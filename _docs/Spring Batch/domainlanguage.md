@@ -139,7 +139,7 @@ job이 실패했으므로, 문제를 판별하는 데 밤새가 소요되어, 'b
 이제 다음 날이므로, 01-02 job도 실행해야하는데, 9시 31분에 바로 시작해서 1시간이 걸려 10시 30분에 정상적으로 종료된다.
 두 job이 동일한 데이터에 접근해서 데이터베이스 레벨에서 잠금 문제를 일으킬 일이 없다면, 하나의 `JobInstance`를 순차적으로 진행해야 할 필요는 없다.
 `Job`을 실행할지 말지 결정하는 일은 전적으로 스케줄러에 달려있다.
-`JobInstance`는 분리되어 있으므로, 스프링배치는 동시에 실행한다고 해서 job을 중단시키지 않는다. (`JobInstance`가 이미 실행 중인데 같은 `JobInstance`를 실행하려고 하면 `JobExecutionAlreadyRunningException`이 발생한다).
+여기서 두 `JobInstance`는 독립적이므로, 스프링배치는 동시에 실행한다고 해서 job을 중단시키지 않는다. (`JobInstance`가 이미 실행 중인데 같은 `JobInstance`를 실행하려고 하면 `JobExecutionAlreadyRunningException`이 발생한다).
 아래 표에 표시된대로 이제 `JobInstance` 및 `JobParameters` 테이블에 entiry 하나씩이 추가되었고, `JobExecution` 테이블에 두 개의 entry가 추가되었다.
 
 **Table 5. BATCH_JOB_INSTANCE**
