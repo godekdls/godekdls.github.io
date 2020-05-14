@@ -1,18 +1,18 @@
 # ----
 # Site
 
-title: Edition Template
-url: "https://long-pig.cloudvent.net"
+title: 토리맘의 스터디 아카이빙
+url: "https://godekdls.github.io/"
 baseurl:
 google_analytics_key:
 show_full_navigation: true
 
 # Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
 logo: /siteicon.png
-description: Product documentation template for Jekyll.
+description: 토리맘의 스터디 아카이빙.
 author:
-  name:
-  email:
+  name: Dain Lee
+  email: godekdls@hanmail.net
   twitter: # twitter username without the @ symbol
 social:
   name: Edition Template
