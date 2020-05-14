@@ -2,37 +2,28 @@
 title: Welcome
 ---
 
-This is the **Edition** template from [CloudCannon](http://cloudcannon.com/).
-**Edition** is perfect for documenting your product, application or service.
-It's populated with example content to give you some ideas.
+공식 개발 Reference를 한글로 번역합니다.
+오역은 제보 부탁드립니다 
+> godekdls@hanmail.net
 
-ChatApp is a fictional chat application for sending messages and media to others.
-Teams and friend groups would use ChatApp to stay up to date if it existed.
+### About Me
 
-> [Sign up](http://example.com/signup) or learn more about ChatApp at [example.com](http://example.com/).
+#### Dain Lee
+- Software Engineer
+- Financial Platform Backend Engineer
+- 토리맘
 
-### Getting Started
+#### Contact Me
+- Email: godekdls@hanmail.net
+- [Linkedin](https://www.linkedin.com/in/%EB%8B%A4%EC%9D%B8-%EC%9D%B4-844604103/)
+- [Github](https://github.com/godekdls)
+- [Instagram](https://www.instagram.com/dainy_bt)
 
-Getting a message sent is quick and easy with ChatApp:
+### Archiving
 
-1. Sign up for an account
-2. Add your friends from their email addresses
-3. Type a message or send a photo
+#### [Spring Batch](https://godekdls.github.io/Spring%20Batch/contents/)
 
-> Feel free to send us a message at [feedback@example.com](mailto:feedback@example.com) with your feedback.
+- 4.2.x 버전 기준
 
-### Features
+> https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
 
-Explore more of ChatApp by reading about our features:
-
-#### Media
-
-Send images, videos and other media to people. Sources include your computer, phone and Facebook.
-
-#### Contact Syncing
-
-Sync your contact list with your phone and/or Facebook contacts. Never lose your contacts between devices again!
-
-#### Devices
-
-ChatApp is available everywhere. Find out how to set it up on your all your devices.
