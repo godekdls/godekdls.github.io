@@ -116,7 +116,7 @@ public Job footballJob() {
 이 프로퍼티들은 유지되어 execution의 상태를 결정할 때 사용되는 중요한 프로퍼티들이다.
 예를 들어, 01-01의 EndOfDay job이 9:00 PM에 실행되서 9:30에 실패한다면, 아래 엔트리들이 배치 메타데이터 테이블에 생성된다:
 
-**table 2. BATCH_JOB_INSTANCE
+**Table 2. BATCH_JOB_INSTANCE**
 
 | JOB_INST_ID 	| JOB_NAME 	|
 |:-----------------:	|:-------------:	|
