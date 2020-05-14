@@ -86,7 +86,28 @@ public Job footballJob() {
 ![Batch Stereotypes](./../../images/springbatch/job-parameters.png)
 
 앞에 나온 예시에서는 각 1월 1일, 1월 2일, 총 두 개의 인스턴스가 있는데, `Job`은 하나지만 `JobParameter`가 두 개 있다: 하나는 2017/01/01에 사용된 파라미터, 다른 하나는 2017/01/02에 사용된 파라미터.
-따라서, 이 공식이 정의된다: `JobInstance` = `Job` + identifying `JobParameters`.
+따라서, 이 공식이 도출된다: `JobInstance` = `Job` + identifying `JobParameters`.
 덕분에 개발자는 효율적으로 `JobInstance`를 정의할 수 있으며, 거기 사용될 파라미터도 컨트롤할 수 있다.
 
 3.1.3. JobExecution
+
+`JobExecution`은 Job 실행을 한번 시도했다는 기술적인 개념을 나타낸다.
+하나의 execution은 성공하거나 실패하게 되는데, execution에 상응하는 `JobInstance`는 해당 execution이 성공적으로 종료되기 전까지는 완료되지 않은 것으로 간주한다.
+앞에서 설명 된 EndOfDay `Job`을 사용하여 처음 실행될 때 실패한 2017/01/01의 `JobInstance`를 생각해보자.
+첫번째 실행(2017/01/01)과 같은 job parameter를 사용해서 재실행한다면, 새 `JobExecution`이 생성된다.
+그러나 `JobInstance`는 여전히 한 개다.
+
+`Job`은 job이 무엇인지와 어떻게 실행되어야 하는 지를 설명하고, `JobInstance`는 주로 올바른 재시작을 위해 execution을 그룹화하는 순수한 구조적인 오브젝트이다.
+반대로 `JobExecution`은 실제 실행 중에 발생한 작업에 대한 기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯, 관리하고 유지해야하는 더 많은 프로퍼티를 가지고있다.
+
+**Table 1. JobExecution Properties**
+| Property 	| Definition 	|
+|:-----------------:	|:-------------:	|
+|Status||
+|startTime||
+|endTime||
+|exitStatus||
+|createTime||
+|lastUpdated||
+|executionContext||
+|failureExceptions||
