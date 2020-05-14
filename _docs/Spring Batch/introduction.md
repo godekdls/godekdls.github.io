@@ -18,4 +18,12 @@ order: 2
 
 1.1. Background
 
+1.2. Usage Scenarios
+
+1.3. Spring Batch Architecture
+
+1.4. General Batch Piplelines and Guidlines
+
+1.5. Batch Processing Strategies
+
 ![](//placehold.it/800x600)
