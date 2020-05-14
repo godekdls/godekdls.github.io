@@ -98,16 +98,69 @@ public Job footballJob() {
 그러나 `JobInstance`는 여전히 한 개다.
 
 `Job`은 job이 무엇인지와 어떻게 실행되어야 하는 지를 설명하고, `JobInstance`는 주로 올바른 재시작을 위해 execution을 그룹화하는 순수한 구조적인 오브젝트이다.
-반대로 `JobExecution`은 실제 실행 중에 발생한 작업에 대한 기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯, 관리하고 유지해야하는 더 많은 프로퍼티를 가지고있다.
+반면 `JobExecution`은 실제 실행 중에 발생한 작업에 대한 기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯, 관리하고 유지해야하는 더 많은 프로퍼티를 가지고있다.
 
 **Table 1. JobExecution Properties**
 | Property 	| Definition 	|
 |:-----------------:	|:-------------:	|
-|Status||
-|startTime||
-|endTime||
-|exitStatus||
-|createTime||
-|lastUpdated||
-|executionContext||
-|failureExceptions||
+|Status|실행 상태를 나타내는 `BatchStatus` 오브젝트. 실행 중일 때는 `BatchStatus#STARTED`. 실패하면 `BatchStatus#FAILED`. 성공적으로 종료되면 `BatchStatus#COMPLETED`|
+|startTime|execution이 실행될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 아직 잡이 시작되지 않았다면 이 필드는 비어있다.|
+|endTime|성공 여부와 상관 없이 execution이 종료될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
+|exitStatus|실행 결과를 나타내는 `ExitStatus`. caller에게 리턴되는 exit 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 chapter 5를 참고. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
+|createTime|`JobExecution`이 처음 저장될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 잡은 시작되지 않았을 수도 있는데(따라서 시작 시간이 없을 수도 있음), createTime은 프레임워크가 job 레벨의 `ExecutionContexts` 관리할 때 사용하기 때문에 항상 존재한다.|
+|lastUpdated|`JobExecution`가 저장된 마지막 시간을 나타내는 `java.util.Date`. 아직 잡이 시작되지 않았다면 이 필드는 비어있다.|
+|executionContext|실행 사이에 유지되어야하는 모든 사용자 데이터를 포함하는 "property bag".|
+|failureExceptions|`Job` 실행 중 발생한 예외 리스트. `Job`이 실패할 때 둘 이상의 예외가 발생한 경우에 유용하다.|
+
+이 프로퍼티들은 유지되어 execution의 상태를 결정할 때 사용되는 중요한 프로퍼티들이다.
+예를 들어, 01-01의 EndOfDay job이 9:00 PM에 실행되서 9:30에 실패한다면, 아래 엔트리들이 배치 메타데이터 테이블에 생성된다:
+
+**table 2. BATCH_JOB_INSTANCE
+
+| JOB_INST_ID 	| JOB_NAME 	|
+|:-----------------:	|:-------------:	|
+|1|EndOfDayJob|
+
+**Table 3. BATCH_JOB_EXECUTION_PARAMS**
+
+| JOB_EXECUTION_ID 	| TYPE_CD 	|KEY_NAME|DATE_VAL|IDENTIFYING|
+|:-----------------:	|:-------------:	||:-----------------:	|:-------------:	|:-------------:	|
+|1|DATE|schedule.Date|2017-01-01|TRUE|
+
+**Table 4. BATCH_JOB_EXECUTION**
+
+| JOB_EXEC_ID 	| JOB_INST_ID 	|START_TIME|END_TIME|STATUS|
+|:-----------------:	|:-------------:	||:-----------------:	|:-------------:	|:-------------:	|
+|1|1|2017-01-01 21:00|2017-01-01 21:30|FAILED|
+
+job이 실패했으므로, 문제를 판별하는 데 밤새가 소요되어, 'batch window'가 닫히지 않았다고 가정해보자.
+또한 window가 9:00 PM에 시작한다고 가정하면, 이 job은 중단 되었던 위치에서 01-01에 다시 시작되어 9:30에 성공적으로 완료된다.
+이제 다음 날이므로, 01-02 job도 실행해야하며, 9시 31분에 바로 시작해서 1시간이 걸려 10시 30분에 정상적으로 종료된다.
+두 job이 동일한 데이터에 접근해서 데이터베이스 레벨에서 잠금 문제를 일으킬 일이 없다면, 하나의 `JobInstance`를 순차적으로 진행해야 할 필요는 없다.
+`Job`을 실행할지 말지 결정하는 일은 전적으로 스케줄러에 달려있다.
+`JobInstance`는 분리되어 있으므로, 스프링배치는 동시에 실행한다고 해서 job을 중단시키지 않는다. (`JobInstance`가 이미 실행 중인데 같은 `JobInstance`를 실행하려고 하면 `JobExecutionAlreadyRunningException`이 발생한다).
+아래 표에 표시된대로 이제 `JobInstance` 및 `JobParameters` 테이블에 entiry 하나씩이 추가되었고, `JobExecution` 테이블에 두 개의 entry가 추가되었다.
+
+**Table 5. BATCH_JOB_INSTANCE**
+
+| JOB_INST_ID 	| JOB_NAME 	|
+|:-----------------:	|:-------------:	|
+|1|EndOfDayJob|
+|2|EndOfDayJob|
+
+**Table 6. BATCH_JOB_EXECUTION_PARAMS**
+| JOB_EXECUTION_ID 	| TYPE_CD 	|KEY_NAME|DATE_VAL|IDENTIFYING|
+|:-----------------:	|:-------------:	||:-----------------:	|:-------------:	|:-------------:	|
+|1|DATE|schedule.Date|2017-01-01|TRUE|
+|2|DATE|schedule.Date|2017-01-01|TRUE|
+|3|DATE|schedule.Date|2017-01-02|TRUE|
+
+**Table 7. BATCH_JOB_EXECUTION**
+
+| JOB_EXEC_ID 	| JOB_INST_ID 	|START_TIME|END_TIME|STATUS|
+|:-----------------:	|:-------------:	||:-----------------:	|:-------------:	|:-------------:	|
+|1|1|2017-01-01 21:00|2017-01-01 21:30|FAILED|
+|2|1|2017-01-02 21:00|2017-01-02 21:30|COMPLETED|
+|3|2|2017-01-02 21:31|2017-01-02 22:29|COMPLETED|
+
+3.2. Step
