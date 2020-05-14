@@ -30,4 +30,63 @@ JCL 및 COBOL 개발자는 C, C # 및 Java 개발자와 같은 개념에 익숙 
 
 3.1. Job
 
-This section describes stereotypes relating to the concept of a batch job. A Job is an entity that encapsulates an entire batch process. As is common with other Spring projects, a Job is wired together with either an XML configuration file or Java-based configuration. This configuration may be referred to as the "job configuration". However, Job is just the top of an overall hierarchy, as shown in the following diagram:
+여기서는 배치 잡 컨셉과 관련있는 개념을 설명한다.
+`Job`은 전체 배치 프로세스를 캡슐화한 엔터티다. 다른 스프링 프로젝트와 마찬가지로, `Job`은 XML 기반이나 자바 기반 설정을 둘 다 지원한다. 이 설정은 "job configuration"이라고도 할 수 있지만, `Job`은 아래 다이어그램에서 보여지듯이 전체 hierarchy의 가장 위에 있을 뿐이다.
+
+![Batch Stereotypes](./../../images/springbatch/job-hierarchy.png)
+
+스프링 배치에서, `Job`은 단순히 `Step` 인스턴스의 컨테이너 개념이다.
+논리적으로 한 플로우에 속한 여러 스텝을 결합하고 재시작과 같은 속성값을 전역으로 구성할 수 있다.
+job configuration은 다음과 같은 값이 있다:
+
+- 단순 job의 name
+- `Step` 인스턴스의 정의와 순서
+- job의 재시작 가능/불가능 여부
+
+`SimpleJob`는 스프링 배치에서 디폴트로 제공하는 간단한 Job 인터페이스의 구현체로, Job의 일부 표준 기능을 구현한다.
+아래 예시처럼, 자바 기반으로 설정하는 경우에는 제공되는 여러 builder를 통해 `Job`의 초기화할 수 있다.
+아래 예시처럼, 자바 기반으로 설정하는 경우에는 제공되는 여러 builder를 통해 `Job`의 초기화할 
+
+```java
+@Bean
+public Job footballJob() {
+    return this.jobBuilderFactory.get("footballJob")
+                     .start(playerLoad())
+                     .next(gameLoad())
+                     .next(playerSummarization())
+                     .end()
+                     .build();
+}
+```
+
+3.1.1. JobInstance
+
+
+`JobInstance`는 논리적인 job 실행을 나타내는 개념이다.
+앞에 있는 다이어그램의 'EndOfDay' `Job`처럼 하루가 끝날 때마다 한번 실행되야하는 배치 잡을 생각해보자.
+'EndOfDay' job은 하나지만, `Job`을 각각 실행할 때마다 따로 추적할 수 있어야 한다. 이 예시에서는, 매일 하나의 논리적인 `JobInstance`가 필요하다.
+예를 들어, 1월 1일 실행, 1월 2일 실행, 등등.
+1월 1일 실행한 배치가 실패하고 다음날 다시 실행되어야 하는 경우에, 재실행 되어도 1월 1일 작업이다. (보통 처리할 데이터와도 일치하는데, 1월 1일에 실행하면 1월 1일의 데이터를 처리한다는 뜻이다)
+따라서 각 `JobInstance`는 여러 개의 실행결과를 가질 수 있고(`JobExecution`은 이 챕터 뒷 부분에 자세히 나온다), 특정 `Job`과 식별가능한 `JobParameters`에 상응하는 `JobInstance`는 단 한 개 뿐이다.
+
+`JobInstance` 정의는 로드되는 데이터와는 아무런 관련이 없다. 데이터가 로드되는 방법은 전적으로 `ItemReader` 구현에 달려있다.
+예를 들어, 앞에서 나온 EndOfDay 시나리오에서는, 데이터가 속하는 시행일이나 스케줄 날짜를 나타내는 컬럼이 있을 것이다.
+즉, 1월 1일 실행은 1일 데이터만 로드하고, 1월 2일 실행은 2일 데이터만 사용할 것이다.
+이러한 걸 결정은 비지니스적 요구사항일 가능성이 높으므로, `ItemReader`가 결정하도록 설계되었다.
+그러나 `JobInstance` 재사용 여부는 이전 실행에서 사용된 상태(state, `ExecutionContext`는 이번 챕터의 뒷부분에 나온다)를 그대로 사용할지 말지를 결정한다.
+새 `JobInstance`를 사용한다는 것은 '처음부터 시작'을 의미하고 이미 있는 instance를 쓴다는 것은 보통 '멈췄던 곳에서부터 시작'을 의미한다.
+
+3.1.2. JobParameters
+
+`JobInstance`가 Job과 어떻게 다른지 이야기하다 보면 보통 이런 질문이 나온다: "`JobInstance`는 다른 JobInstance와 어떻게 구분하지?"
+정답은 `JobParameters`다.
+`JobParameters`는 배치 잡을 시작할 때 사용되는 파라미터 셋을 가지고 있는 오브젝트다.
+아래 이미지에서 보이듯, 실행 중 식별이나 참조 데이터로도 사용될 수 있다.
+
+![Batch Stereotypes](./../../images/springbatch/job-parameters.png)
+
+앞에 나온 예시에서는 각 1월 1일, 1월 2일, 총 두 개의 인스턴스가 있는데, `Job`은 하나지만 `JobParameter`가 두 개 있다: 하나는 2017/01/01에 사용된 파라미터, 다른 하나는 2017/01/02에 사용된 파라미터
+따라서, 이 공식이 정의된다: `JobInstance` = `Job` + identifying `JobParameters`.
+덕분에 개발자는 효율적으로 `JobInstance`를 정의할 수 있으며, 거기 사용될 파라미터도 컨트롤할 수 있다.
+
+3.1.3. JobExecution
