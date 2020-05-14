@@ -85,7 +85,7 @@ public Job footballJob() {
 
 ![Batch Stereotypes](./../../images/springbatch/job-parameters.png)
 
-앞에 나온 예시에서는 각 1월 1일, 1월 2일, 총 두 개의 인스턴스가 있는데, `Job`은 하나지만 `JobParameter`가 두 개 있다: 하나는 2017/01/01에 사용된 파라미터, 다른 하나는 2017/01/02에 사용된 파라미터
+앞에 나온 예시에서는 각 1월 1일, 1월 2일, 총 두 개의 인스턴스가 있는데, `Job`은 하나지만 `JobParameter`가 두 개 있다: 하나는 2017/01/01에 사용된 파라미터, 다른 하나는 2017/01/02에 사용된 파라미터.
 따라서, 이 공식이 정의된다: `JobInstance` = `Job` + identifying `JobParameters`.
 덕분에 개발자는 효율적으로 `JobInstance`를 정의할 수 있으며, 거기 사용될 파라미터도 컨트롤할 수 있다.
 
