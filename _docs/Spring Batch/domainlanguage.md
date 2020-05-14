@@ -101,6 +101,7 @@ public Job footballJob() {
 반면 `JobExecution`은 실제 실행 중에 발생한 작업에 대한 기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯, 관리하고 유지해야하는 더 많은 프로퍼티를 가지고있다.
 
 **Table 1. JobExecution Properties**
+
 | Property 	| Definition 	|
 |:-----------------:	|:-------------:	|
 |Status|실행 상태를 나타내는 `BatchStatus` 오브젝트. 실행 중일 때는 `BatchStatus#STARTED`. 실패하면 `BatchStatus#FAILED`. 성공적으로 종료되면 `BatchStatus#COMPLETED`|
@@ -149,6 +150,7 @@ job이 실패했으므로, 문제를 판별하는 데 밤새가 소요되어, 'b
 |2|EndOfDayJob|
 
 **Table 6. BATCH_JOB_EXECUTION_PARAMS**
+
 | JOB_EXECUTION_ID 	| TYPE_CD 	|KEY_NAME|DATE_VAL|IDENTIFYING|
 |:-----------------:	|:-------------:	||:-----------------:	|:-------------:	|:-------------:	|
 |1|DATE|schedule.Date|2017-01-01|TRUE|
