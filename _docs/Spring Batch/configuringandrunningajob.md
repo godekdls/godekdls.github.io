@@ -845,7 +845,7 @@ job을 재실행 시 특정 step을 스킵하고 싶을 때도 `ABANDONED`를 �
 (job flow 정의와 step execution의 종료 코드에 따라 달라진다).
 
 프로세스가 죽으면 ("Kill -9" 명령어를 사용했거나 서버가 다운된 경우) 당연히 job은 실행 중이 아님에도
-`JobRepository`는 프로세스가 죽었다는 통지르 받을 수가 없기 때문에 이를 알아채지 못한다.
+`JobRepository`는 프로세스가 죽었다는 통지를 받을 수가 없기 때문에 이를 알아채지 못한다.
 execution이 실패하거나 중단되었다고 판단되면 이를 수동으로 알려줘야 하는데 (상태를 `FAILED`나 `ABANDONED`로 바꿔야 한다),
 이는 비지니스 요구사항이기 때문에 자동화할 수는 없다.
 재시작할 수 없는 job이거나(restartable=false) 데이터가 유효하다는 걸 확신할 수 있을 때만 status를 `FAILED`로 바꿔라.
