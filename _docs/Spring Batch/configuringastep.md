@@ -85,7 +85,7 @@ public Step sampleStep(PlatformTransactionManager transactionManager) {
 
 ### 5.1.3. The Commit Interval
 
-앞에서 말했듯이 step은 아이템을 읽고 쓰면서 설정된 `PlatformTransactionManager`를 사용해 주기적으로 커밋한다.
+앞에서 말했듯이 step은 아이템을 읽고 쓰는 동안 설정되어 있는 `PlatformTransactionManager`를 사용해 주기적으로 커밋한다.
 `commit-interval`이 1이면 각 아이템을 write할 때마다 커밋한다.
 트랜잭션을 시작하고 커밋하는 건 소모적인 작업이므로 보통 이렇게 사용하진 않는다.
 보통은 한 트랜잭션에서 가능한 많은 아이템을 처리하는데,
@@ -126,9 +126,9 @@ public Step step1() {
 #### Setting a Start Limit
 
 종종 `Step`의 실행 횟수를 조정하고 싶을 때가 있을 것이다.
-예를 들어, 다시 실행하기 전에 수동으로 수정해야만하는 일부 자원을 무효화시키는 `Step`이 있다면
-한 번만 실행되도록 설정해야 한다.
-step마다 요구사항이 다르므로 step 레벨에서 이를 설정할 수 있다.
+예를 들어, 일부 자원을 무효화시키는 `Step`이 있어서 다시 실행하기 전
+수동으로 수정해야 한다면 한 번만 실행되도록 설정해놔야 한다.
+step마다 요구사항이 다를 수 있으므로 step 레벨에서 이를 설정할 수 있다.
 하나의 `Job`에 한 번만 실행해야 하는 `Step`과 그렇지 않은 `Step`이 같이 있는 경우도 있다.
 아래는 start limit을 설정하는 샘플 코드다:
 
@@ -151,9 +151,9 @@ start-limit의 디폴트 값은 `Integer.MAX_VALUE`이다.
 #### Restarting a Completed `Step`
 
 재시작 가능한 job이라면 첫 실행에서 성공했는지와는 상관없이 항상 실행해야하는 step도 있을 수 있다.
-유효성 검증 스텝이나 배치 전 리소스를 정리하는 `Step`이 그렇다.
+유효성 검증 step이나 배치 전 리소스를 정리하는 `Step`이 그렇다.
 재시작된 job을 처리하는 동안에는 'COMPLETED' 상태를 가진, 즉 이미 성공적으로 완료된 step은 스킵한다.
-아래 예제처럼 `allow-start-if-complete`를 "true"로 설정하면 해당 스텝은 항상 실행된다:
+아래 예제처럼 `allow-start-if-complete`가 "true"로 설정된 step은 항상 실행된다:
 
 ```java
 @Bean
@@ -169,7 +169,7 @@ public Step step1() {
 
 #### `Step` Restart Configuration Example
 
-아래 예제에서는 job에 재시작 가능한 step을 설정한다:
+아래 예제에서는 재시작 가능한 job에 step하는 방법을 보여준다:
 
 ```java
        @Bean
@@ -213,22 +213,21 @@ public Step step1() {
 ```
 
 위 예제는 축구 게임 정보를 읽어와서 요약하는 job을 설정하고 있다.
-`playerLoad`, `gameLoad`, and `playerSummarization` 세 가지 step이 있다.
+`playerLoad`, `gameLoad`, `playerSummarization` 세 가지 step이 있다.
 `playerLoad` step은 플랫한 파일에서 선수 정보를 읽어오고, `gameLoad` step은 같은 방법으로 게임 정보를 읽어온다.
-마지막 `playerSummarization` step은 읽어온 게임 정보를 참고해서 각 선수에 대한 통계를 추출한다.
-`playerLoad`에서 읽는 파일은 한 번에 로드해야 하지만,
+마지막 `playerSummarization` step은 읽어온 게임 정보를 참고해서 각 선수에 대한 요약통계를 추출한다.
+`playerLoad`에서 읽는 파일은 한 개여서 한 번에 읽어올 수 있지만,
 `gameLoad`는 특정 디렉토리 아래 있는 어떤 게임 파일이라도 읽을 수 있으며
 성공적으로 데이터베이스에 저장한 다음에는 파일을 지운다고 가정한다.
 따라서 `playerLoad`는 몇번이고 실행되도 괜찮고, 이미 완료됐다면 스킵해도 좋기 때문에 별다른 설정이 없다.
-그러나 `gameLoad` step은 이전에 실행된 이후 파일이 추가되었을 수도 있으므로 매번 실행할 필요가 있다.
+그러나 `gameLoad` step은 이전에 실행된 이후 파일이 추가되었을 수도 있으므로 매번 실행해야 한다.
 항상 실행될 수 있도록 'allow-start-if-complete'를 'true'로 설정했다.
 (게임을 저장하는 데이터베이스에는 실행을 식별할 수 있는 값이 있어서,
-summarization step에서 게임이 새로 추가된 게임인지를 알 수 있다고 가정한다.)
+summarization step에서 게임이 새로 추가된 게임인지 아닌지를 알 수 있다고 가정한다.)
 가장 중요한 summarization step은 start limit을 2로 설정했다.
-step이 계속해서 실패하면 새 종료코드가 리턴되므로
-job 운영자가 수동 처리가 필요하다는 걸 인지할 수 있다.
+step이 계속해서 실패하면 새 종료코드가 리턴되므로 job 운영자는 수동 처리가 필요하다는 걸 인지할 수 있다.
 
-> 이 job은 이 문서의 예시일 뿐이며 샘플 프로젝트에 있는 `footballJob` 동일하지 않다.
+> 이 job은 이 문서의 예시일 뿐이며 샘플 프로젝트에 있는 `footballJob`과는 동일하지 않다.
 
 여기서부터 `footballJob` 예제를 세 번 실행했을 때의 각 동작을 설명하겠다.
 
@@ -242,13 +241,72 @@ Run 2:
 
 1. `playerLoad`는 이전에 이미 성공했고 `allow-start-if-complete`이 'false'(디폴트)이므로 실행되지 않는다.
 2. `gameLoad`는 다시 실행되어 다른 2개의 파일을 처리하고 마찬가지로 'GAMES' 테이블에 저장한다 (실행을 식별할 수 있는 값과 함께 저장).
-3. `playerSummarization`은 남은 모든 데이터를 처리하고 (실행을 식별할 수 있는 값으로 필터링함) 30분 뒤 다시 실패한다.
+3. `playerSummarization`은 남은 모든 데이터(실행을 식별할 수 있는 값으로 필터링함)를 처리하고 30분 뒤 다시 실패한다.
 
 Run 3:
 
 1. `playerLoad`는 이전에 이미 성공했고 `allow-start-if-complete`이 'false'(디폴트)이므로 실행되지 않는다.
 2. `gameLoad`는 다시 실행되어 다른 2개의 파일을 처리하고 마찬가지로 'GAMES' 테이블에 저장한다 (실행을 식별할 수 있는 값과 함께 저장).
-3. `playerSummarization`을 실행하지 않은 채로 job은 즉시 종료된다. `playerSummarization`을 세 번째 실행하는 건데, 두 번으로 제한되어있기 때문이다. 이 제한을 바꾸던가 `Job`을 새 `JobInstance`로 실행해야 한다.
+3. `playerSummarization`을 실행하지 않은 채로 job은 즉시 종료된다. `playerSummarization`을 세 번째 실행하는 건데, 두 번으로 제한되어있기 때문이다. 이 제한을 바꾸던가 새 `JobInstance`로 `Job`을 실행해야 한다.
 
 ### 5.1.5. Configuring Skip Logic
 
+중간에 발생한 에러가 `Step` 실패로 끝나는 대신 무시하고 넘어가야 하는 케이스도 많다.
+보통 이런건 데이터가 무엇인지 이해하고 있는 사람이 결정한다.
+예를 들어 금융 데이터를 다룰 때는 돈이 송금될 수도 있으므로, 완전 무결해야 하며 실패했을 때 그냥 넘어가선 안 된다.
+반면 벤더 리스트를 읽어들일 때는 그냥 넘어가도 상관 없다.
+데이터 포맷이 잘못되거나 필수 정보가 누락되서 벤더 정보를 읽어들이지 못하는 경우라면 크게 문제되지 않는다.
+잘못된 로그가 저장되는 경우도 빈번하며, 이런 케이스를 다루는 방법은 뒤에 listener를 다룰 때 설명하겠다.
+
+아래 예제는 skip limit을 사용한 예제이다:
+
+```java
+@Bean
+public Step step1() {
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(10)
+				.reader(flatFileItemReader())
+				.writer(itemWriter())
+				.faultTolerant()
+				.skipLimit(10)
+				.skip(FlatFileParseException.class)
+				.build();
+}
+```
+
+앞의 예제는 `FlatFileItemReader`를 사용했다.
+언제든지 `FlatFileParseException`이 발생하면 해당 아이템은 건너 뛰고 skip limit으로 설정된 10이 될 때까지 카운팅한다.
+선언되어있는 Exception(혹은 하위 클래스들)은 청크 프로세싱(read, process, write)의 모든 단계에서 발생할 수 있는데,
+step내에 read, process, write 별로 각각 skip 카운트를 매기지만 이 limit 값은 모두에 적용된다.
+skip limit에 도달했는데 또 예외가 발생 하면 그땐 step이 실패로 끝난다.
+다시 말해 10번은 괜찮아도 11번째 skip은 예외를 발생시긴다.
+
+앞에 예제에서는 한 가지 문제점이 있는데, `FlatFileParseException`이 아닌 다른 예외가 발생하면 `Job`은 실패한다.
+물론 이 동작을 의도했을 수도 있다.
+아래 예제에서처럼 실패로 간주할 예외만 지정하고 나머지는 건너 뛰게 만들면 문제는 단순해진다.
+
+```java
+@Bean
+public Step step1() {
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(10)
+				.reader(flatFileItemReader())
+				.writer(itemWriter())
+				.faultTolerant()
+				.skipLimit(10)
+				.skip(Exception.class)
+				.noSkip(FileNotFoundException.class)
+				.build();
+}
+```
+
+`java.lang.Exception`을 건너뛰어도 되는 예외 클래스로 지정했는데, 이는 모든 `Exception`을 무시하겠다는 뜻이다.
+하지만 `java.io.FileNotFoundException`을 예외로 둠으로써, `FileNotFoundException`을 제외한 모든 `Exceptions`을 무시할 예외 클래스로 지정한다.
+치명적일 수 있는 클래스는 예외로 둔다. (즉, 건너 뛰지 않음).
+
+어떤 예외가 발생하더라도, 건너뛸지 말지는(skippability) 클래스 hierarchy에서 가장 가까운 슈퍼클래스를 참조해 결정한다.
+지정되지 않은 예외는 'fatal'로 간주한다.
+
+`skip` `noSkip` 메소드 호출 순서는 아무런 상관이 없다.
+
+### 5.1.6. Configuring Retry Logic

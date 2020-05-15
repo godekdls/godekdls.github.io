@@ -355,6 +355,6 @@ public JobExecution run(Job job, JobParameters jobParameters)
 
 `ItemProcessor`는 아이템을 처리하는 비지니스 로직을 나타내는 추상화 개념이다.
 `ItemReader`가 아이템을 하나 read하고 `ItemWriter`가 아이템 묶음을 write한다면,
-`ItemProcessor`는 데이터를 변환(transform)이나 다른 비지니스 처리(processing)를 위한 엑세스 포인트 역할을 한다. 
+`ItemProcessor`는 데이터 변환(transform)이나 다른 비지니스 처리(processing)를 위한 엑세스 포인트 역할을 한다. 
 데이터를 처리하던 중 아이템이 유효하지 않다고 판단하면 null을 리턴하는데, 이 아이템은 write되면 안된다는 것을 의미한다.
 `ItemProcessor` 인터페이스에 대한 자세한 설명은 [Readers And Writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)를 참조하라.

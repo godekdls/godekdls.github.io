@@ -437,7 +437,7 @@ Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니�
 
 #### The CommandLineJobRunner
 
-스크립트로 job을 실행하면 자바 Jirtual Machine을 실행하기 때문에 진입점으로 메인 메소드를 가진 클래스가 필요하다.
+스크립트로 job을 실행하면 자바 Virtual Machine을 실행하기 때문에 진입점으로 메인 메소드를 가진 클래스가 필요하다.
 스프링 배치는 이를 위해 `CommandLineJobRunner`라는 구현체를 만들어놨다.
 단, 이는 어플리케이션을 실행하는 방법 중 하나일 뿐이고, 자바 프로세스를 시작할 방법은 많으며 이 클래스가 절대적인 것은 아니다.
 `CommandLineJobRunner`는 네 가지 작업을 수행한다:
@@ -494,8 +494,8 @@ public class EndOfDayJobConfiguration {
 }
 ```
 
-스프링 배치에서 배치 잡을 실해앟려면 더 복잡한 설정들이 있는데, 
-이 예제에서는 `CommandLineJobRunner`에서 필요로하는 두 가지 주요 설정만 나타냈다: `Job` and `JobLauncher`
+스프링 배치에서 배치 잡을 실행하려면 더 복잡한 설정들이 있는데, 
+이 예제에서는 `CommandLineJobRunner`에서 필요로하는 두 가지 주요 설정 `Job`과 `JobLauncher`만 다뤘다.
 
 #### ExitCodes
 
@@ -526,7 +526,7 @@ job runner가 디폴트로 사용하는 구현체는 `SimpleJvmExitCodeMapper`�
 좀 더 세세한 구분이 필요하면 `ExitCodeMapper` 인터페이스를 직접 구현해야 한다.
 `CommandLineJobRunner`는 `ApplicationContext`를 생성하는 클래스이므로 context 내에 함께 묶일 수는 없고, 재구현한 값들을 주입해줄 필요가 있다.
 즉 `BeanFactory` 내에 `ExitCodeMapper` 구현체가 있으면 컨텍스트가 생성되고 난 이후에 runner에 주입된다는 뜻이다.
-직접 구현한 `ExitCodeMapper`를 사용하려면 루트 레벨이 구현체를 선언하고 runner에 의해 로드되는 `ApplicationContext`에 포함시켜야 한다.
+직접 구현한 `ExitCodeMapper`를 사용하려면 루트 레벨에 구현체를 선언하고 runner에 의해 로드되는 `ApplicationContext`에 포함시켜야 한다.
 
 ### 4.5.2. Running Jobs from within a Web Container
 
@@ -567,7 +567,7 @@ public class JobLauncherController {
 ![Job Repository](./../../images/springbatch/job-repository.png)
 
 `JobLauncher`는 `JobExecution` 오브젝트를 생성하고 실행하기 위해 `JobRepository`를 사용한다.
-그 다음으론 `Job` and `Step` 구현체가 job 실행 중에 execution을 업데이트하기 위해 `JobRepository`를 사용한다.
+그 다음으론 `Job`과 `Step` 구현체가 job 실행 중에 execution을 업데이트하기 위해 `JobRepository`를 사용한다.
 이 기본적인 동작은 간단한 시나리오에는 충분하지만 배치 잡이 수백 개에 달하고 스케줄링까지 복잡하다면 메타 데이터에 접근하기 위한 고급 기술이 필요하다.
 
 ![Advanced Job Repository Access](./../../images/springbatch/job-repository-advanced.png)
@@ -576,7 +576,7 @@ public class JobLauncherController {
 
 ### 4.6.1. Querying the Repository
 
-고급 기능 이전에 가장 기본적인 요구사항은 레포지토리에 기존 execution을 요청하는 기능이다.
+어떤 고급 기능보다도 가장 기본적인 요구사항은 레포지토리에 기존 execution을 요청하는 기능이다.
 이 기능은 `JobExplorer` 인터페이스가 지원한다:
 
 ```java
@@ -631,11 +631,11 @@ public JobExplorer getJobExplorer() throws Exception {
 
 `JobRegistry`는 (부모 인터페이스 `JobLocator`도 마찬가지) 필수는 아니지만,
 context내 있는 job을 추적하고 싶을 때 유용하다.
-여러 곳에서 job을 생성하는 환경이라면(e.g. 자식 context) 어플리케이션 컨텍스트에서 job을 수집할 때도 유용하게 쓰인다.
+여러 곳에서 job을 생성하는 환경이라면(e.g. 자식 context) 어플리케이션 컨텍스트에서 job을 수집할 때도 사용할 수 있다.
 커스텀 `JobRegistry` 구현체 또한 등록된 job의 이름이나 프로퍼티를 관리할 때 유용할 수 있다.
 기본으로 제공되는 구현체는 job 이름을 job 인스턴스에 매핑한 간단한 map 기반이다.
 
-`@EnableBatchProcessing`를 선언하면 `JobRegistry`를 기본으로 제공된다.
+`@EnableBatchProcessing`을 선언하면 `JobRegistry`를 기본으로 제공한다.
 자체 구현체를 사용하고 싶다면:
 
 ```java
@@ -700,8 +700,7 @@ registrar에는 `ApplicationContextFactory` array와(여기선 편의상 팩토�
 따라서 부모 컨텍스트와 동일한 설정을 사용한다면 자식 컨텍스트에서 `PropertyPlaceholderConfigurer`나 AOP 설정을 재정의하지 않아도 된다.
 
 원한다면 `AutomaticJobRegistrar`를 `JobRegistryBeanPostProcessor`와 함께 사용할 수 있다 (`DefaultJobLoader`도 함께 사용하는 경우에만).
-기본 상위 컨텍스트 및 하위에 정의 된 job이 있는 경우 이 방법이 바람직하다.
-부모 컨텍스트와 자식 컨텍스트에 모두 job을 정의한 경우에 유용하다.
+메인 부모 컨텍스트와 자식 컨텍스트에 모두 job을 정의한 경우에 유용하다.
 
 ### 4.6.3. JobOperator
 
