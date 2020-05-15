@@ -18,7 +18,7 @@ order: 6
 
 스프링 배치 구현체의 대부분은 '청크 지향'으로 개발되었다.
 청크 지향 프로세싱이란 한 번에 데이터를 하나씩 읽어와서 트랜잭션 경계 내에서 쓰여질 '청크'를 만드는 걸 뜻한다.
-`ItemReader`가 item 하나를 읽으면 `ItemProcessor`에 넘겨져 합쳐진다.
+`ItemReader`가 item 하나를 읽으면 데이터는 `ItemProcessor`에 넘겨지고 결국엔 합쳐진다.
 읽어온 item 수가 commit interval과 같아지면 `ItemWriter`가 청크 전체를 write하고, 트랜잭션이 커밋된다.
 아래는 이 절차를 도식화한 그림이다:
 
