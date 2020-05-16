@@ -135,4 +135,4 @@ https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
 11. Common Batch Patterns
 12. JSR-352 Support
 13. Spring Batch Integration
-14. Monitoring and metrics
+14. [Monitoring and metrics](https://godekdls.github.io/Spring%20Batch/monitoringandmetrics/)

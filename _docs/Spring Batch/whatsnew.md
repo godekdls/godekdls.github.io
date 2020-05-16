@@ -10,12 +10,33 @@ order: 3
 - [2.2. Apache Kafka item reader/writer](#22-apache-kafka-item-readerwriter)
 - [2.3. Apache Avro item reader/writer](#23-apache-avro-item-readerwriter)
 - [2.4. Documentation updates](#24-documentation-updates)
+
+스프링 배치 4.2 버전에서는 아래 기능을 추가됐다:
+
+- [Micrometer](https://micrometer.io/) 를 통한 배치 메트릭(metric) 지원
+- [Apache Kafka](https://kafka.apache.org/) 토픽 읽고 쓰기 지원
+- [Apache Avro](https://avro.apache.org/) 리소스 읽고 쓰기 지원
+- 문서 개선
  
- ## 2.1. Batch metrics with Micrometer
+## 2.1. Batch metrics with Micrometer
  
- ## 2.2. Apache Kafka item reader/writer
+이번 배포에서 Micrometer 사용하는 배치 job 모니터링 기능을 소개한다.
+디폴트로 스프링 배치는 메트릭을 수집하고 (job 지속시간, step 지속시간, 아이템 read/write 처리량 등)
+Micrometer의 글로벌 메트릭 레지스트리에 `spring.batch` 프리픽스와 함께 등록한다.
+이 메트릭은 Micrometer가 지원하는 모든 [monitoring system](https://micrometer.io/docs/concepts#_supported_monitoring_systems) 에 보낼 수 있다. 
  
- ## 2.3. Apache Avro item reader/writer
+이 기능에 대한 자세한 내용은 [Monitoring and metrics](https://godekdls.github.io/Spring%20Batch/monitoringandmetrics/) 챕터를 참고하라.
  
- ## 2.4. Documentation updates
+## 2.2. Apache Kafka item reader/writer
  
+카프카 토픽을 읽고 쓰는 `KafkaItemReader`와 `KafkaItemWriter`를 추가했다.
+새 컴포넌트에 대한 자세한 정보는 [Javadoc](https://docs.spring.io/spring-batch/docs/4.2.x/api/index.html) 을 참조하라.
+ 
+## 2.3. Apache Avro item reader/writer
+ 
+에이브로 리소스로 파일을 읽고 쓰는 `AvroItemReader`와 `AvroItemWriter`를 추가했다. 
+새 컴포넌트에 대한 자세한 정보는 [Javadoc](https://docs.spring.io/spring-batch/docs/4.2.x/api/index.html) 을 참조하라.
+ 
+## 2.4. Documentation updates
+ 
+refernce 문서를 다른 스프링 프로젝트 스타일로 업데이트했다.
