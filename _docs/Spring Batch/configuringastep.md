@@ -10,19 +10,34 @@ order: 6
   + [5.1.1. Configuring a Step](#511-configuring-a-step)
   + [5.1.3. The Commit Interval](#513-the-commit-interval)
   + [5.1.4. Configuring a Step for Restart](#514-configuring-a-step-for-restart)
+    * [Setting a Start Limit](#setting-a-start-limit)
+    * [Restarting a Completed Step](#restarting-a-completed-step)
+    * [Step Restart Configuration Example](#step-restart-configuration-example)
   + [5.1.5. Configuring Skip Logic](#515-configuring-skip-logic)
   + [5.1.6. Configuring Retry Logic](#516-configuring-retry-logic)
   + [5.1.7. Controlling Rollback](#517-controlling-rollback)
+    * [Transactional Readers](#transactional-readers)
   + [5.1.8. Transaction Attributes](#518-transaction-attributes)
   + [5.1.9. Registering ItemStream with a Step](#519-registering-intputstream-with-a-step)
   + [5.1.10. Intercepting Step Execution](#5110-intercepting-step-execution)
+    * [StepExecutionListener](#stepexecutionlistener)
+    * [ChunkListener](#chunklistener)
+    * [ItemReadListener](#itemreaderlistener)
+    * [ItemProcessListener](#itemprocesslistener)
+    * [ItemWriteListener](#itemwritelistener)
+    * [SkipListener](#skiplistener)
+    * [SkipListeners and Transactions](#skiplisteners-and-transactions)
 - [5.2. TaskletStep](#52-taskletstep)
   + [5.2.1. TaskletAdapter](#521-taskletadapter)
   + [5.2.2. Example Tasklet Implementation](#522-example-tasklet-implementation)
 - [5.3. Controlling Step Flow](#53-controlling-step-flow)
   + [5.3.1. Sequential Flow](#531-sequential-flow)
   + [5.3.2. Conditional Flow](#532-conditional-flow)
+    * [Batch Status Versus Exit Status](#batch-status-versus-exit-status)
   + [5.3.3. Configuring for Stop](#533-configuring-for-stop)
+    * [Ending at a Step](#ending-at-a-step)
+    * [Failing a Step](#failing-a-step)
+    * [Stopping a Job at a Given Step](#stopping-a-job-at-a-given-step)
   + [5.3.4. Programmatic Flow Decisions](#534-programmatic-flow-decisions)
   + [5.3.5. Split Flows](#535-split-flows)
   + [5.3.6. Externalizing Flow Definitions and Dependencies Between Jobs](#536-externalizing-flow-definitions-and-dependencies-between-jobs)
@@ -431,12 +446,251 @@ public Step step1() {
 
 step의 생명주기동안 `ItemStream` 콜백을 처리해야할 때가 있다
 (`ItemStream`에 대한 자세한 설명은 [ItemStream](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#64-itemstream) 참고 ).
-`ItemStream`은 step이 실패해서 재시작하려는 경우에 각 실행간 상태에 대해 꼭 필요한 정보를 얻을 수 있는 인터페이스를 제공하는 매우 중요한
+`ItemStream`은 step이 실패해서 재시작하려는 경우에 각 실행 상태에 대해 꼭 필요한 정보를 얻을 수 있는 매우 중요한 인터페이스를 제공한다.
 
+`ItemStream` 인터페이스는 `ItemReader`, `ItemProcessor`, `ItemWriter` 중 하나로 구현하면 자동으로 등록된다.
+다른 steam 구현체는 별도로 등록해야한다.
+reader나 writer에 위임(delegate)같이 직접적이지 않은 의존성(dependency)을 주입하는 경우가 그렇다.
+아래 예제처럼 `Step`에 stream을 등록할 땐 'stream' 메소드를 사용한다.
 
+```java
+@Bean
+public Step step1() {
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(2)
+				.reader(itemReader())
+				.writer(compositeItemWriter())
+				.stream(fileItemWriter1())
+				.stream(fileItemWriter2())
+				.build();
+}
 
+/**
+ * In Spring Batch 4, the CompositeItemWriter implements ItemStream so this isn't
+ * necessary, but used for an example.
+ */
+@Bean
+public CompositeItemWriter compositeItemWriter() {
+	List<ItemWriter> writers = new ArrayList<>(2);
+	writers.add(fileItemWriter1());
+	writers.add(fileItemWriter2());
 
-### 5.1.10. Intercepting Step Execution
+	CompositeItemWriter itemWriter = new CompositeItemWriter();
+
+	itemWriter.setDelegates(writers);
+
+	return itemWriter;
+}
+```
+
+위에서 보이는 `CompositeItemWriter`는 `ItemStream`이 아니며, 위임(delegate)이다.
+따라서 두 delegate writer는 명시적으로 stream으로 등록해주어야 프레임워크에서 처리할 수 있다.
+`ItemReader`는 `Step`의 프로퍼티이므로 따로 stream으로 등록하지 않아도 된다.
+위 step은 재시작 가능한 step인데, 실패 이벤트가 발생해도 reader와 writer 상태를 저장할 수 있다.
+
+### 5.1.10. Intercepting `Step` Execution
+
+`Job`과 마찬가지로 `Step`에서도 실행 중 어떤 이벤트가 발생하면 별도 처리가 필요할 수 있다.
+예를 들어 파일 맨 뒤에 꼬리말이 필요한 파일에 데이터를 쓰고있다면
+`ItemWriter`는 `Step`이 완료됐을 때 통지를 받아야만 꼬리말을 써 넣을 수 있다.
+이를 위한 여러가지 `Step` 레벨의 리스너(listener)가 준비되어있다.
+
+모든 `StepListener`를 확장한 구현체는 (인터페이스는 비어있으므로 해당하지 않음)
+`listeners` 메소드로 step에 등록할 수 있다.
+`listeners`는 step, tasklet, 청크 단위 사용할 수 있다.
+리스너가 필요한 레벨에 등록하는게 좋지만, 리스너가 여러개라면 (`StepExecutionListener` and `ItemReadListener`같은)
+세분화해서 필요한 곳에 각각 등록하는 게 낫다.
+아래 예제에서는 청크 레벨로 리스너를 등록했다:
+
+```java
+@Bean
+public Step step1() {
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(10)
+				.reader(reader())
+				.writer(writer())
+				.listener(chunkListener())
+				.build();
+}
+```
+
+네임스페이스에 `<step>`을 사용하거나 `*StepFactoryBean` 중 하나를 사용해 `Step`을 만들었다면
+`StepListener`을 구현한 `ItemReader`, `ItemWriter` or `ItemProcessor`는 자동으로 등록된다.
+즉 `Step`에 직저버 주입되는 컴포넌트는 자동이다.
+다른 컴포넌트 안에 포함된 채로(nested) 있는 리스너는 명시적으로 등록해야한다
+(위에 있는 예제처럼 [Registering ItemStream with a Step](#519-registering-intputstream-with-a-step) ).
+
+`StepListener`가 아니어도 애노테이션으로 같은 관심사를 처리할 수 있다.
+일반 자바 오브젝트 메소드 위에 이 애노테이션을 선언하면 그에 맞 `StepListener`으로 변환된다.
+`ItemReader`, `ItemWriter`, `Tasklet`같은 청크 컴포넌트를 커스텀화해서 애노테이션을 다는 방법도 많이 쓰인다.
+빌더의 `listener` 메소드로 리스너를 등록하듯,
+애노테이션을 선언하면 XML 파서가 `<listener/>` 요소로 파싱하므로,
+XML 네임스페이스나 빌더만 사용하면 step에 리스너를 등록할 수 있다.
+
+#### `StepExecutionListener`
+
+`Step`을 실행할 때는 `StepExecutionListener`를 가장 많이 사용된다.
+아래 예제에서 보이듯, `Step`의 성공/실패 여부와 상관 없이, step 시작 전과 끝난 후에 통지를 보낸다.
+
+```java
+public interface StepExecutionListener extends StepListener {
+
+    void beforeStep(StepExecution stepExecution);
+
+    ExitStatus afterStep(StepExecution stepExecution);
+
+}
+```
+
+`afterStep`에서 인자로 받는 `ExitStatus`로 종료 코드를 수정할 수 있다.
+
+위 인터페이스와 동일한 애노테이션:
+
+- `@BeforeStep`
+- `@AfterStep`
+
+#### `ChunkListener`
+
+청크는 트랜젹션 스코프에서 처리하는 아이템 묶음이다.
+각 커밋 인터벌 마다 트랜잭션을 커밋하는데, 이때 이 '청크'를 커밋한다.
+`ChunkListener`는 청크를 처리하기 전이나 청크가 완료되고 난 후에 호출된다.
+인터페이스 정의는 다음과 같다:
+
+```java
+public interface ChunkListener extends StepListener {
+
+    void beforeChunk(ChunkContext context);
+    void afterChunk(ChunkContext context);
+    void afterChunkError(ChunkContext context);
+
+}
+```
+
+`beforeChunk` 메소드는 트랜잭션이 시작된 후 호출되는데, 아직 `ItemReader`의 read 메소드를 호출하기 전이다.
+반대로 `afterChunk` 메소드는 청크가 커밋된 후 호출된다 (롤백됬다면 호출되지 않는다).
+
+위 인터페이스와 동일한 애노테이션:
+
+- `@BeforeChunk`
+- `@AfterChunk`
+- `@AfterChunkError`
+
+청크 선언이 없어도 `ChunkListener`를 사용할 수 있다.
+`TaskletStep`이 `ChunkListener`를 호출하는데,
+아이템 기반이 아닌 tasklet에도 마찬가지로 적용된다 (tasklet 전과 후에 호출된다).
+
+#### `ItemReadListener`
+
+전에 skip을 설명할 때 무시하고 지나간 데이터를 기록해두면 나중에 처리할 수 있다고 언급했었다.
+아래 인터페이스에서 보이듯, 읽기에 실패한 경우 `ItemReaderListener`로 로그를 남길 수 있다.
+
+```java
+public interface ItemReadListener<T> extends StepListener {
+
+    void beforeRead();
+    void afterRead(T item);
+    void onReadError(Exception ex);
+
+}
+```
+
+`beforeRead` 메소드는 `ItemReader`의 read 메소드를 호출하기 전 매번 호출된다.
+`afterRead` 메소드는 read 메소드 호출에 성공할 때마다 호출하며, 읽은 item을 인자로 받는다.
+읽는 도중 에러가 발생하면 `onReadError` 메소드가 호출된다.
+발생한 exception 정보도 함께 정보되므로 여기서 로그에 남길 수 있다.
+
+위 인터페이스와 동일한 애노테이션:
+
+- `@BeforeRead`
+- `@AfterRead`
+- `@OnReadError`
+
+#### `ItemProcessListener`
+
+`ItemReadListener`처럼 아이템을 처리(processing)할 때도 리스너를 사용할 수 있다:
+
+```java
+public interface ItemProcessListener<T, S> extends StepListener {
+
+    void beforeProcess(T item);
+    void afterProcess(T item, S result);
+    void onProcessError(T item, Exception e);
+
+}
+```
+
+`beforeProcess` 메소드는 `ItemProcessor`의 `process` 메소드 전 호출되며, 처리할 item을 넘겨받는다.
+`afterProcess` 메소드는 아이템을 성공적으로 처리된 다음 호출한다.
+처리 중 에러가 발생하면 `onProcessError` 메소드를 호출한다.
+exception과 처리하려고 했던 item정보를 함께 넘겨받으므로 로그에 남길 수 있다.
+
+위 인터페이스와 동일한 애노테이션:
+
+- `@BeforeProcess`
+- `@AfterProcess`
+- `@OnProcessError`
+
+#### `ItemWriteListener`
+
+아이템을 쓸 때는 `ItemWriteListener`를 사용한다:
+
+```java
+public interface ItemWriteListener<S> extends StepListener {
+
+    void beforeWrite(List<? extends S> items);
+    void afterWrite(List<? extends S> items);
+    void onWriteError(Exception exception, List<? extends S> items);
+
+}
+```
+
+`beforeWrite`는 `ItemWriter`의 `write` 메소드 전 호출되며 write할 아이템 리스트를 넘겨 받는다.
+`afterWrite`메소드는 아이템을 성공적으로 write한 다음 호출한다.
+아이템를 쓰는 중 에러가 발생하면 `onWriteError` 메소드를 호출한다.
+exception과 쓰려고 했던 item정보를 함께 넘겨받으므로 로그에 남길 수 있다.
+
+위 인터페이스와 동일한 애노테이션:
+
+- `@BeforeWrite`
+- `@AfterWrite`
+- `@OnWriteError`
+
+#### `SkipListener`
+
+`ItemReadListener`, `ItemProcessListener`, `ItemWriteListener` 모두 에러 통지해주지만,
+데이터가 스킵된 경우는 통지해주지 않는다.
+예를 들어 `onWriteError` 메소드는 재시도해서 처리에 성공한 경우에도 호출된다.
+따라서 스킵된 아이템을 추적하기 위한 별도의 인터페이스를 제공한다:
+
+```java
+public interface SkipListener<T,S> extends StepListener {
+
+    void onSkipInRead(Throwable t);
+    void onSkipInProcess(T item, Throwable t);
+    void onSkipInWrite(S item, Throwable t);
+
+}
+```
+
+`onSkipInRead` 메소드는 아이템을 읽는 동안 스킵될 때마다 호출된다.
+주의할 점은, 롤백된 경우에는 같은 아이템이 여러번 스킵된 걸로 간주할 수도 있다.
+`onSkipInWrite` 메소드는 아이템을 쓰는 동안 스킵될 때 호출한다.
+이때는 아이템을 읽는데는 성공했으므로 (읽는 도중 스킵되지 않고), 메소드 인자로 item을 제공한다.
+
+위 인터페이스와 동일한 애노테이션:
+
+- `@OnSkipInRead`
+- `@OnSkipInWrite`
+- `@OnSkipInProcess`
+
+#### SkipListeners and Transactions
+
+스킵된 아이템을 로깅할 때 `SkipListener`를 가장 많이 쓰는데,
+다른 배치 프로세스나 심지어 수동 작업으로 skip된 이슈를 확인하고 수정해야 할 때가 있다.
+기존 트랜잭션이 롤백되었다면, 여러가지 이유가 있을 수 있으므로 스프링 배치는 다음 두가지를 보장한다:
+
+1. 적절한 skip 메소드를(에러 발생 시점에 따라 다름) item마다 한 번만 호출한다.
+2. `SkipListener`는 항상 트랜잭션이 커밋되기 직전에 호출한다. 따라서 `ItemWriter`에서 오류가 발생해도 리스너에서 호출하는 트랜잭션까지 롤백되지 않는다.
 
 ## 5.2. TaskletStep
 

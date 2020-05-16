@@ -118,7 +118,7 @@ public interface JobExecutionListener {
 }
 ```
 
-job의 listeners 요소를 통해 `SimpleJob`에 `JobListeners`를 등록한다.
+job의 listeners 메소드를 통해 `SimpleJob`에 `JobListeners`를 등록한다.
 
 ```java
 @Bean
