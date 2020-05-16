@@ -6,7 +6,7 @@ order: 5
 
 ### 목차
 
- - [4.1. Configuring a Job](#41-configuring-a-job)
+- [4.1. Configuring a Job](#41-configuring-a-job)
   + [4.1.1. Restartability](#411-restartability)
   + [4.1.2. Intercepting Job Execution](#412-intercepting-job-execution)
   + [4.1.4. JobParametersValidator](#414-jobparametersvalidator)

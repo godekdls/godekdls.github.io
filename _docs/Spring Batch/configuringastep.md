@@ -6,7 +6,7 @@ order: 6
 
 ### 목차
 
- - [5.1. Chunk-oriented Processing](#51-chunk-oriented-processing)
+- [5.1. Chunk-oriented Processing](#51-chunk-oriented-processing)
   + [5.1.1. Configuring a Step](#511-configuring-a-step)
   + [5.1.3. The Commit Interval](#513-the-commit-interval)
   + [5.1.4. Configuring a Step for Restart](#514-configuring-a-step-for-restart)
@@ -16,17 +16,17 @@ order: 6
   + [5.1.8. Transaction Attributes](#518-transaction-attributes)
   + [5.1.9. Registering ItemStream with a Step](#519-registering-intputstream-with-a-step)
   + [5.1.10. Intercepting Step Execution](#5110-intercepting-step-execution)
- - [5.2. TaskletStep](#52-taskletstep)
+- [5.2. TaskletStep](#52-taskletstep)
   + [5.2.1. TaskletAdapter](#521-taskletadapter)
   + [5.2.2. Example Tasklet Implementation](#522-example-tasklet-implementation)
- - [5.3. Controlling Step Flow](#53-controlling-step-flow)
+- [5.3. Controlling Step Flow](#53-controlling-step-flow)
   + [5.3.1. Sequential Flow](#531-sequential-flow)
   + [5.3.2. Conditional Flow](#532-conditional-flow)
   + [5.3.3. Configuring for Stop](#533-configuring-for-stop)
   + [5.3.4. Programmatic Flow Decisions](#534-programmatic-flow-decisions)
   + [5.3.5. Split Flows](#535-split-flows)
   + [5.3.6. Externalizing Flow Definitions and Dependencies Between Jobs](#536-externalizing-flow-definitions-and-dependencies-between-jobs)
- - [5.4. Late Binding of Job and Step Attributes](#54-late-binding-of-job-and-step-attributes)
+- [5.4. Late Binding of Job and Step Attributes](#54-late-binding-of-job-and-step-attributes)
   + [5.4.1. Step Scope](#541-step-scope)
   + [5.4.2. Job Scope](#542-job-scope)
 
