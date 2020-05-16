@@ -1,7 +1,7 @@
 # ----
 # Site
 
-title: 토리맘의 스터디 아카이빙
+title: 토리맘의 한글라이즈 프로젝트
 url: "https://godekdls.github.io/"
 baseurl:
 google_analytics_key:
@@ -9,7 +9,7 @@ show_full_navigation: true
 
 # Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
 logo: /siteicon.png
-description: 토리맘의 스터디 아카이빙.
+description: 토리맘의 한글라이즈 프로젝트.
 author:
   name: Dain Lee
   email: godekdls@hanmail.net

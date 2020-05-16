@@ -692,11 +692,65 @@ skip된 이슈를 확인하고 수정하려면 다른 배치 프로세스나 심
 1. 적절한 skip 메소드를(에러 발생 시점에 따라 다름) item마다 한 번만 호출한다.
 2. `SkipListener`는 항상 트랜잭션이 커밋되기 직전에 호출한다. 따라서 `ItemWriter`에서 오류가 발생해도 리스너에서 호출하는 트랜잭션까지 롤백되지 않는다.
 
-## 5.2. TaskletStep
+## 5.2. `TaskletStep`
 
-### 5.2.1. TaskletAdapter
+[Chunk-oriented processing](#51-chunk-oriented-processing) 이 `Step`을 처리하는 절대적인 방법은 아니다.
+`Step`이 반드시 stored procedure를 호출해야 한다면 어떻게 해야할까?
+`ItemReader`에 호출부를 구현하고 하고 프로시저가 끝나면 null을 리턴하게 만들 수도 있다.
+하지만 `ItemWriter`가 아무 일도 하지 않으므로(no-op) 부자연스러워 보인다.
+스프링 배치는 이런 케이스를 위해 `TaskletStep`을 제공한다.
 
-### 5.2.2. Example Tasklet Implementation
+`Tasklet`은 `execute` 메소드 하나를 가진 심플한 인터페이스인데, 이 메소드는
+`RepeatStatus.FINISHED`이 리턴되거나 실패했단 뜻으로 exception이 던져지기 전까지
+`TaskletStep`이 반복적으로 호출한다.
+각 `Tasklet` 호출은 트랜잭션으로 감싸져있다.
+`Tasklet`은 구현부는 stored procedure나 스크립트를 호출하거나 간단한 SQL 업데이트 구문이 될 수 있다.
+
+`TaskletStep`을 생성하려면 빌더의 `tasklet` 메소드에 `Tasklet` 인터페이스를 구현한 빈을 넘겨야한다.
+`TaskletStep`을 만들 때는 `chunk` 메소드를 사용하면 안 된다.
+아래 예제는 간단한 tasklet을 만드는 샘플 코드다:
+
+```java
+@Bean
+public Step step1() {
+    return this.stepBuilderFactory.get("step1")
+    			.tasklet(myTasklet())
+    			.build();
+}
+```
+
+> tasklet이 `StepListener` 인터페이스를 구현했다면 `TaskletStep`이 자동으로 이 tasklet을 `StepListener`로 등록한다.
+
+### 5.2.1. `TaskletAdapter`
+
+`ItemReader`, `ItemWriter` 인터페이스의 아답터(adapter)처럼
+`Tasklet` 인터페이스도 기존 클래스에 꽂아서 사용할 수 있는 `TaskletAdapter`라는 아답터가 있다.
+예를 들어 레코드 셋 플래그를 업데이트할 때 사용힐 DAO가 이미 있는 경우에 아답터를 사용할 수 있다.
+`TaskletAdapter`를 사용하면 `Tasklet` 인터페이스를 위한 아답터를 직접 구현하지 않고도 이 클래스를 호출할 수 있다.
+
+```java
+@Bean
+public MethodInvokingTaskletAdapter myTasklet() {
+	MethodInvokingTaskletAdapter adapter = new MethodInvokingTaskletAdapter();
+
+	adapter.setTargetObject(fooDao());
+	adapter.setTargetMethod("updateFoo");
+
+	return adapter;
+}
+```
+
+### 5.2.2. Example `Tasklet` Implementation
+
+배치를 실행할 때 여러 리소스
+Many batch jobs contain steps that must be done
+before the main processing begins in order to set up various resources
+or after processing has completed to cleanup those resources.
+In the case of a job that works heavily with files,
+it is often necessary to delete certain files locally
+after they have been uploaded successfully to another location.
+The following example (taken from the Spring Batch samples project)
+is a `Tasklet` implementation with just such a responsibility:
 
 ## 5.3. Controlling Step Flow
 
