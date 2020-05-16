@@ -360,7 +360,7 @@ public Step step1() {
 예를 들어 `DeadlockLoserDataAccessException`는 현재 프로세스가
 다른 프로세스가 이미 락(lock)을 소유한 데이터를 수정하려했을 때 발생하는데,
 기다렸다가 다시 시도하면 성공할 수도 있다.
-이런 경우에는 재시도(retry)를 아래처럼 설정해야한다:
+이런 경우라면 재시도(retry)를 아래처럼 설정하는 게 좋다:
 
 ```java
 @Bean
@@ -383,8 +383,8 @@ public Step step1() {
 
 기본적으로 재시도 여부에 상관없이 `ItemWriter`에서 발생하는 모든 예외는 `Step`에서 처리되는 트랜잭션을 롤백시킨다.
 이전에 나온 예제처럼 재시도 없이 넘어가도록(skip) 설정되었다면 `ItemReader`에서 발생한 예외는 롤백을 발생시키지 않는다.
-하지만 트랜잭션을 무효화시킬 다른 조취가 따로 필요하다면, `ItemWriter`에서 발생한 예외가 롤백을 유도해선 안될 수도 있다.
-그렇기 때문에 아래 예제에서처럼 `Step`에 롤백을 유도하지 않은 exception 리스트를 지정할 수 있다.
+하지만 트랜잭션을 무효화시킬 다른 조취가 따로 필요하다면, `ItemWriter`에서 발생한 예외가 롤백을 유발하면 안될 수도 있다.
+그렇기 때문에 아래 예제에서처럼 `Step`에 롤백을 유발하지 않는 exception 리스트를 지정할 수 있다.
 
 ```java
 @Bean
@@ -403,7 +403,7 @@ public Step step1() {
 
 `ItemReader`는 데이터를 읽을 때 기본적으로 앞에서 뒤로만 읽고 역행하지 않는다 (forward only).
 step은 데이터를 읽고나면 버퍼에 넣어두기 때문에 롤백되었을 때 한 번 읽어들인 데이터를 다시 읽어올 필요는 없다.
-하지만 어떤 경우에는 reader가 트랜잭션 리소스보다 상위 레벨에 있을 수도 있다.(e.g JMS 큐)
+하지만 어떤 경우에는 reader가 트랜잭션 리소스보다 상위 레벨에 있을 수도 있다 (e.g JMS 큐).
 이런 경우 큐가 롤백되는 트랜잭션과 엮여있기 때문에 큐로부터 읽어온 메세지는 여전히 큐에 남아있다.
 이런 이유로 아래 예제처럼 step이 버퍼를 사용하지 않도록 설정할 수 있다:
 
@@ -448,9 +448,9 @@ step의 생명주기동안 `ItemStream` 콜백을 처리해야할 때가 있다
 (`ItemStream`에 대한 자세한 설명은 [ItemStream](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#64-itemstream) 참고 ).
 `ItemStream`은 step이 실패해서 재시작하려는 경우에 각 실행 상태에 대해 꼭 필요한 정보를 얻을 수 있는 매우 중요한 인터페이스를 제공한다.
 
-`ItemStream` 인터페이스는 `ItemReader`, `ItemProcessor`, `ItemWriter` 중 하나로 구현하면 자동으로 등록된다.
+`ItemStream` 인터페이스를 `ItemReader`, `ItemProcessor`, `ItemWriter` 중 하나로 구현하면 자동으로 등록된다.
 다른 steam 구현체는 별도로 등록해야한다.
-reader나 writer에 위임(delegate)같이 직접적이지 않은 의존성(dependency)을 주입하는 경우가 그렇다.
+위임(delegate) 의존성(dependency)을 reader나 writer에 간접적으로 주입하는 경우가 그렇다.
 아래 예제처럼 `Step`에 stream을 등록할 땐 'stream' 메소드를 사용한다.
 
 ```java
@@ -490,7 +490,7 @@ public CompositeItemWriter compositeItemWriter() {
 
 ### 5.1.10. Intercepting `Step` Execution
 
-`Job`과 마찬가지로 `Step`에서도 실행 중 어떤 이벤트가 발생하면 별도 처리가 필요할 수 있다.
+`Job`과 마찬가지로 `Step`에서도 실행 중 발생한 특정 이벤트를 별도로 처리해야할 때가 있다.
 예를 들어 파일 맨 뒤에 꼬리말이 필요한 파일에 데이터를 쓰고있다면
 `ItemWriter`는 `Step`이 완료됐을 때 통지를 받아야만 꼬리말을 써 넣을 수 있다.
 이를 위한 여러가지 `Step` 레벨의 리스너(listener)가 준비되어있다.
@@ -516,21 +516,21 @@ public Step step1() {
 
 네임스페이스에 `<step>`을 사용하거나 `*StepFactoryBean` 중 하나를 사용해 `Step`을 만들었다면
 `StepListener`을 구현한 `ItemReader`, `ItemWriter` or `ItemProcessor`는 자동으로 등록된다.
-즉 `Step`에 직저버 주입되는 컴포넌트는 자동이다.
+즉 `Step`에 직접 주입되는 컴포넌트는 자동이다.
 다른 컴포넌트 안에 포함된 채로(nested) 있는 리스너는 명시적으로 등록해야한다
-(위에 있는 예제처럼 [Registering ItemStream with a Step](#519-registering-intputstream-with-a-step) ).
+([Registering ItemStream with a Step](#519-registering-intputstream-with-a-step) 의 예제처럼).
 
 `StepListener`가 아니어도 애노테이션으로 같은 관심사를 처리할 수 있다.
 일반 자바 오브젝트 메소드 위에 이 애노테이션을 선언하면 그에 맞 `StepListener`으로 변환된다.
 `ItemReader`, `ItemWriter`, `Tasklet`같은 청크 컴포넌트를 커스텀화해서 애노테이션을 다는 방법도 많이 쓰인다.
 빌더의 `listener` 메소드로 리스너를 등록하듯,
 애노테이션을 선언하면 XML 파서가 `<listener/>` 요소로 파싱하므로,
-XML 네임스페이스나 빌더만 사용하면 step에 리스너를 등록할 수 있다.
+XML 네임스페이스나 빌더 둘 중 하나만 사용하면 step에 리스너를 등록할 수 있다.
 
 #### `StepExecutionListener`
 
 `Step`을 실행할 때는 `StepExecutionListener`를 가장 많이 사용된다.
-아래 예제에서 보이듯, `Step`의 성공/실패 여부와 상관 없이, step 시작 전과 끝난 후에 통지를 보낸다.
+아래 예제에서 보이듯, `Step`의 성공/실패 여부와 상관 없이 step 시작 전과 완료 후에 통지를 보낸다.
 
 ```java
 public interface StepExecutionListener extends StepListener {
@@ -552,7 +552,7 @@ public interface StepExecutionListener extends StepListener {
 #### `ChunkListener`
 
 청크는 트랜젹션 스코프에서 처리하는 아이템 묶음이다.
-각 커밋 인터벌 마다 트랜잭션을 커밋하는데, 이때 이 '청크'를 커밋한다.
+각 커밋 인터벌마다 트랜잭션을 커밋하는데, 이때 이 '청크'를 커밋한다.
 `ChunkListener`는 청크를 처리하기 전이나 청크가 완료되고 난 후에 호출된다.
 인터페이스 정의는 다음과 같다:
 
@@ -567,7 +567,7 @@ public interface ChunkListener extends StepListener {
 ```
 
 `beforeChunk` 메소드는 트랜잭션이 시작된 후 호출되는데, 아직 `ItemReader`의 read 메소드를 호출하기 전이다.
-반대로 `afterChunk` 메소드는 청크가 커밋된 후 호출된다 (롤백됬다면 호출되지 않는다).
+반대로 `afterChunk` 메소드는 청크가 커밋된 후 호출된다 (롤백됐다면 호출되지 않는다).
 
 위 인터페이스와 동일한 애노테이션:
 
@@ -581,7 +581,7 @@ public interface ChunkListener extends StepListener {
 
 #### `ItemReadListener`
 
-전에 skip을 설명할 때 무시하고 지나간 데이터를 기록해두면 나중에 처리할 수 있다고 언급했었다.
+전에 skip을 설명할 때, 무시하고 지나간 데이터를 어딘가에 기록해두면 나중에 처리할 수 있다고 언급했었다.
 아래 인터페이스에서 보이듯, 읽기에 실패한 경우 `ItemReaderListener`로 로그를 남길 수 있다.
 
 ```java
@@ -620,7 +620,7 @@ public interface ItemProcessListener<T, S> extends StepListener {
 ```
 
 `beforeProcess` 메소드는 `ItemProcessor`의 `process` 메소드 전 호출되며, 처리할 item을 넘겨받는다.
-`afterProcess` 메소드는 아이템을 성공적으로 처리된 다음 호출한다.
+`afterProcess` 메소드는 아이템을 성공적으로 처리한 다음 호출한다.
 처리 중 에러가 발생하면 `onProcessError` 메소드를 호출한다.
 exception과 처리하려고 했던 item정보를 함께 넘겨받으므로 로그에 남길 수 있다.
 
@@ -659,7 +659,7 @@ exception과 쓰려고 했던 item정보를 함께 넘겨받으므로 로그에 
 
 `ItemReadListener`, `ItemProcessListener`, `ItemWriteListener` 모두 에러 통지해주지만,
 데이터가 스킵된 경우는 통지해주지 않는다.
-예를 들어 `onWriteError` 메소드는 재시도해서 처리에 성공한 경우에도 호출된다.
+예를 들어 `onWriteError` 메소드는 재시도로 성공한 경우에도 호출된다.
 따라서 스킵된 아이템을 추적하기 위한 별도의 인터페이스를 제공한다:
 
 ```java
@@ -672,9 +672,9 @@ public interface SkipListener<T,S> extends StepListener {
 }
 ```
 
-`onSkipInRead` 메소드는 아이템을 읽는 동안 스킵될 때마다 호출된다.
+`onSkipInRead` 메소드는 아이템을 읽는 동안 아이템이 스킵될 때마다 호출된다.
 주의할 점은, 롤백된 경우에는 같은 아이템이 여러번 스킵된 걸로 간주할 수도 있다.
-`onSkipInWrite` 메소드는 아이템을 쓰는 동안 스킵될 때 호출한다.
+`onSkipInWrite` 메소드는 아이템을 쓰는 동안 아이템을 스킵할 때 호출한다.
 이때는 아이템을 읽는데는 성공했으므로 (읽는 도중 스킵되지 않고), 메소드 인자로 item을 제공한다.
 
 위 인터페이스와 동일한 애노테이션:
@@ -686,7 +686,7 @@ public interface SkipListener<T,S> extends StepListener {
 #### SkipListeners and Transactions
 
 스킵된 아이템을 로깅할 때 `SkipListener`를 가장 많이 쓰는데,
-다른 배치 프로세스나 심지어 수동 작업으로 skip된 이슈를 확인하고 수정해야 할 때가 있다.
+skip된 이슈를 확인하고 수정하려면 다른 배치 프로세스나 심지어 수동 작업이 필요할 때가 있다.
 기존 트랜잭션이 롤백되었다면, 여러가지 이유가 있을 수 있으므로 스프링 배치는 다음 두가지를 보장한다:
 
 1. 적절한 skip 메소드를(에러 발생 시점에 따라 다름) item마다 한 번만 호출한다.
