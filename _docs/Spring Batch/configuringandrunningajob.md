@@ -594,11 +594,11 @@ public class JobLauncherController {
 
 `JobLauncher`는 `JobExecution` 오브젝트를 생성하고 실행하기 위해 `JobRepository`를 사용한다.
 그 다음으론 `Job`과 `Step` 구현체가 job 실행 중에 execution을 업데이트하기 위해 `JobRepository`를 사용한다.
-이 기본적인 동작은 간단한 시나리오에는 충분하지만 배치 잡이 수백 개에 달하고 스케줄링까지 복잡하다면 메타 데이터에 접근하기 위한 고급 기술이 필요하다.
+이 기본적인 동작은 간단한 시나리오에는 충분하지만 배치 job이 수백 개에 달하고 스케줄링까지 복잡하다면 메타 데이터에 접근하기 위한 고급 기술이 필요하다.
 
 ![Advanced Job Repository Access](./../../images/springbatch/job-repository-advanced.png)
 
-밑에서 설명할 `JobExplorer`와 `JobOperator` 인터페이스는 메타 데이터를 쿼리하고 관리하기 위한 추가적인 기능을 제공한다.
+밑에서 설명할 `JobExplorer`와 `JobOperator` 인터페이스는 메타 데이터를 질의하고 관리하기 위한 추가적인 기능을 제공한다.
 
 ### 4.6.1. Querying the Repository
 
