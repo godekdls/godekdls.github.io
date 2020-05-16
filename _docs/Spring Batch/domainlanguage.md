@@ -7,11 +7,11 @@ order: 4
 ### 목차
 
  - [3.1. Job](#31-job)
-  - [3.1.1. JobInstance](#311-jobinstance)
-  - [3.1.2. JobParameters](#312-jobparameters)
-  - [3.1.3. JobExecution](#313-jobexecution)
+  + [3.1.1. JobInstance](#311-jobinstance)
+  + [3.1.2. JobParameters](#312-jobparameters)
+  + [3.1.3. JobExecution](#313-jobexecution)
  - [3.2. Step](#32-step)
-  - [3.2.1. StepExecution](#321-stepexecution)
+  + [3.2.1. StepExecution](#321-stepexecution)
  - [3.3. ExecutionContext](#33-executioncontext)
  - [3.4. JobRepository](#34-jobrepository)
  - [3.5. JobLauncher](#35-joblauncher)
