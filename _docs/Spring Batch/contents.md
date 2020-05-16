@@ -14,11 +14,18 @@ https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
 >
 > 원활한 번역을 위해 영문 문장과 한글 문장을 1:1로 번역하지 않았습니다.
 >
+> 한글로 완벽하게 표현할 수 없는 일부 개발 용어는 영문 단어로 유지했습니다.
+>
 > 오타, 오역은 제보 부탁드립니다 godekdls@hanmail.net
 
 목차:
 
 1. [Spring Batch Introduction](https://godekdls.github.io/Spring%20Batch/introduction/)
+ - [1.1 Background](https://godekdls.github.io/Spring%20Batch/introduction/#11-background)
+ - [1.2. Usage Scenarios](https://godekdls.github.io/Spring%20Batch/introduction/#12-usage-scenarios)
+ - [1.3. Spring Batch Architecture](https://godekdls.github.io/Spring%20Batch/introduction/#13-Spring-batch-architecture)
+ - [1.4. General Batch Piplelines and Guidlines](https://godekdls.github.io/Spring%20Batch/introduction/#14-general-batch-piplelines-and-guidlines)
+ - [1.5. Batch Processing Strategies](https://godekdls.github.io/Spring%20Batch/introduction/#15-batch-processing-strategies)
 2. [What’s New in Spring Batch 4.2](https://godekdls.github.io/Spring%20Batch/whatsnew/)
 3. [The Domain Language of Batch](https://godekdls.github.io/Spring%20Batch/domainlanguage/)
 4. [Configuring and Running a Job](https://godekdls.github.io/Spring%20Batch/configuringandrunningajob/)
@@ -26,7 +33,7 @@ https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
 6. [ItemReaders and ItemWriters](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)
 7. Scaling and Parallel Processing
 8. Repeat
-9. Retry
+9. [Retry](https://godekdls.github.io/Spring%20Batch/retry/)
 10. Unit Testing
 11. Common Batch Patterns
 12. JSR-352 Support

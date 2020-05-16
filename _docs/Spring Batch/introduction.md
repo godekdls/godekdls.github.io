@@ -4,6 +4,14 @@ category: Spring Batch
 order: 2
 ---
 
+### 목차
+
+ - [1.1 Background](#11-background)
+ - [1.2. Usage Scenarios](#12-usage-scenarios)
+ - [1.3. Spring Batch Architecture](#13-Spring-batch-architecture)
+ - [1.4. General Batch Piplelines and Guidlines](#14-general-batch-piplelines-and-guidlines)
+ - [1.5. Batch Processing Strategies](#15-batch-processing-strategies)
+
 엔터프라이즈 도메인 어플리케이션을 개발할 때, 비지니스 운영에 필수적인 작업에 벌크 프로세싱을 사용하는 경우가 많다. 예를 들어,
 
 - 다량의 정보들을 사용자의 인터랙션 없이 자동으로, 효율적으로 처리하는 복잡한 프로세싱. 주로 시간 기반 이벤트들(월말에 진행되는 계산이나, 통지 또는 다른 조치들)
@@ -16,14 +24,12 @@ order: 2
 
 스프링 배치는 로깅/추적, 트랜잭션 관리, job 프로세싱 통계, job 재시작, 스킵, 리소스 관리같은 대용량 데이터 처리에 필수적인 기능들을 재사용할 수 있게 제공한다. 다른 고급 기술들도 제공하는데, 최적화나 파티셔닝같은 기법을 통해 극단적으로 큰 데이터나 고성능으로 배치잡을 수행할 수 있게 돕는다. 스프링 배치는 단순한 유스케이스(데이터베이스로 파일을 읽거나 저장되있는 프로시저를 수행하는 일)와 복잡한 대용량 처리(데이터베이스간 대용량 데이터를 이동시키고 변형하는 일 등)를 모두 지원한다. 대용량 배치 작업은 확장 가능한 방식으로 프레임워크를 활용하여 많은 양의 데이터를 처리한다.
 
-1.1. Background
+## 1.1. Background
 
-1.2. Usage Scenarios
+## 1.2. Usage Scenarios
 
-1.3. Spring Batch Architecture
+## 1.3. Spring Batch Architecture
 
-1.4. General Batch Piplelines and Guidlines
+## 1.4. General Batch Piplelines and Guidlines
 
-1.5. Batch Processing Strategies
-
-![](//placehold.it/800x600)
+## 1.5. Batch Processing Strategies

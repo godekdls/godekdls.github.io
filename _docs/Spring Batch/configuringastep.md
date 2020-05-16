@@ -38,7 +38,7 @@ itemWriter.write(items);
 
 ### 5.1.1. Configuring a `Step`
 
-`Step`은 요구하는 의존성(dependency)이 상대적으로 적은 편이지만,
+`Step`은 필수 의존성(dependency)이 상대적으로 적은 편이지만,
 많은 collaborator를 포함할 수 있는 매우 복잡한 클래스다.
 
 자바 기반 설정을 사용한다면 아래 예제처럼 스프링 배치 빌더를 사용한다:
@@ -300,13 +300,109 @@ public Step step1() {
 }
 ```
 
-`java.lang.Exception`을 건너뛰어도 되는 예외 클래스로 지정했는데, 이는 모든 `Exception`을 무시하겠다는 뜻이다.
+`java.lang.Exception`을 건너뛰어도 되는 exception 클래스로 지정했는데, 이는 모든 `Exception`을 무시하겠다는 뜻이다.
 하지만 `java.io.FileNotFoundException`을 예외로 둠으로써, `FileNotFoundException`을 제외한 모든 `Exceptions`을 무시할 예외 클래스로 지정한다.
 치명적일 수 있는 클래스는 예외로 둔다. (즉, 건너 뛰지 않음).
 
-어떤 예외가 발생하더라도, 건너뛸지 말지는(skippability) 클래스 hierarchy에서 가장 가까운 슈퍼클래스를 참조해 결정한다.
-지정되지 않은 예외는 'fatal'로 간주한다.
+어떤 exception가 발생하더라도, 건너뛸지 말지는(skippability) 클래스 hierarchy에서 가장 가까운 슈퍼클래스를 참조해 결정한다.
+지정되지 않은 exception는 'fatal'로 간주한다.
 
 `skip` `noSkip` 메소드 호출 순서는 아무런 상관이 없다.
 
 ### 5.1.6. Configuring Retry Logic
+
+대부분은 예외를 무시하고 넘어가거나 `Step`을 실패로 만드는 걸로 충분하지만,
+모두 그런 것은 아니다.
+파일을 읽는 동안 `FlatFileParseException`이 발생하면 항상 예외를 발생시킨다.
+여기선 `ItemReader`을 바꾸는 게 능사는 아니다.
+반면 성격이 다른 예외도 있다.
+예를 들어 `DeadlockLoserDataAccessException`는 현재 프로세스가
+다른 프로세스가 이미 락(lock)을 소유한 데이터를 수정하려했을 때 발생하는데,
+기다렸다가 다시 시도하면 성공할 수도 있다.
+이런 경우에는 재시도(retry)를 아래처럼 설정해야한다:
+
+```java
+@Bean
+public Step step1() {
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(2)
+				.reader(itemReader())
+				.writer(itemWriter())
+				.faultTolerant()
+				.retryLimit(3)
+				.retry(DeadlockLoserDataAccessException.class)
+				.build();
+}
+```
+
+이 `Step`은 각 item을 재시도할 수 있는 횟수와 '재시도 가능한(retryable)' exception 리스트를 정의했다.
+재시도가 어떤 방식으로 이뤄지는 지는 [retry](https://godekdls.github.io/Spring%20Batch/retry/) 에서 자세히 설명한다.
+
+### 5.1.7. Controlling Rollback
+
+기본적으로 재시도 여부에 상관없이 `ItemWriter`에서 발생하는 모든 예외는 `Step`에서 처리되는 트랜잭션을 롤백시킨다.
+이전에 나온 예제처럼 재시도 없이 넘어가도록(skip) 설정되었다면 `ItemReader`에서 발생한 예외는 롤백을 발생시키지 않는다.
+하지만 트랜잭션을 무효화시킬 다른 조취가 따로 필요하다면, `ItemWriter`에서 발생한 예외가 롤백을 유도해선 안될 수도 있다.
+그렇기 때문에 아래 예제에서처럼 `Step`에 롤백을 유도하지 않은 exception 리스트를 지정할 수 있다.
+
+```java
+@Bean
+public Step step1() {
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(2)
+				.reader(itemReader())
+				.writer(itemWriter())
+				.faultTolerant()
+				.noRollback(ValidationException.class)
+				.build();
+}
+```
+
+#### Transactional Readers
+
+`ItemReader`는 데이터를 읽을 때 기본적으로 앞에서 뒤로만 읽고 역행하지 않는다 (forward only).
+step은 데이터를 읽고나면 버퍼에 넣어두기 때문에 롤백되었을 때 한 번 읽어들인 데이터를 다시 읽어올 필요는 없다.
+하지만 어떤 경우에는 reader가 트랜잭션 리소스보다 상위 레벨에 있을 수도 있다.(e.g JMS 큐)
+이런 경우 큐가 롤백되는 트랜잭션과 엮여있기 때문에 큐로부터 읽어온 메세지는 여전히 큐에 남아있다.
+이런 이유로 아래 예제처럼 step이 버퍼를 사용하지 않도록 설정할 수 있다:
+
+```java
+@Bean
+public Step step1() {
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(2)
+				.reader(itemReader())
+				.writer(itemWriter())
+				.readerIsTransactionalQueue()
+				.build();
+}
+```
+
+### 5.1.8. Transaction Attributes
+
+트랜잭션 속성값으로 트랜잭션 고립 수준(isolation), 전파(propagation), 타임아웃을 설정할 수 있다.
+트랜잭션 속성에 대한 자세한 설명은 [Spring core documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction) 를 참고하라.
+아래 예제에서는 고립 수준, 전파, 타임아웃을 설정한다:
+
+```java
+@Bean
+public Step step1() {
+	DefaultTransactionAttribute attribute = new DefaultTransactionAttribute();
+	attribute.setPropagationBehavior(Propagation.REQUIRED.value());
+	attribute.setIsolationLevel(Isolation.DEFAULT.value());
+	attribute.setTimeout(30);
+
+	return this.stepBuilderFactory.get("step1")
+				.<String, String>chunk(2)
+				.reader(itemReader())
+				.writer(itemWriter())
+				.transactionAttribute(attribute)
+				.build();
+}
+```
+
+### 5.1.9. Registering `ItemStream` with a `Step`
+
+step의 생명주기동안 `ItemStream` 콜백을 처리해야할 때가 있다
+(`ItemStream`에 대한 자세한 설명은 [ItemStream](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#64-itemstream) 참고 ).
+`ItemStream`은 step이 실패해서 재시작하려는 경우에 각 실행간 상태에 대해 꼭 필요한 정보를 얻을 수 있는 인터페이스를 제공하는 매우 중요한
