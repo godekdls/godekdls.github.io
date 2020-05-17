@@ -450,7 +450,7 @@ step의 생명주기동안 `ItemStream` 콜백을 처리해야할 때가 있다
 
 `ItemStream` 인터페이스를 `ItemReader`, `ItemProcessor`, `ItemWriter` 중 하나로 구현하면 자동으로 등록된다.
 다른 steam 구현체는 별도로 등록해야한다.
-위임(delegate) 의존성(dependency)을 reader나 writer에 간접적으로 주입하는 경우가 그렇다.
+위임(delegate)받은 객체처럼 reader나 writer에 간접적으로 의존성(dependency)을 주입하는 경우가 그렇다.
 아래 예제처럼 `Step`에 stream을 등록할 땐 'stream' 메소드를 사용한다.
 
 ```java
@@ -779,7 +779,7 @@ public class FileDeletingTasklet implements Tasklet, InitializingBean {
 }
 ```
 
-앞에 있는 `Tasklet` 구현체는 주어진 디렉토레 있는 파일을 모두 지운다.
+앞에 있는 `Tasklet` 구현체는 주어진 디렉토리에 있는 파일을 모두 지운다.
 `execute` 메소드는 한 번만 호출된다는 점에 주의해라.
 이제 남은 건 `Step`에 이 `Tasklet`을 알려주는 일이다:
 

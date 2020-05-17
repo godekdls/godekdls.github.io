@@ -98,7 +98,7 @@ IT 프로젝트라면 대부분 배치 처리를 사용하는데,
 ## 1.3. Spring Batch Architecture
 
 스프링 배치는 확장성과 다양한 사용자 유형을 고려해 설계했다.
-아래 그림은 확장성과 편의성을 지원한 계층 구조를 보여준다.
+아래 그림은 확장성과 편의성을 지원하기 위한 계층 구조를 보여준다.
 
 ![Spring Batch Layered Architecture](./../../images/springbatch/spring-batch-layers.png)
 
