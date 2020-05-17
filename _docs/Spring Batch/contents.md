@@ -23,7 +23,7 @@ https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
 1. [Spring Batch Introduction](https://godekdls.github.io/Spring%20Batch/introduction/)
 - [1.1 Background](https://godekdls.github.io/Spring%20Batch/introduction/#11-background)
 - [1.2. Usage Scenarios](https://godekdls.github.io/Spring%20Batch/introduction/#12-usage-scenarios)
-- [1.3. Spring Batch Architecture](https://godekdls.github.io/Spring%20Batch/introduction/#13-Spring-batch-architecture)
+- [1.3. Spring Batch Architecture](https://godekdls.github.io/Spring%20Batch/introduction/#13-spring-batch-architecture)
 - [1.4. General Batch Piplelines and Guidlines](https://godekdls.github.io/Spring%20Batch/introduction/#14-general-batch-piplelines-and-guidlines)
 - [1.5. Batch Processing Strategies](https://godekdls.github.io/Spring%20Batch/introduction/#15-batch-processing-strategies)
 2. [What’s New in Spring Batch 4.2](https://godekdls.github.io/Spring%20Batch/whatsnew/)

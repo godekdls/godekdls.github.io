@@ -8,16 +8,15 @@ order: 2
 
 - [1.1 Background](#11-background)
 - [1.2. Usage Scenarios](#12-usage-scenarios)
-- [1.3. Spring Batch Architecture](#13-Spring-batch-architecture)
+- [1.3. Spring Batch Architecture](#13-spring-batch-architecture)
 - [1.4. General Batch Piplelines and Guidlines](#14-general-batch-piplelines-and-guidlines)
 - [1.5. Batch Processing Strategies](#15-batch-processing-strategies)
 
-엔터프라이즈 도메인 어플리케이션에선 비지니스 운영에 필수적인 작업을 종종 벌크 프로세싱으로 개발한다. 예를 들어,
+엔터프라이즈 도메인 어플리케이션에선 비지니스 운영에 필수적인 작업을 종종 벌크 프로세싱으로 개발한다.
+예를 들어,
 
 - 다량의 정보를 사용자 인터랙션 없이 자동으로, 효율적으로 처리하는 복잡한 프로세싱. 주로 시간 기반 이벤트(월말 정산 처리, 통지 등)
-
 - 매우 큰 데이터 셋을 반복적, 주기적으로 처리하는 어플리케이션(보험 혜택을 정하거나 보험료를 조정하는 일) 
-
 - 내/외부 시스템에서 받은 데이터를 통합하는 일. 보통 포맷팅, 유효성 검사, 트랜젹션 처리가 필요하다. 이미 많은 기업에서 배치 처리로 매일 수십억 건의 트랜잭션을 처리하고 있다.
 
 스프링 배치는 포괄적인 경량 배치 프레임워크로, 엔터프라이즈 시스템 운영에 일상적으로 꼭 필요한 견고한 배치 어플리케이션 개발을 위해 설계되었다. 
@@ -29,252 +28,427 @@ order: 2
 
 스프링 배치는 로깅/추적, 트랜잭션 관리, job 프로세싱 통계, job 재시작, 스킵, 리소스 관리같은 
 대용량 데이터 처리에 필수적인 기능들을 재사용할 수 있는 형태로 제공한다. 
-다른 고급 기술들도 제공하는데, 최적화나 파티셔닝같은 기법을 사용하면 
+또다른 고급 기술도 제공하는데, 최적화나 파티셔닝같은 기법을 사용하면 
 극단적으로 큰 데이터 처리나 고성능 배치도 쉽게 구현할 수 있다. 
 스프링 배치는 단순한 유스케이스(데이터베이스로 파일을 읽거나 stored procedure를 수행하는 일)와 
 복잡한 대용량 처리(데이터베이스간 대용량 데이터를 이동시키고 변형하는 일 등)를 모두 지원한다.
-프레임워크를 활용하면 배치 작업을 손쉽게 확장할 수 있으므로 많은 양의 데이터를 처리할 수 있다. 
+프레임워크를 활용하면 배치 작업을 손쉽게 확장할 수 있으므로 많은 양의 데이터도 처리할 수 있다. 
 
 ## 1.1. Background
 
-While open source software projects and associated communities have focused greater attention on web-based and microservices-based architecture frameworks, there has been a notable lack of focus on reusable architecture frameworks to accommodate Java-based batch processing needs, despite continued needs to handle such processing within enterprise IT environments. The lack of a standard, reusable batch architecture has resulted in the proliferation of many one-off, in-house solutions developed within client enterprise IT functions.
+엔터프라이즈 IT 환경에서 이전부터 배치 처리를 사용해 왔는데도,
+오픈 소스 프로젝트와 관련 커뮤니티에선 웹 기반 프레임워크와 마이크로 서비스 아키텍처에 관심을 쏟는 반면
+자바 기반 배치 처리에서 요구되는 재사용 가능한 아키텍처 프레임워크에는 관심이 부족했다.
+재사용 가능한 배치 아키텍처는 표준이 없어서 일회성으로 사내 솔루션을 개발하는 경우가 많았다.
 
-SpringSource (now Pivotal) and Accenture collaborated to change this. Accenture’s hands-on industry and technical experience in implementing batch architectures, SpringSource’s depth of technical experience, and Spring’s proven programming model together made a natural and powerful partnership to create high-quality, market-relevant software aimed at filling an important gap in enterprise Java. Both companies worked with a number of clients who were solving similar problems by developing Spring-based batch architecture solutions. This provided some useful additional detail and real-life constraints that helped to ensure the solution can be applied to the real-world problems posed by clients.
+이를 바꿔보고자 SpringSource(현재는 Pivotal)와 Accenture가 뭉쳤다.
+Accenture의 hands-on industry와 배치 아키텍처를 구현하면서 쌓은 기술적인 경험, 그리고 
+SpringSource의 깊이 있는 기술적 기반과
+스프링의 입증된 프로그래밍 모델이 모여 자연스럽고 강력한 파트너십을 만들어냈고,
+엔터프라이즈 자바와의 격차를 메우는 것을 목표로하는, 시장 상황에 맞는 고품질 소프트웨어를 만들었다.
+두 회사 모두 스프링 기반 배치 아키텍처 솔루션으로 유사한 이슈를 해결하고 있는 여러 클라이언트와 협력했다.
+이를 통해 유용한 세부 구현과 현실의 제약조건을 제공할 수 있었고,
+이 솔루션으로 클라이언트가 실제로 겪는 문제를 해결할 수 있었다.
 
-Accenture contributed previously proprietary batch processing architecture frameworks to the Spring Batch project, along with committer resources to drive support, enhancements, and the existing feature set. Accenture’s contribution was based upon decades of experience in building batch architectures with the last several generations of platforms: COBOL/Mainframe, C++/Unix, and now Java/anywhere.
+Accenture는 이전에 소유했던 배치 처리 아키텍처 프레임워크를 Spring Batch 프로젝트에 기증하면서
+프로젝트를 지원하고 개선시킬 수 있는 커미터 리소스도 함께 넘겼다.
+Accenture가 기증한 프로젝트는 지난 몇 세대의 플랫폼
+(COBOL/Mainframe, C++/Unix, 지금은 now Java/anywhere)을 이용해 배치 아키텍처를 만든
+수십년 간의 경험을 바탕으로 만들어졌다.
 
-The collaborative effort between Accenture and SpringSource aimed to promote the standardization of software processing approaches, frameworks, and tools that can be consistently leveraged by enterprise users when creating batch applications. Companies and government agencies desiring to deliver standard, proven solutions to their enterprise IT environments can benefit from Spring Batch.
+Accenture와 SpringSource는 엔터프라이즈 수준의 배치 어플리케이션에 지속적으로 활용할 수 있는
+소프트웨어 처리 방법, 프레임워크, 툴 표준화를 공동 목표로 삼았다.
+엔터프라이즈 IT 환경에 신뢰할 수 있는 표준 솔루션을 제공하고자 하는 회사, 정부 기관은 
+Spring Batch가 도움이 될 것이다.
 
 ## 1.2. Usage Scenarios
 
-A typical batch program generally:
+전형적인 배치 프로그램은 보통:
 
-- Reads a large number of records from a database, file, or queue.
-- Processes the data in some fashion.
-- Writes back data in a modified form.
+- 데이터베이스, 파일, 큐에서 다량의 데이터 조회한다.
+- 특정 방법으로 데이터를 가공한다.
+- 데이터를 수정된 양식으로 다시 저장한다.
 
-Spring Batch automates this basic batch iteration, providing the capability to process similar transactions as a set, typically in an offline environment without any user interaction. Batch jobs are part of most IT projects, and Spring Batch is the only open source framework that provides a robust, enterprise-scale solution.
+스프링 배치는 유사한 트랜잭션을 하나로 묶어 처리해줌으로써 (특히 사용자 인터랙션없는 오프라인 환경)
+이런 반복적인 작업을 자동화한다.
+IT 프로젝트라면 대부분 배치 처리를 사용하는데,
+스프링 배치는 강력한 엔터프라이즈 스케일 솔루션을 제공하는 유일한 오픈 소스 프레임워크다.
 
-Business Scenarios
+비지니스 시나리오(Business Scenarios)
 
-- Commit batch process periodically
-- Concurrent batch processing: parallel processing of a job
-- Staged, enterprise message-driven processing
-- Massively parallel batch processing
-- Manual or scheduled restart after failure
-- Sequential processing of dependent steps (with extensions toworkflow-driven batches)
-- Partial processing: skip records (for example, on rollback)
-- Whole-batch transaction, for cases with a small batch size or existing stored procedures/scripts
+- 배치 프로세스를 주기적으로 커밋
+- 동시 다발적인 배치 처리: job을 병럴 처리
+- 단계적인 엔터프라이즈 메세지 중심 처리
+- 다량의 병렬 배치 처리
+- 실패 후 수동 또는 스케줄링에 의한 재시작
+- 의존관계가 있는 step 여러개를 순차적으로 처리 (워크플로우 중심 배치로 확장)
+- 부분 처리 : 레코드 스킵 (e.g. 롤백 시)
+- 배치 규모가 작거나, stored procedure나 스크립트가 이미 있는 경우 배치 전체에 걸친 트랜잭션
 
-Technical Objectives
+기술 목표(Technical Objectives)
 
-- Batch developers use the Spring programming model: Concentrate on business logic and let the framework take care of infrastructure.
-- Clear separation of concerns between the infrastructure, the batch execution environment, and the batch application.
-- Provide common, core execution services as interfaces that all projects can implement.
-- Provide simple and default implementations of the core execution interfaces that can be used 'out of the box'.
-- Easy to configure, customize, and extend services, by leveraging the spring framework in all layers.
-- All existing core services should be easy to replace or extend, without any impact to the infrastructure layer.
-- Provide a simple deployment model, with the architecture JARs completely separate from the application, built using Maven.
+- 배치 개발자는 스프링 프로그래밍 모델을 사용한다: 비지니스 로직에 집중하고 인프라는 프레임워크가 관리한다.
+- 인프라, 배치 실행 환경, 배치 어플리케션간의 의 관심사는 명확하게 분리한다.
+- 공통 핵심 서비스는 모든 프로젝트에서 구현할 수 있게 인터페이스로 제공한다.
+- 핵심 인터페이스는 '바로 사용할 수 있는' 간단한 디폴트 구현체를 제공한다.
+- 모든 계층의 스프링 프레임워크를 활용해 서비스를 쉽게 설정하고 커스터마이징, 확장할 수 있다.
+- 제공하는 모든 핵심 서비스는 변경, 확장이 쉽고 인프라 레벨에 영향을 주지 않아야 한다.
+- 메이븐으로 빌드된 아키텍처 jar로 어플리케이션과는 완전히 분리된 간단한 배포 모델을 제공한다. 
 
 ## 1.3. Spring Batch Architecture
 
-Spring Batch is designed with extensibility and a diverse group of end users in mind. The figure below shows the layered architecture that supports the extensibility and ease of use for end-user developers.
+스프링 배치는 확장성과 다양한 사용자 유형을 고려해 설계했다.
+아래 그림은 확장성과 편의성을 지원한 계층 구조를 보여준다.
 
-!Spring Batch Layered Architecture](./../../images/springbatch/spring-batch-layers.png)
+![Spring Batch Layered Architecture](./../../images/springbatch/spring-batch-layers.png)
 
-This layered architecture highlights three major high-level components: 
-Application, Core, and Infrastructure. 
-The application contains all batch jobs and custom code written by developers 
-using Spring Batch. 
-The Batch Core contains the core runtime classes necessary 
-to launch and control a batch job. 
-It includes implementations for `JobLauncher`, `Job`, and `Step`. 
-Both Application and Core are built on top of a common infrastructure. 
-This infrastructure contains common readers and writers and services
- (such as the `RetryTemplate`), 
-which are used both by application developers
-(readers and writers, such as `ItemReader` and `ItemWriter`) 
-and the core framework itself (retry, which is its own library).
+이 계층 구조는 세 주요 컴포넌트가 있다: Application, Core, Infrastructure.
+Application은 스프링 배치를 사용하는 개발자가 만드는 모든 배치 job과 커스텀 코드를 포함한다.
+Batch Core는 job을 실행하고 제어하는데 필요한 핵심 런타임 클래스를 포함한다.
+여기엔 `JobLauncher`, `Job`,`Step`의 구현체도 포함된다.
+Application Core 모두 공통 Infrastructure 위에서 빌드한다.
+이 Infrastructure는 공통으로 사용되는 reader와 writer, 서비스(`RetryTemplate`같은)를 포함하는데,
+어플리케이션 개발자(`ItemReader`, `ItemWriter` 등의 reader와 writer)도 사용하고, 
+코어 프레임워크 자체에서(자체 라이브러리인 retry) 활용하기도 한다.
 
 ## 1.4. General Batch Piplelines and Guidlines
 
-The following key principles, guidelines, and general considerations should be considered when building a batch solution.
+배치 솔루션은 아래 나오는 핵심 원칙, 가이드라인, 그외 일반적인 고려사항을 고려해 개발해야한다.
 
-- Remember that a batch architecture typically affects on-line architecture and vice versa. Design with both architectures and environments in mind using common building blocks when possible.
-- Simplify as much as possible and avoid building complex logical structures in single batch applications.
-- Keep the processing and storage of data physically close together (in other words, keep your data where your processing occurs).
-- Minimize system resource use, especially I/O. Perform as many operations as possible in internal memory.
-- Review application I/O (analyze SQL statements) to ensure that unnecessary physical I/O is avoided. In particular, the following four common flaws need to be looked for:
-  + Reading data for every transaction when the data could be read once and cached or kept in the working storage.
-  + Rereading data for a transaction where the data was read earlier in the same transaction.
-  + Causing unnecessary table or index scans.
-  + Not specifying key values in the WHERE clause of an SQL statement.
-- Do not do things twice in a batch run. For instance, if you need data summarization for reporting purposes, you should (if possible) increment stored totals when data is being initially processed, so your reporting application does not have to reprocess the same data.
-- Allocate enough memory at the beginning of a batch application to avoid time-consuming reallocation during the process.
-- Always assume the worst with regard to data integrity. Insert adequate checks and record validation to maintain data integrity.
-- Implement checksums for internal validation where possible. For example, flat files should have a trailer record telling the total of records in the file and an aggregate of the key fields.
-- Plan and execute stress tests as early as possible in a production-like environment with realistic data volumes.
-- In large batch systems, backups can be challenging, especially if the system is running concurrent with on-line on a 24-7 basis. Database backups are typically well taken care of in the on-line design, but file backups should be considered to be just as important. If the system depends on flat files, file backup procedures should not only be in place and documented but be regularly tested as well.
+- 배치 아키텍처는 보통 온라인 아키텍처에 영향을 주고, 반대도 마찬가지임을 기억하라.
+가능하면 공통 구성 요소를 활용하고 아키텍처와 환경을 모두 고려해 설계해라.
+- 단일 배치 어플리케이션은 가능한 단순화하고 복잡한 로직은 피하라.
+- 데이터 처리와 저장은 물리적으로 가까운 곳에서 수행해라 (다시 말해 데이터가 처리되는 곳에 데이터를 저장해라).
+- 시스템 리소스 사용, 특히 I/O를 최소화해라. 내부 메모리에서 가능한 많은 연산을 실행해라.
+- 어플리케이션 I/O를 점검해서 불필요한 물리적 I/O를 줄여라 (SQL 구문을 분석하라).
+특히 아래 네가지 결함에 주의해라:
+  + 한 번 읽고나서 캐시하거나 작업 스토리지에 저장해도 되는 데이터를 매 트랜잭션 마다 읽는 경우.
+  + 같은 트랜잭션 내에서 이미 읽은 데이터를 다시 읽는 경우. 
+  + 불필요한 테이블 스캔이나 인덱스 스캔을 유발하는 경우.
+  + SQL 구문에서 WHERE 절에 키를 지정하지 않는 경우.
+- 배치 실행에서 같은 작업을 두번 하지 마라. 
+예를 들어 리포팅 목적으로 데이터를 요약하는 어플리케이션이라면 
+데이터가 처음 처리될 때 저장된 토탈값을 증가시켜서(가능하다면) 같은 데이터를 다시 처리하지 않게 해라.
+- 실행 중에 재할당에 시간을 쏟지 않게 배치 어플리케이션 시작 시 충분한 메모리를 할당해라.
+- 데이터 무결성은 최악의 상황도 고려해라.
+데이터 무결성을 유지하고 싶으면 적절한 유효성 검증 로직을 추가해라.
+- 가능한 곳에 내부 검증을 위한 체크섬을 구현해라.
+예를 들어 플랫한(flat) 파일은 파일의 총 레코드 수와 
+주요 필드의 집계 결과를 알 수 있는 트레일러 레코드가 필요하다.
+- 실제 프로덕션 환경과 그에 맞는 데이터 볼륨을 가지고 가능한 빨리 부하 테스트를 계획하고 실행해라.
+- 배치 규모가 크면, 특히 그 시스템이 온라인과 동시에 무중단으로(24-7 basis) 실행된다면
+백업이 매우 어려울 수도 있다. 하지만 온라인 설계에서 진행하는 데이터베이스 백업만큼 파일 백업도 중요하다.
+시스템이 플랫한 파일에 의존한다면 파일 백업 절차를 수립하고 문서화하고 정기적으로 테스트해야 한다. 
 
 ## 1.5. Batch Processing Strategies
 
-To help design and implement batch systems, basic batch application building blocks and patterns should be provided to the designers and programmers in the form of sample structure charts and code shells. When starting to design a batch job, the business logic should be decomposed into a series of steps that can be implemented using the following standard building blocks:
+설계자와 프로그래머의 배치 시스템 설계, 구현을 돕기 위해
+구조 차트와 코드 쉘로 만들어진 기본적인 배치 애플리케이션 구성 요소와 패턴 샘플을 제공한다.
+배치 job 설계를 시작하려면
+비즈니스 로직을 다음과 같은 표준 구성 요소를 사용하는 일련의 step으로 나눠야 한다:
 
-- *Conversion Applications*: For each type of file supplied by or generated to an external system, a conversion application must be created to convert the transaction records supplied into a standard format required for processing. This type of batch application can partly or entirely consist of translation utility modules (see Basic Batch Services).
-- *Validation Applications*: Validation applications ensure that all input/output records are correct and consistent. Validation is typically based on file headers and trailers, checksums and validation algorithms, and record level cross-checks.
-- *Extract Applications*: An application that reads a set of records from a database or input file, selects records based on predefined rules, and writes the records to an output file.
-- *Extract/Update Applications*: An application that reads records from a database or an input file and makes changes to a database or an output file driven by the data found in each input record.
-- *Processing and Updating Applications*: An application that performs processing on input transactions from an extract or a validation application. The processing usually involves reading a database to obtain data required for processing, potentially updating the database and creating records for output processing.
-- *Output/Format Applications*: Applications that read an input file, restructure data from this record according to a standard format, and produce an output file for printing or transmission to another program or system.
+- *Conversion Applications*: 
+외부 시스템에서 제공하는 여러 유형의 파일을
+트랜잭션 레코드를 처리하는데 필요한 표준 포맷으로 변환하려면 *conversion application*이 필요하다.
+이런 유형의 배치 어플리케이션은 translation 유틸리티 모듈을 부분적으로 혹은 전체를 포함한다
+ (Basic Batch Service를 보라).
+- *Validation Applications*: 
+인풋/아웃풋 레코드가 정확하고 일관성있는 지 검사한다.
+일반적으로 파일 헤더와 트레일러, 체크섬, 검증 알고리즘, 레코드 레벨 교차 점검을 기반으로 만든다.
+- *Extract Applications*: 
+이 어플리케이션은 데이터베이스나 입력 파일로부터 미리 정의된 규칙대로 데이터를 읽어
+결과 파일에 저장한다.
+- *Extract/Update Applications*:
+데이터베이스나 입력 파일로부터 레코드셋을 읽고 각 데이터 유형에 따라 변경사항을 적용하고 저장하는 어플리케이션이다.
+- *Processing and Updating Applications*: 
+*extract application*이나 *validation application*에서 받은
+입력 트랜잭션에 대한 처리를 수행하는 어플리케이션이다.
+보통 처리하는데 필요한 데이터를 얻기 위해 데이터베이스를 읽고, 
+필요하면 데이터베이스를 수정하고, 출력 처리를 위한 레코드를 만드는 일을 포함한다.
+- *Output/Format Applications*:
+입력 파일을 읽어서 표준 포맷으로 재구성하고, 다른 프로그램이나 시스템에 출력하거나 전송하는 어플리케이션이다. 
 
-Additionally, a basic application shell should be provided for business logic that cannot be built using the previously mentioned building blocks.
+또한 앞에서 언급한 구성 요소로는 만들 수 없는 비즈니스 로직을 위한 기본 애플리케이션 쉘을 제공한다.
 
-In addition to the main building blocks, each application may use one or more of standard utility steps, such as:
+어플리케이션은 메인 구성 요소 외에도, 아래 같은 표준 유틸리티 step을 하나 이상 사용할 수 있다:
 
-- Sort: A program that reads an input file and produces an output file where records have been re-sequenced according to a sort key field in the records. Sorts are usually performed by standard system utilities.
-- Split: A program that reads a single input file and writes each record to one of several output files based on a field value. Splits can be tailored or performed by parameter-driven standard system utilities.
-- Merge: A program that reads records from multiple input files and produces one output file with combined data from the input files. Merges can be tailored or performed by parameter-driven standard system utilities.
+- Sort: 입력 파일을 읽고 지정한 필드로 재정렬한 결과 파일을 제공하는 프로그램.
+Sort는 보통 표준 시스템 유틸리티로 구현한다.
+- Split: 입력 파일을 하나 읽어서 각 레코드를 필드값에 따라 여러 파일로 나눠서 저장하는 프로그램.
+Split은 매개변수 기반 표준 시스템 유틸리티에 의해 조정되거나 수행될 수 있다.
+- Merge: 여러 입력 파일을 읽어서 데이터를 결합해 하나의 결과 파일을 제공하는 프로그램.
+Merge는 매개변수 기반 표준 시스템 유틸리티에 의해 조정되거나 수행될 수 있다.
 
-Batch applications can additionally be categorized by their input source:
+배치 애플리케이션을 입력 소스별로 분류할 수도 있다:
 
-- Database-driven applications are driven by rows or values retrieved from the database.
-- File-driven applications are driven by records or values retrieved from a file.
-- Message-driven applications are driven by messages retrieved from a message queue.
+- 데이터베이스 중심(database-driven) 어플리케이션은 데이터베이스로부터 읽어온 로(row)나 값에 의해 구동된다.
+- 파일 중심(file-drive) 어플리케이션은 파일로부터 읽어온 레코드나 값에 의해 구동된다.
+- 메세지 중심(message-drive) 어플리케이션은 메세지 큐로부터 읽어온 메세지에 의해 구동된다.
 
-The foundation of any batch system is the processing strategy. Factors affecting the selection of the strategy include: estimated batch system volume, concurrency with on-line systems or with other batch systems, available batch windows. (Note that, with more enterprises wanting to be up and running 24x7, clear batch windows are disappearing).
+모든 배치 시스템은 프로세싱 전략이 토대가 된다.
+사용할 전략은 다음 요소들을 고려해 선택한다:
+예상 배치 시스템 볼륨, 온라인 시스템 또는 다른 배치 시스템과의 동시성, 사용 가능한 배치 윈도우.
+(무중단(running 24x7)으로 가동하려는 기업이 많을수록 배치 window를 확보하기 힘들어진다는 점에 주의해라).
 
-Typical processing options for batch are (in increasing order of implementation complexity):
+배치를 위한 일반적인 처리 옵션은 다음과 같다 (구현 복잡도가 낮은 순) :
 
-- Normal processing during a batch window in off-line mode.
-- Concurrent batch or on-line processing.
-- Parallel processing of many different batch runs or jobs at the same time.
-- Partitioning (processing of many instances of the same job at the same time).
-- A combination of the preceding options.
+- 오프라인 모드로 하나의 배치 윈도우에서 실행되는 일반적인 처리.
+- 동시에 실행되는(concurrent) 배치나 온라인 처리.
+- 여러 배치나 job을 동시에 병렬 처리.
+- 파티셔닝 (동시에 같은 job을 여러 인스턴스로 처리).
+- 위 옵션의 조합.
 
-Some or all of these options may be supported by a commercial scheduler.
+상업용 스케줄러는 이 옵션 중 일부 혹은 전체를 지원한다.
 
-The following section discusses these processing options in more detail. It is important to notice that, as a rule of thumb, the commit and locking strategy adopted by batch processes depends on the type of processing performed and that the on-line locking strategy should also use the same principles. Therefore, the batch architecture cannot be simply an afterthought when designing an overall architecture.
+밑에서는 위 옵션을 좀 더 자세히 다룬다.
+경험상으로는, 배치 처리 유형마다 채택해야 할 커밋과 잠금(locking) 전략이 다르며 
+온라인 잠금 전략도 같은 원칙을 사용해야한다.
+따라서 전반적인 배치 아키텍처를 설계하는 것은 간단하지만은 않다.
 
-The locking strategy can be to use only normal database locks or to implement an additional custom locking service in the architecture. The locking service would track database locking (for example, by storing the necessary information in a dedicated db-table) and give or deny permissions to the application programs requesting a db operation. Retry logic could also be implemented by this architecture to avoid aborting a batch job in case of a lock situation.
+잠금 전략은, 일반적인 데이터베이스 lock만을 사용하거나 
+아키텍처에서 추가로 커스텀 잠금 서비스를 구현하는 전략이 있다.
+잠금 서비스는 데이터베이스 lock을 추적하고 (예를 들어 전용 db 테이블에에 필요한 정보를 저장함으로써),
+db 작업을 요청하는 어플리케이션에 권한을 부여하거나 거부하는 서비스다.
+잠금 상태에서 배치 job이 중단되는 걸 막기 위해 아키텍처가 재시도 로직을 구현할 수도 있다. 
 
-1. **Normal processing in a batch window** For simple batch processes running in a separate batch window where the data being updated is not required by on-line users or other batch processes, concurrency is not an issue and a single commit can be done at the end of the batch run.
+**1. Normal processing in a batch window**
+온라인 사용자나 다른 배치 프로세스에서 데이터를 수정하지 않는, 즉 분리된 배치 윈도우 환경의
+간단한 배치 프로세스라면 동시성 문제는 발생하지 않으며, 배치 실행이 끝나면 단일 커밋을 수행하면 된다.
 
-In most cases, a more robust approach is more appropriate. Keep in mind that batch systems have a tendency to grow as time goes by, both in terms of complexity and the data volumes they handle. If no locking strategy is in place and the system still relies on a single commit point, modifying the batch programs can be painful. Therefore, even with the simplest batch systems, consider the need for commit logic for restart-recovery options as well as the information concerning the more complex cases described later in this section.
+하지만 대부분 이보다는 더 견고한 방법을 써야 한다.
+배치 시스템은 시간이 흐르면 복잡도와 처리해야 할 데이터 볼륨이 커지는 경향이 있다는 걸 기억해둬라.
+잠금 전략이 없이 시스템이 단일 커밋에만 의존하고 있다면 나중에 수정하기가 매우 어렵다.
+따라서 가장 간단한 배치 시스템이라고 해도 아래에 설명한 복잡한 케이스와 restart-recovery 옵션에 대한
+커밋 로직을 고려하는 게 좋다.
 
-2. **Concurrent batch or on-line processing** Batch applications processing data that can be simultaneously updated by on-line users should not lock any data (either in the database or in files) which could be required by on-line users for more than a few seconds. Also, updates should be committed to the database at the end of every few transactions. This minimizes the portion of data that is unavailable to other processes and the elapsed time the data is unavailable.
+**2. Concurrent batch or on-line processing**
+온라인 사용자가 동시에 수정할 수 있는 데이터를 처리하는 배치 어플리케이션이라면
+사용자가 수 초 이상 필요할 수도 있는 데이터를 잠가서는 안 된다 (데이터베이스나 파일 모두 마찬가지).
+또한 수정 내역은 몇 번의(few) 트랜잭션이 끝날 때 데이터베이스에 커밋해야 한다.
+이렇게하면 다른 프로세스에서 사용할 수 없는 데이터 양도 최소화하고,
+데이터를 사용하지 못하는 시간도 최소화할 수 있다.
 
-Another option to minimize physical locking is to have logical row-level locking implemented with either an Optimistic Locking Pattern or a Pessimistic Locking Pattern.
+물리적 잠금을 최소화하는 또 다른 방법은
+논리적인 로(row) 레벨 잠금을 구현하는 것으로, 낙관적 잠금 패턴(Optimistic Locking Pattern)과
+비관적 잠금 패턴(Pessimistic Locking Pattern)이 있다.
 
-- Optimistic locking assumes a low likelihood of record contention. It typically means inserting a timestamp column in each database table used concurrently by both batch and on-line processing. When an application fetches a row for processing, it also fetches the timestamp. As the application then tries to update the processed row, the update uses the original timestamp in the WHERE clause. If the timestamp matches, the data and the timestamp are updated. If the timestamp does not match, this indicates that another application has updated the same row between the fetch and the update attempt. Therefore, the update cannot be performed.
+- 낙관전 잠금은 레코드 경합 가능성이 낮다고 가정한다.
+일반적으로 배치나 온라인 처리에서 동시에 사용되는 각 데이터베이스 테이블에 
+timestamp 컬럼을 삽입해서 구현한다.
+어플리케이션이 처리를 위해 로(row)를 읽어오면 timestamp도 함께 따라온다.
+어플리케이션이 처리를 마친 로(row)를 업데이트하려고 하면 WHERE 구문에 기존 timestamp를 사용한다.
+timestamp가 일치하면 해당 데이터와 그 timestamp는 함께 수정된다.
+timestamp가 일치하지 않으면 데이터를 읽어와서 수정하려는 사이 다른 어플리케이션에서 같은 로(row)를
+수정했다는 걸 뜻한다.
+따라서 이 경우에는 update를 수행하지 않는다. 
 
-- Pessimistic locking is any locking strategy that assumes there is a high likelihood of record contention and therefore either a physical or logical lock needs to be obtained at retrieval time. One type of pessimistic logical locking uses a dedicated lock-column in the database table. When an application retrieves the row for update, it sets a flag in the lock column. With the flag in place, other applications attempting to retrieve the same row logically fail. When the application that sets the flag updates the row, it also clears the flag, enabling the row to be retrieved by other applications. Please note that the integrity of data must be maintained also between the initial fetch and the setting of the flag, for example by using db locks (such as `SELECT FOR UPDATE`). Note also that this method suffers from the same downside as physical locking except that it is somewhat easier to manage building a time-out mechanism that gets the lock released if the user goes to lunch while the record is locked.
+- 비관적 잠금은 레코드 경합이 발생할 가능성이 농후해서,
+데이터에 접근하는 동안 물리적 잠금이나 논리적인 잠금이 필요하다고 여기는 모든 잠금 전략을 뜻한다.
+데이터베이스 테이블에 lock 컬럼을 지정해 쓰는 유형도 있다.
+어플리케이션이 수정을 위해 로(row)를 요청하면 lock 컬럼에 플래그를 설정한다.
+이 플래그 덕분에 같은 로(row)를 요청하는 다른 모든 어플리케이션은 실패한다.
+플래그를 설정한 어플리케이션이 로(row)를 수정할 때는 그 플래그를 없애서
+다른 어플리케이션이 해당 로(row)를 다시 조회할 수 있게 해준다.
+처음 데이터를 읽고 플래그를 설정하는 동안에도 데이터 무결성을 유지해야한 다는 점에 주의해라
+(e.g. `SELECT FOR UPDATE` 같은 db lock 사용).
+또한 이 방법은 레코드가 잠긴 상태로 사용자가 점심 식사를 하러 가면
+잠금을 해제해 버리는 타임아웃 메커니즘을 만들기가 쉽다는 점만 빼면 물리적 잠금과 동일한 단점이 있다.
 
-These patterns are not necessarily suitable for batch processing, but they might be used for concurrent batch and on-line processing (such as in cases where the database does not support row-level locking). As a general rule, optimistic locking is more suitable for on-line applications, while pessimistic locking is more suitable for batch applications. Whenever logical locking is used, the same scheme must be used for all applications accessing data entities protected by logical locks.
+두 패턴은 배치 처리에 완전히 적합하진 않지만
+동시에 실행되는(concurrent) 배치나 온라인 처리에 응용할 수 있다
+(데이터베이스가 로(row) 레벨 잠금을 지원하지 않는 경우).
+일반적으로는 낙관적 잠금이 온라인 어플리케이션에 더 잘 맞고 비관적 잠금은 배치 처리에 더 적합하다.
+논리적 잠금을 사용한다면
+논리적 잠금으로 보호되는 데이터 엔터티에 접근하는 모든 어플리케이션에 동일한 스키마를 적용해야 한다.
 
-Note that both of these solutions only address locking a single record. Often, we may need to lock a logically related group of records. With physical locks, you have to manage these very carefully in order to avoid potential deadlocks. With logical locks, it is usually best to build a logical lock manager that understands the logical record groups you want to protect and that can ensure that locks are coherent and non-deadlocking. This logical lock manager usually uses its own tables for lock management, contention reporting, time-out mechanism, and other concerns.
+두 솔루션 모두 단일 레코드 단위 잠금만 지원한다는 점에 주의해라.
+때로는 논리적으로 관련된 레코드 그룹을 잠가야할 때도 있다.
+물리적 잠금을 사용한다면 잠재적인 교착상태(deadlock)를 피하기 위해 매우 조심히 다뤄야 한다. 
+논리적 잠금을 사용한다면 보호하고 싶은 논리적인 레코드 그룹을 잘 이해하는 
+논리적 잠금 매니저를 사용해 일관성을 유지하고 교착상태를 방지하는 게 가장 좋다.
+이 논리적인 잠금 매니저는 일반적으로 잠금 관리, 경합 리포팅, 타임아웃 매키너즘 등을 위해 자체 테이블을 사용한다.
 
-3. **Parallel Processing** Parallel processing allows multiple batch runs or jobs to run in parallel to minimize the total elapsed batch processing time. This is not a problem as long as the jobs are not sharing the same files, db-tables, or index spaces. If they do, this service should be implemented using partitioned data. Another option is to build an architecture module for maintaining interdependencies by using a control table. A control table should contain a row for each shared resource and whether it is in use by an application or not. The batch architecture or the application in a parallel job would then retrieve information from that table to determine if it can get access to the resource it needs or not.
+**3. Parallel Processing** 
+여러 배치나 job을 병렬로 실행하면 총 배치 소요 시간을 줄일 수 있다.
+여러 job이 같은 파일, db 테이블, 인덱스 공간을 공유하지만 않는다면 문제될 건 없다.
+이런 경우는 파티션된 데이터를 이용해 구현한다.
+다른 방법은 컨트롤 테이블을 사용해 상호 의존성을 관리하는 아키텍처 모델을 구축하는 것이다.
+컨트롤 테이블은 각 공유 자원으로 쓰일 로(row) 정보와 어플리케이션에서 사용 중인지 여부를 저장해야한다.
+병렬 job을 사용하는 배치 아키텍처나 어플리케이션은 이 테이블로부터 정보를 읽어와
+필요한 리소스에 접근할 수 있는지 판단한다.
 
-If the data access is not a problem, parallel processing can be implemented through the use of additional threads to process in parallel. In the mainframe environment, parallel job classes have traditionally been used, in order to ensure adequate CPU time for all the processes. Regardless, the solution has to be robust enough to ensure time slices for all the running processes.
+데이터 접근에 문제가 없다면 여러 스레드를 사용해 병럴로 처리하면 된다.
+중앙 컴퓨터(mainframe) 환경이라면, 모든 프로세스에 CPU 타임을 적절히 분배하기 위해
+보통 병렬 job 클래스를 많이 사용한다.
+그럼에도 이 솔루션은 실행중인 모든 프로세스에 시간 분할을 보장 할 수있을 만큼 견고해야한다.
 
-Other key issues in parallel processing include load balancing and the availability of general system resources such as files, database buffer pools, and so on. Also note that the control table itself can easily become a critical resource.
+병렬 처리에서 발생할 수 있는 또 다른 주요 이슈는 로드 밸런싱과
+파일, 데이터베이스 버퍼 풀 등의 공통 시스템 자원의 가용성이다.
+또한 컨트롤 테이블 자체가 문제가 되는 경우도 많다.
 
-4. **Partitioning** Using partitioning allows multiple versions of large batch applications to run concurrently. The purpose of this is to reduce the elapsed time required to process long batch jobs. Processes that can be successfully partitioned are those where the input file can be split and/or the main database tables partitioned to allow the application to run against different sets of data.
+**4. Partitioning** 
+파티셔닝을 이용하면 각기 다른 큰 규모의 배치 어플리케이션을 동시에 실행할 수 있다.
+이는 긴 배치 job을 실행하는데 필요한 시간을 줄이는 것을 목표로 한다.
+입력 파일이나 메인 데이터베이스 테이블을 분할하여 각 어플리케이션을 
+각기 다른 데이터 셋과 함께 실행할 수만 있다면 파티셔닝을 이용할 수 있다.
 
-In addition, processes which are partitioned must be designed to only process their assigned data set. A partitioning architecture has to be closely tied to the database design and the database partitioning strategy. Note that database partitioning does not necessarily mean physical partitioning of the database, although in most cases this is advisable. The following picture illustrates the partitioning approach:
+파티셔닝된 작업은 지정된 데이터 셋만 처리하도록 설계해야 한다.
+파티셔닝 아키텍처는 데이터베이스 설계와 데이터베이스 파티셔닝 전략과 연관이 깊다.
+데이터베이스 파티셔닝이 반드시 데이터베이스의 물리적인 분할을 의미하지는 않지만 대부분의 경우 이것을 권장한다.
+
+아래 그림은 분할 방식을 도식화했다:
 
 ![Partitioned Process](./../../images/springbatch/partitioned.png)
 
-The architecture should be flexible enough to allow dynamic configuration of the number of partitions. Both automatic and user controlled configuration should be considered. Automatic configuration may be based on parameters such as the input file size and the number of input records.
+아키텍처는 파티션 수를 동적으로 설정할 수 있어야 하며
+자동 설정, 수동 설정 모두 고려해야 한다.
+자동 설정은 입력 파일 크기나 입력 레코드 수 같은 파라미터 기반으로 이루어진다. 
 
-4.1 **Partitioning Approaches** Selecting a partitioning approach has to be done on a case-by-case basis. The following list describes some of the possible partitioning approaches:
+4.1 **Partitioning Approaches** 
+어떤 분할 방식을 사용할 지는 케이스마다 다르다.
+아래 리스트는 가능한 분할 방식 몇가지를 보여준다:
 
 *1. Fixed and Even Break-Up of Record Set*
 
-This involves breaking the input record set into an even number of portions (for example, 10, where each portion has exactly 1/10th of the entire record set). Each portion is then processed by one instance of the batch/extract application.
+입력 레코드 셋을 균등하게 나눈다 (예를 들어 10은 정확하게 1/10씩 나눈다). 
+각 분할 된 포션(portion)은 그 다음 *batch/extract application*의 각 인스턴스가 처리한다.
 
-In order to use this approach, preprocessing is required to split the recordset up. The result of this split will be a lower and upper bound placement number which can be used as input to the batch/extract application in order to restrict its processing to only its portion.
+이 방법을 사용하려면 데이터 셋을 나누기 위한 사전 처리가 필요하다.
+분할 결과는 하한/상한 값인데, 이는 *batch/extract application*이
+할당된 부분만 처리하도록 제한하기 위한 입력값으로 사용된다. 
 
-Preprocessing could be a large overhead, as it has to calculate and determine the bounds of each portion of the record set.
+이 전처리 작업은 나눠진 레코드 셋의 경계를 계산하기 때문에 오버 헤드가 커질 수도 있다.
 
 *2. Break up by a Key Column*
 
-This involves breaking up the input record set by a key column, such as a location code, and assigning data from each key to a batch instance. In order to achieve this, column values can be either:
+location code같은 키 컬럼으로 레코드 셋을 나눠서
+데이터를 각 값에 따라 배치 인스턴스에 할당하는 방법도 있다.
+컬럼 값을 할당할 때는 아래 두 가지 방법 모두 가능하다:
 
-- Assigned to a batch instance by a partitioning table (described later in this section).
-- Assigned to a batch instance by a portion of the value (such as 0000-0999, 1000 - 1999, and so on).
+- 파티셔닝 테이블로 배치 인스턴스 할당 (뒷 부분에 설명).
+- 값을 나눠서 배치 인스턴스 할당 (0000-0999, 1000 - 1999 같이)
 
-Under option 1, adding new values means a manual reconfiguration of the batch/extract to ensure that the new value is added to a particular instance.
+1번 방법에서는 새 값이 추가되면 *batch/extract application*에 수동으로 설정해줘야
+추가된 값도 특정 인스턴스에 할당된다.
 
-Under option 2, this ensures that all values are covered via an instance of the batch job. However, the number of values processed by one instance is dependent on the distribution of column values (there may be a large number of locations in the 0000-0999 range, and few in the 1000-1999 range). Under this option, the data range should be designed with partitioning in mind.
+2번 방법은 모든 값이 배치 job 인스턴스에 반영됨을 보장한다.
+하지만 하나의 인스턴스에서 처리되는 값의 갯수는 해당 값들의 분포에 따라 다르다
+(0000-0999 범위에 값이 많이 몰려있고 1000-1999 범위에는 값이 적을 수도 있다).
+이 방법을 사용하려면 데이터 범위는 파티셔닝을 고려해 설계해야 한다.
 
-Under both options, the optimal even distribution of records to batch instances cannot be realized. There is no dynamic configuration of the number of batch instances used.
+두 방법 모두 레코드를 각 배치 인스턴스에 완전히 동일하게 분배할 수는 없다.
+배치 인스턴스가 사용할 레코드 수를 변경해주는 동적인 설정은 없다.
 
 *3. Breakup by Views*
 
-This approach is basically breakup by a key column but on the database level. It involves breaking up the recordset into views. These views are used by each instance of the batch application during its processing. The breakup is done by grouping the data.
+기본적으로 키 컬럼으로 분할한다는 점은 같지만 이번에는 데이터베이스 레벨에서 분할한다.
+레코드 셋을 view로 쪼개고, 각 배치 어플리케이션 인스턴스는 이 뷰를 조회한다.
+여기선 데이터를 그룹화해서 분할한다.
 
-With this option, each instance of a batch application has to be configured to hit a particular view (instead of the master table). Also, with the addition of new data values, this new group of data has to be included into a view. There is no dynamic configuration capability, as a change in the number of instances results in a change to the views.
+이 방법을 사용한다면 각 배치 어플리케이션 인스턴스가 특정 view를 참조하도록(마스터 테이블이 아닌) 설정해줘야 한다.
+또한 새 데이터가 추가되면 이 새 그룹을 view에 추가해야 한다.
+인스턴스 수를 변경하면 view도 바뀌기 때문에 동적인 설정은 불가능하다.
 
 *4. Addition of a Processing Indicator*
 
-This involves the addition of a new column to the input table, which acts as an indicator. As a preprocessing step, all indicators are marked as being non-processed. During the record fetch stage of the batch application, records are read on the condition that that record is marked as being non-processed, and once they are read (with lock), they are marked as being in processing. When that record is completed, the indicator is updated to either complete or error. Many instances of a batch application can be started without a change, as the additional column ensures that a record is only processed once. sentence or two on the order of "On completion, indicators are marked as being complete.")
+이번에는 식별자 역할을 하는 새 컬럼을 입력 테이블에 추가하는 방법이다.
+전 처리 단계에서 모든 식별자는 처리되지 않음으로 마킹된다.
+배치 어플리케이션에서 레코드를 조회할 때는 처리되지 않음으로 마킹된 레코드만 읽으며,
+한번 읽으면 (잠금과 함께), 처리 중으로 다시 마킹한다.
+처리가 완료된 레코드의 식별자를 완료(complete)나 에러로 업데이트한다.
+별도 컬럼만으로 레코드가 한 번만 처리된다는 걸 보장할 수 있으므로
+아무 변경 없이 여러 배치 어플리케이션 인스턴스를 시작할 수 있다.
 
-With this option, I/O on the table increases dynamically. In the case of an updating batch application, this impact is reduced, as a write must occur anyway.
+이 방법을 쓰면 테이블의 I/O가 증가하는데, 
+업데이트를 수행하는 배치 애플리케이션이라면 write는 어차피 항상 있으므로 이 단점을 피해갈 수 있다.
 
 *5. Extract Table to a Flat File*
 
-This involves the extraction of the table into a file. This file can then be split into multiple segments and used as input to the batch instances.
+테이블을 추출해서 파일로 만드는 방법이다.
+그다음 파일을 여러 조각(segment)으로 분할해서 배치 인스턴스의 입력으로 사용한다.
 
-With this option, the additional overhead of extracting the table into a file and splitting it may cancel out the effect of multi-partitioning. Dynamic configuration can be achieved by changing the file splitting script.
+이 방법을 사용하면 테이블을 파일로 추출하고 분할하는 추가적인 오버헤드가 발생해 
+멀티 파티셔닝의 이점을 상쇄시켜버릴 수도 있다.
+파일을 나누는 스크립트를 수정하는 방식을 활용하면 동적인 설정도 가능하다. 
 
 *6. Use of a Hashing Column*
 
-This scheme involves the addition of a hash column (key/index) to the database tables used to retrieve the driver record. This hash column has an indicator to determine which instance of the batch application processes this particular row. For example, if there are three batch instances to be started, then an indicator of 'A' marks a row for processing by instance 1, an indicator of 'B' marks a row for processing by instance 2, and an indicator of 'C' marks a row for processing by instance 3.
+드라이버 레코드를 검색할 때 쓰는 데이터베이스 테이블에 해시 컬럼(key/index)을 추가한다.
+이 컬럼은 특정 로(row)를 어떤 배치 어플리케이션 인스턴스가 처리하는지를 결정하는 식별자를 갖는다.
+예를 들어 배치 인스턴스 세 개를 실행한다면
+식별자 값이 'A'면 인스턴스 1에서, 'B'면 인스턴스 2에서, 'C'면 인스턴스 3에서 실행한다.
 
-The procedure used to retrieve the records would then have an additional WHERE clause to select all rows marked by a particular indicator. The inserts in this table would involve the addition of the marker field, which would be defaulted to one of the instances (such as 'A').
+따라서 레코드를 조회할 때 사용하는 프로시저는 특정 식별자로 마킹된 모든 로(row)를 조회하기 위한
+WHERE 절을 따로 추가한다. 
+이 테이블에 추가되는 데이터는 마커로 사용할 필드와 함께 저장되는데,
+각 인스턴스 중 하나를 디폴트로 사용할 수도 있다 ('A' 같은).
 
-A simple batch application would be used to update the indicators, such as to redistribute the load between the different instances. When a sufficiently large number of new rows have been added, this batch can be run (anytime, except in the batch window) to redistribute the new rows to other instances.
+인스턴스 부하를 재분배하고 싶으면 간단한 배치 어플리케이션을 활용해 식별자를 수정하면 된다.
+새로 추가된 로(row)가 충분히 많다면 새 데이터를 다른 인스턴스에 재분배하기 위해
+이 배치를 실행한다 (배치 윈도우 밖에서라면 언제든지).
 
-Additional instances of the batch application only require the running of the batch application as described in the preceding paragraphs to redistribute the indicators to work with a new number of instances.
+배치 애플리케이션에 인스턴스를 추가하고 싶은 경우,
+앞에서 설명한 이 배치 애플리케이션을 실행하기만 하면 추가된 인스턴스까지 고려해 식별자를 재분배한다.
 
 **4.2 Database and Application Design Principles**
 
-An architecture that supports multi-partitioned applications which run against partitioned database tables using the key column approach should include a central partition repository for storing partition parameters. This provides flexibility and ensures maintainability. The repository generally consists of a single table, known as the partition table.
+멀티 파티셔닝 어플리케이션에서 키 컬럼 접근법으로 분할된 데이터베이스를 사용하려면
+파티션 파라미터를 저장하기 위한 중앙 파티션 레포지토리가 필요하다.
+이를 통해 유연성을 제공할 수 있으며 유지보수 또한 보장된다.
+이 레포지토리는 일반적으로 파티션 테이블로 알려진 테이블 한 개를 저장한다.
 
-Information stored in the partition table is static and, in general, should be maintained by the DBA. The table should consist of one row of information for each partition of a multi-partitioned application. The table should have columns for Program ID Code, Partition Number (logical ID of the partition), Low Value of the db key column for this partition, and High Value of the db key column for this partition.
+파티션 테이블에 저장된 정보는 정적이며, 보통 DBA가 관리한다.
+이 테이블에 있는 로(row) 하나는 하나의 파티션 정보를 담고 있다.
+또한 이 테이블은 프로그램 ID Code, 파티션 넘버 (파티션의 논리 ID), 
+파티션을 위한 db key 컬럼의 하한값, 상한값을 저장할 컬럼이 필요하다.
 
-On program start-up, the program id and partition number should be passed to the application from the architecture (specifically, from the Control Processing Tasklet). If a key column approach is used, these variables are used to read the partition table in order to determine what range of data the application is to process. In addition the partition number must be used throughout the processing to:
+프로그램을 시작하려면 이 아키텍처에 있는(특히, 중앙 처리 Tasklet)
+프로그램 id와 파티션 넘버를 어플리케이션에 넘겨줘야 한다.
+키 컬럼 접근법을 사용한다면, 어플리케이션이 처리할 데이터 범위를 결정하기 위해
+이 변수들로 파티션 테이블을 조회한다.
+추가로 다음 작업을 수행할 때도 파티션 넘버를 사용해야 한다:
 
-- Add to the output files/database updates in order for the merge process to work properly.
-- Report normal processing to the batch log and any errors to the architecture error handler.
+- 병합(merge) 프로세스를 위한 출력 파일/데이터베이스 수정
+- 정상적으로 처리된 결과는 배치 로그에 저장하고, 아키텍처 에러 핸들러에 에러를 넘기는 리포팅
 
 **4.3 Minimizing Deadlocks**
 
-When applications run in parallel or are partitioned, contention in database resources and deadlocks may occur. It is critical that the database design team eliminates potential contention situations as much as possible as part of the database design.
+어플리케이션을 병렬로 실행하거나 파티셔닝을 사용한다면
+데이터베이스 자원에 대한 경합이 생기고 교착상태에 빠질 수도 있다.
+데이터베이스 설계 팀에게는  
+발생할 수 있는 경합 상황을 가능한 줄이는 것도 데이터베이스 설계만큼 중요한 일이다.
 
-Also, the developers must ensure that the database index tables are designed with deadlock prevention and performance in mind.
+또한 개발자는 데이터베이스 인덱스 테이블이 교착상태와 성능을 모두 고려해 설계됐는지 확인해야 한다.
 
-Deadlocks or hot spots often occur in administration or architecture tables, such as log tables, control tables, and lock tables. The implications of these should be taken into account as well. A realistic stress test is crucial for identifying the possible bottlenecks in the architecture.
+교착상태는 로그 테이블이나 관리 테이블, 잠금 테이블 등의 
+어드민성 테이블나 아키텍처관련 테이블에서 발생하는 경우가 많다.
+어드민이나 아키텍처 테이블의 영향도 고려해야한다.
+아키텍처에서 가능한 병목을 찾으려면 현실이 반영된 부하 테스트는 필수다.
 
-To minimize the impact of conflicts on data, the architecture should provide services such as wait-and-retry intervals when attaching to a database or when encountering a deadlock. This means a built-in mechanism to react to certain database return codes and, instead of issuing an immediate error, waiting a predetermined amount of time and retrying the database operation.
+데이터 충돌 영향을 최소화하기 위해 아키텍처는 데이터베이스를 연결하거나 교착상태가 발생했을 때
+wait-and-retry 간격을 조정하는 등의 서비스를 제공해야한다.
+이는 특정 데이터베이스 리턴 코드에 대응하고 즉시 오류를 발생시키는 대신 
+미리 정해진 시간 동안 기다렸다가 데이터베이스 연산을 재시도하는 내장 메커니즘을 뜻한다.
 
 **4.4 Parameter Passing and Validation**
 
-The partition architecture should be relatively transparent to application developers. The architecture should perform all tasks associated with running the application in a partitioned mode, including:
+파티션 아키텍처는 애플리케이션 개발자에게 비교적 투명하게 제공되야 한다.
+아키텍처는 파티셔닝 모드에서 실행하는 어플리케이션과 연관있는, 아래 내용을 포함한 모든 작업을 지원해야 한다:
 
-- Retrieving partition parameters before application start-up.
-- Validating partition parameters before application start-up.
-- Passing parameters to the application at start-up.
+- 어플리케이션 시작 전 파티션 파라미터 검색 
+- 어플리케이션 시작 전 파티션 파라미터 검증
+- 어플리케이션 시작 시 파라미터 전달
 
-The validation should include checks to ensure that:
+검증은 아래 내용을 포함해야 한다:
 
-- The application has sufficient partitions to cover the whole data range.
-- There are no gaps between partitions.
+- 파티션 수가 전체 데이터를 처리하기에 충분한지.
+- 파티션 사이 간극이 없는지.
 
-If the database is partitioned, some additional validation may be necessary to ensure that a single partition does not span database partitions.
+데이터베이스를 분할한다면
+파티션 하나가 데이터베이스의 여러 파티션에 걸쳐있지는 않은지 별도로 검증해야한다.
 
-Also, the architecture should take into consideration the consolidation of partitions. Key questions include:
+아키텍처는 파티션 통합도 고려해야 한다.
+주로 고려해야 할 내용은 다음과 같다:
 
-- Must all the partitions be finished before going into the next job step?
-- What happens if one of the partitions aborts?
+- 다음 단계로 넘어가기 전에 모든 파티션을 완료해야 하는가?
+- 파티션 중 하나가 중단되면 어떻게 해야 하는가?
