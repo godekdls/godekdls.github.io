@@ -11,7 +11,7 @@ order: 3
 - [2.3. Apache Avro item reader/writer](#23-apache-avro-item-readerwriter)
 - [2.4. Documentation updates](#24-documentation-updates)
 
-스프링 배치 4.2 버전에서는 아래 기능을 추가됐다:
+스프링 배치 4.2 버전에서는 아래 기능을 추가했다:
 
 - [Micrometer](https://micrometer.io/) 를 통한 배치 메트릭(metric) 지원
 - [Apache Kafka](https://kafka.apache.org/) 토픽 읽고 쓰기 지원
