@@ -2,6 +2,7 @@
 title: Spring Batch Introduction
 category: Spring Batch
 order: 2
+permalink: /Spring%20Batch/introduction/
 ---
 
 ### 목차

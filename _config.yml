@@ -24,8 +24,8 @@ social:
 
 timezone: Etc/UTC
 
-#permalink: pretty
-permalink: /:categories/:title:output_ext
+permalink: pretty
+#permalink: /:categories/:title:output_ext
 
 plugins:
   - jekyll-sitemap
