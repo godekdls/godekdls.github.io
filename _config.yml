@@ -2,7 +2,7 @@
 # Site
 
 title: 토리맘의 한글라이즈 프로젝트
-url: "https://godekdls.github.io/"
+url: "https://godekdls.github.io"
 baseurl:
 google_analytics_key:
 show_full_navigation: true
@@ -24,7 +24,8 @@ social:
 
 timezone: Etc/UTC
 
-permalink: pretty
+#permalink: pretty
+permalink: /:categories/:title:output_ext
 
 plugins:
   - jekyll-sitemap
