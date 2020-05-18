@@ -2,6 +2,7 @@
 title: Configuring a Step
 category: Spring Batch
 order: 6
+permalink: /Spring%20Batch/configuringastep.md
 ---
 
 ### 목차

@@ -2,6 +2,7 @@
 title: ItemReaders and ItemWriters
 category: Spring Batch
 order: 7
+permalink: /Spring%20Batch/itemreadersanditemwriters.md
 ---
 
 ### 목차
