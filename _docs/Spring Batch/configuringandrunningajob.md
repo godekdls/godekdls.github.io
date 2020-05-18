@@ -2,7 +2,6 @@
 title: Configuring and Running a Job
 category: Spring Batch
 order: 5
-permalink: /Spring%20Batch/configuringandrunningajob.md
 ---
 
 ### 목차

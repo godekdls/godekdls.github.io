@@ -2,7 +2,6 @@
 title: The Domain Language of Batch
 category: Spring Batch
 order: 4
-permalink: /Spring%20Batch/domainlanguage.md
 ---
 
 ### 목차
