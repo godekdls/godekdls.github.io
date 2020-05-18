@@ -2,7 +2,10 @@
 title: Configuring and Running a Job
 category: Spring Batch
 order: 5
+permalink: /Spring%20Batch/configuringandrunningajob/
 ---
+
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureJob) 를 한글로 번역한 문서입니다.
 
 ### 목차
 

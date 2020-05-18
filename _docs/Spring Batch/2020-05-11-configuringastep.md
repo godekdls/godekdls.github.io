@@ -2,7 +2,10 @@
 title: Configuring a Step
 category: Spring Batch
 order: 6
+permalink: /Spring%20Batch/configuringastep/
 ---
+
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureStep) 를 한글로 번역한 문서입니다.
 
 ### 목차
 
@@ -210,47 +213,47 @@ public Step step1() {
 
 #### `Step` Restart Configuration Example
 
-아래 예제에서는 재시작 가능한 job에 step하는 방법을 보여준다:
+아래 예제에서는 재시작 가능한 step을 가진 job 설정법을 보여준다:
 
 ```java
-       @Bean
-       public Job footballJob() {
-       	return this.jobBuilderFactory.get("footballJob")
-       				.start(playerLoad())
-       				.next(gameLoad())
-       				.next(playerSummarization())
-       				.end()
-       				.build();
-       }
+@Bean
+public Job footballJob() {
+	return this.jobBuilderFactory.get("footballJob")
+				.start(playerLoad())
+				.next(gameLoad())
+				.next(playerSummarization())
+				.end()
+				.build();
+}
 
-       @Bean
-       public Step playerLoad() {
-       	return this.stepBuilderFactory.get("playerLoad")
-       			.<String, String>chunk(10)
-       			.reader(playerFileItemReader())
-       			.writer(playerWriter())
-       			.build();
-       }
+@Bean
+public Step playerLoad() {
+	return this.stepBuilderFactory.get("playerLoad")
+			.<String, String>chunk(10)
+			.reader(playerFileItemReader())
+			.writer(playerWriter())
+			.build();
+}
 
-       @Bean
-       public Step gameLoad() {
-       	return this.stepBuilderFactory.get("gameLoad")
-       			.allowStartIfComplete(true)
-       			.<String, String>chunk(10)
-       			.reader(gameFileItemReader())
-       			.writer(gameWriter())
-       			.build();
-       }
+@Bean
+public Step gameLoad() {
+	return this.stepBuilderFactory.get("gameLoad")
+			.allowStartIfComplete(true)
+			.<String, String>chunk(10)
+			.reader(gameFileItemReader())
+			.writer(gameWriter())
+			.build();
+}
 
-       @Bean
-       public Step playerSummarization() {
-       	return this.stepBuilderFactor.get("playerSummarization")
-       			.startLimit(2)
-       			.<String, String>chunk(10)
-       			.reader(playerSummarizationSource())
-       			.writer(summaryWriter())
-       			.build();
-       }
+@Bean
+public Step playerSummarization() {
+	return this.stepBuilderFactor.get("playerSummarization")
+			.startLimit(2)
+			.<String, String>chunk(10)
+			.reader(playerSummarizationSource())
+			.writer(summaryWriter())
+			.build();
+}
 ```
 
 위 예제는 축구 게임 정보를 읽어와서 요약하는 job을 설정하고 있다.

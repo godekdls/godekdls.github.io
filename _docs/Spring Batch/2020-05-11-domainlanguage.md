@@ -2,7 +2,10 @@
 title: The Domain Language of Batch
 category: Spring Batch
 order: 4
+permalink: /Spring%20Batch/domainlanguage/
 ---
+
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#domainLanguageOfBatch) 를 한글로 번역한 문서입니다.
 
 ### 목차
 
