@@ -1,5 +1,5 @@
 ---
 title: Configuring and Running a Job
-category: Spring Batch
+category: spring-batch
 order: 5
 ---
