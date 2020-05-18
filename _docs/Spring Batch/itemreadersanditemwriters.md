@@ -544,6 +544,7 @@ step으로 사용하는 경우도 드물지 않다.
 
 #### `LineMapper`
 
+ResultSet과 같은 낮은 수준의 구조를 취하고 오브젝트를 반환하는 RowMapper와 마찬가지로 플랫 파일 처리도 스트링 라인을 오브젝트로 변환하는 동일한 구조가 필요하다.
 As with `RowMapper`, which takes a low-level construct 
 such as `ResultSet` and returns an `Object`, flat file processing requires 
 the same construct to convert a `String` line into an `Object`,
