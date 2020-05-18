@@ -214,12 +214,12 @@ public interface ItemProcessor<I, O> {
 }
 ```
 
-`ItemProcessor`는 간단하다. 객체 하나를 받아 변환한 객체를 반환한다.
+`ItemProcessor`는 간단하다. 객체 하나를 받아 다른 객체로 변환해서 반환한다.
 새로 반환하는 객체는 같은 타입일 수도 있고 아닐 수도 있다.
 핵심은 process 메소드 안에서 비지니스 로직을 처리할 수 있으며,
 그 로직을 만드는 일은 전적으로 개발자에 달려있다는 것이다.
 `ItemProcessor`는 step에 직접 연결할 수 있다. 
-예를 들어 `ItemReader`는 `Foo` 클래스를 리턴하는데 쓰여기지 전에 `Bar` 타입으로 변경해야 한다고 가정해보자.
+예를 들어 `ItemReader`는 `Foo` 클래스를 반환하는데 최종 write 전에 `Bar` 타입으로 변경해야 한다고 가정해보자.
 아래 예제는 `Foo를` `Bar`로 바꾸는 `ItemProcessor`다:
 
 ```java
@@ -310,7 +310,7 @@ public class FoobarWriter implements ItemWriter<Foobar>{
 ```
 
 아래 예제에서는
-함께 '연결(chained)'된 `FooProcessor`와 `BarProcessor`가 
+함께 '연결(chained)된' `FooProcessor`와 `BarProcessor`가 
 최종 결과물로 `Foobar`를 만든다: 
 
 ```java
@@ -364,12 +364,12 @@ item processor는 `ItemWriter`로 데이터를 넘기기 전 필터링하는 데
 스킵은 데이터가 유효하지 않다는 거고,
 필터링은 단순히 데이터를 write하지 않겠다는 뜻이다.
 
-예를 들어 세 가지 유형의 파일을 읽어야하는 배치 job을 떠올려봐라:
+예를 들어 세 가지 유형의 파일을 읽어야하는 배치 job을 떠올려 봐라:
 insert할 데이터, update할 데이터, delete할 데이터.
-만약 시스템이 레코드 삭제를 지원하지 않는다면 
-`ItemWriter`에 삭제 대상 데이터를 넘기면 안 된다.
-그렇지만 이 데이터가 잘못된 데이터는 아니므로 스킵보단 필터링하고 싶을 것이다.
-결과적으로 `ItemWriter`는 insert 용과 update 용 데이터만 받는다.
+레코드 삭제를 지원하지 않는 시스템이라면, 
+`ItemWriter`에 삭제 대상 데이터를 넘기지 않으면 된다.
+그렇지만 이 데이터가 잘못된 데이터는 아니므로 스킵보단 필터링이 더 적절하다.
+결과적으로 `ItemWriter`에 insert 용과 update 용 데이터만 넘긴다.
 
 아이템을 필터링하고 싶으면 `ItemProcessor`에서 `null`을 리턴하면 된다.
 결과가 `null`이라면 프레임워크가 `ItemWriter`에 전달되는
@@ -380,13 +380,13 @@ insert할 데이터, update할 데이터, delete할 데이터.
 
 청크가 롤백되면 데이터를 읽을 때 이미 캐시해둔 아이템이 다시 처리될 수도 있다.
 내결함성(fault tolerance)이 있는 step이라면 (보통 skip이나 retry가 설정된)
-사용할 모든 `ItemProcessor`는 멱등성(idempotence)을 보장해야한다.
+모든 `ItemProcessor`는 멱등성(idempotence)을 보장해야한다.
 보통은 `ItemProcessor`의 입력 데이터는 바꾸지 않고 결과로 사용할 인스턴스만 바꾸는 식으로 구현한다.
 
 ## 6.4. `ItemStream`
 
 `ItemReaders`, `ItemWriters` 모두 맡은 역할은 잘 처리하지만,
-둘다 다른 인터페이스가 필요한 경우도 있다.
+양쪽 다 다른 인터페이스가 필요한 경우도 있다.
 일반적으로 배치 job의 일환으로 reader와 writer는 리소스를 열고(open) 닫아야(close)하며
 상태를 저장하기 위한 메커니즘이 필요하다.
 아래 예제에 보이는 `ItemStream` 인터페이스는 그런 역할을 담당한다:
@@ -407,7 +407,7 @@ public interface ItemStream {
 `read` 메소드 호출 전에 `open` 메소드를 호출해야 파일이나 커넥션이 필요한 리소스에 접근할 수 있다.
 `ItemStream`을 구현한 `ItemWriter`도 마찬가지로 같은 규칙이 적용된다.
 2장에서 설명했듯이, `ExecutionContext`에 데이터가 있다면
-초기 상태가 아닌(처음 실행하는 게 아닌) `ItemReader`와 `ItemWriter`를 실행할 때 사용한다.
+초기 상태가 아닌(처음 실행하는 게 아닌) `ItemReader`와 `ItemWriter`를 실행할 때 함께 사용된다.
 반대로 열려 있는 모든 리소스를 안전하게 닫으려면 `close` 메소드를 호출해야 한다.  
 `update` 메소드는 주로 현재까지 진행된 모든 상태를 `ExecutionContext`에 저장할 때 사용한다.
 커밋 전 데이터베이스에 현재 상태를 저장하려면 커밋 전에 호출해야 한다.
@@ -426,7 +426,7 @@ Quartz에 비유하면 `JobDataMap`와 유사하게 동작한다.
 `ItemStream`이나 `StepListener` 인터페이스를
 `Step`과 직접 연결하는 reader, writer, processor로 구현하면 자동으로 등록된다.
 그러나 `Step`은 위임 객체(delegate)는 알 수 없으므로
-아래 보이는 예제처럼 listener 또는 stream으로 (필요하다면 둘 다) 직접 주입해야한다:
+아래 보이는 예제처럼 listener 또는 stream으로 (필요하다면 둘 다) 직접 연결해야한다:
 
 ```java
 @Bean
@@ -467,17 +467,17 @@ public BarWriter barWriter() {
 ## 6.6. Flat Files
 
 플랫(flat) 파일은 벌크 데이터를 교환할 때 가장 흔히 사용하는 방법 중 하나다.
-파일을 구성하는 방법을 정한 표준(XSD)이 있는 XML과는 달리
-플랫 파일을 읽으려면 파일의 구조를 알고 있어야만 한다. 
-In general, all flat files fall into two types: delimited and fixed length. 
+파일 구성법을 표준(XSD)으로 정한 XML과는 달리
+플랫(flat) 파일을 읽으려면 파일의 구조를 알고 있어야만 한다.
+일반적으로 플랫(flat) 파일은 두 유형 중 하나에 속한다:
+구분자를 사용하거나 고정 길이를 사용하거나.
 구분자를 사용하는(delimited) 파일은 쉼표같은 구분자로 필드를 구분한다.
-고정된 길이를 갖는 파일은 
-such as a comma. Fixed Length files have fields that are a set length.
+고정된 길이를 갖는 파일은 필드 길이를 미리 설정해서 필드를 구분한다.
 
 ### 6.6.1. The `FieldSet`
 
 스프링 배치에서 플랫(flat) 파일을 다룬다면
-입력 데이터든 출력 데이터든 상관 없이 `FieldSet`가 제일 중요한 클래스 중 하나다.
+입력 데이터든 출력 데이터든 상관 없이 `FieldSet`이 제일 중요한 클래스 중 하나다.
 파일을 읽기 위한 추상 클래스를 지원하는 아키텍처나 라이브러리는 많지만
 보통 `String`이나 `String` 객체의 배열을 리턴한다.
 이건 반만 처리한 거나 마찬가지다.
@@ -498,8 +498,8 @@ boolean booleanValue = fs.readBoolean(2);
 
 `FieldSet`는 `Date`, long, `BigDecimal` 등 다른 값도 지원한다.
 `FieldSet`의 가장 큰 장점은 일관성이다.
-여러 배치 job이 각자의 방법으로 다르게 파싱하는 대신,
-포맷 예외로 인한 에러를 처리할 때든 간단한 데이터 변환을 할 때든 모두 같은 방법으로 파싱한다.  
+여러 배치 job이 각자마다의 방법으로 파싱하는게 아니라,
+포맷 예외로 인한 에러를 처리할 때든, 간단한 데이터 변환을 할 때든 모두 같은 방법으로 파싱한다.  
 
 ### 6.6.2. `FlatFileItemReader`
 
@@ -539,8 +539,7 @@ step으로 사용하는 경우도 드물지 않다.
 |linesToSkip|int|파일 상단에 있는 무시할 라인 수.|
 |recordSeparatorPolicy|RecordSeparatorPolicy|라인이 끝나는 지점과, 따옴표로 묶인 문자열 안에서 라인이 끝나면 같은 라인으로 처리할지 등을 결정할 때 사용.|
 |resource|`Resource`|읽어야할 리소스.|
-|skippedLinesCallback|LineCallbackHandler|
-건너뛸 라인의 원래 내용을 전달하는 인터페이스. `linesToSkip`이 2면 이 인터페이스를 두 번 호출한다.|	
+|skippedLinesCallback|LineCallbackHandler|건너뛸 라인의 원래 내용을 전달하는 인터페이스. `linesToSkip`이 2면 이 인터페이스를 두 번 호출한다.|	
 |strict|boolean|strict 모드에선 입력 리소스가 없으면 `ExecutionContext`에서 예외를 발생시킨다. 반대 경우는 로그를 남기고 넘어간다.|
 
 #### `LineMapper`
@@ -558,7 +557,7 @@ public interface LineMapper<T> {
 
 기본 역할은 현재 라인과 라인 넘버를 받아 도메인 객체를 반환하는 것이다.
 `ResultSet` 안에 있는 각 로(row)가 로(row) 넘버와 함께 처리되는 것처럼
-각 라인을 라인 넘버와 처리한다는 점에서 `RowMapper` 비슷하다.
+각 라인을 라인 넘버와 처리한다는 점에서 `RowMapper`와 비슷하다.
 따라서 동일성(identity)을 비교하거나 더 많은 정보를 로깅할 수 있다.
 하지만 `RowMapper`와는 달리 `LineMapper`는 전에 말한 바와 같이
 반만 처리한 것과 마찬가지인 단순 문자열을 받는다.
@@ -580,11 +579,11 @@ public interface LineTokenizer {
 ```
 
 `LineTokenizer`는 입력받은 라인을 (이론상 문자열은 두 줄 이상을 포함할 수도 있다),
-`FieldSet`로 변환해서 리턴한다.
+`FieldSet`으로 변환해서 리턴한다.
 이 `FieldSet`은 `FieldSetMapper`로 넘겨 처리할 수 있다. 
 스프링 배치는 아래 구현체를 포함한 `LineTokenizer` 구현체를 제공한다: 
 
-- `DelimitedLineTokenizer`: 구분자 필드를 구분하는 파일에 사용한다.
+- `DelimitedLineTokenizer`: 구분자로 필드를 구분하는 파일에 사용한다.
 구분자는 쉼표를 가장 많이 쓰지만 파이프(|)나 세미콜론도 많이 사용한다.
 - `FixedLengthTokenizer`: 각 필드를 "고정된 길이"로 정의하는 파일에 사용한다.
 각 필드 길이는 각 레코드마다 정의해야 한다.
@@ -612,7 +611,7 @@ public interface FieldSetMapper<T> {
 
 #### `DefaultLineMapper`
 
-플랫(파일)을 읽기위한 기본적인 인터페이스를 정의했으니,
+플랫(flat) 파일을 읽기위한 기본적인 인터페이스를 정의했으니,
 아래 세가지 기본적인 절차가 필요하다는 게 분명해졌다:
 
 - 파일에서 라인 한 줄을 읽는다.
@@ -620,12 +619,12 @@ public interface FieldSetMapper<T> {
 - 토크나이저로부터 받은 `FieldSet`을 `FieldSetMapper`로 넘겨
 `ItemReader#read()` 메소드 결과를 받는다.
 
-위에서 서 다룬 두 인터페이스는 두 가지 독립적인 처리를 한다:
-스트링을 `FieldSet`으로 변환하고 모메인 객체를 위한 `FieldSet`에 매핑한다.
-`LineTokenizer`의 입력이 `LineMapper`의 입력 (문자열)과 일치하고
+위에서 다룬 두 인터페이스는 두 가지 독립적인 처리를 한다:
+스트링을 `FieldSet`으로 변환하고 도메인 객체를 위한 `FieldSet`에 매핑한다.
+`LineTokenizer`의 입력이 `LineMapper`의 입력(문자열)과 일치하고
 `FieldSetMapper`의 결과도 `LineMapper`의 결과와 일치하므로,
 `LineTokenizer`와 `FieldSetMapper` 둘 다 사용하는 디폴트 구현체를 제공한다.
-아래 클래스 정의에 나오는 `DefaultLineMapper`는 대부분이 필요할 행동을 나타낸다: 
+아래 클래스 정의에 나오는 `DefaultLineMapper`는 사용자들이 대부분 필요로 하는 작업을 처리한다: 
 
 ```java
 public class DefaultLineMapper<T> implements LineMapper<>, InitializingBean {
@@ -648,11 +647,9 @@ public class DefaultLineMapper<T> implements LineMapper<>, InitializingBean {
 }
 ```
 
-
-위 기능은 reader 자체에 포함되지 않고 (이전 버전의 프레임워크에서 그래왔다)
-디폴트 구현체를 통해 구현했는데,
-이를 통해 직접 파싱을 제어할 수 있는, 높은 유연성을 제공했다. 
-특히 원본 라인에 접근해야 하는는 경우 더 그렇다.
+위 기능은 reader 자체에 포함하지 않고 (이전 버전의 프레임워크에서 그래왔었다)
+디폴트 구현체로 제공했는데, 이를 통해 더 유연하게 파싱을 제어할 수 있다. 
+특히 파일의 원본 라인에 접근해야 하는 경우 더 그렇다.
 
 #### Simple Delimited File Reading Example
 #### Mapping Fields by Name
