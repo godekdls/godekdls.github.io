@@ -503,15 +503,15 @@ boolean booleanValue = fs.readBoolean(2);
 
 ### 6.6.2. `FlatFileItemReader`
 
-플랫(flat) 파일은 최대 2차원(표)으로 표현된 데이터라면 어떤 것이든 가능하다.
-스프링 배치 프레임워크에서는 `FlatFileItemReader`로 플랫(flat) 파일을 읽는데,
-기본적인 플랫(flat) 파일 읽기와 파싱을 지원한다.
+플랫(flat) 파일은 최대 2차원(표)으로 표현된 데이터라면 어떤 것이든 담을 수 있다.
+스프링 배치 프레임워크에서는 기본적인 플랫(flat) 파일 읽기와 파싱을 지원하는
+`FlatFileItemReader`로 플랫(flat) 파일을 읽는다.
 `FlatFileItemReader`를 사용하려면 가장 중요한 `Resource`와 `LineMapper` 두 가지가 필요하다.
 `LineMapper` 인터페이스는 다음 섹션에서 더 다룰 것이다.
-resource 프로퍼티는 스프링 코어의 `Resource`를 가리킨다.
+resource 프로퍼티는 스프링 코어의 `Resource`를 나타낸다.
 이 유형의 빈을 만드는 법이 궁금하다면 
 [Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources) 를 보라.
-따라서 이번 가이드에서는 `Resource` 객체를 만드는 방법은 아래 간단한 예제를 끝으로 더 자세히 다루지 않을 것이다.
+따라서 이번 가이드에서는 `Resource` 객체를 만드는 방법은 아래 간단한 예제를 끝으로 더 자세히 다루지 않는다.
 
 ```java
 Resource resource = new FileSystemResource("resources/trades.csv");
@@ -545,15 +545,115 @@ step으로 사용하는 경우도 드물지 않다.
 
 #### `LineMapper`
 
-ResultSet과 같은 낮은 수준의 구조를 취하고 오브젝트를 반환하는 RowMapper와 마찬가지로 플랫 파일 처리도 스트링 라인을 오브젝트로 변환하는 동일한 구조가 필요하다.
-As with `RowMapper`, which takes a low-level construct 
-such as `ResultSet` and returns an `Object`, flat file processing requires 
-the same construct to convert a `String` line into an `Object`,
-as shown in the following interface definition:
+`ResultSet`같은 저수준의 구조를 처리해 `Object`를 반환하는 `RowMapper`처럼
+플랫(flat) 파일도 `String` 한 줄을 `Object`로 변환한다.
+아래는 인터페이스 정의다:
+```java
+public interface LineMapper<T> {
+
+    T mapLine(String line, int lineNumber) throws Exception;
+
+}
+```
+
+기본 역할은 현재 라인과 라인 넘버를 받아 도메인 객체를 반환하는 것이다.
+`ResultSet` 안에 있는 각 로(row)가 로(row) 넘버와 함께 처리되는 것처럼
+각 라인을 라인 넘버와 처리한다는 점에서 `RowMapper` 비슷하다.
+따라서 동일성(identity)을 비교하거나 더 많은 정보를 로깅할 수 있다.
+하지만 `RowMapper`와는 달리 `LineMapper`는 전에 말한 바와 같이
+반만 처리한 것과 마찬가지인 단순 문자열을 받는다.
+뒷부분에서 다룰 내용이지만,
+문자열은 객체로 매핑할 수 있는 `FieldSet`으로 토큰화해야 한다.
 
 #### LineTokenizer
-#### FieldSetMapper
-#### DefaultLineMapper
+
+`FieldSet`으로 변환할 필요가 있는 플랫(flat) 파일은 파일마다 형식이 다르기 때문에
+문자열을 `FieldSet`으로 변환하는 작업은 추상화시켜야 한다.
+스프링 배치가 제공하는 인터페이스는 `LineTokenizer`다:
+
+```java
+public interface LineTokenizer {
+
+    FieldSet tokenize(String line);
+
+}
+```
+
+`LineTokenizer`는 입력받은 라인을 (이론상 문자열은 두 줄 이상을 포함할 수도 있다),
+`FieldSet`로 변환해서 리턴한다.
+이 `FieldSet`은 `FieldSetMapper`로 넘겨 처리할 수 있다. 
+스프링 배치는 아래 구현체를 포함한 `LineTokenizer` 구현체를 제공한다: 
+
+- `DelimitedLineTokenizer`: 구분자 필드를 구분하는 파일에 사용한다.
+구분자는 쉼표를 가장 많이 쓰지만 파이프(|)나 세미콜론도 많이 사용한다.
+- `FixedLengthTokenizer`: 각 필드를 "고정된 길이"로 정의하는 파일에 사용한다.
+각 필드 길이는 각 레코드마다 정의해야 한다.
+- `PatternMatchingCompositeLineTokenizer`:
+패턴을 보고 각 라인에서 사용할 `LineTokenizer`를 결정한다. 
+
+#### `FieldSetMapper`
+
+`FieldSetMapper`는 `FieldSet` 객체를 받아 다른 객체로 매핑시키는
+메소드 하나를 정의하고 있는 인터페이스다.
+이 객체는 job 성격에 따라 커스텀 DTO일 수도 있고, 도메인 객체나 배열일 수도 있다.
+`FieldSetMapper`를 `LineTokenizer`와 함께 사용하면
+읽어온 라인을 원하는 유형의 객체로 변환할 수 있다.
+아래는 인터페이스 정의다:
+
+```java
+public interface FieldSetMapper<T> {
+
+    T mapFieldSet(FieldSet fieldSet) throws BindException;
+
+}
+```
+
+`JdbcTemplate`에서 `RowMapper`를 사용하는 것과 동일한 패턴을 사용한다.
+
+#### `DefaultLineMapper`
+
+플랫(파일)을 읽기위한 기본적인 인터페이스를 정의했으니,
+아래 세가지 기본적인 절차가 필요하다는 게 분명해졌다:
+
+- 파일에서 라인 한 줄을 읽는다.
+- `String`을 `LineTokenizer#tokenize()` 메소드로 넘겨 `FieldSet`을 받는다.
+- 토크나이저로부터 받은 `FieldSet`을 `FieldSetMapper`로 넘겨
+`ItemReader#read()` 메소드 결과를 받는다.
+
+위에서 서 다룬 두 인터페이스는 두 가지 독립적인 처리를 한다:
+스트링을 `FieldSet`으로 변환하고 모메인 객체를 위한 `FieldSet`에 매핑한다.
+`LineTokenizer`의 입력이 `LineMapper`의 입력 (문자열)과 일치하고
+`FieldSetMapper`의 결과도 `LineMapper`의 결과와 일치하므로,
+`LineTokenizer`와 `FieldSetMapper` 둘 다 사용하는 디폴트 구현체를 제공한다.
+아래 클래스 정의에 나오는 `DefaultLineMapper`는 대부분이 필요할 행동을 나타낸다: 
+
+```java
+public class DefaultLineMapper<T> implements LineMapper<>, InitializingBean {
+
+    private LineTokenizer tokenizer;
+
+    private FieldSetMapper<T> fieldSetMapper;
+
+    public T mapLine(String line, int lineNumber) throws Exception {
+        return fieldSetMapper.mapFieldSet(tokenizer.tokenize(line));
+    }
+
+    public void setLineTokenizer(LineTokenizer tokenizer) {
+        this.tokenizer = tokenizer;
+    }
+
+    public void setFieldSetMapper(FieldSetMapper<T> fieldSetMapper) {
+        this.fieldSetMapper = fieldSetMapper;
+    }
+}
+```
+
+
+위 기능은 reader 자체에 포함되지 않고 (이전 버전의 프레임워크에서 그래왔다)
+디폴트 구현체를 통해 구현했는데,
+이를 통해 직접 파싱을 제어할 수 있는, 높은 유연성을 제공했다. 
+특히 원본 라인에 접근해야 하는는 경우 더 그렇다.
+
 #### Simple Delimited File Reading Example
 #### Mapping Fields by Name
 #### Automapping FieldSets to Domain Objects
