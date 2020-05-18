@@ -17,6 +17,16 @@ order: 7
 - [6.6. Flat Files](#66-flat-files)
   + [6.6.1. The FieldSet](#661-the-fieldset)
   + [6.6.2. FlatFileItemReader](#662-flatfileitemreader)
+    * [LineMapper](#linemapper)
+    * [LineTokenizer](#linetokenizer)
+    * [FieldSetMapper](#fieldsetmapper)
+    * [DefaultLineMapper](#defaultlinemapper)
+    * [Simple Delimited File Reading Example](#simple-delimited-file-reading-example)
+    * [Mapping Fields by Name](#mapping-fields-by-name)
+    * [Automapping FieldSets to Domain Objects](#automapping-fieldsets-to-domain-objects)
+    * [Fixed Length File Formats](#fixed-length-file-formats)
+    * [Multiple Record Types within a Single File](#multiple-record-types-within-a-single-file)
+    * [Exception Handling in Flat Files](#exception-handling-in-flat-files)
   + [6.6.3. FlatFileItemWriter](#663-flatfileitemwriter)
 - [6.7. XML Item Readers and Writers](#67-xml-item-readers-and-writers)
   + [6.7.1. StaxEventItemReader](#671-staxeventitemreader)
@@ -409,12 +419,12 @@ Quartz에 비유하면 `JobDataMap`와 유사하게 동작한다.
 ## 6.5. The Delegate Pattern and Registering with the Step
 
 `CompositeItemWriter`는 스프링 배치에서 흔히 쓰는 위임(delegation) 패턴 중 하나다.
-위임받은 객체 자체가 `StepListener`같은 콜백 인터페이스를 구현하는 경우도 있다.
+위임받는 객체(delegate) 자체가 `StepListener`같은 콜백 인터페이스를 구현하는 경우도 있다.
 스프링 배치 코어의 `Step`에서 위임 패턴을 사용한다면 
 거의 모든 경우 수동으로 `Step`에 등록해야 한다.
 `ItemStream`이나 `StepListener` 인터페이스를
 `Step`과 직접 연결하는 reader, writer, processor로 구현하면 자동으로 등록된다.
-그러나 `Step`은 위임받은 객체는 알 수 없으므로
+그러나 `Step`은 위임 객체(delegate)는 알 수 없으므로
 아래 보이는 예제처럼 listener 또는 stream으로 (필요하다면 둘 다) 직접 주입해야한다:
 
 ```java
@@ -455,9 +465,99 @@ public BarWriter barWriter() {
 
 ## 6.6. Flat Files
 
-### 6.6.1. The FieldSet
+플랫(flat) 파일은 벌크 데이터를 교환할 때 가장 흔히 사용하는 방법 중 하나다.
+파일을 구성하는 방법을 정한 표준(XSD)이 있는 XML과는 달리
+플랫 파일을 읽으려면 파일의 구조를 알고 있어야만 한다. 
+In general, all flat files fall into two types: delimited and fixed length. 
+구분자를 사용하는(delimited) 파일은 쉼표같은 구분자로 필드를 구분한다.
+고정된 길이를 갖는 파일은 
+such as a comma. Fixed Length files have fields that are a set length.
 
-### 6.6.2. FlatFileItemReader
+### 6.6.1. The `FieldSet`
+
+스프링 배치에서 플랫(flat) 파일을 다룬다면
+입력 데이터든 출력 데이터든 상관 없이 `FieldSet`가 제일 중요한 클래스 중 하나다.
+파일을 읽기 위한 추상 클래스를 지원하는 아키텍처나 라이브러리는 많지만
+보통 `String`이나 `String` 객체의 배열을 리턴한다.
+이건 반만 처리한 거나 마찬가지다.
+`FieldSet`은 파일 리소스로부터 필드를 바인딩하기 위해 스프링 배치가 제공하는 인터페이스다.
+덕분에 데이터베이스 입력과 매우 유사하게 파일을 처리할 수 있다. 
+`FieldSet`은 개념적으로 JDBC `ResultSet`과 유사하다. 
+`FieldSet`에 `String` 배열로 토큰을 넘겨주기만 하면 된다.
+아래 예제에서 보이는 것처럼,
+원한다면 `ResultSet`처럼 필드에 이름을 설정해서 인덱스나 이름으로 필드에 접근할 수 있다.
+
+```java
+String[] tokens = new String[]{"foo", "1", "true"};
+FieldSet fs = new DefaultFieldSet(tokens);
+String name = fs.readString(0);
+int value = fs.readInt(1);
+boolean booleanValue = fs.readBoolean(2);
+```
+
+`FieldSet`는 `Date`, long, `BigDecimal` 등 다른 값도 지원한다.
+`FieldSet`의 가장 큰 장점은 일관성이다.
+여러 배치 job이 각자의 방법으로 다르게 파싱하는 대신,
+포맷 예외로 인한 에러를 처리할 때든 간단한 데이터 변환을 할 때든 모두 같은 방법으로 파싱한다.  
+
+### 6.6.2. `FlatFileItemReader`
+
+플랫(flat) 파일은 최대 2차원(표)으로 표현된 데이터라면 어떤 것이든 가능하다.
+스프링 배치 프레임워크에서는 `FlatFileItemReader`로 플랫(flat) 파일을 읽는데,
+기본적인 플랫(flat) 파일 읽기와 파싱을 지원한다.
+`FlatFileItemReader`를 사용하려면 가장 중요한 `Resource`와 `LineMapper` 두 가지가 필요하다.
+`LineMapper` 인터페이스는 다음 섹션에서 더 다룰 것이다.
+resource 프로퍼티는 스프링 코어의 `Resource`를 가리킨다.
+이 유형의 빈을 만드는 법이 궁금하다면 
+[Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources) 를 보라.
+따라서 이번 가이드에서는 `Resource` 객체를 만드는 방법은 아래 간단한 예제를 끝으로 더 자세히 다루지 않을 것이다.
+
+```java
+Resource resource = new FileSystemResource("resources/trades.csv");
+```
+
+복잡한 배치 환경에서 디렉토리 구조는 종종 EAI 인프라가 관리하며,
+FTP에서 배치 처리로 또는 그 반대로 파일을 이동하기 위해 외부 인터페이스 전용 드롭존(drop zone)을 설정한다.
+파일 이동 유틸리티는 스프링 배치 아키텍처를 벗어나는 주제긴 하지만,
+step으로 사용하는 경우도 드물지 않다.
+배치 아키텍처는 처리할 파일을 어떻게 이동시킬지만 알면 된다.
+스프링 배치는 시작점에서 파이프에 데이터 공급(feeding)을 시작한다.
+물론 [Spring Integration](https://spring.io/projects/spring-integration)
+는 더 많은 서비스 유형을 제공한다.
+
+아래 테이블에 있는 `FlatFileItemReader`의 다른 프로퍼티로
+데이터를 어떻게 해석할 지를 더 상세하게 지정할 수 있다:  
+
+**Table 15. `FlatFileItemReader` Properties**
+
+| Property 	| Type 	| Description |
+|:-----------------:	|:-------------:	|:-------------:	|
+|comments|String[]|행 전체를 주석처리하는 라인 프리픽스.|
+|encoding|String|사용할 텍스트 인코딩. 디폴트는 `Charset.defaultCharset()`. |
+|lineMapper|`LineMapper`|`String`을 item `Object`로 변환한다.|
+|linesToSkip|int|파일 상단에 있는 무시할 라인 수.|
+|recordSeparatorPolicy|RecordSeparatorPolicy|라인이 끝나는 지점과, 따옴표로 묶인 문자열 안에서 라인이 끝나면 같은 라인으로 처리할지 등을 결정할 때 사용.|
+|resource|`Resource`|읽어야할 리소스.|
+|skippedLinesCallback|LineCallbackHandler|
+건너뛸 라인의 원래 내용을 전달하는 인터페이스. `linesToSkip`이 2면 이 인터페이스를 두 번 호출한다.|	
+|strict|boolean|strict 모드에선 입력 리소스가 없으면 `ExecutionContext`에서 예외를 발생시킨다. 반대 경우는 로그를 남기고 넘어간다.|
+
+#### `LineMapper`
+
+As with `RowMapper`, which takes a low-level construct 
+such as `ResultSet` and returns an `Object`, flat file processing requires 
+the same construct to convert a `String` line into an `Object`,
+as shown in the following interface definition:
+
+#### LineTokenizer
+#### FieldSetMapper
+#### DefaultLineMapper
+#### Simple Delimited File Reading Example
+#### Mapping Fields by Name
+#### Automapping FieldSets to Domain Objects
+#### Fixed Length File Formats
+#### Multiple Record Types within a Single File
+#### Exception Handling in Flat Files
 
 ### 6.6.3. FlatFileItemWriter
 

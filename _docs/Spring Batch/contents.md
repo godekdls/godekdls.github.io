@@ -4,7 +4,7 @@ category: Spring Batch
 order: 1
 ---
 
-[스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html)를 한글로 번역한 문서입니다.
+[스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html) 를 한글로 번역한 문서입니다.
 
 > 버전은 4.2.x를 기준으로 합니다.
 

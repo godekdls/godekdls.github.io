@@ -483,7 +483,7 @@ public CompositeItemWriter compositeItemWriter() {
 }
 ```
 
-위에서 보이는 `CompositeItemWriter`는 `ItemStream`이 아니며, 위임(delegate)이다.
+위에서 보이는 `CompositeItemWriter`는 `ItemStream`이 아니며, 두 stream에게 위임한다(delegate).
 따라서 두 delegate writer는 명시적으로 stream으로 등록해주어야 프레임워크에서 처리할 수 있다.
 `ItemReader`는 `Step`의 프로퍼티이므로 따로 stream으로 등록하지 않아도 된다.
 위 step은 재시작 가능한 step인데, 실패 이벤트가 발생해도 reader와 writer 상태를 저장할 수 있다.
@@ -1204,7 +1204,7 @@ job과 step을 모니터링하고 리포팅기능을 구현하기 위해 더 세
 
 ## 5.4. Late Binding of `Job` and `Step` Attributes
 
-앞에 나온 XML과 플랫한(flat) 파일 예제 모두 스프링의 `Resource` 추상클래스로 파일을 읽는다.
+앞에 나온 XML과 플랫한(flat) 파일 예제 모두 스프링의 `Resource` 인터페이스로 파일을 읽는다.
 `Resource`에 `java.io.File`을 리턴하는 `getFile` 메소드가 있어서 가능하다.
 XML, flat file 리소스 모두 표준 스프링 구문으로 설정할 수 있다.
 
