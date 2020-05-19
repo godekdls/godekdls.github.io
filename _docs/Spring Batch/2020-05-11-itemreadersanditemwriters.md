@@ -656,7 +656,7 @@ public class DefaultLineMapper<T> implements LineMapper<>, InitializingBean {
 #### Simple Delimited File Reading Example
 
 아래는 실제 환경에서 어떻게 플랫(flat) 파일로 도메인을 처리하는 지 보여주는 예시이다.
-이 배치 job은 아래 파일에서 축구 선수 정보를 읽는다.
+이번 배치 job은 아래 파일에서 축구 선수 정보를 읽는다.
 
 ```java
 ID,lastName,firstName,position,birthYear,debutYear
@@ -668,7 +668,7 @@ ID,lastName,firstName,position,birthYear,debutYear
 "AdamCh00,Adams,Charlie,wr,1979,2003"
 ```
 
-파일 내용은 아래 `Player` 도메인 객체로 매핑된다:
+파일 내용은 아래 `Player` 도메인 객체로 매핑한다:
 
 ```java
 public class Player implements Serializable {
@@ -711,7 +711,7 @@ protected static class PlayerFieldSetMapper implements FieldSetMapper<Player> {
 }
 ```
 
-아래 보이는 것 처럼 `FlatFileItemReader`를 설정하고
+아래처럼 `FlatFileItemReader`를 설정하고
 `read` 메소드를 호출하면 파일 내용을 읽을 수 있다:
 
 ```java
@@ -731,17 +731,17 @@ Player player = itemReader.read();
 
 #### Mapping Fields by Name
 
-`DelimitedLineTokenizer`, `FixedLengthTokenizer`는 추가 기능을
-하나 더 제공하는데, `ResultSet`과 유사한 기능이다.
+`DelimitedLineTokenizer`, `FixedLengthTokenizer`는 다른 기능이
+하나 더 있는데, `ResultSet`과 유사한 기능이다.
 필드명을 이 두 `LineTokenizer` 구현체 중 하나에 주입해주면
 좀 더 가독성있게 매핑할 수 있다.
-가장 먼저, 아래 예제처럼 파일 내 모든 필드의 컬럼명을 토크나이저에 알려준다.
+가장 먼저, 아래 예제처럼 토크나이저에 파일 내 모든 필드의 컬럼명을 알려준다.
  
 ```java
 tokenizer.setNames(new String[] {"ID", "lastName","firstName","position","birthYear","debutYear"});
 ```
 
-아래처럼 `FieldSetMapper`에서 이 정보를 사용할 수 있다:
+그러면 아래처럼 `FieldSetMapper`에서 이 정보를 사용할 수 있다:
 
 ```java
 public class PlayerMapper implements FieldSetMapper<Player> {
@@ -768,7 +768,7 @@ public class PlayerMapper implements FieldSetMapper<Player> {
 
 매번 `FieldSetMapper`에 매핑 규칙을 나열하는 건
 `JdbcTemplate`의 `RowMapper`를 만드는 것 만큼이나 번거로운 작업이다.
-스프링 배치에선 작업이 필요없는데,
+스프링 배치에선 그럴 필요가 없는데,
 `FieldSetMapper`가 자바빈 명세를 사용해 객체의 setter와 일치하는 필드명을
 자동으로 매핑해주기 때문이다.
 다시 축구 예제를 가지고 `BeanWrapperFieldSetMapper`를 설정해보자:
@@ -794,13 +794,13 @@ public Player player() {
 매퍼도 `FieldSet`의 각 엔트리마다
 `Player` 오브젝트의 새 인스턴스에서 (이 때문에 프로토타입 스코프가 필요하다)
 일치하는 setter를 찾는다.
-`FieldSet`의 모든 필드는 알아서 매핑되고, 그 결과로
-`Player` 오브젝트를 리턴하며, 매핑 규칙을 나열하던 코드는 이제 필요 없다.
+`FieldSet`의 모든 필드는 자동으로 매핑되고, 그 결과로
+`Player` 오브젝트가 리턴되며, 매핑 규칙을 나열하던 코드는 더 이상 필요 없다.
 
 #### Fixed Length File Formats
 
 지금까지는 구분자를 사용하는(delimited) 파일만 자세히 다뤘다.
-하지만 이 파일 유형은 파일을 절반만 대표한다.
+하지만 구분자 파일은 파일의 절반만 대표한다.
 플랫(flat) 파일을 다루는 회사라면 고정 길이 포맷도 많이 사용한다.
 다음은 고정 길이 파일 예제다: 
 
@@ -812,7 +812,7 @@ UK21341EAH4421434.11customer4
 UK21341EAH4521535.11customer5
 ```
 
-긴 필드 하나로 보이지만, 사실은 4가지 필드를 가지고 있다:
+긴 필드 하나처럼 보이지만, 사실은 4가지 필드가 있다:
 
 1. ISIN: 주문할 item의 유니크 식별자 - 12자.
 2. Quantity: 주문 수량 - 3자.
