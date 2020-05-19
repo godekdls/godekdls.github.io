@@ -31,6 +31,12 @@ permalink: /Spring%20Batch/itemreadersanditemwriters/
     * [Multiple Record Types within a Single File](#multiple-record-types-within-a-single-file)
     * [Exception Handling in Flat Files](#exception-handling-in-flat-files)
   + [6.6.3. FlatFileItemWriter](#663-flatfileitemwriter)
+    * [LineAggregator](#lineaggregator)
+    * [Simplified File Writing Example](#simplified-file-writing-example)
+    * [FieldExtractor](#fieldextractor)
+    * [Delimited File Writing Example](#delimited-file-writing-example)
+    * [Fixed Width File Writing Example](#fixed-width-file-writing-example)
+    * [Handling File Creation](#handling-file-creation)
 - [6.7. XML Item Readers and Writers](#67-xml-item-readers-and-writers)
   + [6.7.1. StaxEventItemReader](#671-staxeventitemreader)
   + [6.7.2. StaxEventItemWriter](#672-staxeventitemwriter)
@@ -568,8 +574,8 @@ public interface LineMapper<T> {
 
 #### LineTokenizer
 
-`FieldSet`으로 변환할 필요가 있는 플랫(flat) 파일은 파일마다 형식이 다르기 때문에
-문자열을 `FieldSet`으로 변환하는 작업은 추상화시켜야 한다.
+플랫(flat) 파일은 파일마다 형식이 다르기 때문에
+문자열을 `FieldSet`으로 변환하는 작업을 추상화시켜야 한다.
 스프링 배치가 제공하는 인터페이스는 `LineTokenizer`다:
 
 ```java
@@ -622,9 +628,9 @@ public interface FieldSetMapper<T> {
 `ItemReader#read()` 메소드 결과를 받는다.
 
 위에서 다룬 두 인터페이스는 두 가지 독립적인 처리를 한다:
-스트링을 `FieldSet`으로 변환하고 도메인 객체를 위한 `FieldSet`에 매핑한다.
-`LineTokenizer`의 입력이 `LineMapper`의 입력(문자열)과 일치하고
-`FieldSetMapper`의 결과도 `LineMapper`의 결과와 일치하므로,
+문자열을 `FieldSet`으로 변환하고 `FieldSet`을 도메인 객체에 매핑한다.
+`LineTokenizer`의 입력이 `LineMapper` 입력(문자열)과 일치하고
+`FieldSetMapper`의 결과도 `LineMapper` 결과와 일치하므로,
 `LineTokenizer`와 `FieldSetMapper` 둘 다 사용하는 디폴트 구현체를 제공한다.
 아래 클래스 정의에 나오는 `DefaultLineMapper`는 사용자들이 대부분 필요로 하는 작업을 처리한다: 
 
@@ -726,7 +732,7 @@ itemReader.open(new ExecutionContext());
 Player player = itemReader.read();
 ```
 
-`read`를 호출할 때 마다 파일 각 라인을 읽어 `Player` 객체로 리턴한다.
+`read`를 호출할 때 마다 파일 각 라인을 읽어 `Player` 객체를 반환한다.
 파일을 다 읽으면 `null`을 리턴한다.
 
 #### Mapping Fields by Name
@@ -769,8 +775,8 @@ public class PlayerMapper implements FieldSetMapper<Player> {
 매번 `FieldSetMapper`에 매핑 규칙을 나열하는 건
 `JdbcTemplate`의 `RowMapper`를 만드는 것 만큼이나 번거로운 작업이다.
 스프링 배치에선 그럴 필요가 없는데,
-`FieldSetMapper`가 자바빈 명세를 사용해 객체의 setter와 일치하는 필드명을
-자동으로 매핑해주기 때문이다.
+`FieldSetMapper`가 자바빈 명세(JavaBean specification)를 사용해
+객체의 setter와 일치하는 필드명을 자동으로 매핑해주기 때문이다.
 다시 축구 예제를 가지고 `BeanWrapperFieldSetMapper`를 설정해보자:
 
 ```java
@@ -802,7 +808,7 @@ public Player player() {
 지금까지는 구분자를 사용하는(delimited) 파일만 자세히 다뤘다.
 하지만 구분자 파일은 파일의 절반만 대표한다.
 플랫(flat) 파일을 다루는 회사라면 고정 길이 포맷도 많이 사용한다.
-다음은 고정 길이 파일 예제다: 
+다음은 고정 길이 파일 예시다: 
 
 ```java
 UK21341EAH4121131.11customer1
@@ -847,9 +853,446 @@ public FixedLengthTokenizer fixedLengthTokenizer() {
 동일하게 적용할 수 있다.
 
 #### Multiple Record Types within a Single File
+
+지금까지 다룬 파일 읽기 예제는 모두 단순화를 위해
+파일의 모든 레코드 형식이 동일하다고 가정했었다.
+하지만 현실은 항상 그렇지 않다.
+파일 한개 안에서 다르게 토큰화하고 다른 객체로 매핑해야하는 경우도 흔하다.
+아래는 그런 파일의 일부다:
+
+```
+USER;Smith;Peter;;T;20014539;F
+LINEA;1044391041ABC037.49G201XX1383.12H
+LINEB;2134776319DEF422.99M005LI
+```
+
+이 파일에는 "USER", "LINEA", "LINEB", 세 종류의 레코드가 있다.
+"USER" 라인은 `User` 객체로 매핑한다.
+"LINEA"가 "LINEB"보다 정보가 많긴 하지만,
+"LINEA"와 "LINEB"는 모두 `Line` 객체에 매핑한다.
+
+`ItemReader`는 각 라인을 따로 처리하지만,
+`ItemWriter`가 알맞은 item을 받으려면
+`LineTokenizer`와 `FieldSetMapper`를 다르게 지정해야한다.
+아래 보이는 것처럼
+`PatternMatchingCompositeLineMapper`을 사용하면
+`LineTokenizer` 와 `FieldSetMapper` 인스턴스에 패턴을 각각 따로 지정할 수 있다: 
+
+```java
+@Bean
+public PatternMatchingCompositeLineMapper orderFileLineMapper() {
+	PatternMatchingCompositeLineMapper lineMapper =
+		new PatternMatchingCompositeLineMapper();
+
+	Map<String, LineTokenizer> tokenizers = new HashMap<>(3);
+	tokenizers.put("USER*", userTokenizer());
+	tokenizers.put("LINEA*", lineATokenizer());
+	tokenizers.put("LINEB*", lineBTokenizer());
+
+	lineMapper.setTokenizers(tokenizers);
+
+	Map<String, FieldSetMapper> mappers = new HashMap<>(2);
+	mappers.put("USER*", userFieldSetMapper());
+	mappers.put("LINE*", lineFieldSetMapper());
+
+	lineMapper.setFieldSetMappers(mappers);
+
+	return lineMapper;
+}
+```
+
+이 예제에선 "LINEA"와 "LINEB"가 각자 다른 `LineTokenizer` 인스턴스에 매핑되지만,
+같은 `FieldSetMapper`를 사용한다.
+
+`PatternMatchingCompositeLineMapper`는
+각 라인별로 그에 맞는 객체에 위임(delegate)하기 위해 
+`PatternMatcher#match` 메소드를 사용한다. 
+`PatternMatcher`는 특별한 의미를 가진 와일드 카드 문자 두개를 허용한다:
+물음표("?")는 문자 한개를, 별("`*`")은 0개 이상의 문자를 의미한다.
+앞에선 라인 프리픽스를 지정하기 위해 모든 패턴을 별로 끝냈다는 것에 주목하라.
+`PatternMatcher`는 설정된 순서에 상관없이 항상 가장 구체적인 패턴부터 처리한다.
+즉 패턴에 "LINE`*`"과 "LINEA`*`"가 둘 다 있다면, "LINEB"는 "LINE`*`"에 매칭된다. 
+덧붙이자면, 아래 예제처럼 별 한개("`*`")만 사용하면
+다른 패턴과 매칭되지 않은 모든 라인과 매칭된다.
+
+```java
+...
+tokenizers.put("*", defaultLineTokenizer());
+...
+```
+
+토크나이저만 설정해 쓸 수 있는 `PatternMatchingCompositeLineTokenizer`도 있다.
+
+레코드 하나가 여러 줄에 걸쳐있는 플랫(flat) 파일도 흔하다.
+이땐 좀 더 복잡한 전략이 필요하다.
+이러한 주요 패턴의 데모는 `multiLineRecords` 샘플에서 확인할 수 있다.
+
 #### Exception Handling in Flat Files
 
+라인을 토큰화할 때 예외가 발생하는 일도 다반사다.
+형식이 잘못된 레코드가 있는, 불완전한 플랫(flat) 파일도 많다.
+대부분 잘못된 라인은 라인 원본과 라인 번호를 로깅하고 그냥 넘어가길 선택한다.
+나중에 로그를 수동으로 확인하거나 다른 배치 job으로 점검하는 식이다.
+이런 경우 파싱 예외를 처리할 수 있도록 스프링 배치는 exception 계층을 제공한다:
+`FlatFileParseException`과 `FlatFileFormatException`. 
+`FlatFileParseException`는 `FlatFileItemReader`이 
+파일을 읽어들이는 동안 에러가 발생했을 때 던져진다.
+`FlatFileFormatException`은 `LineTokenizer` 인터페이스 구현부에서
+던져지는데, 토큰화 중 좀 더 구체적인 에러가 발생한 케이스다. 
+
+`IncorrectTokenCountException`
+
+`DelimitedLineTokenizer`, `FixedLengthLineTokenizer` 모두
+`FieldSet`을 만들 때 사용할 컬럼명을 지정할 수 있다.
+그러나 컬럼명 갯수가 실제 토큰화한 컬럼 수와 다르다면
+`FieldSet`을 만들 수 없으므로 아래 예제처럼
+실제 토큰 수와 원래 기대한 토큰 수를 포함하고 있는
+`IncorrectTokenCountException`이 발생한다:
+
+```java
+tokenizer.setNames(new String[] {"A", "B", "C", "D"});
+
+try {
+    tokenizer.tokenize("a,b,c");
+}
+catch(IncorrectTokenCountException e){
+    assertEquals(4, e.getExpectedCount());
+    assertEquals(3, e.getActualCount());
+}
+```
+
+토크나이저에 컬럼명을 4개로 설정했는데
+파일에서 발견된 토큰이 3개 뿐이므로 `IncorrectTokenCountException`을 던진다.
+
+`IncorrectLineLengthException`
+
+고정 길이를 사용하는 파일은 구분자를 사용하는 파일과는 달리,
+각 컬럼의 길이가 미리 정의되어있기 때문에 요구사항이 하나 더 있다.
+아래처럼 라인 전체 길이가
+컬럼의 가장 큰 수(컬럼 길이의 총합)와 일치하지 않으면 예외를 던진다:
+
+```java
+tokenizer.setColumns(new Range[] { new Range(1, 5),
+                                   new Range(6, 10),
+                                   new Range(11, 15) });
+try {
+    tokenizer.tokenize("12345");
+    fail("Expected IncorrectLineLengthException");
+}
+catch (IncorrectLineLengthException ex) {
+    assertEquals(15, ex.getExpectedLength());
+    assertEquals(5, ex.getActualLength());
+}
+```
+
+토크나이저에 설정된 범위는 1-5, 6-10, 11-15이다. 
+따라서 라인의 총 길이는 15다.
+하지만 앞의 예제에선 5글자짜리 라인을 넘겨받았으므로
+`IncorrectLineLengthException`이 발생한다.
+첫 번째 컬럼은 매핑할 수 있지만 그러지 않고 바로 예외를 던졌는데, 이렇게하면
+`FieldSetMapper`에서 두 번째 컬럼을 처리하다 실패했을 때보다
+더 일찍 실패하고, 더 많은 정보를 담을 수 있다.
+하지만 라인 길이가 항상 같지 않은 파일도 있다.
+이때는 아래 예제처럼 'strict' 프로퍼티로 라인 길이를 검증하지 않게 만들 수도 있다:
+
+```java
+tokenizer.setColumns(new Range[] { new Range(1, 5), new Range(6, 10) });
+tokenizer.setStrict(false);
+FieldSet tokens = tokenizer.tokenize("12345");
+assertEquals("12345", tokens.readString(0));
+assertEquals("", tokens.readString(1));
+```
+
+위 예제는 `tokenizer.setStrict(false)`를 호출한 부분만 빼면
+이전 예제와 거의 동일하다.
+이 설정은 토크나이저가 라인을 처리할 때 라인 길이를 강제하지 않게 만든다.
+이제 `FieldSet`을 성공적으로 만들고 리턴할 수 있다.
+그러나 나머지 값에 대해선 빈 토큰만 가지고 있다. 
+
 ### 6.6.3. FlatFileItemWriter
+
+플랫(flat)을 write할 때는 read할 때와 같은 이슈가 있다.
+step은 트랜잭션을 지원하면서 구분자(delimit) 형식이나 고정 길이 형식으로
+write할 수 있어야 한다. 
+
+#### `LineAggregator`
+
+`LineTokenizer` 인터페이스가 필요했던 것처럼,
+파일을 쓸 때도 item을 `String`으로 바꾸려면 
+여러 필드를 하나의 string으로 만들 방법이 필요하다.
+스프링 배치에선 아래 정의에 있는 `LineAggregator`가 그 역할을 한다: 
+
+```java
+public interface LineAggregator<T> {
+
+    public String aggregate(T item);
+
+}
+```
+
+`LineAggregator`은 논리적으로 `LineTokenizer`와 정 반대다. 
+`LineTokenizer`는 `String`을 받아 `FieldSet`을 리턴하는 반면, 
+`LineAggregator`는 `item`을 받아 `String`을 리턴한다.
+
+`PassThroughLineAggregator`
+
+가장 흔히 사용하는 `LineAggregator` 인터페이스의 구현체는 
+`PassThroughLineAggregator`로,
+아래 코드처럼 객체가 이미 문자열이거나
+객체의 문자열이 바로 쓸 수 있는 형태라는 전제가 있다:
+
+```java
+public class PassThroughLineAggregator<T> implements LineAggregator<T> {
+
+    public String aggregate(T item) {
+        return item.toString();
+    }
+}
+```
+
+이 구현체는 문자열을 직접 만들어야 하지만
+트랜잭션이나 재시작 지원 등의 이유로 `FlatFileItemWriter`가 필요할 때 유용하다.
+
+#### Simplified File Writing Example
+
+`LineAggregator`의 인페이스와 가장 기본적인 구현체 `PassThroughLineAggregator`를 정의했으니
+이제 write의 기본 흐름을 이해할 수 있다:
+
+1. write할 객체를 `LineAggregator`로 넘겨 `String`을 리턴받는다.
+2. `String`을 설정해둔 파일에 쓴다.
+
+다음 코드는 `FlatFileItemWriter`에서 가져온건데,
+이 흐름을 코드로 나타내고 있다:
+
+```java
+public void write(T item) throws Exception {
+    write(lineAggregator.aggregate(item) + LINE_SEPARATOR);
+}
+```
+
+간단하게는 아래처럼 설정할 수 있다:
+
+```java
+@Bean
+public FlatFileItemWriter itemWriter() {
+	return  new FlatFileItemWriterBuilder<Foo>()
+           			.name("itemWriter")
+           			.resource(new FileSystemResource("target/test-outputs/output.txt"))
+           			.lineAggregator(new PassThroughLineAggregator<>())
+           			.build();
+}
+```
+
+#### `FieldExtractor`
+
+앞에 나온 예제도 기본적인 파일을 쓸 때 유용하지만, 
+`FlatFileItemWriter`는 대부분 도메인 객체와 사용하며,
+따라서 그 객체를 문자열로 바꿔야 한다.
+파일을 읽을 땐 다음의 처리가 필요했다:
+
+1. 파일에서 한 줄을 읽는다.
+2. 문자열을 `LineTokenizer#tokenize() method`에 전달해서 `FieldSet`를 리턴받는다.
+3. 토큰화한 `FieldSet`을 `FieldSetMapper`에 전달해 `ItemReader#read()` 메소드 결과를 받는다.
+
+파일에 쓸 때는 유사하지만 정 반대 단계를 거친다:
+
+1. item을 writer에 전달한다.
+2. item의 필드를 배열로 변환한다.
+3. 배열을 합쳐 문자열로 만든다.
+
+프레임워크에선 객체의 어떤 필드를 write해야할 지 알 수 없으므로
+`FieldExtractor`를 구현해서 item을 배열로 바꿔야 한다.
+아래는 인터페이스 정의다:
+
+```java
+public interface FieldExtractor<T> {
+
+    Object[] extract(T item);
+
+}
+```
+
+`FieldExtractor` 인터페이스 구현체는 전달받은 객체의 필드를 보고
+배열을 만들고, 덕분에 구분자 사이나 혹은 고정 길이 라인 일부에 필드를 쓸 수 있다.
+
+`PassThroughFieldExtractor`
+
+배열이나 `Collection`, `FieldSet`같은 컬렉션을 쓰는 경우도 자주 있다.
+이런 컬렉션에서 배열을 "추출"하기는 매우 쉽다.
+컬렉션을 배열로 바꾸면 그만이다.
+이런 경우 `PassThroughFieldExtractor`를 사용한다.
+주의할 점이 있는데,
+전달받은 객체가 컬렉션이 아니라면
+`PassThroughFieldExtractor`는 해당 item을 하나만 담고 있는 배열을 리턴한다.
+
+`BeanWrapperFieldExtractor`
+
+파일 read를 설명할 때 다뤘던 `BeanWrapperFieldSetMapper`처럼
+직접 도메인 객체를 변환하기 보단
+도메인 객체를 객체 배열로 바꾸게끔 설정하는 게 더 좋다.
+아래 있는 `BeanWrapperFieldExtractor`로 그렇게 할 수 있다:
+
+```java
+BeanWrapperFieldExtractor<Name> extractor = new BeanWrapperFieldExtractor<>();
+extractor.setNames(new String[] { "first", "last", "born" });
+
+String first = "Alan";
+String last = "Turing";
+int born = 1912;
+
+Name n = new Name(first, last, born);
+Object[] values = extractor.extract(n);
+
+assertEquals(first, values[0]);
+assertEquals(last, values[1]);
+assertEquals(born, values[2]);
+``` 
+
+이 구현체는 한 가지 프로퍼티, 즉 매핑할 필드들의 이름만 있으면 된다.
+`BeanWrapperFieldSetMapper`가 `FieldSet`의 필드를 객체의 setter와
+매핑할 때 필드명이 필요한 것처럼
+`BeanWrapperFieldExtractor`도 객체의 배열을 만들 때
+getter와 매핑하기 위해 필드명이 필요하다.
+이름 순서대로 배열 내 필드 순서가 결정된 다는 점은 알아둘 필요가 있다.
+
+#### Delimited File Writing Example
+
+가장 흔한 플랫(flat) 파일은 모든 필드를 구분자로 나누는 파일이다.
+이때는 `DelimitedLineAggregator`를 사용한다.
+아래는 고객 계좌의 잔고를 나타내는 간단한 도메인 객체를 write하는 예제다: 
+
+```java
+public class CustomerCredit {
+
+    private int id;
+    private String name;
+    private BigDecimal credit;
+
+    //getters and setters removed for clarity
+}
+```
+
+도메인 객체를 사용하므로 아래 예제처럼
+`FieldExtractor` 인터페이스 구현체와 구분자가 필요하다:
+
+```java
+@Bean
+public FlatFileItemWriter<CustomerCredit> itemWriter(Resource outputResource) throws Exception {
+	BeanWrapperFieldExtractor<CustomerCredit> fieldExtractor = new BeanWrapperFieldExtractor<>();
+	fieldExtractor.setNames(new String[] {"name", "credit"});
+	fieldExtractor.afterPropertiesSet();
+
+	DelimitedLineAggregator<CustomerCredit> lineAggregator = new DelimitedLineAggregator<>();
+	lineAggregator.setDelimiter(",");
+	lineAggregator.setFieldExtractor(fieldExtractor);
+
+	return new FlatFileItemWriterBuilder<CustomerCredit>()
+				.name("customerCreditWriter")
+				.resource(outputResource)
+				.lineAggregator(lineAggregator)
+				.build();
+}
+``` 
+
+이 예제에선 앞에서 설명한 `BeanWrapperFieldExtractor`를 사용해
+`CustomerCredit`의 name, credit 필드를 오브젝트 배열로 변환하고,
+그 배열을 이용해서 각 필드를 쉼표로 구분해 파일에 쓴다.
+
+아래 예시처럼
+`FlatFileItemWriterBuilder.DelimitedBuilder`를 사용해서
+`BeanWrapperFieldExtractor`와 `DelimitedLineAggregator`를
+자동으로 생성할 수도 있다:
+
+```java
+@Bean
+public FlatFileItemWriter<CustomerCredit> itemWriter(Resource outputResource) throws Exception {
+	return new FlatFileItemWriterBuilder<CustomerCredit>()
+				.name("customerCreditWriter")
+				.resource(outputResource)
+				.delimited()
+				.delimiter("|")
+				.names(new String[] {"name", "credit"})
+				.build();
+}
+```
+
+#### Fixed Width File Writing Example
+
+구분자(delimited) 파일이 유일한 플랫(flat) 파일은 아니다.
+각 컬럼 길이를 정해서 필드를 구분하는 걸 선호하는 사람도 많은데,
+보통 이 포맷을 '고정 길이(fixed width)'라고 한다.
+스프링 배치는 이를 위한 `FormatterLineAggregator`를 제공한다. 
+위에서 다룬 `CustomerCredit` 도메인 객체를 사용하면
+아래처럼 설정할 수 있다:
+
+```java
+@Bean
+public FlatFileItemWriter<CustomerCredit> itemWriter(Resource outputResource) throws Exception {
+	BeanWrapperFieldExtractor<CustomerCredit> fieldExtractor = new BeanWrapperFieldExtractor<>();
+	fieldExtractor.setNames(new String[] {"name", "credit"});
+	fieldExtractor.afterPropertiesSet();
+
+	FormatterLineAggregator<CustomerCredit> lineAggregator = new FormatterLineAggregator<>();
+	lineAggregator.setFormat("%-9s%-2.0f");
+	lineAggregator.setFieldExtractor(fieldExtractor);
+
+	return new FlatFileItemWriterBuilder<CustomerCredit>()
+				.name("customerCreditWriter")
+				.resource(outputResource)
+				.lineAggregator(lineAggregator)
+				.build();
+}
+```
+
+위 예제는 대부분 익숙해 느껴질 것이다.
+하지만 아래 보이는 format 프로퍼티는 처음 등장했다:
+
+```java
+...
+FormatterLineAggregator<CustomerCredit> lineAggregator = new FormatterLineAggregator<>();
+lineAggregator.setFormat("%-9s%-2.0f");
+...
+``` 
+
+기본 구현은 자바 5에서 추가된 포맷터와 동일한 `Formatter`로 구현했다.
+자바 `Formatter`는 C 프로그래밍 언어의 printf 기능을 기반으로 한다.
+포맷터 구성 방법에 대한 자세한 내용은 대부분
+[Formatter](https://docs.oracle.com/javase/8/docs/api/java/util/Formatter.html)
+Javadoc에서 확인할 수 있다.
+
+아래 예시처럼
+`FlatFileItemWriterBuilder.FormattedBuilder`를 사용해서
+`BeanWrapperFieldExtractor`와 `FormatterLineAggregator`를
+자동으로 생성할 수도 있다:
+
+```java
+@Bean
+public FlatFileItemWriter<CustomerCredit> itemWriter(Resource outputResource) throws Exception {
+	return new FlatFileItemWriterBuilder<CustomerCredit>()
+				.name("customerCreditWriter")
+				.resource(outputResource)
+				.formatted()
+				.format("%-9s%-2.0f")
+				.names(new String[] {"name", "credit"})
+				.build();
+}
+```
+
+#### Handling File Creation
+
+`FlatFileItemReader`과 파일 리소스 관계는 매우 간단하다.
+reader가 초기화되면 파일을 열고 (존재하면), 파일이 없으면 예외를 던진다.
+하지만 파일을 쓰는 경우라면 그렇게 간단하지 않다.
+얼핏 생각하면 `FlatFileItemWriter`도 유사하게 간단한 규칙이 있을 것 같다:
+파일이 이미 있다면 예외를 던지고, 없다면 생성해서 쓰는 것.
+하지만 `Job`을 재시작하면 문제가 시작된다.
+일반적인 재시작 시나리오라면 반대로 행동해야한다:
+파일이 있다면 마지막으로 썼던 위치에서부터 쓰고, 없다면 예외를 던진다.
+하지만 job의 파일명의 항상 동일하다면 어떻게 될까?
+이런 경우엔 재시작만 아니라면 이미 존재하는 파일을 지우고 싶을 것이다. 
+이런 경우를 대비해 `FlatFileItemWriter`는 
+`shouldDeleteIfExists`라는 프로퍼티를 가지고 있다.
+이 프로퍼티를 true로 바꾸면 writer가 열릴 때 같은 이름의 파일이 존재하면 삭제한다.
 
 ## 6.7. XML Item Readers and Writers
 
