@@ -1376,9 +1376,5 @@ scope는 스프링 컨테이너의 기본 기능이 아니기 때문에 명시�
 아래는 `JobScope` 빈 정의 선언한 예제이다:
 
 ```xml
-<bean class="org.springframework.batch.core.scope.StepScope" />
-```
-
-```xml
 <bean class="org.springframework.batch.core.scope.JobScope" />
 ```
