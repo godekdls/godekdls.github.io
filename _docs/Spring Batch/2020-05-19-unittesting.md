@@ -17,20 +17,20 @@ permalink: /Spring%20Batch/unittesting/
 - [10.6. Mocking Domain Objects](#106-mocking-domain-objects)
 
 다른 어플리케이션과 마찬가지로 배치 job을 구성하는 모든 코드는 반드시 단위 테스트가 필요하다.
-스프링 환경에서 단위 테스트와 통합 테스트를 하기 위한 가이드는
-스프링 코어 문서에서 충분히 자세히 다루기 때무에 여기서 반복하진 않겠다.
+스프링 환경 단위 테스트와 통합 테스트를 위한 가이드는
+스프링 코어 문서에서 충분히 자세히 다루기 때문에 여기서 반복하진 않겠다.
 여기서 다루지는 않지만 배치 job을 처음부터 끝까지('end to end') 테스트할
 방법을 고민해볼 필요가 있다.
-spring-batch-test 프로젝트에서 end-to-end 테스트를 도와줄 클래스를 제공한다. 
+spring-batch-test 프로젝트는 end-to-end 테스트를 도와줄 클래스를 제공한다. 
 
 ## 10.1. Creating a Unit Test Class
 
-배치 job에서 단위 테스트를 실행시키려면
-프레임워크에서 job의 `ApplicationContext`을 로딩시켜야 한다.
+배치 job을 단위 테스트에서 실행시키려면
+프레임워크가 job의 `ApplicationContext`을 로딩시켜야 한다.
 이를 위해 두 가지 어노테이션을 사용한다:
 
 - `@RunWith(SpringRunner.class)`: 스프링 JUnit 기능을 사용하겠다는 표시 
-- `@ContextConfiguration(…​)`: `ApplicationContext`에 설정할 리소스 명시
+- `@ContextConfiguration(…​)`: `ApplicationContext`에 설정할 리소스를 명시
 
 4.1 버전부터 `@SpringBatchTest` 애노테이션을 사용하면
 `JobLauncherTestUtils`, `JobRepositoryTestUtils`를 포함한
@@ -48,17 +48,17 @@ public class SkipSampleFunctionalTests { ... }
 ## 10.2. End-To-End Testing of Batch Jobs
 
 'End To End' 테스트는 배치 job을 처음부터 끝까지 완전히 실행시키는 테스트로 정의할 수 있다.
-테스트 조건을 설정하고, job을 실행하고, 마지막 결과까지 검증하는 테스트를 진행한다.
+테스트 조건을 설정하고, job을 실행하고, 마지막 결과까지 검증까지 테스트한다.
 
 아래 예시는 데이터베이스에서 데이터를 조회하고 플랫(flat) 파일에 쓰는 배치 job이다.
-테스트 메소드는 데이터베이스를 테스트 데이터와 함께 세팅하는 것으로 시작한다.
+테스트 메소드는 데이터베이스에 테스트 데이터를 세팅하는 것으로 시작한다.
 CUSTOMER 테이블을 비우고, 10개의 레코드를 새로 생성한다.
 그 다음 `launchJob()` 메소드로 `Job`을 실행한다. 
 `launchJob()` 메소드는 `JobLauncherTestUtils` 클래스가 제공하는 메소드다. 
 `JobLauncherTestUtils` 클래스에는 특정 파라미터로 테스트할 수 있는 
 `launchJob(JobParameters)` 메소드도 있다.
 `launchJob()` 메소드가 리턴하는 `JobExecution` 객체로 `Job`의 상태를 검증할 수 있다.
-아래는 `Job`이 "COMPLETED" 상태로 끝나는 걸 검증하는 케이스다:
+여기선 `Job`이 "COMPLETED" 상태로 끝나는 걸 검증한다:
 
 ```java
 @SpringBatchTest
@@ -98,7 +98,7 @@ public class SkipSampleFunctionalTests {
 이 케이스엔 각 step을 따로 테스트하는 게 좋다.
 `JobLauncherTestUtils` 클래스에는
 step 이름을 받아 그 `Step`을 실행하는 `launchStep` 메소드가 있다.
-이렇게 접근하면 각 step에서 필요한 데이터만 세팅하고 곧바로 검증하는 식으로 테스트할 수 있다.
+이 방법을 사용하면 각 step에서 필요한 데이터만 세팅하고 곧바로 검증하는 식으로 테스트할 수 있다.
 아래 예제는 `launchStep` 메소드를 사용해 이름으로 `Step`을 로딩하는 예제이다:
 
 ```java
@@ -111,7 +111,7 @@ JobExecution jobExecution = jobLauncherTestUtils.launchStep("loadFileStep");
 step이나 job의 context에 나중에 바인딩(late binding)되는 경우가 있다.
 실제로 step이 실행중인 것처럼 컨텍스트를 생성하지 않으면
 독립적으로 테스트하기 매우 까다롭다.
-스프링 배체에는 이를 위한 두 가지 컴포넌트가 있다:
+스프링 배치에는 이를 위한 두 가지 컴포넌트가 있다:
 `StepScopeTestExecutionListener`와 `StepScopeTestUtils`.
 
 아래처럼 이 리스너를 클래스 레벨에 선언하면
@@ -146,10 +146,10 @@ public class StepScopeTestExecutionListenerIntegrationTests {
 
 `TestExecutionListeners`는 두 종류가 있다.
 하나는 스프링 테스트 프레임워크에서 제공하는 것으로,
-설정된 어플리케이션 컨텍스트로 의존성(dependency)를 관리해 reader를 주입한다.
+설정된 어플리케이션 컨텍스트로 의존성(dependency)을 관리해 reader를 주입한다.
 다른 하나는 스프링 배치에서 제공하는 `StepScopeTestExecutionListener`다.
 이 리스너는 팩토리 메소드를 찾아 `StepExecution`을 생성하고,
-런타임에 `Step`이 실행됐을 때 처럼, 테스트 메소드에서도 컨텍스트로 사용할 수 있다.
+런타임에 `Step`이 실행됐을 때 처럼, 테스트 메소드의 컨텍스트로 사용할 수 있다.
 팩토리 메소드는 각 메소드의 선언을 보고 결정한다 (`StepExecution`를 반환해야 한다).
 적절한 팩토리 메소드가 없으면 디폴트 `StepExecution`을 생성한다.
 
@@ -207,7 +207,7 @@ int count = StepScopeTestUtils.doInStepScope(stepExecution,
 
 데이터베이스에 write하는 배치 job이라면
 데이터베이스에 질의해서 결과가 기대한 대로인지 쉽게 검증할 수 있다.
-하지만 파일에 write하는 배치 job에서도 결과 파일을 검증하는 일은 똑같이 중요하다.
+하지만 파일에 write하는 배치 job도 결과 파일을 검증하는 일은 똑같이 중요하다.
 스프링 배치는 결과 파일을 쉽게 검증할 수 있는 `AssertFile` 클래스를 제공한다.
 `assertFileEquals` 메소드는 `File` 객체 두 개 (또는 `Resource` 객체 두 개)를 받아
 라인별로 두 파일 내용이 같은지 검증한다.
@@ -223,8 +223,8 @@ AssertFile.assertFileEquals(new FileSystemResource(EXPECTED_FILE),
 
 ## 10.6. Mocking Domain Objects
 
-스프링 배치 컴포넌트로 단위 테스트나 통합 테스트를 만들 때 겪는
-다른 주 이슈는 도메인 객체를 모킹하는 것이다.
+스프링 배치 컴포넌트로 단위 테스트나 통합 테스트를 만들 때 주로 겪는
+다른 이슈는 도메인 객체를 어떻게 모킹할지이다.
 좋은 예시로 아래 코드에서 보이는 `StepExecutionListener`가 있다:
 
 ```java
@@ -240,11 +240,11 @@ public class NoWorkFoundStepExecutionListener extends StepExecutionListenerSuppo
 ```
 
 위 리스너는 프레임워크에서 제공하고 있으며,
-read 카운트를 확인해서 0이면 step이 수행되지 않은 것으로 표시한다.
-위 예제는 간단하지만
-스프링 배치 도메인 객체에서 사용하는 인터페이스를 구현한 클래스를
-단위 테스트할 때 겪을 문제를 보여주기 위해 가져왔다.
-앞에 나온 리스너를 위한 단위 테스트를 만드는 경우를 생각해 보자: 
+read 카운트를 확인해 0이면 step이 수행되지 않은 것으로 표시한다.
+위 예제는 간단하지만, 단위 테스트하고자 하는 클래스가
+스프링 배치 도메인 객체에서 사용하는 인터페이스를 구현한 클래스일 때
+겪을 문제를 보여주기 위해 가져왔다.
+앞에 나온 리스너를 위한 단위 테스트를 만든다고 가정해 보자: 
 
 ```java
 private NoWorkFoundStepExecutionListener tested = new NoWorkFoundStepExecutionListener();
@@ -264,13 +264,12 @@ public void noWork() {
 ```
 
 스프링 배치 도메인은 객체 지향 원칙을 잘 따르기 때문에,
-`StepExecution`을 생성하려면
-`StepExecution`은 `JobExecution`이 필요하고,
+`StepExecution`을 생성하려면 `JobExecution`이 필요하고,
 `JobExecution` 은 `JobInstance`와 `JobParameters`가 필요하다.
-견고한 도메인 모델에서는 좋을 수 있으나
+견고한 도메인 모델로서는 장점일 수 있으나
 스텁(stub) 오브젝트가 많아 단위 테스트가 장황해진다.
 스프링 배치 테스트 모듈은 이를 위해
-도메인 오브젝트를 생성하기 위한 팩토리를 제공한다: `MetaDataInstanceFactory`.
+도메인 오브젝트를 생성하는 팩토리를 제공한다: `MetaDataInstanceFactory`.
 아래 보이는 것 처럼, 이 팩토리가 있으면 단위 테스트를 보다 간결하게 작성할 수 있다:
 
 ```java
@@ -288,7 +287,7 @@ public void testAfterStep() {
 }
 ```
 
-위 메소드는 간단한 `StepExecution`를 만들기 위해 사용했는데
+위에선 간단한 `StepExecution`을 만드는 메소드를 사용했는데, 
 팩토리 내에는 다른 메소드도 많다.
 전체 메소드는 [Javadoc](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/test/MetaDataInstanceFactory.html)
 에서 확인할 수 있다.
