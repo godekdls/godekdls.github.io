@@ -698,7 +698,7 @@ skip된 이슈를 확인하고 수정하려면 다른 배치 프로세스나 심
 ## 5.2. `TaskletStep`
 
 [Chunk-oriented processing](#51-chunk-oriented-processing) 이 `Step`을 처리하는 절대적인 방법은 아니다.
-`Step`이 반드시 stored procedure를 호출해야 한다면 어떻게 해야할까?
+`Step`이 반드시 저장 프로시저(stored procedure)를 호출해야 한다면 어떻게 해야할까?
 `ItemReader`에 호출부를 구현하고 프로시저가 끝나면 null을 리턴하게 만들 수도 있다.
 하지만 `ItemWriter`가 아무 일도 하지 않으므로(no-op) 부자연스럽게 느껴진다.
 스프링 배치는 이런 케이스를 위해 `TaskletStep`을 제공한다.

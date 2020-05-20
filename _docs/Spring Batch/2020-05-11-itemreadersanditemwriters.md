@@ -1659,8 +1659,8 @@ public MultiResourceItemReader multiResourceReader() {
 백만 개의 로(row)를 리턴하는 SQL을 사용하면 결과셋이 모든 로(row)를 다 읽을 때까지 메모리에 유지된다.
 스프링 배치는 이를 해결할 두 가지 솔루션을 제공한다:
 
-- [커서기반 `ItemReader` 구현체](#6101-cursor-based-itemreader-implementations)
-- [페이징 `ItemReader` 구현체](#6102-paging-itemreader-implementations)
+- [커서 기반 `ItemReader` 구현체](#6101-cursor-based-itemreader-implementations)
+- [페이징 기반 `ItemReader` 구현체](#6102-paging-itemreader-implementations)
 
 ### 6.10.1. Cursor-based ItemReader Implementations
 
@@ -1691,7 +1691,7 @@ ID가 1보다 크고 7보다 작은 모든 로(row)를 찾는다.
 `read`를 호출할 때마다 바로 결과를 쓰기때문에 가비지 컬렉터에 수집될 수 있다
 (다른 인스턴스가 참조를 유지하지 않는다고 가정하면).
 
-#### JdbcCursorItemReader
+#### `JdbcCursorItemReader`
 
 `JdbcCursorItemReader`는 커서 기반 테크닉을 구현한 JDBC 구현체다.
 `ResultSet`과 함께 동작하며, `DataSource`에서 커넥션을 얻어와 SQL을 실행한다.
@@ -1764,7 +1764,7 @@ itemReader.close();
 앞의 코드를 실행하고 나면 counter 값은 1000이 된다.
 만약 위 코드에서 리턴된 `customerCredit`을 리스트에 넣었다면
 `JdbcTemplate` 예제 결과와 완전히 같았을 것이다.
-하지만 중요한 건 `ItemReader`는 아이템을 '스트림 처리(streamed)' 해준다는 것이다.
+하지만 중요한 건 `ItemReader`는 아이템을 '스트림 처리(streamed)' 해준다는 점이다.
 `read` 메소드를 한 번 호출한 다음
 `ItemWriter`로 아이템을 쓸 수 있고,
 다음 아이템을 다시 `read`할 수 있다.
@@ -1785,11 +1785,11 @@ public JdbcCursorItemReader<CustomerCredit> itemReader() {
 }
 ```
 
-**Additional Properties**
+#### Additional Properties
 
 자바에서 커서를 열 때는 매우 다양한 옵션이 있기 때문에
 `JdbcCursorItemReader`에 설정할 수 있는 프로퍼티도 다양하다.
-프로퍼티는 아래 테이블에 나타냈다:
+프로퍼티는 아래 테이블로 정리해놨다:
 
 **Table 16. JdbcCursorItemReader Properties**
 
@@ -1800,19 +1800,306 @@ public JdbcCursorItemReader<CustomerCredit> itemReader() {
 |verifyCursorPosition|`ItemReader`는 동일한 `ResultSet`을 `RowMapper`에 전달하므로, 사용자가 `ResultSet.next()`를 직접 호출하면 reader 내부 count에 이슈가 생길 수 있다. 이 값을 true로 지정하면 `RowMapper`를 호출한 후 커서 위치가 이전과 달라졌을 때 예외를 발생시킨다.| 
 |saveState|`ItemStream#update(ExecutionContext)` 메소드로  `ExecutionContext`에 reader의 상태를 저장할지 결정한다. 디폴트는 `true`다.|
 |driverSupportsAbsolute|JDBC 드라이버가 `ResultSet` 커서 강제 이동을 지원하는지를 나타낸다. `ResultSet.absolute()`를 지원하는 JDBC 드라이버를 사용한다면 성능을 위해 `true`로 설정하는 게 좋다. 특히 대규모 데이터셋을 다루는 step이 중간에 실패한다면 더 그렇다. 디폴트는 `false`다.|
-|setUseSharedExtendedConnection|커서에 사용된 커넥션을 다른 프로세싱에서도 사용하고 트랜잭션을 공유할지를 나타낸다. 이 값이 `false`면 커서는 소유한 커넥션에서만 열리며, step 내 다른 곳에서 트랜잭션이 시작돼도 관여하지 않는다. `true`로 설정했다면 커넥션이 매 커밋마다 닫혀 반환되지 않도록 반드시 데이터소스를 `ExtendedConnectionDataSourceProxy`로 감싸야 한다. `true`로 설정했을 땐 커서를 열때 사용하는 statement를 'READ_ONLY'와 'HOLD_CURSORS_OVER_COMMIT' 상태로 생성한다. 이를 통해 step에서 트랜잭션이 시작되고 커밋되는 동안 커서를 열린 채로 유지할 수 있다. 이 기능을 사용하려면 이를 지원하는 데이터베이스와 JDBC 3.0 이상을 지원하는 JDBC가 필요하다. 디폴트는 `false`다.|
+|setUseSharedExtendedConnection|커서에 사용된 커넥션을 다른 프로세싱에서도 사용하고 트랜잭션을 공유할지를 나타낸다. 이 값이 `false`면 커서는 소유한 커넥션에서만 열리며, step 내 다른 곳에서 트랜잭션이 시작돼도 관여하지 않는다. `true`로 설정하면 커넥션이 매 커밋마다 닫혀 반환되지 않도록 반드시 데이터소스를 `ExtendedConnectionDataSourceProxy`로 감싸야 한다. `true`로 설정했을 땐 커서를 열때 사용하는 statement를 'READ_ONLY'와 'HOLD_CURSORS_OVER_COMMIT' 상태로 생성한다. 이를 통해 step에서 트랜잭션이 시작되고 커밋되는 동안 커서를 열린 채로 유지할 수 있다. 이 기능을 사용하려면 이를 지원하는 데이터베이스와 JDBC 3.0 이상을 지원하는 JDBC 드라이버가 필요하다. 디폴트는 `false`다.|
 
 #### `HibernateCursorItemReader`
 
-#### StoredProcedureItemReader
+일반 스프링을 사용할 때 ORM 솔루션을 사용할 지 말지,
+즉 `JdbcTemplate`, `HibernateTemplate` 중 어떤 걸 쓸지 고민하는 것처럼
+스프링 배치에도 똑같은 옵션이 있다.
+`HibernateCursorItemReader`는 커서 테크닉을 사용하는 하이버네이트(Hibernate) 구현체다.
+하이버네이트를 스프링에서 사용하는 것은 상당히 논란거리였다.
+하이버네이트는 온라인 어플리케이션을 위해 개발됐기 때문이다.
+하지만 배치에서 사용할 수 없다는 뜻은 아니다.
+이 문제를 해결하는 가장 쉬운 방법은 표준 세션대신 `StatelessSession`을 사용하는 것이다.
+이걸 사용하면 배치에서 문제될 수 있는 하이버네이트의 캐싱과 엔터티 변경 체크(dirty checking)를 모두 제거해 준다.
+상태가 없는(stateless) 세션과 일반적인 하이버네이트 세션의 차이가 궁금하다면
+하이버네이트 릴리즈 문서를 참고해라.
+`HibernateCursorItemReader`에 HQL 문을 선언하면 `SessionFactory`로 전달하고,
+`JdbcCursorItemReader`와 같은 방식으로 read를 호출할 때마다 아이템 하나를 돌려준다.
+아래 예제는 JDBC reader에서 다룬 '고객 잔고' 예제를 그대로 사용한다:
 
-### 6.10.2. Paging ItemReader Implementations
+```java
+HibernateCursorItemReader itemReader = new HibernateCursorItemReader();
+itemReader.setQueryString("from CustomerCredit");
+//For simplicity sake, assume sessionFactory already obtained.
+itemReader.setSessionFactory(sessionFactory);
+itemReader.setUseStatelessSession(true);
+int counter = 0;
+ExecutionContext executionContext = new ExecutionContext();
+itemReader.open(executionContext);
+Object customerCredit = new Object();
+while(customerCredit != null){
+    customerCredit = itemReader.read();
+    counter++;
+}
+itemReader.close();
+```
 
-#### JdbcPagingItemReader
+`Customer` 테이블을 위한 적절한 하이버네이트 매핑 파일이 있다면, 
+여기서 설정한 `ItemReader`는 `JdbcCursorItemReader`에서 설명한 방법과 정확하게 일치하는 방법으로
+`CustomerCredit`를 리턴한다.
+'useStatelessSession' 프로퍼티는 디폴트값이 true지만 옵션을 끄고 킬 수 있다는 걸 보여주기 위해 추가했다.
+기본 커서의 페치 사이즈는 `setFetchSize`로 설정할 수 있다는 점도 알아두자.
+아래 보이는 것 처럼 `JdbcCursorItemReader`만큼이나 설정하기 쉽다:
 
-#### JpaPagingItemReader
+```java
+@Bean
+public HibernateCursorItemReader itemReader(SessionFactory sessionFactory) {
+	return new HibernateCursorItemReaderBuilder<CustomerCredit>()
+			.name("creditReader")
+			.sessionFactory(sessionFactory)
+			.queryString("from CustomerCredit")
+			.build();
+}
+```
+
+#### `StoredProcedureItemReader`
+
+가끔은 저장 프로시저(stored procedure)를 실행해서 커서를 얻어와야 할 때도 있다. 
+`StoredProcedureItemReader`는 커서를 얻기 위해 쿼리를 실행하는 게 아니라
+커서를 리턴하는 저장 프로시저를 실행한다는 점만 빼면
+`JdbcCursorItemReader`과 유사하다.
+저장 프로시저는 세 가지 방식으로 커서를 리턴한다:
+
+- `ResultSet`을 리턴 (SQL 서버, Sybase, DB2, Derby, MySQL에서 사용).
+- ref-cursor를 out 파라미터로 리턴 (Oracle, PostgreSQL에서 사용).
+- 저장 함수(stored funtion)의 반환값을 리턴. 
+
+아래 예제에서도 위에서처럼 같은 '고객 잔고' 예시를 사용한다:
+
+```java
+@Bean
+public StoredProcedureItemReader reader(DataSource dataSource) {
+	StoredProcedureItemReader reader = new StoredProcedureItemReader();
+
+	reader.setDataSource(dataSource);
+	reader.setProcedureName("sp_customer_credit");
+	reader.setRowMapper(new CustomerCreditRowMapper());
+
+	return reader;
+}
+```
+
+위 예제는 `ResultSet`을 리턴하는 (위의 옵션 1번) 저장 프로시저를 사용한다.
+
+저장 프로시저가 `ref-cursor`를 리턴한다면 (옵션 2)
+`ref-cursor`를 리턴하는 out 파라미터 위치를 알려줘야 한다.
+다음은 첫 번째 파라미터를 ref-cursor로 사용하는 예제다:
+
+```java
+@Bean
+public StoredProcedureItemReader reader(DataSource dataSource) {
+	StoredProcedureItemReader reader = new StoredProcedureItemReader();
+
+	reader.setDataSource(dataSource);
+	reader.setProcedureName("sp_customer_credit");
+	reader.setRowMapper(new CustomerCreditRowMapper());
+	reader.setRefCursorPosition(1);
+
+	return reader;
+}
+```
+
+저장 함수에서 커서를 반환한다면 (옵션 3)
+"function" 프로퍼티를 `true`로 바꿔야 한다.
+디폴트는 `false`다.
+프로퍼티 설정법은 아래 코드에 나와있다:
+
+```java
+@Bean
+public StoredProcedureItemReader reader(DataSource dataSource) {
+	StoredProcedureItemReader reader = new StoredProcedureItemReader();
+
+	reader.setDataSource(dataSource);
+	reader.setProcedureName("sp_customer_credit");
+	reader.setRowMapper(new CustomerCreditRowMapper());
+	reader.setFunction(true);
+
+	return reader;
+}
+```
+
+어떤 방식을 사용하더라도 `RowMapper`, `DataSource`와 실제 프로시저 이름을 정의해야 한다.
+
+저장 프로시저나 펑션이 파라미터를 받는다면 역시 `parameters` 프로퍼티로 설정해줘야 한다.
+오라클을 사용하는 아래 예제에서는 파라미터 세가지를 선언했다.
+첫번째는 ref-cursor를 리턴하는 out 파라미터고
+나머지는 INTEGER 타입을 받는 파라미터다.
+
+```java
+@Bean
+public StoredProcedureItemReader reader(DataSource dataSource) {
+	List<SqlParameter> parameters = new ArrayList<>();
+	parameters.add(new SqlOutParameter("newId", OracleTypes.CURSOR));
+	parameters.add(new SqlParameter("amount", Types.INTEGER);
+	parameters.add(new SqlParameter("custId", Types.INTEGER);
+
+	StoredProcedureItemReader reader = new StoredProcedureItemReader();
+
+	reader.setDataSource(dataSource);
+	reader.setProcedureName("spring.cursor_func");
+	reader.setParameters(parameters);
+	reader.setRefCursorPosition(1);
+	reader.setRowMapper(rowMapper());
+	reader.setPreparedStatementSetter(parameterSetter());
+
+	return reader;
+}
+```
+
+파라미터 선언 외에도 호출에 필요한 파라미터 값을 설정하는 
+`PreparedStatementSetter` 구현체를 지정해야 한다.
+이 reader는 위에서 설명한 `JdbcCursorItemReader`와 같은 방법으로 동작한다.
+[Additional Properties](#additional-properties) 에 있는 모든 프로퍼티는
+`StoredProcedureItemReader`에도 동일하게 사용할 수 있다.
+
+### 6.10.2. Paging `ItemReader` Implementations
+
+데이터베이스 커서를 사용하는 다른 방법은 결과의 일부만 가져오는 쿼리를
+여러번 실행하는 것이다.
+이 결과의 일부를 페이지(page)라고 한다.
+각 쿼리는 로(row) 넘버와 페이지 안에 포함할 로(row) 갯수를 명시해야 한다.
+
+#### `JdbcPagingItemReader`
+
+`JdbcPagingItemReader`는 `ItemReader`의 페이징 처리 구현체다.
+`JdbcPagingItemReader`는 `PagingQueryProvider`로부터
+로(row)를 페이지로 구성해 돌려주는 SQL 쿼리를 제공받아야 한다.
+데이터베이스마다 페이징 지원 전략이 다르기 때문에
+각 데이터베이스 지원 유형마다 다른 `PagingQueryProvider`를 사용한다.
+사용할 데이트베이스를 자동으로 감지하고 적절한 `PagingQueryProvider` 구현체를 
+결정해주는 `SqlPagingQueryProviderFactoryBean`이라는 것도 있다.
+이는 설정을 단순화해주기 때문에 가장 권장하는 방법이다. 
+
+`SqlPagingQueryProviderFactoryBean`을 사용하려면
+`select` 절과 `from` 절이 필요하다.
+`where` 절도 지원하지만 필수는 아니다.
+이것들과 필수 값인 `sortKey`로 SQL 구문을 만든다.
+
+> `sortKey`에 유니크키 제약 조건(unique key constraint)이 있어야
+> 실행간에 데이터를 누락시키지 않는다.
+
+reader가 열리고 나면 `ItemReader`의 기본 방식대로
+`read`를 호출할 때마다 아이템을 하나씩 돌려준다.
+페이징은 추가 로(row)가 필요할 때마다 뒷단에서 처리한다.
+
+아래는 커서기반 `ItemReader`에서 사용했던 익숙한 '고객 잔고' 예시를 사용한 설정이다:
+
+```java
+@Bean
+public JdbcPagingItemReader itemReader(DataSource dataSource, PagingQueryProvider queryProvider) {
+	Map<String, Object> parameterValues = new HashMap<>();
+	parameterValues.put("status", "NEW");
+
+	return new JdbcPagingItemReaderBuilder<CustomerCredit>()
+           				.name("creditReader")
+           				.dataSource(dataSource)
+           				.queryProvider(queryProvider)
+           				.parameterValues(parameterValues)
+           				.rowMapper(customerCreditMapper())
+           				.pageSize(1000)
+           				.build();
+}
+
+@Bean
+public SqlPagingQueryProviderFactoryBean queryProvider() {
+	SqlPagingQueryProviderFactoryBean provider = new SqlPagingQueryProviderFactoryBean();
+
+	provider.setSelectClause("select id, name, credit");
+	provider.setFromClause("from customer");
+	provider.setWhereClause("where status=:status");
+	provider.setSortKey("id");
+
+	return provider;
+}
+```  
+
+위의 `ItemReader`는 `CustomerCredit` 객체를 리턴하는데 
+이를 위해서는 `RowMapper`를 반드시 지정해야 한다. 
+'pageSize' 프로퍼티는 쿼리를 실행할 때마다 데이터베이스에서 읽어올 엔터티 수를 의미한다. 
+
+'parameterValues' 프로퍼티를 이용하면 쿼리에서 사용할 파라미터 값을 `Map`으로 명시할 수 있다.
+`where` 절에 이름으로 접근하는 파라미터(named parameter)가 있다면
+각 엔트리 키는 이 파라미터 이름과 일치해야 한다.
+전통적인 '?' 플레이스홀더를 사용하면 각 엔트리 키는 1부터 시작하는 플레이스홀더 숫자여야 한다.
+
+#### `JpaPagingItemReader`
+
+`JpaPagingItemReader`는 페이징 처리를 지원하는 또 하나의 `ItemReader` 구현체다.
+JPA에는 하이버네이트의 `StatelessSession`같은 개념이 없기 때문에 
+JPA 명세에서 제공하는 다른 기능을 사용해야 한다.
+JPA는 원래 페이징을 지원하기 때문에, 배치에서 JPA를 사용하할 때도 페이징이 자연스러운 선택이다.
+각 페이지를 읽고나면 엔터티는 준영속 상태(detached)가 되고
+영속성 컨텍스트(persistence context)는 비워지므로,
+해당 페이지를 다 처리하고 나면 가비지 컬렉션이 엔터티를 수집할 수 있다.
+
+`JpaPagingItemReader`는 JPQL 문을 사용해서 `EntityManagerFactory`에 전달한다.
+`ItemReader`의 기본 방식대로 `read`를 호출할 때마다 아이템을 하나씩 돌려준다.
+페이징은 추가 로(row)가 필요할 때마다 뒷단에서 처리한다.
+아래는 JDBC reader에서 사용했던 '고객 잔고' 예시를 사용한 설정이다:
+
+```java
+@Bean
+public JpaPagingItemReader itemReader() {
+	return new JpaPagingItemReaderBuilder<CustomerCredit>()
+           				.name("creditReader")
+           				.entityManagerFactory(entityManagerFactory())
+           				.queryString("select c from CustomerCredit c")
+           				.pageSize(1000)
+           				.build();
+}
+```
+
+`CustomerCredit`에 적절한 JPA 애노테이션을 선언하거나 ORM 매핑 파일을 사용했다면
+위 `ItemReader`는 위에서 설명한 `JdbcPagingItemReader`와 정확히 같은 방식으로
+`CustomerCredit` 객체를 리턴한다. 
+'pageSize' 프로퍼티는 쿼리를 실행할 때마다 데이터베이스에서 읽어올 엔터티 수를 의미한다.
 
 ### 6.10.3. Database ItemWriters
+
+플랫(flat) 파일과 XML 파일은 별도의 `ItemWriter` 인스턴스가 필요하지만
+데이터베이스 세계에선 그렇지 않다.
+데이터베이스가 트랜잭션이 필요한 모든 기능을 제공하기 때문이다. 
+파일에 쓸때는 트랜잭션 처리를 위해 쓴 아이템을 추적하고, 
+적절하게 flush 또는 clean해줘야 하므로 별도의 `ItemWriter`구현체가 필요했다.
+데이터베이스의 write는 이미 트랜잭션을 포함하고 있기 때문에 이런 기능이 필요없다.
+`ItemWriter` 인터페이스를 구현하는 DAO를 만들거나
+일반적인 문제를 처리하는 커스텀 `ItemWriter`를 사용하면 된다.
+어느 쪽이든 처리에 문제가 없을 것이다.
+하지만 데이터베이스 출력을 배치로 처리할때는 성능과 에러 핸들링 능력에 주의해야 한다.
+하이버네이트를 `ItemWriter`로 사용하는 경우가 제일 많지만
+JDBC 배치 모드를 사용할 때와 동일한 이슈가 있다.
+데이터에 문제가 없고 데이터를 주의해서 flush한다면 
+데이터베이스 출력 배치 처리에 내제된 결함은 없다.
+하지만 아래 이미지에 나타낸 것처럼,
+쓰는동안 발생한 에러는 충돌을 일으킬 수 있다.
+즉, 아이템 하나때문에 문제가 발생했다 해도
+어떤 아이템이 예외를 발생시켰는지 알 수 없다.
+
+![Error On Flush](./../../images/springbatch/errorOnFlush.png)
+
+아이템을 쓰기 전 버퍼에 넣는다면
+커밋 직전 버퍼를 flush하기 전에 발생한 에러는 예외를 발생시키지 않는다.
+예를 들어 아이템 20개 단위 청크를 write하고,
+15번째 아이템에서 `DataIntegrityViolationException`이 발생했다고 가정해보자.
+`Step`에서는 실제로 write하기 전까진 에러가 발생한 것을 알 수 없으므로
+20개 아이템 모두 성공적으로 write됐다고 생각한다. 
+`Session#flush()`를 호출하면 버퍼가 비워지며 이때 exception이 발생한다. 
+하지만 이때는 `Step`이 할 수 있는 게 없다.
+이 트랜잭션은 반드시 롤백돼야 한다.
+일반적으로 예외가 발생하면 아이템을 스킵하고 (skip/retry 정책에 따라 다름)
+다시 write하지 않는다.
+하지만 배치 시나리오에서는 어떤 아이템이 문제인지 알 수 없다.
+exception이 발생하는 건 이미 전체 버퍼가 쓰여진 다음이다.
+이 문제를 해결하러면 아래 그림처럼 아이템마다 flush하는 방법밖에 없다:
+
+![Error On Write](./../../images/springbatch/errorOnWrite.png)
+
+이 방법은 하이버네이트에서도 흔히 사용하는 방법이고
+`write()`를 호출할 때마다 flush하는 식으로 `ItemWriter`를 구현하라고 가이드하고 있다.
+이렇게하면 스프링 배치 내부에서 에러가 발생한 `ItemWriter` 호출을 개별적으로 처리하기때문에
+아이템을 안정적으로 건너뛸 수 있다.
 
 ## 6.11. Reusing Existing Services
 
