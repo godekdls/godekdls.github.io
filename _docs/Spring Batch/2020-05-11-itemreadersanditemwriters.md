@@ -1296,23 +1296,455 @@ reader가 초기화되면 파일을 열고 (존재하면), 파일이 없으면 �
 
 ## 6.7. XML Item Readers and Writers
 
-### 6.7.1. StaxEventItemReader
+스프링 배치는 XML을 읽어 자바 객체로 매핑하고
+자바 객체를 XML로 쓸 수 있는 트랜잭션 구조를 지원한다.
 
-### 6.7.2. StaxEventItemWriter
+> **Constraints on streaming XML**
+> 다른 표준 XML 파싱 API는 배치 처리 요구사항을 충족하지 않으므로
+> StAX API로 I/O를 처리한다 
+> (DOM 방식은 전체 XML을 한 번에 메모리에 로딩하고
+> SAX 방식은 콜백을 한 번만 사용할 수 있다).
+
+스프링 배치에서 XML 입출력을 어떻게 처리하는 지 알아둘 필요가 있다.
+먼저 파일을 읽고 쓸 때는 달라지지만 스프링 배치 XML 처리에서 공통적으로
+사용되는 몇가지 개념이 있다.
+XML을 처리할 땐 레코드 라인을 토큰화하는 대신 (`FieldSet` 인스턴스) 
+아래 그림처럼 XML 리소스를
+개별 레코드를 나타내는 '조각(fragment)'의 컬렉션으로 생각한다:
+
+![XML Input](./../../images/springbatch/xmlinput.png)
+
+위 그림에선 'trade' 태그가 '루트 엘리먼트(root element)'로 정의돼 있다. 
+'<trade>'와 '</trade>' 사이에 있는 것들은 전부 하나의 '조각(fragment)'를 구성한다.
+스프링 배치는 Object/XML Mapping (OXM)을 사용해서 각 조각을 객체로 바인딩한다.
+하지만 스프링 배치는 특정한 XML 바인딩 기술을 강요하지 않는다.
+보통은 가장 많이 쓰이는 OXM 기술을 균일하게 추상헤 놓은 
+[Spring OXM](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#oxm) 에 위임한다.
+스프링 OXM 의존성(dependency)은 선택이며 원하는 스프링 배치 인터페이스를 구현하면 된다.
+OXM이 지원하는 기술들의 관계는 아래 그림과 같다:
+
+![OXM Binding](./../../images/springbatch/oxm-fragments.png)
+
+OXM과 XML 조각(fragment)으로 레코드를 표현하는 법을 소개했으니
+이제 reader와 writer를 자세히 살펴본다.
+
+### 6.7.1. `StaxEventItemReader`
+
+`StaxEventItemReader`는 XML 입력 스트림으로 레코드를 처리할 때 필요한 전형적인 설정을 지원한다.
+먼저 `StaxEventItemReader`로 아래 XML을 처리한다고 생각해 보자:
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<records>
+    <trade xmlns="https://springframework.org/batch/sample/io/oxm/domain">
+        <isin>XYZ0001</isin>
+        <quantity>5</quantity>
+        <price>11.39</price>
+        <customer>Customer1</customer>
+    </trade>
+    <trade xmlns="https://springframework.org/batch/sample/io/oxm/domain">
+        <isin>XYZ0002</isin>
+        <quantity>2</quantity>
+        <price>72.99</price>
+        <customer>Customer2c</customer>
+    </trade>
+    <trade xmlns="https://springframework.org/batch/sample/io/oxm/domain">
+        <isin>XYZ0003</isin>
+        <quantity>9</quantity>
+        <price>99.99</price>
+        <customer>Customer3</customer>
+    </trade>
+</records>
+```
+
+XML을 처리하려면 다음이 필요하다:
+
+- Root Element Name: 객체에 매핑되는 조각(fragment)을 감싸고 있는, 루트 엘리먼트 이름.
+예제에서 이 값은 trade다.
+- Resource: 읽을 파일을 나타내는 스프링 Resource.
+- `Unmarshaller`: XML 조각(fragment)를 객체에 매핑시켜주는 스프링 OXM이 지원하는 언마샬 기능.
+
+아래 예제는 `trade`라는 루트 엘리먼트,
+`org/springframework/batch/item/xml/domain/trades.xml` 리소스, 
+`tradeMarshaller`라는 언마샬로 `StaxEventItemReader`를 설정하는 법을 보여준다.
+
+```java
+@Bean
+public StaxEventItemReader itemReader() {
+	return new StaxEventItemReaderBuilder<Trade>()
+			.name("itemReader")
+			.resource(new FileSystemResource("org/springframework/batch/item/xml/domain/trades.xml"))
+			.addFragmentRootElements("trade")
+			.unmarshaller(tradeMarshaller())
+			.build();
+
+}
+```
+
+이번 예제에서는 `XStreamMarshaller`를 사용하기로 했다. 
+`XStreamMarshaller`은 맵으로 alias를 지정할 수 있는데, 이 맵의 첫번째 키와 값은 
+첫번째 조각(fragment) 이름(즉 루트 엘리먼트)과 바인딩할 객체 타입이다. 
+따라서 `FieldSet`과 유사하게
+객체의 필드에 매핑할 각 엘리먼트 이름이 맵의 키/값으로 존재한다.
+아래처럼 스프링 설정 유틸리티로 필요한 alias를 설정할 수 있다:
+
+```java
+@Bean
+public XStreamMarshaller tradeMarshaller() {
+	Map<String, Class> aliases = new HashMap<>();
+	aliases.put("trade", Trade.class);
+	aliases.put("price", BigDecimal.class);
+	aliases.put("isin", String.class);
+	aliases.put("customer", String.class);
+	aliases.put("quantity", Long.class);
+
+	XStreamMarshaller marshaller = new XStreamMarshaller();
+
+	marshaller.setAliases(aliases);
+
+	return marshaller;
+}
+```
+
+입력을 처리할 때 reader는 새 조각(fragment)를 만나기 전까지 XML 리소스를 읽는다.
+기본적으로 reader는 엘리먼트 이름을 통해 새 조각(fragment)이 시작하는 지점을 알아낸다.
+reader는 조각(fragment)를 독립적인 XML 문서(document)로 만든 다음
+XML을 자바 객체에 매핑하기 위해 deserializer
+(보통 스프링 OXM `Unmarshaller`를 감싸는 래퍼(wrapper) )에 문서를 넘긴다.
+
+절차를 요약하면 다음 자바 코드와 유사하고,
+아래서는 스프링 설정이 제공하는 주입(injection)을 사용한다:
+
+```java
+StaxEventItemReader<Trade> xmlStaxEventItemReader = new StaxEventItemReader<>();
+Resource resource = new ByteArrayResource(xmlResource.getBytes());
+
+Map aliases = new HashMap();
+aliases.put("trade","org.springframework.batch.sample.domain.trade.Trade");
+aliases.put("price","java.math.BigDecimal");
+aliases.put("customer","java.lang.String");
+aliases.put("isin","java.lang.String");
+aliases.put("quantity","java.lang.Long");
+XStreamMarshaller unmarshaller = new XStreamMarshaller();
+unmarshaller.setAliases(aliases);
+xmlStaxEventItemReader.setUnmarshaller(unmarshaller);
+xmlStaxEventItemReader.setResource(resource);
+xmlStaxEventItemReader.setFragmentRootElementName("trade");
+xmlStaxEventItemReader.open(new ExecutionContext());
+
+boolean hasNext = true;
+
+Trade trade = null;
+
+while (hasNext) {
+    trade = xmlStaxEventItemReader.read();
+    if (trade == null) {
+        hasNext = false;
+    }
+    else {
+        System.out.println(trade);
+    }
+}
+```
+
+### 6.7.2. `StaxEventItemWriter`
+
+출력 처리는 입력과는 대칭적이다.
+`StaxEventItemWriter`는 `Resource`, 마샬러, `rootTagName`이 필요하다.
+자바 객체는 마샬러 (일반적으로 표준 스프링 OXM Marshaller)로 전달되는데,
+마샬러는 커스텀 이벤트 writer를 사용해
+OXM 도구에서 각 조각(fragment)마다 발생시키는 `StartDocument`, `EndDocument` 
+이벤트를 필터링해서 `Resource`에 write한다.
+아래는 `StaxEventItemWriter`를 사용하는 예제다:
+
+```java
+@Bean
+public StaxEventItemWriter itemWriter(Resource outputResource) {
+	return new StaxEventItemWriterBuilder<Trade>()
+			.name("tradesWriter")
+			.marshaller(tradeMarshaller())
+			.resource(outputResource)
+			.rootTagName("trade")
+			.overwriteOutput(true)
+			.build();
+
+}
+```
+
+위에선 세 가지 프로퍼티와,
+이 챕터 앞부분에서 언급했던 이미 존재하는 파일을 덮어 쓸지를 결정하는 선택적인 속성
+`overwriteOutput=true`를 설정했다.
+아래 예제에서 writer가 사용하는 마샬러는 앞에서 read때 사용한 마샬러와 동일하다:
+
+```java
+@Bean
+public XStreamMarshaller customerCreditMarshaller() {
+	XStreamMarshaller marshaller = new XStreamMarshaller();
+
+	Map<String, Class> aliases = new HashMap<>();
+	aliases.put("trade", Trade.class);
+	aliases.put("price", BigDecimal.class);
+	aliases.put("isin", String.class);
+	aliases.put("customer", String.class);
+	aliases.put("quantity", Long.class);
+
+	marshaller.setAliases(aliases);
+
+	return marshaller;
+}
+```
+
+필요한 프로퍼티를 프로그래밍 방식으로 설정하고 있는 아래 자바 코드는
+앞에서 설명한 내용을 모두 함축하고 있다:
+
+```java
+FileSystemResource resource = new FileSystemResource("data/outputFile.xml")
+
+Map aliases = new HashMap();
+aliases.put("trade","org.springframework.batch.sample.domain.trade.Trade");
+aliases.put("price","java.math.BigDecimal");
+aliases.put("customer","java.lang.String");
+aliases.put("isin","java.lang.String");
+aliases.put("quantity","java.lang.Long");
+Marshaller marshaller = new XStreamMarshaller();
+marshaller.setAliases(aliases);
+
+StaxEventItemWriter staxItemWriter =
+	new StaxEventItemWriterBuilder<Trade>()
+				.name("tradesWriter")
+				.marshaller(marshaller)
+				.resource(resource)
+				.rootTagName("trade")
+				.overwriteOutput(true)
+				.build();
+
+staxItemWriter.afterPropertiesSet();
+
+ExecutionContext executionContext = new ExecutionContext();
+staxItemWriter.open(executionContext);
+Trade trade = new Trade();
+trade.setPrice(11.39);
+trade.setIsin("XYZ0001");
+trade.setQuantity(5L);
+trade.setCustomer("Customer1");
+staxItemWriter.write(trade);
+```
 
 ## 6.8. JSON Item Readers And Writers
 
-### 6.8.1. JsonItemReader
+스프링 배치를 사용하면 아래같은 JSON 리소스도 읽고 쓸 수 있다:
 
-### 6.8.2. JsonFileItemWriter
+```json
+[
+  {
+    "isin": "123",
+    "quantity": 1,
+    "price": 1.2,
+    "customer": "foo"
+  },
+  {
+    "isin": "456",
+    "quantity": 2,
+    "price": 1.4,
+    "customer": "bar"
+  }
+]
+```
+
+JSON 리소스는 각 item을 나타내는 JSON 객체의 배열이다.
+스프링 배치는 특정 JSON 라이브러리에 얽매이지 않는다. 
+
+### 6.8.1. `JsonItemReader`
+
+`JsonItemReader`는 JSON 파싱과 바인딩을  
+`org.springframework.batch.item.json.JsonObjectReader` 인터페이스 구현체에 위임한다.
+이 인터페이스는 스트리밍 API로 JSON 오브젝트를 청크로 읽을 수 있게 설계됐다. 
+현재는 두 가지 구현체가 제공된다:
+
+- `org.springframework.batch.item.json.JacksonJsonObjectReader`가 사용하는
+[Jackson](https://github.com/FasterXML/jackson)
+- `org.springframework.batch.item.json.GsonJsonObjectReader`가 사용하는
+[Gson](https://github.com/google/gson) 
+
+JSON으로 write하려면 다음이 필요하다:
+
+- `Resource`: write할 JSON 파일을 나타내는 스프링 Resource.
+- `JsonObjectMarshaller`: 객체를 JSON 형식으로 마샬링하는 JSON object marshaller
+
+`JsonFileItemWriter`를 정의하는 방법은 아래 예제에 있다:
+
+```java
+@Bean
+public JsonFileItemWriter<Trade> jsonFileItemWriter() {
+   return new JsonFileItemWriterBuilder<Trade>()
+                 .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
+                 .resource(new ClassPathResource("trades.json"))
+                 .name("tradeJsonFileItemWriter")
+                 .build();
+}
+```
+
+### 6.8.2. `JsonFileItemWriter`
+
+`JsonFileItemWriter`는 마샬링을   
+`org.springframework.batch.item.json.JsonObjectMarshaller` 인터페이스에 위임한다.
+이 인터페이스 역할은 객체를 받아 JSON `String`으로 마샬링하는 것이다.
+현재는 두 가지 구현체가 제공된다:
+
+- `org.springframework.batch.item.json.JacksonJsonObjectMarshaller`가 사용하는
+[Jackson](https://github.com/FasterXML/jackson)
+- `org.springframework.batch.item.json.GsonJsonObjectMarshaller`가 사용하는
+[Gson](https://github.com/google/gson) 
+
+JSON을 처리하려면 다음이 필요하다:
+
+- `Resource`: 읽을 JSON 파일을 나타내는 스프링 Resource.
+- `JsonObjectReader`: JSON을 파싱하고 아이템에 바인딩시키는 JSON object reader
+
+아래 예제는 앞에 나온 JSON 리소스 `org/springframework/batch/item/json/trades.json`와
+Jackson 기반 `JsonObjectReader`를 사용하는 `JsonItemReader`를 정의한다:
+
+```java
+@Bean
+public JsonFileItemWriter<Trade> jsonFileItemWriter() {
+   return new JsonFileItemWriterBuilder<Trade>()
+                 .jsonObjectMarshaller(new JacksonJsonObjectMarshaller<>())
+                 .resource(new ClassPathResource("trades.json"))
+                 .name("tradeJsonFileItemWriter")
+                 .build();
+}
+```
 
 ## 6.9. Multi-File Input
 
+`Step` 하나에서 여러 파일을 쓰는 경우도 흔하다.
+모든 파일이 같은 포맷을 사용한다면
+`MultiResourceItemReader`으로 XML이나 플랫(flat) 파일을 처리할 수 있다.
+한 디렉토리 안 아래 파일이 있다고 생각해보자:
+
+```
+file-1.txt  file-2.txt  ignored.txt
+```
+
+`file-1.txt`와 `file-2.txt`는 같은 형식을 사용하며
+비지니스 요구사항을 처리하려면 함께 사용해야 한다.
+아래 보이는 예제처럼 `MultiResourceItemReader`를 와일카드를 사용하면
+두 파일을 함께 읽을 수 있다:
+
+```java
+@Bean
+public MultiResourceItemReader multiResourceReader() {
+	return new MultiResourceItemReaderBuilder<Foo>()
+					.delegate(flatFileItemReader())
+					.resources(resources())
+					.build();
+}
+```
+
+참조된 위임 객체는 간단한 `FlatFileItemReader`다.
+위 설정대로면 롤백과 재시작을 고려해서 두 파일을 읽을 수 있다.
+`ItemReader`로 입력을 추가한다면 (여기서는 파일)
+재시작 할때 문제가 발생할 수 있다는 점을 알아둬야 한다.
+배치 job은 각자의 디렉토리에만 가지고 실행하는 게 좋다.
+
+> 입력 리소스는 `MultiResourceItemReader#setComparator(Comparator)`로 정렬돼서
+> job이 재시작되도 같은 순서로 실행된다. 
+
 ## 6.10. Database
+
+대부분의 엔터프라이즈 어플리케이션 스타일과 마찬가지로 데이터베이스도
+배치를 위한 중앙 스토리지 역할을 한다.
+하지만 배치는 시스템은 처리해야하는 데이터 셋 사이즈가 다르다는 점에서 다른 어플리케이션과 구분된다.
+백만 개의 로(row)를 리턴하는 SQL을 사용하면 결과셋이 모든 로(row)를 다 읽을 때까지 메모리에 유지된다.
+스프링 배치는 이를 해결할 두 가지 솔루션을 제공한다:
+
+- [커서기반 `ItemReader` 구현체](#6101-cursor-based-itemreader-implementations)
+- [페이징 `ItemReader` 구현체](#6102-paging-itemreader-implementations)
 
 ### 6.10.1. Cursor-based ItemReader Implementations
 
+데이터베이스 커서는 관계형 데이터를 '스트리밍'해주는 데이터베이스의 솔루션이기 때문에,
+배치에서도 가장 일반적으로 사용하는 접근법이다.
+자바 `ResultSet` 클래스는 본질적으로 커서를 조작하기 위한 객체다. 
+`ResultSet`은 커서를 현재 로(row)에 유지한다. 
+`ResultSet`의 `next`를 호출하면 이 커서가 다음 로(row)를 가리킨다. 
+스프링 배치의 커서 기반 `ItemReader` 구현체는 초기화할 때 커서를 열고
+`read`를 호출할 때 마다 커서를 한 행씩 이동시켜서,
+나중에 처리할 수 있는 매핑된 객체를 반환한다.
+그 다음 모든 리소스를 반환할 수 있게 `close` 메소드를 호출한다.
+스프링 코어 `JdbcTemplate`는 콜백 패턴을 사용해서 `ResultSet`의 모든 로(row)를 매핑하고
+제어가 호출부로 넘어가기 전 close시킨다.
+하지만 배치에선 step이 종료될 때까지 기다려야 한다.
+아래 이미지는 커서 기반 `ItemReader`의 동작 원리를 표현하는 일반적인 다이어그램이다.
+예시에선 SQL을 사용하지만 (SQL이 가장 잘 알려졌으므로),
+구현은 어떤 기술로 해도 상관없다.
+
+![Cursor Example](./../../images/springbatch/cursorExample.png)
+
+이 예제는 기본적인 패턴을 보여준다.
+`ID`, `NAME`, `BAR` 필드를 가지고 있는 'FOO' 테이블에서
+ID가 1보다 크고 7보다 작은 모든 로(row)를 찾는다.
+그러면 커서의 시작점(첫번째 행)은 ID 2를 가리킨다.
+이 로(row)는 `Foo` 객체에 매핑된다.
+`read()`를 다시 호출하면 커서는 ID가 3인 다른 로(row)로 이동한다.
+`read`를 호출할 때마다 바로 결과를 쓰기때문에 가비지 컬렉터에 수집될 수 있다
+(다른 인스턴스가 참조를 유지하지 않는다고 가정하면).
+
 #### JdbcCursorItemReader
+
+`JdbcCursorItemReader`는 커서 베이스 테크닉을 구현한 JDBC 구현체다.
+`ResultSet`과 함께 동작하며, `DataSource`에서 커넥션을 얻어와 SQL을 실행한다.
+다음은 예시로 사용할 데이터베이스 스키마다: 
+
+```sql
+CREATE TABLE CUSTOMER (
+   ID BIGINT IDENTITY PRIMARY KEY,
+   NAME VARCHAR(45),
+   CREDIT FLOAT
+);
+```
+
+대부분 각 로(row)를 도메인 객체로 사용하기 때문에
+아래 예제에서는 `RowMapper` 인터페이스 구현체를 사용해 `CustomerCredit` 객체로 매핑한다.
+
+```java
+public class CustomerCreditRowMapper implements RowMapper<CustomerCredit> {
+
+    public static final String ID_COLUMN = "id";
+    public static final String NAME_COLUMN = "name";
+    public static final String CREDIT_COLUMN = "credit";
+
+    public CustomerCredit mapRow(ResultSet rs, int rowNum) throws SQLException {
+        CustomerCredit customerCredit = new CustomerCredit();
+
+        customerCredit.setId(rs.getInt(ID_COLUMN));
+        customerCredit.setName(rs.getString(NAME_COLUMN));
+        customerCredit.setCredit(rs.getBigDecimal(CREDIT_COLUMN));
+
+        return customerCredit;
+    }
+}
+``` 
+
+`JdbcCursorItemReader`는 `JdbcTemplate`과 주요 인터페이스를 공유하므로
+`JdbcTemplate`으로 같은 데이터를 읽는 예제를 `ItemReader`를 사용했을 때와 비교해보는 것도 좋다.
+비교를 위해 `CUSTOMER` 데이터베이스에 1000개의 로(row)가 있다고 가정한다.
+가장 먼저 `JdbcTemplate`를 사용한 예제다:
+
+```java
+//For simplicity sake, assume a dataSource has already been obtained
+JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+List customerCredits = jdbcTemplate.query("SELECT ID, NAME, CREDIT from CUSTOMER",
+                                          new CustomerCreditRowMapper());
+```
+
+After running the preceding code snippet, 
+the `customerCredits` list contains 1,000 `CustomerCredit` objects. 
+In the query method, a connection is obtained from the `DataSource`, 
+the provided SQL is run against it, and the `mapRow` method is called 
+for each row in the `ResultSet`. 
+Contrast this with the approach of the `JdbcCursorItemReader`, 
+shown in the following example:
 
 #### HibernateCursorItemReader
 
