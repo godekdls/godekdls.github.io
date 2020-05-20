@@ -1653,8 +1653,8 @@ public MultiResourceItemReader multiResourceReader() {
 
 ## 6.10. Database
 
-대부분의 엔터프라이즈 어플리케이션 스타일과 마찬가지로 데이터베이스도
-배치를 위한 중앙 스토리지 역할을 한다.
+대부분의 엔터프라이즈 어플리케이션 스타일과 마찬가지로
+배치에서도 데이터베이스가 중앙 스토리지를 담당한다.
 하지만 배치는 시스템이 처리해야하는 데이터 셋 사이즈가 다르다는 점에서 다른 어플리케이션과 구분된다.
 백만 개의 로(row)를 리턴하는 SQL을 사용하면 결과셋이 모든 로(row)를 다 읽을 때까지 메모리에 유지된다.
 스프링 배치는 이를 해결할 두 가지 솔루션을 제공한다:
@@ -1675,7 +1675,7 @@ public MultiResourceItemReader multiResourceReader() {
 그 다음 모든 리소스를 반환할 수 있게 `close` 메소드를 호출한다.
 스프링 코어 `JdbcTemplate`는 콜백 패턴을 사용해서 `ResultSet`의 모든 로(row)를 매핑하고
 제어가 호출부로 넘어가기 전 close시킨다.
-하지만 배치에서 이렇게 접근하면 step이 종료될 때까지 기다려야 한다.
+하지만 배치에서는 step이 종료될 때까지 기다려야 한다.
 아래 이미지는 커서 기반 `ItemReader`의 동작 원리를 표현하는 일반적인 다이어그램이다.
 예시에선 SQL을 사용하지만 (SQL이 가장 잘 알려졌으므로),
 구현은 어떤 기술로 해도 상관없다.
@@ -1706,7 +1706,7 @@ CREATE TABLE CUSTOMER (
 ```
 
 대부분 각 로(row)를 도메인 객체로 사용하기 때문에
-아래 예제에서는 `RowMapper` 인터페이스 구현체를 사용해 `CustomerCredit` 객체로 매핑한다.
+아래 예제에서는 `RowMapper` 인터페이스 구현체로 `CustomerCredit` 객체에 매핑했다.
 
 ```java
 public class CustomerCreditRowMapper implements RowMapper<CustomerCredit> {
@@ -1728,7 +1728,7 @@ public class CustomerCreditRowMapper implements RowMapper<CustomerCredit> {
 ``` 
 
 `JdbcCursorItemReader`는 `JdbcTemplate`과 주요 인터페이스를 공유하므로,
-같은 데이터를 `JdbcTemplate`으로 예제를 `ItemReader`를 사용했을 때와 비교해보는 것도 좋다.
+같은 데이터를 `JdbcTemplate`으로 읽는 예제를 `ItemReader`를 사용했을 때와 비교해보는 것도 좋다.
 비교를 위해 `CUSTOMER` 데이터베이스에 1000개의 로(row)가 있다고 가정한다.
 가장 먼저 `JdbcTemplate`를 사용한 예제다:
 
@@ -1743,7 +1743,7 @@ List customerCredits = jdbcTemplate.query("SELECT ID, NAME, CREDIT from CUSTOMER
 `customerCredits`리스트에는 1000개의 `CustomerCredit` 객체가 있을 것이다.
 query 메소드에서 `DataSource`로부터 커넥션을 얻어와
 주어진 SQL을 실행하며, `ResultSet`안에 있는 각 로(row)마다 `mapRow` 메소드를 호출한다.
-아래 코드를 보면 `JdbcCursorItemReader`이 담당하는 일을 알 수 있다:
+아래 코드를 보면 `JdbcCursorItemReader`가 담당하는 일을 알 수 있다:
 
 ```java
 JdbcCursorItemReader itemReader = new JdbcCursorItemReader();
@@ -1764,9 +1764,9 @@ itemReader.close();
 앞의 코드를 실행하고 나면 counter 값은 1000이 된다.
 만약 위 코드에서 리턴된 `customerCredit`을 리스트에 넣었다면
 `JdbcTemplate` 예제 결과와 완전히 같았을 것이다.
-하지만 `ItemReader`을 쓰는 이유는 아이템을 '스트림 처리(streamed)' 해준다는 것이다.
+하지만 중요한 건 `ItemReader`는 아이템을 '스트림 처리(streamed)' 해준다는 것이다.
 `read` 메소드를 한 번 호출한 다음
-`ItemWriter`로 아이템을 write할 수 있고,
+`ItemWriter`로 아이템을 쓸 수 있고,
 다음 아이템을 다시 `read`할 수 있다.
 이를 통해 아이템을 주기적으로 커밋하면서 '청크'단위로 읽고 쓸 수 있으며,
 이는 고성능 배치 처리의 핵심이다.
@@ -1793,14 +1793,14 @@ public JdbcCursorItemReader<CustomerCredit> itemReader() {
 
 **Table 16. JdbcCursorItemReader Properties**
 
-|ignoreWarnings|SQLWarnings을 로깅만 하고 넘어갈지 예외를 발생시킬지 결정한다. 디폴트는 `true`다 (warning을 로깅한다는 뜻).|
+|ignoreWarnings|SQLWarnings를 로깅하고 넘어갈지 예외를 발생시킬지 결정한다. 디폴트는 `true`다 (warning을 로깅한다는 뜻).|
 |fetchSize|`ItemReader`에서 사용하는 `ResultSet`객체에 더 많은 로(row)가 필요한 경우 JDBC 드라이버에 데이터베이스에서 fetch해야하는 로(row) 수에 대한 힌트를 제공한다. 디폴트는 힌트를 제공하지 않는다.|
 |maxRows|한 번에 `ResultSet`으로 가져올 수 있는 로(row) 수를 제한한다.|
-|queryTimeout|드라이버가 `Statement` 객체를 실행을 얼마나 기다릴지 초단위로 설정한다. 이 제한을 넘어가면 `DataAccessException`이 발생한다 (자세한 내용은 드라이버 벤더 문서를 참조하라).|
-|verifyCursorPosition|`ItemReader`가 가진 동일한 `ResultSet`이 `RowMapper`에 전달되므로, 사용자가`ResultSet.next ()`를 직접 호출 할 수 있으며, 이로 인해 reader 내부의 count에 이슈가 생길 수 있다. 이 값을 true로 지정하면 `RowMapper`를 호출한 후 커서 위치가 이전과 달라졌을 때 예외를 발생시킨다.| 
+|queryTimeout|드라이버가 `Statement` 객체 실행을 얼마동안 기다릴지 초단위로 설정한다. 이 제한을 넘어가면 `DataAccessException`이 발생한다 (자세한 내용은 드라이버 벤더 문서를 참조하라).|
+|verifyCursorPosition|`ItemReader`는 동일한 `ResultSet`을 `RowMapper`에 전달하므로, 사용자가 `ResultSet.next()`를 직접 호출하면 reader 내부 count에 이슈가 생길 수 있다. 이 값을 true로 지정하면 `RowMapper`를 호출한 후 커서 위치가 이전과 달라졌을 때 예외를 발생시킨다.| 
 |saveState|`ItemStream#update(ExecutionContext)` 메소드로  `ExecutionContext`에 reader의 상태를 저장할지 결정한다. 디폴트는 `true`다.|
-|driverSupportsAbsolute|JDBC 드라이버가 `ResultSet` 커서 강제로 이동을 지원하는지를 나타낸다. `ResultSet.absolute()`를 지원하는 JDBC 드라이버를 사용한다면 성능을 위해 `true`로 설정하는 것이 좋다.특히 대규모 데이터셋을 다루는 동안 step 실패하는 경우라면 더 그렇다. 디폴트는 `false`다.|
-|setUseSharedExtendedConnection|커서에 사용된 커넥션을 다른 프로세싱에서도 사용하고 트랜잭션을 공유할지 나타낸다. 이 값이 `false`면 커서는 소유한 커넥션에서만 열리며, step 내 다른 곳에서 트랜잭션이 시작돼도 관여하지 않는다. `true`로 설정했다면 커넥션이 매 커밋마다 닫혀 반환되지 않도록 반드시 데이터소스를 `ExtendedConnectionDataSourceProxy`로 감싸야 한다. `true`로 설정했을 땐 커서를 열때 사용하는 statement를 'READ_ONLY'와 'HOLD_CURSORS_OVER_COMMIT' 상태로 생성한다. 이를 통해 step에서 트랜잭션이 시작되고 커밋되는 동안 커서를 열린 채로 유지할 수 있다. 이 기능을 사용하려면 이를 지원하는 데이터베이스와 JDBC 3.0 이상을 지원하는 JDBC가 필요하다. 디폴트는 `false`다.|
+|driverSupportsAbsolute|JDBC 드라이버가 `ResultSet` 커서 강제 이동을 지원하는지를 나타낸다. `ResultSet.absolute()`를 지원하는 JDBC 드라이버를 사용한다면 성능을 위해 `true`로 설정하는 게 좋다. 특히 대규모 데이터셋을 다루는 step이 중간에 실패한다면 더 그렇다. 디폴트는 `false`다.|
+|setUseSharedExtendedConnection|커서에 사용된 커넥션을 다른 프로세싱에서도 사용하고 트랜잭션을 공유할지를 나타낸다. 이 값이 `false`면 커서는 소유한 커넥션에서만 열리며, step 내 다른 곳에서 트랜잭션이 시작돼도 관여하지 않는다. `true`로 설정했다면 커넥션이 매 커밋마다 닫혀 반환되지 않도록 반드시 데이터소스를 `ExtendedConnectionDataSourceProxy`로 감싸야 한다. `true`로 설정했을 땐 커서를 열때 사용하는 statement를 'READ_ONLY'와 'HOLD_CURSORS_OVER_COMMIT' 상태로 생성한다. 이를 통해 step에서 트랜잭션이 시작되고 커밋되는 동안 커서를 열린 채로 유지할 수 있다. 이 기능을 사용하려면 이를 지원하는 데이터베이스와 JDBC 3.0 이상을 지원하는 JDBC가 필요하다. 디폴트는 `false`다.|
 
 #### `HibernateCursorItemReader`
 
