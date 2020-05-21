@@ -2103,90 +2103,628 @@ exception이 발생하는 건 이미 전체 버퍼가 쓰여진 다음이다.
 
 ## 6.11. Reusing Existing Services
 
+배치 시스템은 다른 어플리케이션과 함께 운영되는 경우가 많다.
+온라인 시스템과의 조합이 가장 많긴 하지만,
+각 어플리케이션이 사용하는 벌크 데이터를 이동시킴으로써
+심지어 하드웨어와 운영체제를 갖춘 클라이언트(thick client) 어플리케이션과도 통합할 수 있다.
+이런 이유로 배치 job 안에서 이미 있는 DAO나 다른 서비스를 사용하기도 한다.
+이런 요구사항은 스프링 컨테이너가 필요한 클래스를 주입해주기때문에 쉽게 달성할 수 있다.
+하지만 다른 스프링 배치 클래스의 의존성(dependency)때문에
+혹은 사용하려는 서비스 자체가 step의 메인 `ItemReader`인 경우,
+이미 있는 서비스를 `ItemReader`나 `ItemWriter`으로 사용해야 할 때도 있다.
+필요한 서비스를 감싸서 아답터(adapter) 클래스를 만드는 건 사소한 일이지만
+자주 사용하는 패턴이기때문에 스프링배치는 `ItemReaderAdapter`와 `ItemWriterAdapter`
+구현체를 제공한다.
+두 클래스 모두 위임(delegate) 패턴으로 표준 스프링 메소드를 구현했으며
+설정하기도 매우 쉽다.
+아래는 `ItemReaderAdapter`를 사용하는 예시다:
+
+```java
+@Bean
+public ItemReaderAdapter itemReader() {
+	ItemReaderAdapter reader = new ItemReaderAdapter();
+
+	reader.setTargetObject(fooService());
+	reader.setTargetMethod("generateFoo");
+
+	return reader;
+}
+
+@Bean
+public FooService fooService() {
+	return new FooService();
+}
+```
+
+여기서 중요한 점은 `targetMethod`의 역할이 `read` 메소드 역할과 같아야 한다는 것이다.
+데이터가 더 이상 없다면 `null`을 리턴한다. 그렇지 않으면 `Object`를 리턴한다.
+다른 값을 리턴하면 프레임워크가 처리가 끝나는 지점을 알 수 없어서
+`ItemWriter` 구현에 따라 무한 루프에 빠지거나 의도하지 않게 실패로 끝날 수 있다.
+아래는 `ItemWriterAdapter`를 사용하는 예시다:
+
+```java
+@Bean
+public ItemWriterAdapter itemWriter() {
+	ItemWriterAdapter writer = new ItemWriterAdapter();
+
+	writer.setTargetObject(fooService());
+	writer.setTargetMethod("processFoo");
+
+	return writer;
+}
+
+@Bean
+public FooService fooService() {
+	return new FooService();
+}
+```
+
 ## 6.12. Validating Input
+
+이 첩터에서 입력을 파싱하기 위한 여러가지 방법을 소개했다. 
+각 주요 구현체는 입력의 형식이 잘못됐으면 예외를 던진다.
+`FixedLengthTokenizer`는 데이터 범위가 누락되면 예외를 던진다.
+유사하게 `RowMapper`나 `FieldSetMapper`에 존재하지 않는 인덱스에 접근하거나
+형식이 다른 걸 사용하면 예외가 발생한다.
+이럴 때 던져지는 모든 예외는 read 메소드가 리턴하기 전에 던진다.
+하지만 리턴된 아이템이 유효한지 아닌지는 상관하지 않는다.
+예를 들어 나이를 나타내는 필드가 있다면 절대 음수일 수 없다.
+이 값은 존재하는 값이고 숫자이기 때문에 문제없이 파싱되며 예외를 던지지 않는다.
+검증 프레임워크는 이미 넘치기때문에 스프링 배치는 또 다른 검증 프레임워크를 제공하지 않는다.
+대신에 `Validator`라는 간단한 인터페이스를 제공하며
+어떤 프레임워크로도 구현할 수 있다.
+아래는 인터페이스 정의다:
+
+```java
+public interface Validator<T> {
+
+    void validate(T value) throws ValidationException;
+
+}
+```
+
+`validate`의 기본 역할은 객체가 유효하지 않으면 예외를 던지고
+유효하면 그대로 반환하는 것이다.
+스프링 배치는 아래 빈 정의에 보이는 `ValidatingItemProcessor`를 제공한다.
+
+```java
+@Bean
+public ValidatingItemProcessor itemProcessor() {
+	ValidatingItemProcessor processor = new ValidatingItemProcessor();
+
+	processor.setValidator(validator());
+
+	return processor;
+}
+
+@Bean
+public SpringValidator validator() {
+	SpringValidator validator = new SpringValidator();
+
+	validator.setValidator(new TradeValidator());
+
+	return validator;
+}
+```
+
+Bean Validation API (JSR-303)를 선언한 아이템은
+`BeanValidatingItemProcessor`로 검증할 수 있다.
+아래 Person 객체로 예를 들면:
+
+```java
+class Person {
+
+    @NotEmpty
+    private String name;
+
+    public Person(String name) {
+     this.name = name;
+    }
+
+    public String getName() {
+     return name;
+    }
+
+    public void setName(String name) {
+     this.name = name;
+    }
+
+}
+```
+
+어플리케이션 컨텍스트에 `BeanValidatingItemProcessor` 빈을 정의하고
+step의 프로세서로 등록하면 된다:
+
+```java
+@Bean
+public BeanValidatingItemProcessor<Person> beanValidatingItemProcessor() throws Exception {
+    BeanValidatingItemProcessor<Person> beanValidatingItemProcessor = new BeanValidatingItemProcessor<>();
+    beanValidatingItemProcessor.setFilter(true);
+
+    return beanValidatingItemProcessor;
+}
+```
 
 ## 6.13. Preventing State Persistence
 
+기본적으로 모든 `ItemReader`와 `ItemWriter` 구현체는
+커밋 전에 현재 상태를 `ExecutionContext`에 저장한다.
+하지만 이게 항상 바람직하진 아니다.
+예를들어 많은 개발자가 프로세스 식별자를 사용해 데이터베이스 reader를 재사용할 수 있게 만든다.
+입력 데이터가 처리됐는지를 식별하기 위한 별도 컬럼이 사용된다.
+특정 레코드를 읽으면 (혹은 쓰면) 이 플래그를 `false`에서 `true`로 바꾼다. 
+SQL 문에 `where PROCESSED_IND = false`같은 구문을 추가하면
+재시작해도 이미 처리된 레코드는 조회되지 않는다.
+이런 경우라면 재시작할 때 현재 로(row) 넘버같은 상태값을 사용하지 않으므로 저장할 필요가 없다.
+이런 이유로 아래 보이는 것처럼, 모든 reader와 writer는 'saveState'라는 프로퍼티가 있다:
+
+```java
+@Bean
+public JdbcCursorItemReader playerSummarizationSource(DataSource dataSource) {
+	return new JdbcCursorItemReaderBuilder<PlayerSummary>()
+				.dataSource(dataSource)
+				.rowMapper(new PlayerSummaryMapper())
+				.saveState(false)
+				.sql("SELECT games.player_id, games.year_no, SUM(COMPLETES),"
+				  + "SUM(ATTEMPTS), SUM(PASSING_YARDS), SUM(PASSING_TD),"
+				  + "SUM(INTERCEPTIONS), SUM(RUSHES), SUM(RUSH_YARDS),"
+				  + "SUM(RECEPTIONS), SUM(RECEPTIONS_YARDS), SUM(TOTAL_TD)"
+				  + "from games, players where players.player_id ="
+				  + "games.player_id group by games.player_id, games.year_no")
+				.build();
+
+}
+```  
+
+위에 있는 `ItemReader`는 몇 번을 실행해도 `ExecutionContext`에 엔트리를 저장하지 않는다.
+
 ## 6.14. Creating Custom ItemReaders and ItemWriters
 
-### 6.14.1. Custom ItemReader Example
+지금까지 이 챕터에서 스프링 배치의 read, write의 기본 역할과 몇가지 주요 구현체를 다뤘다.
+하지만 이 구현체는 상당히 포괄적이어서 이 구현체만으로 해결하지 못하는 케이스도 많다.
+이번 섹션에선 커스텀 `ItemReader`, `ItemWriter` 구현체를 만들고 올바르게 구현하는 법을
+간단한 예제와 함께 설명하겠다.
+reader와 writer를 재시작할 수 있게 만드는 법을 보여주기 위해
+`ItemReader`는 `ItemStream`도 구현했다.
 
-#### Making the ItemReader Restartable
+### 6.14.1. Custom `ItemReader` Example
+
+목표한 대로 이번 예제에서는 주어진 리스트를 읽는 간단한 `ItemReader` 구현체를 만든다.
+먼저 `ItemReader`의 가장 기본적인 역할을 담당하는 `read` 메소드를 구현하는 것부터 시작한다:
+
+```java
+public class CustomItemReader<T> implements ItemReader<T>{
+
+    List<T> items;
+
+    public CustomItemReader(List<T> items) {
+        this.items = items;
+    }
+
+    public T read() throws Exception, UnexpectedInputException,
+       NonTransientResourceException, ParseException {
+
+        if (!items.isEmpty()) {
+            return items.remove(0);
+        }
+        return null;
+    }
+}
+```
+
+위에 있는 클래스는 아이템 리스트를 받아 한 번에 한 개씩 아이템을 지우면서 리턴한다.
+아래 코드에서도 알 수 있듯,
+`ItemReader`의 가장 기본적인 요구사항대로 리스트가 비면 `null`을 리턴한다.
+
+```java
+List<String> items = new ArrayList<>();
+items.add("1");
+items.add("2");
+items.add("3");
+
+ItemReader itemReader = new CustomItemReader<>(items);
+assertEquals("1", itemReader.read());
+assertEquals("2", itemReader.read());
+assertEquals("3", itemReader.read());
+assertNull(itemReader.read());
+```
+
+#### Making the `ItemReader` Restartable
+
+마지막 목표는 `ItemReader`를 재시작 가능한 구조로 만드는 것이다.
+지금까지 작성한 코드로는 처리 중간에 실패해서 다시 시작한다면
+`ItemReader`는 처음부터 다시 시작해야한다.
+이게 유효한 경우도 많지만 어떨 땐 배치 job을 처리를 중단했던 곳에서 부터 다시 시작하고 싶을 때도 있다.
+이는 reader가 상태가 있는지(stateful) 없는지(stateless)에 따라 갈린다. 
+상태가 없는 reader는 재시작을 걱정할 필요 없지만,
+상태가 있다면 재시작할 때 알고 있는 마지막 상태로 재구성해야한다.
+이런 이유로 가능하다면 reader를 상태를 가지 않게 커스텀하길 권장한다.
+
+그래도 상태를 저장하고 싶다면 `ItemStream` 인터페이스를 사용해야 한다:
+
+```java
+public class CustomItemReader<T> implements ItemReader<T>, ItemStream {
+
+    List<T> items;
+    int currentIndex = 0;
+    private static final String CURRENT_INDEX = "current.index";
+
+    public CustomItemReader(List<T> items) {
+        this.items = items;
+    }
+
+    public T read() throws Exception, UnexpectedInputException,
+        ParseException, NonTransientResourceException {
+
+        if (currentIndex < items.size()) {
+            return items.get(currentIndex++);
+        }
+
+        return null;
+    }
+
+    public void open(ExecutionContext executionContext) throws ItemStreamException {
+        if(executionContext.containsKey(CURRENT_INDEX)){
+            currentIndex = new Long(executionContext.getLong(CURRENT_INDEX)).intValue();
+        }
+        else{
+            currentIndex = 0;
+        }
+    }
+
+    public void update(ExecutionContext executionContext) throws ItemStreamException {
+        executionContext.putLong(CURRENT_INDEX, new Long(currentIndex).longValue());
+    }
+
+    public void close() throws ItemStreamException {}
+}
+```
+
+`ItemStream`의 `update` 메소드를 호출할 때마다
+`ItemReader`의 현재 인덱스를 'current.index' 키와 함께 `ExecutionContext`에 저장한다.
+`ItemStream`의 `open` 메소드를 호출하면 `ExecutionContext`에 이 키를 가진 엔트리가 있는지 검사한다.
+이 키를 찾으면 현재 인덱스를 그 위치로 이동시킨다.
+매우 간단한 예제지만 일반적인 요구사항을 충족한다:
+
+```java
+ExecutionContext executionContext = new ExecutionContext();
+((ItemStream)itemReader).open(executionContext);
+assertEquals("1", itemReader.read());
+((ItemStream)itemReader).update(executionContext);
+
+List<String> items = new ArrayList<>();
+items.add("1");
+items.add("2");
+items.add("3");
+itemReader = new CustomItemReader<>(items);
+
+((ItemStream)itemReader).open(executionContext);
+assertEquals("2", itemReader.read());
+```
+
+`ItemReader` 대부분은 훨씬 정교한 재시작 로직을 가지고 있다.
+예를 들어 `JdbcCursorItemReader`는 커서에 마지막으로 처리된 로(row)의 ID를 저장한다.
+
+`ExecutionContext`에 사용할 키는 흔하지 않은 이름을 써야 한다는 점을 알아둘 필요가 있다.
+`Step`에 있는 모든 `ItemStream`이 같은 `ExecutionContext`을 사용하기 때문이다.
+대부분 간단히 클래스명을 키로 사용하는 걸로 충분하다.
+하지만 드물게 같은 step에서 같은 타입의 `ItemStream`을 두 번 사용하는 경우
+(두 파일에 write한다면 가능한 일이다), 다른 유니크한 이름이 필요하다.
+이런 이유로 많은 스프링 배치 `ItemReader`, `ItemWriter` 구현체가
+이름을 재정의하기 위한 `setName()`를 제공한다.
 
 ### 6.14.2. Custom ItemWriter Example
 
-#### Making the ItemWriter Restartable
+커스텀 `ItemWriter` 구현체를 만드는 건 여러가지 면에서 
+위 `ItemReader`와 비슷하지만, 다른 점도 있어서 별도 예제를 넣었다. 
+하지만 재시작 메커니즘은 완전히 동일하므로 이 예제에서 다시 다루지 않는다.
+`ItemReader` 예제처럼 최대한 단순화하기 위해 `List`를 사용했다:
+
+```java
+public class CustomItemWriter<T> implements ItemWriter<T> {
+
+    List<T> output = TransactionAwareProxyFactory.createTransactionalList();
+
+    public void write(List<? extends T> items) throws Exception {
+        output.addAll(items);
+    }
+
+    public List<T> getOutput() {
+        return output;
+    }
+}
+```
+
+#### Making the `ItemWriter` Restartable
+
+`ItemWriter`을 재시작 가능한 구조로 만드려면 
+`ItemReader`처럼 `ItemStream`를 추가로 구현해서 실행 컨텍스트를 동기화시키면 된다.
+예를 들어 처리된 아이템 수를 세서 꼬리말 레코드를 추가한다고 생각해 보자. 
+그러려면 `ItemWriter`에서 `ItemStream`를 구현해서, 스트림이 다시 열리면
+실행 컨텍스트로 카운터를 재구성하면 된다.
+현실적으로 커스텀 `ItemWriter`는 재시작 가능한 다른 writer에게 위임하거나 (예를 들어 파일에 쓸 때),
+트랜잭션 리소스에 write하기 때문에, 상태를 유지하거나 재시작을 고려할 필요가 없는 경우가 많다.
+writer에 상태가 있다면(stateful) 반드시 `ItemStream`와 `ItemWriter`를 함께 구현해야 한다.
+writer를 호출하는 쪽에서도 `ItemStream`의 존재를 알아야 하기 때문에
+설정에서 stream으로 등록해줘야 한다는 것도 잊지 말자.
 
 ### 6.15. Item Reader and Writer Implementations
 
+이번에는 이전 섹션에서 다루지 않은 reader와 writer를 다룬다.
+
 ### 6.15.1. Decorators
 
-#### SynchronizedItemStreamReader
+어떨 때는 이미 있는 `ItemReader`에 다른 기능을 추가하고 싶을 것이다.
+스프링 배치는 `ItemReader`, `ItemWriter` 구현체에 다른 기능을 추가할 수 있는 데코레이터를 지원한다.
 
-#### SingleItemPeekableItemReader
+스프링 배치의 데코레이터는 아래와 같다:
 
-#### MultiResourceItemWriter
+- [`SynchronizedItemStreamReader`](#synchronizeditemstreamreader)
+- [`SingleItemPeekableItemReader`](#singleitempeekableitemreader)
+- [`MultiResourceItemWriter`](#multiresourceitemwriter)
+- [`ClassifierCompositeItemWriter`](#classifiercompositeitemwriter)
+- [`ClassifierCompositeItemProcessor`](#classifiercompositeitemprocessor)
 
-#### ClassifierCompositeItemWriter
+#### `SynchronizedItemStreamReader`
 
-#### ClassifierCompositeItemProcessor
+thread safe하지 않은 `ItemReader`를 사용한다면
+`SynchronizedItemStreamReader` 데코레이터를 사용해서
+`ItemReader`를 thread safe하게 만들 수 있다.
+스프링 배치는 `SynchronizedItemStreamReader` 인스턴스를 생성하는
+`SynchronizedItemStreamReaderBuilder`를 제공한다. 
+
+#### `SingleItemPeekableItemReader`
+
+스프링 배치는 `ItemReader`에 peak 메소드를 추가한 데코레이터를 제공한다.
+peek 메소드로 아이템 하나를 미리 볼 수 있다.
+peek 메소드는 계속 호출해도 같은 아이템을 리턴하며,
+이 아이템은 다음 `read` 메소드에서 반환할 아이템이다. 
+스프링 배치는 `SingleItemPeekableItemReader` 인스턴스를 생성하는
+`SingleItemPeekableItemReaderBuilder`를 제공한다. 
+
+> SingleItemPeekableItemReader의 peak 메소드는 
+> 여러 쓰레드에게 미리보기를 제공하지 않으므로 thread safe하지 않다.
+> peek를 호출한 여러 쓰레드 중 하나만 다음 번 read에서 반환할 아이템을 받을 수 있다.
+
+#### `MultiResourceItemWriter`
+
+`ResourceAwareItemWriterItemStream`를 감싸고 있는 `MultiResourceItemWriter`는, 
+현재 리소스에 쓰여진 아이템 수가 `itemCountLimitPerResource`를 초과하면 
+새 리소스를 만들어 새 리소스에 쓴다.
+스프링 배치는 `MultiResourceItemWriter` 인스턴스를 생성하는
+`MultiResourceItemWriterBuilder`를 제공한다. 
+
+#### `ClassifierCompositeItemWriter`
+
+`ClassifierCompositeItemWriter`는 `Classifier`로
+라우터(router) 패턴을 구현해서 각 아이템마다 `ItemWriter` 중 하나를 호출한다.
+모든 위임 객체(delegate)가 thread safe하면 이 구현체도 thread safe하다.
+스프링 배치는 `ClassifierCompositeItemWriter` 인스턴스를 생성하는
+`ClassifierCompositeItemWriterBuilder`를 제공한다. 
+
+#### `ClassifierCompositeItemProcessor`
+
+`ClassifierCompositeItemProcessor`는
+`Classifier`로 라우터 패턴을 구현해서 `ItemProcessor` 구현체 중 하나를 호출하는
+`ItemProcessor`다.
+스프링 배치는 `ClassifierCompositeItemProcessor` 인스턴스를 생성하는
+`ClassifierCompositeItemProcessorBuilder`를 제공한다. 
 
 ### 6.15.2. Messaging Readers And Writers
 
-#### AmqpItemReader
+스프링 배치는 자주 사용하는 메세징 시스템을 위해 아래 reader와 writer를 제공한다:
 
-#### AmqpItemWriter
+- [`AmqpItemReader`](#amqpitemreader)
+- [`AmqpItemWriter`](#amqpitemwriter)
+- [`JmsItemReader`](#jmsitemreader)
+- [`JmsItemWriter`](#jmsitemwriter)
+- [`KafkaItemReader`](#kafkaitemreader)
+- [`KafkaItemWriter`](#kafkaitemwriter)
 
-#### JmsItemReader
+#### `AmqpItemReader`
 
-#### JmsItemWriter
+`AmqpItemReader`는 `AmqpTemplate`으로 exchange에서 메세지를 읽거나 변환한다.
+스프링 배치는 `AmqpItemReader` 인스턴스를 생성하는
+`AmqpItemReaderBuilder`를 제공한다.
 
-#### KafkaItemReader
+#### `AmqpItemWriter`
 
-#### KafkaItemWriter
+`AmqpItemWriter`는 `AmqpTemplate`으로 AMQP exchange에 메세지를 보내는 `ItemWriter`다.
+`AmqpTemplate`에 이름을 명시하지 않으면 이름이 없는(nameless) exchange에 메세지를 전송한다.
+스프링 배치는 `AmqpItemWriter` 인스턴스를 생성하는 `AmqpItemWriterBuilder`를 제공한다.
+
+#### `JmsItemReader`
+
+`JmsItemReader`는 `JmsTemplate`을 사용하는 JMS 전용 `ItemReader`다.
+템플릿에 read() 메소드가 item을 읽을 때 사용할 디폴트 destination이 있어야 한다.
+스프링 배치는 `JmsItemReader` 인스턴스를 생성하는
+`JmsItemReaderBuilder`를 제공한다. 
+
+#### `JmsItemWriter`
+
+`JmsItemWriter`는 `JmsTemplate`을 사용하는 JMS 전용 `ItemWriter`다.
+템플릿에 write(List) 메소드가 item을 전송 때 사용할 디폴트 destination이 있어야 한다.
+스프링 배치는 `JmsItemWriter` 인스턴스를 생성하는
+`JmsItemWriterBuilder`를 제공한다. 
+
+#### `KafkaItemReader`
+
+`KafkaItemReader`는 아파치 카프카 토픽을 읽는 `ItemReader`다.
+토픽 한 개에서 여러 파티션의 메세지를 읽도록 설정할 수 있다.
+재시작을 대비해 실행 컨텍스트에 메세지 오프셋을 저장한다.
+스프링 배치는 `KafkaItemReader` 인스턴스를 생성하는
+`KafkaItemReaderBuilder`를 제공한다.
+
+#### `KafkaItemWriter`
+
+`KafkaItemWriter`은 `KafkaTemplate`로 디폴트 토픽에 이벤트를 전송하는
+아파치 카프카 전용 `ItemWriter`다. 
+스프링 배치는 `KafkaItemWriter` 인스턴스를 생성하는
+`KafkaItemWriterBuilder`를 제공한다.
 
 ### 6.15.3. Database Readers
 
-#### Neo4jItemReader
+스프링은 아래 데이터베이스 reader를 제공한다:
 
-#### MongoItemReader
+- [`Neo4jItemReader`](#neo4jitemreader)
+- [`MongoItemReader`](#neo4jitemwriter)
+- [`HibernateCursorItemReader`](#hibernatecursoritemreader)
+- [`HibernatePagingItemReader`](#hibernatepagingitemreader)
+- [`RepositoryItemReader`](#repositoryitemreader)
 
-#### HibernateCursorItemReader
+#### `Neo4jItemReader`
 
-#### HibernatePagingItemReader
+`Neo4jItemReader`는 페이징 기법으로 그래프 데이터베이스 Neo4j에서
+객체를 읽는 `ItemReader`다. 
+스프링 배치는 `Neo4jItemReader` 인스턴스를 생성하는
+`Neo4jItemReaderBuilder`를 제공한다.
 
-#### RepositoryItemReader
+#### `MongoItemReader`
+
+`MongoItemReader`는 페이징 기법으로 MongoDB에서 도큐먼트를 읽는 `ItemReader`다.
+스프링 배치는 `MongoItemReader` 인스턴스를 생성하는
+`MongoItemReaderBuilder`를 제공한다.
+
+#### `HibernateCursorItemReader`
+
+`HibernateCursorItemReader`는 하이버네이트 위에서 데이터베이스 레코드를 읽는 `ItemStreamReader`다.
+HQL 쿼리를 실행하고 초기화되면,
+`read()` 메소드를 호출할 때마다 결과셋을 순회해서 현재 로(row)와 일치하는 객체를 리턴한다.
+스프링 배치는 `HibernateCursorItemReader` 인스턴스를 생성하는
+`HibernateCursorItemReaderBuilder`를 제공한다.
+
+#### `HibernatePagingItemReader`
+
+`HibernatePagingItemReader`는 하이버네이트 위에서 데이터베이스 레코드를 읽지만,
+한 번에 아이템을 고정된 수만큼만 읽는 `ItemReader`다.
+스프링 배치는 `HibernatePagingItemReader` 인스턴스를 생성하는
+`HibernatePagingItemReaderBuilder`를 제공한다.
+
+#### `RepositoryItemReader`
+
+`RepositoryItemReader`는 `PagingAndSortingRepository`로 레코드를 읽는 `ItemReader`다.
+스프링 배치는 `RepositoryItemReader` 인스턴스를 생성하는
+`RepositoryItemReaderBuilder`를 제공한다.
 
 ### 6.15.4. Database Writers
 
-#### Neo4jItemWriter
+스프링은 아래 데이터베이스 writer를 제공한다:
 
-#### MongoItemWriter
+- [`Neo4jItemWriter`](#neo4jitemwriter)
+- [`MongoItemWriter`](#mongoitemwriter)
+- [`RepositoryItemWriter`](#repositoryitemwriter)
+- [`HibernateItemWriter`](#hibernateitemwriter)
+- [`JdbcBatchItemWriter`](#jdbcbatchitemwriter)
+- [`JpaItemWriter`](#jpaitemwriter)
+- [`GemfireItemWriter`](#gemfireitemwriter)
 
-#### RepositoryItemWriter
+#### `Neo4jItemWriter`
 
-#### HibernateItemWriter
+`Neo4jItemWriter`는 Neo4j 데이터베이스에 write하는 `ItemWriter` 구현체다. 
+스프링 배치는 `Neo4jItemWriter` 인스턴스를 생성하는
+`Neo4jItemWriterBuilder`를 제공한다.
 
-#### JdbcBatchItemWriter
+#### `MongoItemWriter`
 
-#### JpaItemWriter
+`MongoItemWriter`는 스프링 데이터의 `MongoOperations` 구현체를 사용해
+MongoDB에 write하는 `ItemWriter` 구현체다.
+스프링 배치는 `MongoItemWriter` 인스턴스를 생성하는
+`MongoItemWriterBuilder`를 제공한다. 
 
-#### GemfireItemWriter
+#### `RepositoryItemWriter`
+
+`RepositoryItemWriter`는 스프링 데이터의 `CrudRepository`를 감싸고 있는 `ItemWriter`다.
+스프링 배치는 `RepositoryItemWriter` 인스턴스를 생성하는
+`RepositoryItemWriterBuilder`를 제공한다. 
+
+#### `HibernateItemWriter`
+
+`HibernateItemWriter`는 하이버네이트 세션을 사용해서
+현재 하이버네이트 세션에 속하지 않은 엔터티를 저장하거나 업데이트하는 `ItemWriter`다.
+스프링 배치는 `HibernateItemWriter` 인스턴스를 생성하는
+`HibernateItemWriterBuilder`를 제공한다. 
+
+#### `JdbcBatchItemWriter`
+
+`JdbcBatchItemWriter`는 `NamedParameterJdbcTemplate`의 배치 기능을 사용해
+모든 아이템에 배치 명령을 실행하는 `ItemWriter`다.
+스프링 배치는 `JdbcBatchItemWriter` 인스턴스를 생성하는 `JdbcBatchItemWriterBuilder`를 제공한다. 
+
+#### `JpaItemWriter`
+
+`JpaItemWriter`는 JPA `EntityManagerFactory`로 영속성 컨텍스트에 속하지 않은
+엔터티를 병합하는 `ItemWriter`다.
+스프링 배치는 `JpaItemWriter` 인스턴스를 생성하는
+`JpaItemWriterBuilder`를 제공한다.
+
+#### `GemfireItemWriter`
+
+`GemfireItemWriter`는 `GemfireTemplate`으로 아이템을 키/값 쌍으로 GemFire에 저장하는
+`ItemWriter`다.
+스프링 배치는 `GemfireItemWriter` 인스턴스를 생성하는
+`GemfireItemWriterBuilder`를 제공한다.
 
 ### 6.15.5. Specialized Readers
 
+스프링 배치는 아래 특화된 reader를 제공한다:
+
+- [`LdifReader`](#ldifreader)
+- [`MappingLdifReader`](#mappingldifreader)
+- [`AvroItemReader`](#avroitemreader)
+
 #### LdifReader
+
+`LdifReader`는 `read` 메소드를 호출할 때 마다
+`Resource`에서 LDIF (LDAP Data Interchange Format) 레코드를
+읽어 파싱하고 `LdapAttribute` 객체로 반환한다.
+스프링 배치는 `LdifReader` 인스턴스를 생성하는
+`LdifReaderBuilder`를 제공한다.
 
 #### MappingLdifReader
 
+`MappingLdifReader`는 `Resource`에서 LDIF (LDAP Data Interchange Format) 레코드를 읽어
+각 LDIF 레코드를 파싱하고 POJO (Plain Old Java Object)로 매핑한다.
+read를 호출할 때마다 POJO를 반환한다.
+스프링 배치는 `MappingLdifReader` 인스턴스를 생성하는
+`MappingLdifReaderBuilder`를 제공한다.
+
 #### AvroItemReader
+
+`AvroItemReader`는 `Resource`에서 직렬화된 Avro 데이터를 읽는다.
+read 메소드를 호출할 때 마다 자바 클래스나 Avro 스키마로 명시한 타입의 인스턴스를 반환한다.
+입력 데이터의 Avro 스키마를 사용하도록 설정할 수 있지만 필수는 아니다.
+스프링 배치는 `AvroItemReader` 인스턴스를 생성하는 `AvroItemReaderBuilder`를 제공한다.
 
 ### 6.15.6. Specialized Writers
 
+스프링 배치는 아래 특화된 writer를 제공한다:
+
+- [`SimpleMailMessageItemWriter`](#simplemailmessageitemwriter)
+- [`AvroItemWriter`](#avroitemwriter)
+
 #### SimpleMailMessageItemWriter
+
+`SimpleMailMessageItemWriter`는 메일을 보낼 수 있는 `ItemWriter`다.
+실제 메세지 전송은 `MailSender`에 위임한다.
+스프링 배치는 `SimpleMailMessageItemWriter` 인스턴스를 생성하는
+`SimpleMailMessageItemWriterBuilder`를 제공한다.
 
 #### AvroItemWriter
 
+`AvroItemWrite`는 주어진 객체 타입이나 스키마를 사용해서
+자바 객체를 WriteableResource로 직렬화한다.
+출력 데이터에 Avro 스키마를 포함하도록 설정할 수 있지만 필수는 아니다.
+스프링 배치는 `AvroItemWriter` 인스턴스를 생성하는
+`AvroItemWriterBuilder`를 제공한다.
+
 ### 6.15.7. Specialized Processors
 
+스프링 배치는 아래 특화된 processor를 제공한다:
+
+- [`ScriptItemProcessor`](#scriptitemprocessor)
+
 #### ScriptItemProcessor
+
+`ScriptItemProcessor`는 현재 아이템을 스크립트로 전달해서 처리하고
+스크립트의 결과를 리턴하는 `ItemProcessor`다. 
+스프링 배치는 `ScriptItemProcessor` 인스턴스를 생성하는 `ScriptItemProcessorBuilder`를 제공한다.
