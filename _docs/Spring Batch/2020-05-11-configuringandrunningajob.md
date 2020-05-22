@@ -208,7 +208,6 @@ public BatchConfigurer batchConfigurer() {
 }
 ```
 
-	
 > 설정 클래스에 필요한 건 `@EnableBatchProcessing` 애노테이션 하나다.
 > 이 애노테이션을 선언한 클래스만 있으면 위에 있는 모든 기능을 사용할 수 있다.
 
