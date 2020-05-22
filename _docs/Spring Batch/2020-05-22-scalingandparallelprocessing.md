@@ -61,7 +61,7 @@ public Step sampleStep(TaskExecutor taskExecutor) {
 }
 ```
 
-메소드에 넘겨준 `taskExecutor`는 빈으로 정의된 `TaskExecutor` 인터페이스 구현체다.  
+메소드에 넘겨준 `taskExecutor`는 빈으로 정의된 `TaskExecutor` 인터페이스 구현체다.
 [TaskExecutor](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/task/TaskExecutor.html)
 는 표준 스프링 인터페이스이므로, 구현체 상세 내용은 스프링 유저 가이드를 참고하라.
 `SimpleAsyncTaskExecutor`는 가장 간단한 멀티 쓰레드 `TaskExecutor`다.

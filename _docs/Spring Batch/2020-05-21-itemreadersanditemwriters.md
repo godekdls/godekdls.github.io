@@ -416,14 +416,14 @@ public interface ItemStream {
 `ItemStream`을 구현한 `ItemWriter`도 마찬가지로 같은 규칙이 적용된다.
 2장에서 설명했듯이, `ExecutionContext`에 데이터가 있다면
 초기 상태가 아닌(처음 실행하는 게 아닌) `ItemReader`와 `ItemWriter`를 실행할 때 함께 사용된다.
-반대로 열려 있는 모든 리소스를 안전하게 닫으려면 `close` 메소드를 호출해야 한다.  
+반대로 열려 있는 모든 리소스를 안전하게 닫으려면 `close` 메소드를 호출해야 한다.
 `update` 메소드는 주로 현재까지 진행된 모든 상태를 `ExecutionContext`에 저장할 때 사용한다.
 커밋 전 데이터베이스에 현재 상태를 저장하려면 커밋 전에 호출해야 한다.
 
 `ItemStream`이 `Step`인 특이한 케이스에선(스프링 배치 코어에서)
 매 `StepExecution` 마다 `ExecutionContext`을 생성해 각 execution 상태를 저장하고,
 같은 `JobInstance`가 실행되면 이 값을 넘겨준다.
-Quartz에 비유하면 `JobDataMap`와 유사하게 동작한다.
+Quartz에 비유하자면 `JobDataMap`과 유사하다.
 
 ## 6.5. The Delegate Pattern and Registering with the Step
 
@@ -507,7 +507,7 @@ boolean booleanValue = fs.readBoolean(2);
 `FieldSet`는 `Date`, long, `BigDecimal` 등 다른 값도 지원한다.
 `FieldSet`의 가장 큰 장점은 일관성이다.
 여러 배치 job이 각자마다의 방법으로 파싱하는게 아니라,
-포맷 예외로 인한 에러를 처리할 때든, 간단한 데이터 변환을 할 때든 모두 같은 방법으로 파싱한다.  
+포맷 예외로 인한 에러를 처리할 때든, 간단한 데이터 변환을 할 때든 모두 같은 방법으로 파싱한다.
 
 ### 6.6.2. `FlatFileItemReader`
 
