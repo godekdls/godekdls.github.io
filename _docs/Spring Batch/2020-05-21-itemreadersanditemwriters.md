@@ -1673,7 +1673,7 @@ public MultiResourceItemReader multiResourceReader() {
 `read`를 호출할 때 마다 커서를 한 행씩 이동시켜서,
 나중에 처리할 수 있는 매핑된 객체를 반환한다.
 그 다음 모든 리소스를 반환할 수 있게 `close` 메소드를 호출한다.
-스프링 코어 `JdbcTemplate`는 콜백 패턴을 사용해서 `ResultSet`의 모든 로(row)를 매핑하고
+스프링 코어 `JdbcTemplate`은 콜백 패턴을 사용해서 `ResultSet`의 모든 로(row)를 매핑하고
 제어가 호출부로 넘어가기 전 close시킨다.
 하지만 배치에서는 step이 종료될 때까지 기다려야 한다.
 아래 이미지는 커서 기반 `ItemReader`의 동작 원리를 표현하는 일반적인 다이어그램이다.
@@ -1730,7 +1730,7 @@ public class CustomerCreditRowMapper implements RowMapper<CustomerCredit> {
 `JdbcCursorItemReader`는 `JdbcTemplate`과 주요 인터페이스를 공유하므로,
 같은 데이터를 `JdbcTemplate`으로 읽는 예제를 `ItemReader`를 사용했을 때와 비교해보는 것도 좋다.
 비교를 위해 `CUSTOMER` 데이터베이스에 1000개의 로(row)가 있다고 가정한다.
-가장 먼저 `JdbcTemplate`를 사용한 예제다:
+가장 먼저 `JdbcTemplate`을 사용한 예제다:
 
 ```java
 //For simplicity sake, assume a dataSource has already been obtained
