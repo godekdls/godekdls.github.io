@@ -70,7 +70,7 @@ public Step sampleStep(TaskExecutor taskExecutor) {
 데이터를 읽고, 처리하고, 청크단위로 쓴다 (commit interval 만큼).
 처리할 아이템 순서는 고정되어 있지 않으며,
 단일 쓰레드일 때처럼 청크에 연속적인 아이템이 들어있지 않다는 것에 주의하라.
-task executor에 있는 limit 설정 외에도 (쓰레드 풀에 자원을 반환할지 등)
+task executor에 있는 limit 설정 외에 (쓰레드 풀에 자원을 반환할지 등)
 tasklet에도 디폴트 값이 4인 throttle limit이 있다.
 쓰레드 풀을 충분히 사용하고 싶으면 이 값을 늘려야 한다.
 
@@ -99,7 +99,7 @@ step에 `DataSource`같이 커넥션 풀을 사용하는 리소스가 있다면
 특히 스프링 배치가 지원하는 reader, writer 대부분은 멀티 쓰레드를 고려해 설계하지 않았다.
 하지만 상태가 없거나(stateless) thread safe한 reader와 writer를 사용하면 멀티 쓰레드도 가능하며,
 [Spring Batch Samples](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples) 에
-처리 식별자 ([Preventing State Persistence](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#613-preventing-state-persistence) 참고)로
+처리 식별자([Preventing State Persistence](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#613-preventing-state-persistence) 참고)로
 데이터베이스 입력 테이블에서 이미 처리된 아이템을 추적하는 예제(parallelJob)가 있다.
 
 스프링 배치는 많은 `ItemWriter`, `ItemReader`를 제공하는데,
@@ -159,7 +159,7 @@ public TaskExecutor taskExecutor(){
 }
 ```
 
-task executor 설정로 각 flow를 실행할 때 사용할 `TaskExecutor` 구현체를 지정한다.
+task executor 설정으로 각 flow를 실행할 때 사용할 `TaskExecutor` 구현체를 지정한다.
 디폴트는 `SyncTaskExecutor`지만
 step을 병렬로 실행하려면 비동기(asynchronous) `TaskExecutor`가 필요하다.
 모든 flow는 job이 종료 상태를 집계하고 변경하기 전에 끝나야 한다는 것에 주의하라.
@@ -170,7 +170,7 @@ step을 병렬로 실행하려면 비동기(asynchronous) `TaskExecutor`가 필�
 ## 7.3. Remote Chunking
 
 remote chunking은 `Step`을 여러 프로세스로 나눠서 다른 미들웨어로 의사소통한다.
-아래 이미지는 이 패턴을 나타낸다:
+아래 이미지는 이 패턴을 나타내고 있다:
 
 ![Remote Chunking](./../../images/springbatch/remote-chunking.png)
 
@@ -216,8 +216,8 @@ JMS가 가장 좋은 후보지만, 그리드 컴퓨팅이나 공유 메모리 �
 `Job`을 실행할 때마다 각 워커를 한 번씩만 실행했다는 걸 보장해준다. 
 
 스프링 배치의 SPI는 `Step`의 특별한 구현체(`PartitionStep`)와
-특정 환경에 따라 구현해야 하는 두 strategy 인터페이스로 구성된다.
-strategy 인터페이스는 `PartitionHandler`와 `StepExecutionSplitter`이며,
+특정 환경에 따라 구현해야 하는 두 전략 인터페이스로 구성된다.
+전략 인터페이스는 `PartitionHandler`와 `StepExecutionSplitter`이며,
 아래 있는 시퀀스 다이어그램에서 그 역할을 알 수 있다:
 
 ![Partitioning SPI](./../../images/springbatch/partitioning-spi.png)
@@ -242,7 +242,7 @@ public Step step1Manager() {
 
 멀티 쓰레드 스텝의 `throttle-limit`과 유사하게, 
 `grid-size` 속성으로 task executor가 하나의 step에
-너무 많은 요청을 보내지 않게 할 수 있다.
+너무 많은 요청을 보내지 않게 만들 수 있다.
 
 [Spring Batch Samples](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples/src/main/resources/jobs)
 단위 테스트에 간단한 예시가 있으니 복사해 가거나 확장해서 사용해도 된다.
@@ -265,10 +265,11 @@ DTO같은 fabric에서 사용하는 특정 형식으로 감싼
 스프링 배치는 어떤 fabric을 사용하더라도 재시작 가능한 구조를 제공한다.
 실패한 `Job`은 항상 재시작할 수 있으며 실패한 `Step`만 재실행한다.
 
-`PartitionHandler` 인터페이스는 다양한 fabric 유형에 따라 다양하게 구현할 수 있으며,
+`PartitionHandler` 인터페이스는 fabric 유형에 따라 다양하게 구현할 수 있으며,
+fabric 유형은
 간단한 RMI 리모팅, EJB 리모팅, 커스텀 웹 서비스, JMS, Java Spaces,
 공유 메모리 그리드(Terracotta나 Coherence 같은), 
-그리드 execution fabrics (GridGain)를 포함한다.
+그리드 execution fabrics (GridGain) 등이 있다.
 스프링 배치는 상표가 있는 그리드나 리모팅 fabric 구현체는 제공하지 않는다.
 
 하지만 스프링의 `TaskExecutor` 전략을 사용해 
@@ -331,17 +332,17 @@ primary key 범위나, 라인 넘버, 입력 파일 위치같은 정보를 담�
 입력 컨텍스트와 바인딩할 때 `#{…​}` 플레이스홀더(step scope에서 나중에 바인딩된다)를 사용한다.
 
 step 실행의 이름(`Partitioner`가 리턴하는 `Map`의 키)은
-`Job` 안에 있는 모든 step 실행에서 유일해야 한다는 것 말고는 제약이 없다.
+`Job` 안에서 step을 실행할 때 마다 유일해야 한다는 것 말고는 제약이 없다.
 이를 지키기 위한 가장 쉬운 방법은 (그리고 이름이 의미를 담고 있게 하려면)
 실행할 step 이름(`Job` 안에서 이미 유니크하다)을 프리픽스로,
 숫자(카운터)를 suffix로 사용하는 prefix+suffix 네이밍 컨벤션을 사용하는 것이다.
 프레임워크는 이 컨벤션을 사용하는 `SimplePartitioner`를 제공한다.
 
 `PartitionNameProvider` 인터페이스를 추가로 구현하면
-사용하면 각 파티션의 이름을 제공할 수 있으며, 필수는 아니다. 
+각 파티션의 이름을 제공할 수 있으며, 필수는 아니다. 
 `Partitioner`가 이 인터페이스를 구현하면 재시작 할 때
 다시 파티셔닝하지 않고 이름으로 파티션을 조회해 재사용한다.
-파티셔닝이 무거운 작업이라면 최적화하는 용으로 유용하다.
+파티셔닝이 무거운 작업이라면 최적화 용으로 유용하다.
 `PartitionNameProvider`가 제공하는 이름은 `Partitioner`가 제공하는 이름과
 반드시 일치해야 한다.
 
