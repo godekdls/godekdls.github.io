@@ -380,7 +380,7 @@ public Step step1() {
 ```
 
 이 `Step`은 각 item을 재시도할 수 있는 횟수와 '재시도 가능한(retryable)' exception 리스트를 정의했다.
-재시도가 어떤 방식으로 이뤄지는 지는 [retry](https://godekdls.github.io/Spring%20Batch/retry/) 에서 자세히 설명한다.
+재시도가 어떤 방식으로 이뤄지는지는 [retry](https://godekdls.github.io/Spring%20Batch/retry/) 에서 자세히 설명한다.
 
 ### 5.1.7. Controlling Rollback
 
@@ -964,7 +964,7 @@ public class SkipCheckingListener extends StepExecutionListenerSupport {
 ### 5.3.3. Configuring for Stop
 
 [BatchStatus and ExitStatus](#batch-status-versus-exit-status) 를 봤다면,
-`Job`의 `BatchStatus`와 `ExitStatus`는 어떻게 결정되는 지 궁금한 사람도 있었을 것이다.
+`Job`의 `BatchStatus`와 `ExitStatus`는 어떻게 결정되는지 궁금한 사람도 있었을 것이다.
 `Step`의 상태는 실행되는 코드로 결정되는 반면, `Job`의 상태는 설정에 따라 달리진다.
 
 지금까지 다룬 job은 모두 transition이 없는 마지막 `Step`을 최소 한 개 이상 갖고 있었다.
@@ -1244,7 +1244,7 @@ public FlatFileItemReader flatFileItemReader(@Value("${input.file.name}") String
 
 > 여기서는 `PropertyPlaceholderConfigurer`를 사용해도 괜찮지만
 > 시스템 속성을 항상 사용한다면 설정하지 않아도 된다.
-> 스프링엔 시스템 속성을 필터링하고 placeholder replacement를 수행하는 `ResourceEditor`가 있기 때문이다.
+> 스프링엔 시스템 속성을 필터링하고 플레이스홀더를 치환하는 `ResourceEditor`가 있기 때문이다.
 
 보통 파일명을 시스템 속성으로 가져와서 직접 접근하기보단 `JobParameters` 활용을 선호한다.
 아래 코드에서 보이는 것 처럼 스프링 배치를 사용하면

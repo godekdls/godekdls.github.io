@@ -121,7 +121,7 @@ public Job footballJob() {
 첫번째 실행(2017/01/01)과 같은 job parameter를 사용해서 재실행한다면, 새 `JobExecution`이 생성된다.
 반면 `JobInstance`는 여전히 한 개다.
 
-`Job`은 job이 무엇인지와 어떻게 실행되어야 하는 지를 설명하고, `JobInstance`는 주로 올바른 재시작을 위해 execution을 그룹화하는 순수한 구조적 오브젝트이다.
+`Job`은 job이 무엇인지와 어떻게 실행되어야 하는지를 설명하고, `JobInstance`는 주로 올바른 재시작을 위해 execution을 그룹화하는 순수한 구조적 오브젝트이다.
 반면 `JobExecution`은 실제 실행 중에 발생한 작업에 대한 기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯 관리하고 유지해야하는 더 많은 프로퍼티를 가지고있다.
 
 **Table 1. JobExecution Properties**
@@ -236,7 +236,7 @@ job이 실패하고, 밤새도록 문제를 찾느라 'batch window'가 이제�
 
 ## 3.3 ExecutionContext
 
-`ExecutionContext`은 프레임워크에서 유지/관리하는 key-value 쌍의 collection으로,
+`ExecutionContext`는 프레임워크에서 유지/관리하는 key-value 쌍의 collection으로,
 `StepExecution` 오브젝트 또는 `JobExecution` 오브젝트에 속하는 상태(state)를 저장한다.
  Quartz에 익숙하다면, JobDataMap과 유사하게 느껴질 것이다.
  쉽게 말해 재시작을 용이하게 해준다는 건데,
@@ -329,7 +329,7 @@ ExecutionContext ecJob = jobExecution.getExecutionContext();
 ```
 
 주석에서 말하듯이 `ecStep`과 `ecJob`은 같지 않다.
-`ExecutionContext`은 두 종류가 있다.
+`ExecutionContext`는 두 종류가 있다.
 하나는 `Step` 레벨로 `Step` 내에서 커밋할 때마다 저장되는 값이고,
 `Job` 레벨의 context는 모든 `Step` 실행 사이마다 저장되는 값이다.
 

@@ -184,8 +184,8 @@ public class StepScopeTestExecutionListenerIntegrationTests {
 }
 ```
 
-step scope를 테스트 메소들를 실행하는 동안으로 설정하고 싶다면 리스너를 쓰는게 편리하다.
-좀 더 유연하지만, 조금 침략적일 수 있는 `StepScopeTestUtils`도 있다.
+step scope를 테스트 메소드를 실행하는 동안으로 설정하고 싶다면 리스너를 쓰는게 편리하다.
+좀 더 유연하지만, 조금 극단적인 `StepScopeTestUtils`도 있다.
 아래 예제는 이전에 사용한 reader로 item 수를 계산한다:
 
 ```java

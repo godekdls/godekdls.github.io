@@ -156,7 +156,7 @@ Application Core 모두 공통 Infrastructure 위에서 빌드한다.
 이런 유형의 배치 어플리케이션은 translation 유틸리티 모듈을 부분적으로 혹은 전체를 포함한다
  (Basic Batch Service를 보라).
 - *Validation Applications*: 
-인풋/아웃풋 레코드가 정확하고 일관성있는 지 검사한다.
+인풋/아웃풋 레코드가 정확하고 일관성있는지 검사한다.
 일반적으로 파일 헤더와 트레일러, 체크섬, 검증 알고리즘, 레코드 레벨 교차 점검을 기반으로 만든다.
 - *Extract Applications*: 
 이 어플리케이션은 데이터베이스나 입력 파일로부터 미리 정의된 규칙대로 데이터를 읽어
