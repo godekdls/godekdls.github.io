@@ -67,7 +67,7 @@ flow 정의 외부화(`Flow`)같은 다른 요소도 설정할 수 있다.
 ### 4.1.1. Restartability
 
 배치 job을 실행할 때 발생하는 주요 이슈는 `Job`이 재시작할 때의 동작과 관련있다.
-job을 실행할 때 특정 `JobInstance`의 `JobExecution`가 이미 존재한다면, '재시작'으로 간주된다.
+job을 실행할 때 특정 `JobInstance`의 `JobExecution`이 이미 존재한다면, '재시작'으로 간주된다.
 모든 잡이 중단된 지점부터 재시작할 수 있다면 이상적이겠지만, 불가능할 때가 있다.
 이런 경우에는 개발자가 직접 새 `JobInstance`를 생성해야 한다.
 물론 스프링 배치를 사용하면 문제가 조금 쉬워지는데,
@@ -436,7 +436,7 @@ protected JobLauncher createJobLauncher() throws Exception {
 이 때는 요청을 비동기로 처리해서 `SimpleJobLauncher`가 요청 즉시
 caller에게 결과를 리턴해줘야 한다.
 배치같은 긴 시간이 소요되는 작업 동안 HTTP 요청을 열린 채로 두는 것은
-좋은 방법이 아니기 때문이다. 아래는 작동 순서 예시이다:
+좋은 방법이 아니기 때문이다. 다음은 작동 순서 예시이다:
 
 ![Asynchronous Job Launcher Sequence](./../../images/springbatch/job-launcher-sequence-async.png)
 
@@ -483,7 +483,7 @@ Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니�
 - 어플리케이션 컨텍스트에 있는 `JobLauncher`로 job 실행
 
 이 모든 건 인자(argument)만 넘겨받을 수 있으면 가능하다.
-아래는 필수 인자들이다:
+필수 인자는 다음과 같다:
 
 | jobPath 	|`ApplicationContext`를 생성할 때 필요한 XML 파일 위치. 이 파일은 Job 실행에 필요한 모든 것을 포함한다.|
 | jobPath   |실행할 job의 이름|
@@ -500,7 +500,7 @@ Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니�
 첫 번째 인자받은 'io.spring.EndOfDayJobConfiguration'는 Job을 포함한 설정 클래스의 풀네임이다.
 두 번재 인자 'endOfDay'는 job의 이름이다.
 마지막으로 넘긴 인자 'schedule.date(date)=2007/05/05'는 JobParameter로 변환된다.
-아래는 자바 설정 예제이다:
+다음은 자바 설정 예제이다:
 
 ```java
 @Configuration

@@ -140,7 +140,7 @@ public Step simpleStep() {
 `StepExecution` 플래그를 설정하는 것이다.
 이 방법을 사용하려면 현재 `StepExecution`에 접근하는
 `StepListener`를 구현하고 `Step`에 등록해야 한다. 
-아래는 플래그를 설정하는 리스너 예시이다:
+다음은 플래그를 설정하는 리스너 예시이다:
 
 ```java
 public class CustomItemWriter extends ItemListenerSupport implements StepListener {
@@ -188,7 +188,7 @@ public FlatFileItemWriter<String> itemWriter(Resource outputResource) {
 ```
 
 footer callback 인터페이스는 꼬리말을 적을 때 호출하는 메소드 하나만 가지고 있다.
-아래는 인터페이스 정의다: 
+인터페이스 정의는 다음과 같다: 
 
 ```java
 public interface FlatFileFooterCallback {
@@ -248,7 +248,7 @@ exception이 발생하지 않았다고 보장할 수 있는
 `FlatFileItemWriter`에
 `TradeItemWriter`(`FlatFileFooterCallback`를 구현한)를 연결해야
 `writeFooter`를 호출한다.
-아래는 그 방법을 보여주는 예시다:
+다음은 그 방법을 보여주는 예시다:
 
 ```java
 @Bean
@@ -276,7 +276,7 @@ public FlatFileItemWriter<String> flatFileItemWriter(Resource outputResource) {
 클래스에 상태가 있는데도(stateful, `totalAmount`를 저장하므로)
 `totalAmount`를 데이터베이스에 저장하지 않기 때문이다.
 따라서 재시작하면 이 값을 얻어올 수 없다.
-이 클래스를 재시작할 수 있게 만드려면
+이 클래스를 재시작할 수 있게 만들려면
 아래 예제처럼 `ItemStream` 인터페이스의 `open`,`update` 메소드를 구현해야한다:
 
 ```java
@@ -494,7 +494,7 @@ public class NoWorkFoundStepExecutionListener extends StepExecutionListenerSuppo
 
 현재 step에서 다음 step으로 특정 정보를 넘기는게 유용할 때가 많다.
 `ExecutionContext`를 사용하면 데이터를 넘길 수 있다.
-중요한 건 `ExecutionContext`이 `Step` 레벨에도 있고 `Job` 레벨에도 있다는 것이다.
+중요한 건 `ExecutionContext`가 `Step` 레벨에도 있고 `Job` 레벨에도 있다는 것이다.
 `Job` `ExecutionContext`는 `Job`을 실행하는 동안 계속 유지되지만
 `Step` `ExecutionContext`는 step에서만 유효하다.
 다시 말해 `Job` `ExecutionContext`는 각 `Step`이 끝날 때만 업데이트되지만

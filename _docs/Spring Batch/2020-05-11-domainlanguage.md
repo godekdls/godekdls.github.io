@@ -126,7 +126,7 @@ public Job footballJob() {
 반면 `JobInstance`는 여전히 한 개다.
 
 `Job`은 job이 무엇인지와 어떻게 실행되어야 하는지를 설명하고, `JobInstance`는 주로 올바른 재시작을 위해 execution을 그룹화하는 순수한 구조적 오브젝트이다.
-반면 `JobExecution`은 실제 실행 중에 발생한 작업에 대한 기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯 관리하고 유지해야하는 더 많은 프로퍼티를 가지고있다.
+반면 `JobExecution`은 실제 실행 중에 발생한 작업에 대한 기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯 관리하고 유지해야하는 더 많은 프로퍼티를 가지고 있다.
 
 **Table 1. JobExecution Properties**
 
@@ -137,7 +137,7 @@ public Job footballJob() {
 |endTime|성공 여부와 상관 없이 execution이 종료될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
 |exitStatus|실행 결과를 나타내는 `ExitStatus`. caller에게 리턴되는 exit 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 5장 참고. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
 |createTime|`JobExecution`이 처음 저장될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 잡은 시작되지 않았을 수도 있는데(따라서 시작 시간이 없을 수도 있음), createTime은 프레임워크가 job 레벨의 `ExecutionContexts` 관리할 때 사용하기 때문에 항상 존재한다.|
-|lastUpdated|`JobExecution`가 저장된 마지막 시간을 나타내는 `java.util.Date`. 아직 잡이 시작되지 않았다면 이 필드는 비어있다.|
+|lastUpdated|`JobExecution`이 저장된 마지막 시간을 나타내는 `java.util.Date`. 아직 잡이 시작되지 않았다면 이 필드는 비어있다.|
 |executionContext|실행 사이에 유지되어야하는 모든 사용자 데이터를 포함하는 "property bag".|
 |failureExceptions|`Job` 실행 중 발생한 예외 리스트. `Job`이 실패할 때 둘 이상의 예외가 발생한 경우에 유용하다.|
 
@@ -204,7 +204,7 @@ job이 실패하고, 밤새도록 문제를 찾느라 'batch window'가 이제�
 `Step`은 배치 job의 독립적이고 순차적인 단계를 캡슐화한 도메인 오브젝트다.
 즉, 모든 Job은 하나 이상의 step으로 구성된다.
 `Step`은 실제 배치 처리를 정의하고 컨트롤하는 데 필요한 모든 정보를 가지고 있다.
-설명이 모호하게 느껴질 수도 있는데, 주어진 `Step`의 모든 내용은 `Job`을 만드는 개발자의 재량이기 때문에 그렇다.
+설명이 모호하게 느껴질 수도 있는데, `Step`의 모든 내용은 `Job`을 만드는 개발자 재량이기 때문에 그렇다.
 `Step`은 어떻게 개발하느냐에 따라 간단할 수도 있고 복잡할 수도 있다.
 즉, 단순히 데이터베이스에서 파일을 읽는, 코드가 거의 필요없거나 전혀 필요하지 않은(사용한 구현체에 따라 다름) 간단한 작업이 될 수도 있고,
 프로세싱의 일부를 처리하는 복잡한 비지니스 로직도 될 수 있다.
@@ -323,12 +323,12 @@ if (executionContext.containsKey(getKey(LINES_READ_COUNT))) {
 각 `Step`에서 데이터베이스로부터 `ExecutionContext`를 읽어와 함께 처리한다(`StepExecution`의 일부로)
 반대로 01-02 배치에선 다른 `JobInstance`를 사용하므로 `Step`에서는 빈 컨텍스트를 주입받는다.
 프레임워크는 여러 가지 상황을 고려해 job 인스턴스와 컨텍스트를 결정한다.
-`StepExecution`가 생길 때 마다 각 `ExecutionContext`가 하나씩 생긴다는 점도 알아두자.
+`StepExecution`이 생길 때 마다 각 `ExecutionContext`가 하나씩 생긴다는 점도 알아두자.
 `ExecutionContext`는 keyspace를 공유하기 때문에 사용에 주의해야한다.
 즉, 데이터가 겹쳐써지지 않도록 값을 넣을 때 주의해야한다는 말이다.
 반대로 `Step`은 데이터 저장하지 않으므로 별다른 영향을 주지 않는다.
 
-또한 `JobExecution` 당 `ExecutionContext`이 하나인 것 처럼, 모든 `StepExecution` 마다 `ExecutionContext`를 한 개씩 가지고 있다는 점도 앚지말자. 
+또한 `JobExecution` 당 `ExecutionContext`가 하나인 것처럼, 모든 `StepExecution` 마다 `ExecutionContext`를 한 개씩 가지고 있다는 점도 앚지말자. 
 예시로 아래 코드를 보자:
 
 ```java

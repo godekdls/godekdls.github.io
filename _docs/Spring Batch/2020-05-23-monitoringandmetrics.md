@@ -37,7 +37,7 @@ permalink: /Spring%20Batch/monitoringandmetrics/
 
 커스텀 컴포넌트에서 필요한 메트릭을 추가하고 싶다면
 Micrometer API를 직접 사용하는 것을 권장한다.
-아래는 `Tasklet`에서 걸린 시간을 측정하는 예제다:
+다음은 `Tasklet`에서 걸린 시간을 측정하는 예제다:
 
 ```java
 import io.micrometer.core.instrument.Metrics;

@@ -270,7 +270,7 @@ public void noWork() {
 스텁(stub) 오브젝트가 많아 단위 테스트가 장황해진다.
 스프링 배치 테스트 모듈은 이를 위해
 도메인 오브젝트를 생성하는 팩토리를 제공한다: `MetaDataInstanceFactory`.
-아래 보이는 것 처럼, 이 팩토리가 있으면 단위 테스트를 보다 간결하게 작성할 수 있다:
+아래 보이는 것처럼, 이 팩토리가 있으면 단위 테스트를 보다 간결하게 작성할 수 있다:
 
 ```java
 private NoWorkFoundStepExecutionListener tested = new NoWorkFoundStepExecutionListener();
