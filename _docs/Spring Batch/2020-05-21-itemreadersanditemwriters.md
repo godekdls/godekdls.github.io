@@ -101,7 +101,7 @@ permalink: /Spring%20Batch/itemreadersanditemwriters/
 
 모든 배치 처리는 제일 간단하게 설명하면
 다량의 데이터를 읽어서 어떤 계산이나 변환을 수행하고 그 결과를 쓰는 작업이다.
-스프링배치는 벌크 read와 write을 위한 세 가지 핵심 인터페이스를 제공한다:
+스프링 배치는 벌크 read와 write을 위한 세 가지 핵심 인터페이스를 제공한다:
 `ItemReader`, `ItemProcessor`, `ItemWriter`.
 
 ## 6.1. `ItemReader`
@@ -1018,7 +1018,7 @@ write할 수 있어야 한다.
 #### `LineAggregator`
 
 `LineTokenizer` 인터페이스가 필요했던 것처럼,
-파일을 쓸 때도 item을 `String`으로 바꾸려면 
+item을 `String`으로 바꿔 파일에 기록하려면 
 여러 필드를 하나의 string으로 만들 방법이 필요하다.
 스프링 배치에선 아래 정의에 있는 `LineAggregator`가 그 역할을 한다: 
 
@@ -1085,7 +1085,7 @@ public FlatFileItemWriter itemWriter() {
 
 #### `FieldExtractor`
 
-앞에 나온 예제도 기본적인 파일을 쓸 때 유용하지만, 
+앞에 나온 예제도 유용하지만, 
 `FlatFileItemWriter`는 대부분 도메인 객체와 사용하며,
 따라서 그 객체를 문자열로 바꿔야 한다.
 파일을 읽을 땐 다음의 처리가 필요했다:
@@ -1094,7 +1094,7 @@ public FlatFileItemWriter itemWriter() {
 2. 문자열을 `LineTokenizer#tokenize() method`에 전달해서 `FieldSet`를 리턴받는다.
 3. 토큰화한 `FieldSet`을 `FieldSetMapper`에 전달해 `ItemReader#read()` 메소드 결과를 받는다.
 
-파일에 쓸 때는 유사하지만 정 반대 단계를 거친다:
+파일에 기록할 때는 유사하지만 정 반대 단계를 거친다:
 
 1. item을 writer에 전달한다.
 2. item의 필드를 배열로 변환한다.
@@ -2113,7 +2113,7 @@ exception이 발생하는 건 이미 전체 버퍼가 쓰여진 다음이다.
 혹은 사용하려는 서비스 자체가 step의 메인 `ItemReader`인 경우,
 이미 있는 서비스를 `ItemReader`나 `ItemWriter`으로 사용해야 할 때도 있다.
 필요한 서비스를 감싸서 아답터(adapter) 클래스를 만드는 건 사소한 일이지만
-자주 사용하는 패턴이기때문에 스프링배치는 `ItemReaderAdapter`와 `ItemWriterAdapter`
+자주 사용하는 패턴이기때문에 스프링 배치는 `ItemReaderAdapter`와 `ItemWriterAdapter`
 구현체를 제공한다.
 두 클래스 모두 위임(delegate) 패턴으로 표준 스프링 메소드를 구현했으며
 설정하기도 매우 쉽다.

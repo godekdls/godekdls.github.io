@@ -242,7 +242,7 @@ public Step step1Manager() {
 }
 ```
 
-멀티 쓰레드 스텝의 `throttle-limit`과 유사하게, 
+멀티 쓰레드 step의 `throttle-limit`과 유사하게, 
 `grid-size` 속성으로 task executor가 하나의 step에
 너무 많은 요청을 보내지 않게 만들 수 있다.
 
@@ -251,7 +251,7 @@ public Step step1Manager() {
 (`Partition*Job.xml` 설정 참고).
 
 스프링 배치는 각 파티션의 step을 "step1:partition0" 등으로 이름을 매긴다. 
-일관성을 위해 매니저 스텝을 "step1:manager"라고 부르기도 한다.
+일관성을 위해 매니저 step을 "step1:manager"라고 부르기도 한다.
 step에 별칭(alias)을 지정할 수도 있다
 (`id`대신 `name` 속성을 지정함으로써).
 
@@ -355,7 +355,7 @@ step 실행의 이름(`Partitioner`가 리턴하는 `Map`의 키)은
 스프링 배치의 StepScope를 사용하면 쉽게 가능하다
 ([Late Binding](https://godekdls.github.io/Spring%20Batch/configuringastep/#54-late-binding-of-job-and-step-attributes) 섹션에서 자세히 다뤘다). 
 예를 들어 `Partitioner`가 `ExecutionContext`을 만들 때
-각 스텝에서 사용할 다른 파일(혹은 디렉토리)을 가리키는 fileName을 저장한다면,
+각 step에서 사용할 다른 파일(혹은 디렉토리)을 가리키는 fileName을 저장한다면,
 `Partitioner`의 결과값은 아래 테이블과 유사할 것이다:
 
 **Table 17. 타겟 디렉토리 처리를 위해 `Partitioner`가 제공하는 step 실행 이름과 실행 컨텍스트 예시**

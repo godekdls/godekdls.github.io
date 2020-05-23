@@ -56,7 +56,7 @@ JCL 및 COBOL 개발자는 C, C # 및 Java 개발자와 같은 개념에 익숙 
 ![Job Hierarchy](./../../images/springbatch/job-hierarchy.png)
 
 스프링 배치에서 `Job`은 단순히 `Step` 인스턴스의 컨테이너 개념이다.
-논리적으로 한 플로우에 속한 여러 스텝을 결합하고 재시작 같은 속성값을 전역으로 구성할 수 있다.
+논리적으로 한 플로우에 속한 여러 step을 결합하고, 재시작 같은 속성을 전역으로 구성할 수 있다.
 job configuration은 다음과 같은 값이 있다:
 
 - 단순 job의 name
@@ -170,7 +170,7 @@ job이 실패하고, 밤새도록 문제를 찾느라 'batch window'가 이제�
 9시 31분에 바로 시작해서 1시간이 걸려 10시 30분에 정상적으로 종료된 상황이다.
 두 job이 동일한 데이터에 접근해서 데이터베이스 레벨에서 잠금 문제를 일으킬 일이 없다면, `JobInstance` 한 개씩 순차적으로 진행할 필요는 없다.
 `Job`을 실행할지 말지 결정하는 일은 전적으로 스케줄러에 달려있다.
-여기서 두 `JobInstance`는 독립적이므로, 스프링배치는 동시에 실행한다고 해서 job을 중단시키지 않는다.
+여기서 두 `JobInstance`는 독립적이므로, 스프링 배치는 동시에 실행한다고 해서 job을 중단시키지 않는다.
 (`JobInstance`가 이미 실행 중인데 같은 `JobInstance`를 실행하려고 하면 `JobExecutionAlreadyRunningException`이 발생한다).
 아래 표를 보면 이제 `JobInstance` 및 `JobParameters` 테이블에 entiry 하나씩이 추가되었고, `JobExecution` 테이블에 두 개의 entry가 추가되었다.
 
@@ -256,7 +256,8 @@ job이 실패하고, 밤새도록 문제를 찾느라 'batch window'가 이제�
 executionContext.putLong(getKey(LINES_READ_COUNT), reader.getPosition());
 ```
 
-`Job` Stereotypes에서 예시로 사용한 EndOfDay를 그대로 가져와서 데이터베이스에서 파일을 읽는 'loadData'라는 스텝 한 개가 있다고 가정해보자.
+`Job` Stereotypes에서 예시로 사용한 EndOfDay를 그대로 가져와서, 
+데이터베이스에서 파일을 읽는 'loadData' step 하나가 있다고 가정해보자.
 첫 실행에 실패한 이후의 메타 데이터 테이블은 아래와 같을 것이다:
 
 **Table 9. BATCH_JOB_INSTANCE**
