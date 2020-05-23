@@ -213,7 +213,7 @@ public BatchConfigurer batchConfigurer() {
 > 설정 클래스에 필요한 건 `@EnableBatchProcessing` 애노테이션 하나다.
 > 이 애노테이션을 선언한 클래스만 있으면 위에 있는 모든 기능을 사용할 수 있다.
 
-이 기반 설정만 해주면 기본으로 제공되는 빌더 팩토리로 job을 설정할 수 있다.
+이 기반 설정만 해주면 기본으로 제공하는 빌더 팩토리로 job을 만들 수 있다.
 아래 예제에서는 `JobBuilderFactory`와 `StepBuilderFactory`로 두 개의 step을 가지고 있는 job을 구성한다.
 
 ```java
@@ -291,7 +291,8 @@ max varchar length는 디폴트값이 2500인데,
 
 ### 4.3.1. Transaction Configuration for the JobRepository
 
-네임스페이스나 기본으로 제공되는 `FactoryBean`을 사용한다면 레포지토리를 위한 트랜잭션 advice가 자동으로 생성된다.
+네임스페이스나 기본으로 제공하는 `FactoryBean`을 사용한다면 
+레포지토리를 위한 트랜잭션 advice가 자동으로 생성된다.
 이는 실패 후 재시작할 때 꼭 필요한 state를 포함한 배치 메타 데이터가 올바르게 저장됨을 보장해준다.
 레포지토리 메소드에 트랜잭션 처리가 없다면 이를 보장할 수 없다.
 두 프로세스가 동시에 같은 job을 실행하려고 하면 하나만 성공해야하므로 `create*` 메소드의 isolation 레벨은 별도로 지정한다.
@@ -668,7 +669,7 @@ public JobExplorer getJobExplorer() throws Exception {
 컨텍스트 내에 있는 job을 추적하고 싶을 때 유용하다.
 여러 곳에서 job을 생성하는 환경이라면(e.g. 자식 컨텍스트) 어플리케이션 컨텍스트에서 job을 수집할 때도 사용할 수 있다.
 커스텀 `JobRegistry` 구현체 또한 등록된 job의 이름이나 프로퍼티를 관리할 때 유용할 수 있다.
-기본으로 제공되는 구현체는 job 이름을 job 인스턴스에 매핑한 간단한 map 기반이다.
+기본으로 제공하는 구현체는 job 이름을 job 인스턴스에 매핑한 간단한 map 기반이다.
 
 `@EnableBatchProcessing`을 선언하면 `JobRegistry`를 기본으로 제공한다.
 자체 구현체를 사용하고 싶다면:

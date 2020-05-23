@@ -1104,7 +1104,7 @@ public Job job() {
 앞에 나온 모든 `Job`은 step을 한 번에 하나씩 선형적으로 실행한다.
 스프링 배치는 이 전형적인 방법 외에 병렬 플로우(flow)를 지원한다.
 
-자바 기반 설정에선 기본으로 제공되는 빌더를 통해 split을 설정한다.
+자바 기반 설정에선 기본으로 제공하는 빌더로 split을 설정할 수 있다.
 아래 예제에서 보이는 바와 같이 `split` element는 하나 이상의 'flow' element를 포함하며,
 여기서 전체 flow를 분리해 정의한다.
 'split' element는 'next' attribute, 'next', 'end', 'fail' element같이
