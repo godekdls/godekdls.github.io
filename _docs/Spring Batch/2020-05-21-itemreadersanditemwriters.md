@@ -421,7 +421,7 @@ public interface ItemStream {
 커밋 전 데이터베이스에 현재 상태를 저장하려면 커밋 전에 호출해야 한다.
 
 `ItemStream`이 `Step`인 특이한 케이스에선(스프링 배치 코어에서)
-매 `StepExecution` 마다 `ExecutionContext`을 생성해 각 execution 상태를 저장하고,
+매 `StepExecution` 마다 `ExecutionContext`을 생성해 각 실행 상태를 저장하고,
 같은 `JobInstance`가 실행되면 이 값을 넘겨준다.
 Quartz에 비유하자면 `JobDataMap`과 유사하다.
 
@@ -907,7 +907,7 @@ public PatternMatchingCompositeLineMapper orderFileLineMapper() {
 `PatternMatchingCompositeLineMapper`는
 각 라인별로 그에 맞는 객체에 위임(delegate)하기 위해 
 `PatternMatcher#match` 메소드를 사용한다. 
-`PatternMatcher`는 특별한 의미를 가진 와일드 카드 문자 두개를 허용한다:
+`PatternMatcher`는 특별한 의미를 가진 와일드 카드 문자 두 개를 허용한다:
 물음표("?")는 문자 한개를, 별("`*`")은 0개 이상의 문자를 의미한다.
 앞에선 라인 프리픽스를 지정하기 위해 모든 패턴을 별로 끝냈다는 것에 주목하라.
 `PatternMatcher`는 설정된 순서에 상관없이 항상 가장 구체적인 패턴부터 처리한다.

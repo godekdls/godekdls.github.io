@@ -997,7 +997,7 @@ stop transition element는 `Steps`의 `BatchStatus`, `ExitStatus`에는 영향�
 
 step이 끝나기만 하면 `Job`의 `BatchStatus`를 `COMPLETED`로 둔 채 종료할 수도 있다.
 `COMPLETED` 상태로 종료된 `Job`은 재시작할 수 없다
-(프레임워크에서 `JobInstanceAlreadyCompleteException`를 발생시킨다).
+(프레임워크에서 `JobInstanceAlreadyCompleteException`을 발생시킨다).
 
 자바 기반 설정을 사용한다면 'end' 메소드를 사용한다.
 `end` 메소드에 `Job`의 `ExitStatus`를 커스터마이징할 수 있는 'exitStatus' 파라미터를 넘길 수도 있다 (옵션).
@@ -1329,11 +1329,11 @@ scope는 스프링 컨테이너의 기본 기능이 아니기 때문에 명시�
 ### 5.4.2. Job Scope
 
 스프링 배치 3.0에서 도입된 `Job` scope는 `Step` scope 설정과 유사하지만,
-`Job` context를 위한 Scope이기 때문에
+`Job` 컨텍스트를 위한 Scope이기 때문에
 이 빈의 인스턴스는 실행 중인 job마다 하나씩만 가지고있다.
 `#{..}` placeholder를 사용해서 `JobContext`에서 접근할 수 있는 late binding 참조를 사용할 수 있다.
-이 기능을 사용하면 아래 에제처럼 job이나 job execution context,
-job parameter로부터 빈 프로퍼티를 가져올 수 있다:
+이 기능을 사용하면 아래 에제처럼 job이나 job 실행 컨텍스트,
+job 파라미터로부터 빈 프로퍼티를 가져올 수 있다:
 
 ```java
 @JobScope

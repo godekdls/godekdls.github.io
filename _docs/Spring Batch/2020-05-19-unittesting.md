@@ -108,7 +108,7 @@ JobExecution jobExecution = jobLauncherTestUtils.launchStep("loadFileStep");
 ## 10.4. Testing Step-Scoped Components
 
 런타임에 step에 설정하는 컴포넌트는 step 스코프로 선언되어
-step이나 job의 context에 나중에 바인딩(late binding)되는 경우가 있다.
+step이나 job 컨텍스트에 나중에 바인딩(late binding)되는 경우가 있다.
 실제로 step이 실행중인 것처럼 컨텍스트를 생성하지 않으면
 독립적으로 테스트하기 매우 까다롭다.
 스프링 배치에는 이를 위한 두 가지 컴포넌트가 있다:
@@ -150,7 +150,7 @@ public class StepScopeTestExecutionListenerIntegrationTests {
 다른 하나는 스프링 배치에서 제공하는 `StepScopeTestExecutionListener`다.
 이 리스너는 팩토리 메소드를 찾아 `StepExecution`을 생성하고,
 런타임에 `Step`이 실행됐을 때 처럼, 테스트 메소드의 컨텍스트로 사용할 수 있다.
-팩토리 메소드는 각 메소드의 선언을 보고 결정한다 (`StepExecution`를 반환해야 한다).
+팩토리 메소드는 각 메소드의 선언을 보고 결정한다 (`StepExecution`을 반환해야 한다).
 적절한 팩토리 메소드가 없으면 디폴트 `StepExecution`을 생성한다.
 
 4.1 버전부터 테스트 클래스에 `@SpringBatchTest`를 선언하면 

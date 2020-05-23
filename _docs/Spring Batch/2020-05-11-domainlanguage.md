@@ -48,7 +48,7 @@ JCL 및 COBOL 개발자는 C, C # 및 Java 개발자와 같은 개념에 익숙 
 
 ## 3.1. Job
 
-여기서는 배치 잡 컨셉과 관련된 개념을 설명한다.
+여기서는 배치 job 컨셉과 관련된 개념을 설명한다.
 `Job`은 전체 배치 프로세스를 캡슐화한 엔터티다.
 다른 스프링 프로젝트와 마찬가지로, `Job`은 XML 기반이나 자바 기반 설정을 둘 다 지원한다.
 이 설정은 "job configuration"이라고도 할 수 있지만, `Job`은 아래 다이어그램에서 보여지듯이 전체 hierarchy의 가장 위에 있는 개념일 뿐이다.
@@ -81,7 +81,7 @@ public Job footballJob() {
 ### 3.1.1. JobInstance
 
 `JobInstance`는 논리적인 job 실행을 뜻한다.
-앞에 있는 다이어그램의 'EndOfDay' `Job`처럼 하루가 끝날 때마다 한번 실행되야하는 배치 잡을 생각해보자.
+앞에 있는 다이어그램의 'EndOfDay' `Job`처럼 하루가 끝날 때마다 한번 실행되야하는 배치 job을 생각해보자.
 'EndOfDay' job은 하나지만, `Job`을 각각 실행할 때마다 따로 추적할 수 있어야 한다.
 이 예시에서는 매일 하나의 논리적인 `JobInstance`가 필요하다.
 예를 들어, 1월 1일 실행, 1월 2일 실행, 등등.
@@ -103,7 +103,7 @@ public Job footballJob() {
 `JobInstance`가 Job과 어떻게 다른지 이야기하다 보면 보통 이런 질문이 나온다:
 "`JobInstance`는 다른 JobInstance와 어떻게 구분하지?"
 정답은 `JobParameters`다.
-`JobParameters`는 배치 잡을 시작할 때 사용되는 파라미터 셋을 가지고 있는 오브젝트다.
+`JobParameters`는 배치 job을 시작할 때 사용되는 파라미터 셋을 가지고 있는 오브젝트다.
 아래 이미지에서 보이듯, 실행 중 식별이나 참조 데이터로도 사용될 수 있다.
 
 ![Job Parameters](./../../images/springbatch/job-parameters.png)
@@ -135,14 +135,14 @@ public Job footballJob() {
 |Status|실행 상태를 나타내는 `BatchStatus` 오브젝트. 실행 중일 때는 `BatchStatus#STARTED`. 실패하면 `BatchStatus#FAILED`. 성공적으로 종료되면 `BatchStatus#COMPLETED`|
 |startTime|execution이 실행될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 아직 잡이 시작되지 않았다면 이 필드는 비어있다.|
 |endTime|성공 여부와 상관 없이 execution이 종료될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
-|exitStatus|실행 결과를 나타내는 `ExitStatus`. caller에게 리턴되는 exit 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 chapter 5를 참고. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
+|exitStatus|실행 결과를 나타내는 `ExitStatus`. caller에게 리턴되는 exit 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 5장 참고. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
 |createTime|`JobExecution`이 처음 저장될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 잡은 시작되지 않았을 수도 있는데(따라서 시작 시간이 없을 수도 있음), createTime은 프레임워크가 job 레벨의 `ExecutionContexts` 관리할 때 사용하기 때문에 항상 존재한다.|
 |lastUpdated|`JobExecution`가 저장된 마지막 시간을 나타내는 `java.util.Date`. 아직 잡이 시작되지 않았다면 이 필드는 비어있다.|
 |executionContext|실행 사이에 유지되어야하는 모든 사용자 데이터를 포함하는 "property bag".|
 |failureExceptions|`Job` 실행 중 발생한 예외 리스트. `Job`이 실패할 때 둘 이상의 예외가 발생한 경우에 유용하다.|
 
 이 프로퍼티들은 계속 유지되며, execution의 상태를 결정할 때 사용되는 중요한 개념이다.
-예를 들어, 01-01의 EndOfDay job이 9:00 PM에 실행되서 9:30에 실패한다면, 아래 엔트리들이 배치 메타데이터 테이블에 생성된다:
+예를 들어, 01-01의 EndOfDay job이 9:00 PM에 실행되서 9:30에 실패한다면, 아래 엔트리들이 배치 메타 데이터 테이블에 생성된다:
 
 **Table 2. BATCH_JOB_INSTANCE**
 
@@ -231,7 +231,7 @@ job이 실패하고, 밤새도록 문제를 찾느라 'batch window'가 이제�
 |Status|execution 상태를 나타내는 `BatchStatus` 오브젝트. 실행 중일 때는 `BatchStatus.STARTED`. 실패하면 `BatchStatus.FAILED`. 성공하면 `BatchStatus.COMPLETED.`|
 |startTime|execution이 실행될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 아직 step이 시작되지 않았다면 이 필드는 비어있다.|
 |endTime|성공 여부와 상관 없이 execution이 종료될 때의 현재 시스템 시간을 나타내는 `java.util.Date`. 아직 step이 종료되지 않았다면 이 필드는 비어있다.|
-|exitStatus|실행 결과를 나타내는 `ExitStatus`. caller에게 리턴되는 exit 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 chapter 5를 참고. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
+|exitStatus|실행 결과를 나타내는 `ExitStatus`. caller에게 리턴되는 exit 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 5장 참고. 아직 잡이 종료되지 않았다면 이 필드는 비어있다.|
 |executionContext|실행 사이에 유지되어야하는 모든 사용자 데이터를 포함하는 “property bag”.|
 |readCount|성공적으로 read한 아이템 수.|
 |writeCount|성공적으로 write한 아이템 수.|
@@ -257,7 +257,7 @@ executionContext.putLong(getKey(LINES_READ_COUNT), reader.getPosition());
 ```
 
 `Job` Stereotypes에서 예시로 사용한 EndOfDay를 그대로 가져와서 데이터베이스에서 파일을 읽는 'loadData'라는 스텝 한 개가 있다고 가정해보자.
-첫 실행에 실패한 이후의 메타데이터 테이블은 아래와 같을 것이다:
+첫 실행에 실패한 이후의 메타 데이터 테이블은 아래와 같을 것이다:
 
 **Table 9. BATCH_JOB_INSTANCE**
 
@@ -320,8 +320,8 @@ if (executionContext.containsKey(getKey(LINES_READ_COUNT))) {
 이미 있는 `ExecutionContext`를 사용할지 말지 판단하는 일은 쉽지만은 않다.
 위에 나온 'EndOfDay'로 예를 들면, 01-01 배치가 두번째로 실행될때는 동일한 `JobInstance`를 사용하기 때문에 
 각 `Step`에서 데이터베이스로부터 `ExecutionContext`를 읽어와 함께 처리한다(`StepExecution`의 일부로)
-반대로 01-02 배치에선 다른 `JobInstance`를 사용하므로 `Step`에서는 빈 context를 주입받는다.
-프레임워크는 여러 가지 상황을 고려해 job instance와 context를 결정한다.
+반대로 01-02 배치에선 다른 `JobInstance`를 사용하므로 `Step`에서는 빈 컨텍스트를 주입받는다.
+프레임워크는 여러 가지 상황을 고려해 job 인스턴스와 컨텍스트를 결정한다.
 `StepExecution`가 생길 때 마다 각 `ExecutionContext`가 하나씩 생긴다는 점도 알아두자.
 `ExecutionContext`는 keyspace를 공유하기 때문에 사용에 주의해야한다.
 즉, 데이터가 겹쳐써지지 않도록 값을 넣을 때 주의해야한다는 말이다.
@@ -339,13 +339,13 @@ ExecutionContext ecJob = jobExecution.getExecutionContext();
 주석에서 말하듯이 `ecStep`과 `ecJob`은 같지 않다.
 `ExecutionContext`는 두 종류가 있다.
 하나는 `Step` 레벨로 `Step` 내에서 커밋할 때마다 저장되는 값이고,
-`Job` 레벨의 context는 모든 `Step` 실행 사이마다 저장되는 값이다.
+`Job` 레벨의 컨텍스트는 모든 `Step` 실행 사이마다 저장되는 값이다.
 
 ## 3.4. JobRepository
 
 `JobRepository`는 위에서 언급된 모든 저장(persistence) 메커니즘을 담당한다.
 `JobLauncher`, `Job`, `Step` 구현체에 CRUD 기능을 제공한다.
-`Job`이 처음 실행될 때 repository로부터 `JobExecution`를 얻어오고,
+`Job`이 처음 실행될 때 repository로부터 `JobExecution`을 얻어오고,
 실행되는 동안은 `StepExecution` `JobExecution`의 구현체를 repository에 넘겨서 저장한다(persist).
 
 자바 configuration을 사용한다면 `@EnableBatchProcessing` 애노테이션만 달아주면 `JobRepository`을 자동으로 컴포넌트로 설정해준다.
