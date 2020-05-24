@@ -6,6 +6,8 @@ permalink: /Spring%20Batch/configuringastep/
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureStep) 를 한글로 번역한 문서입니다.
+>
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
 
 ### 목차
 
@@ -1382,3 +1384,5 @@ scope는 스프링 컨테이너의 기본 기능이 아니기 때문에 명시�
 ```xml
 <bean class="org.springframework.batch.core.scope.JobScope" />
 ```
+
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.

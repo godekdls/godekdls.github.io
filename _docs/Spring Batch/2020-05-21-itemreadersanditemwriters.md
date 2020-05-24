@@ -6,6 +6,8 @@ permalink: /Spring%20Batch/itemreadersanditemwriters/
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#readersAndWriters) 를 한글로 번역한 문서입니다.
+>
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
 
 ### 목차
 
@@ -2728,3 +2730,5 @@ read 메소드를 호출할 때 마다 자바 클래스나 Avro 스키마로 명
 `ScriptItemProcessor`는 현재 아이템을 스크립트로 전달해서 처리하고
 스크립트의 결과를 리턴하는 `ItemProcessor`다. 
 스프링 배치는 `ScriptItemProcessor` 인스턴스를 생성하는 `ScriptItemProcessorBuilder`를 제공한다.
+
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.

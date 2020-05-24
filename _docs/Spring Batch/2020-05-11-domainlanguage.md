@@ -6,6 +6,8 @@ permalink: /Spring%20Batch/domainlanguage/
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#domainLanguageOfBatch) 를 한글로 번역한 문서입니다.
+>
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
 
 ### 목차
 
@@ -42,7 +44,6 @@ JCL 및 COBOL 개발자도 C, C # 및 Java 개발자만큼 이 개념에 익숙 
 단순한 배치부터 매우 복잡한 배치 응용 프로그램까지 개발할 수 있다.
 
 ![Batch Stereotypes](./../../images/springbatch/batch-stereotypes.png)
-
 
 이 다이어그램은 스프링 배치의 도메인 언어를 구성하는 핵심 개념을 나타내고 있다.
 Job 하나는 1~n개의 step을 가지고 있으며,
@@ -271,7 +272,7 @@ Quartz에 익숙하다면, JobDataMap과 유사하게 느껴질 것이다.
 executionContext.putLong(getKey(LINES_READ_COUNT), reader.getPosition());
 ```
 
-`Job` Stereotypes를 설명할 때 예시로 사용한 EndOfDay를 그대로 가져와서, 
+`Job`의 개념 설명할 때 예시로 사용한 EndOfDay를 그대로 가져와서, 
 데이터베이스에서 파일을 읽는 'loadData' step 하나가 있다고 가정해보자.
 첫 실행에 실패한 이후의 메타 데이터 테이블은 아래와 같을 것이다:
 
@@ -405,3 +406,5 @@ public JobExecution run(Job job, JobParameters jobParameters)
 `ItemProcessor`는 데이터 변환이나 다른 비지니스 처리를 담당한다. 
 데이터를 처리하던 중 아이템이 유효하지 않다고 판단하면 null을 리턴하는데, 이 아이템은 write되면 안된다는 것을 의미한다.
 `ItemProcessor` 인터페이스에 대한 자세한 설명은 [Readers And Writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)를 참조하라.
+
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
