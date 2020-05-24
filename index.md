@@ -29,6 +29,14 @@ title: Hello World!
 - [Github](https://github.com/godekdls)
 - [Instagram](https://www.instagram.com/dainy_bt)
 
+### About Her
+
+![profile](./images/tory.jpeg)
+
+- 포메
+- 기고만장
+- 특기는 앉아랑 손
+
 ### Archiving
 
 #### [Spring Batch](https://godekdls.github.io/Spring%20Batch/contents/)
