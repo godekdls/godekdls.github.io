@@ -5,9 +5,9 @@ order: 4
 permalink: /Spring%20Batch/domainlanguage/
 ---
 
-> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#domainLanguageOfBatch) 를 한글로 번역한 문서입니다.
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#domainLanguageOfBatch)를 한글로 번역한 문서입니다.
 >
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
 ### 목차
 
@@ -407,4 +407,4 @@ public JobExecution run(Job job, JobParameters jobParameters)
 데이터를 처리하던 중 아이템이 유효하지 않다고 판단하면 null을 리턴하는데, 이 아이템은 write되면 안된다는 것을 의미한다.
 `ItemProcessor` 인터페이스에 대한 자세한 설명은 [Readers And Writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)를 참조하라.
 
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

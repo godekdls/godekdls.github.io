@@ -5,9 +5,9 @@ order: 5
 permalink: /Spring%20Batch/configuringandrunningajob/
 ---
 
-> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureJob) 를 한글로 번역한 문서입니다.
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureJob)를 한글로 번역한 문서입니다.
 >
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
 ### 목차
 
@@ -41,7 +41,7 @@ permalink: /Spring%20Batch/configuringandrunningajob/
 
 `Job` 오브젝트가 단순한 step의 컨테이너처럼 보이긴 하지만, 반드시 알아둬야 할 여러 가지 설정 옵션이 있다.
 `Job`을 실행하고 실행 중 메타 데이터를 저장하기 위해서는 여러 가지를 고려해야 한다.
-여기서는 다양한 설정 옵션과 `Job`을 실행할 때(runtime) 고려해야 하는 사항을 다룬다.
+여기서는 다양한 설정 옵션과 `Job`을 실행할 때 고려해야 하는 사항을 다룬다.
 
 ## 4.1. Configuring a Job
 
@@ -289,7 +289,7 @@ protected JobRepository createJobRepository() throws Exception {
 위에 있는 옵션 중 필수값은 dataSource와 transactionManager 두 개뿐이다.
 나머지 값들은 따로 설정하지 않으면 위에 보이는 디폴트 값이 사용되는데, 위에는 참고용으로 표기해 두었다.
 max varchar length는 디폴트값이 2500인데,
-[sample schema scripts](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#metaDataSchemaOverview) 에서 사용된 long VARCHAR 컬럼의 길이와 같다.
+[sample schema scripts](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#metaDataSchemaOverview)에서 사용된 long VARCHAR 컬럼의 길이와 같다.
 
 ### 4.3.1. Transaction Configuration for the JobRepository
 
@@ -499,7 +499,7 @@ Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니�
 ```
 
 대부분 manifest를 jar 파일 안의 메인 클래스에 선언하고 싶겠지만, 단순화를 위해 클래스를 직접 사용한다.
-이 예시에서도 [domainLanguageOfBatch](https://godekdls.github.io/Spring%20Batch/domainlanguage/) 에서 사용한 'EndOfDay' 예제를 그대로 사용한다.
+이 예시에서도 [domainLanguageOfBatch](https://godekdls.github.io/Spring%20Batch/domainlanguage/)에서 사용한 'EndOfDay' 예제를 그대로 사용한다.
 첫 번째 인자받은 'io.spring.EndOfDayJobConfiguration'는 Job을 포함한 설정 클래스의 풀네임이다.
 두 번재 인자 'endOfDay'는 job의 이름이다.
 마지막으로 넘긴 인자 'schedule.date(date)=2007/05/05'는 JobParameter로 변환된다.
@@ -813,7 +813,7 @@ public interface JobOperator {
 
 ### 4.6.4. JobParametersIncrementer
 
-`JobOperator`의 메소드는 대부분 설명이 필요 없으며, 자세한 설명은 [javadoc](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/core/launch/JobOperator.html) 에 있다.
+`JobOperator`의 메소드는 대부분 설명이 필요 없으며, 자세한 설명은 [javadoc](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/core/launch/JobOperator.html)에 있다.
 하지만 `startNextInstance` 메소드는 주의 깊게 살펴볼 필요가 있다.
 이 메소드는 항상 새 job 인스턴스를 실행시킨다. 
 `JobExecution`에서 심각한 이슈가 발생해서 job을 처음부터 다시 시작해야하는 경우 매우 유용하다.
@@ -891,4 +891,4 @@ execution이 실패하거나 중단되었다고 판단되면 이를 수동으로
 재시작할 수 없는 job이거나(restartable=false) 데이터가 유효하다는 걸 확신할 수 있을 때만 status를 `FAILED`로 바꿔라.
 job을 중단시키는 유틸리티는 스프링 배치 어드민 `JobService`에 있다.
 
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

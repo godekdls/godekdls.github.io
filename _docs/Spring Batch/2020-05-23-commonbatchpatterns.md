@@ -5,9 +5,9 @@ order: 12
 permalink: /Spring%20Batch/commonbatchpatterns/
 ---
 
-> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#commonPatterns) 를 한글로 번역한 문서입니다.
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#commonPatterns)를 한글로 번역한 문서입니다.
 >
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
 ### 목차
 
@@ -301,7 +301,7 @@ open 메소드는 처리 시작 전 `ExecutionContext`에서 `totalAmount` 값�
 
 ## 11.4. Driving Query Based ItemReaders
 
-[chapter on readers and writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/) 에서 
+[chapter on readers and writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)에서 
 페이징 기법으로 데이터베이스 데이터를 읽는 법을 다뤘다.
 DB2같이 극도로 비관적인(pessimistic) 잠금 기법을 사용하는 데이터베이스 벤더도 많기 때문에,  
 이미 배치에서 읽고 있는 테이블을 다른 온라인 어플리케이션에서도 사용한다면 문제될 수 있다.
@@ -373,7 +373,7 @@ public FlatFileItemReader flatFileItemReader() {
 `PatternMatchingCompositeLineTokenizer`를 사용하면
 파일을 적절하게 토큰화할 수 있는데,
 이는 특히 고정 길이를 사용한다면 매우 중요하다.
-자세한 내용은 [`FlatFileItemReader` in the Readers and Writers chapter](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#662-flatfileitemreader) 를 참고하라.
+자세한 내용은 [`FlatFileItemReader` in the Readers and Writers chapter](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#662-flatfileitemreader)를 참고하라.
 위임받은(delegate) reader는 `PassThroughFieldSetMapper`한테
 각 라인의 `FieldSet`을 받아, 감싸고 있는 `ItemReader`에게 돌려준다.
 아래는 토크나이저 예시다:
@@ -583,4 +583,4 @@ public class RetrievingItemWriter implements ItemWriter<Object> {
 }
 ```
 
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

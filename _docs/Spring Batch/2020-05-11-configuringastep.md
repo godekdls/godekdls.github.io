@@ -5,9 +5,9 @@ order: 6
 permalink: /Spring%20Batch/configuringastep/
 ---
 
-> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureStep) 를 한글로 번역한 문서입니다.
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureStep)를 한글로 번역한 문서입니다.
 >
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
 ### 목차
 
@@ -384,7 +384,7 @@ public Step step1() {
 ```
 
 이 `Step`은 각 item을 재시도할 수 있는 횟수와 '재시도 가능한(retryable)' exception 리스트를 정의했다.
-재시도가 어떤 방식으로 이뤄지는지는 [retry](https://godekdls.github.io/Spring%20Batch/retry/) 에서 자세히 설명한다.
+재시도가 어떤 방식으로 이뤄지는지는 [retry](https://godekdls.github.io/Spring%20Batch/retry/)에서 자세히 설명한다.
 
 ### 5.1.7. Controlling Rollback
 
@@ -429,7 +429,7 @@ public Step step1() {
 ### 5.1.8. Transaction Attributes
 
 트랜잭션 속성값으로 트랜잭션 고립 수준(isolation), 전파(propagation), 타임아웃을 설정할 수 있다.
-트랜잭션 속성에 대한 자세한 설명은 [Spring core documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction) 를 참고하라.
+트랜잭션 속성에 대한 자세한 설명은 [Spring core documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction)를 참고하라.
 아래 예제에서는 고립 수준, 전파, 타임아웃을 설정한다:
 
 ```java
@@ -703,7 +703,7 @@ skip된 이슈를 확인하고 수정하려면 다른 배치 프로세스나 심
 
 ## 5.2. `TaskletStep`
 
-[청크 기반 처리](#51-chunk-oriented-processing) 가 `Step`을 다루는 절대적인 방법은 아니다.
+[청크 기반 처리](#51-chunk-oriented-processing)가 `Step`을 다루는 절대적인 방법은 아니다.
 `Step`이 반드시 저장 프로시저(stored procedure)를 호출해야 한다면 어떻게 해야할까?
 `ItemReader`에 호출부를 구현하고 프로시저가 끝나면 null을 리턴하게 만들 수도 있다.
 하지만 `ItemWriter`가 아무 일도 하지 않으므로 부자연스럽게 느껴진다.
@@ -754,7 +754,7 @@ public MethodInvokingTaskletAdapter myTasklet() {
 리소스 세팅을 위해 시작 전 꼭 호출해야 하는 step이나,
 리소스 정리(cleanup)를 위해 완료 후 꼭 호출해야 하는 step이 필요한 경우도 많다.
 파일 처리가 많은 job이라면 파일을 다른 위치에 쓰고나서 원본을 지우는 경우가 종종 있다.
-아래 예제는 ([Spring Batch samples project](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples) 에서 따온)
+아래 예제는 ([Spring Batch samples project](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples)에서 따온)
 그런 일을 처리하는 `Tasklet` 구현체다:
 
 ```java
@@ -970,7 +970,7 @@ public class SkipCheckingListener extends StepExecutionListenerSupport {
 
 ### 5.3.3. Configuring for Stop
 
-[BatchStatus and ExitStatus](#batch-status-versus-exit-status) 를 봤다면,
+[BatchStatus and ExitStatus](#batch-status-versus-exit-status)를 봤다면,
 `Job`의 `BatchStatus`와 `ExitStatus`는 어떻게 결정되는지 궁금한 사람도 있었을 것이다.
 `Step`의 상태는 실행되는 코드로 결정되는 반면, `Job`의 상태는 설정에 따라 달리진다.
 
@@ -1292,7 +1292,7 @@ public FlatFileItemReader flatFileItemReader(@Value("#{stepExecutionContext['inp
 ```
 
 > late-binding을 사용하는 모든 빈은 scope="step"을 선언해야 한다.
-> 자세한 정보는 [Step Scope](#541-step-scope) 를 참조하라.
+> 자세한 정보는 [Step Scope](#541-step-scope)를 참조하라.
 
 ### 5.4.1. Step Scope
 
@@ -1385,4 +1385,4 @@ scope는 스프링 컨테이너의 기본 기능이 아니기 때문에 명시�
 <bean class="org.springframework.batch.core.scope.JobScope" />
 ```
 
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

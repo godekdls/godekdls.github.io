@@ -5,9 +5,9 @@ order: 8
 permalink: /Spring%20Batch/scalingandparallelprocessing/
 ---
 
-> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#scalability) 를 한글로 번역한 문서입니다.
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#scalability)를 한글로 번역한 문서입니다.
 >
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
 ### 목차
 
@@ -102,7 +102,7 @@ step에 `DataSource`같이 커넥션 풀을 사용하는 리소스가 있다면
 상태를 쓰레드 별로 분리하지 않으면 이 컴포넌트를 멀티 쓰레드 `Step`에서 사용할 수 없다.
 특히 스프링 배치가 지원하는 reader, writer 대부분은 멀티 쓰레드를 고려해 설계하지 않았다.
 하지만 상태가 없거나(stateless) thread safe한 reader와 writer를 사용하면 멀티 쓰레드도 가능하며,
-[Spring Batch Samples](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples) 에
+[Spring Batch Samples](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples)에
 처리 식별자([Preventing State Persistence](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#613-preventing-state-persistence) 참고)로
 데이터베이스 입력 테이블에서 이미 처리된 아이템을 추적하는 예제(parallelJob)가 있다.
 
@@ -383,4 +383,4 @@ public MultiResourceItemReader itemReader(
 }
 ```
 
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

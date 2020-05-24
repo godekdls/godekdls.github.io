@@ -14,7 +14,7 @@ title: Hello World!
 
 ### About Me
 
-![profile](./images/profile.jpeg/)
+![profile](./images/profile.jpeg)
 
 #### Dain Lee
 - Software Engineer

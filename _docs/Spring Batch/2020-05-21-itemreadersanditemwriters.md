@@ -5,9 +5,9 @@ order: 7
 permalink: /Spring%20Batch/itemreadersanditemwriters/
 ---
 
-> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#readersAndWriters) 를 한글로 번역한 문서입니다.
+> [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#readersAndWriters)를 한글로 번역한 문서입니다.
 >
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
 ### 목차
 
@@ -122,7 +122,7 @@ permalink: /Spring%20Batch/itemreadersanditemwriters/
 
 다른 예시도 많은데, 이번 챕터에서는 가장 기본적인 것들에 집중하겠다.
 사용 가능한 모든 `ItemReader` 구현체는 
-[Appendix A](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#listOfReadersAndWriters) 에 있다.
+[Appendix A](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#listOfReadersAndWriters)에 있다.
 
 `ItemReader`는 일반적인 입력 작업을 위한 포괄적 인터페이스이다.
 인터페이스 정의는 다음과 같다: 
@@ -520,7 +520,7 @@ boolean booleanValue = fs.readBoolean(2);
 `LineMapper` 인터페이스는 다음 섹션에서 더 다룰 것이다.
 resource 프로퍼티는 스프링 코어의 `Resource`를 나타낸다.
 이 유형의 빈을 만드는 법이 궁금하다면 
-[Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources) 를 보라.
+[Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources)를 보라.
 따라서 이번 가이드에서는 `Resource` 객체를 만드는 방법은 아래 간단한 예제를 끝으로 더 자세히 다루지 않는다.
 
 ```java
@@ -1322,7 +1322,7 @@ XML을 처리할 땐 레코드 라인을 토큰화하는 대신 (`FieldSet` 인�
 스프링 배치는 Object/XML Mapping (OXM)을 사용해서 각 조각을 객체로 바인딩한다.
 하지만 스프링 배치는 특정한 XML 바인딩 기술을 강요하지 않는다.
 보통은 가장 많이 쓰이는 OXM 기술을 균일하게 추상화해 놓은 
-[Spring OXM](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#oxm) 에 위임한다.
+[Spring OXM](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#oxm)에 위임한다.
 스프링 OXM 의존성(dependency)은 선택이며 원하는 스프링 배치 인터페이스를 구현하면 된다.
 OXM이 지원하는 기술들의 관계는 아래 그림과 같다:
 
@@ -1953,7 +1953,7 @@ public StoredProcedureItemReader reader(DataSource dataSource) {
 파라미터 선언 외에도 호출에 필요한 파라미터 값을 설정하는 
 `PreparedStatementSetter` 구현체를 지정해야 한다.
 이 reader는 위에서 설명한 `JdbcCursorItemReader`와 같은 방법으로 동작한다.
-[Additional Properties](#additional-properties) 에 있는 모든 프로퍼티는
+[Additional Properties](#additional-properties)에 있는 모든 프로퍼티는
 `StoredProcedureItemReader`에도 동일하게 사용할 수 있다.
 
 ### 6.10.2. Paging `ItemReader` Implementations
@@ -2731,4 +2731,4 @@ read 메소드를 호출할 때 마다 자바 클래스나 Avro 스키마로 명
 스크립트의 결과를 리턴하는 `ItemProcessor`다. 
 스프링 배치는 `ScriptItemProcessor` 인스턴스를 생성하는 `ScriptItemProcessorBuilder`를 제공한다.
 
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/) 에 있습니다.
+> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
