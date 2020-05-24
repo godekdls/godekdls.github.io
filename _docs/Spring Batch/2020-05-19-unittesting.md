@@ -291,7 +291,6 @@ public void testAfterStep() {
 
 위에선 간단한 `StepExecution`을 만드는 메소드를 사용했는데, 
 팩토리 내에는 다른 메소드도 많다.
-전체 메소드는 [Javadoc](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/test/MetaDataInstanceFactory.html)
-에서 확인할 수 있다.
+전체 메소드는 [Javadoc](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/test/MetaDataInstanceFactory.html)에서 확인할 수 있다.
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

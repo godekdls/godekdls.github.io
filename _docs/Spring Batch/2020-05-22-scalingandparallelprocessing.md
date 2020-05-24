@@ -66,8 +66,7 @@ public Step sampleStep(TaskExecutor taskExecutor) {
 ```
 
 메소드에 넘겨준 `taskExecutor`는 빈으로 정의된 `TaskExecutor` 인터페이스 구현체다.
-[TaskExecutor](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/task/TaskExecutor.html)
-는 표준 스프링 인터페이스이므로, 구현체 상세 내용은 스프링 유저 가이드를 참고하라.
+[TaskExecutor](https://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/core/task/TaskExecutor.html)는 표준 스프링 인터페이스이므로, 구현체 상세 내용은 스프링 유저 가이드를 참고하라.
 `SimpleAsyncTaskExecutor`는 가장 간단한 멀티 쓰레드 `TaskExecutor`다.
 
 위에서 설정한 `Step`은 여러 쓰레드를 실행해서
@@ -168,8 +167,7 @@ task executor 설정으로 각 flow를 실행할 때 사용할 `TaskExecutor` �
 step을 병렬로 실행하려면 비동기(asynchronous) `TaskExecutor`가 필요하다.
 모든 flow는 job이 종료 상태를 집계하고 변경하기 전에 끝나야 한다는 것에 주의하라.
 
-자세한 내용은 [Split Flows](https://godekdls.github.io/Spring%20Batch/configuringastep/#535-split-flows)
-를 참고하라.
+자세한 내용은 [Split Flows](https://godekdls.github.io/Spring%20Batch/configuringastep/#535-split-flows)를 참고하라.
 
 ## 7.3. Remote Chunking
 
@@ -199,8 +197,7 @@ JMS가 가장 좋은 후보지만, 그리드 컴퓨팅이나 공유 메모리 �
 다른 옵션도 있다 (JavaSpaces 같은).
 
 자세한 정보는 
-[Spring Batch Integration - Remote Chunking](https://godekdls.github.io/Spring%20Batch/springbatchintegration/#remote-chunking)
-르 참조하라.
+[Spring Batch Integration - Remote Chunking](https://godekdls.github.io/Spring%20Batch/springbatchintegration/#remote-chunking)을 참조하라.
 
 ## 7.4. Partitioning
 

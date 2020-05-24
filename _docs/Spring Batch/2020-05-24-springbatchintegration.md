@@ -31,7 +31,7 @@ permalink: /Spring%20Batch/springbatchintegration/
 Spring Integration으로 간단히 해결될 때도 많다.
 반대로 Spring Integration을 사용하다 스프링 배치가 필요할 때도 있으며,
 이럴 땐 두 프레임워크를 효율적으로 통합할 방법이 필요하다.
-이와 관련한 몇 가지 패턴과 사용 사례가 생겨냤고,
+이와 관련한 몇 가지 패턴과 사용 사례가 생겨났고,
 Spring Batch Integration으로 이런 요구사항을 해결할 수 있다.
 
 스프링 배치와 Spring Integration의 경계가 항상 명확하진 아니지만,
@@ -41,8 +41,8 @@ Spring Batch Integration으로 이런 요구사항을 해결할 수 있다.
 
 메세지를 보내 배치 프로세스 명령을 자동화하면 주요 관심사를 분리하고 전략화할 수 있다.
 예를 들어 메세지 전송으로 job 실행을 트리거링하는 등, 다양한 방법으로 활용할 수 있다.
-반대로 job이 완료되거나 실패하면 이 이벤트가 메세지 전송을 트리거링해서
-메세지 컨슈머가 어플리케이션 자체와는 관련없는 로직을 처리할 수도 있다.
+반대로 job이 완료되거나 실패하면 이 이벤트가 메세지 전송을 트리거링해서,
+메세지 컨슈머가 어플리케이션 자체와는 관련없는 다른 로직을 처리할 수도 있다.
 또, job 안에서 메세지 처리를 할 수도 있다(예를 들어 채널로 아이템을 읽고 쓰는 경우).
 remote partitioning과 remote chunking은 부하를 여러 워커에 분산시킨다.
 
@@ -58,38 +58,36 @@ remote partitioning과 remote chunking은 부하를 여러 워커에 분산시�
 코어 스프링 배치 API는 두 가지 방법으로 배치 job을 시작한다:
 
 - 커맨드라인에서 `CommandLineJobRunner` 사용
-- 코드에서 `JobOperator.start()`나 `JobLauncher.run()` 사용
+- 코드에서 `JobOperator.start()`나 `JobLauncher.run()` 호출
 
 쉘 스크립트에서 `CommandLineJobRunner`로 배치를 실행하거나
 직접 `JobOperator`를 사용해도 된다
 (예를 들어 웹 어플리케이션에서 스프링 배치를 사용하고 있다면).
 하지만 좀 더 복잡한 경우라면?
 배치에서 데이터를 (S)FTP 서버에 주기적으로 폴링하거나
-어플리케이션이 여러 데이터소스를 동시에 사용할 있다.
+어플리케이션이 여러 데이터소스를 동시에 사용할 수도 있다.
 예를 들어 데이터 파일을 웹에서 뿐 아니라 FTP나 다른 곳에서 읽을 수도 있고,
 스프링 배치를 시작하기 전 입력 파일을 추가적으로 변환해야 하는 경우도 있다.
 
-이런 경우 훨씬 강력한 방법이 있는데,
+이럴 때 쓸 훨씬 강력한 방법이 있는데,
 Spring Integration과 여러 아답터(adapter)로 배치 job을 시작하는 것이다.
-예를 들어 *파일 인바운드 채널 아답터*를 만들어 파일 시스템 디렉토리를 모니터링하고
+예를 들어 *파일 인바운드 채널 아답터*를 만들어 파일 시스템 디렉토리를 모니터링하면
 입력 파일이 도착하자마자 배치를 시작할 수 있다.
 또, 여러 아답터를 사용해 Spring Integration 플로우를 만들면
-배치 job에서 동시에 여러 소스에서 데이터를 처리할 수 있다.
+배치 job은 동시에 여러 소스에서 데이터를 처리할 수 있다.
 Spring Integration을 사용하면,
 `JobLauncher`로 job을 이벤트 기반으로 나눠 실행할 수 있기 때문에
 쉽게 이런 시나리오를 구현할 수 있다.
 
 스프링 배치 Integration은 배치 job을 시작할 수 있는
 `JobLaunchingMessageHandler` 클래스를 제공한다. 
-Spring Integration 메세지가
-`JobLaunchRequest` 타입의 페이로드로
-`JobLaunchingMessageHandler`의 입력을 만든다. 
+Spring Integration 메세지가 `JobLaunchRequest` 타입 페이로드로
+`JobLaunchingMessageHandler` 입력을 만든다. 
 `JobLaunchRequest`는 실행할 `Job`과 실행에 필요한 `JobParameters`를 감싸고 있다.
 
 아래 이미지는 배치 job을 실행하는 전형적인 Spring Integration 메세지를 보여준다.
 전체 메세지 아이콘과 각 설명은
-[The EIP (Enterprise Integration Patterns) website](https://www.enterpriseintegrationpatterns.com/patterns/messaging/toc.html)
-에 정리돼 있다.
+[The EIP (Enterprise Integration Patterns) website](https://www.enterpriseintegrationpatterns.com/patterns/messaging/toc.html)에 정리돼 있다.
 
 ![Launch Batch Job](./../../images/springbatch/launch-batch-job.png)
 
@@ -133,7 +131,7 @@ public class FileMessageToJobRequest {
 
 #### The `JobExecution` Response
 
-배치 job을 실행하면 `JobExecution` 인스턴스를 반환한다.
+배치 job을 실행하면 `JobExecution` 인스턴스를 반환하며,
 이 인스턴스로 실행 상태를 확인할 수 있다.
 `JobExecution`을 만들 수만 있으면 실제로 job이 성공했는지와는 상관없이 항상 리턴한다. 
 
@@ -142,10 +140,9 @@ public class FileMessageToJobRequest {
 job을 *완료한 후*에 `JobExecution`을 리턴한다.
 *비동기* `TaskExecutor`는 즉시 `JobExecution`을 반환한다.
 이때는 `JobExecution` 인스턴스 `id`를 가져와서(`JobExecution.getJobId()`)
-`JobExplorer`로 `JobRepository`에 job의 업데이트된 상태를 질의한다.
+`JobExplorer`로 `JobRepository`에 업데이트된 job 상태를 질의한다.
 자세한 내용은 스프링 배치 레퍼런스
-[Querying the Repository](https://godekdls.github.io/Spring%20Batch/configuringandrunningajob/#461-querying-the-repository)
-를 참고하라.
+[Querying the Repository](https://godekdls.github.io/Spring%20Batch/configuringandrunningajob/#461-querying-the-repository)를 참고하라.
 
 #### Spring Batch Integration Configuration
 
@@ -618,8 +615,7 @@ public class RemoteChunkingJobConfiguration {
 ```
 
 remote chunking job을 사용하는 좀 더 복잡한 예제는
-[여기](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples#remote-chunking-sample)
-를 참고하라.
+[여기](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples#remote-chunking-sample)를 참고하라.
 
 #### Remote Partitioning
 
@@ -635,8 +631,7 @@ Remote Partitioning을 사용하면 각 워커에게 스프링 배치의 step을
 리모트 워커와 통신하는 데 사용하는 전송수단(JMS나 AMQP같은)을 추상화했다.
 
 "Scalability" 섹션에서
-[remote partitioning](https://godekdls.github.io/Spring%20Batch/scalingandparallelprocessing/#74-partitioning)
-을 설명하면서 기본 개념과 필요한 설정을 정리했고,
+[remote partitioning](https://godekdls.github.io/Spring%20Batch/scalingandparallelprocessing/#74-partitioning)을 설명하면서 기본 개념과 필요한 설정을 정리했고,
 로컬에서 여러 쓰레드로 실행하기 위한
 디폴트 `TaskExecutorPartitionHandler`를 사용한 예제를 다뤘다.
 remote partitioning을 여러 JVM에서 사용하려면 두 가지가 더 필요하다: 
@@ -770,8 +765,7 @@ public IntegrationFlow outboundJmsStaging() {
 ```
 
 remote partitioning job을 사용하는 좀 더 복잡한 예제는
-[여기](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples#remote-partitioning-sample)
-를 참고하라.
+[여기](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples#remote-partitioning-sample)를 참고하라.
 
 `@EnableBatchIntegration` 애노테이션으로 remote partitioning 설정을
 더 단순하게 만들 수 있다.

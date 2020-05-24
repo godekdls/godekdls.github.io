@@ -525,7 +525,7 @@ public Step step1() {
 `StepListener`를 구현한 `ItemReader`, `ItemWriter`, `ItemProcessor`는 자동으로 등록된다.
 즉 `Step`에 직접 주입하는 컴포넌트는 자동이다.
 다른 컴포넌트 안에 감싸져 있는(nested) 리스너는 명시적으로 등록해야한다
-([Registering ItemStream with a Step](#519-registering-itemstream-with-a-step) 의 예제처럼).
+([Registering ItemStream with a Step](#519-registering-itemstream-with-a-step) 예제처럼).
 
 `StepListener`가 아니어도 애노테이션으로 같은 관심사를 처리할 수 있다.
 일반 자바 객체 메소드 위에 이 애노테이션을 선언하면 그에 맞는 `StepListener`로 변환된다.
@@ -994,7 +994,7 @@ public Job job() {
 순차적인 step만 있는 단순한 job이라면 위 규칙대로 job을 끝내도 상관없지만,
 커스텀한 job 종료 시나리오가 필요할 수도 있다.
 이를 위해 스프링 배치는 `Job`을 종료시키기 위한 transition element 세가지를 지원한다
-(위에서 다룬 [next element](#532-conditional-flow) 와는 별도로).
+(위에서 다룬 [next element](#532-conditional-flow)와는 별도로).
 각 stopping element는 `Job`을 종료시키면서 `BatchStatus`를 적절한 값으로 설정해둔다.
 stop transition element는 `Step`의 `BatchStatus`, `ExitStatus`에는 영향을 주지 않는 다는 점을 주의해라.
 이 element는 `Job`의 최종 상태만 변경한다.

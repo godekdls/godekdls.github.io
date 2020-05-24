@@ -22,8 +22,8 @@ permalink: /Spring%20Batch/monitoringandmetrics/
 
 메트릭 수집은 별도 설정이 필요 없다.
 스프링이 제공하는 모든 메트릭은 `spring.batch` 프리픽스를 사용해서
-[Micrometer’s global registry](https://micrometer.io/docs/concepts#_global_registry)
-에 등록된다. 
+[Micrometer’s global registry](https://micrometer.io/docs/concepts#_global_registry)에
+등록된다. 
 모든 메트릭은 아래 테이블에서 설명한다:
 
 |Metric Name|Type|Description|
