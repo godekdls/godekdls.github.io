@@ -256,6 +256,10 @@ nav > ul {
 		color: #111;
 	}
 
+	&.dain-custom-hide {
+		display: none;
+	}
+
 	&.top-level > a {
 		line-height: 1.5;
 		font-weight: 600;
