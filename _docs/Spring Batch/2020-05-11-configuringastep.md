@@ -500,7 +500,7 @@ public CompositeItemWriter compositeItemWriter() {
 `Job`과 마찬가지로 `Step`에서도 실행 중 발생한 특정 이벤트를 별도로 처리해야할 때가 있다.
 예를 들어 맨 끝에 꼬리말이 필요한 파일에 데이터를 쓰고있다면
 `ItemWriter`는 `Step`이 완료됐을 때 통지를 받아야만 꼬리말을 써 넣을 수 있다.
-이를 위한 여러 가지 `Step` 레벨의 리스너(listener)가 준비되어있다.
+이를 위한 여러 가지 `Step` 레벨의 리스너가 준비돼 있다.
 
 모든 `StepListener`를 확장한 구현체는 (인터페이스는 비어있으므로 해당하지 않음)
 `listener` 메소드로 step에 등록할 수 있다.

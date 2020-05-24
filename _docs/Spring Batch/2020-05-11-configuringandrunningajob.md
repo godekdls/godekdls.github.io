@@ -301,7 +301,7 @@ max varchar length는 디폴트값이 2500인데,
 메소드의 디폴트 isloation 레벨은 SERIALIZABLE로, 극단적이라고 느껴질 수도 있다:
 READ_COMMITTED도 잘 동작한다;
 두 프로세스가 충돌하는 경우만 아니면 READ_UNCOMMITTED도 괜찮다.
-하지만 `create*` 메소드 호출이 매우 짧기 때문에 SERIALIZED이 딱히 문제되지는 않는다.(데이터베이스 플랫폼이 이를 지원한다면.)
+하지만 `create*` 메소드 호출이 매우 짧기 때문에 SERIALIZED이 딱히 문제되지는 않는다 (데이터베이스 플랫폼이 이를 지원한다면).
 물론 원한다면 오버라이드할 수 있다:
 
 ```java
@@ -577,9 +577,9 @@ job runner가 디폴트로 사용하는 구현체는 `SimpleJvmExitCodeMapper`�
 ![Asynchronous Job Launcher Sequence From Web Container](./../../images/springbatch/launch-from-request.png)
 
 여기 나오는 컨트롤러는 스프링 MVC 컨트롤러를 의미한다.
-스프링 MVC에 관한 상세 내용은 여기에 있다: https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc.
+스프링 MVC에 관한 상세 내용은 [여기](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc)를 참고하라.
 컨트롤러가 `Job`을 실행시키는데, 이때 요청 즉시 `JobExecution`을 리턴하게 설정한(비동기) `JobLauncher`를 사용한다.
-`Job`은 여전히 실행중인데도 논블로킹(nonblocking) 처리로 컨트롤러는 즉시 응답할 수 있으며, `HttpRequest`를 사용한다면 이 것은 필수이다.
+`Job`은 여전히 실행중인데도 논블로킹 처리로 컨트롤러는 즉시 응답할 수 있으며, `HttpRequest`를 사용한다면 이 것은 필수이다.
 예제는 아래 있다:
 
 ```java
@@ -636,7 +636,7 @@ public interface JobExplorer {
 }
 ```
 
-위의 메소드에서 알 수 있듯이, `JobExplorer`는 `JobRepository`의 리드온리(read-only) 버전이며,
+위의 메소드에서 알 수 있듯이, `JobExplorer`는 `JobRepository`의 리드온리 버전이며,
 `JobRepository`와 동일하게 팩토리 빈을 통해 손쉽게 설정할 수 있다:
 
 ```java
@@ -669,7 +669,7 @@ public JobExplorer getJobExplorer() throws Exception {
 
 ### 4.6.2. JobRegistry
 
-`JobRegistry`는 (부모 인터페이스 `JobLocator`도 마찬가지) 필수는 아니지만,
+`JobRegistry`는(부모 인터페이스 `JobLocator`도 마찬가지) 필수는 아니지만,
 컨텍스트 내에 있는 job을 추적하고 싶을 때 유용하다.
 여러 곳에서 job을 생성하는 환경이라면(e.g. 자식 컨텍스트) 어플리케이션 컨텍스트에서 job을 수집할 때도 사용할 수 있다.
 커스텀 `JobRegistry` 구현체 또한 등록된 job의 이름이나 프로퍼티를 관리할 때 유용할 수 있다.
@@ -745,7 +745,7 @@ registrar 필수 프로퍼티는 `ApplicationContextFactory` 배열과(여기선
 
 ### 4.6.3. JobOperator
 
-앞서 말한 바와 같이 `JobRepository`는 메타 데이터에 대한 CRUD 오퍼레이션을, `JobExplorer`는 리드온리(read-only) 오퍼레이션을 제공한다.
+앞서 말한 바와 같이 `JobRepository`는 메타 데이터에 대한 CRUD 오퍼레이션을, `JobExplorer`는 리드온리 오퍼레이션을 제공한다.
 그런데 이 두 오퍼레이션을 함께 사용하면 배치에서 흔히 쓰는 중단, 재시작, job 요약 등의 모니터링이 가능해진다.
 스프링 배치는 `JobOperator` 인터페이스를 통해 이를 지원한다:
 

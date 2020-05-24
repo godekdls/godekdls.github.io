@@ -533,7 +533,8 @@ FTP에서 배치 처리로 또는 그 반대로 파일을 이동하기 위해 �
 step으로 사용하는 경우도 드물지 않다.
 배치 아키텍처는 처리할 파일을 어떻게 이동시킬지만 알면 된다.
 스프링 배치는 시작점에서 파이프에 데이터 공급(feeding)을 시작한다.
-물론 [Spring Integration](https://spring.io/projects/spring-integration)은 더 많은 서비스 유형을 제공한다.
+물론 [Spring Integration](https://spring.io/projects/spring-integration)은
+더 다양한 서비스를 제공한다.
 
 아래 테이블에 있는 `FlatFileItemReader`의 다른 프로퍼티로
 데이터를 어떻게 해석할 지를 더 상세하게 지정할 수 있다:  
