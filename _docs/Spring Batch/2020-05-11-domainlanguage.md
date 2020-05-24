@@ -223,7 +223,7 @@ job이 실패했고, 밤새도록 문제를 찾느라 '배치 윈도우'가 이�
 `Step`은 어떻게 개발하느냐에 따라 간단할 수도 있고 복잡할 수도 있다.
 즉, 단순히 데이터베이스에서 파일을 읽는, 코드가 거의 필요없거나 전혀 필요하지 않은(사용한 구현체에 따라 다름) 간단한 작업이 될 수도 있고,
 프로세싱의 일부를 처리하는 복잡한 비지니스 로직도 될 수 있다.
-아래 그림처럼, `Job`이 고유 `JobExecution`이 있듯, `Step`도 각자의 `StepExecution`이 있다.
+아래 그림처럼 `Job`이 고유 `JobExecution`이 있듯, `Step`도 각자의 `StepExecution`이 있다.
 
 ![Job Hierarchy With Steps](./../../images/springbatch/job-hierarchy-with-steps.png)
 

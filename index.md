@@ -17,11 +17,13 @@ title: Hello World!
 ![profile](./images/profile.jpeg)
 
 #### Dain Lee
+
 - Software Engineer
 - Financial Platform Backend Engineer
 - 토리맘
 
 #### Contact Me
+
 - Email: godekdls@hanmail.net
 - [Linkedin](https://www.linkedin.com/in/%EB%8B%A4%EC%9D%B8-%EC%9D%B4-844604103/)
 - [Github](https://github.com/godekdls)
@@ -31,7 +33,7 @@ title: Hello World!
 
 #### [Spring Batch](https://godekdls.github.io/Spring%20Batch/contents/)
 
-- 4.2.x 버전 기준
-
-> https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
+- 2020/05
+- 4.2.x
+- https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
 
