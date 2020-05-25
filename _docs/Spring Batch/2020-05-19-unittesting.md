@@ -50,7 +50,7 @@ public class SkipSampleFunctionalTests { ... }
 ## 10.2. End-To-End Testing of Batch Jobs
 
 'End To End' 테스트는 배치 job을 처음부터 끝까지 완전히 실행시키는 테스트로 정의할 수 있다.
-테스트 조건을 설정하고, job을 실행하고, 마지막 결과까지 검증까지 테스트한다.
+테스트 조건을 설정하고, job을 실행하고, 마지막 결과까지 검증한다.
 
 아래 예시는 데이터베이스에서 데이터를 조회하고 플랫(flat) 파일에 쓰는 배치 job이다.
 테스트 메소드는 데이터베이스에 테스트 데이터를 세팅하는 것으로 시작한다.
@@ -244,7 +244,7 @@ public class NoWorkFoundStepExecutionListener extends StepExecutionListenerSuppo
 위 리스너는 프레임워크에서 제공하고 있으며,
 read 카운트를 확인해 0이면 step이 수행되지 않은 것으로 표시한다.
 위 예제는 간단하지만, 단위 테스트하고자 하는 클래스가
-스프링 배치 도메인 객체에서 사용하는 인터페이스를 구현한 클래스일 때
+스프링 배치 도메인 객체에서 사용하는 인터페이스를 구현했을 때
 겪을 문제를 보여주기 위해 가져왔다.
 앞에 나온 리스너를 위한 단위 테스트를 만든다고 가정해 보자: 
 
@@ -269,7 +269,7 @@ public void noWork() {
 `StepExecution`을 생성하려면 `JobExecution`이 필요하고,
 `JobExecution` 은 `JobInstance`와 `JobParameters`가 필요하다.
 견고한 도메인 모델로서는 장점일 수 있으나
-스텁(stub) 오브젝트가 많아 단위 테스트가 장황해진다.
+스텁(stub) 오브젝트가 많아 테스트가 장황해진다.
 스프링 배치 테스트 모듈은 이를 위해
 도메인 오브젝트를 생성하는 팩토리를 제공한다: `MetaDataInstanceFactory`.
 아래 보이는 것처럼, 이 팩토리가 있으면 단위 테스트를 보다 간결하게 작성할 수 있다:
