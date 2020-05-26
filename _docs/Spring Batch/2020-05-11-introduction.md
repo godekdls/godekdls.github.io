@@ -57,7 +57,7 @@ SpringSource의 깊이 있는 기술적 기반과
 
 Accenture는 이전에 소유했던 배치 처리 아키텍처 프레임워크를 Spring Batch 프로젝트에 기증하면서
 프로젝트를 지원하고 개선시킬 수 있는 커미터 리소스도 함께 넘겼다.
-Accenture가 기증한 프로젝트는 지난 몇 세대의 플랫폼(COBOL/Mainframe, C++/Unix, 지금은 now Java/anywhere)으로 
+Accenture가 기증한 프로젝트는 지난 몇 세대의 플랫폼(COBOL/Mainframe, C++/Unix, 지금은 Java/anywhere)으로 
 배치 아키텍처를 만들며 쌓은 수십년 간의 경험을 바탕으로 만들어졌다.
 
 Accenture와 SpringSource는 엔터프라이즈 수준의 배치 어플리케이션에 지속적으로 활용할 수 있는
