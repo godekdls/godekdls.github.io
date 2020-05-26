@@ -732,10 +732,10 @@ public Step step1() {
 
 ### 5.2.1. `TaskletAdapter`
 
-`ItemReader`, `ItemWriter` 인터페이스의 아답터(adapter)처럼
+`ItemReader`, `ItemWriter` 인터페이스의 어댑터(adapter)처럼
 `Tasklet` 인터페이스도 기존 클래스에 꽂아서 사용할 수 있는 `TaskletAdapter`가 있다.
-예를 들어 레코드 셋 플래그를 업데이트할 때 사용힐 DAO가 이미 있는 경우에 아답터를 사용할 수 있다.
-`TaskletAdapter`를 사용하면 `Tasklet` 인터페이스를 위한 아답터를 직접 구현하지 않고도 이 클래스를 호출할 수 있다.
+예를 들어 레코드 셋 플래그를 업데이트할 때 사용힐 DAO가 이미 있는 경우에 어댑터를 사용할 수 있다.
+`TaskletAdapter`를 사용하면 `Tasklet` 인터페이스를 위한 어댑터를 직접 구현하지 않고도 이 클래스를 호출할 수 있다.
 
 ```java
 @Bean

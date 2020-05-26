@@ -910,11 +910,13 @@ public PatternMatchingCompositeLineMapper orderFileLineMapper() {
 각 라인별로 그에 맞는 객체에 위임(delegate)하기 위해 
 `PatternMatcher#match` 메소드를 사용한다. 
 `PatternMatcher`는 특별한 의미를 가진 와일드 카드 문자 두 개를 허용한다:
-물음표("?")는 문자 한개를, 별("`*`")은 0개 이상의 문자를 의미한다.
+물음표("?")는 문자 한개를, 별("\*")은 0개 이상의 문자를 의미한다.
 앞에선 라인 프리픽스를 지정하기 위해 모든 패턴을 별로 끝냈다는 것에 주목하라.
 `PatternMatcher`는 설정된 순서에 상관없이 항상 가장 구체적인 패턴부터 처리한다.
-즉 패턴에 "LINE`*`"과 "LINEA`*`"가 둘 다 있다면, "LINEB"는 "LINE`*`"에 매칭된다. 
-덧붙이자면, 아래 예제처럼 별 한개("`*`")만 사용하면
+즉 패턴에 "LINE\*"과 "LINEA\*"가 둘 다 있다면,
+"LINEA"는 "LINEA\*"에, 
+"LINEB"는 "LINE\*"에 매칭된다. 
+덧붙이자면, 아래 예제처럼 별 한개("\*")만 사용하면
 다른 패턴과 매칭되지 않은 모든 라인과 매칭된다.
 
 ```java
@@ -2114,7 +2116,7 @@ exception이 발생하는 건 이미 전체 버퍼가 쓰여진 다음이다.
 하지만 다른 스프링 배치 클래스의 의존성(dependency)때문에
 혹은 사용하려는 서비스 자체가 step의 메인 `ItemReader`인 경우,
 이미 있는 서비스를 `ItemReader`나 `ItemWriter`으로 사용해야 할 때도 있다.
-필요한 서비스를 감싸서 아답터(adapter) 클래스를 만드는 건 사소한 일이지만
+필요한 서비스를 감싸서 어댑터(adapter) 클래스를 만드는 건 사소한 일이지만
 자주 사용하는 패턴이기때문에 스프링 배치는 `ItemReaderAdapter`와 `ItemWriterAdapter`
 구현체를 제공한다.
 두 클래스 모두 위임(delegate) 패턴으로 표준 스프링 메소드를 구현했으며

@@ -70,10 +70,10 @@ remote partitioning과 remote chunking은 부하를 여러 워커에 분산시�
 스프링 배치를 시작하기 전 입력 파일을 추가적으로 변환해야 하는 경우도 있다.
 
 이럴 때 쓸 훨씬 강력한 방법이 있는데,
-Spring Integration과 여러 아답터(adapter)로 배치 job을 시작하는 것이다.
-예를 들어 *파일 인바운드 채널 아답터*를 만들어 파일 시스템 디렉토리를 모니터링하면
+Spring Integration과 여러 어댑터(adapter)로 배치 job을 시작하는 것이다.
+예를 들어 *파일 인바운드 채널 어댑터*를 만들어 파일 시스템 디렉토리를 모니터링하면
 입력 파일이 도착하자마자 배치를 시작할 수 있다.
-또, 여러 아답터를 사용해 Spring Integration 플로우를 만들면
+또, 여러 어댑터를 사용해 Spring Integration 플로우를 만들면
 배치 job은 동시에 여러 소스에서 데이터를 처리할 수 있다.
 Spring Integration을 사용하면,
 `JobLauncher`로 job을 이벤트 기반으로 나눠 실행할 수 있기 때문에
@@ -227,7 +227,7 @@ job-launching gateway는 다음과 같은 속성으로 job을 제어한다:
 값을 지정하지 않으면 디폴트 값인 *-1*로 설정되는데, `Gateway`가 무기한 기다린다는 뜻이다.
 - `job-launcher`: Optional. 
 커스텀 `JobLauncher` 빈을 사용해도 된다.
-지정하지 않으면 아답터는 `jobLauncher` `id`로 등록한 인스턴스를 재사용한다.
+지정하지 않으면 어댑터는 `jobLauncher` `id`로 등록한 인스턴스를 재사용한다.
 디폴트 인스턴스가 없으면 예외를 던진다.
 - `order`: 엔드포인트를 `SubscribableChannel` 구독자로 연결한 경우 실행 순서를 명시한다.
 
@@ -274,7 +274,7 @@ public JobLaunchingGateway sampleJobLaunchingGateway() {
 아래 그림에 보이는 예제는 `StepExecutionListener`를 사용한다.
 따라서 Spring Integration은 step에서 발생한 모든 이벤트를 step 전후에 통지받는다.   
 예를 들어 받은 `Router`로 `StepExecution` 상태에 따라 분기할 수 있다.
-메일 아웃바운드 채널 아답터에 메세지를 라우팅하면
+메일 아웃바운드 채널 어댑터에 메세지를 라우팅하면
 특정 조건에 메일로 통지할 수 있다.
 
 ![Handling Informational Messages](./../../images/springbatch/handling-informational-messages.png)
@@ -458,7 +458,7 @@ public ItemWriter<Integer> itemWriter() {
 ```
 
 위 설정에선 빈을 여러개 정의했는데,
-ActiveMQ와 Spring Integration이 제공하는 인바운드/아웃바운드 JMS 아답터로
+ActiveMQ와 Spring Integration이 제공하는 인바운드/아웃바운드 JMS 어댑터로
 메세지 미들웨어를 설정했다.
 위 step에서 참조하고 있는 `itemWriter`는
 설정한 미들웨어로 청크를 쓰기 위해 `ChunkMessageChannelItemWriter`를 사용했다. 

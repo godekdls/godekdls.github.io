@@ -29,7 +29,7 @@ spring-batch-test 프로젝트는 end-to-end 테스트를 도와줄 클래스를
 
 배치 job을 단위 테스트에서 실행시키려면
 프레임워크가 job의 `ApplicationContext`을 로딩시켜야 한다.
-이를 위해 두 가지 어노테이션을 사용한다:
+이를 위해 두 가지 애노테이션을 사용한다:
 
 - `@RunWith(SpringRunner.class)`: 스프링 JUnit 기능을 사용하겠다는 표시 
 - `@ContextConfiguration(…​)`: `ApplicationContext`에 설정할 리소스를 명시

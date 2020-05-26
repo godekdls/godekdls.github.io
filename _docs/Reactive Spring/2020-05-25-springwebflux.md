@@ -22,6 +22,10 @@ permalink: /Reactive%20Spring/springwebflux/
 - [1.2. Reactive Core](#12-reactive-core)
   + [1.2.1. HttpHandler](#121-httphandler)
   + [1.2.2. WebHandler API](#122-webhandler-api)
+    * [Special bean types](#special-bean-types)
+    * [Form Data](#form-data)
+    * [Multipart Data](#multipart-data)
+    * [Forwarded Headers](#forwarded-headers)
   + [1.2.3. Filters](#123-filters)
   + [1.2.4. Exceptions](#124-exceptions)
   + [1.2.5. Codecs](#125-codecs)
@@ -189,7 +193,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 
 `spring-web` 모듈에 있는 웹플럭스는,
 여러 서버를 지원하기위한 
-HTTP 추상화와 리액티브 스트림 [아답터](#121-httphandler),
+HTTP 추상화와 리액티브 스트림 [어댑터](#121-httphandler),
 [코덱](#125-codecs),
 Servlet API에 상응하는 코어 [`WebHandler` API](#122-webhandler-api)를
 아우르는 개념이며, 이는 모두 논블로킹이다.
@@ -281,7 +285,7 @@ annotated controller와 다른 점은
 
 스프링 부트에선 웹플럭스 스타터가 이 단계를 자동화해준다.
 스타터는 기본으로 Netty를 사용하지만,
-메이븐이나 그래들 디펜던시만 수정하면 톰캣이나 Jetty, Undertow로 쉽게 교체할 수 있다.
+메이븐이나 그래들 dependency만 수정하면 톰캣이나 Jetty, Undertow로 쉽게 교체할 수 있다.
 스프링 부트가 Netty를 디폴트로 사용하는 이유는
 보통 비동기 논블로킹에 많이 사용하기도 하고,
 클라이언트와 서버가 리소스를 공유할 수 있어서다.
@@ -291,7 +295,7 @@ annotated controller와 다른 점은
 스프링 MVC는 서블릿의 블로킹 I/O를 사용하며,
 어플리케이션에서 필요하면 서블릿 API를 직접 사용할 수 있다.
 스프링 웹플럭스는 서블릿 3.1 논블로킹 I/O로 동작하며,
-서블릿 API는 저수준 아답터에서 사용하기 때문에 노출돼 있지 않다.
+서블릿 API는 저수준 어댑터에서 사용하기 때문에 노출돼 있지 않다.
 
 스프링 웹플럭스에서 Undertow를 사용할 때는 서블릿 API가 아닌
 Undertow API를 사용한다.
@@ -357,15 +361,15 @@ Undertow API를 사용한다.
 어떤 쓰레드를 얼마나 실행할까?
 
 - 최소한의 설정으로 스프링 웹 플럭스 서버를 띄우면
-(예를 들어 데이터 접근이나 다른 디펜던시가 없는),
+(예를 들어 데이터 접근이나 다른 dependency가 없는),
 서버는 쓰레드 한 개로 운영하고, 소량의 쓰레드로 요청을 처리할 수 있다
 (보통은 CPU 코어 수만큼).
-하지만 서블릿 컨테이너는 서블릿 (블로킹) I/O와
-서블릿 3.1 (논블로킹) I/O를 모두 지원하기 때문에
+하지만 서블릿 컨테이너는 서블릿 블로킹 I/O와
+서블릿 3.1 논블로킹 I/O를 모두 지원하기 때문에
 더 많은 쓰레드를 실행할 것이다 (예를 들어 톰캣은 10개).
 - 리액티브 `WebClient`는 이벤트 루프 방식이다.
-따라서 적은 쓰레드를 고정해 두고 쓰는 것을 확인할 수 있다
-(예를 들어 리액터 Netty 커넥터를 쓴다면 `reactor-http-nio-`로 시작하는 쓰레드).
+따라서 적은 쓰레드를 고정해 두고 쓴다
+(예를 들어 리액터 Netty 커넥터를 쓴다면 `reactor-http-nio-`로 시작하는 쓰레드를 확인할 수 있다).
 단, 클라이언트와 서버에서 모두 리액터 Netty를 사용하면
 디폴트로 이벤트 루프 리소스를 공유한다.
 - 리액터와 RxJava는 스케줄러라는 추상화된 쓰레드 풀 전략을 제공한다.
@@ -376,7 +380,7 @@ Undertow API를 사용한다.
 여러 쓰레드로 I/O가 많은 처리를 할 때는 "elastic"이다.
 이런 쓰레들르 본다면
 코드 어딘가에서 그 이름에 해당하는 쓰레드 풀 `Scheduler` 전략을 사용하고 있다는 뜻이다.
-- 데이터에 접근하는 라이브러리나 다른 외부 디펜던시에서도
+- 데이터에 접근하는 라이브러리나 다른 외부 dependency에서
 쓰레드를 따로 실행하는 경우도 있다.
 
 **Configuring**
@@ -391,8 +395,245 @@ Undertow API를 사용한다.
 
 ## 1.2. Reactive Core
 
-### 1.2.1. HttpHandler
-### 1.2.2. WebHandler API
+`spring-web`은 리액티브 웹 어플리케이션을 위해 기본적으로 다음을 지원한다:
+
+- 서버 요청 처리는 저수준과 고수준으로 나눠서 지원한다.  
+  + [HttpHandler](#121-httphandler): 논블로킹 I/O와 리액티브 스트림 back pressure로 HTTP 요청 처리. 리액터 Netty, Undertow, 톰캣, Jetty, 서블릿 3.1+ 컨테이너 어댑터와 함께 동작한다.
+  + [`WebHandler` API](#122-webhandler-api): 약간 더 고수준으로, 애노테이션을 선언한 컨트롤러나 함수형 엔드포인트같이 구체적인 프로그래밍 모델로 요청을 처리하기 위한 범용 웹 API
+- 클라이언트 사이드에서는 기본적으로 `ClientHttpConnector`가
+논블로킹 I/O와 리액티브 스트림 back pressure로
+HTTP 요청을 처리한다.
+[Reactor Netty](https://github.com/reactor/reactor-netty),
+리액티브 [Jetty HttpClient](https://github.com/jetty-project/jetty-reactive-httpclient)
+어댑터와 함께 요청을 처리하며,
+어플리케이션에서 사용하는 고수준 [WebClient](https://godekdls.github.io/Reactive%20Spring/webclient/)는
+이를 기반으로 동작한다. 
+- 클라이언트와 서버 사이드 모두, [codecs](#125-codecs)으로
+HTTP 요청과 응답 컨텐츠를 직렬화/역직렬화할 수 있다.
+
+### 1.2.1. `HttpHandler`
+
+[HttpHandler](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/server/reactive/HttpHandler.html)는
+요청과 응답을 처리하기 위한 메소드 하나 뿐이다.
+의도한 유일한 역할은 여러 HTTP 서버 API를 추상화하는 것이다.
+
+지원하는 서버 API는 아래 표에 나타냈다:
+
+|서버 이름|사용하는 Server API|리액티브 스트림 지원|
+|:-----------------:	|:-------------:	|:-------------:	|
+|Netty|Netty API|[Reactor Netty](https://github.com/reactor/reactor-netty)|
+|Undertow|Undertow API|spring-web: Undertow to 리액티브 스트림 브릿지|
+|톰캣|서블릿 3.1 논블로킹 I/O; ByteBuffers, byte[]를 읽고 쓰는 톰캣 API|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
+|Jetty|서블릿 3.1 논블로킹 I/O; ByteBuffers, byte[]를 쓰는 Jetty API|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
+|서블릿 3.1 컨테이너|서블릿 3.1 논블로킹 I/O|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
+
+서버 dependency는 아래 테이블에 있다
+([지원 버전](https://github.com/spring-projects/spring-framework/wiki) 참고):
+
+|서버 이름|Group id|Artifact name|
+|:-----------------:	|:-------------:	|:-------------:	|
+|리액터 Netty|io.projectreactor.netty|reactor-netty|
+|Undertow|io.undertow|undertow-core|
+|톰캣|org.apache.tomcat.embed|tomcat-embed-core|
+|Jetty|org.eclipse.jetty|jetty-server, jetty-servlet|
+
+다음은 각 서버 API 어댑터를 활용하는 `HttpHandler` 코드다:
+
+**리액터 Netty**
+- *java*
+```java
+HttpHandler handler = ...
+ReactorHttpHandlerAdapter adapter = new ReactorHttpHandlerAdapter(handler);
+HttpServer.create().host(host).port(port).handle(adapter).bind().block();
+```
+- *kotlin*
+```kotlin
+val handler: HttpHandler = ...
+val adapter = ReactorHttpHandlerAdapter(handler)
+HttpServer.create().host(host).port(port).handle(adapter).bind().block()
+```
+
+**Undertow**
+- *java*
+```java
+HttpHandler handler = ...
+UndertowHttpHandlerAdapter adapter = new UndertowHttpHandlerAdapter(handler);
+Undertow server = Undertow.builder().addHttpListener(port, host).setHandler(adapter).build();
+server.start();
+```
+- *kotlin*
+```kotlin
+val handler: HttpHandler = ...
+val adapter = UndertowHttpHandlerAdapter(handler)
+val server = Undertow.builder().addHttpListener(port, host).setHandler(adapter).build()
+server.start()
+```
+
+**Tomcat**
+- *java*
+
+```java
+HttpHandler handler = ...
+Servlet servlet = new TomcatHttpHandlerAdapter(handler);
+
+Tomcat server = new Tomcat();
+File base = new File(System.getProperty("java.io.tmpdir"));
+Context rootContext = server.addContext("", base.getAbsolutePath());
+Tomcat.addServlet(rootContext, "main", servlet);
+rootContext.addServletMappingDecoded("/", "main");
+server.setHost(host);
+server.setPort(port);
+server.start();
+```
+- *kotlin*
+
+```kotlin
+val handler: HttpHandler = ...
+val servlet = TomcatHttpHandlerAdapter(handler)
+
+val server = Tomcat()
+val base = File(System.getProperty("java.io.tmpdir"))
+val rootContext = server.addContext("", base.absolutePath)
+Tomcat.addServlet(rootContext, "main", servlet)
+rootContext.addServletMappingDecoded("/", "main")
+server.host = host
+server.setPort(port)
+server.start()
+```
+
+**Jetty**
+
+- *java*
+
+```java
+HttpHandler handler = ...
+Servlet servlet = new JettyHttpHandlerAdapter(handler);
+
+Server server = new Server();
+ServletContextHandler contextHandler = new ServletContextHandler(server, "");
+contextHandler.addServlet(new ServletHolder(servlet), "/");
+contextHandler.start();
+
+ServerConnector connector = new ServerConnector(server);
+connector.setHost(host);
+connector.setPort(port);
+server.addConnector(connector);
+server.start();
+```
+- *kotlin*
+
+```kotlin
+val handler: HttpHandler = ...
+val servlet = JettyHttpHandlerAdapter(handler)
+
+val server = Server()
+val contextHandler = ServletContextHandler(server, "")
+contextHandler.addServlet(ServletHolder(servlet), "/")
+contextHandler.start();
+
+val connector = ServerConnector(server)
+connector.host = host
+connector.port = port
+server.addConnector(connector)
+server.start()
+```
+
+**서블릿 3.1+ 컨테이너**
+
+서블릿 3.1+ 컨테이너에 WAR를 배포하려면
+WAR에 [`AbstractReactiveWebInitializer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/adapter/AbstractReactiveWebInitializer.html)를
+확장해서 추가하면 된다.
+이 클래스는 `HttpHandler`, `ServletHttpHandlerAdapter`를 감싸고 있으며,
+이 핸들러를 `Servlet`으로 등록한다.
+
+### 1.2.2. `WebHandler` API
+
+`org.springframework.web.server` 패키지를 보면, [`HttpHandler`](#121-httphandler)가
+[`WebHandler`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/WebHandler.html)와,
+여러 [`WebExceptionHandler`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/WebExceptionHandler.html),
+[`WebFilter`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/WebFilter.html)로
+체인을 형성해 요청을 처리하는 범용 웹 API를 제공한다.
+`WebHttpHandlerBuilder`에 컴포넌트를 등록하거나,
+[자동으로 주입](#special-bean-types)해 주는 
+스프링 `ApplicationContext` 위치만 알려주면
+컴포넌트를 체인에 추가할 수 있다.
+
+`HttpHandler`는 서로 다른 HTTP 서버를 쓰기 위한 추상화가 전부인 반면,
+`WebHandler` API는 아래와 같이 웹 어플리케이션에서
+흔히 쓰는 광범위한 기능을 제공한다:
+
+- User session과 Session attributes.
+- Request attributes.
+- `Locale`, `Principal` 리졸브
+- form 데이터 파싱, 캐시 및 접근.
+- multipart 데이터 추상화.
+- 기타 등등
+
+#### Special bean types
+
+다음은 `WebHttpHandlerBuilder`에 직접 등록하거나
+어플리케이션 컨텍스트에서 자동으로 주입받을 수 있는 컴포넌트다:
+
+|Bean name|Bean type|Count|Description|
+|:-----------------:	|:-------------:	|:-------------:	|:-------------:	|
+|\<any\>|`WebExceptionHandler`|0..N|`WebFilter` 인스턴스 체인과 대상 `WebHandler`에서 발생한 예외를 처리한다. 자세한 내용은 [Exceptions](#124-exceptions)를 참고하라.|
+|\<any\>|`WebFilter`|0..N|다른 필터 체인과 타겟 `WebHandler` 전후에서 요청을 가로채 원하는 로직을 넣을 수 있다. 자세한 내용은 [Filters](#123-filters)를 참고하라.|
+|`webHandler`|`WebHandler`|1|요청을 처리하는 핸들러.|
+|`webSessionManager`|`WebSessionManager`|0..1|`WebSession`의 매니저. `WebSession`은 `ServerWebExchange`의 메소드로 접근할 수 있다. 디폴트는 `DefaultWebSessionManager`다.|
+|`serverCodecConfigurer`|`ServerCodecConfigurer`|0..1|form 데이터나 multipart 데이터를 파싱하는 `HttpMessageReader`를 설정하기 위한 인터페이스. 이 데이터는 `ServerWebExchange`의 메소드로 접근할 수 있다. 디폴트는 `ServerCodecConfigurer.create()`를 사용한다.|
+|`localeContextResolver`|`LocaleContextResolver`|0..1|`LocaleContext` 리졸버. `LocaleContext`는 `ServerWebExchange`의 메소드로 접근한다. 디폴트는 `AcceptHeaderLocaleContextResolver`다.|
+|`forwardedHeaderTransformer`|`ForwardedHeaderTransformer`|0..1|forwarded 헤더를 파싱해서 추출 후 제거하거나, 제거만 하고 헤더 정보를 무시할수도 있다. 디폴트는 사용하지 않는 것이다.|
+
+#### Form Data
+
+`ServerWebExchange`는 form 데이터에 접근할 수 있는 다음 메소드를 제공한다:
+
+- *java*
+```java
+Mono<MultiValueMap<String, String>> getFormData();
+```
+- *kotlin*
+```kotlin
+suspend fun getFormData(): MultiValueMap<String, String>
+```
+
+`DefaultServerWebExchange`는 설정한 `HttpMessageReader`로
+form 데이터(`application/x-www-form-urlencoded`)를 `MultiValueMap`으로 파싱한다.
+디폴트로는 `ServerCodecConfigurer` 빈에서 `FormHttpMessageReader`를 설정한다 
+([Web Handler API](#122-webhandler-api) 참고).
+
+#### Multipart Data
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-multipart)
+
+`ServerWebExchange`는 multipart 데이터에 접근할 수 있는 다음 메소드를 제공한다:
+
+- *java*
+```java
+Mono<MultiValueMap<String, Part>> getMultipartData();
+```
+- *kotlin*
+```kotlin
+suspend fun getMultipartData(): MultiValueMap<String, Part>
+```
+
+`DefaultServerWebExchange`는 설정한 `HttpMessageReader<MultiValueMap<String, Part>>`로
+`multipart/form-data` 컨텐츠를 `MultiValueMap`으로 파싱한다.
+현재로서는 [Synchronoss NIO Multipart](https://github.com/synchronoss/nio-multipart)가
+유일하게 지원하는 서드파티 라이브러리이며, 논블로킹으로 multipart 요청을 파싱하는 유일한 라이브러리다.
+`ServerCodecConfigurer` 빈으로 활성화할 수 있다. 
+([Web Handler API](#122-webhandler-api) 참고).
+
+스트리밍 방식으로 multipart 데이터를 파싱하려면
+`HttpMessageReader<Part>`가 리턴하는 `Flux<Part>`를 사용하면 된다.
+예를 들어 컨트롤러에서 `@RequestPart`를 선언하면
+`Map`처럼 이름으로 각 파트에 접근하겠다는 뜻이므로,
+multipart 데이터를 한 번에 파싱해야 한다.
+반대로 `Flux<Part>`타입에 `@RequestBody`를 사용하면
+컨텐츠를 디코딩할 때 `MultiValueMap`에 수집하지 않는다.
+
+#### Forwarded Headers
+
 ### 1.2.3. Filters
 ### 1.2.4. Exceptions
 ### 1.2.5. Codecs
