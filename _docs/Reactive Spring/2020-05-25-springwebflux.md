@@ -30,7 +30,16 @@ permalink: /Reactive%20Spring/springwebflux/
     * [CORS](#cors)
   + [1.2.4. Exceptions](#124-exceptions)
   + [1.2.5. Codecs](#125-codecs)
+    * [Jackson JSON](#jackson-json)
+    * [Form Data](#form)
+    * [Multipart](#multipart)
+    * [Limits](#limits)
+    * [Streaming](#streaming)
+    * [DataBuffer](#databuffer)
   + [1.2.6. Logging](#126-logging)
+    * [Log Id](#log-id)
+    * [Sensitive Data](#sensitive-data)
+    * [Custom codecs](#custom-codecs)
 - [1.3. DispatcherHandler](#13-dispatcherhandler)
   + [1.3.1. Special Bean Types](#131-special-bean-types)
   + [1.3.2. WebFlux Config](#132-webflux-config)
@@ -396,17 +405,17 @@ Undertow API를 사용한다.
 
 ## 1.2. Reactive Core
 
-`spring-web`은 리액티브 웹 어플리케이션을 위해 기본적으로 다음을 지원한다:
+`spring-web`을 사용하면 다음과 같은 방법으로 리액티브 웹 어플리케이션을 만들 수 있다:
 
-- 서버 요청 처리는 저수준과 고수준으로 나눠서 지원한다.  
-  + [HttpHandler](#121-httphandler): 논블로킹 I/O와 리액티브 스트림 back pressure로 HTTP 요청 처리. 리액터 Netty, Undertow, 톰캣, Jetty, 서블릿 3.1+ 컨테이너 어댑터와 함께 동작한다.
-  + [`WebHandler` API](#122-webhandler-api): 약간 더 고수준으로, 애노테이션을 선언한 컨트롤러나 함수형 엔드포인트같이 구체적인 프로그래밍 모델로 요청을 처리하기 위한 범용 웹 API
+- 서버 쪽 요청은 저수준과 고수준으로 나눠서 처리한다.  
+  + [HttpHandler](#121-httphandler): 논블로킹 I/O와 리액티브 스트림 back pressure로 HTTP 요청을 처리한다. 리액터 Netty, Undertow, 톰캣, Jetty, 서블릿 3.1+ 컨테이너 어댑터와 함께 사용한다.
+  + [`WebHandler` API](#122-webhandler-api): 약간 더 고수준으로, 애노테이션을 선언한 컨트롤러나 함수형 엔드포인트같이 구체적인 프로그래밍 모델로 작성하는 범용 웹 API다.
 - 클라이언트 사이드에서는 기본적으로 `ClientHttpConnector`가
 논블로킹 I/O와 리액티브 스트림 back pressure로
 HTTP 요청을 처리한다.
 [Reactor Netty](https://github.com/reactor/reactor-netty),
 리액티브 [Jetty HttpClient](https://github.com/jetty-project/jetty-reactive-httpclient)
-어댑터와 함께 요청을 처리하며,
+어댑터와 함께 사용하며,
 어플리케이션에서 사용하는 고수준 [WebClient](https://godekdls.github.io/Reactive%20Spring/webclient/)는
 이를 기반으로 동작한다. 
 - 클라이언트와 서버 사이드 모두, [codecs](#125-codecs)으로
@@ -415,7 +424,7 @@ HTTP 요청과 응답 컨텐츠를 직렬화/역직렬화할 수 있다.
 ### 1.2.1. `HttpHandler`
 
 [HttpHandler](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/server/reactive/HttpHandler.html)는
-요청과 응답을 처리하기 위한 메소드 하나 뿐이다.
+요청과 응답을 처리하는 메소드를 하나만 가지고 있다.
 의도한 유일한 역할은 여러 HTTP 서버 API를 추상화하는 것이다.
 
 지원하는 서버 API는 아래 표에 나타냈다:
@@ -566,7 +575,7 @@ WAR에 [`AbstractReactiveWebInitializer`](https://docs.spring.io/spring-framewor
 - User session과 Session attributes.
 - Request attributes.
 - `Locale`, `Principal` 리졸브
-- form 데이터 파싱, 캐시 및 접근.
+- form 데이터 파싱, 캐시 조회.
 - multipart 데이터 추상화.
 - 기타 등등
 
@@ -577,17 +586,17 @@ WAR에 [`AbstractReactiveWebInitializer`](https://docs.spring.io/spring-framewor
 
 |Bean name|Bean type|Count|Description|
 |:-----------------:	|:-------------:	|:-------------:	|:-------------:	|
-|\<any\>|`WebExceptionHandler`|0..N|`WebFilter` 인스턴스 체인과 대상 `WebHandler`에서 발생한 예외를 처리한다. 자세한 내용은 [Exceptions](#124-exceptions)를 참고하라.|
-|\<any\>|`WebFilter`|0..N|다른 필터 체인과 타겟 `WebHandler` 전후에 요청을 가로채 원하는 로직을 넣을 수 있다. 자세한 내용은 [Filters](#123-filters)를 참고하라.|
+|\<any\>|`WebExceptionHandler`|0..N|`WebFilter` 체인과 `WebHandler`에서 발생한 예외를 처리한다. 자세한 내용은 [Exceptions](#124-exceptions)를 참고하라.|
+|\<any\>|`WebFilter`|0..N|다른 필터 체인과 `WebHandler` 전후에 요청을 가로채 원하는 로직을 넣을 수 있다. 자세한 내용은 [Filters](#123-filters)를 참고하라.|
 |`webHandler`|`WebHandler`|1|요청을 처리하는 핸들러.|
-|`webSessionManager`|`WebSessionManager`|0..1|`WebSession`의 매니저. `WebSession`은 `ServerWebExchange`의 메소드로 접근할 수 있다. 디폴트는 `DefaultWebSessionManager`다.|
-|`serverCodecConfigurer`|`ServerCodecConfigurer`|0..1|form 데이터나 multipart 데이터를 파싱하는 `HttpMessageReader`를 설정하기 위한 인터페이스. 이 데이터는 `ServerWebExchange`의 메소드로 접근할 수 있다. 디폴트는 `ServerCodecConfigurer.create()`를 사용한다.|
-|`localeContextResolver`|`LocaleContextResolver`|0..1|`LocaleContext` 리졸버. `LocaleContext`는 `ServerWebExchange`의 메소드로 접근한다. 디폴트는 `AcceptHeaderLocaleContextResolver`다.|
+|`webSessionManager`|`WebSessionManager`|0..1|`WebSession`의 매니저. `WebSession`은 `ServerWebExchange`로 접근할 수 있다. 디폴트는 `DefaultWebSessionManager`다.|
+|`serverCodecConfigurer`|`ServerCodecConfigurer`|0..1|form 데이터나 multipart 데이터를 파싱하는 `HttpMessageReader`를 설정하기 위한 인터페이스. 이 데이터는 `ServerWebExchange`로 접근할 수 있다. 디폴트는 `ServerCodecConfigurer.create()`를 사용한다.|
+|`localeContextResolver`|`LocaleContextResolver`|0..1|`LocaleContext` 리졸버. `LocaleContext`는 `ServerWebExchange`로 접근한다. 디폴트 리졸버는 `AcceptHeaderLocaleContextResolver`다.|
 |`forwardedHeaderTransformer`|`ForwardedHeaderTransformer`|0..1|forwarded 헤더를 파싱해서 추출 후 제거하거나, 제거만 하고 헤더 정보를 무시할수도 있다. 디폴트는 사용하지 않는 것이다.|
 
 #### Form Data
 
-`ServerWebExchange`는 form 데이터에 접근할 수 있는 다음 메소드를 제공한다:
+`ServerWebExchange`는 form 데이터(`application/x-www-form-urlencoded`)에 접근할 수 있는 다음 메소드를 제공한다:
 
 - *java*
 ```java
@@ -598,9 +607,9 @@ Mono<MultiValueMap<String, String>> getFormData();
 suspend fun getFormData(): MultiValueMap<String, String>
 ```
 
-`DefaultServerWebExchange`는 설정한 `HttpMessageReader`로
-form 데이터(`application/x-www-form-urlencoded`)를 `MultiValueMap`으로 파싱한다.
-디폴트로는 `ServerCodecConfigurer` 빈에서 `FormHttpMessageReader`를 설정한다 
+`DefaultServerWebExchange`는 설정에 있는 `HttpMessageReader`를 사용해
+form 데이터를 `MultiValueMap`으로 파싱한다.
+디폴트로 사용하는 리더는 `ServerCodecConfigurer` 빈에 있는 `FormHttpMessageReader`다
 ([Web Handler API](#122-webhandler-api) 참고).
 
 #### Multipart Data
@@ -618,7 +627,7 @@ Mono<MultiValueMap<String, Part>> getMultipartData();
 suspend fun getMultipartData(): MultiValueMap<String, Part>
 ```
 
-`DefaultServerWebExchange`는 설정한 `HttpMessageReader<MultiValueMap<String, Part>>`로
+`DefaultServerWebExchange`는 설정에 있는 `HttpMessageReader<MultiValueMap<String, Part>>`를 사용해
 `multipart/form-data` 컨텐츠를 `MultiValueMap`으로 파싱한다.
 현재로서는 [Synchronoss NIO Multipart](https://github.com/synchronoss/nio-multipart)가
 유일하게 지원하는 서드파티 라이브러리이며, 논블로킹으로 multipart 요청을 파싱하는 유일한 라이브러리다.
@@ -637,26 +646,26 @@ multipart 데이터를 한 번에 파싱해야 한다.
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#filters-forwarded-headers)
 
-프록시를 경유한 요청은(e.g. 로드 밸런서) 호스트, 포트, 스키마가 바뀔 수 있다.
+프록시를 경유한 요청은(e.g. 로드 밸런서) 호스트, 포트, 스키마가 변경될 수 있기 때문에,
 클라이언트 입장에서는 원래 url 정보를 알아내기 어렵다.
 
 [RFC 7239](https://tools.ietf.org/html/rfc7239)에 따르면
 Forwarded `HTTP` 헤더는 프록시가 원래 요청에 대한 정보를 추가하는 헤더다.
-`X-Forwarded-Host`, `X-Forwarded-Port`, `X-Forwarded-Proto`, 
+물론 `X-Forwarded-Host`, `X-Forwarded-Port`, `X-Forwarded-Proto`, 
 `X-Forwarded-Ssl`, `X-Forwarded-Prefix`같은
 비 표준 헤더도 있다.
 
 `ForwardedHeaderTransformer`는 forwarded 헤더를 보고
-요청의 호스트, 포트, 스키마를 바꾼 다음 헤더를 제거해주는 컴포넌트다.
+요청의 호스트, 포트, 스키마를 바꿔준 다음, 헤더를 제거하는 컴포넌트다.
 `forwardedHeaderTransformer`라는 이름으로 빈을 정의하면
 자동으로 [체인에 추가](#special-bean-types)된다.
 
 forwarded 헤더는 보안에 신경써야 할 요소가 있는데,
 프록시가 헤더를 추가한 건지, 클라이언트가 악의적으로 추가한 것인지
 어플리케이션에서는 알 수 없기 때문이다.
-이 때문에 외부에서 들어오는 신뢰할 수 없는 프록시 요청을 제거하는 것도 중요하다.
+이 때문에 외부에서 들어오는 신뢰할 수 없는 프록시 요청을 제거하고 싶을 수도 있다.
 `ForwardedHeaderTransformer`를 `removeOnly=true`로 설정하면
-헤더 정보를 사용하지 않고 제거한다.
+헤더 정보를 사용하지 않고 제거해 준다.
 
 > 5.1 버전 부터 `ForwardedHeaderFilter`는 제거 대상에 올랐으며(deprecated),
 > `ForwardedHeaderTransformer`로 대신한다.
@@ -669,9 +678,9 @@ forwarded 헤더는 보안에 신경써야 할 요소가 있는데,
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#filters)
 
-[`WebHandler` API](#122-webhandler-api)에선 `WebFilter`로
-다른 필터 체인과 타켓 `WebHandler` 전후에 요청을 가로채 원하는 로직을 넣을 수 있다.
-`WebFilter` 등록은 스프링 빈으로 만들어 원한다면 빈 위에 `@Order`를 선언하거나
+[`WebHandler` API](#122-webhandler-api)에선 `WebFilter`를 사용하면,
+다른 필터 체인과 `WebHandler` 전후에 요청을 가로채 원하는 로직을 넣을 수 있다.
+`WebFilter`를 등록하려면 스프링 빈으로 만들어 원한다면 빈 위에 `@Order`를 선언하거나
 `Ordered`를 구현해 순서를 정해도 되고,
 [WebFlux Config](#111-webflux-config)를 사용해도 그만큼 간단하다.
 
@@ -690,10 +699,9 @@ CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작�
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-customer-servlet-container-error-page)
 
-[`WebHandler` API](#122-webhandler-api)에선
-`WebExceptionHandler`으로 `WebFilter` 체인과 타겟
-`WebHandler`에서 발생한 예외를 처리할 수 있다.
-`WebExceptionHandler` 등록은 스프링 빈으로 만들어 원한다면
+[`WebHandler` API](#122-webhandler-api)는
+`WebFilter` 체인과 `WebHandler`에서 발생한 예외를 `WebExceptionHandler`로 처리한다.
+`WebExceptionHandler`를 등록하려면 스프링 빈으로 만들어 원한다면
 빈 위에 `@Order`를 선언하거나 `Ordered`를 구현해 순서를 정해도 되고,
 [WebFlux Config](#111-webflux-config)를 사용해도 그만큼 간단하다.
 
@@ -705,7 +713,276 @@ CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작�
 |`WebFluxResponseStatusExceptionHandler`|`ResponseStatusExceptionHandler`를 확장한 것으로, 다른 exception 타입도 `@ResponseStatus`를 선언해서 HTTP staus code를 정할 수 있다.<br><br>이 핸들러는 [WebFlux Config](#111-webflux-config) 안에 선언 돼 있다.|
 
 ### 1.2.5. Codecs
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/integration.html#rest-message-conversion)
+
+`spring-web`, `spring-core` 모듈을 사용하면
+리액티브 논블로킹 방식으로
+byte 컨텐츠를 고수준 객체로 직렬화, 역직렬화할 수 있다.
+다음과 같은 내용을 지원 한다:
+
+- [`Encoder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/codec/Encoder.html),
+[`Decoder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/codec/Decoder.html)는 
+HTTP와는 관계 없는 컨텐츠를 인코딩, 디코딩한다.
+- [`HttpMessageReader`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/codec/HttpMessageReader.html),
+[`HttpMessageWriter`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/codec/HttpMessageWriter.html)는
+HTTP 메세지를 인코딩, 디코딩한다.
+- 웹 어플리케이션에선 `Encoder`를 감싸고 있는 `EncoderHttpMessageWriter`와
+`Decoder`를 감싸고 있는 `DecoderHttpMessageReader`를 사용할 수 있다.
+- 모든 코덱은 라이브러리마다 다른 byte 버퍼(e.g. Netty `ByteBuf`, `java.nio.ByteBuffer` 등)를
+추상화한 [`DataBuffer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/io/buffer/DataBuffer.html)로
+처리한다. 자세한 내용은 스프링 코어의 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)를
+참고하라.
+
+`spring-core` 모듈에는 `byte[]`, `ByteBuffer`,
+`DataBuffer`, `Resource`, `String` 인코더/디코더 구현체가 있다. 
+`spring-web` 모듈은 Jackson JSON, 
+Jackson Smile, JAXB2, Protocol Buffers 등의 인코더/디코더와,
+form 데이터, multipart 데이터, 서버 전송 이벤트(SSE) 등을 처리하는
+웹 전용 HTTP 메세지 reader/writer를 제공한다.
+
+`ClientCodecConfigurer`와 `ServerCodecConfigurer`로
+기본 코덱을 설정하거나 커스텀 코덱을 등록할 수 있다.
+[HTTP message codecs](#1116-http-message-codecs)를 참고하라.
+
+#### Jackson JSON
+
+JSON, binary JSON([Smile](https://github.com/FasterXML/smile-format-specification))
+모두 Jackson 라이브러리 디펜던시가 있으면 추가된다.
+
+`Jackson2Decoder`는 다음과 같이 동작한다:
+
+- Jackson의 비동기, 논블로킹 파서가 `TokenBuffer`로 바이트 청크 스트림을 모아 JSON 객체로 변환한다.
+- 각 `TokenBuffer`는 Jackson의 `ObjectMapper`로 넘겨져 고수준 객체를 만든다.
+- 값이 하나 뿐인 publisher(e.g. `Mono`)를 디코딩 할때는 `TokenBuffer`가 하나 뿐이다.
+- 값이 여러 개인 publisher(e.g. `Flux`)를 디코딩 할때는, 각 `TokenBuffer`에
+객체를 구성할 수 있을 만큼 바이트가 모이면 그때그때 `ObjectMapper`로 전달한다.
+입력 컨텐츠는 JSON 배열이거나, 컨텐츠 타입이 `application/stream+json`이라면
+[line-delimited JSON](https://en.wikipedia.org/wiki/JSON_streaming)일 수도 있다.
+
+`Jackson2Encoder`는 다음과 같이 동작한다:
+
+- 값이 하나 뿐인 publisher(e.g. `Mono`)는 바로 `ObjectMapper`에서 직렬화한다.
+- 값이 여러 개인 publisher를 `application/json`로 직렬화할 땐
+기본적으로 `Flux#collectToList()`로 값을 수집한 다음 그 컬렉션을 직렬화한다.
+- `application/stream+json`, `application/stream+x-jackson-smile`같은
+스트리밍 타입을 값이 여러 개인 publisher로 직렬화하면
+[line-delimited JSON](https://en.wikipedia.org/wiki/JSON_streaming) 포맷으로
+따로따로 인코딩하고, write, flush한다.
+- SSE라면 이벤트가 발생할 때 마다 `Jackson2Encoder`를 호출하고 바로 flush한다.
+
+> 기본적으로 `Jackson2Encoder`, `Jackson2Decoder` 모두
+> `String`을 객체로 사용할 수 없다. 
+> 대신 string이나 string 시퀀스는 `CharSequenceEncoder`로 만들 수 있는
+> 직렬화된 JSON 컨텐츠로 간주한다.
+> `Flux<String>`으로 JSON 배열을 만들고 싶다면
+> `Flux#collectToList()`를 사용해서 `Mono<List<String>>`을 인코딩하라.
+
+#### Form
+
+`FormHttpMessageReader`, `FormHttpMessageWriter`는
+`application/x-www-form-urlencoded` 컨텐츠를 인코딩/디코딩한다.
+
+form 데이터는 어플리케이션에서 여러번 접근하는 경우가 많기 때문에,
+`ServerWebExchange`는
+`FormHttpMessageReader`로 컨텐츠를 파싱한 뒤 캐시된 데이터를 반환하는
+`getFormData()` 메소드를 제공한다.
+[`Handler` API](#122-webhandler-api) 섹션의 [Form Data](#form-data)를 참고하라.
+
+`getFormData()`를 한번 호출하고 나면 원본 컨텐츠는 다시 읽을 수 없다.
+때문에 그 다음부터는 request body가 아닌 `ServerWebExchange`로 캐시된 데이터를 조회해야 한다.
+
+#### Multipart
+
+`MultipartHttpMessageReader`, `MultipartHttpMessageWriter`는
+"multipart/form-data" 컨텐츠를 인코딩/디코딩한다.
+사실 `MultipartHttpMessageReader`는 다른 `HttpMessageReader`에 파싱을 위임하고,
+돌려받은 `Flux<Part>`를 `MultiValueMap`에 수집하는 역할만 한다.
+실제 파싱은 [Synchronoss NIO Multipart](https://github.com/synchronoss/nio-multipart)를
+사용한다.
+
+multipart form 데이터는 어플리케이션에서 여러번 접근하는 경우가 많기 때문에,
+`ServerWebExchange`는 `MultipartHttpMessageReader`로
+컨텐츠를 파싱한 뒤 캐시된 데이터를 반환하는 `getMultipartData()` 메소드를 제공한다.
+[`WebHandler` API](#122-webhandler-api) 섹션의 [Multipart Data](#multipart-data)를 참고하라.
+
+`getMultipartData()`를 한번 호출하고 나면 원본 컨텐츠는 다시 읽을 수 없다.
+때문에 그 다음부터는 request body 대신,
+Map을 리턴하는 `getMultipartData()`를 사용해야 한다.
+그게 아니라면 `SynchronossPartHttpMessageReader`를 사용해
+매번 파싱해야한다.
+
+#### Limits
+
+`Decoder`나 `HttpMessageReader`처럼 입력 스트림을 버퍼링한다면,
+메모리 버퍼 용량을 제한할 수 있다.
+버퍼는 객체를 만들려면 입력을 어딘가에 모아놔야 해서 필요할 때도 있고,
+(예를 들어 `@RequestBody byte[]`나 `x-www-form-urlencoded` 데이터를 받는 컨트롤러 메소드 등),
+입력을 나눠서 스트리밍할 때도 버퍼링이 필요하다
+(구분자를 사용하는(delimited) 텍스트나, JSON 객체 스트림 등).
+스트리밍은 보통 객체 하나를 담을 수 있는 바이트 수로 제한한다.
+
+버퍼 사이즈를 변경하고 싶으면 먼저 
+`Decoder`나 `HttpMessageReader`에 `maxInMemorySize` 프로퍼티가
+노출돼 있는지 확인해보고, 만약 그렇다면 Javadoc에 자세한 정보가 있을 것이다.
+서버 사이드에선 모든 코덱은 `ServerCodecConfigurer`에 설정하면 된다
+([HTTP message codecs](#1116-http-message-codecs) 참고). 
+클라이언트 사이드에선 [WebClient.Builder](https://godekdls.github.io/Reactive%20Spring/webclient/#211-maxinmemorysize)로
+코덱의 최대 버퍼 사이즈를 수정할 수 있다.
+
+[Multipart 데이터를 파싱](#multipart)할 때는,
+먼저 파일이 아닌 part가 사용할 메모리 크기는 `maxInMemorySize` 프로퍼티로 제한한다.
+파일 part라면 이 프로퍼티는 디스크 크기를 제한한다.
+이 때는 `maxDiskUsagePerPart`로 part 별 디스크 크기도 제한할 수 있다.
+multipart 요청에 사용할 전체 part 수를 제한하는 `maxParts`도 있다.
+웹플럭스에서 이같은 설정을 사용하려면
+`ServerCodecConfigurer`에 `MultipartHttpMessageReader` 인스턴스가
+설정돼 있어야 한다.
+
+#### Streaming
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-async-http-streaming)
+
+HTTP 응답을 스트리밍할 땐
+(예를 들어 `text/event-stream`, `application/stream+json`),
+클라이언트 연결이 끊기면 가능한 빨리 알아챌 수 있도록
+주기적으로 데이터를 보내는 게 좋다.
+이 때 보내는 하트비트는 짧은 문자열이나, 비어있는 SSE 이벤트나,
+"no-op"를 나타내는 데이터라면 어떤 것이든 사용할 수 있다.
+
+#### `DataBuffer`
+
+웹플럭스 코드에서 바이트 버퍼는 `DataBuffer`로 표현한다.
+스프링 코어 문서를 보면
+[Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)에
+더 자세한 내용이 나와있다.
+핵심은 Netty같은 일부 서버에선 메모리 풀을 사용해서 바이트 버퍼를 처리하고
+레퍼런스를 카운팅하므로, 메모리 릭을 방지하려면
+컨슈밍하고 나서 버퍼 메모리를 반환해야 한다는 것이다.
+
+코덱을 쓰는 대신 버퍼를 직접 처리하거나, 코덱을 커스텀하지만 않는다면
+WebFlux 애플리케이션은
+이런 이슈는 신경쓰지 않아도 된다.
+예외 케이스에 해당한다면 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)를
+참고하라. 특히 [DataBuffer](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers-using)
+섹션을 유심히 봐라.
+
 ### 1.2.6. Logging
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-logging)
+
+스프링 웹플럭스는 `DEBUG` 레벨 로그에 꼭 필요한 정보만 최소한으로 담았기 때문에 읽기 편할 것이다.
+어떤 이슈에서도 유용할만한 가치있는 정보만 추렸다.
+
+`TRACE` 레벨도 `DEBUG`와 원론적으로 동일하지만
+(예를 들어 `TRACE`도 불필요한 정보를 잔뜩 쏟아내선 안된다),
+이슈를 디버깅할 때 좀 더 유용할 만한 정보를 담았다.
+일부 `TRACE`, `DEBUG` 레벨 로그는 디테일한 정도가 다를 것이다.
+
+어떤 로그가 좋은 로그인지는 사용해 봐야 알 수 있다.
+각 레벨과 어울리지 않는 로그를 발견하면 재보 바란다.
+
+#### Log Id
+
+웹플럭스에선 요청 하나를 여러 쓰레드로 처리할 수 있기 때문에,
+쓰레드 ID만 보고는 어떤 요청인지 파악하기 어렵다.
+그렇기 때문에 웹플럭스는 기본적으로
+로그 메세지마다 앞에 요청 ID를 붙인다.
+
+서버 사이드에선 이 로그 ID를 
+`ServerWebExchange` attribute([`LOG_ID_ATTRIBUTE`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/ServerWebExchange.html#LOG_ID_ATTRIBUTE))에
+저장하며, `ServerWebExchange#getLogPrefix()`로 포맷팅된 로그 프리픽스를 확인할 수 있다.
+
+`WebClient`에선
+`ClientRequest` attribute ([`LOG_ID_ATTRIBUTE`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/function/client/ClientRequest.html#LOG_ID_ATTRIBUTE))에
+저장하고 포맷팅된 로그 프리픽스는 `ClientRequest#logPrefix()`로 확인할 수 있다.
+
+#### Sensitive Data
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-logging-sensitive-data)
+
+`DEBUG`, `TRACE` 로그는 민감한 정보를 포함할 수 있다.
+따라서 form 파라미터와 헤더를 로깅하지 않는게 디폴트며,
+원한다면 직접 활성화시켜야 한다.
+
+다음은 서버 로그를 활성화 시키는 코드다:
+
+- *java*
+```java
+@Configuration
+@EnableWebFlux
+class MyConfig implements WebFluxConfigurer {
+
+    @Override
+    public void configureHttpMessageCodecs(ServerCodecConfigurer configurer) {
+        configurer.defaultCodecs().enableLoggingRequestDetails(true);
+    }
+}
+```
+- *kotlin*
+```kotlin
+@Configuration
+@EnableWebFlux
+class MyConfig : WebFluxConfigurer {
+
+    override fun configureHttpMessageCodecs(configurer: ServerCodecConfigurer) {
+        configurer.defaultCodecs().enableLoggingRequestDetails(true)
+    }
+}
+```
+
+다음은 클라이언트 로그를 활성화 시키는 코드다:
+
+- *java*
+
+```java
+Consumer<ClientCodecConfigurer> consumer = configurer ->
+        configurer.defaultCodecs().enableLoggingRequestDetails(true);
+
+WebClient webClient = WebClient.builder()
+        .exchangeStrategies(strategies -> strategies.codecs(consumer))
+        .build();
+```
+- *kotlin*
+
+```kotlin
+val consumer: (ClientCodecConfigurer) -> Unit  = { configurer -> configurer.defaultCodecs().enableLoggingRequestDetails(true) }
+
+val webClient = WebClient.builder()
+        .exchangeStrategies({ strategies -> strategies.codecs(consumer) })
+        .build()
+```
+
+#### Custom codecs
+
+다른 미디어 타입이나 디폴트 코덱이 지원하지 않는 기능을 추가하고 싶으면
+커스텀 코덱을 사용한다.
+
+커스텀 코덱에서도 [버퍼 제한](#limits)이나 [form 데이터/헤더 로깅](#sensitive-data)같은
+설정을 그대로 사용하고 싶을 수 있는데,
+그럴 땐 디폴트 코덱에 설정한 일부 옵션을 재사용할 수 있다.
+
+다음은 클라이언트 사이드 예제로,
+커스텀 코덱에 디폴트 코덱 설정을 등록한다:
+
+- *java*
+```java
+WebClient webClient = WebClient.builder()
+        .codecs(configurer -> {
+                CustomDecoder decoder = new CustomDecoder();
+                configurer.customCodecs().registerWithDefaultConfig(decoder);
+        })
+        .build();
+```
+- *kotlin*
+```kotlin
+val webClient = WebClient.builder()
+        .codecs({ configurer ->
+                val decoder = CustomDecoder()
+                configurer.customCodecs().registerWithDefaultConfig(decoder)
+         })
+        .build()
+```
 
 ## 1.3. DispatcherHandler
 
