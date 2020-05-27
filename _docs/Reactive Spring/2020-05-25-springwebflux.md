@@ -27,6 +27,7 @@ permalink: /Reactive%20Spring/springwebflux/
     * [Multipart Data](#multipart-data)
     * [Forwarded Headers](#forwarded-headers)
   + [1.2.3. Filters](#123-filters)
+    * [CORS](#cors)
   + [1.2.4. Exceptions](#124-exceptions)
   + [1.2.5. Codecs](#125-codecs)
   + [1.2.6. Logging](#126-logging)
@@ -577,7 +578,7 @@ WAR에 [`AbstractReactiveWebInitializer`](https://docs.spring.io/spring-framewor
 |Bean name|Bean type|Count|Description|
 |:-----------------:	|:-------------:	|:-------------:	|:-------------:	|
 |\<any\>|`WebExceptionHandler`|0..N|`WebFilter` 인스턴스 체인과 대상 `WebHandler`에서 발생한 예외를 처리한다. 자세한 내용은 [Exceptions](#124-exceptions)를 참고하라.|
-|\<any\>|`WebFilter`|0..N|다른 필터 체인과 타겟 `WebHandler` 전후에서 요청을 가로채 원하는 로직을 넣을 수 있다. 자세한 내용은 [Filters](#123-filters)를 참고하라.|
+|\<any\>|`WebFilter`|0..N|다른 필터 체인과 타겟 `WebHandler` 전후에 요청을 가로채 원하는 로직을 넣을 수 있다. 자세한 내용은 [Filters](#123-filters)를 참고하라.|
 |`webHandler`|`WebHandler`|1|요청을 처리하는 핸들러.|
 |`webSessionManager`|`WebSessionManager`|0..1|`WebSession`의 매니저. `WebSession`은 `ServerWebExchange`의 메소드로 접근할 수 있다. 디폴트는 `DefaultWebSessionManager`다.|
 |`serverCodecConfigurer`|`ServerCodecConfigurer`|0..1|form 데이터나 multipart 데이터를 파싱하는 `HttpMessageReader`를 설정하기 위한 인터페이스. 이 데이터는 `ServerWebExchange`의 메소드로 접근할 수 있다. 디폴트는 `ServerCodecConfigurer.create()`를 사용한다.|
@@ -634,8 +635,75 @@ multipart 데이터를 한 번에 파싱해야 한다.
 
 #### Forwarded Headers
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#filters-forwarded-headers)
+
+프록시를 경유한 요청은(e.g. 로드 밸런서) 호스트, 포트, 스키마가 바뀔 수 있다.
+클라이언트 입장에서는 원래 url 정보를 알아내기 어렵다.
+
+[RFC 7239](https://tools.ietf.org/html/rfc7239)에 따르면
+Forwarded `HTTP` 헤더는 프록시가 원래 요청에 대한 정보를 추가하는 헤더다.
+`X-Forwarded-Host`, `X-Forwarded-Port`, `X-Forwarded-Proto`, 
+`X-Forwarded-Ssl`, `X-Forwarded-Prefix`같은
+비 표준 헤더도 있다.
+
+`ForwardedHeaderTransformer`는 forwarded 헤더를 보고
+요청의 호스트, 포트, 스키마를 바꾼 다음 헤더를 제거해주는 컴포넌트다.
+`forwardedHeaderTransformer`라는 이름으로 빈을 정의하면
+자동으로 [체인에 추가](#special-bean-types)된다.
+
+forwarded 헤더는 보안에 신경써야 할 요소가 있는데,
+프록시가 헤더를 추가한 건지, 클라이언트가 악의적으로 추가한 것인지
+어플리케이션에서는 알 수 없기 때문이다.
+이 때문에 외부에서 들어오는 신뢰할 수 없는 프록시 요청을 제거하는 것도 중요하다.
+`ForwardedHeaderTransformer`를 `removeOnly=true`로 설정하면
+헤더 정보를 사용하지 않고 제거한다.
+
+> 5.1 버전 부터 `ForwardedHeaderFilter`는 제거 대상에 올랐으며(deprecated),
+> `ForwardedHeaderTransformer`로 대신한다.
+> 따라서 exchange(http 요청/응답과 세션 정보 등의 컨테이너)를
+> 만들 기 전에 forwarded 헤더를 처리할 수 있다.
+> 필터로 설정하면 전체 필터 리스트에서 제외되고
+> 대신 `ForwardedHeaderTransformer`를 사용한다.
+
 ### 1.2.3. Filters
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#filters)
+
+[`WebHandler` API](#122-webhandler-api)에선 `WebFilter`로
+다른 필터 체인과 타켓 `WebHandler` 전후에 요청을 가로채 원하는 로직을 넣을 수 있다.
+`WebFilter` 등록은 스프링 빈으로 만들어 원한다면 빈 위에 `@Order`를 선언하거나
+`Ordered`를 구현해 순서를 정해도 되고,
+[WebFlux Config](#111-webflux-config)를 사용해도 그만큼 간단하다.
+
+#### CORS
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#filters-cors)
+
+CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작한다.
+하지만 Spring Security와 함께 사용한다면,
+내장 `CorsFilter`를 사용해서 Spring Security의 필터 체인보다
+먼저 처리되도록 해야 한다.
+
+자세한 내용은 [CORS](#17-cors)와 [CORS webfilter](#175-cors-webfilter)를 참고하라.
+
 ### 1.2.4. Exceptions
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-customer-servlet-container-error-page)
+
+[`WebHandler` API](#122-webhandler-api)에선
+`WebExceptionHandler`으로 `WebFilter` 체인과 타겟
+`WebHandler`에서 발생한 예외를 처리할 수 있다.
+`WebExceptionHandler` 등록은 스프링 빈으로 만들어 원한다면
+빈 위에 `@Order`를 선언하거나 `Ordered`를 구현해 순서를 정해도 되고,
+[WebFlux Config](#111-webflux-config)를 사용해도 그만큼 간단하다.
+
+다음은 바로 사용할 수 있는 `WebExceptionHandler` 구현체다:
+
+|Exception Handler|Description|
+|:-----------------:	|:-------------:	|
+|`ResponseStatusExceptionHandler`|HTTP status code를 지정할 수 있는 [`ResponseStatusException`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/ResponseStatusException.html)을 처리한다.|
+|`WebFluxResponseStatusExceptionHandler`|`ResponseStatusExceptionHandler`를 확장한 것으로, 다른 exception 타입도 `@ResponseStatus`를 선언해서 HTTP staus code를 정할 수 있다.<br><br>이 핸들러는 [WebFlux Config](#111-webflux-config) 안에 선언 돼 있다.|
+
 ### 1.2.5. Codecs
 ### 1.2.6. Logging
 

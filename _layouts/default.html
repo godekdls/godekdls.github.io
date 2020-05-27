@@ -2,6 +2,26 @@
 
 <html>
 	<head>
+		<!-- 스크롤 영역 커스텀 (dain) -->
+		<style>
+			body {
+				background-color: transparent !important;
+			}
+			body::-webkit-scrollbar {
+				width: 9px;
+			}
+			body::-webkit-scrollbar-track {
+				background-color: transparent;
+			}
+			body::-webkit-scrollbar-thumb {
+				border-radius: 7px;
+				background-color: gray;
+			}
+			body::-webkit-scrollbar-button {
+				width: 0;
+				height: 0;
+			}
+		</style>
 		<meta name="google-site-verification" content="g2dLRdMS1SPihdzkf0q6J8FEkrSUOygDgB4bMvtvHXI" />
 		<meta name="naver-site-verification" content="e850929c9ab3443ed8691da60f57be4d2ca369ec" />
 		<meta charset="utf-8">
@@ -62,12 +82,13 @@
 					{% endfor %}
 				</ul>
 
-				<ul>
-					<li class="nav-item top-level {% if page.url == '/changelog/' %}current{% endif %}">
-						{% assign changelog = site.html_pages | where: 'url', '/changelog/' | first %}
-						<a href="{{ site.baseurl }}/changelog/">{{ changelog.title }}</a>
-					</li>
-				</ul>
+				<!-- 커스텀!! change log 노출 제거 -->
+<!--				<ul>-->
+<!--					<li class="nav-item top-level {% if page.url == '/changelog/' %}current{% endif %}">-->
+<!--						{% assign changelog = site.html_pages | where: 'url', '/changelog/' | first %}-->
+<!--						<a href="{{ site.baseurl }}/changelog/">{{ changelog.title }}</a>-->
+<!--					</li>-->
+<!--				</ul>-->
 			</nav>
 		</header>
 

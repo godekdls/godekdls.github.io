@@ -80,7 +80,7 @@ permalink: /Spring%20Batch/itemreadersanditemwriters/
   + [6.15.3. Database Readers](#6153-database-readers)
     * [Neo4jItemReader](#neo4jitemreader)
     * [MongoItemReader](#neo4jitemwriter)
-    * [HibernateCursorItemReader](#hibernatecursoritemreader)
+    * [HibernateCursorItemReader](#hibernatecursoritemreader-2)
     * [HibernatePagingItemReader](#hibernatepagingitemreader)
     * [RepositoryItemReader](#repositoryitemreader)
   + [6.15.4. Database Writers](#6154-database-writers)
@@ -2589,7 +2589,7 @@ peek 메소드는 계속 호출해도 같은 아이템을 리턴하며,
 스프링 배치는 `MongoItemReader` 인스턴스를 생성하는
 `MongoItemReaderBuilder`를 제공한다.
 
-#### `HibernateCursorItemReader`
+#### `HibernateCursorItemReader` (2)
 
 `HibernateCursorItemReader`는 하이버네이트 위에서 데이터베이스 레코드를 읽는 `ItemStreamReader`다.
 HQL 쿼리를 실행하고 초기화되면,
