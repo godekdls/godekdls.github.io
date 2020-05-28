@@ -24,7 +24,7 @@ permalink: /Spring%20Batch/domainlanguage/
 - [3.7. Item Writer](#37-item-writer)
 - [3.8. Item Processor](#38-item-processor)
 
-스프링 배치는 전반적으로 배치 설계를 해봤다면 익숙하고 편하게 느껴질만한 배치 컨셉을 사용한다.
+스프링 배치는 전반적으로 배치 설계를 해봤다면 익숙하고 편하게 느껴질만한 컨셉을 사용한다.
 Job과 Step, 개발자가 직접 제공해야하는 처리 유닛(`ItemReader` `ItemWriter`)으로 구성되어 있는데,
 스프링 패턴, operation, 템플릿, 콜백 및 idiom으로 인한 다음과 같은 차별점이 있다.
 

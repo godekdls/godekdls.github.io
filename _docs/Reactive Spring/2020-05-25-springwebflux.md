@@ -47,6 +47,9 @@ permalink: /Reactive%20Spring/springwebflux/
   + [1.3.4. Result Handling](#134-result-handling)
   + [1.3.5. Exceptions](#135-exceptions)
   + [1.3.6. View Resolution](#136-view-resolution)
+    * [Handling](#handling)
+    * [Redirecting](#redirecting)
+    * [Content Negotiation](#content-negotiation)
 - [1.4. Annotated Controllers](#14-annotated-controllers)
   + [1.4.1. @Controller](#141-controller)
   + [1.4.2. Request Mapping](#142-request-mapping)
@@ -217,7 +220,7 @@ Servlet API에 상응하는 코어 [`WebHandler` API](#122-webhandler-api)를
 한 가지 눈에 띄는 차이는 웹플럭스에선
 `@RequestBody`로 리액티브 인자를 받을 수 있다는 것이다.
 - [Functional Endpoints](#15-functional-endpoints):
-경령화된 람다 기반 함수형 프로그래밍 모델.
+경량화된 람다 기반 함수형 프로그래밍 모델.
 요청을 라우팅해주는 조그만한 라이브러리나 유틸리티 모음이라고 생각하면 된다.
 annotated controller와 다른 점은
 애노테이션으로 의도를 선언해서 콜백받기보단
@@ -388,7 +391,7 @@ Undertow API를 사용한다.
 스케줄러는 이름을 보면 동시 처리 전략을 알 수 있다.
 예를 들어, 제한된 쓰레드로 CPU 연산이 많은 처리를 할 때는 “parallel”,
 여러 쓰레드로 I/O가 많은 처리를 할 때는 "elastic"이다.
-이런 쓰레들르 본다면
+이런 쓰레드를 본다면
 코드 어딘가에서 그 이름에 해당하는 쓰레드 풀 `Scheduler` 전략을 사용하고 있다는 뜻이다.
 - 데이터에 접근하는 라이브러리나 다른 외부 dependency에서
 쓰레드를 따로 실행하는 경우도 있다.
@@ -418,8 +421,8 @@ HTTP 요청을 처리한다.
 어댑터와 함께 사용하며,
 어플리케이션에서 사용하는 고수준 [WebClient](https://godekdls.github.io/Reactive%20Spring/webclient/)는
 이를 기반으로 동작한다. 
-- 클라이언트와 서버 사이드 모두, [codecs](#125-codecs)으로
-HTTP 요청과 응답 컨텐츠를 직렬화/역직렬화할 수 있다.
+- 클라이언트와 서버 사이드 모두, [코덱](#125-codecs)으로
+HTTP 요청과 응답 컨텐츠를 직렬화/역직렬화힌다.
 
 ### 1.2.1. `HttpHandler`
 
@@ -564,9 +567,9 @@ WAR에 [`AbstractReactiveWebInitializer`](https://docs.spring.io/spring-framewor
 [`WebFilter`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/WebFilter.html)로
 체인을 형성해 요청을 처리하는 범용 웹 API를 제공한다.
 `WebHttpHandlerBuilder`에 컴포넌트를 등록하거나,
-[자동으로 주입](#special-bean-types)해 주는 
 스프링 `ApplicationContext` 위치만 알려주면
-컴포넌트를 체인에 추가할 수 있다.
+[자동으로](#special-bean-types) 
+컴포넌트를 체인에 추가한다.
 
 `HttpHandler`는 서로 다른 HTTP 서버를 쓰기 위한 추상화가 전부인 반면,
 `WebHandler` API는 아래와 같이 웹 어플리케이션에서
@@ -986,12 +989,210 @@ val webClient = WebClient.builder()
 
 ## 1.3. DispatcherHandler
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet)
+
+스프링 웹플럭스도 스프링 MVC와 유사한 프론트 컨트롤러 패턴을 사용한다.
+중앙 `WebHandler`가 요청을 받아, 실제 처리는
+다른 컴포넌트에 위임하는데, `DispatcherHandler`가 바로 이 중앙 `WebHandler`다.
+이 모델덕분에 다양한 워크플로우를 지원할 수 있다.
+
+`DispatcherHandler`는 스프링 설정에 따라 그에 맞는 컴포넌트로 위임한다.
+`DispatcherHandler`도 스프링 빈이며, `ApplicationContextAware` 인터페이스를 구현했기 때문에
+실행 중인 컨텍스트에 접근할 수 있다.
+`DispatcherHandler` 빈을 `webHandler`란 이름으로 정의하면
+[`WebHttpHandlerBuilder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/adapter/WebHttpHandlerBuilder.html)가
+이를 감지하고, [`WebHandler` API](#122-webhandler-api)에서
+설명했던 체인에 추가한다.
+
+웹플럭스 어플리케이션에서 사용하는 일반적인
+스프링 설정은 다음과 같다:
+
+- `webHandler`란 이름의 `DispatcherHandler` 빈
+- `WebFilter`, `WebExceptionHandler` 빈
+- [그 외 `DispatcherHandler`가 사용하는 빈](#131-special-bean-types)
+- 기타 등등
+
+아래 코드에서 보이는 것처럼,
+`WebHttpHandlerBuilder`가 체인을 만들 땐 이 설정을 사용한다.
+
+- *java*
+```java
+ApplicationContext context = ...
+HttpHandler handler = WebHttpHandlerBuilder.applicationContext(context).build();
+```
+- *kotlin*
+```kotlin
+val context: ApplicationContext = ...
+val handler = WebHttpHandlerBuilder.applicationContext(context).build()
+```
+
+이땐 리턴된 `HttpHandler`는 [서버 어댑터](#121-httphandler)와 함께 요청을 처리한다.
+
 ### 1.3.1. Special Bean Types
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet-special-bean-types)
+
+`DispatcherHandler`는 요청을 처리하고
+그에 맞는 응답을 만들 때 사용하는 특별한 빈이 있다.
+"특별한 빈"이란, 웹플럭스 프레임워크가 동작하는데 필요한,
+스프링이 관리하는 `Object` 인스턴스를 말한다. 
+이 빈들은 기본적으로 내장돼 있지만,
+프로퍼티를 수정해서 확장하거나 커스텀 빈으로 대체할 수도 있다.
+
+`DispatcherHandler`는 다음과 같은 빈을 감지한다.
+저수준에서 동작하는 다른 빈도 자동으로 추가될 수 있다는 점에 주의하라
+(Web Handler API 섹션의 [Special bean types](#special-bean-types) 참고).
+
+|Bean type|Explanation|
+|:-----------------:	|:-------------:	|
+|`HandlerMapping`|요청을 핸들러에 매핑한다. 매핑 기준은 `HandlerMapping` 구현체마다 다르다 (애노테이션을 선언한 컨트롤러, URL 패턴 매칭 등).<br><br>주로 쓰는 구현체는 `@RequestMapping`을 선언한 메소드를 찾는 `RequestMappingHandlerMapping`, 함수형 엔드포인트를 라우팅하는 `RouterFunctionMapping`, URI path 패턴으로 `WebHandler`를 찾는 `SimpleUrlHandlerMapping` 등이 있다.|
+|`HandlerAdapter`|`HandlerAdapter`가 핸들러를 실행하는 방법을 알고 있기 때문에, `DispatcherHandler`는 어떤 핸들러든지 받아 처리할 수 있다. 예를 들어 애노테이션을 선언한 컨트롤러를 실행하려면 리졸버가 필요한데, `HandlerAdapter`를 사용하면 `DispatcherHandler`는 이런 디테일을 몰라도 된다.|
+|`HandlerResultHandler`|핸들러가 건내준 결과를 처리하고 응답을 종료한다. [Result Handling](#134-result-handling)를 참고하라.|
+
 ### 1.3.2. WebFlux Config
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet-config)
+
+프레임워크 내부에서 사용하는 빈([Web Handler API](#special-bean-types)에 있는 리스트와 [`DispatcherHandler`](#131-special-bean-types))도
+어플리케이션에서 직접 정의할 수 있다.
+하지만 특별한 이유가 없다면 [WebFlux Config](#111-webflux-config)로
+시작하는게 가장 좋다.
+웹플럭스 config는 필요한 빈을 알아서 만들어주고,
+쉽게 설정을 커스텀할 수 있는 콜백 API를 제공한다.
+
+> 스프링부트를 사용해도 이 웹플러스 config로 초기화하며,
+> 부트가 제공하는 옵션으로 좀 더 편리하게 설정을 관리할 수 있다.
+
 ### 1.3.3. Processing
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet-sequence)
+
+`DispatcherHandler`는 다음과 같이 요청을 처리한다:
+
+- `HandlerMapping`을 뒤져 매칭되는 핸들러를 찾는다. 첫번째로 매칭된 핸들러를 사용한다.
+- 핸들러를 찾으면 적당한 `HandlerAdapter`를 사용해 핸들러를 실행하고,
+`HandlerResult`를 돌려 받는다.
+- `HandlerResult`를 적절한 `HandlerResultHandler`로 넘겨
+바로 응답을 만들거나 뷰로 렌더링하고 처리를 완료한다.
+
 ### 1.3.4. Result Handling
+
+`HandlerAdapter`는 핸들러 실행을 완료하고 나면,
+실행 결과와 컨텍스트 정보를 감싸고 있는 `HandlerResult`를 반환한다.
+이 `HandlerResult`는 `HandlerResultHandler`가 받아서 요청을 완료한다.
+다음은 [WebFlux Config](#111-webflux-config)에 정의돼 있는 `HandlerResultHandler` 구현체다:
+
+|Result Handler Type|Return Values|Default Order|
+|:-----------------:	|:-------------:	|:-------------:	|
+|`ResponseEntityResultHandler`|`ResponseEntity`, 보통 `@Controller`에서 사용.|0|
+|`ServerResponseResultHandler`|`ServerResponse`, 보통 함수형 엔드포인트에서 사용.|0|
+|`ResponseBodyResultHandler`|`@ResponseBody` 메소드나 `@RestController`에서 리턴한 값을 처리.|100|
+|`ViewResolutionResultHandler`|`CharSequence`, `View`, [Model](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/ui/Model.html), `Map`, [Rendering](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/result/view/Rendering.html)이나 다른 `Object`를 model attribute로 처리.<br><br>[View Resolution](#136-view-resolution) 참고.|`Integer.MAX_VALUE`|
+
 ### 1.3.5. Exceptions
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-exceptionhandlers)
+
+`HandlerAdapter`가 리턴한 `HandlerResult`는
+핸들러마다 다른 에러 처리 함수에 넘겨진다.
+이 함수는 이럴 때 호출된다:
+
+- 핸들러 실행에 실패한 경우 (예를 들어 `@Controller`에서).
+- `HandlerResultHandler`가 핸들러가 리턴한 값을 처리하는 데 실패한 경우.
+
+핸들러가 리턴한 리액티브 타입이 데이터를 produce하기 전에
+에러를 알아차릴 수만 있으면,
+이 함수로 응답을 변경할 수 있다(예를 들어 에러 status로).
+
+이 덕분에 `@Controller` 클래스의 특정 메소드에 `@ExceptionHandler`를 선언할
+수 있는 것이다. 
+스프링 MVC에선 `HandlerExceptionResolver`가 이 역할을 담당한다.
+여기서 중요한 건 MVC가 아니지만,
+웹플럭스에선 핸들러를 선택하기 전 발생한 exception은
+`@ControllerAdvice`로 처리할 수 없다는 것에 주의하라.
+
+“Annotated Controller” 섹션의 [Managing Exceptions](#146-managing-exceptions)이나 
+WebHandler API 섹션의 [Exceptions](#124-exceptions)을 참고하라.
+
 ### 1.3.6. View Resolution
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-viewresolver)
+
+View resolution은 특정 view 기술에 얽매이지않고
+HTML 템플릿이나 모델을 사용해 브라우저에 렌더링하는 기법을 말한다.
+Spring 웹플럭스에선 [HandlerResultHandler](#134-result-handling)가
+`ViewResolver` 인스턴스를 사용해
+view의 논리적인 이름을 가리키는 String과 `View` 인스턴스를 매핑한다.
+이 `View`는 응답을 만들 때 사용된다.
+
+#### Handling
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-handling)
+
+`ViewResolutionResultHandler`로 넘겨진 `HandlerResult`는
+핸들러가 리턴한 값과,
+요청을 처리하면서 추가한 attribute를 포함한 model을 가지고 있다.
+리턴값은 다음 중 하나로 사용된다:
+
+- `String`, `CharSequence`: `ViewResolver`로 `View`를 만들 때 사용할 view의 논리적인 이름
+- `void`: 요청 path에 맞는 디폴트 view name을 앞뒤 슬래쉬를 제거해서 `View`로 리졸브한다.
+view name이 제공되지 않았을 때나(e.g. model attribute를 리턴한 경우)
+비동기 리턴값일 때도(e.g. `Mono`가 비어있을 때)
+동일하게 처리한다.
+- [Rendering](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/result/view/Rendering.html):
+여러 가지 view resolution 시나리오를 위한 API.
+IDE 자동 완성으로 옵션을 확인해봐라.
+- `Model`, `Map`: model에 추가로 넣을 model attributes
+- 그외: 그외 다른 리턴값은([BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)가
+true를 리턴하는 값은 예외) model에 추가할 model attribute로 간주한다.
+`@ModelAttribute` 애노테이션이 없으면
+[conventions](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/Conventions.html)와
+클래스명으로 attribute name을 결정한다.
+
+모델에는 비동기 리액티브 타입이 있을 수도 있다(e.g. 리액터나 RxJava가 리턴한 값).
+이런 model attribute는 `AbstractView`가
+렌더링하기 전에 실제 값으로 바꿔준다.
+값이 하나뿐인 리액티브 타입은 값 하나 혹은 빈 값으로 리졸브되고,
+여러 값을 가진 리액티브 타입(e.g. `Flux<T>`)은
+`List<T>`로 수집한다.
+
+view resolution은 스프링 설정에
+`ViewResolutionResultHandler`만 추가하면 된다.
+[WebFlux Config](#1117-view-resolvers)는
+view resolution을 위한 설정 API를 제공한다.
+
+스프링 웹플럭스에 통합된 view 기술은
+[View Technologies](#19-view-technologies)에서 자세히 설명한다.
+
+#### Redirecting
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-redirecting-redirect-prefix)
+
+리다이렉트는 view name에 `redirect:`를 프리픽스로 붙이기만 하면 된다.
+`UrlBasedViewResolver`(하위 클래스도 포함)가
+이를 리다이렉트 요청으로 판단한다.
+프리픽스를 제외한 나머지 view name은 리다이렉트 URL로 사용한다.
+동작 자체는 컨트롤러가 `RedirectView`나 
+`Rendering.redirectTo("abc").build()`를 리턴했을 때와 동일하지만,
+이 방법을 사용하면 컨트롤러가 직접 view name을 보고 처리한다.
+`redirect:/some/resource`같은 값은
+현재 어플리케이션에서 이동할 페이지를 찾고,
+`redirect:https://example.com/arbitrary/path`같이 사용하면
+해당 URL로 리다이렉트한다.
+
+#### Content Negotiation
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-multiple-representations)
+
+content negotiation은 `ViewResolutionResultHandler`가 담당한다.
+요청 미디어 타입과 `View`가 지원하는 미디어 타입을 비교해서,
+첫번째로 찾은 `View`를 사용한다.
+
+스프링 웹플럭스는 [HttpMessageWriter](#125-codecs)로
+JSON, XML같은 미디어 타입을 만드는 `HttpMessageWriterView`를 지원한다.
+보통은 [WebFlux 설정](#1117-view-resolvers)을 통해
+`HttpMessageWriterView`를 디폴트 view로 사용한다.
+디폴트 뷰는 요청 미디어 타입과 일치하기만 하면 항상 사용되는 뷰다.
 
 ## 1.4. Annotated Controllers
 
