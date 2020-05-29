@@ -53,7 +53,32 @@ permalink: /Reactive%20Spring/springwebflux/
 - [1.4. Annotated Controllers](#14-annotated-controllers)
   + [1.4.1. @Controller](#141-controller)
   + [1.4.2. Request Mapping](#142-request-mapping)
+    * [URI Patterns](#uri-patterns)
+    * [Pattern Comparison](#pattern-comparison)
+    * [Consumable Media Types](#consumable-media-types)
+    * [Producible Media Types](#producible-media-types)
+    * [Parameters and Headers](#parameters-and-headers)
+    * [HTTP HEAD, OPTIONS](#http-head-options)
+    * [Custom Annotations](#custom-annotations)
+    * [Explicit Registrations](#explicit-registrations)
   + [1.4.3. Handler Methods](#143-handler-methods)
+    * [Method Arguments](#method-arguments)
+    * [Return Values](#return-values)
+    * [Type Conversion](#type-conversion)
+    * [Matrix Variables](#matrix-variables)
+    * [@RequestParam](#requestparam)
+    * [@RequestHeader](#requestheader)
+    * [@CookieValue](#cookievalue)
+    * [@ModelAttribute](#modelattribute)
+    * [@SessionAttributes](#sessionattributes)
+    * [@SessionAttribute](#sessionattribute)
+    * [@RequestAttribute](#requestattribute)
+    * [Multipart Content](#multipart-content)
+    * [@RequestBody](#requestbody)
+    * [HttpEntity](#httpentity)
+    * [@ResponseBody](#responsebody)
+    * [ResponseEntity](#responseentity)
+    * [Jackson JSON](#jackson-json)
   + [1.4.4. Model](#144-model)
   + [1.4.5. DataBinder](#145-databinder)
   + [1.4.6. Managing Exceptions](#146-managing-exceptions)
@@ -483,73 +508,69 @@ server.start()
 ```
 
 **Tomcat**
-- *java*
-
-```java
-HttpHandler handler = ...
-Servlet servlet = new TomcatHttpHandlerAdapter(handler);
-
-Tomcat server = new Tomcat();
-File base = new File(System.getProperty("java.io.tmpdir"));
-Context rootContext = server.addContext("", base.getAbsolutePath());
-Tomcat.addServlet(rootContext, "main", servlet);
-rootContext.addServletMappingDecoded("/", "main");
-server.setHost(host);
-server.setPort(port);
-server.start();
-```
-- *kotlin*
-
-```kotlin
-val handler: HttpHandler = ...
-val servlet = TomcatHttpHandlerAdapter(handler)
-
-val server = Tomcat()
-val base = File(System.getProperty("java.io.tmpdir"))
-val rootContext = server.addContext("", base.absolutePath)
-Tomcat.addServlet(rootContext, "main", servlet)
-rootContext.addServletMappingDecoded("/", "main")
-server.host = host
-server.setPort(port)
-server.start()
-```
+- *java*<br>
+    ```java
+    HttpHandler handler = ...
+    Servlet servlet = new TomcatHttpHandlerAdapter(handler);
+    
+    Tomcat server = new Tomcat();
+    File base = new File(System.getProperty("java.io.tmpdir"));
+    Context rootContext = server.addContext("", base.getAbsolutePath());
+    Tomcat.addServlet(rootContext, "main", servlet);
+    rootContext.addServletMappingDecoded("/", "main");
+    server.setHost(host);
+    server.setPort(port);
+    server.start();
+    ```
+- *kotlin*<br>
+    ```kotlin
+    val handler: HttpHandler = ...
+    val servlet = TomcatHttpHandlerAdapter(handler)
+    
+    val server = Tomcat()
+    val base = File(System.getProperty("java.io.tmpdir"))
+    val rootContext = server.addContext("", base.absolutePath)
+    Tomcat.addServlet(rootContext, "main", servlet)
+    rootContext.addServletMappingDecoded("/", "main")
+    server.host = host
+    server.setPort(port)
+    server.start()
+    ```
 
 **Jetty**
 
-- *java*
-
-```java
-HttpHandler handler = ...
-Servlet servlet = new JettyHttpHandlerAdapter(handler);
-
-Server server = new Server();
-ServletContextHandler contextHandler = new ServletContextHandler(server, "");
-contextHandler.addServlet(new ServletHolder(servlet), "/");
-contextHandler.start();
-
-ServerConnector connector = new ServerConnector(server);
-connector.setHost(host);
-connector.setPort(port);
-server.addConnector(connector);
-server.start();
-```
+- *java*<br>
+    ```java
+    HttpHandler handler = ...
+    Servlet servlet = new JettyHttpHandlerAdapter(handler);
+    
+    Server server = new Server();
+    ServletContextHandler contextHandler = new ServletContextHandler(server, "");
+    contextHandler.addServlet(new ServletHolder(servlet), "/");
+    contextHandler.start();
+    
+    ServerConnector connector = new ServerConnector(server);
+    connector.setHost(host);
+    connector.setPort(port);
+    server.addConnector(connector);
+    server.start();
+    ```
 - *kotlin*
-
-```kotlin
-val handler: HttpHandler = ...
-val servlet = JettyHttpHandlerAdapter(handler)
-
-val server = Server()
-val contextHandler = ServletContextHandler(server, "")
-contextHandler.addServlet(ServletHolder(servlet), "/")
-contextHandler.start();
-
-val connector = ServerConnector(server)
-connector.host = host
-connector.port = port
-server.addConnector(connector)
-server.start()
-```
+    ```kotlin
+    val handler: HttpHandler = ...
+    val servlet = JettyHttpHandlerAdapter(handler)
+    
+    val server = Server()
+    val contextHandler = ServletContextHandler(server, "")
+    contextHandler.addServlet(ServletHolder(servlet), "/")
+    contextHandler.start();
+    
+    val connector = ServerConnector(server)
+    connector.host = host
+    connector.port = port
+    server.addConnector(connector)
+    server.start()
+    ```
 
 **서블릿 3.1+ 컨테이너**
 
@@ -936,25 +957,23 @@ class MyConfig : WebFluxConfigurer {
 
 다음은 클라이언트 로그를 활성화 시키는 코드다:
 
-- *java*
-
-```java
-Consumer<ClientCodecConfigurer> consumer = configurer ->
-        configurer.defaultCodecs().enableLoggingRequestDetails(true);
-
-WebClient webClient = WebClient.builder()
-        .exchangeStrategies(strategies -> strategies.codecs(consumer))
-        .build();
-```
-- *kotlin*
-
-```kotlin
-val consumer: (ClientCodecConfigurer) -> Unit  = { configurer -> configurer.defaultCodecs().enableLoggingRequestDetails(true) }
-
-val webClient = WebClient.builder()
-        .exchangeStrategies({ strategies -> strategies.codecs(consumer) })
-        .build()
-```
+- *java*<br>
+    ```java
+    Consumer<ClientCodecConfigurer> consumer = configurer ->
+            configurer.defaultCodecs().enableLoggingRequestDetails(true);
+    
+    WebClient webClient = WebClient.builder()
+            .exchangeStrategies(strategies -> strategies.codecs(consumer))
+            .build();
+    ```
+- *kotlin*<br>
+    ```kotlin
+    val consumer: (ClientCodecConfigurer) -> Unit  = { configurer -> configurer.defaultCodecs().enableLoggingRequestDetails(true) }
+    
+    val webClient = WebClient.builder()
+            .exchangeStrategies({ strategies -> strategies.codecs(consumer) })
+            .build()
+    ```
 
 #### Custom codecs
 
@@ -1196,9 +1215,481 @@ JSON, XML같은 미디어 타입을 만드는 `HttpMessageWriterView`를 지원�
 
 ## 1.4. Annotated Controllers
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-controller)
+
+스프링 웹플럭스는 애노테이션 기반 프로그래밍 모델을 지원하기 때문에,
+`@Controller`, `@RestController` 컴포넌트로
+요청을 매핑하고, 입력을 받고, exception을 처리할 수 있다.
+컨트롤러는 메소드를 여러가지로 활용할 수 있어서
+클래스를 상속하거나 인터페이스를 구현하지 않아도 된다.
+
+다음은 아주 기본적인 예제다:
+
+- *java*
+```java
+@RestController
+public class HelloController {
+
+    @GetMapping("/hello")
+    public String handle() {
+        return "Hello WebFlux";
+    }
+}
+```
+- *kotlin*
+```kotlin
+@RestController
+class HelloController {
+
+    @GetMapping("/hello")
+    fun handle() = "Hello WebFlux"
+}
+```
+
+위 코드에선 response body에 쓸 `String`을 리턴한다.
+
 ### 1.4.1. @Controller
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-controller)
+
+컨트롤러는 표준 스프링 빈으로 정의한다.
+`@Controller` 애노테이션을 달면 스프링이 클래스패스
+내 다른 `@Component` 클래스처럼 자동으로 스캔하고 빈으로 등록한다.
+이 애노테이션을 선언하면 그 클래스가 web 컴포넌트라는 뜻이기도 하다.
+
+`@Controller` 빈을 자동으로 등록하려면
+다음 예제처럼 컴포넌트 스캔을 위한 설정이 필요하다:
+
+- *java*
+```java
+@Configuration
+@ComponentScan("org.example.web") // (1)
+public class WebConfig {
+
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@Configuration
+@ComponentScan("org.example.web") // (1)
+class WebConfig {
+
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `org.example.web` 패키지를 스캔한다.</small>
+
+`@RestController`는 자체에
+`@Controller`, `@ResponseBody`를 선언하고 있어서,
+컨트롤러 내 모든 메소드에 `@ResponseBody`를 상속한다.
+따라서 리턴한 값으로 view를 만들지 않고 response body에 바로 쓴다.
+
 ### 1.4.2. Request Mapping
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping)
+
+컨트롤러 메소드에 요청을 매핑할 때는 `@RequestMapping`을 사용한다.
+이 애노테이션에 있는 attribute로
+URL, HTTP 메소드, 요청 파라미터, 헤더, 미디어 타입을 매칭할 수 있다.
+메소드에 선언하거나, 모든 메소드에서 공유하고 싶을 땐 클래스 레벨에 선언한다.
+
+HTTP 메소드를 바로 지정할 수 있는 애노테이션도 있다:
+
+- `@GetMapping`
+- `@PostMapping`
+- `@PutMapping`
+- `@DeleteMapping`
+- `@PatchMapping`
+
+위 애노테이션은,
+컨트롤러 메소드는 거의 대부분이 HTTP 메소드 하나만 담당하기 때문에
+지원하는 일종의 [커스텀 애노테이션](#custom-annotations)이다.
+하지만 위 애노테이션을 선언하더라도,
+다른 매핑 조건을 공통으로 사용하려면 클래스 레벨에 `@RequestMapping`을 선언해야 한다.
+
+다음 예제도 클래스와 메소드에 모두 매핑 애노테이션을 선언했다:
+
+- *java*
+```java
+@RestController
+@RequestMapping("/persons")
+class PersonController {
+
+    @GetMapping("/{id}")
+    public Person getPerson(@PathVariable Long id) {
+        // ...
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public void add(@RequestBody Person person) {
+        // ...
+    }
+}
+```
+- *kotlin*
+```kotlin
+@RestController
+@RequestMapping("/persons")
+class PersonController {
+
+    @GetMapping("/{id}")
+    fun getPerson(@PathVariable id: Long): Person {
+        // ...
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    fun add(@RequestBody person: Person) {
+        // ...
+    }
+}
+```
+
+#### URI Patterns
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-uri-templates)
+
+URI로 요청을 매핑할 때는 glob 패턴이나 와일드카드를 사용할 수 있다:
+
+|Pattern|Description|Example|
+|:-----------------:	|:-------------:	|:-------------:	|
+|`?`|문자 하나|`"/pages/t?st.html"`은 `"/pages/test.html"`, `"/pages/t3st.html"` 둘 다 매칭된다|
+|`*`|path segment 안에 있는 0개 이상의 문자|`"/resources/*.png"`는 `"/resources/file.png"`와 매칭된다.<br><br>`"/projects/*/versions"`는 `"/projects/spring/versions"`와는 매칭되지만 `"/projects/spring/boot/versions"`과는 매칭되지 않는다.|
+|`**`|path 마지막에 있는 0개 이상의 path segment|`"/resources/**"`는 `"/resources/file.png"`, `"/resources/images/file.png"`와 매칭된다.<br><br>`"**"`는 path 마지막에서만 사용할 수 있기 때문에 `"/resources/**/file.png"`는 사용할 수 없다.|
+|`{name}`|path segment 하나와 매칭되며, 이 segment를 "name"이라는 변수에 저장한다.|`"/projects/{project}/versions"`를 `"/projects/spring/versions"`와 매칭하면 `project` 변수는 `spring`이다.|
+|`{name:[a-z]+}`|정규식 `"[a-z]+"`과 매칭되는 값을 "name"이라는 변수에 저장한다.|`"/projects/{project:[a-z]+}/versions"`는 `"/projects/spring/versions"`와는 매칭되지만 `"/projects/spring1/versions"`랑은 매칭되지 않는다.|
+|`{*path}`|path 마지막에 있는 0개 이상의 path segment를 나타내며, "path"라는 변수에 이 값을 저장한다.|`/resources/{*file}`은 `"/resources/images/file.png"`와 매칭되고 `file` 변수는 `/images/file.png`가 된다.|
+
+여기서 저장한 URI 변수는 아래 예제처럼
+`@PathVariable`로 접근할 수 있다:
+
+- *java*
+```java
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+public Pet findPet(@PathVariable Long ownerId, @PathVariable Long petId) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+fun findPet(@PathVariable ownerId: Long, @PathVariable petId: Long): Pet {
+    // ...
+}
+```
+
+아래 보이는 것처럼 URI 변수는 클래스와 메소드에 모두 선언할 수 있다:
+
+- *java*
+```java
+@Controller
+@RequestMapping("/owners/{ownerId}") // (1)
+public class OwnerController {
+
+    @GetMapping("/pets/{petId}") // (2) 
+    public Pet findPet(@PathVariable Long ownerId, @PathVariable Long petId) {
+        // ...
+    }
+}
+```
+- *kotlin*
+```kotlin
+@Controller
+@RequestMapping("/owners/{ownerId}") // (1)
+class OwnerController {
+
+    @GetMapping("/pets/{petId}") // (2)
+    fun findPet(@PathVariable ownerId: Long, @PathVariable petId: Long): Pet {
+        // ...
+    }
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 클래스 레벨 URI 매핑.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 메소드 레벨 URI 매핑.</small>
+
+URI 변수는 자동으로 선언한 타입으로 변환되는데,
+변환이 불가능하다면 `TypeMismatchException`이 발생한다. 
+기본적인 타입(`int`, `long`, `Date` 등)은 대부분 지원하고 있으며,
+컨트롤러에서 그외 데이터 타입을 사용하려면 바인더를 등록하면 된다.
+[Type Conversion](#type-conversion)과 [`DataBinder`](#145-databinder)를
+참고하라.
+
+URI 변수에 이름을 지정할 수 있지만(`@PathVariable("customId")`),
+파라미터 이름과 동일하다면 생략해도 된다.
+단, 컴파일 할때 디버그 정보도 포함시키거나(`-g`)
+자바 8의 `-parameters` 플래그를 사용해야 한다.
+
+`{*varName}`은 가장 뒤에 있는 0개 이상의 path segment를 나타내는 URI 변수다.
+예를 들어 `/resources/{*path}`처럼 사용하면 `/resources/` 내
+모든 파일과 매칭되며, `"path"` 변수엔 하위 경로를 포함한 상대 경로가 저장된다.
+
+`{varName:regex}`는 `{변수명:정규식}`과 같이 표현하는 URI 변수다.
+예를 들어 URL이 `/spring-web-3.0.5 .jar`라면,
+다음 예제처럼 정규식으로 이름, 버전, 파일 확장자를 추출할 수 있다.
+
+- *java*
+```java
+@GetMapping("/{name:[a-z-]+}-{version:\\d\\.\\d\\.\\d}{ext:\\.[a-z]+}")
+public void handle(@PathVariable String version, @PathVariable String ext) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/{name:[a-z-]+}-{version:\\d\\.\\d\\.\\d}{ext:\\.[a-z]+}")
+fun handle(@PathVariable version: String, @PathVariable ext: String) {
+    // ...
+}
+```
+
+URI path 패턴에도 `${…​}` 플레이스홀더를 사용할 수 있다.
+서버가 기동될 때 `PropertyPlaceHolderConfigurer`가
+로컬, 시스템, 환경변수를 참고해 플레이스홀더를 치환한다.
+플레이스홀더를 사용하면 환경마다 달라지는 base URL을 외부 설정으로 관리할 수 있다.
+
+> 웹 어플리케이션은 URI path를 런타임에 패턴으로 매칭하는 경우가 많다.
+> 스프링 웹플럭스는 `spring-web` 모듈에 들어있는
+> `PathPattern`과 `PathPatternParser`로 패턴 매칭을 지원한다.
+
+스프링 MVC에선 `/person`은 `/person.*`과도 매칭되지만,
+스프링 웹플럭스는 이런 suffix 패턴은 지원하지 않는다.
+URL 기반 content negotiation이 하고 싶다면,
+더 쉽고 명시적이면서 보안에도 덜 취약한 쿼리 파라미터를 권장한다.
+
+#### Pattern Comparison
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-pattern-comparison)
+
+URL과 매칭되는 패턴이 여러 개라면,
+`PathPattern.SPECIFICITY_COMPARATOR`로 각 패턴을 비교해서
+가장 구체적인 패턴을 선택한다.
+
+패턴을 비교할 땐 URI 변수와 와일드카드 수를 기반으로 점수를 계산한다.
+URI 변수가 와일드카드 보다 점수가 낮으며,
+점수가 가장 낮은 패턴을 선택한다.
+두 패턴이 점수가 같다면 더 긴 패턴을 사용한다.
+
+어떤 URL과도 매칭되는 패턴은(e.g. `**`, `{*varName}`)
+점수 계산에서 제외되며, 마지막 순위로 밀린다.
+이런 패턴이 여러 개라면 가장 긴 패턴을 선택한다.
+
+#### Consumable Media Types
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-consumes)
+
+다음 예제처럼 요청 `Content-Type`으로 매칭되는 범위를 줄일 수 있다.
+
+- *java*
+```java
+@PostMapping(path = "/pets", consumes = "application/json")
+public void addPet(@RequestBody Pet pet) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/pets", consumes = ["application/json"])
+fun addPet(@RequestBody pet: Pet) {
+    // ...
+}
+```
+
+consumes attribute는 부정 표현식을 지원한다.
+예를 들어 `!text/plain`은 `text/plain`을 제외한 모든 컨텐츠 타입을 의미한다.
+
+클래스 레벨에 `consumes` attribute를 지정해서 클래스 전체에서
+공유할 수도 있다.
+단, request mapping attribute는 대부분 클래스 레벨에 선언한 값을
+확장해 쓰지만, `consumes` attribute는 덮어 쓴다.
+
+> 자주 사용하는 미디어 타입은 `MediaType`에 상수로 선언돼 있다.
+> (e.g. `APPLICATION_JSON_VALUE`, `APPLICATION_XML_VALUE`).
+
+#### Producible Media Types
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-produces)
+
+다음 예제처럼, `Accept` 요청 헤더와 컨트롤러 메소드가 지원하는 컨텐츠 타입으로
+매칭 범위를 줄일 수 있다:
+
+- *java*
+```java
+@GetMapping(path = "/pets/{petId}", produces = "application/json")
+@ResponseBody
+public Pet getPet(@PathVariable String petId) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/pets/{petId}", produces = ["application/json"])
+@ResponseBody
+fun getPet(@PathVariable String petId): Pet {
+    // ...
+}
+```
+
+미디어 타입에 캐릭터셋을 지정해도 된다.
+produces 역시 부정 표현식을 지원한다.
+예를 들어 `!text/plain`은 `text/plain`을 제외한 모든 컨텐츠 타입이다.
+
+클래스 레벨에 `produces` attribute를 지정해서 클래스 전체에서
+공유할 수도 있다.
+단, request mapping attribute는 대부분 클래스 레벨에 선언한 값을
+확장해 쓰지만, `produces` attribute는 덮어 쓴다.
+
+> 자주 사용하는 미디어 타입은 `MediaType`에 상수로 선언돼 있다.
+> (e.g. `APPLICATION_JSON_VALUE`, `APPLICATION_XML_VALUE`).
+
+#### Parameters and Headers
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-params-and-headers)
+
+쿼리 파라미터 조건을 사용할 수도 있다.
+쿼리 파라미터가 있는지(myParam), 혹은 없는지(!myParam),
+아니면 특정 값을 가지고 있는지(myParam=myValue) 검증할 수 있다.
+다음은 파라미터 값을 검사하는 예제다:
+
+- *java*
+```java
+@GetMapping(path = "/pets/{petId}", params = "myParam=myValue") // (1) 
+public void findPet(@PathVariable String petId) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/pets/{petId}", params = ["myParam=myValue"]) // (1) 
+fun findPet(@PathVariable petId: String) {
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `myParam`이 `myValue`인지 확인한다.</small>
+
+다음 예제처럼 요청 헤더를 검증할 수도 있다:
+
+- *java*
+```java
+@GetMapping(path = "/pets", headers = "myHeader=myValue") // (1)
+public void findPet(@PathVariable String petId) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/pets", headers = ["myHeader=myValue"]) // (1)
+fun findPet(@PathVariable petId: String) {
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `myHeader`가 `myValue`인지 확인한다.</small>
+
+#### HTTP HEAD, OPTIONS
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-head-options)
+
+`@GetMapping`과 `@RequestMapping(method=HttpMethod.GET)`은
+HTTP HEAD도 처리해 준다. 컨트롤러 메소드를 변경할 필요는 없다.
+`HttpHandler` 서버 어답터가 응답을 래핑해서
+실제로 body에 쓰지는 않고, 바이트 수만 `Content-Length` 헤더에 넣어 준다.
+
+HTTP OPTIONS 요청은 기본적으로
+URL 패턴이 매칭되는 모든 `@RequestMapping` 메소드를 찾아,
+지원하는 HTTP 메소드를 전부 `Allow` 응답 헤더에 추가한다.
+
+HTTP 메소드를 선언하지 않은 `@RequestMapping`이 있다면
+`Allow` 헤더는 `GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS`로 설정한다.
+컨트롤러 메소드는 항상 지원하는 HTTP 메소드를 선언하는 게 좋다
+(예를 들어 HTTP 메소드별 애노테이션 `@GetMapping`, `@PostMapping` 등등).
+
+`@RequestMapping`에 직접 HTTP HEAD나 OPTIONS 메소드를 지정할 순 있지만,
+특별한 이유가 없다면 명시하지 않아도 된다.
+
+#### Custom Annotations
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-composed)
+
+스프링 웹플럭스에선 [composed annotation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-meta-annotations)으로
+요청을 매핑할 수 있다.
+이 애노테이션은 자체에 `@RequestMapping`이 선언돼 있고,
+`@RequestMapping` attibute 일부를(혹은 전체를) 다시 지정할 수 있다.
+
+`@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, 
+`@PatchMapping`이 그 예시이다.
+`@RequestMapping`은 HTTP 메소드를 지정하지 않으면 모든 메소드와 매칭되는데,
+컨트롤러 메소드는 왠만하면 HTTP 메소드를 하나만 지정해서 써야한다.
+그렇기 때문에 이 애노테이션을 따로 지원한다.
+예제가 필요하다면, 애노테이션이 어떻게 선언되어 있는지 확인해 봐라.
+
+커스텀 attribute로 직접 매핑 로직을 구현할 수도 있다.
+그러려면 `RequestMappingHandlerMapping`을 상속해서,
+`getCustomMethodCondition` 메소드에서
+커스텀 attribute를 검사하고 직접 만든 `RequestCondition`을 리턴해야 한다.
+
+#### Explicit Registrations
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-registration)
+
+코드로도 핸들러 메소드를 등록할 수 있다.
+이 방법을 사용하면 핸들러 메소드를 동적으로 등록하거나,
+URL이 다르면 같은 핸들러의 다른 인스턴스를 사용할 수도 있다.
+다음은 핸들러 메소드를 등록하는 방법이다:
+
+- *java*
+```java
+    @Configuration
+    public class MyConfig {
+    
+        @Autowired // (1)
+        public void setHandlerMapping(RequestMappingHandlerMapping mapping, UserHandler handler) 
+                throws NoSuchMethodException {
+            // (2)
+            RequestMappingInfo info = RequestMappingInfo
+                    .paths("/user/{id}").methods(RequestMethod.GET).build();
+            // (3)
+            Method method = UserHandler.class.getMethod("getUser", Long.class);
+            // (4)
+            mapping.registerMapping(info, handler, method);
+        }
+    
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    @Configuration
+    class MyConfig {
+    
+        @Autowired // (1)
+        fun setHandlerMapping(mapping: RequestMappingHandlerMapping, handler: UserHandler) {
+            // (2)
+            val info = RequestMappingInfo.paths("/user/{id}").methods(RequestMethod.GET).build()
+            // (3)
+            val method = UserHandler::class.java.getMethod("getUser", Long::class.java)
+            // (4)
+            mapping.registerMapping(info, handler, method)
+        }
+    }
+    ```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 컨트롤러에서 사용할 타겟 핸들러와 핸들러 매핑을 주입한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청을 매핑하기 위한 메타 데이터를 준비한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 핸들러 메소드를 가져온다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 핸들러 매핑에 등록한다.</small>
+
 ### 1.4.3. Handler Methods
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-methods)
+
+`@RequestMapping` 핸들러 메소드는 다양한 컨트롤러 메소드 인자와 리턴값을 지원하기 때문에
+원하는 것을 선택하면 된다.
+
+#### Method Arguments
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-arguments)
+
+지원하는 컨트롤러 메소드 인자는 아래 테이블에 있다.
+
 ### 1.4.4. Model
 ### 1.4.5. DataBinder
 ### 1.4.6. Managing Exceptions

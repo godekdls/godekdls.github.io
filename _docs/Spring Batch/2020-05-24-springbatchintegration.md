@@ -457,7 +457,7 @@ public ItemWriter<Integer> itemWriter() {
 }
 ```
 
-위 설정에선 빈을 여러개 정의했는데,
+위 설정에선 빈을 여러 개 정의했는데,
 ActiveMQ와 Spring Integration이 제공하는 인바운드/아웃바운드 JMS 어댑터로
 메세지 미들웨어를 설정했다.
 위 step에서 참조하고 있는 `itemWriter`는

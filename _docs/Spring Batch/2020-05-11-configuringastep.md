@@ -505,7 +505,7 @@ public CompositeItemWriter compositeItemWriter() {
 모든 `StepListener`를 확장한 구현체는 (인터페이스는 비어있으므로 해당하지 않음)
 `listener` 메소드로 step에 등록할 수 있다.
 `listener`는 step, tasklet, 청크 단위 사용할 수 있다.
-리스너가 필요한 레벨에 등록하는게 좋지만, 리스너가 여러개라면 (`StepExecutionListener`, `ItemReadListener`같은)
+리스너가 필요한 레벨에 등록하는게 좋지만, 리스너가 여러 개라면 (`StepExecutionListener`, `ItemReadListener`같은)
 세분화해서 필요한 곳에 각각 등록하는 게 낫다.
 아래 예제에서는 청크 레벨로 리스너를 등록했다:
 
