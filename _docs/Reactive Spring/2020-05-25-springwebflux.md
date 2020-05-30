@@ -461,8 +461,8 @@ HTTP 요청과 응답 컨텐츠를 직렬화/역직렬화힌다.
 |:-----------------:	|:-------------:	|:-------------:	|
 |Netty|Netty API|[Reactor Netty](https://github.com/reactor/reactor-netty)|
 |Undertow|Undertow API|spring-web: Undertow to 리액티브 스트림 브릿지|
-|톰캣|서블릿 3.1 논블로킹 I/O; ByteBuffers, byte[]를 읽고 쓰는 톰캣 API|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
-|Jetty|서블릿 3.1 논블로킹 I/O; ByteBuffers, byte[]를 쓰는 Jetty API|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
+|톰캣|서블릿 3.1 논블로킹 I/O; ByteBuffers로 byte[]를 읽고 쓰는 톰캣 API|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
+|Jetty|서블릿 3.1 논블로킹 I/O; ByteBuffers로 byte[]를 쓰는 Jetty API|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
 |서블릿 3.1 컨테이너|서블릿 3.1 논블로킹 I/O|spring-web: 서블릿 3.1 논블로킹 I/O to 리액티브 스트림 브릿지|
 
 서버 dependency는 아래 테이블에 있다
@@ -1418,7 +1418,7 @@ URI 변수는 자동으로 선언한 타입으로 변환되는데,
 
 URI 변수에 이름을 지정할 수 있지만(`@PathVariable("customId")`),
 파라미터 이름과 동일하다면 생략해도 된다.
-단, 컴파일 할때 디버그 정보도 포함시키거나(`-g`)
+단, 컴파일할때 디버그 정보도 포함시키거나(`-g`)
 자바 8의 `-parameters` 플래그를 사용해야 한다.
 
 `{*varName}`은 가장 뒤에 있는 0개 이상의 path segment를 나타내는 URI 변수다.
@@ -1681,14 +1681,518 @@ URL이 다르면 같은 핸들러의 다른 인스턴스를 사용할 수도 있
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-methods)
 
-`@RequestMapping` 핸들러 메소드는 다양한 컨트롤러 메소드 인자와 리턴값을 지원하기 때문에
+`@RequestMapping` 핸들러는 다양한 컨트롤러 메소드 인자와 리턴값을 지원하므로
 원하는 것을 선택하면 된다.
 
 #### Method Arguments
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-arguments)
 
-지원하는 컨트롤러 메소드 인자는 아래 테이블에 있다.
+컨트롤러 메소드에서 사용 할 수 있는 인자는 아래 테이블에 있다.
+
+블로킹 I/O로 받는 인자는(예를 들어 request body를 읽는 경우)
+리액티브 타입(리액터, RxJava, [그 외](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/))을
+사용할 수 있다.
+이런 타입은 Description 컬럼에 명시해 뒀다.
+블로킹이 없는 인자는 리액티브 타입을 사용하지 않는다.
+
+일부 애노테이션은(e.g. `@RequestParam`, `@RequestHeader` 등) `required` attribute로
+필수 여부를 지정할 수 있으며,
+JDK 1.8의 `java.util.Optional`을 사용해도 된다.
+효과는 `required=false`와 동일하다.
+
+|Controller method argument|Description|
+|:-----------------:	|:-------------:	|
+|`ServerWebExchange`|`ServerWebExchange`는 HTTP 요청, 응답, request attributes, session attributes를 모두 포함하고 있는 컨테이너다. `checkNotModified` 메소드도 지원한다.|
+|`ServerHttpRequest`, `ServerHttpResponse`|HTTP 요청과 응답에 접근할 수 있다.|
+|`WebSession`|세션에 접근할 수 있다. 세션에 접근해도 attribute를 추가하지 않으면 새 세션을 열지 않는다. 리액티브 타입을 지원한다.|
+|`java.security.Principal`|현재 인증된 유저 — `Principal` 구현체가 있다면 구현체를 리졸브한다. 리액티브 타입을 지원한다.|
+|`org.springframework.http.HttpMethod`|요청 HTTP 메소드|
+|`java.util.Locale`|요청의 locale 정보. `LocaleResolver`가 가장 구체적인 locale을 리졸브한다. — 사실상 `LocaleResolver`/`LocaleContextResolver` 설정이 결정한다.|
+|`java.util.TimeZone` + `java.time.ZoneId`|요청에 사용된 타임존. `LocaleContextResolver`가 결정한다.|
+|`@PathVariable`|URI 템플릿 변수에 접근하는 용도. [URI Patterns](#uri-patterns) 참고.|
+|`@MatrixVariable`|URI path segment를 name/value 쌍으로 접근하는 용도. [Matrix Variables](#matrix-variables) 참고.|
+|`@RequestParam`|서블릿 request 파라미터에 접근할 수 있다. 파라미터 값은 메소드에 선언한 인자 타입으로 변환된다. [`@RequestParam`](#requestparam) 참고.<br><br>`@RequestParam`은 생략해도 된다. — 예를 들어 애노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다. 테이블 마지막에 나오는 “Any other argument” 참고.|
+|`@RequestHeader`|요청 헤더에 접근하는 용도. 헤더 값은 메소드에 선언한 인자 타입으로 변환된다. [@RequestHeader](#requestheader) 참고.|
+|`@CookieValue`|쿠키에 접근하는 용도. 쿠기 값은 메소드에 선언한 인자 타입으로 변환된다. [@CookieValue](#cookievalue) 참고.|
+|`@RequestBody`|HTTP request body에 접근하는 용도. `HttpMessageReader`가 body를 메소드에 선언한 인자 타입으로 변환한다. 리액티브 타입을 지원한다. [@RequestBody](#requestbody) 참고.|
+|`HttpEntity<B>`|요청 헤더와 body에 접근하는 용도. `HttpMessageReader`가 body를 변환한다. 리액티브 타입을 지원한다. [HttpEntity](#httpentity) 참고.|
+|`@RequestPart`|`multipart/form-data` 요청에서 part에 접근하는 용도. 리액티브 타입을 지원한다. [Multipart Content](#multipart-content), [Multipart Data](#multipart-data) 참고.|
+|`java.util.Map`, `org.springframework.ui.Model`, `org.springframework.ui.ModelMap`|HTML 컨트롤러가 템플릿으로 뷰를 렌더링할 때 사용하는 모델에 접근할 수 있다.|
+|`@ModelAttribute`|model에 있는 attribute에 접근할 수 있다(attribute가 없다면 model 초기화만 한다). 이 때 데이터를 바인딩하면서 유효성도 함께 검사한다. [`@ModelAttribute`](#modelattribute), [Model](#144-model), [DataBinder](#145-databinder) 참고.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other argument”를 참고하라.|
+|`Errors`, `BindingResult`|커맨드 객체를 메소드 인자에 바인딩할 땐 유효성을 검증 할 수 있는데(e.g. `@ModelAttribute`), 이 때 발생한 에러에 접근하는 용도로 사용한다. `Errors`, `BindingResult` 인자는 유효성을 검증하는 인자 바로 뒤에 사용해야 한다.|
+|`SessionStatus` + 클래스 레벨 `@SessionAttributes`|`@SessionAttributes` 애노테이션을 클래스에 선언하면 세션에 attribute를 저장하는데, `SessionStatus`를 인자로 받아 session 처리가 완료됐다고 알려주면 session attribute를 지운다. 자세한 내용은 [`@SessionAttributes`](#sessionattribute) 참고.|
+|`UriComponentsBuilder`|요청 호스트, 포트, 스키마, path로 URL을 만들 수 있다. [URI Links](#161-uricomponents) 참고.|
+|`@SessionAttribute`|session attribute에 접근하는 용도. 클래스 레벨에 `@SessionAttributes`를 선언하면 세션에 model attribute를 저장하지만, 메소드 인자에 선언하면 session attribute에 접근할 수 있다. 자세한 내용은 [`@SessionAttribute`](#sessionattribute) 참고.|
+|`@RequestAttribute`|request attribute에 접근하는 용도. 자세한 내용은 [`@RequestAttribute`](#requestattribute) 참고.|
+|Any other argument|그 외 타입을 메소드 인자로 선언하면 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 true인 경우엔 `@RequestParam`에, 그 외는 `@ModelAttribute`로 리졸브한다.|
+
+#### Return Values
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-return-types)
+
+컨트롤러 메소드에서 리턴할 수 있는 값은 아래 테이블에 있다.
+모두 리액터, RxJava나 [그 외](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)
+리액티브 라이브러리가 사용하는 리액티브 타입을 지원한다.
+
+|Controller method return value|Description|
+|:-----------------:	|:-------------:	|
+|`@ResponseBody`|리턴한 값을 `HttpMessageWriter`로 인코딩해서 body에 쓴다. [`@ResponseBody`](#responsebody) 참고.|
+|`HttpEntity<B>`, `ResponseEntity<B>`|HTTP 헤더를 포함해서 response를 직접 지정할 수 있다. body는 `HttpMessageWriter`로 인코딩한다. [`ResponseEntity`](#responseentity) 참고.|
+|`HttpHeaders`|body 없이 헤더로만 응답하는 용도.|
+|`String`|`ViewResolver`에서 사용하는 view name으로, 커맨드 객체와 `@ModelAttribute` 메소드로 만든 모델과 함께 사용한다. 핸들러 메소드에서도 `Model`을 인자로 받아 attribute를 추가할 수 있다([앞에서](#handling) 설명했다).|
+|`View`|커맨드 객체와 `@ModelAttribute` 메소드로 만든 모델과 함께 렌더링하는 `View` 인스턴스. 핸들러 메소드에서도 `Model`을 인자로 받아 attribute를 추가할 수 있다([앞에서](#handling) 설명했다).|
+|`java.util.Map`, `org.springframework.ui.Model`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.
+|`@ModelAttribute`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other return value”를 참고하라.|
+|`Rendering`|model과 view를 만드는 API.|
+|`void`|void 메소드는 비동기 값(`Mono<Void>`)이나 null을 리턴한 경우도 포함이다. 이 때는 `ServerHttpResponse`, `ServerWebExchange` 인자가 있거나, `@ResponseStatus` 애노테이션을 선언했다면 요청을 완료한 것으로 간주한다. ETag나 `lastModified` 헤더로 클라이언트 캐시가 최신이라고 판단했을 때도 동일하다. 자세한 내용은 [Controllers](#1102-controllers)를 참조하라.<br><br>그 외엔 REST 컨트롤러에선 "response body가 없음"을 의미하고, HTML 컨트롤러에선 디폴트 view name을 선택한다.|
+|`Flux<ServerSentEvent>`, `Observable<ServerSentEvent>`, or other reactive type|서버 전송 이벤트(SSE)를 발생시킨다. 데이터만 전송하면 된다면 `ServerSentEvent` 래퍼는 생략해도 된다(단, 헤더에 `text/event-stream`을 사용하거나, `produces` attribute로 매핑해야 한다).|
+|Any other return value|`String`은 view name으로 사용하고, `void`면 디폴트 view name을 사용한다. 그 외에는 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 false면 모델 attribute로 사용하고, true면 리졸브하지 못한다.|
+
+#### Type Conversion
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-typeconversion)
+
+컨트롤러 메소드에 사용하는 일부 인자는
+String으로 요청한 값을 매핑하기 때문에(`@RequestParam`, `@RequestHeader`, `@PathVariable`, `@MatrixVariable`, `@CookieValue` 등)
+`String`이 아닌 다른 타입으로 선언했다면 타입을 변환해야한다.
+
+이런 경우엔 설정한 컨버터가 자동으로 변환해 준다.
+기본적인 타입은(`int`, `long`, `Date` 등) 디폴트로 지원한다.
+직접 타입을 변환하고 싶으면
+`WebDataBinder`([`DataBinder`](#145-databinder) 참고)를 만들거나
+`FormattingConversionService`에 `Formatters`를 등록하면 된다 
+([Spring Field Formatting](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#format) 참고).
+
+#### Matrix Variables
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-matrix-variables)
+
+[RFC 3986](https://tools.ietf.org/html/rfc3986#section-3.3)에 따르면
+path segment에 name/value 쌍 변수를 사용할 수 있다.
+스프링 웹플럭스에선 Tim Berners-Lee가 오래 전 작성한 [문서](https://www.w3.org/DesignIssues/MatrixURIs.html)를
+따라 이를 “메트릭스 변수”라고 부르는데, URI path 파라미터라고도 한다.
+
+메트릭스 변수는 path segment 어디에든 사용할 수 있다.
+각 변수는 세미콜론(`;`)으로 구분하고 값이 여러 개라면 콤마(`,`)로 구분한다
+(e.g. `"/cars;color=red,green;year=2012"`).
+값이 여러 개일 땐 변수 이름을 반복해도 된다 
+(e.g. `"color=red;color=green;color=blue"`).
+
+스프링 MVC와는 다르게 웹플럭스에선
+메트릭스 변수가 있다고 해서 request 매핑이 달라지지 않는다.
+다시 말해 URI 변수로 지정하지 않아도 된다는 뜻이다.
+즉, 컨트롤러 메소드에서 메트릭스 변수에 접근하고 싶을 때만
+해당하는 path segment에 URI 변수를 추가하면 된다.
+다음은 메트릭스 변수를 사용하는 예제다:
+
+- *java*
+    ```java
+    // GET /pets/42;q=11;r=22
+    
+    @GetMapping("/pets/{petId}")
+    public void findPet(@PathVariable String petId, @MatrixVariable int q) {
+    
+        // petId == 42
+        // q == 11
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    // GET /pets/42;q=11;r=22
+    
+    @GetMapping("/pets/{petId}")
+    fun findPet(@PathVariable petId: String, @MatrixVariable q: Int) {
+    
+        // petId == 42
+        // q == 11
+    }
+    ```
+
+메트릭스 변수를 여러 path segment에서 사용한다면,
+아래 예제처럼 메트릭스 변수가 어떤 path에 있는지 명시하면 된다:
+
+- *java*
+    ```java
+    // GET /owners/42;q=11/pets/21;q=22
+    
+    @GetMapping("/owners/{ownerId}/pets/{petId}")
+    public void findPet(
+            @MatrixVariable(name="q", pathVar="ownerId") int q1,
+            @MatrixVariable(name="q", pathVar="petId") int q2) {
+    
+        // q1 == 11
+        // q2 == 22
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    // GET /owners/42;q=11/pets/21;q=22
+    
+    @GetMapping("/owners/{ownerId}/pets/{petId}")
+    fun findPet(
+            @MatrixVariable(name = "q", pathVar = "ownerId") q1: Int,
+            @MatrixVariable(name = "q", pathVar = "petId") q2: Int) {
+    
+        // q1 == 11
+        // q2 == 22
+    }
+    ```
+
+아래 예제처럼 필수 여부와 디폴트 값을 지정할 수도 있다:
+
+- *java*
+    ```java
+    // GET /pets/42
+    
+    @GetMapping("/pets/{petId}")
+    public void findPet(@MatrixVariable(required=false, defaultValue="1") int q) {
+    
+        // q == 1
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    // GET /pets/42
+    
+    @GetMapping("/pets/{petId}")
+    fun findPet(@MatrixVariable(required = false, defaultValue = "1") q: Int) {
+    
+        // q == 1
+    }
+    ```
+
+`MultiValueMap`에 모든 매트릭 변수를 담을 수도 있다:
+
+- *java*
+    ```java
+    // GET /owners/42;q=11;r=12/pets/21;q=22;s=23
+    
+    @GetMapping("/owners/{ownerId}/pets/{petId}")
+    public void findPet(
+            @MatrixVariable MultiValueMap<String, String> matrixVars,
+            @MatrixVariable(pathVar="petId") MultiValueMap<String, String> petMatrixVars) {
+    
+        // matrixVars: ["q" : [11,22], "r" : 12, "s" : 23]
+        // petMatrixVars: ["q" : 22, "s" : 23]
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    // GET /owners/42;q=11;r=12/pets/21;q=22;s=23
+    
+    @GetMapping("/owners/{ownerId}/pets/{petId}")
+    fun findPet(
+            @MatrixVariable matrixVars: MultiValueMap<String, String>,
+            @MatrixVariable(pathVar="petId") petMatrixVars: MultiValueMap<String, String>) {
+    
+        // matrixVars: ["q" : [11,22], "r" : 12, "s" : 23]
+        // petMatrixVars: ["q" : 22, "s" : 23]
+    }
+    ```
+
+#### `@RequestParam`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestparam)
+
+`@RequestParam` 애노테이션은 쿼리 파라미터를 컨트롤러 메소드 인자로 바인딩한다.
+다음은 이 애노테이션을 사용하는 예제다:
+
+- *java*
+```java
+@Controller
+@RequestMapping("/pets")
+public class EditPetForm {
+
+    // ...
+
+    @GetMapping
+    public String setupForm(@RequestParam("petId") int petId, Model model) { // (1)
+        Pet pet = this.clinic.loadPet(petId);
+        model.addAttribute("pet", pet);
+        return "petForm";
+    }
+
+    // ...
+}
+```
+- *kotlin*
+    ```kotlin
+    import org.springframework.ui.set
+    
+    @Controller
+    @RequestMapping("/pets")
+    class EditPetForm {
+    
+        // ...
+    
+        @GetMapping
+        fun setupForm(@RequestParam("petId") petId: Int, model: Model): String { // (1) 
+            val pet = clinic.loadPet(petId)
+            model["pet"] = pet
+            return "petForm"
+        }
+    
+        // ...
+    }
+    ```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestParam`을 사용한다.</small>
+
+> 서블릿 API에선 “요청 파라미터”는
+> 쿼리 파라미터, form 데이터, multiparts 데이터를 모두 포함하는 개념이다.
+> 하지만 웹플럭스에선 `ServerWebExchange`를 사용해 각각 따로 접근하며,
+> `@RequestParam`은 쿼리 파라미터만 바인딩한다.
+> 쿼리 파라미터, form 데이터, multiparts를 모두 사용하려면
+> [커맨드 객체](#modelattribute)로 바인딩하면 된다.
+
+`@RequestParam`을 선언한 파라미터는 디폴트가 필수값이며,
+변경하려면 `required` attribute를 `false`로 지정하거나
+인자를 `java.util.Optional`로 감싸야 한다.
+
+메소드 파라미터가 `String`이 아니라면 자동으로 타입을 변환한다.
+[Type Conversion](#type-conversion)을 참고하라.
+
+`Map<String, String>`이나 `MultiValueMap<String, String>`에 
+`@RequestParam`을 선언하면 map에 모든 쿼리 파라미터를 추가한다.
+
+`@RequestParam`은 생략해도 된다. 
+예를 들어 애노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다.
+적당한 리졸버가 없고
+[BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)
+결과가 true면 `@RequestParam`을 선언한 것과 동일하게 처리한다.
+
+#### `@RequestHeader`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestheader)
+
+`@RequestHeader` 애노테이션은 요청 헤더를 컨트롤러 메소드 인자로 바인딩한다.
+
+다음은 요청 헤더 예시다:
+
+```
+Host                    localhost:8080
+Accept                  text/html,application/xhtml+xml,application/xml;q=0.9
+Accept-Language         fr,en-gb;q=0.7,en;q=0.3
+Accept-Encoding         gzip,deflate
+Accept-Charset          ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive              300
+```
+
+다음은 `Accept-Encoding`, `Keep-Alive` 헤더 값을 바인딩하는 코드다:
+
+- *java*
+```java
+@GetMapping("/demo")
+public void handle(
+        @RequestHeader("Accept-Encoding") String encoding, // (1) 
+        @RequestHeader("Keep-Alive") long keepAlive) { // (2)
+    //...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/demo")
+fun handle(
+        @RequestHeader("Accept-Encoding") encoding: String, // (1)
+        @RequestHeader("Keep-Alive") keepAlive: Long) { // (2)
+    //...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Accept-Encoging` 헤더 값을 가져온다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `Keep-Alive` 헤더 값을 가져온다.</small>
+
+메소드 파라미터가 `String`이 아니라면 자동으로 타입을 변환한다. 
+[Type Conversion](#type-conversion)을 참고하라.
+
+`Map<String, String>`, `MultiValueMap<String, String>`,
+`HttpHeaders`에
+`@RequestHeader`를 선언하면 map에 모든 헤더를 추가한다.
+
+> 콤마(`,`)로 구분하는 문자열은 String 배열이나 컬렉션 등으로 자동으로
+> 변환해 준다. 예를 들어 `@RequestHeader("Accept")`는
+> `String` 인자 외에도 `String[]`이나 `List<String>`에
+> 선언할 수 있다.
+
+#### `@CookieValue`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-cookievalue)
+
+`@CookieValue` 애노테이션은 HTTP 쿠키를 컨트롤러 메소드 인자로 바인딩한다.
+
+다음은 쿠키 예시다:
+
+```
+JSESSIONID=415A4AC178C59DACE0B2C9CA727CDD84
+```
+
+다음은 쿠키 값을 바인딩하는 코드다:
+
+- *java*
+```java
+@GetMapping("/demo")
+public void handle(@CookieValue("JSESSIONID") String cookie) { // (1) 
+    //...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/demo")
+fun handle(@CookieValue("JSESSIONID") cookie: String) { // (1)
+    //...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 쿠키 값을 가져온다.</small>
+
+메소드 파라미터가 `String`이 아니라면 자동으로 타입을 변환한다. 
+[Type Conversion](#type-conversion)을 참고하라.
+
+#### `@ModelAttribute`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-method-args)
+
+메소드 인자에 `@ModelAttribute` 애노테이션을 사용하면
+model attribute에 접근할 수 있으며, attribute가 없더라도 model을 생성해 준다.
+쿼리 파라미터나 form 데이터 필드명이 객체 필드명과 일치한다면
+model attribute에 추가된다.
+따라서 쿼리 파라미터나 form 필드를 일일이 파싱하지 않아도 되며,
+이를 데이터 바인딩이라고 한다.
+
+다음은 `Pet` 인스턴스로 바인딩하는 예제다:
+
+- *java*
+```java
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+public String processSubmit(@ModelAttribute Pet pet) { } // (1)
+```
+- *kotlin*
+```kotlin
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+fun processSubmit(@ModelAttribute pet: Pet): String { } // (1)
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Pet` 인스턴스에 바인딩한다.</small>
+
+다음과 같은 방법으로 `Pet` 인스턴스를 리졸브한다:
+
+- [`Model`](#144-model) attribute가 있다면 model을 통해서.
+- [`@SessionAttributes`](#sessionattributes)에 값이 있다면 HTTP 세션을 통해서.
+- 기본 생성자를 통해서.
+- 쿼리 파라미터나 form 필드와 일치하는 인자를 받는 "첫 번째 생성자"를 통해서.
+인자 이름은 자바빈 `@ConstructorProperties`로 지정하지 않으면
+런타임에 바이트 코드에 있는 파라미터 명을 사용한다.
+
+데이터 바인딩은 model attribute 인스턴스를 생성한 다음 진행한다.
+`WebExchangeDataBinder`가 쿼리 파라미터와 form 필드 이름을
+바인딩할 `Object` 필드명과 비교한다.
+필요하다면 필드 매칭 전 타입을 변환한다.
+데이터 바인딩과 유효성 검증에 대한 자세한 정보는
+[Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation)을
+참고하라.
+데이터 바인딩을 커스텀하고 싶다면 [DataBinder](#145-databinder)를 참고하라.
+
+데이터 바인딩에 실패하면 기본적으로 `WebExchangeBindException`이 발생한다.
+컨트롤러 메소드에서 에러를 처리하고 싶다면 
+다음 예제처럼 `@ModelAttribute` 인자 바로 다음에 `BindingResult`를
+받으면 된다:
+
+- *java*
+```java
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+public String processSubmit(@ModelAttribute("pet") Pet pet, BindingResult result) { // (1) 
+    if (result.hasErrors()) {
+        return "petForm";
+    }
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+fun processSubmit(@ModelAttribute("pet") pet: Pet, result: BindingResult): String { // (1) 
+    if (result.hasErrors()) {
+        return "petForm"
+    }
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `BindingResult`를 추가한다.</small>
+
+`javax.validation.Valid`나 스프링의 `@Validated` 애노테이션을
+선언하면, 데이터를 바인딩 한 후 자동으로 유효성을 검증한다
+([Bean Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation),
+[Spring validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation) 참고).
+다음 예제는 `@Valid` 애노테이션을 사용한다:
+
+- *java*
+```java
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+public String processSubmit(@Valid @ModelAttribute("pet") Pet pet, BindingResult result) { 
+    if (result.hasErrors()) {
+        return "petForm";
+    }
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+fun processSubmit(@Valid @ModelAttribute("pet") pet: Pet, result: BindingResult): String { 
+    if (result.hasErrors()) {
+        return "petForm"
+    }
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> model attribute 인자에 `@Valid`를 선언한다.</small>
+
+스프링 웹플럭스는 스프링 MVC와는 달리 모델에 리액티브 타입을 사용할 수 있다
+(e.g. `Mono<Account>`, `io.reactivex.Single<Account>`).
+리액티브 타입으로 `@ModelAttribute` 인자를 감싸는 것은 선택 사항이며,
+상황에 따라 필요하다면 실제 값을 리졸브한다.
+하지만 `BindingResult`를 인자로 받으려면 위 예시처럼
+리액티브 타입으로 감싸지 않은 `@ModelAttribute` 인자가 바로 앞에 있어야 한다.
+아니면 다음 예제처럼 리액티브 타입으로 에러를 처리해도 된다:
+
+- *java*
+```java
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+public Mono<String> processSubmit(@Valid @ModelAttribute("pet") Mono<Pet> petMono) {
+    return petMono
+        .flatMap(pet -> {
+            // ...
+        })
+        .onErrorResume(ex -> {
+            // ...
+        });
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/owners/{ownerId}/pets/{petId}/edit")
+fun processSubmit(@Valid @ModelAttribute("pet") petMono: Mono<Pet>): Mono<String> {
+    return petMono
+            .flatMap { pet ->
+                // ...
+            }
+            .onErrorResume{ ex ->
+                // ...
+            }
+}
+```
+
+`@ModelAttribute`는 생략해도 된다.
+예를 들어 애노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다.
+적당한 리졸버가 없고 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)
+결과가 false면 `@ModelAttribute`를 선언한 것과 동일하게 처리한다.
+
+#### @SessionAttributes
+#### @SessionAttribute
+#### @RequestAttribute
+#### Multipart Content
+#### @RequestBody
+#### HttpEntity
+#### @ResponseBody
+#### ResponseEntity
+#### Jackson JSON
 
 ### 1.4.4. Model
 ### 1.4.5. DataBinder
