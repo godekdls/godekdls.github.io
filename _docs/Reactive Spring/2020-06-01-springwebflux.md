@@ -82,6 +82,7 @@ permalink: /Reactive%20Spring/springwebflux/
   + [1.4.4. Model](#144-model)
   + [1.4.5. DataBinder](#145-databinder)
   + [1.4.6. Managing Exceptions](#146-managing-exceptions)
+    * [REST API exceptions](#rest-api-exceptions)
   + [1.4.7. Controller Advice](#147-controller-advice)
 
 스프링 프레임워크, 스프링 웹 MVC를 포함한 기존 웹 프레임워크는
@@ -1649,7 +1650,7 @@ URL이 다르면 같은 핸들러의 다른 인스턴스를 사용할 수도 있
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-arguments)
 
-컨트롤러 메소드에서 사용 할 수 있는 인자는 아래 테이블에 있다.
+컨트롤러 메소드에서 사용할 수 있는 인자는 아래 테이블에 있다.
 
 블로킹 I/O로 받는 인자는(예를 들어 request body를 읽는 경우)
 리액티브 타입(리액터, RxJava, [그 외](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/))을
@@ -1684,7 +1685,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`Errors`, `BindingResult`|커맨드 객체를 메소드 인자에 바인딩할 땐 유효성을 검증 할 수 있는데(e.g. `@ModelAttribute`), 이 때 발생한 에러에 접근하는 용도로 사용한다. `Errors`, `BindingResult` 인자는 유효성을 검증하는 인자 바로 뒤에 사용해야 한다.|
 |`SessionStatus` + 클래스 레벨 `@SessionAttributes`|`@SessionAttributes` 애노테이션을 클래스에 선언하면 세션에 attribute를 저장하는데, `SessionStatus`를 인자로 받아 session 처리가 완료됐다고 알려주면 session attribute를 지운다. 자세한 내용은 [`@SessionAttributes`](#sessionattribute) 참고.|
 |`UriComponentsBuilder`|요청 호스트, 포트, 스키마, path로 URL을 만들 수 있다. [URI Links](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#161-uricomponents) 참고.|
-|`@SessionAttribute`|session attribute에 접근하는 용도. 클래스 레벨에 `@SessionAttributes`를 선언하면 세션에 model attribute를 저장하지만, 메소드 인자에 선언하면 session attribute에 접근할 수 있다. 자세한 내용은 [`@SessionAttribute`](#sessionattribute) 참고.|
+|`@SessionAttribute`|session attribute에 접근하는 용도. 클래스 레벨에 `@SessionAttributes`를 선언하면 세션에 model attribute를 저장하지만, 메소드 인자에 `@SessionAttribute`를 선언하면 session attribute에 접근할 수 있다. 자세한 내용은 [`@SessionAttribute`](#sessionattribute) 참고.|
 |`@RequestAttribute`|request attribute에 접근하는 용도. 자세한 내용은 [`@RequestAttribute`](#requestattribute) 참고.|
 |Any other argument|그 외 타입을 메소드 인자로 선언하면 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 true인 경우엔 `@RequestParam`에, 그 외는 `@ModelAttribute`로 리졸브한다.|
 
@@ -2153,7 +2154,7 @@ fun processSubmit(@Valid @ModelAttribute("pet") petMono: Mono<Pet>): Mono<String
 `WebSession`에 저장한다.
 [type 레벨](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html#TYPE) 애노테이션으로,
 컨트롤러에서 사용할 session attributes를 지정할 수 있다.
-보통 세션에 넣어놓고 다음 요청에서도 이어서 접근해야하는
+보통 세션에 넣어놓고 다음 요청에서도 이어서 접근하는
 model attributes 이름이나 타입 리스트를 명시한다.
 
 다음 예제를 보라:
@@ -2245,10 +2246,10 @@ fun handle(@SessionAttribute user: User): String { // (1)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@SessionAttribute`를 사용한다.</small>
 
-session attribute를 추가하거나 제거해야 한다면
+session attribute를 추가하거나 제거하고 싶다면
 컨트롤러 메소드에서 `WebSession`을 주입받으면 된다.
 
-컨트롤러에서 임시로 세션에 model attribute를 저장해야 한다면 앞에서 설명한
+컨트롤러에서 model attribute를 임시로 세션에 저장해야 한다면 앞에서 설명한
 [`@SessionAttributes`](#sessionattributes)를 활용하면 된다.
 
 #### `@RequestAttribute`
@@ -2695,8 +2696,354 @@ body를 single, multi-value 리액티브 타입으로 만들어도 된다.
 > 뷰를 여러개 사용하려면 compiste 인터페이스를 만들어라.
 
 ### 1.4.4. Model
-### 1.4.5. DataBinder
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-methods)
+
+`@ModelAttribute` 애노테이션은 다음과 같이 사용할 수 있다:
+
+- `@RequestMapping` 메소드 [인자](#modelattribute)에 선언해서
+model을 생성, 접근하고 `WebDataBinder`로 객체에 바인딩한다.
+- `@Controller`나 `@ControllerAdvice` 클래스 메소드에 선언해서
+다른 `@RequestMapping` 메소드를 실행하기 전 모델을 초기화한다.
+- `@RequestMapping` 메소드에서 리턴하는 값을 model attribute로 만든다.
+
+이번 섹션에서는 두번째에 있는 `@ModelAttribute` 메소드를 설명한다.
+`@ModelAttribute` 메소드는 컨트롤러 안에 몇 개든지 만들 수 있다.
+이 메소드는 같은 컨트롤러에 있는 `@RequestMapping` 메소드를 실행 하기 전
+전부 실행된다.
+모든 컨트롤러에서 공유하려면 `@ControllerAdvice`에 만들면 된다.
+자세한 내용은 [Controller Advice](#147-controller-advice) 섹션을 참고하라.
+
+`@ModelAttribute` 메소드는 여러가지 방법으로 활용할 수 있다.
+지원하는 인자는 대부분 `@RequestMapping` 메소드와 동일하다
+(`@ModelAttribute` 자체와 reqeust body랑 관련된 것만 빼고).
+
+다음은 `@ModelAttribute` 메소드 사용 예시다:
+
+- *java*
+```java
+@ModelAttribute
+public void populateModel(@RequestParam String number, Model model) {
+    model.addAttribute(accountRepository.findAccount(number));
+    // add more ...
+}
+```
+- *kotlin*
+```kotlin
+@ModelAttribute
+fun populateModel(@RequestParam number: String, model: Model) {
+    model.addAttribute(accountRepository.findAccount(number))
+    // add more ...
+}
+```
+
+attribute 한 개를 추가할 땐 다음과 같이 사용할 수도 있다:
+
+- *java*
+```java
+@ModelAttribute
+public Account addAccount(@RequestParam String number) {
+    return accountRepository.findAccount(number);
+}
+```
+- *kotlin*
+```kotlin
+@ModelAttribute
+fun addAccount(@RequestParam number: String): Account {
+    return accountRepository.findAccount(number);
+}
+```
+
+> attribute 이름을 명시하지 않으면 타입별 디폴트 이름을 사용한다
+> ([`Conventions`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/Conventions.html)
+> javadoc 참고).
+> 이름을 지정하려면 attributeName을 인자로 받는 `Model#addAttribute` 메소드를 사용하거나,
+> `@ModelAttribute`의 name attribute에 명시하면 된다 (이땐 리턴하는 값을 value로 사용한다).
+
+스프링 웹플럭스는 스프링 MVC와 달리
+모델에 리액티브 타입을 저장할 수 있다
+(e.g. `Mono<Account>`, `io.reactivex.Single<Account>`).
+이런 비동기 model attribute는
+`@RequestMapping`을 실행할 때 실제 값을 리졸브하며 (모델도 함께 업데이트한다),
+`@ModelAttribute` 인자는 리액티브 타입으로 감싸지 않아도 된다:
+
+- *java*
+    ```java
+    @ModelAttribute
+    public void addAccount(@RequestParam String number) {
+        Mono<Account> accountMono = accountRepository.findAccount(number);
+        model.addAttribute("account", accountMono);
+    }
+    
+    @PostMapping("/accounts")
+    public String handle(@ModelAttribute Account account, BindingResult errors) {
+        // ...
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    import org.springframework.ui.set
+    
+    @ModelAttribute
+    fun addAccount(@RequestParam number: String) {
+        val accountMono: Mono<Account> = accountRepository.findAccount(number)
+        model["account"] = accountMono
+    }
+    
+    @PostMapping("/accounts")
+    fun handle(@ModelAttribute account: Account, errors: BindingResult): String {
+        // ...
+    }
+    ```
+
+만약 model attribute를 리액티브 타입으로 감쌌다면
+뷰를 만들기 직전에 리졸브한다(역시 모델도 함께 업데이트한다).
+
+`@ModelAttribute`를 `@RequestMapping` 메소드 위에 선언하면
+이 메소드가 리턴하는 값을 model attribute로 해석한다.
+HTML 컨트롤러에서는 `String`만 view name으로 사용하고, 나머지는
+모두 model attribute로 처리하므로 생략할 수 있다.
+다음 예제처럼 `@ModelAttribute`로 attribute 이름을 지정할 수도 있다:
+
+- *java*
+```java
+@GetMapping("/accounts/{id}")
+@ModelAttribute("myAccount")
+public Account handle() {
+    // ...
+    return account;
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/accounts/{id}")
+@ModelAttribute("myAccount")
+fun handle(): Account {
+    // ...
+    return account
+}
+```
+
+### 1.4.5. `DataBinder`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-initbinder)
+
+`WebDataBinder`는 `@Controller`, `@ControllerAdvice` 클래스에서
+`@InitBinder` 메소드로 초기화할 수 있다.
+`@InitBinder` 메소드는 다음과 같이 활용할 수 있다:
+
+- 요청 파라미터(form 데이터나 쿼리 파라미터)를 model에 바인딩한다.
+- String으로 요청한 값을(파라미터, path variable, 헤더, 쿠키 등)
+컨트롤러 메소드 인자 타입으로 변환한다.
+- HTML을 렌더링할 때 model 값을 `String`으로 변환한다.
+
+`@InitBinder` 메소드로 컨트롤러별
+`java.bean.PropertyEditor`나 스프링 `Converter`, `Formatter`를
+등록할 수 있다.
+`FormattingConversionService`에서 전역으로 사용하는 
+`Converter`, `Formatter`는 [웹플럭스 설정](https://godekdls.github.io/Reactive%20Spring/springwebflux2/#1113-conversion-formatting)으로
+등록한다.
+
+`@InitBinder` 메소드가 지원하는 인자는 `@ModelAttribute` (커맨드 객체)만 제외하고
+대부분 `@RequestMapping` 메소드와 동일하다.
+보통은 `WebDataBinder`를 인자로 받아 컴포넌트를 등록하고 `void`를 리턴한다.
+다음은 `@InitBinder` 애노테이션을 사용하는 예제다:
+
+- *java*
+```java
+@Controller
+public class FormController {
+
+    @InitBinder // (1)
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
+    }
+
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@Controller
+class FormController {
+
+    @InitBinder // (1)
+    fun initBinder(binder: WebDataBinder) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        dateFormat.isLenient = false
+        binder.registerCustomEditor(Date::class.java, CustomDateEditor(dateFormat, false))
+    }
+
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@InitBinder` 애노테이션을 사용한다.</small>
+
+아니면 같은 방법으로
+`FormattingConversionService`에서 사용하는 
+`Formatter` 인스턴스를 컨트롤러 전용으로 등록해도 된다:
+
+- *java*
+```java
+@Controller
+public class FormController {
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addCustomFormatter(new DateFormatter("yyyy-MM-dd")); // (1) 
+    }
+
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@Controller
+class FormController {
+
+    @InitBinder
+    fun initBinder(binder: WebDataBinder) {
+        binder.addCustomFormatter(DateFormatter("yyyy-MM-dd")) // (1) 
+    }
+
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 커스텀 포맷터를 등록한다 (여기선 `DateFormatter`).</small>
+
 ### 1.4.6. Managing Exceptions
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler)
+
+`@Controller`, [@ControllerAdvice](#147-controller-advice) 클래스 메소드에
+`@ExceptionHandler`를 선언하면
+컨트롤러에서 발생한 예외를 처리할 수 있다.
+다음은 예외를 처리하는 메소드 예시다:
+
+- *java*
+```java
+@Controller
+public class SimpleController {
+
+    // ...
+
+    @ExceptionHandler // (1)
+    public ResponseEntity<String> handle(IOException ex) {
+        // ...
+    }
+}
+```
+- *kotlin*
+```kotlin
+@Controller
+class SimpleController {
+
+    // ...
+
+    @ExceptionHandler // (1)
+    fun handle(ex: IOException): ResponseEntity<String> {
+        // ...
+    }
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@ExceptionHandler`를 선언한다.</small>
+
+최초에 전파된 exception과(예를 들어 `IOException`)
+제일 바깥에서 감싸고 있는 exception(`IOException`를 감싸고 있는 `IllegalStateException`) 
+모두 매칭된다.
+
+가급적이면 위 예시처럼 메소드 인자로 원하는 예외 타입을 지정하는 게 좋다.
+아니면 애노테이션에 지정해도 된다.
+메소드 인자는 최대한 구체적으로 지정하고,
+우선순위를 정한 `@ControllerAdvice`에서
+루트 exception을 처리해라.
+자세한 내용은 [MVC 섹션](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler)을 참고하라.
+
+> request body나 `@ModelAttribute`와 관려된 인자만 제외하면,
+> `@RequestMapping` 메소드가 지원하는 모든 인자와 리턴값을
+> `@ExceptionHandler` 메소드에서도 사용할 수 있다.
+
+스프링 웹플럭스에선 `@RequestMapping` 메소드를
+실행하는 `HandlerAdapter`가 `@ExceptionHandler` 메소드를 처리한다.
+자세한 내용은 [`DispatcherHandler`](#13-dispatcherhandler)를 참고하라.
+
+#### REST API exceptions
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-rest-exceptions)
+
+REST 서비스에선 보통 에러 정보를 response body에 담는다.
+에러 정보를 표현하는 방식은 어플리케이션마다 다르기 때문에
+스프링 프레임워크가 자동으로 해주지는 않는다.
+하지만 `@RestController` 메소드에 `@ExceptionHandler`를 선언하고,
+`ResponseEntity`로 상태 코드와 body를 정할 수는 있다.
+`@ControllerAdvice`에 만들어 어플리케이션 전체에 적용할 수도 있다.
+
+> 스프링 웹플럭스는 MVC의 `ResponseEntityExceptionHandler`에 상응하는 핸들러가 없다.
+> 스프링 웹플럭스에서 발생하는 모든 예외는 `ResponseStatusException`(혹은 상속한 클래스)이기 때문에
+> exception마다 HTTP 상태 코드를 지정할 필요가 없다.
+
 ### 1.4.7. Controller Advice
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-controller-advice)
+
+`@ExceptionHandler`, `@InitBinder`, `@ModelAttribute` 메소드는
+선언한 `@Controller` 클래스(혹은 상속한 클래스)에 적용된다.
+모든 컨트롤러에 적용하고 싶다면
+`@ControllerAdvice`나 `@RestControllerAdvice`를 선언한
+클래스 안에 만들어야 한다.
+
+`@ControllerAdvice`는 `@Component` 애노테이션이 선언돼 있기 때문에
+[컴포넌트 스캔](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-java-instantiating-container-scan)으로
+스프링 빈에 등록할 수 있다.
+`@RestControllerAdvice`는 `@ControllerAdvice`와 `@ResponseBody`가
+둘 다 선언되어 있어서, `@ExceptionHandler` 메소드에서 리턴한 값은
+메세지 변환을 통해 response body로 렌더링한다
+(view를 만들거나 템플릿을 렌더링하는 대신).
+
+어플리케이션을 기동하면 프레임워크 내부에서 `@ControllerAdvice`를 선언한 스프링 빈을 찾아
+`@RequestMapping`과 `@ExceptionHandler` 메소드를 적용한다.
+전역에 설정한 `@ExceptionHandler` 메소드(`@ControllerAdvice`에 있는)는
+`@Controller` 메소드 다음에 적용한다.
+반대로 전역 `@ModelAttribute`, `@InitBinder` 메소드는
+`@Controller` 메소드 전에 적용한다.
+
+기본적으로 `@ControllerAdvice` 메소드는 모든 요청에 적용되지만(즉, 모든 컨트롤러에),
+다음 예제처럼 애노테이션 attribute로 컨트롤러를 지정할 수 있다:
+
+- *java*
+    ```java
+    // Target all Controllers annotated with @RestController
+    @ControllerAdvice(annotations = RestController.class)
+    public class ExampleAdvice1 {}
+    
+    // Target all Controllers within specific packages
+    @ControllerAdvice("org.example.controllers")
+    public class ExampleAdvice2 {}
+    
+    // Target all Controllers assignable to specific classes
+    @ControllerAdvice(assignableTypes = {ControllerInterface.class, AbstractController.class})
+    public class ExampleAdvice3 {}
+    ```
+- *kotlin*
+    ```kotlin
+    // Target all Controllers annotated with @RestController
+    @ControllerAdvice(annotations = [RestController::class])
+    public class ExampleAdvice1 {}
+    
+    // Target all Controllers within specific packages
+    @ControllerAdvice("org.example.controllers")
+    public class ExampleAdvice2 {}
+    
+    // Target all Controllers assignable to specific classes
+    @ControllerAdvice(assignableTypes = [ControllerInterface::class, AbstractController::class])
+    public class ExampleAdvice3 {}
+    ```
+
+이 예제처럼 컨트롤러를 지정하면 런타임에 비교하기때문에,
+과도한 사용은 성능에 좋지 않다.
+자세한 내용은 [`@ControllerAdvice`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html)
+javadoc을 참고하라.
 
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
