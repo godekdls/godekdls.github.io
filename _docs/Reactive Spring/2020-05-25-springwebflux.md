@@ -1,5 +1,5 @@
 ---
-title: Spring WebFlux
+title: Spring WebFlux (1)
 category: Reactive Spring
 order: 2
 permalink: /Reactive%20Spring/springwebflux/
@@ -83,44 +83,6 @@ permalink: /Reactive%20Spring/springwebflux/
   + [1.4.5. DataBinder](#145-databinder)
   + [1.4.6. Managing Exceptions](#146-managing-exceptions)
   + [1.4.7. Controller Advice](#147-controller-advice)
-- [1.5. Functional Endpoints](#15-functional-endpoints)
-  + [1.5.1. Overview](#151-overview)
-  + [1.5.2. HandlerFunction](#152-handlerfunction)
-  + [1.5.3. RouterFunction](#153-routerfunction)
-  + [1.5.4. Running a Server](#154-running-a-server)
-  + [1.5.5. Filtering Handler Functions](#155-filtering-handler-functions)
-- [1.6. URI Links](#16-uri-links)
-  + [1.6.1. UriComponents](#161-uricomponents)
-  + [1.6.2. UriBuilder](#162-uribuilder)
-  + [1.6.3. URI Encoding](#163-uri-encoding)
-- [1.7. CORS](#17-cors)
-  + [1.7.1. Introduction](#171-introduction)
-  + [1.7.2. Processing](#172-processing)
-  + [1.7.3. @CrossOrigin](#173-crossorigin)
-  + [1.7.4. Global Configuration](#174-global-configuration)
-  + [1.7.5. CORS WebFilter](#175-cors-webfilter)
-- [1.8. Web Security](#18-web-security)
-- [1.9. View Technologies](#19-view-technologies)
-  + [1.9.1. Thymeleaf](#191-thymeleaf)
-  + [1.9.2. FreeMarker](#192-freemarker)
-  + [1.9.3. Script Views](#193-script-views)
-  + [1.9.4. JSON and XML](#194-json-and-xml)
-- [1.10. HTTP Caching](#110-http-caching)
-  + [1.10.1. CacheControl](#1101-cachecontrol)
-  + [1.10.2. Controllers](#1102-controllers)
-  + [1.10.3. Static Resources](#1103-static-resources)
-- [1.11. WebFlux Config](#111-webflux-config)
-  + [1.11.1. Enabling WebFlux Config](#1111-enabling-webflux-config)
-  + [1.11.2. WebFlux config API](#1112-webflux-config-api)
-  + [1.11.3. Conversion, formatting](#1113-conversion-formatting)
-  + [1.11.4. Validation](#1114-validation)
-  + [1.11.5. Content Type Resolvers](#1115-content-type-resolvers)
-  + [1.11.6. HTTP message codecs](#1116-http-message-codecs)
-  + [1.11.7. View Resolvers](#1117-view-resolvers)
-  + [1.11.8. Static Resources](#1118-static-resources)
-  + [1.11.9. Path Matching](#1119-path-matching)
-  + [1.11.10. Advanced Configuration Mode](#11110-advanced-configuration-mode)
-- [1.12. HTTP/2](#112-http2)
 
 스프링 프레임워크, 스프링 웹 MVC를 포함한 기존 웹 프레임워크는
 서블릿 API와 서블릿 컨테이너를 위해 개발됐다.
@@ -222,7 +184,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 자세한 내용은 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
 
 > 리액티브 API와는 별개로 
-> WebFlux는 코틀린의 [코루틴](https://godekdls.github.io/Reactive%20Spring/coroutines/)
+> WebFlux는 코틀린의 [코루틴](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#coroutines)
 > API와도 사용할 수 있는데,
 > 이를 사용하면 좀 더 명령적(imperative)인 프로그래밍이 가능하다.
 > 아래 나오는 코틀린 코드 샘플은 코루틴 API를 사용할 것이다.
@@ -244,7 +206,7 @@ Servlet API에 상응하는 코어 [`WebHandler` API](#122-webhandler-api)를
 지원하기때문에 이 둘을 구분하기 어렵다.
 한 가지 눈에 띄는 차이는 웹플럭스에선
 `@RequestBody`로 리액티브 인자를 받을 수 있다는 것이다.
-- [Functional Endpoints](#15-functional-endpoints):
+- [Functional Endpoints](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#15-functional-endpoints):
 경량화된 람다 기반 함수형 프로그래밍 모델.
 요청을 라우팅해주는 조그만한 라이브러리나 유틸리티 모음이라고 생각하면 된다.
 annotated controller와 다른 점은
@@ -317,7 +279,7 @@ annotated controller와 다른 점은
 고수준 [프로그래밍 모델](#113-programming-models)을 적용할 수 있다.
 
 스프링 웹플럭스엔 서버 기동이나 중단을 위한 내장 기능은 없다.
-하지만 스프링 설정과 [웹플럭스 구조](#111-webflux-config)를
+하지만 스프링 설정과 [웹플럭스 구조](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)를
 [조립](#122-webhandler-api)해
 적은 코드로 손쉽게 어플리케이션을 [실행](#121-httphandler)할 수 있다.
 
@@ -706,7 +668,7 @@ forwarded 헤더는 보안에 신경써야 할 요소가 있는데,
 다른 필터 체인과 `WebHandler` 전후에 요청을 가로채 원하는 로직을 넣을 수 있다.
 `WebFilter`를 등록하려면 스프링 빈으로 만들어 원한다면 빈 위에 `@Order`를 선언하거나
 `Ordered`를 구현해 순서를 정해도 되고,
-[WebFlux Config](#111-webflux-config)를 사용해도 그만큼 간단하다.
+[WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)를 사용해도 그만큼 간단하다.
 
 #### CORS
 
@@ -717,7 +679,7 @@ CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작�
 내장 `CorsFilter`를 사용해서 Spring Security의 필터 체인보다
 먼저 처리되도록 해야 한다.
 
-자세한 내용은 [CORS](#17-cors)와 [CORS webfilter](#175-cors-webfilter)를 참고하라.
+자세한 내용은 [CORS](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#17-cors)와 [CORS webfilter](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#175-cors-webfilter)를 참고하라.
 
 ### 1.2.4. Exceptions
 
@@ -727,7 +689,7 @@ CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작�
 `WebFilter` 체인과 `WebHandler`에서 발생한 예외를 `WebExceptionHandler`로 처리한다.
 `WebExceptionHandler`를 등록하려면 스프링 빈으로 만들어 원한다면
 빈 위에 `@Order`를 선언하거나 `Ordered`를 구현해 순서를 정해도 되고,
-[WebFlux Config](#111-webflux-config)를 사용해도 그만큼 간단하다.
+[WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)를 사용해도 그만큼 간단하다.
 
 다음은 바로 사용할 수 있는 `WebExceptionHandler` 구현체다:
 
@@ -767,7 +729,7 @@ form 데이터, multipart 데이터, 서버 전송 이벤트(SSE) 등을 처리�
 
 `ClientCodecConfigurer`와 `ServerCodecConfigurer`로
 기본 코덱을 설정하거나 커스텀 코덱을 등록할 수 있다.
-[HTTP message codecs](#1116-http-message-codecs)를 참고하라.
+[HTTP message codecs](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1116-http-message-codecs)를 참고하라.
 
 #### Jackson JSON
 
@@ -778,16 +740,16 @@ JSON, binary JSON([Smile](https://github.com/FasterXML/smile-format-specificatio
 
 - Jackson의 비동기, 논블로킹 파서가 `TokenBuffer`로 바이트 청크 스트림을 모아 JSON 객체로 변환한다.
 - 각 `TokenBuffer`는 Jackson의 `ObjectMapper`로 넘겨져 고수준 객체를 만든다.
-- 값이 하나 뿐인 publisher(e.g. `Mono`)를 디코딩 할때는 `TokenBuffer`가 하나 뿐이다.
-- 값이 여러 개인 publisher(e.g. `Flux`)를 디코딩 할때는, 각 `TokenBuffer`에
+- single-value publisher(e.g. `Mono`)를 디코딩 할때는 `TokenBuffer`가 하나 뿐이다.
+- multi-value publisher(e.g. `Flux`)를 디코딩 할때는, 각 `TokenBuffer`에
 객체를 구성할 수 있을 만큼 바이트가 모이면 그때그때 `ObjectMapper`로 전달한다.
 입력 컨텐츠는 JSON 배열이거나, 컨텐츠 타입이 `application/stream+json`이라면
 [line-delimited JSON](https://en.wikipedia.org/wiki/JSON_streaming)일 수도 있다.
 
 `Jackson2Encoder`는 다음과 같이 동작한다:
 
-- 값이 하나 뿐인 publisher(e.g. `Mono`)는 바로 `ObjectMapper`에서 직렬화한다.
-- 값이 여러 개인 publisher를 `application/json`로 직렬화할 땐
+- single-value publisher(e.g. `Mono`)는 바로 `ObjectMapper`에서 직렬화한다.
+- multi-value publisher를 `application/json`로 직렬화할 땐
 기본적으로 `Flux#collectToList()`로 값을 수집한 다음 그 컬렉션을 직렬화한다.
 - `application/stream+json`, `application/stream+x-jackson-smile`같은
 스트리밍 타입을 값이 여러 개인 publisher로 직렬화하면
@@ -850,7 +812,7 @@ Map을 리턴하는 `getMultipartData()`를 사용해야 한다.
 `Decoder`나 `HttpMessageReader`에 `maxInMemorySize` 프로퍼티가
 노출돼 있는지 확인해보고, 만약 그렇다면 Javadoc에 자세한 정보가 있을 것이다.
 서버 사이드에선 모든 코덱은 `ServerCodecConfigurer`에 설정하면 된다
-([HTTP message codecs](#1116-http-message-codecs) 참고). 
+([HTTP message codecs](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1116-http-message-codecs) 참고). 
 클라이언트 사이드에선 [WebClient.Builder](https://godekdls.github.io/Reactive%20Spring/webclient/#211-maxinmemorysize)로
 코덱의 최대 버퍼 사이즈를 수정할 수 있다.
 
@@ -1074,7 +1036,7 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 
 프레임워크 내부에서 사용하는 빈([Web Handler API](#special-bean-types)에 있는 리스트와 [`DispatcherHandler`](#131-special-bean-types))도
 어플리케이션에서 직접 정의할 수 있다.
-하지만 특별한 이유가 없다면 [WebFlux Config](#111-webflux-config)로
+하지만 특별한 이유가 없다면 [WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)로
 시작하는게 가장 좋다.
 웹플럭스 config는 필요한 빈을 알아서 만들어주고,
 쉽게 설정을 커스텀할 수 있는 콜백 API를 제공한다.
@@ -1099,7 +1061,7 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 `HandlerAdapter`는 핸들러 실행을 완료하고 나면,
 실행 결과와 컨텍스트 정보를 감싸고 있는 `HandlerResult`를 반환한다.
 이 `HandlerResult`는 `HandlerResultHandler`가 받아서 요청을 완료한다.
-다음은 [WebFlux Config](#111-webflux-config)에 정의돼 있는 `HandlerResultHandler` 구현체다:
+다음은 [WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)에 정의돼 있는 `HandlerResultHandler` 구현체다:
 
 |Result Handler Type|Return Values|Default Order|
 |:-----------------:	|:-------------:	|:-------------:	|
@@ -1168,20 +1130,19 @@ true를 리턴하는 값은 예외) model에 추가할 model attribute로 간주
 [conventions](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/Conventions.html)와
 클래스명으로 attribute name을 결정한다.
 
-모델에는 비동기 리액티브 타입이 있을 수도 있다(e.g. 리액터나 RxJava가 리턴한 값).
-이런 model attribute는 `AbstractView`가
-렌더링하기 전에 실제 값으로 바꿔준다.
-값이 하나뿐인 리액티브 타입은 값 하나 혹은 빈 값으로 리졸브되고,
-여러 값을 가진 리액티브 타입(e.g. `Flux<T>`)은
+모델에는 비동기 리액티브 타입도 있을 수 있다(e.g. 리액터나 RxJava가 리턴한 값).
+이런 model attribute는 `AbstractView`가 렌더링하기 전에 실제 값으로 바꿔준다.
+single-value 리액티브 타입은 비어있지 않다면 값 하나로 리졸브 되고,
+multi-value 리액티브 타입(e.g. `Flux<T>`)은
 `List<T>`로 수집한다.
 
 view resolution은 스프링 설정에
 `ViewResolutionResultHandler`만 추가하면 된다.
-[WebFlux Config](#1117-view-resolvers)는
+[WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1117-view-resolvers)는
 view resolution을 위한 설정 API를 제공한다.
 
 스프링 웹플럭스에 통합된 view 기술은
-[View Technologies](#19-view-technologies)에서 자세히 설명한다.
+[View Technologies](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#19-view-technologies)에서 자세히 설명한다.
 
 #### Redirecting
 
@@ -1209,7 +1170,7 @@ content negotiation은 `ViewResolutionResultHandler`가 담당한다.
 
 스프링 웹플럭스는 [HttpMessageWriter](#125-codecs)로
 JSON, XML같은 미디어 타입을 만드는 `HttpMessageWriterView`를 지원한다.
-보통은 [WebFlux 설정](#1117-view-resolvers)을 통해
+보통은 [WebFlux 설정](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1117-view-resolvers)을 통해
 `HttpMessageWriterView`를 디폴트 view로 사용한다.
 디폴트 뷰는 요청 미디어 타입과 일치하기만 하면 항상 사용되는 뷰다.
 
@@ -1722,7 +1683,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`@ModelAttribute`|model에 있는 attribute에 접근할 수 있다(attribute가 없다면 model 초기화만 한다). 이 때 데이터를 바인딩하면서 유효성도 함께 검사한다. [`@ModelAttribute`](#modelattribute), [Model](#144-model), [DataBinder](#145-databinder) 참고.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other argument”를 참고하라.|
 |`Errors`, `BindingResult`|커맨드 객체를 메소드 인자에 바인딩할 땐 유효성을 검증 할 수 있는데(e.g. `@ModelAttribute`), 이 때 발생한 에러에 접근하는 용도로 사용한다. `Errors`, `BindingResult` 인자는 유효성을 검증하는 인자 바로 뒤에 사용해야 한다.|
 |`SessionStatus` + 클래스 레벨 `@SessionAttributes`|`@SessionAttributes` 애노테이션을 클래스에 선언하면 세션에 attribute를 저장하는데, `SessionStatus`를 인자로 받아 session 처리가 완료됐다고 알려주면 session attribute를 지운다. 자세한 내용은 [`@SessionAttributes`](#sessionattribute) 참고.|
-|`UriComponentsBuilder`|요청 호스트, 포트, 스키마, path로 URL을 만들 수 있다. [URI Links](#161-uricomponents) 참고.|
+|`UriComponentsBuilder`|요청 호스트, 포트, 스키마, path로 URL을 만들 수 있다. [URI Links](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#161-uricomponents) 참고.|
 |`@SessionAttribute`|session attribute에 접근하는 용도. 클래스 레벨에 `@SessionAttributes`를 선언하면 세션에 model attribute를 저장하지만, 메소드 인자에 선언하면 session attribute에 접근할 수 있다. 자세한 내용은 [`@SessionAttribute`](#sessionattribute) 참고.|
 |`@RequestAttribute`|request attribute에 접근하는 용도. 자세한 내용은 [`@RequestAttribute`](#requestattribute) 참고.|
 |Any other argument|그 외 타입을 메소드 인자로 선언하면 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 true인 경우엔 `@RequestParam`에, 그 외는 `@ModelAttribute`로 리졸브한다.|
@@ -1745,7 +1706,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`java.util.Map`, `org.springframework.ui.Model`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.
 |`@ModelAttribute`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other return value”를 참고하라.|
 |`Rendering`|model과 view를 만드는 API.|
-|`void`|void 메소드는 비동기 값(`Mono<Void>`)이나 null을 리턴한 경우도 포함이다. 이 때는 `ServerHttpResponse`, `ServerWebExchange` 인자가 있거나, `@ResponseStatus` 애노테이션을 선언했다면 요청을 완료한 것으로 간주한다. ETag나 `lastModified` 헤더로 클라이언트 캐시가 최신이라고 판단했을 때도 동일하다. 자세한 내용은 [Controllers](#1102-controllers)를 참조하라.<br><br>그 외엔 REST 컨트롤러에선 "response body가 없음"을 의미하고, HTML 컨트롤러에선 디폴트 view name을 선택한다.|
+|`void`|void 메소드는 비동기 값(`Mono<Void>`)이나 null을 리턴한 경우도 포함이다. 이 때는 `ServerHttpResponse`, `ServerWebExchange` 인자가 있거나, `@ResponseStatus` 애노테이션을 선언했다면 요청을 완료한 것으로 간주한다. ETag나 `lastModified` 헤더로 클라이언트 캐시가 최신이라고 판단했을 때도 동일하다. 자세한 내용은 [Controllers](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1102-controllers)를 참조하라.<br><br>그 외엔 REST 컨트롤러에선 "response body가 없음"을 의미하고, HTML 컨트롤러에선 디폴트 view name을 선택한다.|
 |`Flux<ServerSentEvent>`, `Observable<ServerSentEvent>`, or other reactive type|서버 전송 이벤트(SSE)를 발생시킨다. 데이터만 전송하면 된다면 `ServerSentEvent` 래퍼는 생략해도 된다(단, 헤더에 `text/event-stream`을 사용하거나, `produces` attribute로 매핑해야 한다).|
 |Any other return value|`String`은 view name으로 사용하고, `void`면 디폴트 view name을 사용한다. 그 외에는 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 false면 모델 attribute로 사용하고, true면 리졸브하지 못한다.|
 
@@ -2184,71 +2145,558 @@ fun processSubmit(@Valid @ModelAttribute("pet") petMono: Mono<Pet>): Mono<String
 적당한 리졸버가 없고 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)
 결과가 false면 `@ModelAttribute`를 선언한 것과 동일하게 처리한다.
 
-#### @SessionAttributes
+#### `@SessionAttributes`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-sessionattributes)
+
+`@SessionAttributes`는 model attribute를 요청이 끝나도 유지되는 
+`WebSession`에 저장한다.
+[type 레벨](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html#TYPE) 애노테이션으로,
+컨트롤러에서 사용할 session attributes를 지정할 수 있다.
+보통 세션에 넣어놓고 다음 요청에서도 이어서 접근해야하는
+model attributes 이름이나 타입 리스트를 명시한다.
+
+다음 예제를 보라:
+
+- *java*
+```java
+@Controller
+@SessionAttributes("pet") // (1)
+public class EditPetForm {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@Controller
+@SessionAttributes("pet") // (1)
+class EditPetForm {
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@SessionAttributes`를 사용한다.</small>
+
+model에 `pet`이란 attribute를 한 번 저장하고 나면
+자동으로 `WebSession`에 추가된다.
+이 값은 다음 예제처럼 컨트롤러 메소드에서 `SessionStatus`를 인자로 받아
+지우기 전까지 유된한다:
+
+- *java*
+```java
+@Controller
+@SessionAttributes("pet") // (1)
+public class EditPetForm {
+
+    // ...
+
+    @PostMapping("/pets/{id}")
+    public String handle(Pet pet, BindingResult errors, SessionStatus status) { // (2) 
+        if (errors.hasErrors()) {
+            // ...
+        }
+            status.setComplete();
+            // ...
+        }
+    }
+}
+```
+- *kotlin*
+```kotlin
+@Controller
+@SessionAttributes("pet") // (1)
+class EditPetForm {
+
+    // ...
+
+    @PostMapping("/pets/{id}")
+    fun handle(pet: Pet, errors: BindingResult, status: SessionStatus): String { // (2) 
+        if (errors.hasErrors()) {
+            // ...
+        }
+        status.setComplete()
+        // ...
+    }
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@SessionAttributes`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `SessionStatus`를 인자로 받는다.</small>
+
 #### @SessionAttribute
-#### @RequestAttribute
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-sessionattribute)
+
+전역에서 관리하는(필터같이 컨트롤러 밖에 있는 컴포넌트에서)
+session attribute에 접근하고 싶다면,
+다음 예제처럼 메소드 파라미터에 `@SessionAttribute`를 사용한다:
+
+- *java*
+```java
+@GetMapping("/")
+public String handle(@SessionAttribute User user) { // (1)
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/")
+fun handle(@SessionAttribute user: User): String { // (1)
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@SessionAttribute`를 사용한다.</small>
+
+session attribute를 추가하거나 제거해야 한다면
+컨트롤러 메소드에서 `WebSession`을 주입받으면 된다.
+
+컨트롤러에서 임시로 세션에 model attribute를 저장해야 한다면 앞에서 설명한
+[`@SessionAttributes`](#sessionattributes)를 활용하면 된다.
+
+#### `@RequestAttribute`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestattrib)
+
+`@SessionAttribute`와 유사하게 `@RequestAttribute` 애노테이션으로
+컨트롤러에 진입하기 전에 만든(e.g. `WebFilter`)
+request attributes에 접근할 수 있다: 
+
+- *java*
+```java
+@GetMapping("/")
+public String handle(@RequestAttribute Client client) { // (1)
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/")
+fun handle(@RequestAttribute client: Client): String { // (1)
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestAttribute`를 사용한다.</small>
+
 #### Multipart Content
-#### @RequestBody
-#### HttpEntity
-#### @ResponseBody
-#### ResponseEntity
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-multipart-forms)
+
+[Multipart Data](#multipart-data)에서 설명했듯이,
+multipart 컨텐츠는 `ServerWebExchange`로 접근할 수 있다.
+컨트롤러에서 파일 업로드 form을(e.g. 브라우저가 보낸) 처리하는 가장 좋은 방법은
+다음 예제처럼 [커맨드 객체](#modelattribute)에 바인딩하는 것이다:
+
+- *java*
+    ```java
+    class MyForm {
+    
+        private String name;
+    
+        private MultipartFile file;
+    
+        // ...
+    
+    }
+    
+    @Controller
+    public class FileUploadController {
+    
+        @PostMapping("/form")
+        public String handleFormUpload(MyForm form, BindingResult errors) {
+            // ...
+        }
+    
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    class MyForm(
+            val name: String,
+            val file: MultipartFile)
+    
+    @Controller
+    class FileUploadController {
+    
+        @PostMapping("/form")
+        fun handleFormUpload(form: MyForm, errors: BindingResult): String {
+            // ...
+        }
+    
+    }
+    ```
+
+RESTful 서비스로
+브라우저 이외의 클라이언트가 보내는 mutipart 요청도
+처리할 수 있다.
+다음 예제는 JSON으로 파일을 전송한다:
+
+```
+POST /someUrl
+Content-Type: multipart/mixed
+
+--edt7Tfrdusa7r3lNQc79vXuhIIMlatb7PQg7Vp
+Content-Disposition: form-data; name="meta-data"
+Content-Type: application/json; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+{
+    "name": "value"
+}
+--edt7Tfrdusa7r3lNQc79vXuhIIMlatb7PQg7Vp
+Content-Disposition: form-data; name="file-data"; filename="file.properties"
+Content-Type: text/xml
+Content-Transfer-Encoding: 8bit
+... File Data ...
+```
+
+각 part는 `@RequestPart`로 접근할 수 있다:
+
+- *java*
+```java
+@PostMapping("/")
+public String handle(@RequestPart("meta-data") Part metadata, // (1) 
+        @RequestPart("file-data") FilePart file) { // (2)
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/")
+fun handle(@RequestPart("meta-data") Part metadata, // (1)
+        @RequestPart("file-data") FilePart file): String { // (2)
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestPart`로 메타 데이터를 가져온다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `@RequestPart`로 파일을 가져온다.</small>
+
+다음 예제처럼
+part 데이터를 `Part`대신 원하는 `Object`로 바인딩할 수도 있다
+(JSON을 `@RequestBody`로 역직렬화하는 것과 유사하다):
+
+- *java*
+```java
+@PostMapping("/")
+public String handle(@RequestPart("meta-data") MetaData metadata) { 
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/")
+fun handle(@RequestPart("meta-data") metadata: MetaData): String { 
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestPart`로 메타 데이터를 가져온다.</small>
+
+`@RequestPart`도
+`javax.validation.Valid`나 스프링의 `@Validated` 애노테이션을 붙이면
+표준 빈 검증 방식으로 유효성을 확인한다.
+유효성 검증에 실패하면 `WebExchangeBindException`이 발생하고
+400(BAD_REQUEST)으로 응답한다.
+exception은 상세 정보를 확인할 수 있는 `BindingResult`를 가지고 있다.
+메소드 인자를 비동기 타입으로 감싸면 연산자로 에러를 처리할 수 있다:
+
+- *java*
+```java
+@PostMapping("/")
+public String handle(@Valid @RequestPart("meta-data") Mono<MetaData> metadata) {
+    // use one of the onError* operators...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/")
+fun handle(@Valid @RequestPart("meta-data") metadata: MetaData): String {
+    // ...
+}
+```
+
+`MultiValueMap`으로 multipart 데이터 전체에 접근하려면
+다음 예제처럼 `@RequestBody`를 사용하면 된다:
+
+- *java*
+```java
+@PostMapping("/")
+public String handle(@RequestBody Mono<MultiValueMap<String, Part>> parts) { // (1) 
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/")
+fun handle(@RequestBody parts: MultiValueMap<String, Part>): String { // (1) 
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestBody`를 사용한다.</small>
+
+스트리밍 방식으로 multipart 데이터에 순차적으로 접근하고 싶을 땐
+`@RequestBody`와 `Flux<Part>`를(코틀린은 `Flow<Part>`) 사용한다: 
+
+- *java*
+```java
+@PostMapping("/")
+public String handle(@RequestBody Flux<Part> parts) { // (1) 
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/")
+fun handle(@RequestBody parts: Flow<Part>): String { // (1)
+    // ...
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestBody`를 사용한다.</small>
+
+#### `@RequestBody`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestbody)
+
+`@RequestBody` 애노테이션을 붙이면 [HttpMessageReader](#125-codecs)가
+request body를 `Object`로 역직렬화한다.
+다음은 `@RequestBody` 예제다:
+
+- *java*
+```java
+@PostMapping("/accounts")
+public void handle(@RequestBody Account account) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/accounts")
+fun handle(@RequestBody account: Account) {
+    // ...
+}
+```
+
+스프링 MVC와는 달리 웹플럭스는 리액티브 타입을 지원한다.
+리액티브 타입에 `@RequestBody`를 사용하면
+완전한 논블로킹 방식으로 스트리밍한다(클라이언트 to 서버).
+
+- *java*
+```java
+@PostMapping("/accounts")
+public void handle(@RequestBody Mono<Account> account) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/accounts")
+fun handle(@RequestBody accounts: Flow<Account>) {
+    // ...
+}
+```
+
+메세지 리더 설정은
+[WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)의
+[HTTP message codecs](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1116-http-message-codecs)
+옵션으로 바꿀 수 있다.
+
+`@RequestBody`도
+`javax.validation.Valid`나 스프링의 `@Validated` 애노테이션을 붙이면
+표준 빈 검증 방식으로 유효성을 확인한다.
+유효성 검증에 실패하면 `WebExchangeBindException`이 발생하고
+400(BAD_REQUEST)으로 응답한다.
+exception은 상세 정보를 확인할 수 있는 `BindingResult`를 가지고 있다.
+메소드 인자를 비동기 타입으로 감싸면 연산자로 에러를 처리할 수 있다:
+
+- *java*
+```java
+@PostMapping("/accounts")
+public void handle(@Valid @RequestBody Mono<Account> account) {
+    // use one of the onError* operators...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/accounts")
+fun handle(@Valid @RequestBody account: Mono<Account>) {
+    // ...
+}
+```
+
+#### `HttpEntity`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-httpentity)
+
+`HttpEntity`는 [`@RequestBody`](#requestbody)와 유사하지만
+request 헤더와 body를 감싸는 컨테이너 객체다.
+다음은 `HttpEntity` 예제다:
+
+- *java*
+```java
+@PostMapping("/accounts")
+public void handle(HttpEntity<Account> entity) {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@PostMapping("/accounts")
+fun handle(entity: HttpEntity<Account>) {
+    // ...
+}
+```
+
+#### `@ResponseBody`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-responsebody)
+
+메소드에 `@ResponseBody`를 선언하면
+[HttpMessageWriter](#125-codecs)가 리턴한 값을 response body로
+직렬화한다.
+다음은 사용 예시다:
+
+- *java*
+```java
+@GetMapping("/accounts/{id}")
+@ResponseBody
+public Account handle() {
+    // ...
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/accounts/{id}")
+@ResponseBody
+fun handle(): Account {
+    // ...
+}
+```
+
+`@ResponseBody`를 클래스 레벨에 선언하면 컨트롤러 내 모든 메소드에 상속한다.
+`@RestController`를 사용해도 효과는 동일하다.
+`@RestController`는 단순히 `@Controller`, `@ResponseBody`를 가지고 있는
+메타 애노테이션이다.
+
+`@ResponseBody`는 리액티브 타입을 지원하므로
+리액터나 RxJava 타입을 리턴하면 비동기로 응답을 만든다.
+자세한 내용은 [Streaming](#streaming)과 
+[JSON rendering](#jackson-json)을 참고하라.
+
+`@ResponseBody`는 JSON 뷰와 함께 쓸 수 있다.
+자세한 내용은 [Jackson JSON](#jackson-json)을 참고하라.
+
+메세지 writer 설정은
+[WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)의
+[HTTP message codecs](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1116-http-message-codecs)
+옵션으로 바꿀 수 있다.
+
+#### `ResponseEntity`
+
+`ResponseEntity`는 [`@ResponseBody`](#responsebody)와 유사하지만
+상태 코드와 헤더를 함께 설정할 수 있다:
+
+- *java*
+```java
+@GetMapping("/something")
+public ResponseEntity<String> handle() {
+    String body = ... ;
+    String etag = ... ;
+    return ResponseEntity.ok().eTag(etag).build(body);
+}
+```
+- *kotlin*
+```kotlin
+@GetMapping("/something")
+fun handle(): ResponseEntity<String> {
+    val body: String = ...
+    val etag: String = ...
+    return ResponseEntity.ok().eTag(etag).build(body)
+}
+```
+
+웹플럭스에선 single value
+[리액티브 타입](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)으로
+`ResponseEntity`를 비동기로 만들 수도 있고,
+body를 single, multi-value 리액티브 타입으로 만들어도 된다.
+
 #### Jackson JSON
+
+스프링은 Jackson JSON 라이브러리를 지원한다.
+
+#### JSON Views
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-jackson)
+
+스프링 웹플럭스는 기본적으로 
+[Jackson’s Serialization Views](https://www.baeldung.com/jackson-json-view-annotation)를
+지원하기 때문에 `Object` 필드 일부만 렌더링할 수 있다.
+`@ResponseBody`나 `ResponseEntity`와 함께 사용하려면
+아래 예제처럼 Jackson의 `@JsonView` 애노테이션으로
+사용할 view 클래스를 명시하면 된다:
+
+- *java*
+    ```java
+    @RestController
+    public class UserController {
+    
+        @GetMapping("/user")
+        @JsonView(User.WithoutPasswordView.class)
+        public User getUser() {
+            return new User("eric", "7!jd#h23");
+        }
+    }
+    
+    public class User {
+    
+        public interface WithoutPasswordView {};
+        public interface WithPasswordView extends WithoutPasswordView {};
+    
+        private String username;
+        private String password;
+    
+        public User() {
+        }
+    
+        public User(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
+    
+        @JsonView(WithoutPasswordView.class)
+        public String getUsername() {
+            return this.username;
+        }
+    
+        @JsonView(WithPasswordView.class)
+        public String getPassword() {
+            return this.password;
+        }
+    }
+    ```
+- *kotlin*
+    ```kotlin
+    @RestController
+    class UserController {
+    
+        @GetMapping("/user")
+        @JsonView(User.WithoutPasswordView::class)
+        fun getUser(): User {
+            return User("eric", "7!jd#h23")
+        }
+    }
+    
+    class User(
+            @JsonView(WithoutPasswordView::class) val username: String,
+            @JsonView(WithPasswordView::class) val password: String
+    ) {
+        interface WithoutPasswordView
+        interface WithPasswordView : WithoutPasswordView
+    }
+    ```
+
+> `@JsonView`는 뷰 클래스 배열도 받지만,
+> 컨트롤러 메소드 당 하나만 지정할 수 있다.
+> 뷰를 여러개 사용하려면 compiste 인터페이스를 만들어라.
 
 ### 1.4.4. Model
 ### 1.4.5. DataBinder
 ### 1.4.6. Managing Exceptions
 ### 1.4.7. Controller Advice
-
-## 1.5. Functional Endpoints
-
-### 1.5.1. Overview
-### 1.5.2. HandlerFunction
-### 1.5.3. RouterFunction
-### 1.5.4. Running a Server
-### 1.5.5. Filtering Handler Functions
-
-## 1.6. URI Links
-
-### 1.6.1. UriComponents
-### 1.6.2. UriBuilder
-### 1.6.3. URI Encoding
-
-## 1.7. CORS
-
-### 1.7.1. Introduction
-### 1.7.2. Processing
-### 1.7.3. @CrossOrigin
-### 1.7.4. Global Configuration
-### 1.7.5. CORS WebFilter
-
-## 1.8. Web Security
-
-## 1.9. View Technologies
-
-### 1.9.1. Thymeleaf
-### 1.9.2. FreeMarker
-### 1.9.3. Script Views
-### 1.9.4. JSON and XML
-
-## 1.10. HTTP Caching
-
-### 1.10.1. CacheControl
-### 1.10.2. Controllers
-### 1.10.3. Static Resources
-
-## 1.11. WebFlux Config
-
-### 1.11.1. Enabling WebFlux Config
-### 1.11.2. WebFlux config API
-### 1.11.3. Conversion, formatting
-### 1.11.4. Validation
-### 1.11.5. Content Type Resolvers
-### 1.11.6. HTTP message codecs
-### 1.11.7. View Resolvers
-### 1.11.8. Static Resources
-### 1.11.9. Path Matching
-### 1.11.10. Advanced Configuration Mode
-
-## 1.12. HTTP/2
 
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
