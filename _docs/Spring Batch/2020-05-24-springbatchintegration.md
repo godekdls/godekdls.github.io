@@ -25,6 +25,8 @@ permalink: /Spring%20Batch/springbatchintegration/
     * [Remote Chunking](#remote-chunking)
     * [Remote Partitioning](#remote-partitioning)
 
+---
+
 ## 13.1. Spring Batch Integration Introduction
 
 스프링 배치로 해결할 수 없는 일이
@@ -207,6 +209,8 @@ public ItemReader sampleReader(@Value("#{jobParameters[input.file.name]}") Strin
 빈을 step 스코프로 설정해야 프로퍼티를 나중에 바인딩(late binding)하고
 `jobParameters`에 접근할 수 있다.
 
+---
+
 ## 13.2. Available Attributes of the Job-Launching Gateway
 
 job-launching gateway는 다음과 같은 속성으로 job을 제어한다:
@@ -230,6 +234,8 @@ job-launching gateway는 다음과 같은 속성으로 job을 제어한다:
 지정하지 않으면 어댑터는 `jobLauncher` `id`로 등록한 인스턴스를 재사용한다.
 디폴트 인스턴스가 없으면 예외를 던진다.
 - `order`: 엔드포인트를 `SubscribableChannel` 구독자로 연결한 경우 실행 순서를 명시한다.
+
+---
 
 ## 13.3. Sub-Elements
 
@@ -856,5 +862,7 @@ public class RemotePartitioningJobConfiguration {
 
 }
 ```
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

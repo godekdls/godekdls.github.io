@@ -14,9 +14,13 @@ permalink: /Spring%20Batch/monitoringandmetrics/
 - [14.1. Built-in metrics](#141-built-in-metrics)
 - [14.2. Custom metrics](#142-custom-metrics)
 
+---
+
 스프링 배치 4.2 버전부터 [Micrometer](https://micrometer.io/) 기반
 배치 모니터링과 메트릭을 지원한다.
 이번 장에서는 기본으로 제공하는 메트릭과 커스텀 메트릭을 설정하는 법을 설명한다.
+
+---
 
 ## 14.1. Built-in metrics
 
@@ -34,6 +38,8 @@ permalink: /Spring%20Batch/monitoringandmetrics/
 |`spring.batch.item.read`|`TIMER`|아이템을 읽는데 걸린 시간|
 |`spring.batch.item.process`|`TIMER`|아이템을 처리하는데 걸린 시간|
 |`spring.batch.item.write`|`TIMER`|청크를 쓰는데 걸린 시간|
+
+---
 
 ## 14.2. Custom metrics
 
@@ -71,5 +77,7 @@ public class MyTimedTasklet implements Tasklet {
 	}
 }
 ```
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

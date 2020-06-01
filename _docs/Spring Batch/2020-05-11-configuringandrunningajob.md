@@ -35,6 +35,8 @@ permalink: /Spring%20Batch/configuringandrunningajob/
   + [4.6.5. Stopping a Job](#465-stopping-a-job)
   + [4.6.6. Aborting a Job](#466-aborting-a-job)
 
+---
+
 [domain](https://godekdls.github.io/Spring%20Batch/domainlanguage/) 섹션에서 아래 다이어그램을 사용해서 전반적인 아키텍처 설계를 다뤘다:
 
 ![Batch Stereotypes](./../../images/springbatch/batch-stereotypes.png)
@@ -173,6 +175,8 @@ public Job job1() {
 }
 ```
 
+---
+
 ## 4.2. Java Config
 
 Spring 3부터 XML뿐 아니라 자바 코드로도 어플리케이션을 설정할 수 있는데,
@@ -255,6 +259,8 @@ public class AppConfig {
     }
 }
 ```
+
+---
 
 ## 4.3. Configuring a JobRepository
 
@@ -407,6 +413,8 @@ protected JobRepository createJobRepository() throws Exception {
 그래도 동작하지 않거나 RDBMS를 사용하지 않는다면 가능한 유일한 옵션은
 `SimpleJobRepository`가 의존하는 여러 `Dao` 인터페이스를 구현해서 스프링 방식대로 수동으로 연결하는 방법 뿐이다.
 
+---
+
 ## 4.4. Configuring a JobLauncher
 
 `@EnableBatchProcessing`를 사용하면 `JobRegistry`가 제공된다.
@@ -456,6 +464,8 @@ public JobLauncher jobLauncher() {
 ```
 
 스프링 `TaskExecutor`의 모든 구현체는 job을 비동기로 처리할 수 있다.
+
+---
 
 ## 4.5. Running a Job
 
@@ -598,6 +608,8 @@ public class JobLauncherController {
     }
 }
 ```
+
+---
 
 ## 4.6. Advanced Meta-Data Usage
 
@@ -890,5 +902,7 @@ execution이 실패하거나 중단되었다고 판단되면 이를 수동으로
 이는 비지니스 요구사항이기 때문에 자동화할 수는 없다.
 재시작할 수 없는 job이거나(restartable=false) 데이터가 유효하다는 걸 확신할 수 있을 때만 status를 `FAILED`로 바꿔라.
 job을 중단시키는 유틸리티는 스프링 배치 어드민 `JobService`에 있다.
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

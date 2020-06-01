@@ -50,6 +50,8 @@ permalink: /Spring%20Batch/configuringastep/
   + [5.4.1. Step Scope](#541-step-scope)
   + [5.4.2. Job Scope](#542-job-scope)
 
+---
+
 [domain](https://godekdls.github.io/Spring%20Batch/domainlanguage/) 챕터에서 이야기한 대로,
 `Step`은 batch job의 독립적으로 실행되는 순차적인 단계를 캡슐화한 도메인 객체이며,
 실제 배치 처리를 정의하고 컨트롤하는 데 필요한 모든 정보를 가지고 있다.
@@ -701,6 +703,8 @@ skip된 이슈를 확인하고 수정하려면 다른 배치 프로세스나 심
 1. 적절한 skip 메소드를(에러 발생 시점에 따라 다름) 아이템마다 한 번만 호출한다.
 2. `SkipListener`는 항상 트랜잭션이 커밋되기 직전에 호출한다. 따라서 `ItemWriter`에서 오류가 발생해도 리스너에서 호출하는 트랜잭션까지 롤백되지 않는다.
 
+---
+
 ## 5.2. `TaskletStep`
 
 [청크 기반 처리](#51-chunk-oriented-processing)가 `Step`을 다루는 절대적인 방법은 아니다.
@@ -816,6 +820,8 @@ public FileDeletingTasklet fileDeletingTasklet() {
 	return tasklet;
 }
 ```
+
+---
 
 ## 5.3. Controlling Step Flow
 
@@ -1211,6 +1217,8 @@ job과 step을 모니터링하고 리포팅기능을 구현하기 위해 더 세
 여러 job에 의존성(dependency)을 설정하고 싶을 때도 `JobStep`으로 해결할 수 있다.
 또 커다란 시스템을 작은 모듈로 쪼개고 job의 flow를 관리하는 데에도 좋다.
 
+---
+
 ## 5.4. Late Binding of `Job` and `Step` Attributes
 
 앞에 나온 XML과 플랫(flat) 파일 예제 모두 스프링의 `Resource` 인터페이스로 파일을 읽는다.
@@ -1384,5 +1392,7 @@ scope는 스프링 컨테이너의 기본 기능이 아니기 때문에 명시�
 ```xml
 <bean class="org.springframework.batch.core.scope.JobScope" />
 ```
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

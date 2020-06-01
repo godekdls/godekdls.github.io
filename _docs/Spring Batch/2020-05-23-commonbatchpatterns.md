@@ -21,6 +21,8 @@ permalink: /Spring%20Batch/commonbatchpatterns/
 - [11.7. Handling Step Completion When No Input is Found](#117-handling-step-completion-when-no-input-is-found)
 - [11.8. Passing Data to Future Steps](#118-passing-data-to-future-steps)
 
+---
+
 일부 배치 job은 스프링 배치가 제공하는 컴포넌트만으로도 구성할 수 있다.
 예를 들어 `ItemReader`, `ItemWriter` 구현체만으로 다양한 시나리오를 구현할 수 있다. 
 하지만 커스텀 코드가 필요할 때가 훨씬 많다.
@@ -34,6 +36,8 @@ permalink: /Spring%20Batch/commonbatchpatterns/
 여기서 나오는 예제는 주로 리스너 인터페이스를 사용한다.
 `ItemReader`나 `ItemWriter`는 필요하다면
 리스너 인터페이스도 구현할 수 있다는 점을 알아두면 좋다.
+
+---
 
 ## 11.1. Logging Item Processing and Failures
 
@@ -77,6 +81,8 @@ public Step simpleStep() {
 > 메소드에 선언적인 트랜잭션을 추가해서
 > (자세한 내용은 Spring Core Reference Guide 참고)
 > 전파(propagation) 속성을 `REQUIRES_NEW`로 설정해라.
+
+---
 
 ## 11.2. Stopping a Job Manually for Business Reasons
 
@@ -166,6 +172,8 @@ public class CustomItemWriter extends ItemListenerSupport implements StepListene
 이 동작은 `StepInterruptionPolicy`가 제어한다.
 하지만 exception을 던지거나 던지지 않는 동작만 가능해서
 항상 비정상적으로 job을 종료한다.
+
+---
 
 ## 11.3. Adding a Footer Record
 
@@ -299,6 +307,8 @@ open 메소드는 처리 시작 전 `ExecutionContext`에서 `totalAmount` 값�
 그 덕분에 재시작했을 때 `TradeItemWriter`는
 이전 `Step`이 중단됐던 곳부터 다시 처리할 수 있다.
 
+---
+
 ## 11.4. Driving Query Based ItemReaders
 
 [chapter on readers and writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)에서 
@@ -321,6 +331,8 @@ DB2같이 극도로 비관적인(pessimistic) 잠금 기법을 사용하는 데�
 
 `ItemProcessor`가 쿼리를 실행해서(driving query) 키를 'Foo' 객체로 바꾼다.
 키로 전체 객체를 질의할 때는 DAO를 사용한다.
+
+---
 
 ## 11.5. Multi-Line Records
 
@@ -435,6 +447,8 @@ public Trade read() throws Exception {
 }
 ```
 
+---
+
 ## 11.6. Executing System Commands
 
 배치 job 내부에서 외부 명령어를 실행하는 경우도 많다.
@@ -456,6 +470,8 @@ public SystemCommandTasklet tasklet() {
 	return tasklet;
 }
 ```
+
+---
 
 ## 11.7. Handling Step Completion When No Input is Found
 
@@ -491,6 +507,8 @@ public class NoWorkFoundStepExecutionListener extends StepExecutionListenerSuppo
 읽은 아이템이 없다는 걸 알아챌 수 있다.
 그런 경우엔 `Step`이 실패했다는 걸 의미하는 종료 코드 FAILED를 리턴한다.
 그 외에는 `Step`의 상태에 영향을 주지 않는 `null`을 리턴한다.
+
+---
 
 ## 11.8. Passing Data to Future Steps
 
@@ -582,5 +600,7 @@ public class RetrievingItemWriter implements ItemWriter<Object> {
     }
 }
 ```
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

@@ -18,12 +18,16 @@ permalink: /Spring%20Batch/unittesting/
 - [10.5. Validating Output Files](#105-validating-output-files)
 - [10.6. Mocking Domain Objects](#106-mocking-domain-objects)
 
+---
+
 다른 어플리케이션과 마찬가지로 배치 job을 구성하는 모든 코드는 반드시 단위 테스트가 필요하다.
 스프링 환경 단위 테스트와 통합 테스트를 위한 가이드는
 스프링 코어 문서에서 충분히 자세히 다루기 때문에 여기서 반복하진 않겠다.
 여기서 다루지는 않지만 배치 job을 '처음부터 끝까지(end to end)' 테스트할
 방법을 고민해볼 필요가 있다.
 spring-batch-test 프로젝트는 end-to-end 테스트를 도와줄 클래스를 제공한다. 
+
+---
 
 ## 10.1. Creating a Unit Test Class
 
@@ -46,6 +50,8 @@ spring-batch-test 프로젝트는 end-to-end 테스트를 도와줄 클래스를
 @ContextConfiguration(classes=SkipSampleConfiguration.class)
 public class SkipSampleFunctionalTests { ... }
 ```
+
+---
 
 ## 10.2. End-To-End Testing of Batch Jobs
 
@@ -94,6 +100,8 @@ public class SkipSampleFunctionalTests {
 }
 ```
 
+---
+
 ## 10.3. Testing Individual Steps
 
 배치 job이 복잡해지면 end-to-end 테스트로만은 관리할 수 없다.
@@ -106,6 +114,8 @@ step 이름을 받아 그 `Step`을 실행하는 `launchStep` 메소드가 있�
 ```java
 JobExecution jobExecution = jobLauncherTestUtils.launchStep("loadFileStep");
 ``` 
+
+---
 
 ## 10.4. Testing Step-Scoped Components
 
@@ -205,6 +215,8 @@ int count = StepScopeTestUtils.doInStepScope(stepExecution,
 });
 ``` 
 
+---
+
 ## 10.5. Validating Output Files
 
 데이터베이스에 write하는 배치 job이라면
@@ -222,6 +234,8 @@ private static final String OUTPUT_FILE = "target/test-outputs/output.txt";
 AssertFile.assertFileEquals(new FileSystemResource(EXPECTED_FILE),
                             new FileSystemResource(OUTPUT_FILE));
 ```
+
+---
 
 ## 10.6. Mocking Domain Objects
 
@@ -292,5 +306,7 @@ public void testAfterStep() {
 위에선 간단한 `StepExecution`을 만드는 메소드를 사용했는데, 
 팩토리 내에는 다른 메소드도 많다.
 전체 메소드는 [Javadoc](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/test/MetaDataInstanceFactory.html)에서 확인할 수 있다.
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

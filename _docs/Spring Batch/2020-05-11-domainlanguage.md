@@ -24,6 +24,8 @@ permalink: /Spring%20Batch/domainlanguage/
 - [3.7. Item Writer](#37-item-writer)
 - [3.8. Item Processor](#38-item-processor)
 
+---
+
 스프링 배치는 전반적으로 배치 설계를 해봤다면 익숙하고 편하게 느껴질만한 컨셉을 사용한다.
 Job과 Step, 개발자가 직접 제공해야하는 처리 유닛(`ItemReader` `ItemWriter`)으로 구성되어 있는데,
 스프링 패턴, operation, 템플릿, 콜백 및 idiom으로 인한 다음과 같은 차별점이 있다.
@@ -49,6 +51,8 @@ JCL, COBOL 개발자도 C, C#, Java 개발자만큼 이 개념에 익숙 할 것
 Job 하나는 1~n개의 step을 가지고 있으며,
 각 step은 `ItemReader`, `ItemProcessor`, `ItemWrite`를 딱 한 개 씩 가지고 있다.
 각 Job은 `JobLauncher`가 실행하며, 현재 실행중인 프로세스의 메타정보는 `JobRepository`에 저장된다.
+
+---
 
 ## 3.1. Job
 
@@ -214,6 +218,8 @@ job이 실패했고, 밤새도록 문제를 찾느라 '배치 윈도우'가 이�
 
 > 명확하게 하기 위해, 혹은 포맷팅을 위해 축약하거나 제거한 컬럼명도 있다.
 
+---
+
 ## 3.2. Step
 
 `Step`은 배치 job의 독립적이고 순차적인 단계를 캡슐화한 도메인 객체다.
@@ -256,6 +262,8 @@ job이 실패했고, 밤새도록 문제를 찾느라 '배치 윈도우'가 이�
 |processSkipCount|process에 실패해서 스킵된 횟수.|
 |filterCount|`ItemProcessor`에 의해 필터링된 아이템 수.|
 |writeSkipCount|write에 실패해서 스킵된 횟수.|
+
+---
 
 ## 3.3 ExecutionContext
 
@@ -359,6 +367,8 @@ ExecutionContext ecJob = jobExecution.getExecutionContext();
 하나는 `Step` 레벨로 `Step` 내에서 커밋할 때마다 저장하고,
 `Job` 레벨의 컨텍스트는 모든 `Step` 실행 사이마다 저장한다.
 
+---
+
 ## 3.4. JobRepository
 
 `JobRepository`는 위에서 언급된 모든 저장(persistence) 메커니즘을 담당한다.
@@ -370,6 +380,8 @@ ExecutionContext ecJob = jobExecution.getExecutionContext();
 자바 기반 설정은
 `@EnableBatchProcessing` 애노테이션만 달아주면
 `JobRepository`를 자동으로 컴포넌트로 설정한다.
+
+---
 
 ## 3.5. JobLauncher
 
@@ -387,17 +399,23 @@ public JobExecution run(Job job, JobParameters jobParameters)
 
 `JobRepository`에서 유효한 `JobExecution`을 조회하고 `Job`을 실행하는 기능을 구현한다.
 
+---
+
 ## 3.6. Item Reader
 
 `ItemReader`는 `Step`에서 한 번에 아이템을 하나씩 읽어오는 작업을 추상화한 개념이다.
 더 이상 읽을 아이템이 없으면 `ItemReader`는 null을 리턴한다.
 `ItemReader`에 대한 자세한 설명과 구현체는 [Readers And Writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)를 참조하라.
 
+---
+
 ## 3.7. Item Writer
 
 `ItemWriter`는 `Step`에서 배치나 청크 단위로 아이템을 출력하는 작업을 추상화한다.
 보통 `ItemWriter`는 다음에 받을 입력이 무엇인지는 알지 못하며 현재 받은 아이템만 알고 있다.
 `ItemWriter`에 대한 자세한 설명과 구현체는 [Readers And Writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)를 참조하라.
+
+---
 
 ## 3.8. Item Processor
 
@@ -406,5 +424,7 @@ public JobExecution run(Job job, JobParameters jobParameters)
 `ItemProcessor`는 데이터 변환이나 다른 비지니스 처리를 담당한다. 
 데이터를 처리하던 중 아이템이 유효하지 않다고 판단하면 null을 리턴하는데, 이 아이템은 write되면 안된다는 것을 의미한다.
 `ItemProcessor` 인터페이스에 대한 자세한 설명은 [Readers And Writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)를 참조하라.
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

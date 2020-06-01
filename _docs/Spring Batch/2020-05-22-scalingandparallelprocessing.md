@@ -19,6 +19,8 @@ permalink: /Spring%20Batch/scalingandparallelprocessing/
   + [7.4.2. Partitioner](#74-partitioning)
   + [7.4.3. Binding Input Data to Steps](#743-binding-input-data-to-steps)
 
+---
+
 배치는 job 하나를 싱글 쓰레드로 띄워도 충분한 경우가 많기 때문에
 더 복잡한 구현을 생각하기 전 싱글 쓰레드를 먼저 고려해보는 게 좋다.
 처음엔 간단하게 구현해서 실제 환경에서 job 성능을 테스트해 보고
@@ -41,6 +43,8 @@ permalink: /Spring%20Batch/scalingandparallelprocessing/
 
 가장 먼저 싱글 프로세스 옵션을 설명한다.
 그 다음 멀티 프로세스 옵션을 설명하겠다.
+
+---
 
 ## 7.1. Multi-threaded Step
 
@@ -114,6 +118,8 @@ thread safe하지 않은 reader는 `SynchronizedItemStreamReader`로 감싸거�
 `read()` 호출을 동기화하면 되고,
 process와 write가 가장 무거운 작업이라면 싱글 쓰레드에서보다 훨씬 빨라질 것이다.
 
+---
+
 ## 7.2. Parallel Steps
 
 병렬 처리가 필요한 어플리케이션 로직은
@@ -169,6 +175,8 @@ step을 병렬로 실행하려면 비동기(asynchronous) `TaskExecutor`가 필�
 
 자세한 내용은 [Split Flows](https://godekdls.github.io/Spring%20Batch/configuringastep/#535-split-flows)를 참고하라.
 
+---
+
 ## 7.3. Remote Chunking
 
 remote chunking은 `Step`을 여러 프로세스로 나눠서 다른 미들웨어로 의사소통한다.
@@ -198,6 +206,8 @@ JMS가 가장 좋은 후보지만, 그리드 컴퓨팅이나 공유 메모리 �
 
 자세한 정보는 
 [Spring Batch Integration - Remote Chunking](https://godekdls.github.io/Spring%20Batch/springbatchintegration/#remote-chunking)을 참조하라.
+
+---
 
 ## 7.4. Partitioning
 
@@ -379,5 +389,7 @@ public MultiResourceItemReader itemReader(
 			.build();
 }
 ```
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

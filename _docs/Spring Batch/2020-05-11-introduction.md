@@ -17,6 +17,8 @@ permalink: /Spring%20Batch/introduction/
 - [1.4. General Batch Piplelines and Guidlines](#14-general-batch-piplelines-and-guidlines)
 - [1.5. Batch Processing Strategies](#15-batch-processing-strategies)
 
+---
+
 엔터프라이즈 도메인 어플리케이션에선 비지니스 운영에 필수적인 작업을 종종 벌크 프로세싱으로 개발한다.
 예를 들어,
 
@@ -38,6 +40,8 @@ permalink: /Spring%20Batch/introduction/
 스프링 배치는 단순한 유스케이스(데이터베이스로 파일을 읽거나 저장 프로시저(stored procedure)를 실행하는 일)와 
 복잡한 대용량 처리(데이터베이스간 대용량 데이터를 이동시키고 변형하는 일 등)를 모두 지원한다.
 프레임워크를 활용하면 배치 작업을 손쉽게 확장할 수 있으므로 많은 양의 데이터도 처리할 수 있다. 
+
+---
 
 ## 1.1. Background
 
@@ -64,6 +68,8 @@ Accenture와 SpringSource는 엔터프라이즈 수준의 배치 어플리케이
 소프트웨어 처리 방법, 프레임워크, 툴 표준화를 공동 목표로 삼았다.
 엔터프라이즈 IT 환경에 신뢰할 수 있는 표준 솔루션을 제공하고자 하는 회사, 정부 기관은 
 Spring Batch가 도움이 될 것이다.
+
+---
 
 ## 1.2. Usage Scenarios
 
@@ -99,6 +105,8 @@ IT 프로젝트라면 대부분 배치 처리를 사용하는데,
 - 제공하는 모든 핵심 서비스는 변경, 확장이 쉽고 인프라 레벨에 영향을 주지 않아야 한다.
 - 메이븐으로 빌드된 아키텍처 jar로 어플리케이션과는 완전히 분리된 간단한 배포 모델을 제공한다. 
 
+---
+
 ## 1.3. Spring Batch Architecture
 
 스프링 배치는 확장성과 다양한 사용자 유형을 고려해 설계했다.
@@ -114,6 +122,8 @@ Application, Core 모두 공통 Infrastructure 위에서 빌드한다.
 이 Infrastructure는 공통 reader와 writer, 서비스(`RetryTemplate`같은)를 포함하는데,
 어플리케이션 개발자도 사용하고(`ItemReader`, `ItemWriter` 등의 reader와 writer), 
 코어 프레임워크 자체에서 활용하기도 한다(자체 라이브러리인 retry).
+
+---
 
 ## 1.4. General Batch Piplelines and Guidlines
 
@@ -144,6 +154,8 @@ Application, Core 모두 공통 Infrastructure 위에서 빌드한다.
 - 배치 규모가 크면, 특히 그 시스템이 온라인과 동시에 무중단으로 실행된다면
 백업이 매우 어려울 수도 있다. 하지만 온라인 설계에서 진행하는 데이터베이스 백업만큼 파일 백업도 중요하다.
 시스템이 플랫(flat) 파일을 사용한다면 파일 백업 절차를 수립하고 문서화하고 정기적으로 테스트해야 한다. 
+
+---
 
 ## 1.5. Batch Processing Strategies
 
@@ -458,5 +470,7 @@ wait-and-retry 간격을 조정하는 등의 서비스를 제공해야한다.
 
 - 다음 단계로 넘어가기 전에 모든 파티션을 완료해야 하는가?
 - 파티션 중 하나가 중단되면 어떻게 처리해야 하는가?
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

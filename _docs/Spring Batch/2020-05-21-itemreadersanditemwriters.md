@@ -101,10 +101,14 @@ permalink: /Spring%20Batch/itemreadersanditemwriters/
   + [6.15.7. Specialized Processors](#6157-specialized-processors)
     * [ScriptItemProcessor](#scriptitemprocessor)
 
+---
+
 모든 배치 처리는 제일 간단하게 설명하면
 다량의 데이터를 읽어서 어떤 계산이나 변환을 수행하고 그 결과를 쓰는 작업이다.
 스프링 배치는 벌크 read와 write을 위한 세 가지 핵심 인터페이스를 제공한다:
 `ItemReader`, `ItemProcessor`, `ItemWriter`.
+
+---
 
 ## 6.1. `ItemReader`
 
@@ -149,6 +153,8 @@ XML 파일에선 하나의 엘리먼트일 수도 있다.
 예를 들어 결과가 0개인 쿼리로 설정된 데이터베이스 `ItemReader`는 
 read를 처음 호출할 때부터 `null`을 반환한다.
 
+---
+
 ## 6.2. `ItemWriter`
 
 `ItemWriter`는 `ItemReader`와 비슷하지만 하는 일은 정 반대다.
@@ -176,6 +182,8 @@ public interface ItemWriter<T> {
 예를 들어 하이버네이트 DAO로 쓴다면
 각 아이템마다 각각, 여러번 write 메소드를 호출한다.
 그러면 writer는 결과를 리턴하기 전 하이버네이트 세션에서 `flush`를 호출한다.
+
+---
 
 ## 6.3. `ItemProcessor`
 
@@ -393,6 +401,8 @@ insert할 데이터, update할 데이터, delete할 데이터.
 모든 `ItemProcessor`는 멱등성(idempotence)을 보장해야한다.
 보통은 `ItemProcessor`의 입력 데이터는 바꾸지 않고 결과로 사용할 인스턴스만 바꾸는 식으로 구현한다.
 
+---
+
 ## 6.4. `ItemStream`
 
 `ItemReaders`, `ItemWriters` 모두 맡은 역할은 잘 처리하지만,
@@ -426,6 +436,8 @@ public interface ItemStream {
 매 `StepExecution` 마다 `ExecutionContext`을 생성해 각 실행 상태를 저장하고,
 같은 `JobInstance`가 실행되면 이 값을 넘겨준다.
 Quartz에 비유하자면 `JobDataMap`과 유사하다.
+
+---
 
 ## 6.5. The Delegate Pattern and Registering with the Step
 
@@ -473,6 +485,8 @@ public BarWriter barWriter() {
 	return new BarWriter();
 }
 ```
+
+---
 
 ## 6.6. Flat Files
 
@@ -1298,6 +1312,8 @@ reader가 초기화되면 파일을 열고 (존재하면), 파일이 없으면 �
 `shouldDeleteIfExists`라는 프로퍼티를 가지고 있다.
 이 프로퍼티를 true로 바꾸면 writer가 열릴 때 같은 이름의 파일이 존재하면 삭제한다.
 
+---
+
 ## 6.7. XML Item Readers and Writers
 
 스프링 배치는 XML을 읽어 자바 객체로 매핑하고,
@@ -1535,6 +1551,8 @@ trade.setCustomer("Customer1");
 staxItemWriter.write(trade);
 ```
 
+---
+
 ## 6.8. JSON Item Readers And Writers
 
 스프링 배치를 사용하면 아래같은 JSON 리소스도 읽고 쓸 수 있다:
@@ -1620,6 +1638,8 @@ public JsonFileItemWriter<Trade> jsonFileItemWriter() {
 }
 ```
 
+---
+
 ## 6.9. Multi-File Input
 
 `Step` 하나에서 여러 파일을 쓰는 경우도 흔하다.
@@ -1654,6 +1674,8 @@ public MultiResourceItemReader multiResourceReader() {
 
 > 입력 리소스는 `MultiResourceItemReader#setComparator(Comparator)`로 정렬돼서
 > job이 재시작되도 같은 순서로 실행된다. 
+
+---
 
 ## 6.10. Database
 
@@ -2105,6 +2127,8 @@ exception이 발생하는 건 이미 전체 버퍼가 쓰여진 다음이다.
 이렇게하면 스프링 배치 내부에서 에러가 발생한 `ItemWriter` 호출을 개별적으로 처리하기때문에
 아이템을 안정적으로 건너뛸 수 있다.
 
+---
+
 ## 6.11. Reusing Existing Services
 
 배치 시스템은 다른 어플리케이션과 함께 운영되는 경우가 많다.
@@ -2162,6 +2186,8 @@ public FooService fooService() {
 	return new FooService();
 }
 ```
+
+---
 
 ## 6.12. Validating Input
 
@@ -2249,6 +2275,8 @@ public BeanValidatingItemProcessor<Person> beanValidatingItemProcessor() throws 
 }
 ```
 
+---
+
 ## 6.13. Preventing State Persistence
 
 기본적으로 모든 `ItemReader`와 `ItemWriter` 구현체는
@@ -2281,6 +2309,8 @@ public JdbcCursorItemReader playerSummarizationSource(DataSource dataSource) {
 ```  
 
 위에 있는 `ItemReader`는 몇 번을 실행해도 `ExecutionContext`에 엔트리를 저장하지 않는다.
+
+---
 
 ## 6.14. Creating Custom ItemReaders and ItemWriters
 
@@ -2451,6 +2481,8 @@ public class CustomItemWriter<T> implements ItemWriter<T> {
 writer에 상태가 있다면(stateful) 반드시 `ItemStream`와 `ItemWriter`를 함께 구현해야 한다.
 writer를 호출하는 쪽에서도 `ItemStream`의 존재를 알아야 하기 때문에
 설정에서 stream으로 등록해줘야 한다는 것도 잊지 말자.
+
+---
 
 ### 6.15. Item Reader and Writer Implementations
 
@@ -2732,5 +2764,7 @@ read 메소드를 호출할 때 마다 자바 클래스나 Avro 스키마로 명
 `ScriptItemProcessor`는 현재 아이템을 스크립트로 전달해서 처리하고
 스크립트의 결과를 리턴하는 `ItemProcessor`다. 
 스프링 배치는 `ScriptItemProcessor` 인스턴스를 생성하는 `ScriptItemProcessorBuilder`를 제공한다.
+
+---
 
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
