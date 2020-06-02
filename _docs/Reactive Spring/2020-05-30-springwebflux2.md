@@ -1149,31 +1149,524 @@ URI 변수를 템플릿에 적용하기 전에
 
 ## 1.7. CORS
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-cors)
+
+스프링 웹플럭스는 CORS(Cross-Origin Resource Sharing)를 지원한다.
+이번 섹션에선 CORS 설정 방법을 설명한다.
+
 ### 1.7.1. Introduction
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-cors-intro)
+
+보안상 이유로 브라우저는 origin이 다르다면 AJAX 요청을 보낼 수 없게 차단한다. 예를 들어 브라우저 탭 하나에선 은행 계좌 사이트를 보고 있고, 다른 탭에선 evil.com에 접속했다고 해보자. evil.com 사이트에 있는 스크립트는 은행 API에 AJAX 요청을 날릴 수 없다 (계좌 인출 요청 등).
+
+Cross-Origin Resource Sharing(CORS)은 [W3C 스펙](https://www.w3.org/TR/cors/)으로, [브라우저 대부분](https://caniuse.com/#feat=cors)이 지원한다. IFRAME이나 JSONP으로는 한계가 있지만, CORS를 사용하면 원하는 cross-domain 요청만 허가할 수 있다.
+
 ### 1.7.2. Processing
-### 1.7.3. @CrossOrigin
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-cors-processing)
+
+CORS 요청은 preflight, simple, 본 요청(actual reqeust)으로 나뉜다. CORS에 관한 글은 아주 많다. CORS 동작 방법이 궁금하다면 [이 문서](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)를 봐도 되고, 자세한 내용은 스펙 문서를 확인해 봐라.
+
+스프링 웹플럭스는 CORS를 지원하는 `HandlerMapping` 구현체를 내장하고 있다. 요청이 핸들러에 매핑되면 `HandlerMapping`이 CORS 설정을 확인하고 다음 처리를 이어간다. Preflight 요청은 바로 처리하고, simple, 본 요청은 가로채서 유효성을 확인한 후에 CORS 응답 헤더를 추가한다.
+
+cross-origin 요청(`Origin` 헤더와 호스트가 다른)을 허용하려면 몇 가지 CORS 설정이 필요하다. 매칭되는 CORS 설정이 없으면 preflight 요청은 거부하고, simple, 본 요청은 CORS 헤더를 추가하지 않으므로 브라우저단에서 요청을 차단한다.
+
+`HandlerMapping`마다 URL 패턴 기반 `CorsConfiguration`을 [설정](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/handler/AbstractHandlerMapping.html#setCorsConfigurations-java.util.Map-)할 수 있다. 보통은 웹플럭스 자바 설정에 글로벌 CORS 매핑을 선언해서 모든 `HandlerMapping` 구현체에 공통으로 적용한다.
+
+각 `HandlerMapping`에 있는 핸들러 레벨 CORS 설정과 글로벌 CORS 설정을 조합해서 쓸 수도 있다. 예를 들어 애노테이션을 선언한 컨트롤러는 클래스 레벨이나 메소드 레벨에 `@CrossOrigin`을 사용할 수 있다 (다른 핸들러는 `CorsConfigurationSource`를 구현할 수 있다).
+
+글로벌 설정과 로컬 설정은 서로 덮어쓰지 않고 합쳐진다(additive). — 예를 들어 글로벌 설정에 있는 origin과 로컬 origin을 모두 더한다. 단, `allowCredentials`, `maxAge`같이 값 하나만 사용하는 속성은 로컬 값이 글로벌 값을 덮어 쓴다. 자세한 내용은 [`CorsConfiguration#combine(CorsConfiguration)`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#combine-org.springframework.web.cors.CorsConfiguration-)을 참고하라.
+
+> 소스 코드를 더 자세히 익히고 싶거나 커스텀하고 싶다면 다음을 참고하라:<br>
+> - `CorsConfiguration`<br>
+> - `CorsProcessor`, `DefaultCorsProcessor`<br>
+> - `AbstractHandlerMapping`<br>
+
+### 1.7.3. `@CrossOrigin`
+
+다음과 같이 컨트롤러 메소드에 `@CrossOrigin`을 선언하면 cross-origin 요청을 허용한다:
+
+- *java*
+```java
+@RestController
+@RequestMapping("/account")
+public class AccountController {
+
+    @CrossOrigin
+    @GetMapping("/{id}")
+    public Mono<Account> retrieve(@PathVariable Long id) {
+        // ...
+    }
+
+    @DeleteMapping("/{id}")
+    public Mono<Void> remove(@PathVariable Long id) {
+        // ...
+    }
+}
+```
+- *kotlin*
+```kotlin
+@RestController
+@RequestMapping("/account")
+class AccountController {
+
+    @CrossOrigin
+    @GetMapping("/{id}")
+    suspend fun retrieve(@PathVariable id: Long): Account {
+        // ...
+    }
+
+    @DeleteMapping("/{id}")
+    suspend fun remove(@PathVariable id: Long) {
+        // ...
+    }
+}
+```
+
+`@CrossOrigin`을 사용하면 디폴트로 다음을 허용한다:
+
+- 모든 origin.
+- 모든 헤더.
+- 컨트롤러 메소드에 매핑된 모든 HTTP 메소드.
+
+`allowedCredentials`는 기본적으로 비활성화 돼있다. 이 헤더를 사용하면 민감한 유저 식별 정보를(쿠키나 CSRF 토큰 같은) 노출하기 때문에 필요한 곳에서만 사용해야 한다.
+
+`maxAge`는 30분으로 설정한다.
+
+`@CrossOrigin`을 클래스 레벨에 사용하면 모든 메소드에 상속한다. 다음은 특정 도메인을 지정하고 `maxAge`를 1시간으로 설정하는 예제다:
+
+- *java*
+```java
+@CrossOrigin(origins = "https://domain2.com", maxAge = 3600)
+@RestController
+@RequestMapping("/account")
+public class AccountController {
+
+    @GetMapping("/{id}")
+    public Mono<Account> retrieve(@PathVariable Long id) {
+        // ...
+    }
+
+    @DeleteMapping("/{id}")
+    public Mono<Void> remove(@PathVariable Long id) {
+        // ...
+    }
+}
+```
+- *kotlin*
+```kotlin
+@CrossOrigin("https://domain2.com", maxAge = 3600)
+@RestController
+@RequestMapping("/account")
+class AccountController {
+
+    @GetMapping("/{id}")
+    suspend fun retrieve(@PathVariable id: Long): Account {
+        // ...
+    }
+
+    @DeleteMapping("/{id}")
+    suspend fun remove(@PathVariable id: Long) {
+        // ...
+    }
+}
+```
+
+아래 예제처럼 `@CrossOrigin`을 클래스 레벨과 메소드 레벨에 동시에 선언해도 된다:
+
+- *java*
+```java
+@CrossOrigin(maxAge = 3600) // (1)
+@RestController
+@RequestMapping("/account")
+public class AccountController {
+
+    @CrossOrigin("https://domain2.com") // (2)
+    @GetMapping("/{id}")
+    public Mono<Account> retrieve(@PathVariable Long id) {
+        // ...
+    }
+
+    @DeleteMapping("/{id}")
+    public Mono<Void> remove(@PathVariable Long id) {
+        // ...
+    }
+}
+```
+- *kotlin*
+```kotlin
+@CrossOrigin(maxAge = 3600) // (1)
+@RestController
+@RequestMapping("/account")
+class AccountController {
+
+    @CrossOrigin("https://domain2.com") // (2) 
+    @GetMapping("/{id}")
+    suspend fun retrieve(@PathVariable id: Long): Account {
+        // ...
+    }
+
+    @DeleteMapping("/{id}")
+    suspend fun remove(@PathVariable id: Long) {
+        // ...
+    }
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 클래스 레벨에 `@CrossOrigin`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 메소드 레벨에 `@CrossOrigin`을 사용한다.</small>
+
 ### 1.7.4. Global Configuration
-### 1.7.5. CORS WebFilter
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-cors-global)
+
+컨트롤러 메소드에 일일이 설정하는 대신, 어딘가에 공통으로 사용할 CORS 설정을 정의하고 싶을 때도 있다. 모든 `HandlerMapping`은 전용 URL 기반 `CorsConfiguration`을 매핑할 수 있다. 하지만 대부분은 웹플럭스 자바 설정으로 공통 CORS 룰을 적용한다.
+
+글로벌 설정을 사용하면 디폴트로 다음을 허용한다:
+
+- 모든 origin.
+- 모든 헤더.
+- `GET`, `HEAD`, `POST` 메소드.
+
+`allowedCredentials`는 기본적으로 비활성화 돼있다. 이 헤더를 사용하면 민감한 유저 식별 정보를(쿠키나 CSRF 토큰 같은) 노출하기 때문에 필요한 곳에서만 사용해야 한다.
+
+`maxAge`는 30분으로 설정한다.
+
+웹플럭스 자바 설정으로 CORS를 활성화시키려면 다음 예제처럼 `CorsRegistry` 콜백을 사용한다:
+
+- *java*
+```java
+@Configuration
+@EnableWebFlux
+public class WebConfig implements WebFluxConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+
+        registry.addMapping("/api/**")
+            .allowedOrigins("https://domain2.com")
+            .allowedMethods("PUT", "DELETE")
+            .allowedHeaders("header1", "header2", "header3")
+            .exposedHeaders("header1", "header2")
+            .allowCredentials(true).maxAge(3600);
+
+        // Add more mappings...
+    }
+}
+```
+- *kotlin*
+```kotlin
+@Configuration
+@EnableWebFlux
+class WebConfig : WebFluxConfigurer {
+
+    override fun addCorsMappings(registry: CorsRegistry) {
+
+        registry.addMapping("/api/**")
+                .allowedOrigins("https://domain2.com")
+                .allowedMethods("PUT", "DELETE")
+                .allowedHeaders("header1", "header2", "header3")
+                .exposedHeaders("header1", "header2")
+                .allowCredentials(true).maxAge(3600)
+
+        // Add more mappings...
+    }
+}
+```
+
+### 1.7.5. CORS `WebFilter`
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-cors-filter)
+
+[함수형 엔드포인트](#15-functional-endpoints)와도 잘 맞는 내장 [`CorsWebFilter`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/cors/reactive/CorsWebFilter.html)로 CORS를 지원할 수도 있다.
+
+> `CorsFilter`를 Spring Security와 함께 사용한다면, Spring Security에는 [CORS 통합 설정](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#cors)이 있다는 것을 기억해 둬라.
+
+필터를 설정하려면, 다음 코드 처럼 `CorsWebFilter` 생성자에 `CorsConfigurationSource`를 주입하고 빈으로 정의한다:
+
+- *java*
+```java
+@Bean
+CorsWebFilter corsFilter() {
+
+    CorsConfiguration config = new CorsConfiguration();
+
+    // Possibly...
+    // config.applyPermitDefaultValues()
+
+    config.setAllowCredentials(true);
+    config.addAllowedOrigin("https://domain1.com");
+    config.addAllowedHeader("*");
+    config.addAllowedMethod("*");
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+
+    return new CorsWebFilter(source);
+}
+```
+- *kotlin*
+```kotlin
+@Bean
+fun corsFilter(): CorsWebFilter {
+
+    val config = CorsConfiguration()
+
+    // Possibly...
+    // config.applyPermitDefaultValues()
+
+    config.allowCredentials = true
+    config.addAllowedOrigin("https://domain1.com")
+    config.addAllowedHeader("*")
+    config.addAllowedMethod("*")
+
+    val source = UrlBasedCorsConfigurationSource().apply {
+        registerCorsConfiguration("/**", config)
+    }
+    return CorsWebFilter(source)
+}
+```
 
 ---
 
 ## 1.8. Web Security
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-web-security)
+
+[Spring Security](https://spring.io/projects/spring-security) 
+프로젝트는 악의적인 취약점 공격(exploit)으로부터 웹 어플리케이션을 보호해 준다. 다음 Spring Security 레퍼런스 문서를 참고하라:
+
+- [WebFlux Security](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#jc-webflux)
+- [WebFlux Testing Support](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#test-webflux)
+- [CSRF Protection](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#csrf)
+- [Security Response Headers](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#headers)
+
 ---
 
 ## 1.9. View Technologies
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view)
+
+스프링 웹플럭스에선 원하는 view 기술을 선택할 수 있다. Thymeleaf든 FreeMarker든, 그외 다른 뷰 기술이든 설정만 바꿔주면 된다. 이번 챕터에서는 스프링 웹플럭스에 통합된 뷰 기술을 다룬다. [View Resolution](https://godekdls.github.io/Reactive%20Spring/springwebflux/#136-view-resolution)은 이미 알고 있다고 가정한다.
+
 ### 1.9.1. Thymeleaf
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-thymeleaf)
+
+Thymeleaf는 모던 서버사이드 자바 템플릿 엔진이다. 브라우저 더블 클릭만으로 미리보기를 실행할 수 있는 natural HTML 템플릿을 피력하기 때문에, 서버를 실행하지 않고 독립적으로 UI 템플릿을 만들기 좋다(예를 들어 디자이가). Thymeleaf는 제공하는 기능도 아주 많고, 지금도 활발하게 개발되고 있다. 자세한 소개는 [Thymeleaf](https://www.thymeleaf.org/) 프로젝트 홈페이지를 참고하라.
+
+Thymeleaf-스프링 웹플럭스 통합 모듈은 Thymeleaf 프로젝트에서 관리한다. 통합 설정은 `SpringResourceTemplateResolver`, `SpringWebFluxTemplateEngine`, `ThymeleafReactiveViewResolver`같은 몇 가지 빈을 정의한다. 자세한 정보는 [Thymeleaf+Spring](https://www.thymeleaf.org/documentation.html)과 WebFlux 통합 [공지](http://forum.thymeleaf.org/Thymeleaf-3-0-8-JUST-PUBLISHED-td4030687.html)에서 확인할 수 있다.
+
 ### 1.9.2. FreeMarker
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-freemarker)
+
+[Apache FreeMarker](https://freemarker.apache.org/)는
+HTML, 이메일 등의 텍스트를 만들어 주는 템플릿 엔진이다. 스프링 웹플럭스에서 FreeMarker 템플릿을 사용한다면, 스프링 프레임워크가 제공하는 내장 통합 모듈을 사용하면 된다.
+
 #### View Configuration
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-freemarker-contextconfig)
+
+다음은 FreeMarker를 설정하는 예제다:
+
+- *java*
+```java
+@Configuration
+@EnableWebFlux
+public class WebConfig implements WebFluxConfigurer {
+
+    @Override
+    public void configureViewResolvers(ViewResolverRegistry registry) {
+        registry.freeMarker();
+    }
+
+    // Configure FreeMarker...
+
+    @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
+        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+        configurer.setTemplateLoaderPath("classpath:/templates/freemarker");
+        return configurer;
+    }
+}
+```
+- *kotlin*
+```kotlin
+@Configuration
+@EnableWebFlux
+class WebConfig : WebFluxConfigurer {
+
+    override fun configureViewResolvers(registry: ViewResolverRegistry) {
+        registry.freeMarker()
+    }
+
+    // Configure FreeMarker...
+
+    @Bean
+    fun freeMarkerConfigurer() = FreeMarkerConfigurer().apply {
+        setTemplateLoaderPath("classpath:/templates/freemarker")
+    }
+}
+```
+
+템플릿은 `FreeMarkerConfigurer`에 명시한 디렉토리에 있어야 한다. 위와 같이 설정하면 컨트롤러에서 view name `welcome`을 리턴했을 때 리졸버가 `classpath:/templates/freemarker/welcome.ftl` 템플릿을 찾는다.
+
 #### FreeMarker Configuration
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-views-freemarker)
+
+`FreeMarkerConfigurer` 빈 프로퍼티로 FreeMarker `Configuration` 객체(스프링이 관리하는)에 'Settings', 'SharedVariables' 값을 설정할 수 있다. `freemarkerSettings` 프로퍼티는 `java.util.Properties` 객체를, `freemarkerVariables` 프로퍼티는 `java.util.Map`을 사용한다. 다음은 `FreeMarkerConfigurer`를 사용하는 예제다:
+
+- *java*
+```java
+@Configuration
+@EnableWebFlux
+public class WebConfig implements WebFluxConfigurer {
+
+    // ...
+
+    @Bean
+    public FreeMarkerConfigurer freeMarkerConfigurer() {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("xml_escape", new XmlEscape());
+
+        FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
+        configurer.setTemplateLoaderPath("classpath:/templates");
+        configurer.setFreemarkerVariables(variables);
+        return configurer;
+    }
+}
+```
+- *kotlin*
+```kotlin
+@Configuration
+@EnableWebFlux
+class WebConfig : WebFluxConfigurer {
+
+    // ...
+
+    @Bean
+    fun freeMarkerConfigurer() = FreeMarkerConfigurer().apply {
+        setTemplateLoaderPath("classpath:/templates")
+        setFreemarkerVariables(mapOf("xml_escape" to XmlEscape()))
+    }
+}
+```
+
+`Configuration` 객체의 설정값과 변수는 FreeMarker 문서에 자세히 나와 있다.
+
 #### Form Handling
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-freemarker-forms)
+
+스프링은 JSP에서 사용하는 `<spring:bind/>` 엘리먼트 등, 다양한 태그 라이브러리를 지원한다. 이 엘리먼트를 사용하면 객체에 form 데이터를 유지하기 때문에, 웹이나 비지니스 레이어 `Validator`에서 유효성 검증에 실패하더라도 사용자가 입력한 데이터를 화면에 그대로 보여줄 수 있다. 스프링은 FreeMarker에서도 같은 기능을 지원하며, form 입력 엘리먼트를 만들어주는 편리한 매크로도 함께 제공한다.
+
+#### The Bind Macros
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-bind-macros)
+
+FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들어있기 때문에 어플리케이션에서 적절히 설정해 쓰면 된다.
+
+스프링 템플릿 라이브러리에 있는 일부 매크로는 내부에서만 관리하지만(private), 매크로 정의는 그렇지 않으므로 코드와 템플릿에선 모든 매크로를 사용할 수 있다. 다음 섹션은 템플릿에서 직접 호출하는 매크로에만 집중한다. 매크로 코드가 궁금하다면 `org.springframework.web.reactive.result.view.freemarker` 패키지에 있는 `spring.ftl` 파일을 확인하라.
+
+매크로 바인딩에 대한 자세한 정보는 스프링 MVC의 [Simple Binding](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-simple-binding)을 참고하라.
+
+#### Form Macros
+
+스프링이 지원하는 FreeMarker 템플릿용 form 매크로는 아래 있는 스프링 MVC 문서에 자세히 나와 있다.
+
+- [Input Macros](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-views-form-macros)
+- [Input Fields](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-views-form-macros-input)
+- [Selection Fields](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-views-form-macros-select)
+- [HTML Escaping](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-views-form-macros-html-escaping)
+
+
 
 ### 1.9.3. Script Views
 
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-script)
+
+스프링 프레임워크는 [JSR-223](https://www.jcp.org/en/jsr/detail?id=223) 자바 스크립트 엔진에서 실행할 수 있는 모든 템플릿 라이브러리를 스프링 웹플럭스와 자동으로 통합해 준다. 다음 테이블은 각 스크립트 엔진에서 테스트를 거친 템플릿 라이브러리다:
+
+| Scripting Library                                            | Scripting Engine                                      |
+| :----------------------------------------------------------- | :---------------------------------------------------- |
+| [Handlebars](https://handlebarsjs.com/)                      | [Nashorn](https://openjdk.java.net/projects/nashorn/) |
+| [Mustache](https://mustache.github.io/)                      | [Nashorn](https://openjdk.java.net/projects/nashorn/) |
+| [React](https://facebook.github.io/react/)                   | [Nashorn](https://openjdk.java.net/projects/nashorn/) |
+| [EJS](https://www.embeddedjs.com/)                           | [Nashorn](https://openjdk.java.net/projects/nashorn/) |
+| [ERB](https://www.stuartellis.name/articles/erb/)            | [JRuby](https://www.jruby.org/)                       |
+| [String templates](https://docs.python.org/2/library/string.html#template-strings) | [Jython](https://www.jython.org/)                     |
+| [Kotlin Script templating](https://github.com/sdeleuze/kotlin-script-templating) | [Kotlin](https://kotlinlang.org/)                     |
+
+> 다른 스크립트 엔진을 통합하려면 반드시 `ScriptEngine` , `Invocable` 인터페이스를 구현해야 한다.
+
 #### Requirements
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-script-dependencies)
+
+클래스패스에 스크립트 엔진이 있어야 하며, 각 엔진마다 요구사항이 조금씩 다르다:
+
+- java 8+는 [Nashorn](https://openjdk.java.net/projects/nashorn/) 자바스크립트 엔진을 지원한다. 가장 최근에 업데이트된 버전을 사용하는 게 가장 좋다.
+- Ruby를 사용하려면 [JRuby](https://www.jruby.org/) 의존성을 추가해야 한다.
+- Python을 사용하려면 [Jython](https://www.jython.org/) 의존성을 추가해야 한다.
+- 코틀린 스크립트를 사용하려면
+  `org.jetbrains.kotlin:kotlin-script-util` 의존성과, `org.jetbrains.kotlin.script.jsr223.KotlinJsr223JvmLocalScriptEngineFactory` 라인을 포함한  `META-INF/services/javax.script.ScriptEngineFactory` 파일이 필요하다. 자세한 내용은 [이 예제](https://github.com/sdeleuze/kotlin-script-templating)를 참고하라.
+
+스크립트 템플릿 라이브러리가 필요하다. 자바스크립트를 사용하는 한 가지 방법은 [WebJars](https://www.webjars.org/)를 사용하는 것이다.
+
 #### Script Templates
+
+[Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-script-integrate)
+
+`ScriptTemplateConfigurer` 빈으로 실행할 스크립트 엔진과, 로딩할 스크립트 파일, 템플릿을 렌더링할 때 실행할 함수 등을 설정할 수 있다. 다음 예제는 Mustache 템플릿과 Nashorn 자바스크립트 엔진을 사용한다:
+
+- *java*
+
+  ```java
+  @Configuration
+  @EnableWebFlux
+  public class WebConfig implements WebFluxConfigurer {
+  
+      @Override
+      public void configureViewResolvers(ViewResolverRegistry registry) {
+          registry.scriptTemplate();
+      }
+  
+      @Bean
+      public ScriptTemplateConfigurer configurer() {
+          ScriptTemplateConfigurer configurer = new ScriptTemplateConfigurer();
+          configurer.setEngineName("nashorn");
+          configurer.setScripts("mustache.js");
+          configurer.setRenderObject("Mustache");
+          configurer.setRenderFunction("render");
+          return configurer;
+      }
+  }
+  ```
+
+- *kotlin*
+
+  ```kotlin
+  @Configuration
+  @EnableWebFlux
+  class WebConfig : WebFluxConfigurer {
+  
+      override fun configureViewResolvers(registry: ViewResolverRegistry) {
+          registry.scriptTemplate()
+      }
+  
+      @Bean
+      fun configurer() = ScriptTemplateConfigurer().apply {
+          engineName = "nashorn"
+          setScripts("mustache.js")
+          renderObject = "Mustache"
+          renderFunction = "render"
+      }
+  }
+  ```
+
+  
 
 ### 1.9.4. JSON and XML
 
