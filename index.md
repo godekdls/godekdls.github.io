@@ -47,6 +47,6 @@ title: Hello World!
 
 #### [Reactive Spring](https://godekdls.github.io/Reactive%20Spring/contents/)
 
-- 2020
+- 2020/06
 - 5.2.6.RELEASE
 - https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html

@@ -79,7 +79,7 @@ WebFlux.fn이라고도 하는 이 모델은,
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#webmvc-fn-overview)
 
-WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. HandlerFunction`은 `ServerRequest`를 받아 비동기 `ServerResponse`(i.e. `Mono<ServerResponse>`)를 리턴하는 함수다. 요청, 응답 객체 모두 불변(immutable)이기 때문에 JDK 8 방식으로 HTTP 요청, 응답에 접근할 수 있다. `HandlerFunction` 역할은 애노테이션 프로그래밍 모델로 치면 `@RequestMapping` 메소드가 하던 일과 동일하다.
+WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. `HandlerFunction`은 `ServerRequest`를 받아 비동기 `ServerResponse`(i.e. `Mono<ServerResponse>`)를 리턴하는 함수다. 요청, 응답 객체 모두 불변(immutable)이기 때문에 JDK 8 방식으로 HTTP 요청, 응답에 접근할 수 있다. `HandlerFunction` 역할은 애노테이션 프로그래밍 모델로 치면 `@RequestMapping` 메소드가 하던 일과 동일하다.
 
 요청은 `RouterFunction`이 핸들러 펑션에 라우팅한다.`RouterFunction`은 `ServerRequest`를 받아 비동기 `HandlerFunction`(i.e. `Mono<HandlerFunction>`)을 리턴하는 함수다. 매칭되는 라우터 펑션이 있으면 핸들러 펑션을 리턴하고 그 외는 비어있는 Mono를 리턴한다. `RouterFunction`이 하는 일은 `@RequestMapping` 애노테이션과 동일하지만,
 라우터 펑션은 데이터 뿐 아니라 행동까지 제공한다는 점이 다르다.
@@ -1479,7 +1479,6 @@ FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들�
 `ScriptTemplateConfigurer` 빈으로 실행할 스크립트 엔진과, 로딩할 스크립트 파일, 템플릿을 렌더링할 때 실행할 함수 등을 설정할 수 있다. 다음 예제는 Mustache 템플릿과 Nashorn 자바스크립트 엔진을 사용한다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -1501,9 +1500,7 @@ FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들�
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1534,7 +1531,6 @@ FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들�
 스크립트를 추가하면 커스텀 렌더 함수를 사용할 수 있다. 예를 들어 [Handlerbars](https://handlebarsjs.com/)는 템플릿을 사용하기 전 먼저 컴파일해야 하고, 서버 사이드 스크립트 엔진에서 사용할 수 없는 일부 브라우저 기능은 [polyfill](https://en.wikipedia.org/wiki/Polyfill)이 필요하다. 다음은 커스텀 렌더 함수를 설정하는 예제다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -1556,9 +1552,7 @@ FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들�
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1629,7 +1623,6 @@ function render(template, model) {
 [RFC 7234](https://tools.ietf.org/html/rfc7234#section-5.2.2)는 `Cache-Control` 응답 헤더의 모든 것을 다룬다. 하지만 `CacheControl`을 사용하면 다음 예제처럼, 자주 사용하는 유스 케이스별 시나리오를 만들 수 있다:
 
 - *Java*
-
   ```java
   // Cache for an hour - "Cache-Control: max-age=3600"
   CacheControl ccCacheOneHour = CacheControl.maxAge(1, TimeUnit.HOURS);
@@ -1642,9 +1635,7 @@ function render(template, model) {
   // "Cache-Control: max-age=864000, public, no-transform"
   CacheControl ccCustom = CacheControl.maxAge(10, TimeUnit.DAYS).noTransform().cachePublic();
   ```
-
 - *kotlin*
-
   ```kotlin
   // Cache for an hour - "Cache-Control: max-age=3600"
   val ccCacheOneHour = CacheControl.maxAge(1, TimeUnit.HOURS)
@@ -1667,7 +1658,6 @@ function render(template, model) {
 컨트롤러는 HTTP 캐시를 직접 명시할 수 있다. 요청 헤더와 비교하기 전에 `lastModified`나 `ETag` 값을 계산해야 하므로, 보통은 컨트롤러에 명시하는 게 맞다. 다음 예제처럼  `ResponseEntity`에 `ETag`,  `Cache-Control` 설정을 추가하면 된다:
 
 - *java*
-
   ```java
   @GetMapping("/book/{id}")
   public ResponseEntity<Book> showBook(@PathVariable Long id) {
@@ -1682,9 +1672,7 @@ function render(template, model) {
               .body(book);
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @GetMapping("/book/{id}")
   fun showBook(@PathVariable id: Long): ResponseEntity<Book> {
@@ -1705,7 +1693,6 @@ function render(template, model) {
 다음 예제처럼 컨트롤러에서 직접 요청 헤더를 체크할 수도 있다:
 
 - *java*
-
   ```java
   @RequestMapping
   public String myHandleMethod(ServerWebExchange exchange, Model model) {
@@ -1720,9 +1707,7 @@ function render(template, model) {
       return "myViewName";
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @RequestMapping
   fun myHandleMethod(exchange: ServerWebExchange, model: Model): String? {
@@ -1766,16 +1751,13 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 자바 설정에 `@EnableWebFlux` 애노테이션을 선언하면 웹플럭스 설정을 사용할 수 있다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
   public class WebConfig {
   }
   ```
-
 * *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1791,7 +1773,6 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 자바 설정 파일은 `WebFluxConfigurer` 인터페이스를 구현할 수도 있다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -1800,9 +1781,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
       // Implement configuration methods...
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1821,7 +1800,6 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 커스텀 포맷터와 컨버터는 다음과 같이 등록한다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -1834,9 +1812,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
   
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1851,7 +1827,6 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 스프링 웹플럭스는 기본적으로 날짜를 파싱하고 포맷팅할 때 요청 Locale을 사용한다. 단, 이건 날짜를 "input" form의 String으로 표현했을 때의 동작이다. 브라우저는 "date", "time" form 필드는 HTML 스펙에 정의된 고정 포맷을 사용한다. 이런 경우 아래 예제처럼 포맷을 커스텀할 수 있다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -1865,9 +1840,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1892,7 +1865,6 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 글로벌 `Validator` 인스턴스를 커스텀하고 싶으면 다음 예제 처럼 자바 설정을 이용하면 된다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -1905,9 +1877,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
   
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1923,7 +1893,6 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 물론 원하는 곳에서만 사용할 `Validator`도 등록할 수 있다:
 
 - *java*
-
   ```java
   @Controller
   public class MyController {
@@ -1935,9 +1904,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
   
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Controller
   class MyController {
@@ -1960,7 +1927,6 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 다음은 요청 content-type 매핑 방식을 커스텀하는 예제다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -1972,9 +1938,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -1993,7 +1957,6 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 다음 예제는 요청, 응답 body를 읽고 쓰는 방식을 커스텀한다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2005,9 +1968,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2040,7 +2001,6 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 다음은 뷰 리졸버를 설정하는 코드다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2052,9 +2012,7 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2069,7 +2027,6 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 `ViewResolverRegistry`로 간단하게 view 기술을 스프링 프레임워크에 통합할 수 있다. 다음 예제는 FreeMarker를 사용한다(별도 FreeMarker 설정이 필요하다):
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2091,9 +2048,7 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2115,7 +2070,6 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 다음 예제처럼 `ViewResolver` 구현체를 직접 등록할 수도 있다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2129,9 +2083,7 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
       }
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2147,7 +2099,6 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 [Content Negotiation](https://godekdls.github.io/Reactive%20Spring/springwebflux/#content-negotiation)을 위해 HTML 외 다른 포맷으로 렌더링한다면, `spring-web` 모듈에 있는 모든 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)과 호환되는 `HttpMessageWriterView` 구현체로 디폴트 뷰를 여러 개 설정하면 된다. 다음 예제를 보라:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2165,9 +2116,7 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
       // ...
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2196,7 +2145,6 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 다음 예제에선  `/resources`로 시작하는 요청은 상대경로를 사용해서 클래스패스 `/static`에 있는 스태틱 리소스를 찾는다. 브라우저 캐시를 최대한 활용해서 HTTP 요청을 줄이기 위해 리소스 만료 기한은 1년 후로 잡았다. `Last-Modified` 헤더를 검사한 후 브라우저 캐시가 최신이라면 `304` 상태 코드를 리턴한다.
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2211,9 +2159,7 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
   
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2234,7 +2180,6 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 다음 예제는 `VersionResourceResolver`를 사용한다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2250,9 +2195,7 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
   
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2283,7 +2226,6 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자세한 설명은 [`PathMatchConfigurer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/config/PathMatchConfigurer.html) javadoc을 참고하라. 다음은 `PathMatchConfigurer`를 사용하는 예제다:
 
 - *java*
-
   ```java
   @Configuration
   @EnableWebFlux
@@ -2299,9 +2241,7 @@ Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자�
       }
   }
   ```
-
 * *Kotlin*
-
   ```kotlin
   @Configuration
   @EnableWebFlux
@@ -2332,7 +2272,6 @@ Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자�
 더 많은 설정을 커스텀하고 싶다면, 다음 예제처럼 `@EnableWebFlux`를 지우고 `WebFluxConfigurer`를 구현하는 대신 `DelegatingWebFluxConfiguration`을 직접 상속하면 된다.
 
 - *java*
-
   ```java
   @Configuration
   public class WebConfig extends DelegatingWebFluxConfiguration {
@@ -2340,9 +2279,7 @@ Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자�
       // ...
   }
   ```
-
 - *kotlin*
-
   ```kotlin
   @Configuration
   class WebConfig : DelegatingWebFluxConfiguration {

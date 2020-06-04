@@ -515,7 +515,7 @@ CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작�
 
 `spring-web`, `spring-core` 모듈을 사용하면
 리액티브 논블로킹 방식으로
-byte 컨텐츠를 고수준 객체로 직렬화, 역직렬화할 수 있다.
+바이트 컨텐츠를 고수준 객체로 직렬화, 역직렬화할 수 있다.
 다음과 같은 내용을 지원 한다:
 
 - [`Encoder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/codec/Encoder.html),
@@ -526,7 +526,7 @@ HTTP와는 관계 없는 컨텐츠를 인코딩, 디코딩한다.
 HTTP 메세지를 인코딩, 디코딩한다.
 - 웹 어플리케이션에선 `Encoder`를 감싸고 있는 `EncoderHttpMessageWriter`와
 `Decoder`를 감싸고 있는 `DecoderHttpMessageReader`를 사용할 수 있다.
-- 모든 코덱은 라이브러리마다 다른 byte 버퍼(e.g. Netty `ByteBuf`, `java.nio.ByteBuffer` 등)를
+- 모든 코덱은 라이브러리마다 다른 바이트 버퍼(e.g. Netty `ByteBuf`, `java.nio.ByteBuffer` 등)를
 추상화한 [`DataBuffer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/io/buffer/DataBuffer.html)로
 처리한다. 자세한 내용은 스프링 코어의 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)를
 참고하라.
@@ -649,13 +649,8 @@ HTTP 응답을 스트리밍할 땐
 
 #### `DataBuffer`
 
-웹플럭스 코드에서 바이트 버퍼는 `DataBuffer`로 표현한다.
-스프링 코어 문서를 보면
-[Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)에
-더 자세한 내용이 나와있다.
-핵심은 Netty같은 일부 서버에선 메모리 풀을 사용해서 바이트 버퍼를 처리하고
-레퍼런스를 카운팅하므로, 메모리 릭을 방지하려면
-컨슈밍하고 나서 버퍼 메모리를 반환해야 한다는 것이다.
+웹플럭스에선 바이트 버퍼를 `DataBuffer`클래스로 표현한다. 이 클래스는 스프링 코어 문서 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers) 섹션에서 자세히 다룬다.
+핵심은 Netty같은 일부 서버에선 메모리 풀을 사용해서 바이트 버퍼를 처리하고 레퍼런스를 카운팅하므로, 메모리 릭을 방지하려면 컨슈밍하고 나서 버퍼 메모리를 반환해야 한다는 것이다.
 
 코덱을 쓰는 대신 버퍼를 직접 처리하거나, 코덱을 커스텀하지만 않는다면
 WebFlux 애플리케이션은
@@ -1641,7 +1636,7 @@ path segment에 name/value 쌍 변수를 사용할 수 있다.
 `MultiValueMap`에 모든 메트릭스 변수를 담을 수도 있다:
 
 - *java*
-    
+  
     ```java
     // GET /owners/42;q=11;r=12/pets/21;q=22;s=23
     
