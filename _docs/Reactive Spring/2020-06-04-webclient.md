@@ -28,7 +28,7 @@ permalink: /Reactive%20Spring/webclient/
 
 ---
 
-스프링 웹플럭스는 리액티브, 논블로킹 HTTP 요청을 위한 `WebClient`를 제공한다. 웹 클라이언트는 리액티브 타입을 사용하는 함수형 API기때문에 선언적인(declarative) 프로그래밍이 가능하다([리액티브 라이브러리](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/) 참고). 웹플럭스 클라이언트와 서버는 동일한 논블로킹 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)으로 요청과 응답을 인코딩/디코딩한다.
+스프링 웹플럭스는 리액티브, 논블로킹 HTTP 요청을 위한 `WebClient`를 제공한다. 웹 클라이언트는 리액티브 타입을 사용하는 함수형 API기때문에 선언적인(declarative) 프로그래밍이 가능하다([리액티브 라이브러리](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/) 참고). 웹플럭스 클라이언트와 서버는 동일한 논블로킹 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)으로 요청/응답을 인코딩/디코딩한다.
 
 `WebClient` 내부에선 HTTP 클라언트 라이브러리에 처리를 위임한다. 디폴트는 [Reactor Netty](https://github.com/reactor/reactor-netty)를 사용하고, Jetty [reactive HttpClient](https://github.com/jetty-project/jetty-reactive-httpclient)를 기본으로 제공하며, 다른 라이브러리는 `ClientHttpConnector`에 등록할 수 있다.
 
@@ -372,7 +372,7 @@ org.springframework.core.io.buffer.DataBufferLimitException: Exceeded limit on m
           .bodyToFlow<Quote>()
   ```
 
-4xx, 5xx 응답 코드를 받으면 디폴트는 `WebClientResponseException` 또는 각 HTTP 상태에 해당하는 `WebClientResponseException.BadRequest`, `WebClientResponseException.NotFound` 등의 하위 클래스 exception을 던진다. 다음 예제처럼 `onStatus` 메소드로 상태별 exception을 커스텀할 수도 있다:
+4xx, 5xx 응답 코드를 받으면 디폴트는 `WebClientResponseException` 또는 각 HTTP 상태에 해당하는 `WebClientResponseException.BadRequest`, `WebClientResponseException.NotFound` 등의 하위 exception을 던진다. 다음 예제처럼 `onStatus` 메소드로 상태별 exception을 커스텀할 수도 있다:
 
 - *java*
   ```java
@@ -399,7 +399,7 @@ org.springframework.core.io.buffer.DataBufferLimitException: Exceeded limit on m
 
 ## 2.3. `exchange()`
 
-`exchange()` 메소드는`retrieve` 보다 더 많은 기능을 제공한다. 다음 예제는 `retrieve()` 예제와 동일하지만, `ClientResponse`에 접근한다:
+`exchange()` 메소드는 `retrieve`보다 더 많은 기능을 제공한다. 다음 예제는 `retrieve()` 예제와 동일하지만, `ClientResponse`에 접근한다:
 
 - *java*
   ```java
@@ -808,7 +808,7 @@ multipart 데이터를 보낼 때는 `MultiValueMap<String, ?>`을 사용해서,
       }
   ```
 
-위 코드는 단지 한가지 예시일 뿐이다. 리액티브 파이라인을 구축해서 요청이 끝날 때까지 블로킹하지 않고, 상호 독립적으로 원격 호출을 여러번 실행하는(보통 감싸진 경우가 많다) 다른 패턴과 연산자도 많다.
+위 코드는 단지 한가지 예시일 뿐이다. 요청이 끝날 때까지 블로킹하지 않고, 리액티브 파이라인을 구축해서 상호 독립적으로 원격 호출을 여러번 실행하는(보통 감싸진 경우가 많다) 다른 패턴과 연산자도 많다.
 
 > 스프링 MVC나 웹플럭스 컨트롤러에서 `Flux`나 `Mono`를 사용한다면 블로킹할 필요가 없다. 단순히 컨트롤러 메소드에서 리액티브 타입을 리턴하기만 하면 된다. 코틀린 코루틴과 스프링 웹플럭스에서도 마찬가지다. 컨트롤러 메소드에서 suspend 함수를 사용하거나 `Flow`를 리턴하면 된다.
 
@@ -816,7 +816,7 @@ multipart 데이터를 보낼 때는 `MultiValueMap<String, ?>`을 사용해서,
 
 ## 2.7. Testing
 
-`WebClient`를 사용한 코드는 [OkHttp MockWebServer](https://github.com/square/okhttp#mockwebserver)같은 mock 웹 서버로 테스트할 수 있다. 예제 코드는 스프링 프레임워크 테스트 코드에 있는 [`WebClientIntegrationTests`](https://github.com/spring-projects/spring-framework/blob/master/spring-webflux/src/test/java/org/springframework/web/reactive/function/client/WebClientIntegrationTests.java)나, OkHttp 레포지토레 있는 [`static-server`](https://github.com/square/okhttp/tree/master/samples/static-server)를 확인해 봐라.
+`WebClient`를 사용한 코드는 [OkHttp MockWebServer](https://github.com/square/okhttp#mockwebserver)같은 mock 웹 서버로 테스트할 수 있다. 예제 코드는 스프링 프레임워크 테스트 코드에 있는 [`WebClientIntegrationTests`](https://github.com/spring-projects/spring-framework/blob/master/spring-webflux/src/test/java/org/springframework/web/reactive/function/client/WebClientIntegrationTests.java)나, OkHttp 레포지토리에 있는 [`static-server`](https://github.com/square/okhttp/tree/master/samples/static-server)를 확인해 봐라.
 
 ---
 

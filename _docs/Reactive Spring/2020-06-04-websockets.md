@@ -33,7 +33,7 @@ permalink: /Reactive%20Spring/websockets/
 
 웹소켓 프로토콜([RFC 6455](https://tools.ietf.org/html/rfc6455))은 TCP 커넥션 하나로 클라이언트와 서버 사이 양방향 통신을 지원하는 표준 프로토콜이다. HTTP와는 또 다른 TCP 프로토콜이지만, HTTP와 동일한 80, 443 포트로 접속하기 때문에 방화벽을 새로 만들지 않아도 된다.
 
-웹소켓 통신이 가능해진 건 HTTP 요청의 프로토콜을 업그레이드해 주는 `Ugrade` 헤더 덕분이다. 이 헤더를 사용해면 웹 소켓 프로토콜로 전환할 수 있다. 다음은 웹소켓 프로토콜을 사용한 통신 예제다:
+웹소켓 통신이 가능해진 건 HTTP 요청의 프로토콜을 업그레이드해 주는 `Ugrade` 헤더 덕분이다. 이 헤더를 사용해면 웹 소켓 프로토콜로 전환할 수 있다. 다음은 웹소켓 프로토콜을 사용한 통신 예시다:
 
 ```yaml
 GET /spring-websocket-portfolio/portfolio HTTP/1.1
@@ -328,7 +328,7 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
 웹플럭스에선 바이트 버퍼를 `DataBuffer`클래스로 표현한다. 이 클래스는 스프링 코어 문서 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers) 섹션에서 자세히 다룬다.
 핵심은 Netty같은 일부 서버에선 메모리 풀을 사용해서 바이트 버퍼를 처리하고 레퍼런스를 카운팅하므로, 메모리 릭을 방지하려면 컨슈밍하고 나서 버퍼 메모리를 반환해야 한다는 것이다.
 
-어플리케이션을 Netty를 실행한다면, 입력 버퍼에 데이터를 유지해야 할 땐 반드시 `DataBufferUtils.retain(dataBuffer)`를 사용하고, 버퍼에 있는 데이터를 다 사용하고 나면 `DataBufferUtils.release(dataBuffer)`를 호출해야 한다.
+어플리케이션을 Netty에서 실행한다면, 입력 버퍼에 데이터를 유지해야 할 땐 반드시 `DataBufferUtils.retain(dataBuffer)`를 사용하고, 버퍼에 있는 데이터를 다 사용하고 나면 `DataBufferUtils.release(dataBuffer)`를 호출해야 한다.
 
 ### 3.2.4. Handshake
 
