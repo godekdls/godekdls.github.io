@@ -1417,7 +1417,7 @@ class WebConfig : WebFluxConfigurer {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-freemarker-forms)
 
-스프링은 JSP에서 사용하는 `<spring:bind/>` 엘리먼트 등, 다양한 태그 라이브러리를 지원한다. 이 엘리먼트를 사용하면 객체에 form 데이터를 유지하기 때문에, 웹이나 비지니스 레이어 `Validator`에서 유효성 검증에 실패하더라도 사용자가 입력한 데이터를 화면에 그대로 보여줄 수 있다. 스프링은 FreeMarker에서도 같은 기능을 지원하며, form 입력 엘리먼트를 만들어주는 편리한 매크로도 함께 제공한다.
+스프링은 JSP에서 사용하는 `<spring:bind/>` 엘리먼트같은 다양한 태그 라이브러리를 지원한다. 이 엘리먼트를 사용하면 객체에 form 데이터를 유지하기 때문에, 웹이나 비지니스 레이어 `Validator`에서 유효성 검증에 실패하더라도 사용자가 입력한 데이터를 화면에 그대로 보여줄 수 있다. 스프링은 FreeMarker에서도 같은 기능을 지원하며, form 입력 엘리먼트를 만들어주는 편리한 매크로도 함께 제공한다.
 
 #### The Bind Macros
 
@@ -1425,9 +1425,9 @@ class WebConfig : WebFluxConfigurer {
 
 FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들어있기 때문에 어플리케이션에서 적절히 설정해 쓰면 된다.
 
-스프링 템플릿 라이브러리에 있는 일부 매크로는 내부에서만 관리하지만(private), 매크로 정의는 그렇지 않으므로 코드와 템플릿에선 모든 매크로를 사용할 수 있다. 다음 섹션은 템플릿에서 직접 호출하는 매크로에만 집중한다. 매크로 코드가 궁금하다면 `org.springframework.web.reactive.result.view.freemarker` 패키지에 있는 `spring.ftl` 파일을 확인하라.
+스프링 템플릿 라이브러리에 있는 일부 매크로는 내부에서만 관리하지만(private), 매크로 정의는 그렇지 않으므로 코드와 템플릿에선 모든 매크로를 사용할 수 있다. 다음 섹션은 템플릿에서 직접 호출하는 매크로에만 집중한다. 매크로 코드가 궁금하다면 `org.springframework.web.reactive.result.view.freemarker` 패키지에 있는 `spring.ftl` 파일을 확인해 봐라.
 
-매크로 바인딩에 대한 자세한 정보는 스프링 MVC의 [Simple Binding](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-simple-binding)을 참고하라.
+매크로 바인딩에 대한 자세한 정보는 스프링 MVC의 [Simple Binding](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-simple-binding)을 참고해라.
 
 #### Form Macros
 
@@ -1578,7 +1578,7 @@ FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들�
   }
   ```
 
-  > `sharedEngine` 프로퍼티를 `false`로 설정한 이유는 thread-safe하지 않은 템플릿 라이브러리를 사용하기 때문이다. Nashorn에서 실행하는 Handlebars나 React 등은 동시성을 고려해 설계되지 않았다. 이런 라이브러리를 사용한다면 자바 SE 8은 [버그](https://bugs.openjdk.java.net/browse/JDK-8076099)를 수정한 60업데이트 버전을 사용해야 한다. 물론 이 버그가 아니더라도 최근 패치된 버전을 사용하는 게 좋다.
+  > `sharedEngine` 프로퍼티를 `false`로 설정한 이유는 thread-safe하지 않은 템플릿 라이브러리를 사용하기 때문이다. Nashorn에서 실행하는 Handlebars나 React 등은 동시성을 고려해 설계되지 않았다. 이런 라이브러리를 사용한다면 자바 SE 8은 [버그](https://bugs.openjdk.java.net/browse/JDK-8076099)를 수정한 60업데이트 버전을 사용해야 한다. 물론 이 버그가 아니더라도 최신 패치 버전을 사용하는 게 좋다.
 
 `polyfill.js`는 다음 코드에 보이는 것처럼, 단순히 Handlebars에서 필요한  `window` 객체만 정의한다:
 
@@ -1601,11 +1601,11 @@ function render(template, model) {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-jackson)
 
-[Content Negotiation](https://godekdls.github.io/Reactive%20Spring/springwebflux/#content-negotiation)을 지원하는 서버는 클라이언트가 요청한 content-type에 따라 HTML 템플릿에 모델을 렌더링할 수도 있고, 다른 포맷(JSON, XML 등)으로 응답할 수도 있다. 스프링 웹플럭스가 제공하는 `HttpMessageWriterView`를 사용하면 `spring-web`에 있는  `Jackson2JsonEncoder`, `Jackson2SmileEncoder`, `Jaxb2XmlEncoder` 등의 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)을 플러그인처럼 사용할 수 있다.
+[Content Negotiation](https://godekdls.github.io/Reactive%20Spring/springwebflux/#content-negotiation)을 지원하는 서버는 클라이언트가 요청한 content-type에 따라 HTML 템플릿에 모델을 렌더링할 수도 있고, 다른 포맷(JSON, XML 등)으로 응답할 수도 있다. 스프링 웹플럭스가 제공하는 `HttpMessageWriterView `는 `spring-web`에 있는  `Jackson2JsonEncoder`, `Jackson2SmileEncoder`, `Jaxb2XmlEncoder` 등의 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)을 플러그인처럼 사용할 수 있다.
 
 다른 뷰 기술과는 달리, `HttpMessageWriterView`는 디폴트 뷰로 [설정](#1117-view-resolvers)돼 있기 때문에 `ViewResolver`가 필요없다. `HttpMessageWrite` 나 `Encoder` 인스턴스를 감싸면 디폴트 뷰를 여러 개 설정할 수 있다. 이때는 런타임에 들어온 요청 content-type과 일치하는 뷰를 사용한다.
 
-모델은 대부분 attribute가 여러 개다. 렌더링할 때 직렬화할 모델 attribute는 `HttpMessageWriterView`에 설정하면 된다. 모델에 attibute가 하나밖에 없다면 해당 attribute를 사용한다.
+모델은 대부분 attribute가 여러 개다. 렌더링할 때 직렬화할 모델 attribute는 `HttpMessageWriterView`에 설정한다. 모델에 attibute가 하나밖에 없다면 해당 attribute를 사용한다.
 
 ---
 
@@ -1816,7 +1816,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config-conversion)
 
-기본적으로 숫자와 날짜 타입을 지원하는 다양한 포맷터를 제공하지만, 필드 위에 `@NumberFormat`, `@DateTimeFormat`를 선언해서 사용할 포맷터를 지정할 수 있다.
+기본적으로 숫자와 날짜 타입을 지원하는 다양한 포맷터를 제공하지만, 필드 위에 `@NumberFormat`, `@DateTimeFormat`를 선언하면 사용할 포맷터를 지정할 수 있다.
 
 커스텀 포맷터와 컨버터는 다음과 같이 등록한다:
 
@@ -1848,7 +1848,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
   }
   ```
 
-스프링 웹플럭스는 기본적으로 날짜를 파싱하고 포맷팅할 때 요청 Locale을 사용한다. 단, 이건 "input" form의 String으로 날짜를 표현했을 때의 동작이다. 브라우저는 "date", "time" form 필드는 HTML 스펙에 정의된 고정 포맷을 사용한다. 이런 경우 아래 예제처럼 포맷팅을 커스텀할 수 있다:
+스프링 웹플럭스는 기본적으로 날짜를 파싱하고 포맷팅할 때 요청 Locale을 사용한다. 단, 이건 날짜를 "input" form의 String으로 표현했을 때의 동작이다. 브라우저는 "date", "time" form 필드는 HTML 스펙에 정의된 고정 포맷을 사용한다. 이런 경우 아래 예제처럼 포맷을 커스텀할 수 있다:
 
 - *java*
 
@@ -1887,7 +1887,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config-validation)
 
-기본적로 [Bean Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation-overview)이 클래스패스 내에 있으면(Hibernate Validator 등), `LocalValidatorFactoryBean`이 글로벌 [validator](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validator)로 등록되서 `@Controller` 메소드 인자에 바로 `@Valid`와 `@Validated`를 사용할 수 있다.
+기본적로 [Bean Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation-overview)이 클래스패스 내에 있으면(Hibernate Validator 등) `LocalValidatorFactoryBean`이 글로벌 [validator](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validator)로 등록되기 때문에, `@Controller` 메소드 인자에 바로 `@Valid`와 `@Validated`를 사용할 수 있다.
 
 글로벌 `Validator` 인스턴스를 커스텀하고 싶으면 다음 예제 처럼 자바 설정을 이용하면 된다:
 
@@ -1949,7 +1949,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
   }
   ```
 
-> `LocalValidatorFactoryBean`을 주입받아야 한다면, MVC 설정에서 정의한 빈과 충돌하지 않게 빈 정의에 `@Primary` 를 선언해야 한다.
+> `LocalValidatorFactoryBean`을 주입받아야 한다면, MVC 설정에서 정의한 빈과 충돌하지 않게 빈 정의에 `@Primary`를 선언해야 한다.
 
 ### 1.11.5. Content Type Resolvers
 
@@ -2021,7 +2021,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 
 `ServerCodecConfigurer`는 디폴트 reader, writer 셋을 제공한다. 이 인터페이스로 다른 reader, writer를 추가하거나, 디폴트 구현체를 커스텀해도 되고, 다른 구현체로 디폴트 구현체를 대체할 수도 있다.
 
-Jackson JSON과 XML을 사용한다면 기본적으로 Jackson의 다음 디폴트 프로퍼티를 커스텀해 주는  [`Jackson2ObjectMapperBuilder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html)를 사용하는 것도 좋다.
+Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프로퍼티를 커스텀해주는  [`Jackson2ObjectMapperBuilder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/converter/json/Jackson2ObjectMapperBuilder.html)를 사용하는 것도 좋다.
 
 - [`DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES`](https://fasterxml.github.io/jackson-databind/javadoc/2.6/com/fasterxml/jackson/databind/DeserializationFeature.html#FAIL_ON_UNKNOWN_PROPERTIES)를 비활성화한다.
 - [`MapperFeature.DEFAULT_VIEW_INCLUSION`](https://fasterxml.github.io/jackson-databind/javadoc/2.6/com/fasterxml/jackson/databind/MapperFeature.html#DEFAULT_VIEW_INCLUSION)을 비활성화한다.
@@ -2227,7 +2227,7 @@ Jackson JSON과 XML을 사용한다면 기본적으로 Jackson의 다음 디폴�
   }
   ```
 
-리소스 핸들러는  [`ResourceResolver`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/resource/ResourceResolver.html), [`ResourceTransformer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/resource/ResourceTransformer.html) 구현체로 체인은 만들 수 있기 때문에, 리소스 서빙을 최적화할 수 있다.
+리소스 핸들러는  [`ResourceResolver`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/resource/ResourceResolver.html), [`ResourceTransformer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/resource/ResourceTransformer.html) 구현체로 체인을 만들 수 있기 때문에, 리소스 서빙을 최적화할 수 있다.
 
 `VersionResourceResolver`를 사용하면 리소스 URL 버전을 컨텐츠의 MD5 해쉬값이나, 어플리케이션 고정 버전 등으로 관리할 수 있다. 자바스크립트 모듈 로더 등 몇가지 예외케이스만 아니라면  `ContentVersionStrategy`(MD5 hash)를 사용하는 것도 좋은 방법이다.
 
@@ -2270,17 +2270,17 @@ Jackson JSON과 XML을 사용한다면 기본적으로 Jackson의 다음 디폴�
 
 `ResourceUrlProvider`는 전체 리졸버, 트랜스포머(버전 추가 등) 체인을 적용해서 URL을 재작성한다. 웹플럭스 설정은 `ResourceUrlProvider`를 지원하므로 원하는 곳에 주입해서 사용하면 된다.
 
-아직까지는 리졸버, 트랜스포머 체인을 논블로킹으로 적용하는 view 기술이 없기 때문에, 웹플럭스는 스프링 MVC와 달리 스태틱 리소스 URL을 투명하게 재작성할 방법이 없다. 로컬 리소스만 서빙하면 된다면, 블로킹 `ResourceUrlProvider`를 직접 사용하는 것도 대안이다(e.g. 커스텀 엘리먼트를 통해).
+아직까지는 리졸버, 트랜스포머 체인을 논블로킹으로 적용하는 view 기술이 없기 때문에, 웹플럭스는 스프링 MVC와 달리 스태틱 리소스 URL을 투명하게 재작성할 방법이 없다. 로컬 리소스만 서빙하면 된다면, 블로킹 `ResourceUrlProvider`를 직접 사용하는 것도 방법이다(e.g. 커스텀 엘리먼트를 통해).
 
-`EncodedResourceResolver`(e.g. Gzip, Brotli 인코딩)와 `VersionedResourceResolver`를 함께 사용한다면, 파일을 인코딩하기 전 버전을 계산할 수 있도록, 반드시 이 순서대로 등록해야 한다.
+`EncodedResourceResolver`(e.g. Gzip, Brotli 인코딩)와 `VersionedResourceResolver`를 함께 사용한다면, 파일을 인코딩하기 전 버전을 계산하도록, 반드시 이 순서대로 등록해야 한다.
 
-[WebJars](https://www.webjars.org/documentation)는 `WebJarsResourceResolver`가 지원하는데, 이는 클래스패스에  `org.webjars:webjars-locator-core` 라이브러리가 있으면 자동으로 등록된다. 이 리졸버는 URL에 jar 버전을 추가하기 때문에, 버전없이 요청한 URL도 각 필요한 버전에 매칭할 수 있다 — 예를 들어 `/jquery/jquery.min.js`는 `/jquery/1.2.0/jquery.min.js`로.
+[WebJars](https://www.webjars.org/documentation)는 `WebJarsResourceResolver`가 지원하는데, 이 클래스는 클래스패스에  `org.webjars:webjars-locator-core` 라이브러리가 있으면 자동으로 등록된다. 이 리졸버는 URL에 jar 버전을 추가하기 때문에, 버전없이 요청한 URL도 각 필요한 버전에 매칭할 수 있다 — 예를 들어 `/jquery/jquery.min.js`는 `/jquery/1.2.0/jquery.min.js`로.
 
 ### 1.11.9. Path Matching
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config-path-matching)
 
-Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자세한 내용은 [`PathMatchConfigurer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/config/PathMatchConfigurer.html) javadoc을 참고하라. 다음은 `PathMatchConfigurer`를 사용하는 예제다:
+Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자세한 설명은 [`PathMatchConfigurer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/config/PathMatchConfigurer.html) javadoc을 참고하라. 다음은 `PathMatchConfigurer`를 사용하는 예제다:
 
 - *java*
 
@@ -2318,18 +2318,18 @@ Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자�
   }
   ```
 
->  스프링 웹플럭스는 파싱한 요청 path를 나타내는 `RequestPath` 인터페이스를 사용해 세미콜론 컨텐츠를 제거해서 디코딩한 path segment 값에(즉, path나 메트릭스 변수) 접근한다. 이 말은 스프링 MVC와는 다르게 path를 매칭할 때 요청 path를 디코딩할지나 세미콜론 컨텐츠를 지울지를 명시하지 않아도 된다는 뜻이다. 또한 스프링 웹플럭스는 스프링 MVC에서 지원하던 suffix 패턴 매칭을 지원하지 않는다. suffix 패턴은 스프링 MVC에서도 사용하지 않는 것을 [권장](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-suffix-pattern-match)한다.
+>  스프링 웹플럭스는 `RequestPath` 인터페이스로 파싱이 완료된 path에 접근한다. 즉, 세미콜론을 제거하고 디코딩한 path segment 값을(e.g. path나 메트릭스 변수) 사용한다. 이 말은 스프링 MVC처럼 요청 path를 디코딩할지, 세미콜론 컨텐츠를 지워야 할지 명시할 필요가 없다는 뜻이다. 또한 스프링 웹플럭스는 스프링 MVC에서 지원하던 suffix 패턴 매칭을 지원하지 않는다. suffix 패턴은 스프링 MVC에서도 사용하지 않는 것을 [권장](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-suffix-pattern-match)한다.
 
 ### 1.11.10. Advanced Configuration Mode
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config-advanced-java)
 
-`@EnableWebFlux` imports `DelegatingWebFluxConfiguration` that:
+`@EnableWebFlux`는 다음과 같은 일을 하는 `DelegatingWebFluxConfiguration`을 임포트한다:
 
-- Provides default Spring configuration for WebFlux applications
-- detects and delegates to `WebFluxConfigurer` implementations to customize that configuration.
+- 웹플럭스 어플리케이션을 위한 스프링 디폴트 설정을 제공한다.
+- 설정을 커스텀할 수 있도록 `WebFluxConfigurer` 구현체를 찾아 위임한다.
 
-For advanced mode, you can remove `@EnableWebFlux` and extend directly from `DelegatingWebFluxConfiguration` instead of implementing `WebFluxConfigurer`, as the following example shows:
+더 많은 설정을 커스텀하고 싶다면, 다음 예제처럼 `@EnableWebFlux`를 지우고 `WebFluxConfigurer`를 구현하는 대신 `DelegatingWebFluxConfiguration`을 직접 상속하면 된다.
 
 - *java*
 
@@ -2351,7 +2351,7 @@ For advanced mode, you can remove `@EnableWebFlux` and extend directly from `Del
   }
   ```
 
-You can keep existing methods in `WebConfig`, but you can now also override bean declarations from the base class and still have any number of other `WebMvcConfigurer` implementations on the classpath.
+`WebConfig`에 있던 메소드는 모두 그대로 사용할 수 있다. 대신 이렇게 사용하면, 부모 클래스에서 정의한 빈을 재정의할 수 있고, 클래스패스 내 여러 클래스로 `WebMvcConfigurer`를 구현해도 된다.
 
 ---
 
