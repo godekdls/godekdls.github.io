@@ -99,7 +99,7 @@ permalink: /Reactive%20Spring/springwebflux/
 
 웹플럭스가 탄생한 이유 중 하나는 적은 쓰레드로 동시 처리를 제어하고 적은 하드웨어 리소스로 확장하기 위해
 논블로킹 웹 스택이 필요했기 때문이다. 이전에도 서블릿 3.1은 논블로킹 I/O를 위한 API를 제공했다. 하지만 서블릿으로 논블로킹을 구현하려면 다른 동기 처리나(`Filter`, `Servlet`) 블로킹 방식(`getParameter`, `getPart`)을 쓰는
-API를 사용하기 어렵다. 이런 점때문에 어떤 논블로킹 런타임과도 잘 동작하는 새 공통 API를 만들게 됐다. 이미 비동기 논블로킹 환경에서 자리를 잡은 서버(e.g. Netty)때문에라도 새 API가 필요했다.
+API를 사용하기 어렵다. 이런 점때문에 어떤 논블로킹과도 잘 동작하는 새 공통 API를 만들게 됐다. 이미 비동기 논블로킹 환경에서 자리를 잡은 서버(e.g. Netty)때문에라도 새 API가 필요했다.
 
 또 다른 이유는 함수형 프로그래밍이다. 자바 5의 애노테이션 등장으로 선택의 폭이 넓어진 것처럼(애노테이션을 선언한 REST 컨트롤러나 유닛 테스트 등), 자바 8에서 추가된 람다 표현식덕분에 자바에서도 함수형 API를 작성할 수 있게 됐다. 이 기능은 논블로킹 어플리케이션을 만들 때도 요긴하게 쓰이며, 이제는 continuation-style API(`CompletableFuture`와 [ReactiveX](http://reactivex.io/)로 대중화된)로 비동기 로직을 선언적으로 작성할 수 있다. 프로그래밍 모델 관점에서 보면, 웹플럭스에서 애노테이션을 선언한 컨트롤러와 더불어 함수형 웹 엔드포인트를 사용할 수 있는 건 자바 8덕분이다.
 
@@ -131,7 +131,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 웹플럭스는 리액터를 핵심 라이브러리로 사용하지만, 다른 리액티브 라이브러리를 써도 리액티브 스트림으로 상호작용 할 수 있다.
 웹플럭스 API의 일반적인 룰은, 순수한 `Publisher`를 입력으로 받아 내부적으로 리액터 타입으로 맞추고, 이걸 사용해서 `Flux`나 `Mono`를 반환한다. 따라서 어떤 `Publisher`든 입력으로 전달하고 연산할 수 있지만, 다른 리액티브 라이브러리를 사용하려면 출력 형식을 맞춰줘야 한다. 웹플럭스는 가능만 하다면(e.g. 애노테이션을 선언한 컨트롤러) 투명한 방식으로 RxJava나 다른 리액티브 라이브러리에 맞게 바꿔준다. 자세한 내용은 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
 
-> 리액티브 API와는 별개로 WebFlux는 코틀린의 [코루틴](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#coroutines) API와도 사용할 수 있는데, 이를 사용하면 좀 더 명령적(imperative)인 프로그래밍이 가능하다. 아래 나오는 코틀린 코드 샘플은 코루틴 API를 사용할 것이다.
+> 리액티브 API와는 별개로 웹플럭스는 코틀린의 [코루틴](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#coroutines) API와도 사용할 수 있는데, 이를 사용하면 좀 더 명령적(imperative)인 프로그래밍이 가능하다. 아래 나오는 코틀린 코드 샘플은 코루틴 API를 사용할 것이다.
 
 ### 1.1.3. Programming Models
 
@@ -149,8 +149,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 
 스프링 MVC냐 웹플럭스냐?
 
-많이들 하는 질문이지만 이분법적 사고는 좋지 않다. 둘 모두 사용해서 선택의 폭을 넓힌다고 보는게 맞다.
-이 둘은 지속성과 일관성을 위해 설계했으며, 함께 사용할 수 있고, 각자의 피드백이 서로에게 도움이 된다. 다음은 둘은 어떤 관련이 있는지, 공통점이 무엇이고 한쪽에서만 지원하는 게 무엇인지 나타낸 다이어그램이다:
+많이들 하는 질문이지만 이분법적 사고는 좋지 않다. 둘 모두 선택의 폭을 넓혀준다고 보는게 맞다. 이 둘은 지속성과 일관성을 위해 설계했으며, 함께 사용할 수 있고, 각자의 피드백이 서로에게 도움이 된다. 다음은 둘은 어떤 관련이 있는지, 공통점이 무엇이고 한쪽에서만 지원하는 게 무엇인지 나타낸 다이어그램이다:
 
 ![Spring MVC VS WebFlux](./../../images/reactivespring/spring-mvc-and-webflux-venn.png)
 
@@ -205,7 +204,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 스프링 웹플럭스를 사용하는 어플리케이션은 어떤 쓰레드를 얼마나 실행할까?
 
 - 최소한의 설정으로 스프링 웹 플럭스 서버를 띄우면(예를 들어 데이터 접근이나 다른 dependency가 없는), 서버는 쓰레드 한 개로 운영하고, 소량의 쓰레드로 요청을 처리할 수 있다(보통은 CPU 코어 수만큼). 하지만 서블릿 컨테이너는 서블릿 블로킹 I/O와 서블릿 3.1 논블로킹 I/O를 모두 지원하기 때문에 더 많은 쓰레드를 실행할 것이다 (예를 들어 톰캣은 10개).
-- 리액티브 `WebClient`는 이벤트 루프 방식이다. 따라서 적은 쓰레드를 고정해 두고 쓴다(예를 들어 리액터 Netty 커넥터를 쓴다면 `reactor-http-nio-`로 시작하는 쓰레드를 확인할 수 있다). 단, 클라이언트와 서버에서 모두 리액터 Netty를 사용하면 디폴트로 이벤트 루프 리소스를 공유한다.
+- 리액티브 `WebClient`는 이벤트 루프를 사용한다. 따라서 적은 쓰레드를 고정해 두고 쓴다(예를 들어 리액터 Netty 커넥터를 쓴다면 `reactor-http-nio-`로 시작하는 쓰레드를 확인할 수 있다). 단, 클라이언트와 서버에서 모두 리액터 Netty를 사용하면 디폴트로 이벤트 루프 리소스를 공유한다.
 - 리액터와 RxJava는 스케줄러라는 추상화된 쓰레드 풀 전략을 제공한다. `publishOn` 연산자가 나머지 연산을 다른 쓰레드 풀로 전환할 때도 이 스케줄러를 사용한다. 스케줄러는 이름을 보면 동시 처리 전략을 알 수 있다. 예를 들어, 제한된 쓰레드로 CPU 연산이 많은 처리를 할 때는 “parallel”, 여러 쓰레드로 I/O가 많은 처리를 할 때는 "elastic"이다. 이런 쓰레드를 본다면 코드 어딘가에서 그 이름에 해당하는 쓰레드 풀 `Scheduler` 전략을 사용하고 있다는 뜻이다.
 - 데이터에 접근하는 라이브러리나 다른 외부 dependency에서 쓰레드를 따로 실행하는 경우도 있다.
 
@@ -563,7 +562,7 @@ JSON, binary JSON([Smile](https://github.com/FasterXML/smile-format-specificatio
 - multi-value publisher를 `application/json`로 직렬화할 땐
 기본적으로 `Flux#collectToList()`로 값을 수집한 다음 그 컬렉션을 직렬화한다.
 - `application/stream+json`, `application/stream+x-jackson-smile`같은
-스트리밍 타입을 값이 여러 개인 publisher로 직렬화하면
+스트리밍 타입을 multi-value publisher로 직렬화하면
 [line-delimited JSON](https://en.wikipedia.org/wiki/JSON_streaming) 포맷으로
 따로따로 인코딩하고, write, flush한다.
 - SSE라면 이벤트가 발생할 때 마다 `Jackson2Encoder`를 호출하고 바로 flush한다.
@@ -649,7 +648,7 @@ HTTP 응답을 스트리밍할 땐
 
 #### `DataBuffer`
 
-웹플럭스에선 바이트 버퍼를 `DataBuffer`클래스로 표현한다. 이 클래스는 스프링 코어 문서 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers) 섹션에서 자세히 다룬다.
+웹플럭스에선 바이트 버퍼를 `DataBuffer` 클래스로 표현한다. 이 클래스는 스프링 코어 문서 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers) 섹션에서 자세히 다룬다.
 핵심은 Netty같은 일부 서버에선 메모리 풀을 사용해서 바이트 버퍼를 처리하고 레퍼런스를 카운팅하므로, 메모리 릭을 방지하려면 컨슈밍하고 나서 버퍼 메모리를 반환해야 한다는 것이다.
 
 코덱을 쓰는 대신 버퍼를 직접 처리하거나, 코덱을 커스텀하지만 않는다면
@@ -924,10 +923,7 @@ view의 논리적인 이름을 가리키는 String과 `View` 인스턴스를 매
 리턴값은 다음 중 하나로 사용된다:
 
 - `String`, `CharSequence`: `ViewResolver`로 `View`를 만들 때 사용할 view의 논리적인 이름
-- `void`: 요청 path에 맞는 디폴트 view name을 앞뒤 슬래쉬를 제거해서 `View`로 리졸브한다.
-view name이 제공되지 않았을 때나(e.g. model attribute를 리턴한 경우)
-비동기 리턴값일 때도(e.g. `Mono`가 비어있을 때)
-동일하게 처리한다.
+- `void`: 요청 path에 맞는 디폴트 view name에서 앞뒤 슬래쉬를 제거하고 `View`로 리졸브한다. view name이 제공되지 않았을 때나(e.g. model attribute를 리턴한 경우) 비동기 리턴값일 때도(e.g. `Mono`가 비어있을 때) 동일하게 처리한다.
 - [Rendering](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/result/view/Rendering.html):
 여러 가지 view resolution 시나리오를 위한 API.
 IDE 자동 완성으로 옵션을 확인해봐라.
@@ -1524,8 +1520,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-typeconversion)
 
-컨트롤러 메소드에 사용하는 일부 인자는
-String으로 요청한 값을 매핑하기 때문에(`@RequestParam`, `@RequestHeader`, `@PathVariable`, `@MatrixVariable`, `@CookieValue` 등)
+컨트롤러 메소드에 사용하는 일부 인자는 문자열로 요청한 값을 매핑하기 때문에(`@RequestParam`, `@RequestHeader`, `@PathVariable`, `@MatrixVariable`, `@CookieValue` 등)
 `String`이 아닌 다른 타입으로 선언했다면 타입을 변환해야한다.
 
 이런 경우엔 설정한 컨버터가 자동으로 변환해 준다.
@@ -1916,13 +1911,7 @@ fun processSubmit(@Valid @ModelAttribute("pet") pet: Pet, result: BindingResult)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> model attribute 인자에 `@Valid`를 선언한다.</small>
 
-스프링 웹플럭스는 스프링 MVC와는 달리 모델에 리액티브 타입을 사용할 수 있다
-(e.g. `Mono<Account>`, `io.reactivex.Single<Account>`).
-리액티브 타입으로 `@ModelAttribute` 인자를 감싸는 것은 선택 사항이며,
-상황에 따라 필요하다면 실제 값을 리졸브한다.
-하지만 `BindingResult`를 인자로 받으려면 위 예시처럼
-리액티브 타입으로 감싸지 않은 `@ModelAttribute` 인자가 바로 앞에 있어야 한다.
-아니면 다음 예제처럼 리액티브 타입으로 에러를 처리해도 된다:
+스프링 웹플럭스는 스프링 MVC와는 달리 모델에 리액티브 타입을 사용할 수 있다(e.g. `Mono<Account>`, `io.reactivex.Single<Account>`). 상황에 따라 필요하다면 실제 값을 리졸브하기 때문에, 리액티브 타입으로 `@ModelAttribute` 인자를 감싸는 것은 선택 사항이다. 하지만 `BindingResult`를 인자로 받으려면 위 예시처럼 리액티브 타입으로 감싸지 않은 `@ModelAttribute` 인자가 바로 앞에 있어야 한다. 아니면 다음 예제처럼 리액티브 타입으로 에러를 처리해도 된다:
 
 - *java*
 ```java
@@ -2643,8 +2632,7 @@ fun handle(): Account {
 `@InitBinder` 메소드는 다음과 같이 활용할 수 있다:
 
 - 요청 파라미터(form 데이터나 쿼리 파라미터)를 model에 바인딩한다.
-- String으로 요청한 값을(파라미터, path variable, 헤더, 쿠키 등)
-컨트롤러 메소드 인자 타입으로 변환한다.
+- 문자열로 요청한 값을(파라미터, path variable, 헤더, 쿠키 등) 컨트롤러 메소드 인자 타입으로 변환한다.
 - HTML을 렌더링할 때 model 값을 `String`으로 변환한다.
 
 `@InitBinder` 메소드로 컨트롤러별
