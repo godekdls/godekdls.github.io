@@ -81,7 +81,7 @@ WebFlux.fn이라고도 하는 이 모델은,
 
 WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. `HandlerFunction`은 `ServerRequest`를 받아 비동기 `ServerResponse`(i.e. `Mono<ServerResponse>`)를 리턴하는 함수다. 요청, 응답 객체 모두 불변(immutable)이기 때문에 JDK 8 방식으로 HTTP 요청, 응답에 접근할 수 있다. `HandlerFunction` 역할은 애노테이션 프로그래밍 모델로 치면 `@RequestMapping` 메소드가 하던 일과 동일하다.
 
-요청은 `RouterFunction`이 핸들러 펑션에 라우팅한다.`RouterFunction`은 `ServerRequest`를 받아 비동기 `HandlerFunction`(i.e. `Mono<HandlerFunction>`)을 리턴하는 함수다. 매칭되는 라우터 펑션이 있으면 핸들러 펑션을 리턴하고 그 외는 비어있는 Mono를 리턴한다. `RouterFunction`이 하는 일은 `@RequestMapping` 애노테이션과 동일하지만,
+요청은 `RouterFunction`이 핸들러 펑션에 라우팅한다. `RouterFunction`은 `ServerRequest`를 받아 비동기 `HandlerFunction`(i.e. `Mono<HandlerFunction>`)을 리턴하는 함수다. 매칭되는 라우터 펑션이 있으면 핸들러 펑션을 리턴하고 그 외는 비어있는 Mono를 리턴한다. `RouterFunction`이 하는 일은 `@RequestMapping` 애노테이션과 동일하지만,
 라우터 펑션은 데이터 뿐 아니라 행동까지 제공한다는 점이 다르다.
 
 라우터를 만들 때는 아래 예제처럼 `RouterFunctions.route()`가 제공하는 빌더를 사용할 수 있다:
@@ -824,13 +824,14 @@ val uri = UriComponentsBuilder
 
 ### 1.6.2. UriBuilder
 
-[`UriComponentsBuilder`](#161-uricomponents)는 `UriBuilder` 인터페이스를 구현하고 있다. `UriBuilderFactory`로 `UriBuilder`를 만들어도 된다. `UriBuilderFactory`는 base URL, 인코딩 여부 등의 설정을 공유해서 `UriBuilder`를 만들기 때문에, URI 템플릿을 플러그인 처럼 꽂아 쓸 수 있다.
+[`UriComponentsBuilder`](#161-uricomponents)는 `UriBuilder` 인터페이스를 구현하고 있다. `UriBuilder`는 팩토리 클래스로 만들 수도 있다. `UriBuilderFactory`로 `UriBuilder`를 만들면, URI 템플릿을 빌드할 때 사용할 base URL, 인코딩 여부 등의 설정을 재사용할 수 있다.
 
-`RestTemplate`이나 `WebClient`에 `UriBuilderFactory`를 설정해 놓고 URI를 커스텀할 수도 있다. `DefaultUriBuilderFactory`는 옵션을 공유해서 `UriComponentsBuilder`를 만드는 `UriBuilderFactory`의 디폴트 구현체다.
+`RestTemplate`이나 `WebClient`에 `UriBuilderFactory`를 설정해 놓고 URI를 커스텀할 수도 있다. `DefaultUriBuilderFactory`는 내부에서 `UriComponentsBuilder`를 사용하는 `UriBuilderFactory`의 디폴트 구현체인데, 여기에 재사용하고 싶은 옵션을 설정하면 된다.
 
 다음 예제는 팩토리를 `RestTemplate`에 설정하는 예제다:
 
 - *java*
+    
     ```java
     // import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
     
@@ -1620,7 +1621,7 @@ function render(template, model) {
 - [Controllers](#1102-controllers)
 - [Static Resources](#1103-static-resources)
 
-[RFC 7234](https://tools.ietf.org/html/rfc7234#section-5.2.2)는 `Cache-Control` 응답 헤더의 모든 것을 다룬다. 하지만 `CacheControl`을 사용하면 다음 예제처럼, 자주 사용하는 유스 케이스별 시나리오를 만들 수 있다:
+[RFC 7234](https://tools.ietf.org/html/rfc7234#section-5.2.2)는 `Cache-Control` 응답 헤더의 모든 것을 다룬다. 하지만 `CacheControl`을 사용하면 다음 예제처럼, 자주 사용하는 케이스별로 시나리오를 만들 수 있다:
 
 - *Java*
   ```java

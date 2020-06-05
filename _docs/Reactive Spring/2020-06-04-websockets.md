@@ -71,7 +71,7 @@ HTTP 업그레이드 요청을 보내면, 핸드셰이킹을 완료한 다음에
 
 HTTP/REST 방식을 사용하는 어플리케이션은 URL을 굉장히 많이 설계한다. 클라이언트는 이 URL에 접근해서 어플리케이션과 요청/응답을 주고 받는다. 서버는 HTTP URL, 메소드, 헤더에 맞는 핸들러에 요청을 라우팅한다.
 
-반대로 웹소켓은 보통 커넥션을 맺기 위한 URL 하나만 사용한다. 커넥션을 맺고 나면 모든 어플리케이션 메세지는 같은 TCP 커넥션으로 통신한다. 이는 기존과는 완전히 다른, 비동기 이벤트 지향 메세지 아케턱처다.
+반대로 웹소켓은 보통 커넥션을 맺기 위한 URL 하나만 사용한다. 커넥션을 맺고 나면 모든 메세지를 같은 TCP 커넥션으로 통신한다. 이는 기존과는 완전히 다른, 비동기 이벤트 지향 메세지 아케턱처다.
 
 웹소켓은 HTTP와는 달리, 메세지 내용에 규격이 없는 저수준 통신 프로토콜이다. 이 말은, 클라이언트와 서버가 미리 같은 메세지 규약을 설계해 놓지 않으면 메세지를 라우팅하고 처리할 수 없다는 뜻이다.
 
@@ -175,7 +175,7 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
 | `WebSocketSession` method                      | Description                                                  |
 | :--------------------------------------------- | :----------------------------------------------------------- |
 | `Flux<WebSocketMessage> receive()`             | 인바운드 메세지 스트림에 접근하고 커넥션을 닫으면 완료한다.  |
-| `Mono<Void> send(Publisher<WebSocketMessage>)` | 전송할 메세지를 받아 메세지를 wirte하고, 처리를 완료하면 `Mono<Void>`를 리턴한다. |
+| `Mono<Void> send(Publisher<WebSocketMessage>)` | 전송할 메세지를 받아 메세지를 쓰고, 처리를 완료하면 `Mono<Void>`를 리턴한다. |
 
 `WebSocketHandler`는 반드시 인바운드, 아웃바운드 스트림을 하나의 플로우로 구성하고, 플로우 처리를 완료하면 `Mono<Void>`를 리턴해야 한다. 어플리케이션 요구사항에 따라 플로우는 다음 상황에 완료된다:
 
@@ -225,7 +225,7 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
 	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 감싸진 형태로(nested) 메세지 컨텐츠에 비동기 연산을 수행한다.</small><br>
 	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 수신을 완료하면 `Mono<Void>`를 리턴한다.</small>
 
->  pooled data buffer를 사용하는 서버에서(e.g. Netty) 비동기 연산을 감싸서(nested) 사용한다면, `message.retain()`을 호출해야 하는 경우도 있다. 그렇지 않으면 데이터를 읽기 전에 버퍼가 비워질 수 있다. 상세 배경은 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)를 참고하라.
+>  pooled data buffer를 사용하는 서버에서(e.g. Netty) 비동기 연산을 감싸서(nested) 사용한다면, `message.retain()`을 호출해야 하는 경우도 있다. 그렇지 않으면 데이터를 읽기도 전에 버퍼가 비워질 수 있다. 상세 배경은 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)를 참고하라.
 
 다음 예제는 인바운드, 아웃바운드 스트림을 함께 처리한다:
 
@@ -270,7 +270,7 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
   ```
   <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인바운드 메세지 스트림을 처리한다.</small><br>
 	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 아웃바운드 메세지를 생성해서 단일 플로우로 통합한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메세지를 받는 동안은 처리를 완료하지 않는`Mono<Void>`를 리턴한다.</small>
+	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메세지를 받는 동안은 처리를 완료하지 않는 `Mono<Void>`를 리턴한다.</small>
 
 인바운드, 아웃바운드 스트림을 독립적으로 처리하고 완료됐을 때 합칠 수도 있다:
 
