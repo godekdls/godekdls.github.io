@@ -826,12 +826,12 @@ val uri = UriComponentsBuilder
 
 [`UriComponentsBuilder`](#161-uricomponents)는 `UriBuilder` 인터페이스를 구현하고 있다. `UriBuilder`는 팩토리 클래스로 만들 수도 있다. `UriBuilderFactory`로 `UriBuilder`를 만들면, URI 템플릿을 빌드할 때 사용할 base URL, 인코딩 여부 등의 설정을 재사용할 수 있다.
 
-`RestTemplate`이나 `WebClient`에 `UriBuilderFactory`를 설정해 놓고 URI를 커스텀할 수도 있다. `DefaultUriBuilderFactory`는 내부에서 `UriComponentsBuilder`를 사용하는 `UriBuilderFactory`의 디폴트 구현체인데, 여기에 재사용하고 싶은 옵션을 설정하면 된다.
+`RestTemplate`, `WebClient`의 URI 템플릿 빌드 방식은 `UriBuilderFactory`로 커스텀할 수 있다. `DefaultUriBuilderFactory`는 내부에서 `UriComponentsBuilder`를 사용하는 `UriBuilderFactory`의 디폴트 구현체인데, 여기에 재사용하고 싶은 옵션을 설정하면 된다.
 
 다음 예제는 팩토리를 `RestTemplate`에 설정하는 예제다:
 
 - *java*
-    
+  
     ```java
     // import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
     
