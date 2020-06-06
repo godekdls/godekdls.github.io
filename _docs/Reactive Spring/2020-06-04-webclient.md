@@ -28,7 +28,7 @@ permalink: /Reactive%20Spring/webclient/
 
 ---
 
-스프링 웹플럭스는 리액티브, 논블로킹 HTTP 요청을 위한 `WebClient`를 제공한다. 웹 클라이언트는 리액티브 타입을 사용하는 함수형 API기때문에 선언적인(declarative) 프로그래밍이 가능하다([리액티브 라이브러리](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/) 참고). 웹플럭스 클라이언트와 서버는 동일한 논블로킹 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)으로 요청/응답을 인코딩/디코딩한다.
+스프링 웹플럭스는 리액티브, 논블로킹 HTTP 요청을 위한 `WebClient`를 제공한다. 웹 클라이언트는 리액티브 타입을 사용하는 함수형 API기 때문에 선언적인(declarative) 프로그래밍이 가능하다([리액티브 라이브러리](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/) 참고). 웹플럭스 클라이언트와 서버는 동일한 논블로킹 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)으로 요청/응답을 인코딩/디코딩한다.
 
 `WebClient` 내부에선 HTTP 클라언트 라이브러리에 처리를 위임한다. 디폴트는 [Reactor Netty](https://github.com/reactor/reactor-netty)를 사용하고, Jetty [reactive HttpClient](https://github.com/jetty-project/jetty-reactive-httpclient)를 기본으로 제공하며, 다른 라이브러리는 `ClientHttpConnector`에 등록할 수 있다.
 
@@ -393,7 +393,7 @@ org.springframework.core.io.buffer.DataBufferLimitException: Exceeded limit on m
           .awaitBody<Person>()
   ```
 
-`onStatus`를 사용할 땐, response에 body가 있다면 `onStatus` 콜백에서 소비해야 한다. 그렇치 않으면 리소스 반환을 위해 body를 자동으로 비운다.
+`onStatus`를 사용할 땐, response에 body가 있다면 `onStatus` 콜백에서 소비해야 한다. 그렇지 않으면 리소스 반환을 위해 body를 자동으로 비운다.
 
 ---
 
