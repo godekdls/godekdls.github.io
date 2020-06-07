@@ -193,7 +193,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 
 **Invoking a Blocking API**
 
-블로킹 라이브러리를 사용해야 한다면 어떻게 해야 할까? 리액터, RxJava 모두 다른 쓰레드로 요청을 처리해 주는 `publishOn` 오퍼레이터를 지원한다. 블로킹을 쉽게 피해갈 수 있다는 말이긴 하지만, 블로킹 API자체가 동시성 모델에 적합하지 않다는 걸 유념하라.
+블로킹 라이브러리를 사용해야 한다면 어떻게 해야 할까? 리액터, RxJava 모두 다른 쓰레드로 요청을 처리해 주는 `publishOn` 오퍼레이터를 지원한다. 블로킹을 쉽게 피해갈 수 있다는 말이긴 하지만, 블로킹 API 자체가 동시성 모델에 적합하지 않다는 걸 유념하라.
 
 **Mutable State**
 
@@ -442,7 +442,7 @@ multipart 데이터를 한 번에 파싱해야 한다.
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#filters-forwarded-headers)
 
-프록시를 경유한 요청은(e.g. 로드 밸런서) 호스트, 포트, 스키마가 변경될 수 있기 때문에,
+프록시를 경유한 요청은(e.g. 로드 밸런서) 호스트, 포트, URL 스킴이 변경될 수 있기 때문에,
 클라이언트 입장에서는 원래 url 정보를 알아내기 어렵다.
 
 [RFC 7239](https://tools.ietf.org/html/rfc7239)에 따르면
@@ -452,7 +452,7 @@ Forwarded `HTTP` 헤더는 프록시가 원래 요청에 대한 정보를 추가
 비 표준 헤더도 있다.
 
 `ForwardedHeaderTransformer`는 forwarded 헤더를 보고
-요청의 호스트, 포트, 스키마를 바꿔준 다음, 헤더를 제거하는 컴포넌트다.
+요청의 호스트, 포트, 스킴을 바꿔준 다음, 헤더를 제거하는 컴포넌트다.
 `forwardedHeaderTransformer`라는 이름으로 빈을 정의하면
 자동으로 [체인에 추가](#special-bean-types)된다.
 
@@ -671,7 +671,7 @@ WebFlux 애플리케이션은
 일부 `TRACE`, `DEBUG` 레벨 로그는 디테일한 정도가 다를 것이다.
 
 어떤 로그가 좋은 로그인지는 사용해 봐야 알 수 있다.
-각 레벨과 어울리지 않는 로그를 발견하면 재보 바란다.
+각 레벨과 어울리지 않는 로그를 발견하면 제보 바란다.
 
 #### Log Id
 
@@ -1489,7 +1489,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`@ModelAttribute`|model에 있는 attribute에 접근할 수 있다(attribute가 없다면 model 초기화만 한다). 이 때 데이터를 바인딩하면서 유효성도 함께 검사한다. [`@ModelAttribute`](#modelattribute), [Model](#144-model), [DataBinder](#145-databinder) 참고.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other argument”를 참고하라.|
 |`Errors`, `BindingResult`|커맨드 객체를 메소드 인자에 바인딩할 땐 유효성을 검증 할 수 있는데(e.g. `@ModelAttribute`), 이 때 발생한 에러에 접근하는 용도로 사용한다. `Errors`, `BindingResult` 인자는 유효성을 검증하는 인자 바로 뒤에 사용해야 한다.|
 |`SessionStatus` + 클래스 레벨 `@SessionAttributes`|`@SessionAttributes` 애노테이션을 클래스에 선언하면 세션에 attribute를 저장하는데, `SessionStatus`를 인자로 받아 session 처리가 완료됐다고 알려주면 session attribute를 지운다. 자세한 내용은 [`@SessionAttributes`](#sessionattribute) 참고.|
-|`UriComponentsBuilder`|요청 호스트, 포트, 스키마, path로 URL을 만들 수 있다. [URI Links](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#161-uricomponents) 참고.|
+|`UriComponentsBuilder`|요청 호스트, 포트, 스킴, path로 URL을 만들 수 있다. [URI Links](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#161-uricomponents) 참고.|
 |`@SessionAttribute`|session attribute에 접근하는 용도. 클래스 레벨에 `@SessionAttributes`를 선언하면 세션에 model attribute를 저장하지만, 메소드 인자에 `@SessionAttribute`를 선언하면 session attribute에 접근할 수 있다. 자세한 내용은 [`@SessionAttribute`](#sessionattribute) 참고.|
 |`@RequestAttribute`|request attribute에 접근하는 용도. 자세한 내용은 [`@RequestAttribute`](#requestattribute) 참고.|
 |Any other argument|그 외 타입을 메소드 인자로 선언하면 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 true인 경우엔 `@RequestParam`에, 그 외는 `@ModelAttribute`로 리졸브한다.|
