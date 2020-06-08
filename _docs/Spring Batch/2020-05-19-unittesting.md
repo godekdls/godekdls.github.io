@@ -3,6 +3,9 @@ title: Unit Testing
 category: Spring Batch
 order: 11
 permalink: /Spring%20Batch/unittesting/
+description: 스프링 배치 유닛 테스트 한글 번역
+image: ./../../images/springbatch/batch-stereotypes.png
+lastmod: 2020-06-08T19:00:00+09:00
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#testing)를 한글로 번역한 문서입니다.
@@ -113,7 +116,7 @@ step 이름을 받아 그 `Step`을 실행하는 `launchStep` 메소드가 있�
 
 ```java
 JobExecution jobExecution = jobLauncherTestUtils.launchStep("loadFileStep");
-``` 
+```
 
 ---
 
@@ -213,7 +216,7 @@ int count = StepScopeTestUtils.doInStepScope(stepExecution,
         return count;
     }
 });
-``` 
+```
 
 ---
 

@@ -3,6 +3,9 @@ title: Scaling and Parallel Processing
 category: Spring Batch
 order: 8
 permalink: /Spring%20Batch/scalingandparallelprocessing/
+description: 스프링 배치 병렬 처리 한글 번역
+image: ./../../images/springbatch/remote-chunking.png
+lastmod: 2020-06-08T19:00:00+09:00
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#scalability)를 한글로 번역한 문서입니다.
@@ -166,7 +169,7 @@ public Flow flow2() {
 public TaskExecutor taskExecutor(){
     return new SimpleAsyncTaskExecutor("spring_batch");
 }
-```
+ ```
 
 task executor 설정으로 각 flow를 실행할 때 사용할 `TaskExecutor` 구현체를 지정한다.
 디폴트는 `SyncTaskExecutor`지만

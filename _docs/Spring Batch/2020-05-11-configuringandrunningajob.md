@@ -3,6 +3,9 @@ title: Configuring and Running a Job
 category: Spring Batch
 order: 5
 permalink: /Spring%20Batch/configuringandrunningajob/
+description: 스프링 배치 job 설정하기 한글 번역
+image: ./../../images/springbatch/batch-stereotypes.png
+lastmod: 2020-06-08T19:00:00+09:00
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureJob)를 한글로 번역한 문서입니다.
@@ -357,7 +360,7 @@ protected JobRepository createJobRepository() throws Exception {
 
 위 예제대로 설정하면 모든 쿼리는 메타 테이블에 "SYSTEM.TEST_"라는 프리픽스를 붙인다.
 BATCH_JOB_EXECUTION는 SYSTEM.TEST_JOB_EXECUTION로 바뀐다.
- 
+
 > 이 설정은 테이블 프리픽스만을 변경한다. 테이블 명이나 컬럼 명은 해당하지 않는다.
 
 ### 4.3.3. In-Memory Repository
@@ -451,8 +454,8 @@ caller에게 결과를 리턴해줘야 한다.
 ![Asynchronous Job Launcher Sequence](./../../images/springbatch/job-launcher-sequence-async.png)
 
 이런 경우 `SimpleJobLauncher`에  `TaskExecutor`를 설정하면 된다:
- 
- ```java
+
+```java
 @Bean
 public JobLauncher jobLauncher() {
 	SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
@@ -872,7 +875,7 @@ public Job footballJob() {
     				 ...
                                  .build();
 }
-``` 
+```
 
 ### 4.6.5. Stopping a Job
 

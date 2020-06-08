@@ -3,6 +3,9 @@ title: ItemReaders and ItemWriters
 category: Spring Batch
 order: 7
 permalink: /Spring%20Batch/itemreadersanditemwriters/
+description: 스프링 배치 ItemReader, ItemWriter 한글 번역
+image: ./../../images/springbatch/errorOnWrite.png
+lastmod: 2020-06-08T19:00:00+09:00
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#readersAndWriters)를 한글로 번역한 문서입니다.
@@ -758,7 +761,7 @@ Player player = itemReader.read();
 필드명을 이 두 `LineTokenizer` 구현체 중 하나에 주입해주면
 좀 더 가독성있게 매핑할 수 있다.
 가장 먼저, 아래 예제처럼 토크나이저에 파일 내 모든 필드의 컬럼명을 알려준다.
- 
+
 ```java
 tokenizer.setNames(new String[] {"ID", "lastName","firstName","position","birthYear","debutYear"});
 ```
@@ -1164,7 +1167,7 @@ Object[] values = extractor.extract(n);
 assertEquals(first, values[0]);
 assertEquals(last, values[1]);
 assertEquals(born, values[2]);
-``` 
+```
 
 이 구현체는 한 가지 프로퍼티, 즉 매핑할 필드들의 이름만 있으면 된다.
 `BeanWrapperFieldSetMapper`가 `FieldSet`의 필드를 객체의 setter와
@@ -1210,7 +1213,7 @@ public FlatFileItemWriter<CustomerCredit> itemWriter(Resource outputResource) th
 				.lineAggregator(lineAggregator)
 				.build();
 }
-``` 
+```
 
 이 예제에선 앞에서 설명한 `BeanWrapperFieldExtractor`를 사용해
 `CustomerCredit`의 name, credit 필드를 오브젝트 배열로 변환하고,
@@ -1270,7 +1273,7 @@ public FlatFileItemWriter<CustomerCredit> itemWriter(Resource outputResource) th
 FormatterLineAggregator<CustomerCredit> lineAggregator = new FormatterLineAggregator<>();
 lineAggregator.setFormat("%-9s%-2.0f");
 ...
-``` 
+```
 
 기본 구현은 자바 5에서 추가된 포맷터와 동일한 `Formatter`로 구현했다.
 자바 `Formatter`는 C 프로그래밍 언어의 printf 기능을 기반으로 한다.
@@ -1751,7 +1754,7 @@ public class CustomerCreditRowMapper implements RowMapper<CustomerCredit> {
         return customerCredit;
     }
 }
-``` 
+```
 
 `JdbcCursorItemReader`는 `JdbcTemplate`과 주요 인터페이스를 공유하므로,
 같은 데이터를 `JdbcTemplate`으로 읽는 예제를 `ItemReader`를 사용했을 때와 비교해보는 것도 좋다.
@@ -2039,7 +2042,7 @@ public SqlPagingQueryProviderFactoryBean queryProvider() {
 
 	return provider;
 }
-```  
+```
 
 위의 `ItemReader`는 `CustomerCredit` 객체를 리턴하는데 
 이를 위해서는 `RowMapper`를 반드시 지정해야 한다. 
@@ -2306,7 +2309,7 @@ public JdbcCursorItemReader playerSummarizationSource(DataSource dataSource) {
 				.build();
 
 }
-```  
+```
 
 위에 있는 `ItemReader`는 몇 번을 실행해도 `ExecutionContext`에 엔트리를 저장하지 않는다.
 

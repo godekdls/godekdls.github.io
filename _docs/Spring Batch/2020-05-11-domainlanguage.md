@@ -3,6 +3,9 @@ title: The Domain Language of Batch
 category: Spring Batch
 order: 4
 permalink: /Spring%20Batch/domainlanguage/
+description: 스프링 배치 도메인 언어 개념 정리 한글 번역
+image: ./../../images/springbatch/batch-stereotypes.png
+lastmod: 2020-06-08T19:00:00+09:00
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#domainLanguageOfBatch)를 한글로 번역한 문서입니다.
@@ -320,7 +323,7 @@ executionContext.putLong(getKey(LINES_READ_COUNT), reader.getPosition());
 이전 예시와 동일하게 다음 날 `Job`을 재실행했다고 가정한다.
 재시작할 때 데이터베이스로부터 마지막 실행을 가리키는 `ExecutionContext` 값을 조회한다.
 아래 예제처럼, `ItemReader`가 열릴 때 컨텍스트에 저장된 상태가 있는지 확인하고, 있다면 해당 컨텍스트를 참조해서 초기화한다.
-  
+
 ```java
 if (executionContext.containsKey(getKey(LINES_READ_COUNT))) {
     log.debug("Initializing for restart. Restart data is: " + executionContext);
@@ -387,8 +390,8 @@ ExecutionContext ecJob = jobExecution.getExecutionContext();
 
 `JobLauncher`는 아래 코드처럼
 주어진 `JobParameters`로 `Job`을 실행하는 간단한 인터페이스다.
- 
- ```java
+
+```java
 public interface JobLauncher {
 
 public JobExecution run(Job job, JobParameters jobParameters)
