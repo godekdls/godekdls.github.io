@@ -1599,7 +1599,7 @@ function render(template, model) {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-jackson)
 
-[Content Negotiation](https://godekdls.github.io/Reactive%20Spring/springwebflux/#content-negotiation)을 지원하는 서버는 클라이언트가 요청한 content-type에 따라 HTML 템플릿에 모델을 렌더링할 수도 있고, 다른 포맷(JSON, XML 등)으로 응답할 수도 있다. 스프링 웹플럭스가 제공하는 `HttpMessageWriterView `는 `spring-web`에 있는  `Jackson2JsonEncoder`, `Jackson2SmileEncoder`, `Jaxb2XmlEncoder` 등의 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)을 플러그인처럼 사용할 수 있다.
+[Content Negotiation](https://godekdls.github.io/Reactive%20Spring/springwebflux/#content-negotiation)을 지원하는 서버는 클라이언트가 요청한 content-type에 따라 HTML 템플릿에 모델을 렌더링할 수도 있고, 다른 포맷(JSON, XML 등)으로 응답할 수도 있다. 스프링 웹플럭스가 제공하는 `HttpMessageWriterView`는 `spring-web`에 있는  `Jackson2JsonEncoder`, `Jackson2SmileEncoder`, `Jaxb2XmlEncoder` 등의 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)을 플러그인처럼 사용할 수 있다.
 
 다른 뷰 기술과는 달리, `HttpMessageWriterView`는 디폴트 뷰로 [설정](#1117-view-resolvers)돼 있기 때문에 `ViewResolver`가 필요없다. `HttpMessageWrite` 나 `Encoder` 인스턴스를 감싸면 디폴트 뷰를 여러 개 설정할 수 있다. 이때는 런타임에 들어온 요청 content-type과 일치하는 뷰를 사용한다.
 

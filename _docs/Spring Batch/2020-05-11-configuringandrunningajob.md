@@ -501,8 +501,8 @@ Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니�
 이 모든 건 인자(argument)만 넘겨받을 수 있으면 가능하다.
 필수 인자는 다음과 같다:
 
-| jobPath 	|`ApplicationContext`를 생성할 때 필요한 XML 파일 위치. 이 파일은 Job 실행에 필요한 모든 것을 포함한다.|
-| jobPath   |실행할 job의 이름|
+| jobPath |`ApplicationContext`를 생성할 때 필요한 XML 파일 위치. 이 파일은 Job 실행에 필요한 모든 것을 포함한다.|
+| jobName |실행할 job의 이름|
 
 이 인자들은 path, name 순으로 전달해야한다.
 이 두 인자 다음에 나오는 모든 인자는 `JobParameter`로 간주하며 'name=value' 포맷으로 사용해야 한다.
