@@ -1,11 +1,11 @@
 ---
 title: WebSockets
-category: Reactive Spring
+category: Spring Web on Reactive Stack
 order: 5
 permalink: /Reactive%20Spring/websockets/
-description: (스프링5) 리액티브 스프링 웹소켓 한글 번역
+description: 스프링5 웹 리액티브 스택 웹소켓 한글 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
-lastmod: 2020-06-08T19:00:00+09:00
+lastmod: 2020-07-12T16:00:00+09:00
 ---
 
 > [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-websocket)를 한글로 번역한 문서입니다.

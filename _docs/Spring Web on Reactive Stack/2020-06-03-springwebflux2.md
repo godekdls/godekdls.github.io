@@ -1,11 +1,11 @@
 ---
 title: Spring WebFlux (2)
-category: Reactive Spring
+category: Spring Web on Reactive Stack
 order: 3
 permalink: /Reactive%20Spring/springwebflux2/
-description: (스프링 5) 리액티브 스프링 웹플럭스 (함수형 엔드포인트, URI 링크, CORS, 보안, View 렌더링, HTTP 캐시, 웹플럭스 설정)
+description: 스프링5 웹 리액티브 스택 웹플럭스 (함수형 엔드포인트, URI 링크, CORS, 보안, View 렌더링, HTTP 캐시, 웹플럭스 설정)
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
-lastmod: 2020-06-08T19:00:00+09:00
+lastmod: 2020-07-12T16:00:00+09:00
 ---
 
 > [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux)를 한글로 번역한 문서입니다.

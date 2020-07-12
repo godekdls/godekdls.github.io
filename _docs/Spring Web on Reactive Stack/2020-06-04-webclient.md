@@ -1,11 +1,11 @@
 ---
 title: WebClient
-category: Reactive Spring
+category: Spring Web on Reactive Stack
 order: 4
 permalink: /Reactive%20Spring/webclient/
-description: (스프링5) 리액티브 스프링 WebClient 한글 번역
+description: 스프링5 웹 리액티브 스택 WebClient 한글 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
-lastmod: 2020-06-08T19:00:00+09:00
+lastmod: 2020-07-12T16:00:00+09:00
 ---
 
 > [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-client)를 한글로 번역한 문서입니다.
