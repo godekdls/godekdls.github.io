@@ -12,8 +12,6 @@ lastmod: 2020-07-12T21:00:00+09:00
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
----
-
 ### 목차
 
 - [2.1. Introducing Reactor](#21-introducing-reactor)
@@ -23,6 +21,8 @@ lastmod: 2020-07-12T21:00:00+09:00
 - [2.2. Prerequisites](#22-prerequisites)
 - [2.3. Understanding the BOM](#23-understanding-the-bom)
 - [2.4. Getting Reactor](#24-getting-reactor)
+
+---
 
 이번 섹션은 리액터를 사용하는 데 도움이 될 다음 내용들을 다룬다:
 
