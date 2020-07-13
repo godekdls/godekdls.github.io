@@ -15,12 +15,12 @@ lastmod: 2020-07-12T21:00:00+09:00
 ### 목차
 
 - [2.1. Introducing Reactor](#21-introducing-reactor)
-  + [2.4.1. Maven Installation](#241-maven-installation)
-  + [2.4.2. Gradle Installation](#242-gradle-installation)
-  + [2.4.3. Milestones and Snapshots](#243-milestones-and-snapshots)
 - [2.2. Prerequisites](#22-prerequisites)
 - [2.3. Understanding the BOM](#23-understanding-the-bom)
 - [2.4. Getting Reactor](#24-getting-reactor)
+  + [2.4.1. Maven Installation](#241-maven-installation)
+  + [2.4.2. Gradle Installation](#242-gradle-installation)
+  + [2.4.3. Milestones and Snapshots](#243-milestones-and-snapshots)
 
 ---
 
@@ -74,7 +74,7 @@ BOM 자체는 코드네임과 식별용 수식어(qualifier)를 사용하는 릴
 - `BUILD-SNAPSHOT`: 개발과 테스트를 위한 빌드.
 - `M1`..`N`: 마일스톤이나 개발자 프리뷰.
 - `RELEASE`: 코드네임 시리즈에서 첫 번째 GA (General Availability) 릴리즈.
-- `SR1`..`N`: 이어지는 코드네임 시리즈 GA 릴리즈들 — PATCH 넘버와 동일함. (SR는 “Service Release”를 뜻한다).
+- `SR1`..`N`: 이어지는 코드네임 시리즈 GA 릴리즈들 — PATCH 번호와 동일함. (SR은 “Service Release”를 뜻한다).
 
 ---
 
@@ -123,8 +123,7 @@ BOM 자체는 코드네임과 식별용 수식어(qualifier)를 사용하는 릴
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 코어 라이브러리 의존성.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 여기엔 version 태그가 없다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `reactor-test`는 리액티브 스트림의 단위 테스트를 도와준다.
-</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `reactor-test`는 리액티브 스트림의 단위 테스트를 도와준다.</small>
 
 ### 2.4.2. Gradle Installation
 
@@ -218,7 +217,7 @@ repositories {
 }
 ```
 
-"[Getting Started](.)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/gettingStarted.adoc)
+"[Getting Started](https://projectreactor.io/docs/core/release/reference/#getting-started)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/gettingStarted.adoc)
 
 ---
 
