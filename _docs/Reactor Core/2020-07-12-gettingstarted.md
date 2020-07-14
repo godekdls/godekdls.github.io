@@ -37,7 +37,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 
 리액터는 JVM 위에서 동작하는, 완전한 논블로킹 리액티브 프로그래밍을 위한 기반 라이브러리로, 요구(demand)를 효율적으로 관리해 준다("backpressure"를 관리하는 방식으로). 리액터는 자바 8의 함수형 API를(주로 `CompletableFuture`, `Stream`, `Duration`) 직접 통합한다. 이를 통해 비동기 시퀀스 API(`Flux` - N개의 요소, `Mono` - 0 혹은 1개의 요소)를 구성하고, [리액티브 스트림](https://www.reactive-streams.org/) 스펙을 폭넓게 구현한다.
 
-리액터를 사용하면 `reactor-netty` 프로젝트 프로세스와 논블로킹 방식 통신이 가능하다. 리액터 네티는 마이크로서비스 아키텍처에 적합한, backpressure를 지원하는 HTTP(웹소켓 포함), TCP, UDP 네트워크 엔진을 제공한다. 완전한 리액티브 방식 인코딩과 디코딩을 지원한다.
+리액터를 사용하면 `reactor-netty` 프로젝트 프로세스와 논블로킹 방식으로 통신할 수 있다. 리액터 네티는 마이크로서비스 아키텍처에 적합한, backpressure를 지원하는 HTTP(웹소켓 포함), TCP, UDP 네트워크 엔진을 제공한다. 완전한 리액티브 방식 인코딩과 디코딩을 지원한다.
 
 ---
 
@@ -112,7 +112,7 @@ BOM 자체는 코드네임과 식별용 수식어(qualifier)를 사용하는 릴
     <dependency>
         <groupId>io.projectreactor</groupId>
         <artifactId>reactor-core</artifactId> <!-- (1) -->
-        <!-- (3) -->
+        <!-- (2) -->
     </dependency>
     <dependency>
         <groupId>io.projectreactor</groupId>
@@ -127,7 +127,7 @@ BOM 자체는 코드네임과 식별용 수식어(qualifier)를 사용하는 릴
 
 ### 2.4.2. Gradle Installation
 
-그래들은 5.0 버전 이전에는 메이븐 BOM을 지원하지 않지만, 스프링의 [gradle-dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin) 플러그인을 사용하면 된다.
+그래들 5.0 이전 버전은 메이븐 BOM을 지원하지 않지만, 스프링의 [gradle-dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin) 플러그인을 사용하면 된다.
 
 먼저 다음과 같이 그래들 플러그인 포탈로 부터 플러그인을 적용한다:
 

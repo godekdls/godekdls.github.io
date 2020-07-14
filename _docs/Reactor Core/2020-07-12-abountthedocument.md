@@ -40,7 +40,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 
 개선할 점이나 제안하고 싶은 게 있다면 언제든지 pull request를 생성해 달라.
 
-레포지토리 로컬 사본을 체크아웃 받아서 `asciidoctor` 그래들 테스크를 실행해 직접 문서를 생성하고 렌더링을 확인해보길 권한다. 일부 섹션은 레포지토리 내 파일을 참고하고 있기 때문에 GitHub 렌더링이 깨질 가능성도 있다.
+레포지토리 로컬 사본을 체크아웃 받아서 `asciidoctor` 그래들 테스크를 실행해 직접 문서를 생성하고 렌더링을 확인해보길 권한다. 일부 섹션은 레포지토리 내 파일을 참조하고 있기 때문에 GitHub 렌더링이 깨질 가능성도 있다.
 
 > 섹션 대부분은 쉽게 수정할 수 있도록 마지막에 해당 섹션의 깃허브 소스 파일을 수정하는 UI 링크가 있다. 이 링크는 HTML5 버전 레퍼런스 가이드에만 있다. 예를 들어: [About the Documentation](https://projectreactor.io/docs/core/release/reference/#about-doc) [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/aboutDoc.adoc).
 
