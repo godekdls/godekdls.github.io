@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-15T00:00:00+09:00
 ---
 
-> [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/)를 한글로 번역한 문서입니다.
+> [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#intro-reactive)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
@@ -171,7 +171,7 @@ userService.getFavorites(userId)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 에러 발생 시엔 `cacheService`로 대응한다(fallback).</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 나머지 체인은 이전 예제와 유사하다.</small>
 
-`Future` 객체는 콜백보다 여러면으로 더 낫고 자바 8의 `CompletableFuture`로 좀 더 개선됐만, 조합해서 쓰긴 여전히 어렵다. `Future` 객체 여러개를 조율하기란 가능은 하지만 쉽지 않다. `Future`는 다른 문제도 있다:
+`Future` 객체는 콜백보다 여러면으로 더 낫고 자바 8 `CompletableFuture`로 좀 더 개선되기도 했지만, 조합해서 쓰긴 여전히 어렵다. `Future` 객체 여러개를 조율하기란 가능은 하지만 쉽지 않다. `Future`는 다른 문제도 있다:
 
 - `Future` 객체는 `get()` 메소드를 호출하면 결국 블로킹된다.
 - 지연 연산(lazy computation)을 지원하지 않는다.
@@ -305,7 +305,7 @@ assertThat(results).containsExactly( // (8)
 
 중간 연산자로 전송 중인 요청을 변경할 수도 있다. 10개의 배치 데이터를 그룹화하는 `buffer` 연산자를 생각해 보자. 구독자가 버퍼 하나를 요청하면, 데이터 소스는 데이터 10개를 생산할 수 있다. 일부 연산자는 **prefetching** 전략을 구현하는데, 이는 불필요한 `request(1)` 왕복을 방지하며, 요청 전 미리 데이터를 생성해 두는 비용이 크지 않다면 더 유리하다.
 
-이는 푸시 모델 대신 **push-pull hybrid 하이브리드**를 사용하는데, 데이터가 있다면 다운스트림이 업스트림에 데이터 n개를 pull할 수 있다. 하지만 데이터가 준비되지 않은 경우엔 데이터를 생산했을 때 업스트림이 push한다.
+이는 푸시 모델 대신 **push-pull 하이브리드**모델을 사용하는데, 데이터가 있다면 다운스트림이 업스트림에 데이터 n개를 pull할 수 있다. 하지만 데이터가 준비되지 않은 경우엔 데이터를 생산했을 때 업스트림이 push한다.
 
 ### 3.3.6. Hot vs Cold
 
