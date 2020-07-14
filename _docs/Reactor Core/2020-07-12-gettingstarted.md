@@ -59,7 +59,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 
 리액터 3는 BOM(Bill Of Materials) 모델을 사용한다(`reactor-core 3.0.4`에서 `Aluminium` 릴리즈 트레인을 사용한 이후부터). 이를 통해 각 아티팩트의 버전 관리 체계가 다르더라도, 함께 잘 동작하는 아티팩트 그룹을 엄선해서 관련 버전을 함께 제공한다.
 
-BOM 자체는 코드네임과 식별용 수식어(qualifier)를 사용하는 릴리즈 트레인 체계로 버전을 정한다. 예를 들어 다음과 같다:
+BOM 자체는 코드명과 식별용 수식어(qualifier)를 사용하는 릴리즈 트레인 체계로 버전을 정한다. 예를 들어 다음과 같다:
 
 *Aluminium-RELEASE*<br>
 *Californium-BUILD-SNAPSHOT*<br>
@@ -67,14 +67,14 @@ BOM 자체는 코드네임과 식별용 수식어(qualifier)를 사용하는 릴
 *Bismuth-RELEASE*<br>
 *Californium-SR32*<br>
 
-코드네임은 전통적으로 MAJOR.MINOR 번호를 나타낸다. 대부분 [주기율표](https://en.wikipedia.org/wiki/Periodic_table#Overview)에서 알파벳 오름차순으로 따왔다.
+코드명은 전통적으로 MAJOR.MINOR 번호를 나타낸다. 대부분 [주기율표](https://en.wikipedia.org/wiki/Periodic_table#Overview)에서 알파벳 오름차순으로 따왔다.
 
 각 식별용 수식어는 다음과 같다 (일어나는 시간순):
 
 - `BUILD-SNAPSHOT`: 개발과 테스트를 위한 빌드.
 - `M1`..`N`: 마일스톤이나 개발자 프리뷰.
-- `RELEASE`: 코드네임 시리즈에서 첫 번째 GA (General Availability) 릴리즈.
-- `SR1`..`N`: 이어지는 코드네임 시리즈 GA 릴리즈들 — PATCH 번호와 동일함. (SR은 “Service Release”를 뜻한다).
+- `RELEASE`: 코드명 시리즈에서 첫 번째 GA (General Availability) 릴리즈.
+- `SR1`..`N`: 이어지는 코드명 시리즈 GA 릴리즈들 — PATCH 번호와 동일함. (SR은 “Service Release”를 뜻한다).
 
 ---
 
