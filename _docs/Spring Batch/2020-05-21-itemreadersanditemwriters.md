@@ -2284,7 +2284,7 @@ public BeanValidatingItemProcessor<Person> beanValidatingItemProcessor() throws 
 
 기본적으로 모든 `ItemReader`와 `ItemWriter` 구현체는
 커밋 전에 현재 상태를 `ExecutionContext`에 저장한다.
-하지만 이게 항상 바람직하진 아니다.
+하지만 이게 항상 바람직한 건 아니다.
 예를들어 많은 개발자가 처리 식별자를 사용해 데이터베이스 reader를 재사용할 수 있게 만든다.
 이땐 입력 데이터가 처리됐는지를 식별하기 위한 별도 컬럼을 이용한다.
 특정 레코드를 읽으면 (혹은 쓰면) 이 플래그를 `false`에서 `true`로 바꾼다. 
