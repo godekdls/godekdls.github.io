@@ -39,7 +39,7 @@ lastmod: 2020-07-19T16:40:00+09:00
 Schedulers.enableMetrics();
 ```
 
-> 스케줄러를 생성할 때 instrumentation을 수행한다. 이 메소드는 가능한한 빨리 호출하는 것이 좋다.
+> 스케줄러를 생성할 때 메트릭 수집을 시작한다. 이 메소드는 가능한한 빨리 호출하는 것이 좋다.
 
 > 스프링 부트를 사용하고 있다면, 이 코드를 `SpringApplication.run(Application.class, args)` 앞에 두는 게 좋다.
 
@@ -95,7 +95,7 @@ listenToEvents()
 | :----------------------- | :------------------ | :----------------------------------------------------------- |
 | reactor.subscribed       | Counter             | 리액터 시퀀스를 구독한 횟수                                  |
 | reactor.malformed.source | Counter             | 잘못된 소스로부터 받은 이벤트 수 (i.e. onComplete 다음 onNext) |
-| reactor.requested        | DistributionSummary | 최소 한 번 언바운드 요청을 받기 전까지, 모든 구독자가 이름을 지정한 `Flux`에 요청을 보낸 횟수 |
+| reactor.requested        | DistributionSummary | 최소 한 번 언바운드 요청을 받기 전까지, 모든 구독자가 지정한 `Flux`에 요청을 보낸 횟수 |
 | reactor.onNext.delay     | Timer               | onNext 신호 사이 지연 시간 (또는 onSubscribe와 첫 번째 onNext 사이 간격) |
 | reactor.flow.duration    | Timer               | 구독 후 시퀀스 종료나 취소까지 소요된 시간. 타이머를 종료한 이벤트를 (`onComplete`, `onError`, `cancel`) 알 수 있는 상태 태그를 추가한다. |
 
