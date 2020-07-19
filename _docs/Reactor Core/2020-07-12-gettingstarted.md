@@ -59,7 +59,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 
 리액터 3는 BOM(Bill Of Materials) 모델을 사용한다(`reactor-core 3.0.4`에서 `Aluminium` 릴리즈 트레인을 사용한 이후부터). 이를 통해 각 아티팩트의 버전 관리 체계가 다르더라도, 함께 잘 동작하는 아티팩트 그룹을 엄선해서 관련 버전을 함께 제공한다.
 
-BOM 자체는 코드명과 식별용 수식어(qualifier)를 사용하는 릴리즈 트레인 체계로 버전을 정한다. 예를 들어 다음과 같다:
+BOM 자체는 코드명과 식별용 수식어를 사용하는 릴리즈 트레인으로 버전을 정한다. 예를 들어 다음과 같다:
 
 *Aluminium-RELEASE*<br>
 *Californium-BUILD-SNAPSHOT*<br>
@@ -74,7 +74,7 @@ BOM 자체는 코드명과 식별용 수식어(qualifier)를 사용하는 릴리
 - `BUILD-SNAPSHOT`: 개발과 테스트를 위한 빌드.
 - `M1`..`N`: 마일스톤이나 개발자 프리뷰.
 - `RELEASE`: 코드명 시리즈에서 첫 번째 GA (General Availability) 릴리즈.
-- `SR1`..`N`: 이어지는 코드명 시리즈 GA 릴리즈들 — PATCH 번호와 동일함. (SR은 “Service Release”를 뜻한다).
+- `SR1`..`N`: 이어지는 코드명 시리즈의 GA 릴리즈들 — PATCH 번호와 동일함. (SR은 “Service Release”를 뜻한다).
 
 ---
 
@@ -82,7 +82,7 @@ BOM 자체는 코드명과 식별용 수식어(qualifier)를 사용하는 릴리
 
 [앞서 언급](#23-understanding-the-bom)했듯, 리액터를 사용하는 가장 쉬운 방법은 BOM을 통해 프로젝트에 관련 의존성을 추가하는 것이다. 단, 버전을 생략해야 BOM에 정의된 버전이 추가된 다는 점에 주의하라.
 
-하지만 특정 아티팩트의 버전을 강제로 지정하고 싶다면, 보통 의존성을 추가할 때처럼 명시하면 된다. BOM을 완전히 버리고 원하는 아티팩트 버전으로 의존성을 추가할 수도 있다.
+하지만 특정 아티팩트의 버전을 강제하고 싶다면, 평소에 의존성을 추가할 때처럼 명시하면 된다. BOM을 완전히 버리고 원하는 아티팩트 버전으로 의존성을 추가할 수도 있다.
 
 ### 2.4.1. Maven Installation
 
@@ -129,7 +129,7 @@ BOM 자체는 코드명과 식별용 수식어(qualifier)를 사용하는 릴리
 
 그래들 5.0 이전 버전은 메이븐 BOM을 지원하지 않지만, 스프링의 [gradle-dependency-management](https://github.com/spring-gradle-plugins/dependency-management-plugin) 플러그인을 사용하면 된다.
 
-먼저 다음과 같이 그래들 플러그인 포탈로 부터 플러그인을 적용한다:
+먼저 다음과 같이 그래들 플러그인 포탈로부터 플러그인을 적용한다:
 
 ```groovy
 plugins {

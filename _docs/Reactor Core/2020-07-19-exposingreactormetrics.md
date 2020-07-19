@@ -55,7 +55,7 @@ Schedulers.enableMetrics();
 
 스케줄러 하나에 여러 executor가 있을 수도 있기 때문에, 모든 executor 메트릭엔 `reactor_scheduler_id` 태그가 있다.
 
-> 그라파나 + 프로메테우스 사용자는 스레드, 완료된 테스크, 테스크 큐 등의 편리한 메트릭을 제공하는 [빌트인 대시보드](https://raw.githubusercontent.com/reactor/reactor-monitoring-demo/master/dashboards/schedulers.json)를 활용할 수 있다.
+> 그라파나 + 프로메테우스 사용자는 스레드, 완료된 태스크, 태스크 큐 등의 편리한 메트릭을 제공하는 [빌트인 대시보드](https://raw.githubusercontent.com/reactor/reactor-monitoring-demo/master/dashboards/schedulers.json)를 활용할 수 있다.
 
 ---
 

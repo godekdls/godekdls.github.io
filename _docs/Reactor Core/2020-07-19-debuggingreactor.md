@@ -218,7 +218,7 @@ Error has been observed by the following operator(s):
 
 `checkpoint(String)` 메소드로는 어셈블리 traceback을 식별하기 위한 유니크한 `String description`을 추가할 수 있다. 이 방법은 stack trace를 생략하기 때문에, 이 문자열로 어셈블리 위치를 식별해야 한다. `checkpoint(String)`은 일반 `checkpoint`보다 비용이 덜 드는 작업이다.
 
-아래처럼 `checkpoint(String)`은 "light"이라는 단어를 함께 출력한다 (검색하기 편할 것이다):
+아래처럼 `checkpoint(String)`은 "light"라는 단어를 함께 출력한다 (검색하기 편할 것이다):
 
 ```java
 ...
