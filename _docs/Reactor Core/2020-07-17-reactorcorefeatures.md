@@ -6,6 +6,7 @@ permalink: /Reactor%20Core/reactorcorefeatures/
 description: 리액터 코어 기능 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-17T23:49:00+09:00
+priority: 0.8
 ---
 
 > [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#core-features)를 한글로 번역한 문서입니다.
@@ -713,7 +714,7 @@ final Flux<String> flux = Flux
 
 new Thread(() -> flux.subscribe(System.out::println)); // (5)
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Thread` 인스턴스 4개로 풀을 만드는 `Scheduler`를 생성한다. </small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Thread` 인스턴스 4개를 지원하는 `Scheduler`를 생성한다. </small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 첫 번째 `map`은 (5)에서 생성한 익명 스레드에서 실행한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `publishOn`은 (1)에서 생성한 스레드 중 하나에서 전체 시퀀스를 전환한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 두 번째 `map`은 (1)에서 생성한 스레드 중 하나에서 실행한다.</small><br>
@@ -741,7 +742,7 @@ final Flux<String> flux = Flux
 
 new Thread(() -> flux.subscribe(System.out::println)); // (5)
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Thread` 인스턴스 4개로 풀을 만드는 `Scheduler`를 생성한다. </small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Thread` 인스턴스 4개를 지원하는 `Scheduler`를 생성한다. </small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 첫 번째 `map`은 이 스레드 4개 중 하나에서 실행한다...</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> ...`subscribeOn`이 (5)에서 구독하는 즉시 전체 시퀀스를 전환하기 때문이다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 두 번째 `map`도 동일한 스레드에서 실행한다.</small><br>
