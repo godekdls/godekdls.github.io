@@ -751,7 +751,7 @@ itemReader.open(new ExecutionContext());
 Player player = itemReader.read();
 ```
 
-`read`를 호출할 때 마다 파일 각 라인을 읽어 `Player` 객체를 반환한다.
+`read`를 호출할 때마다 파일 각 라인을 읽어 `Player` 객체를 반환한다.
 파일을 다 읽으면 `null`을 리턴한다.
 
 #### Mapping Fields by Name
@@ -1699,7 +1699,7 @@ public MultiResourceItemReader multiResourceReader() {
 `ResultSet`은 커서를 현재 로(row)에 유지한다. 
 `ResultSet`의 `next`를 호출하면 이 커서가 다음 로(row)를 가리킨다. 
 스프링 배치의 커서 기반 `ItemReader` 구현체는 초기화할 때 커서를 열고
-`read`를 호출할 때 마다 커서를 한 행씩 이동시켜서,
+`read`를 호출할 때마다 커서를 한 행씩 이동시켜서,
 나중에 처리할 수 있는 매핑된 객체를 반환한다.
 그 다음 모든 리소스를 반환할 수 있게 `close` 메소드를 호출한다.
 스프링 코어 `JdbcTemplate`은 콜백 패턴을 사용해서 `ResultSet`의 모든 로(row)를 매핑하고
@@ -2713,7 +2713,7 @@ MongoDB에 write하는 `ItemWriter` 구현체다.
 
 #### LdifReader
 
-`LdifReader`는 `read` 메소드를 호출할 때 마다
+`LdifReader`는 `read` 메소드를 호출할 때마다
 `Resource`에서 LDIF (LDAP Data Interchange Format) 레코드를
 읽어 파싱하고 `LdapAttribute` 객체로 반환한다.
 스프링 배치는 `LdifReader` 인스턴스를 생성하는
@@ -2730,7 +2730,7 @@ read를 호출할 때마다 POJO를 반환한다.
 #### AvroItemReader
 
 `AvroItemReader`는 `Resource`에서 직렬화된 Avro 데이터를 읽는다.
-read 메소드를 호출할 때 마다 자바 클래스나 Avro 스키마로 명시한 타입의 인스턴스를 반환한다.
+read 메소드를 호출할 때마다 자바 클래스나 Avro 스키마로 명시한 타입의 인스턴스를 반환한다.
 입력 데이터의 Avro 스키마를 사용하도록 설정할 수 있지만 필수는 아니다.
 스프링 배치는 `AvroItemReader` 인스턴스를 생성하는 `AvroItemReaderBuilder`를 제공한다.
 

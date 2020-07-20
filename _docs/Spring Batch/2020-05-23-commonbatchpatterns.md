@@ -247,7 +247,7 @@ public class TradeItemWriter implements ItemWriter<Trade>,
 }
 ```
 
-`TradeItemWriter`는 각 `Trade` 아이템을 처리할 때 마다
+`TradeItemWriter`는 각 `Trade` 아이템을 처리할 때마다
 `amount` 값을 `totalAmount`에 더한다.
 마지막 `Trade`를 처리하고 나면 프레임워크가 `writeFooter` 메소드를 호출해서
 파일에 `totalAmount`를 기록한다.

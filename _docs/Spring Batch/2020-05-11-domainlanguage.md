@@ -351,7 +351,7 @@ if (executionContext.containsKey(getKey(LINES_READ_COUNT))) {
 각 `Step`에서 데이터베이스로부터 `ExecutionContext`를 읽어와 함께 처리한다(`StepExecution`의 일부로).
 반대로 01-02 배치에선 다른 `JobInstance`를 사용하므로 `Step`은 빈 컨텍스트를 주입받는다.
 프레임워크는 여러 가지 상황을 고려해 job 인스턴스와 컨텍스트를 결정한다.
-`StepExecution`이 생길 때 마다 `ExecutionContext`가 하나씩 생긴다는 점도 알아두자.
+`StepExecution`이 생길 때마다 `ExecutionContext`가 하나씩 생긴다는 점도 알아두자.
 `ExecutionContext`는 keyspace를 공유하기 때문에 주의해서 사용해야 한다.
 즉, 데이터가 겹쳐써지지 않도록 값을 넣을 때 주의해야 한다.
 반대로 `Step`은 데이터 저장하지 않으므로 별다른 영향을 주지 않는다.

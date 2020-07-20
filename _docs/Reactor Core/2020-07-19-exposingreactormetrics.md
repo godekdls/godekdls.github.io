@@ -45,7 +45,7 @@ Schedulers.enableMetrics();
 
 스케줄러 메트릭을 활성화했고 클래스 패스에 Micrometer가 있다면, 리액터는 Micrometer를 사용해서 스케줄러 대부분이 사용하는 executor를 추적한다.
 
-아래 있는 메트릭 정보는 [Micrometer’s documentation](http://micrometer.io/docs/ref/jvm)을 참고하라:
+아래 있는 메트릭 정보는 [Micrometer 문서](http://micrometer.io/docs/ref/jvm)를 참고하라:
 
 - executor_active_threads
 - executor_completed_tasks_total

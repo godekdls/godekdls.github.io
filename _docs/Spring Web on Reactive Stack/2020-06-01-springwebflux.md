@@ -568,7 +568,7 @@ JSON, binary JSON([Smile](https://github.com/FasterXML/smile-format-specificatio
 스트리밍 타입을 multi-value publisher로 직렬화하면
 [line-delimited JSON](https://en.wikipedia.org/wiki/JSON_streaming) 포맷으로
 따로따로 인코딩하고, write, flush한다.
-- SSE라면 이벤트가 발생할 때 마다 `Jackson2Encoder`를 호출하고 바로 flush한다.
+- SSE라면 이벤트가 발생할 때마다 `Jackson2Encoder`를 호출하고 바로 flush한다.
 
 > 기본적으로 `Jackson2Encoder`, `Jackson2Decoder` 모두
 > `String`을 객체로 사용할 수 없다. 
