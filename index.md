@@ -52,6 +52,6 @@ title: Hello World!
 - https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html
 
 #### [Reactor Core](/Reactor%20Core/contents/)
-- 2020
+- 2020/07
 - 3.3.7.RELEASE
 - https://projectreactor.io/docs/core/release/reference/
