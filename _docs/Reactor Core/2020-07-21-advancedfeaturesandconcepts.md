@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-07-21T16:00:00+09:00
 ---
 
-> [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/)를 한글로 번역한 문서입니다.
+> [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#advanced)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
@@ -520,11 +520,11 @@ parallel-2 -> 10
 
 Dropping 훅은 연산자의 소스가 리액티브 스트림 스펙을 지키지 않았을 때 실행한다. 이런 종류의 에러는 일반적인 실행 경로를 벗어난다 (즉, `onError`를 통해 전파할 수 없다).
 
-전형적으로 `onCompleted`을 호출한 이후에 `Publisher`가 `onNext`를 호출하는 경우가 그렇다. 이 때 `onNext` 값은 드랍된다. 관련 없는 `onError` 신호도 마찬가지다.
+전형적으로 `onCompleted`를 호출한 이후에 `Publisher`가 `onNext`를 호출하는 경우가 그렇다. 이 때 `onNext` 값은 드랍된다. 관련 없는 `onError` 신호도 마찬가지다.
 
 `onNextDropped`, `onErrorDropped` 훅을 사용하면 버려지는 신호를 컨슘할 글로벌 `Consumer`를 설정할 수 있다. 예를 들어 로그를 남긴 다음 필요하다면 관련 리소스를 정리할 수 있다 (남은 리액티브 체인에서도 절대 사용하지 않기 때문).
 
-로(row) 하나에 훅을 두 번 설정하면 덮어 써지는 대신 그대로 더해진다 (additive): 제공한 모든 컨슈머를 실행한다. 훅은 `Hooks.resetOn*Dropped()` 메소드로 완전히 리셋시킬 수 있다.
+로(row) 하나에 훅을 두 번 설정하면 덮어 써지는 대신 그대로 더해진다 (additive). 즉, 제공한 모든 컨슈머를 실행한다. 훅은 `Hooks.resetOn*Dropped()` 메소드로 완전히 리셋시킬 수 있다.
 
 ### 9.7.2. Internal Error Hook
 
@@ -641,7 +641,7 @@ StepVerifier.create(r)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 그 다음 `map`을 사용해서 `"message"`에 해당하는 키를 추출하고 기존 단어와 연결한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 그 결과 `Mono<String>`은 `"Hello World"`를 방출한다.</small>
 
-> 위에 표시한 숫자가 선언 순서와 다른 것은 실수가 아니다. 실행 순서를 나타낸 것이다. `subscriberContext`는 체인 마지막에 있지만 가장 먼저 실행된다 (구독 시점이란 특성과 구독 신호는 아래에서 위로 흐른다는 사실 때문에).
+> 위에 표시한 숫자와 선언 순서가 일치하지 않는 것은 실수가 아니다. 실행 순서를 나타낸 것이다. `subscriberContext`는 체인 마지막에 있지만 가장 먼저 실행된다 (구독 시점이란 특성과 구독 신호는 아래에서 위로 흐른다는 사실 때문에).
 
 > 연산자 체인에서 `Context`에 데이터를 담는 순서와 읽는 순서는 중요하다. 다음 예제에서 알 수 있듯이, `Context`는 불변이며, `Context` 내 정보는 위에 있는 연산자에서만 볼 수 있다:
 
@@ -818,7 +818,7 @@ public void contextForLibraryReactivePut() {
 
 ## 9.9. Dealing with Objects that Need Cleanup
 
-매우 특별한 경우긴 하지만, 어플리케이션에서 사용하는 객체를 더 이상 사용하지 않는다면 어떤 방식으로든 cleanup해줘야 할 때가 있다. 참조를 카운팅하고 있는 객체나 힙 바깥에서 관리하는 객체 등의 고급 시나리오에 해당한다. 네티의 `ByteBuf`가 이 둘에 해당하는 대표적인 예시이다.
+매우 특이 케이스긴 하지만, 어플리케이션에서 사용하는 객체를 더 이상 사용하지 않는다면 어떤 방식으로든 cleanup해줘야 할 때가 있다. 참조를 카운팅하고 있는 객체나 힙 바깥에서 관리하는 객체 등의 고급 시나리오에 해당한다. 네티의 `ByteBuf`가 이 둘에 해당하는 대표적인 예시이다.
 
 이런 객체를 제대로 cleanup하려면 글로벌 훅 뿐 아니라 ([Using Global Hooks](#97-using-global-hooks) 참고), `Flux` 별로도 고려해볼 필요가 있다:
 
@@ -829,13 +829,13 @@ public void contextForLibraryReactivePut() {
 
 각 훅은 모든 cleanup 시나리오를 다 고려해서 만들어지지 않았으며, 사용자는 (예를 들어) `onOperatorError`에 특정 에러 처리 로직과 cleanup 로직을 함께 구현하고 싶을 수도 있기 때문이다.
 
-일부 연산자는 cleanup이 필요한 객체에 적합하지 않다는 것에 주의하라. 예를 들어 `bufferWhen`은 오버랩된 버퍼를 만들 수 있으며, 이는 앞에서 사용한 discard "로컬 훅"이 첫 번째 버퍼는 버려지는 것으로 보고, 여전히 유효한 두 번째 버퍼 안에도 있는 아이템을 cleanup할 수 있다.
+일부 연산자는 cleanup이 필요한 객체에 적합하지 않다는 것에 주의하라. 예를 들어 `bufferWhen`은 오버랩된 버퍼를 만들 수 있으며, 앞에서 사용한 discard "로컬 훅"이 첫 번째 버퍼는 버려지는 것으로 보고, 두 번째 버퍼와 겹치는 아이템을 유효한데도 cleanup해버릴 수 있다.
 
 >  cleanup이 목적이라면 **모든 연산자는 멱등성을 보장해야 한다**. 같은 객체에 여러번 적용하는 경우가 그렇다. 클래스 레벨 `instanceOf`을 체크하는 `doOnDiscard` 연산자와는 달리, 글로벌 훅은 어떤 `Object`도 될 수 있는 인스턴스를 처리한다. 이는 사용자가 어떤 인스턴스를 cleanup하고 하지 않을지를 구현하는 방식에 달려있다.
 
 ### 9.9.1. The `doOnDiscard` Operator or Local Hook
 
-사용자 코드에서 접근할 수 없는 객체를 cleanup하기 위한 훅이다. 일반적인 플로우에서 cleanup할 때 사용한다 (아이템을 너무 많이 푸쉬하는 등 비정상적인 소스는 `onNextDropped`으로 처리한다).
+사용자 코드에서 접근할 수 없는 객체를 cleanup하기 위한 훅이다. 일반적인 플로우에서 cleanup할 때 사용한다 (아이템을 너무 많이 푸쉬하는 등 비정상적인 소스는 `onNextDropped`로 처리한다).
 
 연산자를 통해 활성화되며, 주어진 `Flux`나 `Mono`에만 적용되기 때문에 로컬 훅이라고 할 수 있다.
 
@@ -875,7 +875,7 @@ cleanup이 필요한 아이템이라면 `onOperatorError`에 이를 구현하되
 
 리액터에서 이 애노테이션을 사용하지만, 모든 리액터 기반 자바 프로젝트에서도 똑같이 null-safe API를 선언할 수 있다. 메소드 내부에서 사용하는 타입에 대한 널 체크는 이 기능 범위를 벗어난다.
 
-이 애노테이션은 [JSR 305](https://jcp.org/en/jsr/detail?id=305) 애노테이션을 선언하고 있기 때문에 (IntelliJ IDEA 등의 툴에서 지원하는, 현재는 추가 개발이 진행되지 않는 JSR), 자바 개발자는 런타임 `NullPointerException`를 방지하기 위한 null-safety 관련 경고를 볼 수 있다. JSR 305 메타 애노테이션 덕분에 툴 벤더는 리액터 애노테이션 전용 하드 코딩없이, 일반적인 방식으로 null safety를 지원할 수 있다.
+이 애노테이션은 [JSR 305](https://jcp.org/en/jsr/detail?id=305) 애노테이션을 선언하고 있기 때문에 (IntelliJ IDEA 등의 툴에서 지원하는, 현재는 추가 개발이 진행되지 않는 JSR), 자바 개발자는 런타임 `NullPointerException`을 방지하기 위한 null-safety 관련 경고를 볼 수 있다. JSR 305 메타 애노테이션 덕분에 툴 벤더는 리액터 애노테이션 전용 하드 코딩없이, 일반적인 방식으로 null safety를 지원할 수 있다.
 
 > 코틀린 1.1.5+에선 클래스패스에 JSR 305 의존성을 추가할 필요가 없으며, 권장하지도 않는다.
 
