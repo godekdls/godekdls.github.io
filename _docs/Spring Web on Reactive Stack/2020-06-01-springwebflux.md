@@ -6,6 +6,7 @@ permalink: /Reactive%20Spring/springwebflux/
 description: 스프링5 웹 리액티브 스택 웹플럭스 한글 번역 1편 (리액티브, 웹플럭스 소개, DispatcherHandler, 컨트롤러)
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
+priority: 0.8
 ---
 
 > [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux)를 한글로 번역한 문서입니다.

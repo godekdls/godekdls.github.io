@@ -20,10 +20,10 @@ layout: null
         <changefreq>{{ post.sitemap.changefreq }}</changefreq>
         {% endif %}
 
-        {% if post.sitemap.priority == null %}
+        {% if post.priority == null %}
         <priority>0.5</priority>
         {% else %}
-        <priority>{{ post.sitemap.priority }}</priority>
+        <priority>{{ post.priority }}</priority>
         {% endif %}
 
     </url>
