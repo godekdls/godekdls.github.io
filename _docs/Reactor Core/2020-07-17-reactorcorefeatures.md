@@ -61,7 +61,7 @@ priority: 0.8
 
 이 둘은 비동기 처리에 대략적인 카디널리티 정보를 담는 식으로 타입을 구분한다. 예를 들어 HTTP 요청은 응답을 하나만 생성하기 때문에 굳이 `count` 연산을 실행할 필요가 없다. 이런 HTTP 호출 결과를 `Mono<HttpResponse>`로 표현하면 아이템이 0~1개일 때 사용할만한 연산자만 제공하기 때문에 `Flux<HttpResponse>`로 표현하는 것 보다 더 낫다.
 
-최대 카디널리티를 바꿔 주는 연산자로 타입을 변환할 수도 있다. 예를 들어 `Flux`엔 `count` 연산자가 있는데, `Mono<Long>`를 리턴한다.
+최대 카디널리티를 바꿔 주는 연산자로 타입을 변환할 수도 있다. 예를 들어 `Flux`엔 `count` 연산자가 있는데, `Mono<Long>`을 리턴한다.
 
 ---
 
@@ -235,7 +235,7 @@ ints.subscribe(i -> System.out.println(i),
     () -> System.out.println("Done"),
     sub -> sub.request(10)); // (1)
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 구독을 시작하면 `Subscription`을 건내 받는다. 데이터 소스로부터 최대 **10개**까지 받겠다는 신호를 보낸다 (실제론 값 4개를 방출하고 완료하다).</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 구독을 시작하면 `Subscription`을 건내 받는다. 데이터 소스로부터 최대 **10개**까지 받겠다는 신호를 보낸다 (실제론 값 4개를 방출하고 완료한다).</small>
 
 ### 4.3.2. Cancelling a `subscribe()` with Its `Disposable`
 
@@ -310,7 +310,7 @@ Subscribed
 
 ### 4.3.4. On Backpressure and Ways to Reshape Requests
 
-컨슈머 압력을 소스로 다시 전파하는 backpressure를, 리액터에선 업스트림 연산자로 `request`를 보내는 식으로 구현했다. 현재의 모든 요청을 합쳐서 종종 현재 "demand" 또는 "pending request"라고 부른다. Demand는 언바운드 요청을 나타내는 `Long.MAX_VALUE`으로 제한한다 ("가능한 빨리 생산하라"는 뜻 — 기본적으로 backpressure를 비활성화한다).
+컨슈머 압력을 소스로 다시 전파하는 backpressure를, 리액터에선 업스트림 연산자로 `request`를 보내는 식으로 구현했다. 현재의 모든 요청을 합쳐서 종종 현재 "demand" 또는 "pending request"라고 부른다. Demand는 언바운드 요청을 나타내는 `Long.MAX_VALUE`로 제한한다 ("가능한 빨리 생산하라"는 뜻 — 기본적으로 backpressure를 비활성화한다).
 
 첫 요청은 구독하는 타이밍에 구독자 쪽에서 보내는데, 모든 데이터를 직접적으로 즉시 구독하면  `Long.MAX_VALUE`의 언바운드 요청을 트리거링한다:
 
