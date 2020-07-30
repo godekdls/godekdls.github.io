@@ -103,6 +103,26 @@
 			</article>
 		</section>
 
+		<!-- 이전/다음 페이지 커스텀 (dain) -->
+		<p class="" style="text-align: center;">
+		{% for group in grouped %}
+			{% if group.name == page.category %}
+				{% assign items = group.items | sort: 'order' %}
+					{% if page.order == 1 %}
+						<span style="text-decoration:none; padding-left: 20px; padding-right: 20px; color: #9999;">&lt;&lt;</span>
+					{% else %}
+						{% assign prevIndex = page.order | minus: 2 %}
+						<a href="{{items[prevIndex].url}}" style="text-decoration:none; padding-left: 20px; padding-right: 20px;">&lt;&lt;</a>
+					{% endif %}
+					{% if page.order == items.size %}
+						<span style="text-decoration:none; padding-right: 20px; padding-left: 20px; color: #9999;">&gt;&gt;</span>
+					{% else %}
+						<a href="{{items[page.order].url}}" style="text-decoration:none; padding-right: 20px; padding-left: 20px;">&gt;&gt;</a>
+					{% endif %}
+			{% endif %}
+		{% endfor %}
+		</p>
+
 		<script>
 			document.getElementById("open-nav").addEventListener("click", function () {
 				document.body.classList.toggle("nav-open");
@@ -158,7 +178,7 @@
 			document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
 				el.onclick = showKotlin
 			})
-			if (switchLanguage) showJava()
+			if (typeof switchLanguage !== 'undefined' && switchLanguage) showJava()
 		</script>
 	</body>
 </html>
