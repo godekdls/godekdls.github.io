@@ -93,7 +93,7 @@ priority: 0.8
 
 스프링 프레임워크, 스프링 웹 MVC를 포함한 기존 웹 프레임워크는 서블릿 API와 서블릿 컨테이너를 위해 개발됐다. 5.0 버전에 추가된 스프링 웹플럭스는 리액티브 스택 웹 프레임워크다. 완전하게 논블로킹으로 동작하며, [Reactive Streams](https://www.reactive-streams.org/) back pressure를 지원하고, Netty, Undertow, 서블릿 3.1+ 컨테이너 서버에서 실행된다.
 
-두 웹 프레임워크 모두 소스 모듈 이름과 동일하며([spring-webmvc](https://github.com/spring-projects/spring-framework/tree/master/spring-webmvc), [spring-webflux](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux)), 스프림 프레임워크에 공존한다. 원하는 모듈을 선택하면 된다. 둘 중 하나를 사용해 어플리케이션을 개발할 수 있고, 둘 다 사용할 수도 있다(예를 들어, 스프링 MVC 컨트롤러에서 리액티브 `WebClient`를 사용하는 식으로). 
+두 웹 프레임워크 모두 소스 모듈 이름과 동일하며([spring-webmvc](https://github.com/spring-projects/spring-framework/tree/master/spring-webmvc), [spring-webflux](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux)), 스프링 프레임워크에 공존한다. 원하는 모듈을 선택하면 된다. 둘 중 하나를 사용해 어플리케이션을 개발할 수 있고, 둘 다 사용할 수도 있다(예를 들어, 스프링 MVC 컨트롤러에서 리액티브 `WebClient`를 사용하는 식으로). 
 
 ---
 

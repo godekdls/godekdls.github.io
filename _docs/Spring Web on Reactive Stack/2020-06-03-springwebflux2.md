@@ -1593,7 +1593,7 @@ function render(template, model) {
 }
 ```
 
-더 많은 설정을 사용하는 예제는 스프림 프레임워크 유닛 테스트에 있는 [자바 코드](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux/src/test/java/org/springframework/web/reactive/result/view/script)와 [resources 폴더](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux/src/test/resources/org/springframework/web/reactive/result/view/script)를 확인해 봐라.
+더 많은 설정을 사용하는 예제는 스프링 프레임워크 유닛 테스트에 있는 [자바 코드](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux/src/test/java/org/springframework/web/reactive/result/view/script)와 [resources 폴더](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux/src/test/resources/org/springframework/web/reactive/result/view/script)를 확인해 봐라.
 
 ### 1.9.4. JSON and XML
 
