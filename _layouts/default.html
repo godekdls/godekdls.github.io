@@ -108,5 +108,57 @@
 				document.body.classList.toggle("nav-open");
 			});
 		</script>
+
+		<!-- 언어 선택 영역 커스텀 (dain) -->
+		<script>
+			function showJava() {
+				document.querySelectorAll('.language-only-for-java').forEach(function (el) {
+					el.nextElementSibling.style.display = 'block'
+				});
+				document.querySelectorAll('.description-for-java').forEach(function (el) {
+					el.nextElementSibling.style.display = 'block';
+				});
+				document.querySelectorAll('.language-only-for-kotlin').forEach(function(el) {
+					el.nextElementSibling.style.display = 'none'
+				})
+				document.querySelectorAll('.description-for-kotlin').forEach(function (el) {
+					el.nextElementSibling.style.display = 'none';
+				});
+				document.querySelectorAll('.switch-language.java').forEach(function (el) {
+					el.classList.add("selected")
+				});
+				document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
+					el.classList.remove("selected")
+				});
+			}
+
+			function showKotlin() {
+				document.querySelectorAll('.language-only-for-kotlin').forEach(function (el) {
+					el.nextElementSibling.style.display = 'block';
+				});
+				document.querySelectorAll('.description-for-kotlin').forEach(function (el) {
+					el.nextElementSibling.style.display = 'block';
+				});
+				document.querySelectorAll('.language-only-for-java').forEach(function(el) {
+					el.nextElementSibling.style.display = 'none';
+				})
+				document.querySelectorAll('.description-for-java').forEach(function (el) {
+					el.nextElementSibling.style.display = 'none';
+				});
+				document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
+					el.classList.add("selected")
+				});
+				document.querySelectorAll('.switch-language.java').forEach(function (el) {
+					el.classList.remove("selected")
+				});
+			}
+			document.querySelectorAll('.switch-language.java').forEach(function (el) {
+				el.onclick = showJava
+			})
+			document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
+				el.onclick = showKotlin
+			})
+			if (switchLanguage) showJava()
+		</script>
 	</body>
 </html>

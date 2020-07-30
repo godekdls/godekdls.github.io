@@ -1,3 +1,21 @@
+// 커스텀
+div.switch-language-wrapper {
+	padding-bottom: 10px;
+}
+span.switch-language {
+	padding: 10px;
+	background-color: #9999;
+	border-radius: 50px;
+	color: #fff;
+}
+span.switch-language.selected {
+	background-color: #a9dcfc;
+	border: 2px solid #6799FF;
+	color: #003399;
+	font-weight: bold;
+}
+//
+
 pre, code, tt {
 	font-family: Inconsolata, Consolas, Courier, "Courier New", "Liberation Mono", monospace;
 	font-size: 0.85em;
