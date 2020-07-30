@@ -8,6 +8,7 @@ image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 priority: 0.8
 ---
+<script>var switchLanguage=true</script>
 
 > [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux)를 한글로 번역한 문서입니다.
 >
@@ -254,13 +255,17 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 다음은 각 서버 API 어댑터를 활용하는 `HttpHandler` 코드다:
 
 **리액터 Netty**
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 HttpHandler handler = ...
 ReactorHttpHandlerAdapter adapter = new ReactorHttpHandlerAdapter(handler);
 HttpServer.create().host(host).port(port).handle(adapter).bind().block();
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 val handler: HttpHandler = ...
 val adapter = ReactorHttpHandlerAdapter(handler)
@@ -268,14 +273,18 @@ HttpServer.create().host(host).port(port).handle(adapter).bind().block()
 ```
 
 **Undertow**
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 HttpHandler handler = ...
 UndertowHttpHandlerAdapter adapter = new UndertowHttpHandlerAdapter(handler);
 Undertow server = Undertow.builder().addHttpListener(port, host).setHandler(adapter).build();
 server.start();
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 val handler: HttpHandler = ...
 val adapter = UndertowHttpHandlerAdapter(handler)
@@ -284,69 +293,76 @@ server.start()
 ```
 
 **Tomcat**
-- *java*<br>
-    ```java
-    HttpHandler handler = ...
-    Servlet servlet = new TomcatHttpHandlerAdapter(handler);
-    
-    Tomcat server = new Tomcat();
-    File base = new File(System.getProperty("java.io.tmpdir"));
-    Context rootContext = server.addContext("", base.getAbsolutePath());
-    Tomcat.addServlet(rootContext, "main", servlet);
-    rootContext.addServletMappingDecoded("/", "main");
-    server.setHost(host);
-    server.setPort(port);
-    server.start();
-    ```
-- *kotlin*<br>
-    ```kotlin
-    val handler: HttpHandler = ...
-    val servlet = TomcatHttpHandlerAdapter(handler)
-    
-    val server = Tomcat()
-    val base = File(System.getProperty("java.io.tmpdir"))
-    val rootContext = server.addContext("", base.absolutePath)
-    Tomcat.addServlet(rootContext, "main", servlet)
-    rootContext.addServletMappingDecoded("/", "main")
-    server.host = host
-    server.setPort(port)
-    server.start()
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+HttpHandler handler = ...
+Servlet servlet = new TomcatHttpHandlerAdapter(handler);
+
+Tomcat server = new Tomcat();
+File base = new File(System.getProperty("java.io.tmpdir"));
+Context rootContext = server.addContext("", base.getAbsolutePath());
+Tomcat.addServlet(rootContext, "main", servlet);
+rootContext.addServletMappingDecoded("/", "main");
+server.setHost(host);
+server.setPort(port);
+server.start();
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+val handler: HttpHandler = ...
+val servlet = TomcatHttpHandlerAdapter(handler)
+
+val server = Tomcat()
+val base = File(System.getProperty("java.io.tmpdir"))
+val rootContext = server.addContext("", base.absolutePath)
+Tomcat.addServlet(rootContext, "main", servlet)
+rootContext.addServletMappingDecoded("/", "main")
+server.host = host
+server.setPort(port)
+server.start()
+```
 
 **Jetty**
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+HttpHandler handler = ...
+Servlet servlet = new JettyHttpHandlerAdapter(handler);
 
-- *java*<br>
-    ```java
-    HttpHandler handler = ...
-    Servlet servlet = new JettyHttpHandlerAdapter(handler);
-    
-    Server server = new Server();
-    ServletContextHandler contextHandler = new ServletContextHandler(server, "");
-    contextHandler.addServlet(new ServletHolder(servlet), "/");
-    contextHandler.start();
-    
-    ServerConnector connector = new ServerConnector(server);
-    connector.setHost(host);
-    connector.setPort(port);
-    server.addConnector(connector);
-    server.start();
-    ```
-- *kotlin*
-    ```kotlin
-    val handler: HttpHandler = ...
-    val servlet = JettyHttpHandlerAdapter(handler)
-    
-    val server = Server()
-    val contextHandler = ServletContextHandler(server, "")
-    contextHandler.addServlet(ServletHolder(servlet), "/")
-    contextHandler.start();
-    
-    val connector = ServerConnector(server)
-    connector.host = host
-    connector.port = port
-    server.addConnector(connector)
-    server.start()
-    ```
+Server server = new Server();
+ServletContextHandler contextHandler = new ServletContextHandler(server, "");
+contextHandler.addServlet(new ServletHolder(servlet), "/");
+contextHandler.start();
+
+ServerConnector connector = new ServerConnector(server);
+connector.setHost(host);
+connector.setPort(port);
+server.addConnector(connector);
+server.start();
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+val handler: HttpHandler = ...
+val servlet = JettyHttpHandlerAdapter(handler)
+
+val server = Server()
+val contextHandler = ServletContextHandler(server, "")
+contextHandler.addServlet(ServletHolder(servlet), "/")
+contextHandler.start();
+
+val connector = ServerConnector(server)
+connector.host = host
+connector.port = port
+server.addConnector(connector)
+server.start()
+```
 
 **서블릿 3.1+ 컨테이너**
 
@@ -398,11 +414,15 @@ WAR에 [`AbstractReactiveWebInitializer`](https://docs.spring.io/spring-framewor
 
 `ServerWebExchange`는 form 데이터(`application/x-www-form-urlencoded`)에 접근할 수 있는 다음 메소드를 제공한다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 Mono<MultiValueMap<String, String>> getFormData();
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 suspend fun getFormData(): MultiValueMap<String, String>
 ```
@@ -418,11 +438,15 @@ form 데이터를 `MultiValueMap`으로 파싱한다.
 
 `ServerWebExchange`는 multipart 데이터에 접근할 수 있는 다음 메소드를 제공한다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 Mono<MultiValueMap<String, Part>> getMultipartData();
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 suspend fun getMultipartData(): MultiValueMap<String, Part>
 ```
@@ -702,7 +726,11 @@ WebFlux 애플리케이션은
 
 다음은 서버 로그를 활성화 시키는 코드다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -714,7 +742,7 @@ class MyConfig implements WebFluxConfigurer {
     }
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -728,23 +756,27 @@ class MyConfig : WebFluxConfigurer {
 
 다음은 클라이언트 로그를 활성화 시키는 코드다:
 
-- *java*<br>
-    ```java
-    Consumer<ClientCodecConfigurer> consumer = configurer ->
-            configurer.defaultCodecs().enableLoggingRequestDetails(true);
-    
-    WebClient webClient = WebClient.builder()
-            .exchangeStrategies(strategies -> strategies.codecs(consumer))
-            .build();
-    ```
-- *kotlin*<br>
-    ```kotlin
-    val consumer: (ClientCodecConfigurer) -> Unit  = { configurer -> configurer.defaultCodecs().enableLoggingRequestDetails(true) }
-    
-    val webClient = WebClient.builder()
-            .exchangeStrategies({ strategies -> strategies.codecs(consumer) })
-            .build()
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+Consumer<ClientCodecConfigurer> consumer = configurer ->
+        configurer.defaultCodecs().enableLoggingRequestDetails(true);
+
+WebClient webClient = WebClient.builder()
+        .exchangeStrategies(strategies -> strategies.codecs(consumer))
+        .build();
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+val consumer: (ClientCodecConfigurer) -> Unit  = { configurer -> configurer.defaultCodecs().enableLoggingRequestDetails(true) }
+
+val webClient = WebClient.builder()
+        .exchangeStrategies({ strategies -> strategies.codecs(consumer) })
+        .build()
+```
 
 #### Custom codecs
 
@@ -758,7 +790,11 @@ class MyConfig : WebFluxConfigurer {
 다음은 클라이언트 사이드 예제로,
 커스텀 코덱에 디폴트 코덱 설정을 등록한다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 WebClient webClient = WebClient.builder()
         .codecs(configurer -> {
@@ -767,7 +803,7 @@ WebClient webClient = WebClient.builder()
         })
         .build();
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 val webClient = WebClient.builder()
         .codecs({ configurer ->
@@ -807,12 +843,16 @@ val webClient = WebClient.builder()
 아래 코드에서 보이는 것처럼,
 `WebHttpHandlerBuilder`가 체인을 만들 땐 이 설정을 사용한다.
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 ApplicationContext context = ...
 HttpHandler handler = WebHttpHandlerBuilder.applicationContext(context).build();
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 val context: ApplicationContext = ...
 val handler = WebHttpHandlerBuilder.applicationContext(context).build()
@@ -996,7 +1036,11 @@ JSON, XML같은 미디어 타입을 만드는 `HttpMessageWriterView`를 지원�
 
 다음은 아주 기본적인 예제다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @RestController
 public class HelloController {
@@ -1007,7 +1051,7 @@ public class HelloController {
     }
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @RestController
 class HelloController {
@@ -1031,7 +1075,11 @@ class HelloController {
 `@Controller` 빈을 자동으로 등록하려면
 다음 예제처럼 컴포넌트 스캔을 위한 설정이 필요하다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Configuration
 @ComponentScan("org.example.web") // (1)
@@ -1040,7 +1088,7 @@ public class WebConfig {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Configuration
 @ComponentScan("org.example.web") // (1)
@@ -1081,7 +1129,11 @@ HTTP 메소드를 바로 지정할 수 있는 애노테이션도 있다:
 
 다음 예제도 클래스와 메소드에 모두 매핑 애노테이션을 선언했다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @RestController
 @RequestMapping("/persons")
@@ -1099,7 +1151,7 @@ class PersonController {
     }
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @RestController
 @RequestMapping("/persons")
@@ -1136,14 +1188,18 @@ URI로 요청을 매핑할 때는 glob 패턴이나 와일드카드를 사용할
 여기서 저장한 URI 변수는 아래 예제처럼
 `@PathVariable`로 접근할 수 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/owners/{ownerId}/pets/{petId}")
 public Pet findPet(@PathVariable Long ownerId, @PathVariable Long petId) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/owners/{ownerId}/pets/{petId}")
 fun findPet(@PathVariable ownerId: Long, @PathVariable petId: Long): Pet {
@@ -1153,7 +1209,11 @@ fun findPet(@PathVariable ownerId: Long, @PathVariable petId: Long): Pet {
 
 아래 보이는 것처럼 URI 변수는 클래스와 메소드에 모두 선언할 수 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Controller
 @RequestMapping("/owners/{ownerId}") // (1)
@@ -1165,7 +1225,7 @@ public class OwnerController {
     }
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Controller
 @RequestMapping("/owners/{ownerId}") // (1)
@@ -1200,14 +1260,18 @@ URI 변수에 이름을 지정할 수 있지만(`@PathVariable("customId")`),
 예를 들어 URL이 `/spring-web-3.0.5 .jar`라면,
 다음 예제처럼 정규식으로 이름, 버전, 파일 확장자를 추출할 수 있다.
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/{name:[a-z-]+}-{version:\\d\\.\\d\\.\\d}{ext:\\.[a-z]+}")
 public void handle(@PathVariable String version, @PathVariable String ext) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/{name:[a-z-]+}-{version:\\d\\.\\d\\.\\d}{ext:\\.[a-z]+}")
 fun handle(@PathVariable version: String, @PathVariable ext: String) {
@@ -1252,14 +1316,18 @@ URI 변수가 와일드카드 보다 점수가 낮으며,
 
 다음 예제처럼 요청 `Content-Type`으로 매칭되는 범위를 줄일 수 있다.
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping(path = "/pets", consumes = "application/json")
 public void addPet(@RequestBody Pet pet) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/pets", consumes = ["application/json"])
 fun addPet(@RequestBody pet: Pet) {
@@ -1285,7 +1353,11 @@ consumes attribute는 부정 표현식을 지원한다.
 다음 예제처럼, `Accept` 요청 헤더와 컨트롤러 메소드가 지원하는 컨텐츠 타입으로
 매칭 범위를 줄일 수 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping(path = "/pets/{petId}", produces = "application/json")
 @ResponseBody
@@ -1293,7 +1365,7 @@ public Pet getPet(@PathVariable String petId) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/pets/{petId}", produces = ["application/json"])
 @ResponseBody
@@ -1323,14 +1395,18 @@ produces 역시 부정 표현식을 지원한다.
 아니면 특정 값을 가지고 있는지(myParam=myValue) 검증할 수 있다.
 다음은 파라미터 값을 검사하는 예제다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping(path = "/pets/{petId}", params = "myParam=myValue") // (1) 
 public void findPet(@PathVariable String petId) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/pets/{petId}", params = ["myParam=myValue"]) // (1) 
 fun findPet(@PathVariable petId: String) {
@@ -1341,14 +1417,18 @@ fun findPet(@PathVariable petId: String) {
 
 다음 예제처럼 요청 헤더를 검증할 수도 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping(path = "/pets", headers = "myHeader=myValue") // (1)
 public void findPet(@PathVariable String petId) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/pets", headers = ["myHeader=myValue"]) // (1)
 fun findPet(@PathVariable petId: String) {
@@ -1408,41 +1488,45 @@ HTTP 메소드를 선언하지 않은 `@RequestMapping`이 있다면
 URL이 다르면 같은 핸들러의 다른 인스턴스를 사용할 수도 있다.
 다음은 핸들러 메소드를 등록하는 방법이다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
-    @Configuration
-    public class MyConfig {
-    
-        @Autowired // (1)
-        public void setHandlerMapping(RequestMappingHandlerMapping mapping, UserHandler handler) 
-                throws NoSuchMethodException {
-            // (2)
-            RequestMappingInfo info = RequestMappingInfo
-                    .paths("/user/{id}").methods(RequestMethod.GET).build();
-            // (3)
-            Method method = UserHandler.class.getMethod("getUser", Long.class);
-            // (4)
-            mapping.registerMapping(info, handler, method);
-        }
-    
+@Configuration
+public class MyConfig {
+
+    @Autowired // (1)
+    public void setHandlerMapping(RequestMappingHandlerMapping mapping, UserHandler handler) 
+            throws NoSuchMethodException {
+        // (2)
+        RequestMappingInfo info = RequestMappingInfo
+                .paths("/user/{id}").methods(RequestMethod.GET).build();
+        // (3)
+        Method method = UserHandler.class.getMethod("getUser", Long.class);
+        // (4)
+        mapping.registerMapping(info, handler, method);
     }
+
+}
 ```
-- *kotlin*
-    ```kotlin
-    @Configuration
-    class MyConfig {
-    
-        @Autowired // (1)
-        fun setHandlerMapping(mapping: RequestMappingHandlerMapping, handler: UserHandler) {
-            // (2)
-            val info = RequestMappingInfo.paths("/user/{id}").methods(RequestMethod.GET).build()
-            // (3)
-            val method = UserHandler::class.java.getMethod("getUser", Long::class.java)
-            // (4)
-            mapping.registerMapping(info, handler, method)
-        }
+<div class="language-only-for-kotlin"></div>
+```kotlin
+@Configuration
+class MyConfig {
+
+    @Autowired // (1)
+    fun setHandlerMapping(mapping: RequestMappingHandlerMapping, handler: UserHandler) {
+        // (2)
+        val info = RequestMappingInfo.paths("/user/{id}").methods(RequestMethod.GET).build()
+        // (3)
+        val method = UserHandler::class.java.getMethod("getUser", Long::class.java)
+        // (4)
+        mapping.registerMapping(info, handler, method)
     }
-    ```
+}
+```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 컨트롤러에서 사용할 타겟 핸들러와 핸들러 매핑을 주입한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청을 매핑하기 위한 메타 데이터를 준비한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 핸들러 메소드를 가져온다.</small><br>
@@ -1556,111 +1640,126 @@ path segment에 name/value 쌍 변수를 사용할 수 있다.
 해당하는 path segment에 URI 변수를 추가하면 된다.
 다음은 메트릭스 변수를 사용하는 예제다:
 
-- *java*
-    ```java
-    // GET /pets/42;q=11;r=22
-    
-    @GetMapping("/pets/{petId}")
-    public void findPet(@PathVariable String petId, @MatrixVariable int q) {
-    
-        // petId == 42
-        // q == 11
-    }
-    ```
-- *kotlin*
-    ```kotlin
-    // GET /pets/42;q=11;r=22
-    
-    @GetMapping("/pets/{petId}")
-    fun findPet(@PathVariable petId: String, @MatrixVariable q: Int) {
-    
-        // petId == 42
-        // q == 11
-    }
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+// GET /pets/42;q=11;r=22
+
+@GetMapping("/pets/{petId}")
+public void findPet(@PathVariable String petId, @MatrixVariable int q) {
+
+    // petId == 42
+    // q == 11
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+// GET /pets/42;q=11;r=22
+
+@GetMapping("/pets/{petId}")
+fun findPet(@PathVariable petId: String, @MatrixVariable q: Int) {
+
+    // petId == 42
+    // q == 11
+}
+```
 
 메트릭스 변수를 여러 path segment에서 사용한다면,
 아래 예제처럼 메트릭스 변수가 어떤 path에 있는지 명시하면 된다:
 
-- *java*
-    ```java
-    // GET /owners/42;q=11/pets/21;q=22
-    
-    @GetMapping("/owners/{ownerId}/pets/{petId}")
-    public void findPet(
-            @MatrixVariable(name="q", pathVar="ownerId") int q1,
-            @MatrixVariable(name="q", pathVar="petId") int q2) {
-    
-        // q1 == 11
-        // q2 == 22
-    }
-    ```
-- *kotlin*
-    ```kotlin
-    // GET /owners/42;q=11/pets/21;q=22
-    
-    @GetMapping("/owners/{ownerId}/pets/{petId}")
-    fun findPet(
-            @MatrixVariable(name = "q", pathVar = "ownerId") q1: Int,
-            @MatrixVariable(name = "q", pathVar = "petId") q2: Int) {
-    
-        // q1 == 11
-        // q2 == 22
-    }
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+// GET /owners/42;q=11/pets/21;q=22
+
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+public void findPet(
+        @MatrixVariable(name="q", pathVar="ownerId") int q1,
+        @MatrixVariable(name="q", pathVar="petId") int q2) {
+
+    // q1 == 11
+    // q2 == 22
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+// GET /owners/42;q=11/pets/21;q=22
+
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+fun findPet(
+        @MatrixVariable(name = "q", pathVar = "ownerId") q1: Int,
+        @MatrixVariable(name = "q", pathVar = "petId") q2: Int) {
+
+    // q1 == 11
+    // q2 == 22
+}
+```
 
 아래 예제처럼 필수 여부와 디폴트 값을 지정할 수도 있다:
 
-- *java*
-    ```java
-    // GET /pets/42
-    
-    @GetMapping("/pets/{petId}")
-    public void findPet(@MatrixVariable(required=false, defaultValue="1") int q) {
-    
-        // q == 1
-    }
-    ```
-- *kotlin*
-    ```kotlin
-    // GET /pets/42
-    
-    @GetMapping("/pets/{petId}")
-    fun findPet(@MatrixVariable(required = false, defaultValue = "1") q: Int) {
-    
-        // q == 1
-    }
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+// GET /pets/42
+
+@GetMapping("/pets/{petId}")
+public void findPet(@MatrixVariable(required=false, defaultValue="1") int q) {
+
+    // q == 1
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+// GET /pets/42
+
+@GetMapping("/pets/{petId}")
+fun findPet(@MatrixVariable(required = false, defaultValue = "1") q: Int) {
+
+    // q == 1
+}
+```
 
 `MultiValueMap`에 모든 메트릭스 변수를 담을 수도 있다:
 
-- *java*
-  
-    ```java
-    // GET /owners/42;q=11;r=12/pets/21;q=22;s=23
-    
-    @GetMapping("/owners/{ownerId}/pets/{petId}")
-    public void findPet(
-            @MatrixVariable MultiValueMap<String, String> matrixVars,
-            @MatrixVariable(pathVar="petId") MultiValueMap<String, String> petMatrixVars) {
-    
-        // matrixVars: ["q" : [11,22], "r" : 12, "s" : 23]
-        // petMatrixVars: ["q" : 22, "s" : 23]
-    }
-    ```
-- *kotlin*
-    ```kotlin
-    // GET /owners/42;q=11;r=12/pets/21;q=22;s=23
-    
-    @GetMapping("/owners/{ownerId}/pets/{petId}")
-    fun findPet(
-            @MatrixVariable matrixVars: MultiValueMap<String, String>,
-            @MatrixVariable(pathVar="petId") petMatrixVars: MultiValueMap<String, String>) {
-    
-        // matrixVars: ["q" : [11,22], "r" : 12, "s" : 23]
-        // petMatrixVars: ["q" : 22, "s" : 23]
-    }
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+// GET /owners/42;q=11;r=12/pets/21;q=22;s=23
+
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+public void findPet(
+        @MatrixVariable MultiValueMap<String, String> matrixVars,
+        @MatrixVariable(pathVar="petId") MultiValueMap<String, String> petMatrixVars) {
+
+    // matrixVars: ["q" : [11,22], "r" : 12, "s" : 23]
+    // petMatrixVars: ["q" : 22, "s" : 23]
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+// GET /owners/42;q=11;r=12/pets/21;q=22;s=23
+
+@GetMapping("/owners/{ownerId}/pets/{petId}")
+fun findPet(
+        @MatrixVariable matrixVars: MultiValueMap<String, String>,
+        @MatrixVariable(pathVar="petId") petMatrixVars: MultiValueMap<String, String>) {
+
+    // matrixVars: ["q" : [11,22], "r" : 12, "s" : 23]
+    // petMatrixVars: ["q" : 22, "s" : 23]
+}
+```
 
 #### `@RequestParam`
 
@@ -1669,7 +1768,11 @@ path segment에 name/value 쌍 변수를 사용할 수 있다.
 `@RequestParam` 애노테이션은 쿼리 파라미터를 컨트롤러 메소드 인자로 바인딩한다.
 다음은 이 애노테이션을 사용하는 예제다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Controller
 @RequestMapping("/pets")
@@ -1687,26 +1790,26 @@ public class EditPetForm {
     // ...
 }
 ```
-- *kotlin*
-    ```kotlin
-    import org.springframework.ui.set
-    
-    @Controller
-    @RequestMapping("/pets")
-    class EditPetForm {
-    
-        // ...
-    
-        @GetMapping
-        fun setupForm(@RequestParam("petId") petId: Int, model: Model): String { // (1) 
-            val pet = clinic.loadPet(petId)
-            model["pet"] = pet
-            return "petForm"
-        }
-    
-        // ...
+<div class="language-only-for-kotlin"></div>
+```kotlin
+import org.springframework.ui.set
+
+@Controller
+@RequestMapping("/pets")
+class EditPetForm {
+
+    // ...
+
+    @GetMapping
+    fun setupForm(@RequestParam("petId") petId: Int, model: Model): String { // (1) 
+        val pet = clinic.loadPet(petId)
+        model["pet"] = pet
+        return "petForm"
     }
-    ```
+
+    // ...
+}
+```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestParam`을 사용한다.</small>
 
 > 서블릿 API에선 “요청 파라미터”는
@@ -1751,7 +1854,11 @@ Keep-Alive              300
 
 다음은 `Accept-Encoding`, `Keep-Alive` 헤더 값을 바인딩하는 코드다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/demo")
 public void handle(
@@ -1760,7 +1867,7 @@ public void handle(
     //...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/demo")
 fun handle(
@@ -1798,14 +1905,18 @@ JSESSIONID=415A4AC178C59DACE0B2C9CA727CDD84
 
 다음은 쿠키 값을 바인딩하는 코드다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/demo")
 public void handle(@CookieValue("JSESSIONID") String cookie) { // (1) 
     //...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/demo")
 fun handle(@CookieValue("JSESSIONID") cookie: String) { // (1)
@@ -1830,12 +1941,16 @@ model attribute에 추가된다.
 
 다음은 `Pet` 인스턴스로 바인딩하는 예제다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 public String processSubmit(@ModelAttribute Pet pet) { } // (1)
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 fun processSubmit(@ModelAttribute pet: Pet): String { } // (1)
@@ -1865,7 +1980,11 @@ fun processSubmit(@ModelAttribute pet: Pet): String { } // (1)
 다음 예제처럼 `@ModelAttribute` 인자 바로 다음에 `BindingResult`를
 받으면 된다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 public String processSubmit(@ModelAttribute("pet") Pet pet, BindingResult result) { // (1) 
@@ -1875,7 +1994,7 @@ public String processSubmit(@ModelAttribute("pet") Pet pet, BindingResult result
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 fun processSubmit(@ModelAttribute("pet") pet: Pet, result: BindingResult): String { // (1) 
@@ -1893,7 +2012,11 @@ fun processSubmit(@ModelAttribute("pet") pet: Pet, result: BindingResult): Strin
 [Spring validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation) 참고).
 다음 예제는 `@Valid` 애노테이션을 사용한다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 public String processSubmit(@Valid @ModelAttribute("pet") Pet pet, BindingResult result) { 
@@ -1903,7 +2026,7 @@ public String processSubmit(@Valid @ModelAttribute("pet") Pet pet, BindingResult
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 fun processSubmit(@Valid @ModelAttribute("pet") pet: Pet, result: BindingResult): String { 
@@ -1917,7 +2040,11 @@ fun processSubmit(@Valid @ModelAttribute("pet") pet: Pet, result: BindingResult)
 
 스프링 웹플럭스는 스프링 MVC와는 달리 모델에 리액티브 타입을 사용할 수 있다(e.g. `Mono<Account>`, `io.reactivex.Single<Account>`). 상황에 따라 필요하다면 실제 값을 리졸브하기 때문에, 리액티브 타입으로 `@ModelAttribute` 인자를 감싸는 것은 선택 사항이다. 하지만 `BindingResult`를 인자로 받으려면 위 예시처럼 리액티브 타입으로 감싸지 않은 `@ModelAttribute` 인자가 바로 앞에 있어야 한다. 아니면 다음 예제처럼 리액티브 타입으로 에러를 처리해도 된다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 public Mono<String> processSubmit(@Valid @ModelAttribute("pet") Mono<Pet> petMono) {
@@ -1930,7 +2057,7 @@ public Mono<String> processSubmit(@Valid @ModelAttribute("pet") Mono<Pet> petMon
         });
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/owners/{ownerId}/pets/{petId}/edit")
 fun processSubmit(@Valid @ModelAttribute("pet") petMono: Mono<Pet>): Mono<String> {
@@ -1962,7 +2089,11 @@ model attributes 이름이나 타입 리스트를 명시한다.
 
 다음 예제를 보라:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Controller
 @SessionAttributes("pet") // (1)
@@ -1970,7 +2101,7 @@ public class EditPetForm {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Controller
 @SessionAttributes("pet") // (1)
@@ -1985,7 +2116,11 @@ model에 `pet`이란 attribute를 한 번 저장하고 나면
 이 값은 다음 예제처럼 컨트롤러 메소드에서 `SessionStatus`를 인자로 받아
 지우기 전까지 유된한다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Controller
 @SessionAttributes("pet") // (1)
@@ -2004,7 +2139,7 @@ public class EditPetForm {
     }
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Controller
 @SessionAttributes("pet") // (1)
@@ -2023,7 +2158,7 @@ class EditPetForm {
 }
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@SessionAttributes`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `SessionStatus`를 인자로 받는다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `SessionStatus`를 인자로 받는다.</small>
 
 #### @SessionAttribute
 
@@ -2033,14 +2168,18 @@ class EditPetForm {
 session attribute에 접근하고 싶다면,
 다음 예제처럼 메소드 파라미터에 `@SessionAttribute`를 사용한다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/")
 public String handle(@SessionAttribute User user) { // (1)
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/")
 fun handle(@SessionAttribute user: User): String { // (1)
@@ -2063,14 +2202,18 @@ session attribute를 추가하거나 제거하고 싶다면
 컨트롤러에 진입하기 전에 만든(e.g. `WebFilter`)
 request attributes에 접근할 수 있다: 
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/")
 public String handle(@RequestAttribute Client client) { // (1)
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/")
 fun handle(@RequestAttribute client: Client): String { // (1)
@@ -2088,44 +2231,48 @@ multipart 컨텐츠는 `ServerWebExchange`로 접근할 수 있다.
 컨트롤러에서 파일 업로드 form을(e.g. 브라우저가 보낸) 처리하는 가장 좋은 방법은
 다음 예제처럼 [커맨드 객체](#modelattribute)에 바인딩하는 것이다:
 
-- *java*
-    ```java
-    class MyForm {
-    
-        private String name;
-    
-        private MultipartFile file;
-    
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+class MyForm {
+
+    private String name;
+
+    private MultipartFile file;
+
+    // ...
+
+}
+
+@Controller
+public class FileUploadController {
+
+    @PostMapping("/form")
+    public String handleFormUpload(MyForm form, BindingResult errors) {
         // ...
-    
     }
-    
-    @Controller
-    public class FileUploadController {
-    
-        @PostMapping("/form")
-        public String handleFormUpload(MyForm form, BindingResult errors) {
-            // ...
-        }
-    
+
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+class MyForm(
+        val name: String,
+        val file: MultipartFile)
+
+@Controller
+class FileUploadController {
+
+    @PostMapping("/form")
+    fun handleFormUpload(form: MyForm, errors: BindingResult): String {
+        // ...
     }
-    ```
-- *kotlin*
-    ```kotlin
-    class MyForm(
-            val name: String,
-            val file: MultipartFile)
-    
-    @Controller
-    class FileUploadController {
-    
-        @PostMapping("/form")
-        fun handleFormUpload(form: MyForm, errors: BindingResult): String {
-            // ...
-        }
-    
-    }
-    ```
+
+}
+```
 
 RESTful 서비스로
 브라우저 이외의 클라이언트가 보내는 mutipart 요청도
@@ -2153,7 +2300,11 @@ Content-Transfer-Encoding: 8bit
 
 각 part는 `@RequestPart`로 접근할 수 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/")
 public String handle(@RequestPart("meta-data") Part metadata, // (1) 
@@ -2161,7 +2312,7 @@ public String handle(@RequestPart("meta-data") Part metadata, // (1)
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/")
 fun handle(@RequestPart("meta-data") Part metadata, // (1)
@@ -2176,17 +2327,21 @@ fun handle(@RequestPart("meta-data") Part metadata, // (1)
 part 데이터를 `Part`대신 원하는 `Object`로 바인딩할 수도 있다
 (JSON을 `@RequestBody`로 역직렬화하는 것과 유사하다):
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/")
-public String handle(@RequestPart("meta-data") MetaData metadata) { 
+public String handle(@RequestPart("meta-data") MetaData metadata) { // (1) 
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/")
-fun handle(@RequestPart("meta-data") metadata: MetaData): String { 
+fun handle(@RequestPart("meta-data") metadata: MetaData): String { // (1) 
     // ...
 }
 ```
@@ -2200,14 +2355,18 @@ fun handle(@RequestPart("meta-data") metadata: MetaData): String {
 exception은 상세 정보를 확인할 수 있는 `BindingResult`를 가지고 있다.
 메소드 인자를 비동기 타입으로 감싸면 연산자로 에러를 처리할 수 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/")
 public String handle(@Valid @RequestPart("meta-data") Mono<MetaData> metadata) {
     // use one of the onError* operators...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/")
 fun handle(@Valid @RequestPart("meta-data") metadata: MetaData): String {
@@ -2218,14 +2377,18 @@ fun handle(@Valid @RequestPart("meta-data") metadata: MetaData): String {
 `MultiValueMap`으로 multipart 데이터 전체에 접근하려면
 다음 예제처럼 `@RequestBody`를 사용하면 된다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/")
 public String handle(@RequestBody Mono<MultiValueMap<String, Part>> parts) { // (1) 
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/")
 fun handle(@RequestBody parts: MultiValueMap<String, Part>): String { // (1) 
@@ -2237,14 +2400,18 @@ fun handle(@RequestBody parts: MultiValueMap<String, Part>): String { // (1)
 스트리밍 방식으로 multipart 데이터에 순차적으로 접근하고 싶을 땐
 `@RequestBody`와 `Flux<Part>`를(코틀린은 `Flow<Part>`) 사용한다: 
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/")
 public String handle(@RequestBody Flux<Part> parts) { // (1) 
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/")
 fun handle(@RequestBody parts: Flow<Part>): String { // (1)
@@ -2261,14 +2428,18 @@ fun handle(@RequestBody parts: Flow<Part>): String { // (1)
 request body를 `Object`로 역직렬화한다.
 다음은 `@RequestBody` 예제다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/accounts")
 public void handle(@RequestBody Account account) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/accounts")
 fun handle(@RequestBody account: Account) {
@@ -2280,14 +2451,18 @@ fun handle(@RequestBody account: Account) {
 리액티브 타입에 `@RequestBody`를 사용하면
 완전한 논블로킹 방식으로 스트리밍한다(클라이언트 to 서버).
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/accounts")
 public void handle(@RequestBody Mono<Account> account) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/accounts")
 fun handle(@RequestBody accounts: Flow<Account>) {
@@ -2308,14 +2483,18 @@ fun handle(@RequestBody accounts: Flow<Account>) {
 exception은 상세 정보를 확인할 수 있는 `BindingResult`를 가지고 있다.
 메소드 인자를 비동기 타입으로 감싸면 연산자로 에러를 처리할 수 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/accounts")
 public void handle(@Valid @RequestBody Mono<Account> account) {
     // use one of the onError* operators...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/accounts")
 fun handle(@Valid @RequestBody account: Mono<Account>) {
@@ -2331,14 +2510,18 @@ fun handle(@Valid @RequestBody account: Mono<Account>) {
 request 헤더와 body를 감싸는 컨테이너 객체다.
 다음은 `HttpEntity` 예제다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @PostMapping("/accounts")
 public void handle(HttpEntity<Account> entity) {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @PostMapping("/accounts")
 fun handle(entity: HttpEntity<Account>) {
@@ -2355,7 +2538,11 @@ fun handle(entity: HttpEntity<Account>) {
 직렬화한다.
 다음은 사용 예시다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/accounts/{id}")
 @ResponseBody
@@ -2363,7 +2550,7 @@ public Account handle() {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/accounts/{id}")
 @ResponseBody
@@ -2395,7 +2582,11 @@ fun handle(): Account {
 `ResponseEntity`는 [`@ResponseBody`](#responsebody)와 유사하지만
 상태 코드와 헤더를 함께 설정할 수 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/something")
 public ResponseEntity<String> handle() {
@@ -2404,7 +2595,7 @@ public ResponseEntity<String> handle() {
     return ResponseEntity.ok().eTag(etag).build(body);
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/something")
 fun handle(): ResponseEntity<String> {
@@ -2434,65 +2625,69 @@ body를 single, multi-value 리액티브 타입으로 만들어도 된다.
 아래 예제처럼 Jackson의 `@JsonView` 애노테이션으로
 사용할 view 클래스를 명시하면 된다:
 
-- *java*
-    ```java
-    @RestController
-    public class UserController {
-    
-        @GetMapping("/user")
-        @JsonView(User.WithoutPasswordView.class)
-        public User getUser() {
-            return new User("eric", "7!jd#h23");
-        }
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+@RestController
+public class UserController {
+
+    @GetMapping("/user")
+    @JsonView(User.WithoutPasswordView.class)
+    public User getUser() {
+        return new User("eric", "7!jd#h23");
     }
-    
-    public class User {
-    
-        public interface WithoutPasswordView {};
-        public interface WithPasswordView extends WithoutPasswordView {};
-    
-        private String username;
-        private String password;
-    
-        public User() {
-        }
-    
-        public User(String username, String password) {
-            this.username = username;
-            this.password = password;
-        }
-    
-        @JsonView(WithoutPasswordView.class)
-        public String getUsername() {
-            return this.username;
-        }
-    
-        @JsonView(WithPasswordView.class)
-        public String getPassword() {
-            return this.password;
-        }
+}
+
+public class User {
+
+    public interface WithoutPasswordView {};
+    public interface WithPasswordView extends WithoutPasswordView {};
+
+    private String username;
+    private String password;
+
+    public User() {
     }
-    ```
-- *kotlin*
-    ```kotlin
-    @RestController
-    class UserController {
-    
-        @GetMapping("/user")
-        @JsonView(User.WithoutPasswordView::class)
-        fun getUser(): User {
-            return User("eric", "7!jd#h23")
-        }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
-    
-    class User(
-            @JsonView(WithoutPasswordView::class) val username: String,
-            @JsonView(WithPasswordView::class) val password: String
-    ) {
-        interface WithoutPasswordView
-        interface WithPasswordView : WithoutPasswordView
+
+    @JsonView(WithoutPasswordView.class)
+    public String getUsername() {
+        return this.username;
     }
-    ```
+
+    @JsonView(WithPasswordView.class)
+    public String getPassword() {
+        return this.password;
+    }
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+@RestController
+class UserController {
+
+    @GetMapping("/user")
+    @JsonView(User.WithoutPasswordView::class)
+    fun getUser(): User {
+        return User("eric", "7!jd#h23")
+    }
+}
+
+class User(
+        @JsonView(WithoutPasswordView::class) val username: String,
+        @JsonView(WithPasswordView::class) val password: String
+) {
+    interface WithoutPasswordView
+    interface WithPasswordView : WithoutPasswordView
+}
+```
 
 > `@JsonView`는 뷰 클래스 배열도 받지만,
 > 컨트롤러 메소드 당 하나만 지정할 수 있다.
@@ -2523,7 +2718,11 @@ model을 생성, 접근하고 `WebDataBinder`로 객체에 바인딩한다.
 
 다음은 `@ModelAttribute` 메소드 사용 예시다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @ModelAttribute
 public void populateModel(@RequestParam String number, Model model) {
@@ -2531,7 +2730,7 @@ public void populateModel(@RequestParam String number, Model model) {
     // add more ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @ModelAttribute
 fun populateModel(@RequestParam number: String, model: Model) {
@@ -2542,14 +2741,18 @@ fun populateModel(@RequestParam number: String, model: Model) {
 
 attribute 한 개를 추가할 땐 다음과 같이 사용할 수도 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @ModelAttribute
 public Account addAccount(@RequestParam String number) {
     return accountRepository.findAccount(number);
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @ModelAttribute
 fun addAccount(@RequestParam number: String): Account {
@@ -2570,34 +2773,38 @@ fun addAccount(@RequestParam number: String): Account {
 `@RequestMapping`을 실행할 때 실제 값을 리졸브하며 (모델도 함께 업데이트한다),
 `@ModelAttribute` 인자는 리액티브 타입으로 감싸지 않아도 된다:
 
-- *java*
-    ```java
-    @ModelAttribute
-    public void addAccount(@RequestParam String number) {
-        Mono<Account> accountMono = accountRepository.findAccount(number);
-        model.addAttribute("account", accountMono);
-    }
-    
-    @PostMapping("/accounts")
-    public String handle(@ModelAttribute Account account, BindingResult errors) {
-        // ...
-    }
-    ```
-- *kotlin*
-    ```kotlin
-    import org.springframework.ui.set
-    
-    @ModelAttribute
-    fun addAccount(@RequestParam number: String) {
-        val accountMono: Mono<Account> = accountRepository.findAccount(number)
-        model["account"] = accountMono
-    }
-    
-    @PostMapping("/accounts")
-    fun handle(@ModelAttribute account: Account, errors: BindingResult): String {
-        // ...
-    }
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+@ModelAttribute
+public void addAccount(@RequestParam String number) {
+    Mono<Account> accountMono = accountRepository.findAccount(number);
+    model.addAttribute("account", accountMono);
+}
+
+@PostMapping("/accounts")
+public String handle(@ModelAttribute Account account, BindingResult errors) {
+    // ...
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+import org.springframework.ui.set
+
+@ModelAttribute
+fun addAccount(@RequestParam number: String) {
+    val accountMono: Mono<Account> = accountRepository.findAccount(number)
+    model["account"] = accountMono
+}
+
+@PostMapping("/accounts")
+fun handle(@ModelAttribute account: Account, errors: BindingResult): String {
+    // ...
+}
+```
 
 만약 model attribute를 리액티브 타입으로 감쌌다면
 뷰를 만들기 직전에 리졸브한다(역시 모델도 함께 업데이트한다).
@@ -2608,7 +2815,11 @@ HTML 컨트롤러에서는 `String`만 view name으로 사용하고, 나머지�
 모두 model attribute로 처리하므로 생략할 수 있다.
 다음 예제처럼 `@ModelAttribute`로 attribute 이름을 지정할 수도 있다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @GetMapping("/accounts/{id}")
 @ModelAttribute("myAccount")
@@ -2617,7 +2828,7 @@ public Account handle() {
     return account;
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @GetMapping("/accounts/{id}")
 @ModelAttribute("myAccount")
@@ -2651,7 +2862,11 @@ fun handle(): Account {
 보통은 `WebDataBinder`를 인자로 받아 컴포넌트를 등록하고 `void`를 리턴한다.
 다음은 `@InitBinder` 애노테이션을 사용하는 예제다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Controller
 public class FormController {
@@ -2666,7 +2881,7 @@ public class FormController {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Controller
 class FormController {
@@ -2687,7 +2902,11 @@ class FormController {
 `FormattingConversionService`에서 사용하는 
 `Formatter` 인스턴스를 컨트롤러 전용으로 등록해도 된다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Controller
 public class FormController {
@@ -2700,7 +2919,7 @@ public class FormController {
     // ...
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Controller
 class FormController {
@@ -2724,7 +2943,11 @@ class FormController {
 컨트롤러에서 발생한 예외를 처리할 수 있다.
 다음은 예외를 처리하는 메소드 예시다:
 
-- *java*
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
 ```java
 @Controller
 public class SimpleController {
@@ -2737,7 +2960,7 @@ public class SimpleController {
     }
 }
 ```
-- *kotlin*
+<div class="language-only-for-kotlin"></div>
 ```kotlin
 @Controller
 class SimpleController {
@@ -2814,34 +3037,38 @@ REST 서비스에선 보통 에러 정보를 response body에 담는다.
 기본적으로 `@ControllerAdvice` 메소드는 모든 요청에 적용되지만(즉, 모든 컨트롤러에),
 다음 예제처럼 애노테이션 attribute로 컨트롤러를 지정할 수 있다:
 
-- *java*
-    ```java
-    // Target all Controllers annotated with @RestController
-    @ControllerAdvice(annotations = RestController.class)
-    public class ExampleAdvice1 {}
-    
-    // Target all Controllers within specific packages
-    @ControllerAdvice("org.example.controllers")
-    public class ExampleAdvice2 {}
-    
-    // Target all Controllers assignable to specific classes
-    @ControllerAdvice(assignableTypes = {ControllerInterface.class, AbstractController.class})
-    public class ExampleAdvice3 {}
-    ```
-- *kotlin*
-    ```kotlin
-    // Target all Controllers annotated with @RestController
-    @ControllerAdvice(annotations = [RestController::class])
-    public class ExampleAdvice1 {}
-    
-    // Target all Controllers within specific packages
-    @ControllerAdvice("org.example.controllers")
-    public class ExampleAdvice2 {}
-    
-    // Target all Controllers assignable to specific classes
-    @ControllerAdvice(assignableTypes = [ControllerInterface::class, AbstractController::class])
-    public class ExampleAdvice3 {}
-    ```
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+// Target all Controllers annotated with @RestController
+@ControllerAdvice(annotations = RestController.class)
+public class ExampleAdvice1 {}
+
+// Target all Controllers within specific packages
+@ControllerAdvice("org.example.controllers")
+public class ExampleAdvice2 {}
+
+// Target all Controllers assignable to specific classes
+@ControllerAdvice(assignableTypes = {ControllerInterface.class, AbstractController.class})
+public class ExampleAdvice3 {}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+// Target all Controllers annotated with @RestController
+@ControllerAdvice(annotations = [RestController::class])
+public class ExampleAdvice1 {}
+
+// Target all Controllers within specific packages
+@ControllerAdvice("org.example.controllers")
+public class ExampleAdvice2 {}
+
+// Target all Controllers assignable to specific classes
+@ControllerAdvice(assignableTypes = [ControllerInterface::class, AbstractController::class])
+public class ExampleAdvice3 {}
+```
 
 이 예제처럼 컨트롤러를 지정하면 런타임에 비교하기때문에,
 과도한 사용은 성능에 좋지 않다.

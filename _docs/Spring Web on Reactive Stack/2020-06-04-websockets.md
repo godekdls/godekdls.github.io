@@ -7,6 +7,7 @@ description: 스프링5 웹 리액티브 스택 웹소켓 한글 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 ---
+<script>var switchLanguage=true</script>
 
 > [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-websocket)를 한글로 번역한 문서입니다.
 >
@@ -104,72 +105,79 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
 
 웹소켓 서버를 만드려면 먼저 `WebSocketHandler`가 필요하다. 다음은 웹소켓 핸들러를 만드는 예제다:
 
-- *java*
-  
-  ```java
-  import org.springframework.web.reactive.socket.WebSocketHandler;
-  import org.springframework.web.reactive.socket.WebSocketSession;
-  
-  public class MyWebSocketHandler implements WebSocketHandler {
-  
-      @Override
-      public Mono<Void> handle(WebSocketSession session) {
-          // ...
-      }
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+import org.springframework.web.reactive.socket.WebSocketHandler;
+import org.springframework.web.reactive.socket.WebSocketSession;
+
+public class MyWebSocketHandler implements WebSocketHandler {
+
+  @Override
+  public Mono<Void> handle(WebSocketSession session) {
+      // ...
   }
-  ```
-- *kotlin*
-  ```kotlin
-  import org.springframework.web.reactive.socket.WebSocketHandler
-  import org.springframework.web.reactive.socket.WebSocketSession
-  
-  class MyWebSocketHandler : WebSocketHandler {
-  
-      override fun handle(session: WebSocketSession): Mono<Void> {
-          // ...
-      }
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+import org.springframework.web.reactive.socket.WebSocketHandler
+import org.springframework.web.reactive.socket.WebSocketSession
+
+class MyWebSocketHandler : WebSocketHandler {
+
+  override fun handle(session: WebSocketSession): Mono<Void> {
+      // ...
   }
-  ```
+}
+```
 
 그 다음엔 핸들러를 URL에 매핑하고 `WebSocketHandlerAdapter`를 추가해야 한다:
 
-- *java*
-  ```java
-  @Configuration
-  class WebConfig {
-  
-      @Bean
-      public HandlerMapping handlerMapping() {
-          Map<String, WebSocketHandler> map = new HashMap<>();
-          map.put("/path", new MyWebSocketHandler());
-          int order = -1; // before annotated controllers
-  
-          return new SimpleUrlHandlerMapping(map, order);
-      }
-  
-      @Bean
-      public WebSocketHandlerAdapter handlerAdapter() {
-          return new WebSocketHandlerAdapter();
-      }
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+@Configuration
+class WebConfig {
+
+  @Bean
+  public HandlerMapping handlerMapping() {
+      Map<String, WebSocketHandler> map = new HashMap<>();
+      map.put("/path", new MyWebSocketHandler());
+      int order = -1; // before annotated controllers
+
+      return new SimpleUrlHandlerMapping(map, order);
   }
-  ```
-- *kotlin*
-  ```kotlin
-  @Configuration
-  class WebConfig {
-  
-      @Bean
-      fun handlerMapping(): HandlerMapping {
-          val map = mapOf("/path" to MyWebSocketHandler())
-          val order = -1 // before annotated controllers
-  
-          return SimpleUrlHandlerMapping(map, order)
-      }
-  
-      @Bean
-      fun handlerAdapter() =  WebSocketHandlerAdapter()
+
+  @Bean
+  public WebSocketHandlerAdapter handlerAdapter() {
+      return new WebSocketHandlerAdapter();
   }
-  ```
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+@Configuration
+class WebConfig {
+
+  @Bean
+  fun handlerMapping(): HandlerMapping {
+      val map = mapOf("/path" to MyWebSocketHandler())
+      val order = -1 // before annotated controllers
+
+      return SimpleUrlHandlerMapping(map, order)
+  }
+
+  @Bean
+  fun handlerAdapter() =  WebSocketHandlerAdapter()
+}
+```
 
 ### 3.2.2. `WebSocketHandler`
 
@@ -190,141 +198,153 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
 
 가장 간단한 구현체는 인바운드 스트림을 처리하는 핸들러다:
 
-- *java*
-  ```java
-  class ExampleHandler implements WebSocketHandler {
-  
-      @Override
-      public Mono<Void> handle(WebSocketSession session) {
-          return session.receive()  // (1)       
-                  .doOnNext(message -> {
-                      // ...        // (2)      
-                  })
-                  .concatMap(message -> {
-                      // ...        // (3)          
-                  })
-                  .then();          // (4)    
-      }
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+class ExampleHandler implements WebSocketHandler {
+
+  @Override
+  public Mono<Void> handle(WebSocketSession session) {
+      return session.receive()  // (1)       
+              .doOnNext(message -> {
+                  // ...        // (2)      
+              })
+              .concatMap(message -> {
+                  // ...        // (3)          
+              })
+              .then();          // (4)    
   }
-  ```
-- *kotlin*
-  ```kotlin
-  class ExampleHandler : WebSocketHandler {
-  
-      override fun handle(session: WebSocketSession): Mono<Void> {
-          return session.receive() // (1)
-                  .doOnNext {
-                      // ...       // (2)           
-                  }
-                  .concatMap {
-                      // ...       // (3)         
-                  }
-                  .then()          // (4)       
-      }
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+class ExampleHandler : WebSocketHandler {
+
+  override fun handle(session: WebSocketSession): Mono<Void> {
+      return session.receive() // (1)
+              .doOnNext {
+                  // ...       // (2)           
+              }
+              .concatMap {
+                  // ...       // (3)         
+              }
+              .then()          // (4)       
   }
-  ```
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인바운드 메세지 스트림에 접근한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 각 메세지에 원하는 처리를 한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 감싸진 형태로(nested) 메세지 컨텐츠에 비동기 연산을 수행한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 수신을 완료하면 `Mono<Void>`를 리턴한다.</small>
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인바운드 메세지 스트림에 접근한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 각 메세지에 원하는 처리를 한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 감싸진 형태로(nested) 메세지 컨텐츠에 비동기 연산을 수행한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 수신을 완료하면 `Mono<Void>`를 리턴한다.</small>
 
 >  pooled data buffer를 사용하는 서버에서(e.g. Netty) 비동기 연산을 감싸서(nested) 사용한다면, `message.retain()`을 호출해야 하는 경우도 있다. 그렇지 않으면 데이터를 읽기도 전에 버퍼가 비워질 수 있다. 상세 배경은 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)를 참고하라.
 
 다음 예제는 인바운드, 아웃바운드 스트림을 함께 처리한다:
 
-- *java*
-  ```java
-  class ExampleHandler implements WebSocketHandler {
-  
-      @Override
-      public Mono<Void> handle(WebSocketSession session) {
-  
-          Flux<WebSocketMessage> output = session.receive()            // (1)
-                  .doOnNext(message -> {
-                      // ...
-                  })
-                  .concatMap(message -> {
-                      // ...
-                  })
-                  .map(value -> session.textMessage("Echo " + value)); // (2)
-  
-          return session.send(output);                                 // (3)
-      }
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+class ExampleHandler implements WebSocketHandler {
+
+  @Override
+  public Mono<Void> handle(WebSocketSession session) {
+
+      Flux<WebSocketMessage> output = session.receive()            // (1)
+              .doOnNext(message -> {
+                  // ...
+              })
+              .concatMap(message -> {
+                  // ...
+              })
+              .map(value -> session.textMessage("Echo " + value)); // (2)
+
+      return session.send(output);                                 // (3)
   }
-  ```
-- *kotlin*
-  ```kotlin
-  class ExampleHandler : WebSocketHandler {
-  
-      override fun handle(session: WebSocketSession): Mono<Void> {
-  
-          val output = session.receive()                   // (1)
-                  .doOnNext {
-                      // ...
-                  }
-                  .concatMap {
-                      // ...
-                  }
-                  .map { session.textMessage("Echo $it") } // (2)
-  
-          return session.send(output)                      // (3)
-      }
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+class ExampleHandler : WebSocketHandler {
+
+  override fun handle(session: WebSocketSession): Mono<Void> {
+
+      val output = session.receive()                   // (1)
+              .doOnNext {
+                  // ...
+              }
+              .concatMap {
+                  // ...
+              }
+              .map { session.textMessage("Echo $it") } // (2)
+
+      return session.send(output)                      // (3)
   }
-  ```
-  <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인바운드 메세지 스트림을 처리한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 아웃바운드 메세지를 생성해서 단일 플로우로 통합한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메세지를 받는 동안은 처리를 완료하지 않는 `Mono<Void>`를 리턴한다.</small>
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인바운드 메세지 스트림을 처리한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 아웃바운드 메세지를 생성해서 단일 플로우로 통합한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메세지를 받는 동안은 처리를 완료하지 않는 `Mono<Void>`를 리턴한다.</small>
 
 인바운드, 아웃바운드 스트림을 독립적으로 처리하고 완료됐을 때 합칠 수도 있다:
 
-- *java*
-  ```java
-  class ExampleHandler implements WebSocketHandler {
-  
-      @Override
-      public Mono<Void> handle(WebSocketSession session) {
-  
-          Mono<Void> input = session.receive()                                // (1)
-                  .doOnNext(message -> {
-                      // ...
-                  })
-                  .concatMap(message -> {
-                      // ...
-                  })
-                  .then();
-  
-          Flux<String> source = ... ;
-          Mono<Void> output = session.send(source.map(session::textMessage)); // (2)
-  
-          return Mono.zip(input, output).then();                              // (3)
-      }
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+class ExampleHandler implements WebSocketHandler {
+
+  @Override
+  public Mono<Void> handle(WebSocketSession session) {
+
+      Mono<Void> input = session.receive()                                // (1)
+              .doOnNext(message -> {
+                  // ...
+              })
+              .concatMap(message -> {
+                  // ...
+              })
+              .then();
+
+      Flux<String> source = ... ;
+      Mono<Void> output = session.send(source.map(session::textMessage)); // (2)
+
+      return Mono.zip(input, output).then();                              // (3)
   }
-  ```
-- *kotlin*
-  ```kotlin
-  class ExampleHandler : WebSocketHandler {
-  
-      override fun handle(session: WebSocketSession): Mono<Void> {
-  
-          val input = session.receive()                               // (1)
-                  .doOnNext {
-                      // ...
-                  }
-                  .concatMap {
-                      // ...
-                  }
-                  .then()
-  
-          val source: Flux<String> = ...
-          val output = session.send(source.map(session::textMessage)) // (2)
-  
-          return Mono.zip(input, output).then()                       // (3)
-      }
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+class ExampleHandler : WebSocketHandler {
+
+  override fun handle(session: WebSocketSession): Mono<Void> {
+
+      val input = session.receive()                               // (1)
+              .doOnNext {
+                  // ...
+              }
+              .concatMap {
+                  // ...
+              }
+              .then()
+
+      val source: Flux<String> = ...
+      val output = session.send(source.map(session::textMessage)) // (2)
+
+      return Mono.zip(input, output).then()                       // (3)
   }
-  ```
-  <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인바운드 메세지 스트림을 처리한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 메세지를 전송한다.</small><br>
-	<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 스트림을 합쳐서 모두 완료되면 종료하는 `Mono<Void>`를 리턴한다.</small>
+}
+```
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인바운드 메세지 스트림을 처리한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 메세지를 전송한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 스트림을 합쳐서 모두 완료되면 종료하는 `Mono<Void>`를 리턴한다.</small>
 
 ### 3.2.3. `DataBuffer`
 
@@ -347,42 +367,46 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
 
 각 서버의 `RequestUpgradeStrategy` 구현체로 웹소켓 엔진 관련 옵션을 설정할 수 있다. 다음은 톰캣에서 사용할 웹소켓 옵션을 설정하는 예제다:
 
-- *java*
-  ```java
-  @Configuration
-  class WebConfig {
-  
-      @Bean
-      public WebSocketHandlerAdapter handlerAdapter() {
-          return new WebSocketHandlerAdapter(webSocketService());
-      }
-  
-      @Bean
-      public WebSocketService webSocketService() {
-          TomcatRequestUpgradeStrategy strategy = new TomcatRequestUpgradeStrategy();
-          strategy.setMaxSessionIdleTimeout(0L);
-          return new HandshakeWebSocketService(strategy);
-      }
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+@Configuration
+class WebConfig {
+
+  @Bean
+  public WebSocketHandlerAdapter handlerAdapter() {
+      return new WebSocketHandlerAdapter(webSocketService());
   }
-  ```
-- *kotlin*
-  ```kotlin
-  @Configuration
-  class WebConfig {
-  
-      @Bean
-      fun handlerAdapter() =
-              WebSocketHandlerAdapter(webSocketService())
-  
-      @Bean
-      fun webSocketService(): WebSocketService {
-          val strategy = TomcatRequestUpgradeStrategy().apply {
-              setMaxSessionIdleTimeout(0L)
-          }
-          return HandshakeWebSocketService(strategy)
-      }
+
+  @Bean
+  public WebSocketService webSocketService() {
+      TomcatRequestUpgradeStrategy strategy = new TomcatRequestUpgradeStrategy();
+      strategy.setMaxSessionIdleTimeout(0L);
+      return new HandshakeWebSocketService(strategy);
   }
-  ```
+}
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+@Configuration
+class WebConfig {
+
+  @Bean
+  fun handlerAdapter() =
+          WebSocketHandlerAdapter(webSocketService())
+
+  @Bean
+  fun webSocketService(): WebSocketService {
+      val strategy = TomcatRequestUpgradeStrategy().apply {
+          setMaxSessionIdleTimeout(0L)
+      }
+      return HandshakeWebSocketService(strategy)
+  }
+}
+```
 
 사용 중인 서버에서 지원하는 업데이트 전략 옵션을 확인해 봐라. 현재는 톰캣과 Jetty만 옵션을 설정할 수 있다.
 
@@ -400,27 +424,31 @@ CORS를 설정하고 웹소켓 엔드포인트 접근을 제한하는 가장 쉬
 
 클라이언트 인스턴스를 생성해서 `execute` 메소드를 실행하면 웹소켓 세션을 시작한다:
 
-- *java*
-  ```java
-  WebSocketClient client = new ReactorNettyWebSocketClient();
-  
-  URI url = new URI("ws://localhost:8080/path");
-  client.execute(url, session ->
+<div class="switch-language-wrapper">
+<span class="switch-language java">java</span>
+<span class="switch-language kotlin">kotlin</span>
+</div>
+<div class="language-only-for-java"></div>
+```java
+WebSocketClient client = new ReactorNettyWebSocketClient();
+
+URI url = new URI("ws://localhost:8080/path");
+client.execute(url, session ->
+      session.receive()
+              .doOnNext(System.out::println)
+              .then());
+```
+<div class="language-only-for-kotlin"></div>
+```kotlin
+val client = ReactorNettyWebSocketClient()
+
+      val url = URI("ws://localhost:8080/path")
+      client.execute(url) { session ->
           session.receive()
-                  .doOnNext(System.out::println)
-                  .then());
-  ```
-- *kotlin*
-  ```kotlin
-  val client = ReactorNettyWebSocketClient()
-  
-          val url = URI("ws://localhost:8080/path")
-          client.execute(url) { session ->
-              session.receive()
-                      .doOnNext(::println)
-              .then()
-          }
-  ```
+                  .doOnNext(::println)
+          .then()
+      }
+```
 
 Jetty같이 `Lifecycle` 인터페이스를 구현하고 있는 일부 클라이언트는 사용하기 전에 stop/start 메소드를 호출해야 한다. 모든 클라이언트는 각 웹소켓 클라이언트 관련 옵션을 설정할 수 있는 생성자를 가지고 있다.
 
