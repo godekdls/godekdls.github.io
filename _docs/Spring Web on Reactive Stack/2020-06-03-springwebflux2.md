@@ -686,7 +686,7 @@ public class WebConfig implements WebFluxConfigurer {
         // configure view resolution for HTML rendering...
     }
 }
-````
+```
 <div class="language-only-for-kotlin"></div>
 ```kotlin
 @Configuration
