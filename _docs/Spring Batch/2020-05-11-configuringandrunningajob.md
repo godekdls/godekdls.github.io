@@ -69,16 +69,16 @@ public Job footballJob() {
 
 위에 보이는 예시에서 `Job`은 세 개의 `Step`을 가지고 있다.
 job 빌더로 step뿐 아니라 병렬화(`Split`), 선언적인 flow 제어(`Decision`),
-flow 정의 외부화(`Flow`)같은 다른 요소도 설정할 수 있다.
+flow 정의 외부화(`Flow`) 같은 다른 요소도 설정할 수 있다.
 
 ### 4.1.1. Restartability
 
-배치 job을 실행할 때 발생하는 주요 이슈는 `Job`이 재시작할 때의 동작과 관련있다.
-job을 실행할 때 특정 `JobInstance`의 `JobExecution`이 이미 존재한다면, '재시작'으로 간주된다.
+배치 job을 실행할 때 발생하는 주요 이슈는 `Job`이 재시작할 때의 동작과 관련 있다.
+job을 실행할 때 특정 `JobInstance`의 `JobExecution`이 이미 존재한다면, '재시작'으로 간주한다.
 모든 잡이 중단된 지점부터 재시작할 수 있다면 이상적이겠지만, 불가능할 때가 있다.
 이런 경우에는 개발자가 직접 새 `JobInstance`를 생성해야 한다.
 물론 스프링 배치를 사용하면 문제가 조금 쉬워지는데,
-restartable 프로퍼티 값을 'false'로 설정하면 절대 `Job`을 재실행해지 않고 항상 새 `JobInstance`로 실행한다:
+restartable 프로퍼티 값을 'false'로 설정하면 절대 `Job`을 재실행하지 않고 항상 새 `JobInstance`로 실행한다:
 
 ```java
 @Bean
@@ -111,8 +111,8 @@ catch (JobRestartException e) {
 }
 ```
 
-위 코드에서 보여주는 바와 같이 재시작 불가능한 job으로 `JobExecution`을 처음으로 생성할 때는 문제 없이 잘 생성된다.
-그러나 두번째 시도부터 `JobRestartException`이 발생한다.
+위 코드에서 보여주는 바와 같이 재시작 불가능한 job으로 `JobExecution`을 처음으로 생성할 때는 문제없이 잘 생성된다.
+그러나 두 번째 시도부터 `JobRestartException`이 발생한다.
 
 ### 4.1.2. Intercepting Job Execution
 
@@ -184,7 +184,7 @@ public Job job1() {
 
 Spring 3부터 XML뿐 아니라 자바 코드로도 어플리케이션을 설정할 수 있는데,
 이와 동일하게 스프링 배치 2.2.0부터 자바 코드로 배치 job을 설정할 수 있다.
-자바 기반 설정을 위한 두가지 컴포넌트를 지원한다:
+자바 기반 설정을 위한 두 가지 컴포넌트를 지원한다:
 `@EnableBatchProcessing` 애노테이션과 두 개의 빌더
 
 `@EnableBatchProcessing`는 자바 진영의 다른 @Enable* 애노테이션과 유사하게 동작한다.
@@ -204,7 +204,7 @@ Spring 3부터 XML뿐 아니라 자바 코드로도 어플리케이션을 설정
 `BatchConfigurer` 인터페이스를 구현하면 직접 이 빈들을 커스터마이징할 수도 있다.
 늘 그렇듯, `DefaultBatchConfigurer`(`BatchConfigurer`가 없으면 제공되는)를 확장하고
 필요한 getter를 오버라이딩하는 것만으로 충분하다.
-그러나 처음부터 직접 구현해야할 수도 있다.
+그러나 처음부터 직접 구현해야 할 수도 있다.
 아래 예시는 커스텀 트랜잭션 매니저를 사용하는 방법을 설명한다:
 
 ```java
@@ -270,13 +270,13 @@ public class AppConfig {
 `@EnableBatchProcessing`을 사용하면 `JobRepository`가 제공된다.
 이 섹션은 원하는 repository를 설정하는 방법을 설명한다.
 
-위에서 설명한대로, `JobRepository`는 `JobExecution`나 `StepExecution`같은 
+위에서 설명한대로, `JobRepository`는 `JobExecution`나 `StepExecution` 같은 
 스프링 배치에서 사용되는 여러 도메인 오브젝트를 CRUD할 때 필요하다.
-이는 `JobLauncher`, `Job`, `Step`같은 주요 프레임워크 기능에서 사용된다.
+이는 `JobLauncher`, `Job`, `Step` 같은 주요 프레임워크 기능에서 사용된다.
 
 자바 기반 설정을 사용한다면 `JobRepository`를 사용하면 된다.
-`DataSource`가 제공된다면 JDBC를 기반으로한 repository를 제공하며,
-나머지의 경우 Map을 기반으로한 repository를 제공한다.
+`DataSource`가 제공된다면 JDBC를 기반으로 한 repository를 제공하며,
+나머지의 경우 Map을 기반으로 한 repository를 제공한다.
 물론 `BatchConfigurer` 인터페이스를 구현해서 `JobRepository` 설정을 커스터마이징할 수도 있다.
 
 ```java
@@ -306,11 +306,11 @@ max varchar length는 디폴트값이 2500인데,
 레포지토리를 위한 트랜잭션 advice가 자동으로 생성된다.
 이는 실패 후 재시작할 때 꼭 필요한 state를 포함한 배치 메타 데이터가 올바르게 저장됨을 보장해준다.
 레포지토리 메소드에 트랜잭션 처리가 없다면 이를 보장할 수 없다.
-두 프로세스가 동시에 같은 job을 실행하려고 하면 하나만 성공해야하므로 `create*` 메소드의 isolation 레벨은 별도로 지정한다.
+두 프로세스가 동시에 같은 job을 실행하려고 하면 하나만 성공해야 하므로 `create*` 메소드의 isolation 레벨은 별도로 지정한다.
 메소드의 디폴트 isloation 레벨은 SERIALIZABLE로, 극단적이라고 느껴질 수도 있다:
 READ_COMMITTED도 잘 동작한다;
 두 프로세스가 충돌하는 경우만 아니면 READ_UNCOMMITTED도 괜찮다.
-하지만 `create*` 메소드 호출이 매우 짧기 때문에 SERIALIZED이 딱히 문제되지는 않는다 (데이터베이스 플랫폼이 이를 지원한다면).
+하지만 `create*` 메소드 호출이 매우 짧기 때문에 SERIALIZED가 딱히 문제 되지는 않는다 (데이터베이스 플랫폼이 이를 지원한다면).
 물론 원한다면 오버라이드할 수 있다:
 
 ```java
@@ -365,7 +365,7 @@ BATCH_JOB_EXECUTION는 SYSTEM.TEST_JOB_EXECUTION로 바뀐다.
 
 ### 4.3.3. In-Memory Repository
 
-성능 등의 이유로 도메인 오브젝트를 굳이 데이터베이스에 저장하고싶지 않을 수도 있다.
+성능 등의 이유로 도메인 오브젝트를 굳이 데이터베이스에 저장하고 싶지 않을 수도 있다.
 매 커밋 때마다 도메인 오브젝트를 저장하는 건 별도의 시간이 소요되는 작업이다.
 아니면 단순히 상태를 저장할 필요가 없는 job이거나.
 위와 같은 이유로 스프링 배치는 인메모리 Map 버전의 job 레포지토리를 제공한다:
@@ -385,7 +385,7 @@ protected JobRepository createJobRepository() throws Exception {
 멀티 쓰레드 job이나 프로그램 내에서 파티셔닝한 `Step`에는 적합하지 않다.
 따라서 이런 기능이 필요하다면 인메모리가 아닌 데이터베이스 버전의 레포지토리를 사용해야 한다.
 
-인메모리 레포지토리도 트랜잭션 매니저를 등록해야한다.
+인메모리 레포지토리도 트랜잭션 매니저를 등록해야 한다.
 레포지토리에 롤백 시멘틱이 존재하고, 여전히 비지니스 로직에 트랜잭션이 필요하기 때문이다 (e.g. RDBMS 접근).
 테스트가 목적이라면 `ResourcelessTransactionManager`가 유용할 것이다.
 
@@ -414,7 +414,7 @@ protected JobRepository createJobRepository() throws Exception {
 (스프링 프레임워크의 표준 인터페이스 중 하나를 사용해서).
 
 그래도 동작하지 않거나 RDBMS를 사용하지 않는다면 가능한 유일한 옵션은
-`SimpleJobRepository`가 의존하는 여러 `Dao` 인터페이스를 구현해서 스프링 방식대로 수동으로 연결하는 방법 뿐이다.
+`SimpleJobRepository`가 의존하는 여러 `Dao` 인터페이스를 구현해서 스프링 방식대로 수동으로 연결하는 방법뿐이다.
 
 ---
 
@@ -448,7 +448,7 @@ protected JobLauncher createJobLauncher() throws Exception {
 문제는 HTTP 요청으로 job을 시작할 때 생긴다.
 이 때는 요청을 비동기로 처리해서 `SimpleJobLauncher`가 요청 즉시
 caller에게 결과를 리턴해줘야 한다.
-배치같은 긴 시간이 소요되는 작업 동안 HTTP 요청을 열린 채로 두는 것은
+배치 같은 긴 시간이 소요되는 작업 동안 HTTP 요청을 열린 채로 두는 것은
 좋은 방법이 아니기 때문이다. 다음은 작동 순서 예시이다:
 
 ![Asynchronous Job Launcher Sequence](./../../images/springbatch/job-launcher-sequence-async.png)
@@ -472,9 +472,9 @@ public JobLauncher jobLauncher() {
 
 ## 4.5. Running a Job
 
-배치 job을 실행하려면 실행할 `Job`과 `JobLauncher` 두가지가 필요하다.
+배치 job을 실행하려면 실행할 `Job`과 `JobLauncher` 두 가지가 필요하다.
 두 가지 모두 같은 컨텍스트를 사용할 수도 있고 각기 다른 컨텍스트를 사용할 수 있다.
-예를 들어 커맨드라인에서 job을 실행시킬 때는 각 job 마다 JVM이 따로 초기화될 거고, 
+예를 들어 커맨드라인에서 job을 실행시킬 때는 각 job마다 JVM이 따로 초기화될 거고, 
 그러면 각 job은 다른 `JobLauncher`에서 실행된다.
 반대로 웹 컨테이너에서 HttpRequest로 job을 실행한다면 일반적으로 여러 요청을 비동기로 실행하기 위해 `JobLauncher`를 하나만 사용한다.
 
@@ -482,7 +482,7 @@ public JobLauncher jobLauncher() {
 
 엔터프라이즈 스케줄러로 job을 실행한다면 커맨드라인이 기본 인터페이스다.
 NativeJob을 사용하지 않는다면 Qartz를 제외한 스케줄러 대부분은
-주로 쉘 스크립트로 실행되서 운영체제 프로세스와 직접 작동하기 때문이다.
+주로 쉘 스크립트로 실행돼서 운영체제 프로세스와 직접 작동하기 때문이다.
 Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니어도 Java 프로세스를 시작하는 방법은 많다.
 그러나 예제에서는 대부분이 익숙하다고 느낄 쉘 스크립트를 사용한다.
 
@@ -504,7 +504,7 @@ Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니�
 | jobPath |`ApplicationContext`를 생성할 때 필요한 XML 파일 위치. 이 파일은 Job 실행에 필요한 모든 것을 포함한다.|
 | jobName |실행할 job의 이름|
 
-이 인자들은 path, name 순으로 전달해야한다.
+이 인자들은 path, name 순으로 전달해야 한다.
 이 두 인자 다음에 나오는 모든 인자는 `JobParameter`로 간주하며 'name=value' 포맷으로 사용해야 한다.
 
 ```bash
@@ -514,7 +514,7 @@ Perl, Ruby같은 쉘 스크립트나 ant, maven같은 '빌드 도구'가 아니�
 대부분 manifest를 jar 파일 안의 메인 클래스에 선언하고 싶겠지만, 단순화를 위해 클래스를 직접 사용한다.
 이 예시에서도 [domainLanguageOfBatch](https://godekdls.github.io/Spring%20Batch/domainlanguage/)에서 사용한 'EndOfDay' 예제를 그대로 사용한다.
 첫 번째 인자받은 'io.spring.EndOfDayJobConfiguration'는 Job을 포함한 설정 클래스의 풀네임이다.
-두 번재 인자 'endOfDay'는 job의 이름이다.
+두 번째 인자 'endOfDay'는 job의 이름이다.
 마지막으로 넘긴 인자 'schedule.date(date)=2007/05/05'는 JobParameter로 변환된다.
 다음은 자바 설정 예제이다:
 
@@ -546,7 +546,7 @@ public class EndOfDayJobConfiguration {
 ```
 
 스프링 배치에서 배치 job을 실행하려면 더 복잡한 설정들이 있는데, 
-이 예제에서는 `CommandLineJobRunner`에서 필요로하는 
+이 예제에서는 `CommandLineJobRunner`에서 필요로 하는 
 `Job`과 `JobLauncher`만 다뤘다.
 
 #### ExitCodes
@@ -558,7 +558,7 @@ public class EndOfDayJobConfiguration {
 리턴 코드는 프로세스가 스케줄러에게 리턴하는 숫자로 실행 결과를 나타낸다.
 가장 간단하게는 0은 성공이고 1은 실패를 의미한다.
 그러나 더 복잡한 케이스도 있는데, job A가 4를 리턴하고 job B를 시작했으며, job B는 5를 리턴하고 job C를 시작한 경우를 생각해 보자.
-이런 동작은 스케줄러 레벨에서 처리되지만, 스프링 배치같은 프레임워크를 다룰 때는 특정 job의 'Exit Code'를 의미하는 숫자를 리턴할 방법이 필요하다.
+이런 동작은 스케줄러 레벨에서 처리되지만, 스프링 배치 같은 프레임워크를 다룰 때는 특정 job의 'Exit Code'를 의미하는 숫자를 리턴할 방법이 필요하다.
 스프링 배치에선 이를 `ExitStatus`로 캡슐화해서 지원하는데, 5장에서 상세하게 다룬다.
 여기서 기억해둬야 할 점은 `ExitStatus`는 프레임워크에서 설정하는(혹은 개발자가 직접) exit code라는 프로퍼티가 있으며,
 `JobLauncher`가 리턴하는 `JobExecution`에서 확인할 수 있다는 점이다.
@@ -572,9 +572,9 @@ public interface ExitCodeMapper {
 }
 ```
 
-string으로 된 종료 코드를 받아서 숫자로 리턴하는게 `ExitCodeMapper`의 핵심이다.
+string으로 된 종료 코드를 받아서 숫자로 리턴하는 게 `ExitCodeMapper`의 핵심이다.
 job runner가 디폴트로 사용하는 구현체는 `SimpleJvmExitCodeMapper`로,
-성공 시에는 0을, 일반적인 에러라면 1을, 컨텍스트 내에서 `Job`을 못찾는 등의 job runner 에러는 2를 리턴한다.
+성공 시에는 0을, 일반적인 에러라면 1을, 컨텍스트 내에서 `Job`을 못 찾는 등의 job runner 에러는 2를 리턴한다.
 좀 더 세세한 구분이 필요하면 `ExitCodeMapper` 인터페이스를 직접 구현해야 한다.
 `CommandLineJobRunner`는 `ApplicationContext`를 생성하는 클래스이므로 context 내에 함께 묶일 수는 없고, 재구현한 값들을 주입해줄 필요가 있다.
 즉 `BeanFactory` 내에 `ExitCodeMapper` 구현체가 있으면 컨텍스트가 생성되고 난 이후에 runner에 주입된다는 뜻이다.
@@ -584,7 +584,7 @@ job runner가 디폴트로 사용하는 구현체는 `SimpleJvmExitCodeMapper`�
 
 위에서 설명한 바와 같이 보통 배치 job 같은 오프라인 처리는 커맨드라인에서 실행해왔다.
 그러나 리포팅 용도나, 애드혹(ad-hoc) job을 실행할 때, 
-웹 어플리케이션을 지원해야할 때 등 `HttpRequest`로 실행하는 게 더 나을 때도 있다.
+웹 어플리케이션을 지원해야 할 때 등 `HttpRequest`로 실행하는 게 더 나을 때도 있다.
 배치 job은 보통 긴 작업을 의미하므로 job은 비동기로 실행해야 한다.
 
 ![Asynchronous Job Launcher Sequence From Web Container](./../../images/springbatch/launch-from-request.png)
@@ -592,7 +592,7 @@ job runner가 디폴트로 사용하는 구현체는 `SimpleJvmExitCodeMapper`�
 여기 나오는 컨트롤러는 스프링 MVC 컨트롤러를 의미한다.
 스프링 MVC에 관한 상세 내용은 [여기](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc)를 참고하라.
 컨트롤러가 `Job`을 실행시키는데, 이때 요청 즉시 `JobExecution`을 리턴하게 설정한(비동기) `JobLauncher`를 사용한다.
-`Job`은 여전히 실행중인데도 논블로킹 처리로 컨트롤러는 즉시 응답할 수 있으며, `HttpRequest`를 사용한다면 이 것은 필수이다.
+`Job`은 여전히 실행 중인데도 논블로킹 처리로 컨트롤러는 즉시 응답할 수 있으며, `HttpRequest`를 사용한다면 이것은 필수이다.
 예제는 아래 있다:
 
 ```java
@@ -622,7 +622,7 @@ public class JobLauncherController {
 ![Job Repository](./../../images/springbatch/job-repository.png)
 
 `JobLauncher`는 `JobExecution` 오브젝트를 생성하고 실행하기 위해 `JobRepository`를 사용한다.
-그 다음으론 `Job`과 `Step` 구현체가 job 실행 중에 execution을 업데이트하기 위해 `JobRepository`를 사용한다.
+그다음으론 `Job`과 `Step` 구현체가 job 실행 중에 execution을 업데이트하기 위해 `JobRepository`를 사용한다.
 이 기본적인 동작은 간단한 시나리오에는 충분하지만 배치 job이 수백 개에 달하고 스케줄링까지 복잡하다면 메타 데이터에 접근하기 위한 고급 기술이 필요하다.
 
 ![Advanced Job Repository Access](./../../images/springbatch/job-repository-advanced.png)
@@ -706,7 +706,7 @@ public JobRegistry jobRegistry() throws Exception {
 ```
 
 빈 post processer나 register lifecycle 컴포넌트를 사용해서 `JobRegistry`를 등록할 수 있는데,
-이 두가지 메커니즘은 아래 섹션에서 설명한다. 
+이 두 가지 메커니즘은 아래 섹션에서 설명한다. 
 
 #### JobRegistryBeanPostProcessor
 
@@ -731,7 +731,7 @@ public JobRegistryBeanPostProcessor jobRegistryBeanPostProcessor() {
 job이 의존성을 갖는 빈(bean) 이름은 그럴 필요가 없어진다.
 예를 들어, `Job`을 하나씩 가진 여러 XML 설정 파일에
 빈 이름이 같은(e.g. "reader") `ItemReader`가 여러 개 있어도 상관없다.
-모든 파일이 같은 컨텍스트에 임포트된다면 reader는 충돌해서 서로를 덮어 쓰게 되지만
+모든 파일이 같은 컨텍스트에 임포트된다면 reader는 충돌해서 서로를 덮어쓰게 되지만
 이 자동 registrar가 이를 방지해 준다.
 여러 모듈로 구성된 어플리케이션의 job을 통합하기도 쉬워진다.
 
@@ -751,7 +751,7 @@ public AutomaticJobRegistrar registrar() {
 registrar 필수 프로퍼티는 `ApplicationContextFactory` 배열과(여기선 편의상 팩토리 빈으로 생성했다) `JobLoader` 두 개다.
 `JobLoader`가 자식 컨텍스트와 `JobRegistry`에 등록된 job의 라이프사이클을 관리한다.
 
-`ApplicationContextFactory`가 자식 컨텍스트 생성을 담당하며, 보통 위에서 처럼 `ClassPathXmlApplicationContextFactory`를 사용한다.
+`ApplicationContextFactory`가 자식 컨텍스트 생성을 담당하며, 보통 위에서처럼 `ClassPathXmlApplicationContextFactory`를 사용한다.
 이 팩토리는 기본적으로 부모 컨텍스트의 일부 설정을 자식 컨텍스트로 복사한다.
 따라서 부모 컨텍스트와 동일한 설정을 사용한다면 자식 컨텍스트에서 `PropertyPlaceholderConfigurer`나 AOP 설정을 재정의하지 않아도 된다.
 
@@ -800,7 +800,7 @@ public interface JobOperator {
 }
 ```
 
-위 오퍼레이션엔 `JobLauncher`, `JobRepository`, `JobExplorer`, `JobRegistry`같은 인터페이스를 사용하는 메소드가 많다.
+위 오퍼레이션엔 `JobLauncher`, `JobRepository`, `JobExplorer`, `JobRegistry` 같은 인터페이스를 사용하는 메소드가 많다.
 즉, `JobOperator`를 구현한 `SimpleJobOperator`는 의존성(dependency)이 높다.
 
 ```java
@@ -831,7 +831,7 @@ public interface JobOperator {
 `JobOperator`의 메소드는 대부분 설명이 필요 없으며, 자세한 설명은 [javadoc](https://docs.spring.io/spring-batch/docs/current/api/org/springframework/batch/core/launch/JobOperator.html)에 있다.
 하지만 `startNextInstance` 메소드는 주의 깊게 살펴볼 필요가 있다.
 이 메소드는 항상 새 job 인스턴스를 실행시킨다. 
-`JobExecution`에서 심각한 이슈가 발생해서 job을 처음부터 다시 시작해야하는 경우 매우 유용하다.
+`JobExecution`에서 심각한 이슈가 발생해서 job을 처음부터 다시 시작해야 하는 경우 매우 유용하다.
 `JobLauncher`는 이전 파라미터 셋과는 다른 값으로 새 `JobInstance`를 실행시키려면 새로운 `JobParameters` 오브젝트가 필요한 반면에,
 `startNextInstance` 메소드는 `Job`에 상응하는 `JobParametersIncrementer`를 통해 새 인스턴스를 만들도록 강제한다.
 
@@ -862,8 +862,8 @@ public class SampleIncrementer implements JobParametersIncrementer {
 ```
 
 이 예제에서는 'run.id'라는 키를 가진 값으로 `JobInstances`를 구분한다.
-넘겨받은 `JobParameters`가 null이라면 이전에 해당 `Job`을 실행한 적이 없다는 뜻이므로 초기 값을 리턴하면 된다.
-반대의 경우에는 이전에 사용된 값을 넘겨 받아 바로 다음에 사용할 값을 리턴한다.
+넘겨받은 `JobParameters`가 null이라면 이전에 해당 `Job`을 실행한 적이 없다는 뜻이므로 초깃값을 리턴하면 된다.
+반대의 경우에는 이전에 사용된 값을 넘겨받아 바로 다음에 사용할 값을 리턴한다.
 
 incrementer는 빌더에서 제공하는 `incrementer` 메소드로 설정한다.
 

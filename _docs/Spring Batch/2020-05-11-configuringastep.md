@@ -61,9 +61,9 @@ lastmod: 2020-06-08T19:00:00+09:00
 설명이 모호하게 느껴질 수도 있는데, `Step`의 모든 내용은 `Job`을 만드는 개발자 재량이기 때문에 그렇다.
 `Step`은 어떻게 개발하느냐에 따라 간단할 수도 있고 복잡할 수도 있다.
 아래 그림에서 표현하는 `Step`은 단순히 데이터베이스에서 파일을 읽는, 
-코드가 거의 필요없거나 전혀 필요하지 않은(사용한 구현체에 따라 다름) 
+코드가 거의 필요 없거나 전혀 필요하지 않은(사용한 구현체에 따라 다름) 
 간단한 작업이 될 수도 있고,
-프로세싱의 일부를 처리하는 복잡한 비지니스 로직일 수도 있다.
+프로세싱 일부를 처리하는 복잡한 비지니스 로직일 수도 있다.
 
 ![Step](./../../images/springbatch/step.png)
 
@@ -124,16 +124,16 @@ public Step sampleStep(PlatformTransactionManager transactionManager) {
 }
 ```
 
-위 설정은 아이템 지향 step을 생성하는데 꼭 필요한 의존성(dependency)만 보여주고 있다.
+위 설정은 아이템 지향 step을 생성하는 데 꼭 필요한 의존성(dependency)만 보여주고 있다.
 
 - `reader`: 처리할 아이템을 제공하는 `ItemReader`
-- `writer`: `ItemReader`에게 제공받은 아이템을 처리할 `ItemWriter`
+- `writer`: `ItemReader`가 제공하는 아이템을 처리할 `ItemWriter`
 - `transactionManager`: 트랜잭션을 시작하고 커밋하는 스프링의 `PlatformTransactionManager`
 - `repository`: `StepExecution`과 `ExecutionContext`를 주기적으로(커밋 직전) 저장하는 `JobRepository`
 - `chunk`: 트랜잭션을 커밋하기 전까지 처리할 아이템 수로, 아이템 기반 step이라는 걸 보여줌
 
 디폴트 레포지토리는 `jobRepository`, 디폴트 트랜잭션 매니저는 `transactionManger`라는 걸 명심해라
-(모두 `@EnableBatchProcessing`를 통해 제공된다).
+(모두 `@EnableBatchProcessing`을 통해 제공된다).
 아이템은 아무런 처리 없이 reader에서 writer로 바로 전달될 수도 있기 때문에 `ItemProcessor`는 옵션이다.
 
 ### 5.1.3. The Commit Interval
@@ -168,7 +168,7 @@ public Step step1() {
 앞의 예제는 한 트랜잭션에서 아이템을 10개씩 처리한다.
 데이터를 처리하기 전에 트랜잭션을 시작한다.
 `ItemReader`의 `read` 메소드를 호출할 때마다 카운터가 증가한다.
-카운터가 10이되면 합쳐진 아이템 리스트는 `ItemWriter`로 넘겨지고 트랜잭션이 커밋된다.
+카운터가 10이 되면 합쳐진 아이템 리스트는 `ItemWriter`로 넘겨지고 트랜잭션이 커밋된다.
 
 ### 5.1.4. Configuring a Step for Restart
 
@@ -203,7 +203,7 @@ start-limit의 디폴트 값은 `Integer.MAX_VALUE`이다.
 
 #### Restarting a Completed `Step`
 
-재시작 가능한 job이라면 첫 실행에서 성공했는지와는 상관없이 항상 실행해야하는 step도 있을 수 있다.
+재시작 가능한 job이라면 첫 실행에서 성공했는 지와는 상관없이 항상 실행해야 하는 step도 있을 수 있다.
 유효성 검증 step이나 배치 전 리소스를 정리하는 `Step`이 그렇다.
 재시작된 job을 처리하는 동안에는 'COMPLETED' 상태를 가진, 즉 이미 성공적으로 완료된 step은 스킵한다.
 아래 예제처럼 `allow-start-if-complete`가 "true"로 설정된 step은 항상 실행된다:
@@ -272,7 +272,7 @@ public Step playerSummarization() {
 `playerLoad`에서 읽는 파일은 한 개여서 한 번에 읽어올 수 있지만,
 `gameLoad`는 특정 디렉토리 아래 있는 어떤 게임 파일이라도 읽을 수 있으며
 성공적으로 데이터베이스에 저장한 다음에는 파일을 지운다고 가정한다.
-따라서 `playerLoad`는 몇번이고 실행되도 괜찮고, 이미 완료됐다면 스킵해도 좋기 때문에 별다른 설정이 없다.
+따라서 `playerLoad`는 몇 번이고 실행돼도 괜찮고, 이미 완료됐다면 스킵해도 좋기 때문에 별다른 설정이 없다.
 그러나 `gameLoad` step은 이전에 실행된 이후 파일이 추가되었을 수도 있으므로 매번 실행해야 한다.
 항상 실행될 수 있도록 'allow-start-if-complete'를 'true'로 설정했다.
 (게임을 저장하는 데이터베이스에는 실행을 식별할 수 있는 값이 있어서,
@@ -307,8 +307,8 @@ Run 3:
 중간에 에러가 발생하면 `Step`을 실패로 끝내는 대신 무시하고 넘어가야 하는 케이스도 많다.
 보통 이런건 데이터가 무엇인지 이해하고 있는 사람이 결정한다.
 예를 들어 금융 데이터를 다룰 때는 돈이 송금될 수도 있으므로, 완전 무결해야 하며 실패했을 때 그냥 넘어가선 안 된다.
-반면 벤더 리스트를 읽어들일 때는 그냥 넘어가도 상관 없다.
-데이터 포맷이 잘못되거나 필수 정보가 누락되서 벤더 정보를 읽어들이지 못하는 경우라면 크게 문제되지 않는다.
+반면 벤더 리스트를 읽어드릴 때는 그냥 넘어가도 상관 없다.
+데이터 포맷이 잘못되거나 필수 정보가 누락되서 벤더 정보를 읽어들이지 못하는 경우라면 크게 문제 되지 않는다.
 잘못된 로그가 저장되는 경우도 빈번하며, 이런 케이스를 다루는 방법은 뒤에서 listener를 다룰 때 설명하겠다.
 
 아래 예제는 skip limit을 사용한 예제이다:
@@ -328,15 +328,15 @@ public Step step1() {
 ```
 
 앞의 예제는 `FlatFileItemReader`를 사용했다.
-언제든지 `FlatFileParseException`이 발생하면 해당 아이템은 건너 뛰고 skip limit으로 설정된 10이 될 때까지 카운팅한다.
+언제든지 `FlatFileParseException`이 발생하면 해당 아이템은 건너뛰고 skip limit으로 설정된 10이 될 때까지 카운팅한다.
 선언되어있는 Exception(혹은 하위 클래스들)은 청크 프로세싱(read, process, write)의 모든 단계에서 발생할 수 있는데,
-step내에 read, process, write 별로 각각 skip 카운트를 매기지만 이 limit 값은 모두에 적용된다.
+step 내에 read, process, write 별로 각각 skip 카운트를 매기지만 이 limit 값은 모두에 적용된다.
 skip limit에 도달했는데 또 예외가 발생하면 그땐 step이 실패로 끝난다.
-다시 말해 10번은 괜찮아도 11번째 skip은 예외를 발생시긴다.
+다시 말해 10번은 괜찮아도 11번째 skip은 예외를 발생시킨다.
 
 앞에 예제에 한 가지 문제점이 있는데, `FlatFileParseException`이 아닌 다른 예외가 발생하면 `Job`은 실패한다.
 물론 이 동작을 의도했을 수도 있다.
-아래 예제처럼 실패로 간주할 예외만 지정하고 나머지는 건너 뛰게 만들면 문제는 단순해진다.
+아래 예제처럼 실패로 간주할 예외만 지정하고 나머지는 건너뛰게 만들면 문제는 단순해진다.
 
 ```java
 @Bean
@@ -355,10 +355,10 @@ public Step step1() {
 
 `java.lang.Exception`을 건너뛰어도 되는 exception 클래스로 지정했는데, 이는 모든 `Exception`을 무시하겠다는 뜻이다.
 하지만 `java.io.FileNotFoundException`을 예외로 둠으로써, `FileNotFoundException`을 제외한 모든 `Exception`을 무시할 예외 클래스로 지정한다.
-치명적일 수 있는 클래스는 예외로 둔다. (즉, 건너 뛰지 않음).
+치명적일 수 있는 클래스는 예외로 둔다. (즉, 건너뛰지 않음).
 
-어떤 exception가 발생하더라도, 건너뛸지 말지는 클래스 계층에서 가장 가까운 슈퍼클래스를 참조해 결정한다.
-지정되지 않은 exception는 'fatal'로 간주한다.
+어떤 exception이 발생하더라도, 건너뛸지 말지는 클래스 계층에서 가장 가까운 슈퍼클래스를 참조해 결정한다.
+지정되지 않은 exception은 'fatal'로 간주한다.
 
 `skip` `noSkip` 메소드 호출 순서는 아무런 상관이 없다.
 
@@ -370,7 +370,7 @@ public Step step1() {
 여기선 `ItemReader`을 바꾸는 게 능사는 아니다.
 반면 성격이 다른 예외도 있다.
 예를 들어 `DeadlockLoserDataAccessException`은 현재 프로세스가
-다른 프로세스가 이미 락(lock)을 소유한 데이터를 수정하려했을 때 발생하는데,
+다른 프로세스가 이미 락(lock)을 소유한 데이터를 수정하려 했을 때 발생하는데,
 기다렸다가 다시 시도하면 성공할 수도 있다.
 이런 경우라면 아래처럼 재시도(retry)를 설정하는 게 좋다:
 
@@ -395,7 +395,7 @@ public Step step1() {
 
 기본적으로 재시도 여부에 상관없이 `ItemWriter`에서 발생하는 모든 예외는 `Step`에서 처리되는 트랜잭션을 롤백시킨다.
 이전에 나온 예제처럼 재시도 없이 넘어가도록(skip) 설정되었다면 `ItemReader`에서 발생한 예외는 롤백을 발생시키지 않는다.
-하지만 트랜잭션을 무효화시킬 다른 조취가 따로 필요하다면, `ItemWriter`에서 발생한 예외가 롤백을 유발하면 안될 수도 있다.
+하지만 트랜잭션을 무효화시킬 다른 조치가 따로 필요하다면, `ItemWriter`에서 발생한 예외가 롤백을 유발하면 안 될 수도 있다.
 그렇기 때문에 아래 예제에서처럼 `Step`에 롤백을 유발하지 않는 exception 리스트를 지정할 수 있다.
 
 ```java
@@ -414,7 +414,7 @@ public Step step1() {
 #### Transactional Readers
 
 `ItemReader`는 데이터를 읽을 때 기본적으로 앞에서 뒤로만 읽고 역행하지 않는다 (forward only).
-step은 데이터를 읽고나면 버퍼에 넣어두기 때문에 롤백되었을 때 한 번 읽어들인 데이터를 다시 읽어올 필요는 없다.
+step은 데이터를 읽고 나면 버퍼에 넣어두기 때문에 롤백되었을 때 한 번 읽어들인 데이터를 다시 읽어올 필요는 없다.
 하지만 어떤 경우에는 reader가 트랜잭션 리소스보다 상위 레벨에 있을 수도 있다 (e.g JMS 큐).
 이런 경우 큐가 롤백되는 트랜잭션과 엮여있기 때문에 큐로부터 읽어온 메세지는 여전히 큐에 남아있다.
 이런 이유로 아래 예제처럼 step이 버퍼를 사용하지 않도록 설정할 수 있다:
@@ -434,7 +434,7 @@ public Step step1() {
 ### 5.1.8. Transaction Attributes
 
 트랜잭션 속성값으로 트랜잭션 고립 수준(isolation), 전파(propagation), 타임아웃을 설정할 수 있다.
-트랜잭션 속성에 대한 자세한 설명은 [Spring core documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction)를 참고하라.
+트랜잭션 속성에 대한 자세한 설명은 [Spring core documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction)을 참고하라.
 아래 예제에서는 고립 수준, 전파, 타임아웃을 설정한다:
 
 ```java
@@ -456,12 +456,12 @@ public Step step1() {
 
 ### 5.1.9. Registering `ItemStream` with a `Step`
 
-step의 생명주기동안 `ItemStream` 콜백을 처리해야할 때가 있다
+step의 생명주기 동안 `ItemStream` 콜백을 처리해야 할 때가 있다
 (`ItemStream`에 대한 자세한 설명은 [ItemStream](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/#64-itemstream) 참고 ).
 `ItemStream`은 step이 실패해서 재시작하려는 경우에 각 실행 상태에 대해 꼭 필요한 정보를 얻을 수 있는 매우 중요한 인터페이스를 제공한다.
 
 `ItemStream` 인터페이스를 `ItemReader`, `ItemProcessor`, `ItemWriter` 중 하나로 구현하면 자동으로 등록된다.
-다른 steam 구현체는 별도로 등록해야한다.
+다른 steam 구현체는 별도로 등록해야 한다.
 위임받은 객체(delegate)처럼 reader나 writer에 간접적으로 의존성(dependency)을 주입하는 경우가 그렇다.
 아래 예제처럼 `Step`에 stream을 등록할 땐 'stream' 메소드를 사용한다.
 
@@ -502,15 +502,15 @@ public CompositeItemWriter compositeItemWriter() {
 
 ### 5.1.10. Intercepting `Step` Execution
 
-`Job`과 마찬가지로 `Step`에서도 실행 중 발생한 특정 이벤트를 별도로 처리해야할 때가 있다.
-예를 들어 맨 끝에 꼬리말이 필요한 파일에 데이터를 쓰고있다면
-`ItemWriter`는 `Step`이 완료됐을 때 통지를 받아야만 꼬리말을 써 넣을 수 있다.
+`Job`과 마찬가지로 `Step`에서도 실행 중 발생한 특정 이벤트를 별도로 처리해야 할 때가 있다.
+예를 들어 맨 끝에 꼬리말이 필요한 파일에 데이터를 쓰고 있다면
+`ItemWriter`는 `Step`이 완료됐을 때 통지를 받아야만 꼬리말을 써넣을 수 있다.
 이를 위한 여러 가지 `Step` 레벨의 리스너가 준비돼 있다.
 
 모든 `StepListener`를 확장한 구현체는 (인터페이스는 비어있으므로 해당하지 않음)
 `listener` 메소드로 step에 등록할 수 있다.
 `listener`는 step, tasklet, 청크 단위 사용할 수 있다.
-리스너가 필요한 레벨에 등록하는게 좋지만, 리스너가 여러 개라면 (`StepExecutionListener`, `ItemReadListener`같은)
+리스너가 필요한 레벨에 등록하는 게 좋지만, 리스너가 여러 개라면 (`StepExecutionListener`, `ItemReadListener` 같은)
 세분화해서 필요한 곳에 각각 등록하는 게 낫다.
 아래 예제에서는 청크 레벨로 리스너를 등록했다:
 
@@ -529,20 +529,20 @@ public Step step1() {
 네임스페이스에 `<step>`을 사용하거나 `*StepFactoryBean` 중 하나를 사용해 `Step`을 만들었다면
 `StepListener`를 구현한 `ItemReader`, `ItemWriter`, `ItemProcessor`는 자동으로 등록된다.
 즉 `Step`에 직접 주입하는 컴포넌트는 자동이다.
-다른 컴포넌트 안에 감싸져 있는(nested) 리스너는 명시적으로 등록해야한다
+다른 컴포넌트 안에 감싸져 있는(nested) 리스너는 명시적으로 등록해야 한다
 ([Registering ItemStream with a Step](#519-registering-itemstream-with-a-step) 예제처럼).
 
 `StepListener`가 아니어도 애노테이션으로 같은 관심사를 처리할 수 있다.
 일반 자바 객체 메소드 위에 이 애노테이션을 선언하면 그에 맞는 `StepListener`로 변환된다.
-`ItemReader`, `ItemWriter`, `Tasklet`같은 청크 컴포넌트를 커스텀화해서 애노테이션을 다는 방법도 많이 쓰인다.
+`ItemReader`, `ItemWriter`, `Tasklet` 같은 청크 컴포넌트를 커스텀해서 애노테이션을 다는 방법도 많이 쓰인다.
 빌더의 `listener` 메소드로 리스너를 등록하듯,
 애노테이션을 선언하면 XML 파서가 `<listener/>` 요소로 처리하므로,
 XML 네임스페이스나 빌더 둘 중 하나만 사용하면 step에 리스너를 등록할 수 있다.
 
 #### `StepExecutionListener`
 
-`Step`을 실행할 때는 `StepExecutionListener`를 가장 많이 사용된다.
-아래 예제에 보이듯, `Step`의 성공/실패 여부와 상관 없이 step 시작 전과 완료 후에 통지를 보낸다.
+`Step`을 실행할 때는 `StepExecutionListener`를 가장 많이 사용한다.
+아래 예제에 보이듯, `Step`의 성공/실패 여부와 상관없이 step 시작 전과 완료 후에 통지를 보낸다.
 
 ```java
 public interface StepExecutionListener extends StepListener {
@@ -657,9 +657,9 @@ public interface ItemWriteListener<S> extends StepListener {
 }
 ```
 
-`beforeWrite`는 `ItemWriter`의 `write` 메소드 전 호출되며 write할 아이템 리스트를 넘겨 받는다.
+`beforeWrite`는 `ItemWriter`의 `write` 메소드 전 호출되며 write할 아이템 리스트를 넘겨받는다.
 `afterWrite`메소드는 아이템을 성공적으로 write한 다음 호출한다.
-아이템를 쓰는 중 에러가 발생하면 `onWriteError` 메소드를 호출한다.
+아이템을 쓰는 중 에러가 발생하면 `onWriteError` 메소드를 호출한다.
 exception과 쓰려고 했던 아이템 정보를 함께 넘겨받으므로 로그에 남길 수 있다.
 
 위 인터페이스와 동일한 애노테이션:
@@ -687,9 +687,9 @@ public interface SkipListener<T,S> extends StepListener {
 ```
 
 `onSkipInRead` 메소드는 아이템을 읽는 동안 아이템이 스킵될 때마다 호출된다.
-주의할 점은, 롤백된 경우에는 같은 아이템이 여러번 스킵된 걸로 간주할 수도 있다.
+주의할 점은, 롤백된 경우에는 같은 아이템이 여러 번 스킵된 걸로 간주할 수도 있다.
 `onSkipInWrite` 메소드는 아이템을 쓰는 동안 아이템을 스킵할 때 호출한다.
-이때는 아이템을 읽는데는 성공했으므로 (읽는 도중 스킵되지 않고), 메소드 인자로 아이템을 제공한다.
+이때는 아이템을 읽는 데는 성공했으므로 (읽는 도중 스킵되지 않고), 메소드 인자로 아이템을 제공한다.
 
 위 인터페이스와 동일한 애노테이션:
 
@@ -701,17 +701,17 @@ public interface SkipListener<T,S> extends StepListener {
 
 스킵된 아이템을 로깅할 때 `SkipListener`를 가장 많이 쓰는데,
 skip된 이슈를 확인하고 수정하려면 다른 배치 프로세스나 심지어 수동 작업이 필요할 때가 있다.
-기존 트랜잭션이 롤백되었다면, 여러 가지 이유가 있을 수 있으므로 스프링 배치는 다음 두가지를 보장한다:
+기존 트랜잭션이 롤백되었다면, 여러 가지 이유가 있을 수 있으므로 스프링 배치는 다음 두 가지를 보장한다:
 
 1. 적절한 skip 메소드를(에러 발생 시점에 따라 다름) 아이템마다 한 번만 호출한다.
-2. `SkipListener`는 항상 트랜잭션이 커밋되기 직전에 호출한다. 따라서 `ItemWriter`에서 오류가 발생해도 리스너에서 호출하는 트랜잭션까지 롤백되지 않는다.
+2. `SkipListener`는 항상 트랜잭션이 커밋 되기 직전에 호출한다. 따라서 `ItemWriter`에서 오류가 발생해도 리스너에서 호출하는 트랜잭션까지 롤백되지 않는다.
 
 ---
 
 ## 5.2. `TaskletStep`
 
 [청크 기반 처리](#51-chunk-oriented-processing)가 `Step`을 다루는 절대적인 방법은 아니다.
-`Step`이 반드시 저장 프로시저(stored procedure)를 호출해야 한다면 어떻게 해야할까?
+`Step`이 반드시 저장 프로시저(stored procedure)를 호출해야 한다면 어떻게 해야 할까?
 `ItemReader`에 호출부를 구현하고 프로시저가 끝나면 null을 리턴하게 만들 수도 있다.
 하지만 `ItemWriter`가 아무 일도 하지 않으므로 부자연스럽게 느껴진다.
 스프링 배치는 이런 케이스를 위해 `TaskletStep`을 제공한다.
@@ -719,10 +719,10 @@ skip된 이슈를 확인하고 수정하려면 다른 배치 프로세스나 심
 `Tasklet`은 `execute` 메소드 하나를 가진 심플한 인터페이스인데, 이 메소드는
 `RepeatStatus.FINISHED`가 리턴되거나 실패했단 뜻으로 exception이 던져지기 전까지
 `TaskletStep`이 반복적으로 호출한다.
-각 `Tasklet` 호출은 트랜잭션으로 감싸져있다.
+각 `Tasklet` 호출은 트랜잭션으로 감싸져 있다.
 `Tasklet` 구현부는 저장 프로시저나 스크립트를 호출하거나 간단한 SQL 업데이트 구문이 될 수 있다.
 
-`TaskletStep`을 생성하려면 빌더의 `tasklet` 메소드에 `Tasklet` 인터페이스를 구현한 빈을 넘겨야한다.
+`TaskletStep`을 생성하려면 빌더의 `tasklet` 메소드에 `Tasklet` 인터페이스를 구현한 빈을 넘겨야 한다.
 `TaskletStep`을 만들 때는 `chunk` 메소드를 사용하면 안 된다.
 아래 예제는 간단한 tasklet을 만드는 샘플 코드다:
 
@@ -829,7 +829,7 @@ public FileDeletingTasklet fileDeletingTasklet() {
 ## 5.3. Controlling Step Flow
 
 job은 소유한 여러 step을 함께 묶을 수 있으므로, 각 step 어떻게 연결(flow)할지도 결정할 수 있어야 한다.
-`Step`이 실패했다고 해서 반드시 `Job`도 실패로 끝나야하는 건 아니다.
+`Step`이 실패했다고 해서 반드시 `Job`도 실패로 끝나야 하는 건 아니다.
 게다가 step이 '성공'했다고 해서 모두 같은 '성공'은 아니다.
 다음에 실행해야 할 step이 다를 수 있다.
 `Step` 그룹이 어떻게 설정됐냐에 따라 특정 step은 전혀 실행되지 않을 수도 있다.
@@ -864,7 +864,7 @@ public Job job() {
 2. `Step`이 실패하고 따라서 `Job`도 실패한다.
 
 이것만으로 충분한 경우도 많다.
-하지만 `Step`의 실패가 전체 실패를 유발하면 안되고 다른 `Step`을 유발해야는 경우라면?
+하지만 `Step`의 실패가 전체 실패를 유발하면 안 되고 다른 `Step`을 유발해야 하는 경우라면?
 아래 그림은 이런 flow를 도식화했다:
 
 ![Conditional Flow](./../../images/springbatch/conditional-flow.png)
@@ -872,9 +872,9 @@ public Job job() {
 스프링 배치 네임스페이스를 사용한다면 step에 transition element를 정의해서 더 복잡한 케이스를 처리할 수 있다.
 `next` element도 transition 중 하나이다.
 `next` attribute처럼 `next` element는 `Job`에게 다음에 실행할 `Step`을 알려준다.
-하지만 attribute와는 달리 `next` element는 몇개든지 `Step`에 등록할 수 있으며
-실패시 처리할 디폴트 액션이라는 게 존재하지 않는다.
-즉 transition element를 사용하려면 모든 `Step` transition 행동을 명시적으로 정의해야한다.
+하지만 attribute와는 달리 `next` element는 몇 개든지 `Step`에 등록할 수 있으며
+실패 시 처리할 디폴트 액션이라는 게 존재하지 않는다.
+즉 transition element를 사용하려면 모든 `Step` transition 행동을 명시적으로 정의해야 한다.
 또한 step 한 개가 `next` attribute와 `transition` element를 둘 다 가질 수는 없다.
 
 아래 예제처럼 `next` element에 매칭시킬 패턴을 넘겨서 다음 실행할 step을 정할 수 있다:
@@ -900,7 +900,7 @@ public Job job() {
 - "*" : 0개 이상의 문자와 매칭
 - "?" : 정확히 1개의 문자와 매칭
 
-예를 들어 "c*t"는 "cat"와 "count"에 매칭되고,
+예를 들어 "c*t"는 "cat"과 "count"에 매칭되고,
 "c?t"는 "cat"에는 매칭되지만 "count"와는 매칭되지 않는다.
 
 `Step`은 transition element 수에 제한이 없긴 하지만,
@@ -919,7 +919,7 @@ transition은 구체적인 것부터 그렇지 않은 순서로 적용된다.
 `COMPLETED`, `STARTING`, `STARTED`, `STOPPING`, `STOPPED`, `FAILED`, `ABANDONED`, `UNKNOWN`.
 대부분 설명이 필요하지 않을 것이다:
 `COMPLETED`은 step이나 job이 성공적으로 완료된 상태를 나타낸다.
-`FAILED`은 실패한 경우를 나타낸다.
+`FAILED`는 실패한 경우를 나타낸다.
 
 다음은 자바 기반 설정으로 'on' element를 사용한 예제다:
 
@@ -981,7 +981,7 @@ public class SkipCheckingListener extends StepExecutionListenerSupport {
 
 [BatchStatus and ExitStatus](#batch-status-versus-exit-status)를 봤다면,
 `Job`의 `BatchStatus`와 `ExitStatus`는 어떻게 결정되는지 궁금한 사람도 있었을 것이다.
-`Step`의 상태는 실행되는 코드로 결정되는 반면, `Job`의 상태는 설정에 따라 달리진다.
+`Step`의 상태는 실행되는 코드로 결정되는 반면, `Job`의 상태는 설정에 따라 달라진다.
 
 지금까지 다룬 job은 모두 transition이 없는 마지막 `Step`을 최소 한 개 이상 갖고 있었다.
 예를 들어 아래 샘플처럼 step을 다 실행하고 나면 `Job`이 종료된다:
@@ -1002,10 +1002,10 @@ public Job job() {
 
 순차적인 step만 있는 단순한 job이라면 위 규칙대로 job을 끝내도 상관없지만,
 커스텀한 job 종료 시나리오가 필요할 수도 있다.
-이를 위해 스프링 배치는 `Job`을 종료시키기 위한 transition element 세가지를 지원한다
+이를 위해 스프링 배치는 `Job`을 종료시키기 위한 transition element 세 가지를 지원한다
 (위에서 다룬 [next element](#532-conditional-flow)와는 별도로).
 각 stopping element는 `Job`을 종료시키면서 `BatchStatus`를 적절한 값으로 설정해둔다.
-stop transition element는 `Step`의 `BatchStatus`, `ExitStatus`에는 영향을 주지 않는 다는 점을 주의해라.
+stop transition element는 `Step`의 `BatchStatus`, `ExitStatus`에는 영향을 주지 않는다는 점을 주의해라.
 이 element는 `Job`의 최종 상태만 변경한다.
 예를 들어 job의 모든 step은 `FAILED`, job은 `COMPLETED` 상태로 종료시킬 수도 있다.
 
@@ -1016,7 +1016,7 @@ step이 끝나기만 하면 `Job`의 `BatchStatus`를 `COMPLETED`로 둔 채 종
 (프레임워크에서 `JobInstanceAlreadyCompleteException`을 발생시킨다).
 
 자바 기반 설정에선 'end' 메소드를 사용한다.
-`end` 메소드에 `Job`의 `ExitStatus`를 커스터마이징할 수 있는 'exitStatus' 파라미터를 넘길 수도 있다 (옵션).
+`end` 메소드에 `Job`의 `ExitStatus`를 커스텀할 수 있는 'exitStatus' 파라미터를 넘길 수도 있다 (옵션).
 'exitStatus' 파라미터를 넘기지 않았다면
 `ExitStatus`를 디폴트값인 `COMPLETED`로 설정해 `BatchStatus`와 통일시킨다.
 
@@ -1044,7 +1044,7 @@ public Job job() {
 end 메소드와는 다르게 `Job`이 실패해도 재시작할 수 있다.
 
 아래 예제에서는 `step2`가 실패하면 `Job`의 `BatchStatus`는 `FAILED`,
-`ExitStatus`는 `EARLY TERMINATION`로 두고 종료되며, `step3`를 실행하지 않는다.
+`ExitStatus`는 `EARLY TERMINATION`으로 두고 종료되며, `step3`를 실행하지 않는다.
 반대로 `step2`가 성공하면 다음은 `step3`를 실행한다.
 `step2`가 실패해서 `Job`을 재시작하면 `step2`부터 다시 실행한다.
 
@@ -1066,7 +1066,7 @@ public Job job() {
 `Job`을 중단하면 중간에 잠깐의 텀이 생겨서 `Job`을 재시작하기 전 필요한 액션을 실행할 수 있다.
 
 자바 기반 설정을 사용한다면 `stopAndRestart` 메소드에
-"Job이 다시 실행됐을 때" 실행해야할 step을 나타내는 'restart' 인자를 넘겨야한다.
+"Job이 다시 실행됐을 때" 실행해야 할 step을 나타내는 'restart' 인자를 넘겨야 한다.
 
 아래 예제에서는 `step1`이 `COMPLETE`로 끝나면 job을 중단한다.
 재시작되면 `step2`를 시작한다.
@@ -1149,7 +1149,7 @@ public Job job() {
 
 ### 5.3.6. Externalizing Flow Definitions and Dependencies Between Jobs
 
-일부 flow는 빈으로 따로 정의해서 재사용해도된다.
+일부 flow는 빈으로 따로 정의해서 재사용해도 된다.
 두 가지 방법이 있는데,
 첫 번째는 아래 예제처럼 다른 곳에 정의된 flow를 단순히 레퍼런스로 사용하는 것이다.
 
@@ -1239,8 +1239,8 @@ public FlatFileItemReader flatFileItemReader() {
 ```
 
 위에 있는 `Resource`는 명시된 파일 시스템 위치에서 파일을 로드한다.
-절대 경로는 더블 슬래쉬 (`//`)로 시작한다 점을 주의해라.
-대부분 스프링 어플리케이션이라면 컴파일 타임에 리소스 이름을 알수 있기 때문에 이 방식으로도 충분하다.
+절대 경로는 더블 슬래쉬 (`//`)로 시작한다는 점을 주의해라.
+대부분 스프링 어플리케이션이라면 컴파일 타임에 리소스 이름을 알 수 있기 때문에 이 방식으로도 충분하다.
 하지만 배치 처리라면, 런타임에 job에서 넘겨받는 파라미터로 파일명을 결정하는 경우도 있다.
 이럴 때는 '-D' 파라미터를 사용해 시스템 속성을 읽는다.
 
@@ -1257,7 +1257,7 @@ public FlatFileItemReader flatFileItemReader(@Value("${input.file.name}") String
 ```
 
 위 코드가 동작하기 위해 필요한 건 시스템 인자(argument)가 전부다
-(`-Dinput.file.name="file://outputs/file.txt"`같은).
+(`-Dinput.file.name="file://outputs/file.txt"` 같은).
 
 > 여기서는 `PropertyPlaceholderConfigurer`를 사용해도 괜찮지만
 > 시스템 속성을 항상 사용한다면 설정하지 않아도 된다.
@@ -1349,7 +1349,7 @@ scope는 스프링 컨테이너의 기본 기능이 아니기 때문에 명시�
 `Job` 컨텍스트를 위한 Scope이기 때문에
 이 빈의 인스턴스는 실행 중인 job마다 하나씩만 가지고 있다.
 `#{..}` 플레이스홀더로 `JobContext`에 나중에 바인딩되는(late binding) 값도 참조할 수 있다.
-이 기능을 사용하면 아래 에제처럼 job이나 job 실행 컨텍스트,
+이 기능을 사용하면 아래 예제처럼 job이나 job 실행 컨텍스트,
 job 파라미터로부터 빈 프로퍼티를 가져올 수 있다:
 
 ```java

@@ -47,7 +47,7 @@ Spring Batch Integration으로 이런 요구사항을 해결할 수 있다.
 메세지를 보내 배치 프로세스 명령을 자동화하면 주요 관심사를 분리하고 전략화할 수 있다.
 예를 들어 메세지 전송으로 job 실행을 트리거링하는 등, 다양한 방법으로 활용할 수 있다.
 반대로 job이 완료되거나 실패하면 이 이벤트가 메세지 전송을 트리거링해서,
-메세지 컨슈머가 어플리케이션 자체와는 관련없는 다른 로직을 처리할 수도 있다.
+메세지 컨슈머가 어플리케이션 자체와는 관련 없는 다른 로직을 처리할 수도 있다.
 또, job 안에서 메세지 처리를 할 수도 있다(예를 들어 채널로 아이템을 읽고 쓰는 경우).
 remote partitioning과 remote chunking은 부하를 여러 워커에 분산시킨다.
 
@@ -71,7 +71,7 @@ remote partitioning과 remote chunking은 부하를 여러 워커에 분산시�
 하지만 좀 더 복잡한 경우라면?
 배치에서 데이터를 (S)FTP 서버에 주기적으로 폴링하거나
 어플리케이션이 여러 데이터소스를 동시에 사용할 수도 있다.
-예를 들어 데이터 파일을 웹에서 뿐 아니라 FTP나 다른 곳에서 읽을 수도 있고,
+예를 들어 데이터 파일을 웹에서뿐 아니라 FTP나 다른 곳에서 읽을 수도 있고,
 스프링 배치를 시작하기 전 입력 파일을 추가적으로 변환해야 하는 경우도 있다.
 
 이럴 때 쓸 훨씬 강력한 방법이 있는데,
@@ -221,7 +221,7 @@ job-launching gateway는 다음과 같은 속성으로 job을 제어한다:
 - `id`: 기본 스프링 빈 정의를 식별하며 두 가지 중 하나다: 
   + `EventDrivenConsumer`
   + `PollingConsumer` (정확한 구현은 입력 채널이 `SubscribableChannel`인지 `PollableChannel`에 따라 다르다.)
-- `auto-startup`: job을 실행할 때 엔드포인트를 자동으로 시작해야하는지 나타내는 boolean 플래그. 디폴트는 *true*다.
+- `auto-startup`: job을 실행할 때 엔드포인트를 자동으로 시작해야 하는지 나타내는 boolean 플래그. 디폴트는 *true*다.
 - `request-channel`: 엔드포인트의 입력 `MessageChannel`.
 - `reply-channel`: 결과로 `JobExecution` 페이로드를 보낼 `MessageChannel`.
 - `reply-timeout`: 게이트웨이가 reply 채널에 응답 메세지를 보내는 동안
@@ -310,7 +310,7 @@ public interface NotificationExecutionListener extends StepExecutionListener {}
 
 > 설정에 `@IntegrationComponentScan` 애노테이션을 추가해야 한다. 
 
-그 다음, step 레벨 리스너를 job에 등록한다.
+그다음, step 레벨 리스너를 job에 등록한다.
 
 ```java
 public Job importPaymentsJob() {
@@ -330,7 +330,7 @@ public Job importPaymentsJob() {
 아이템을 다 처리하고 나면 `AsynchItemWriter`에 `Future`를 전송한다.
 
 게다가 비동기로 아이템을 처리하면
-fork-jon을 사용할 수 있으므로 성능이 향상된다.
+fork-join을 사용할 수 있으므로 성능이 향상된다.
 `AsyncItemWriter`는 결과를 모으고 있다가, 모든 아이템이 다 처리되면 청크로 write한다.
 
 다음은 `AsyncItemProcessor`를 사용하는 예시이다:
@@ -382,12 +382,12 @@ Spring Batch Integration은 다음 두 가지를 지원한다:
 `ChunkMessageChannelItemWriter`(Spring Batch Integration 제공)를 사용하면
 청크 처리도 외부에서 할 수 있다.
 스프링 배치는 일단 데이터를 보내고 나면
-결과를 기다리지 않고 계속 해서 아이템을 읽고 그룹화한다.
+결과를 기다리지 않고 계속해서 아이템을 읽고 그룹화한다.
 `ChunkMessageChannelItemWriter`가 결과를 모아 통합하고 스프링 배치 프로세스로 돌려준다.
 
 Spring Integration을 사용하면 동시 처리를 완벽하게 제어할 수 있다
 (예를 들어 `DirectChannel` 대신 `QueueChannel`을 사용함으로써).
-게다가 스프링 배치의 풍부한 채널 어답터(JMS나 AMQP같은)를 사용하면
+게다가 스프링 배치의 풍부한 채널 어댑터(JMS나 AMQP같은)를 사용하면
 청크를 외부 시스템으로 분산처리할 수 있다.
 
 step에서 remote chunking을 사용하는 job은 아래와 유사하게 설정할 수 있다:
@@ -408,7 +408,7 @@ public Job chunkJob() {
 `ItemWriter`는 위에서 설명한 특별한 `ItemWriter`(`ChunkMessageChannelItemWriter`)를 가리킨다.
 processor는(만약 있다면) 워커에서 사용하므로 매니저에는 설정하지 않는다.
 다음은 기본적인 매니저를 설정해 보겠다.
-실제로 사용할 때는 throttle limit같은 다른 컴포넌트 프로퍼티도 함께 체크해라. 
+실제로 사용할 때는 throttle limit 같은 다른 컴포넌트 프로퍼티도 함께 체크해라. 
 
 ```java
 @Bean
@@ -544,10 +544,10 @@ public ChunkProcessorChunkHandler<Integer> chunkProcessorChunkHandler() {
 Spring Batch Integration은 4.1 버전부터
 `@EnableBatchIntegration` 애노테이션으로
 간단하게 remote chunking을 설정할 수 있다.
-이 애노테이션은 어플리케이션 컨텍스트에 주입할 수 있는 빈 두개를 제공한다:
+이 애노테이션은 어플리케이션 컨텍스트에 주입할 수 있는 빈 두 개를 제공한다:
 
 - `RemoteChunkingManagerStepBuilderFactory`: 매니저 step을 만들 때 사용
-- `RemoteChunkingWorkerBuilder`: 리모터 워커 플로우를 만들 때 사용
+- `RemoteChunkingWorkerBuilder`: 리모트 워커 플로우를 만들 때 사용
 
 이 둘을 사용하면 아래 다이어그램에 나오는 여러 컴포넌트를 구성할 수 있다:
 
@@ -778,7 +778,7 @@ remote partitioning job을 사용하는 좀 더 복잡한 예제는
 
 `@EnableBatchIntegration` 애노테이션으로 remote partitioning 설정을
 더 단순하게 만들 수 있다.
-이 애노테이션은 remote partitioning에 유용하게 쓸 수 있는 빈 두개를 제공한다: 
+이 애노테이션은 remote partitioning에 유용하게 쓸 수 있는 빈 두 개를 제공한다: 
 
 - `RemotePartitioningManagerStepBuilderFactory`: 매니저 step을 만들 때 사용
 - `RemotePartitioningWorkerStepBuilderFactory`: 워커 step을 만들 때 사용

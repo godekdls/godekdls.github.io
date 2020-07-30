@@ -104,9 +104,9 @@ priority: 0.8
 
 웹플럭스가 탄생한 이유 중 하나는 적은 쓰레드로 동시 처리를 제어하고 적은 하드웨어 리소스로 확장하기 위해
 논블로킹 웹 스택이 필요했기 때문이다. 이전에도 서블릿 3.1은 논블로킹 I/O를 위한 API를 제공했다. 하지만 서블릿으로 논블로킹을 구현하려면 다른 동기 처리나(`Filter`, `Servlet`) 블로킹 방식(`getParameter`, `getPart`)을 쓰는
-API를 사용하기 어렵다. 이런 점때문에 어떤 논블로킹과도 잘 동작하는 새 공통 API를 만들게 됐다. 이미 비동기 논블로킹 환경에서 자리를 잡은 서버(e.g. Netty)때문에라도 새 API가 필요했다.
+API를 사용하기 어렵다. 이런 점 때문에 어떤 논블로킹과도 잘 동작하는 새 공통 API를 만들게 됐다. 이미 비동기 논블로킹 환경에서 자리를 잡은 서버(e.g. Netty) 때문에라도 새 API가 필요했다.
 
-또 다른 이유는 함수형 프로그래밍이다. 자바 5의 애노테이션 등장으로 선택의 폭이 넓어진 것처럼(애노테이션을 선언한 REST 컨트롤러나 유닛 테스트 등), 자바 8에서 추가된 람다 표현식덕분에 자바에서도 함수형 API를 작성할 수 있게 됐다. 이 기능은 논블로킹 어플리케이션을 만들 때도 요긴하게 쓰이며, 이제는 continuation-style API(`CompletableFuture`와 [ReactiveX](http://reactivex.io/)로 대중화된)로 비동기 로직을 선언적으로 작성할 수 있다. 프로그래밍 모델 관점에서 보면, 웹플럭스에서 애노테이션을 선언한 컨트롤러와 더불어 함수형 웹 엔드포인트를 사용할 수 있는 건 자바 8덕분이다.
+또 다른 이유는 함수형 프로그래밍이다. 자바 5의 애노테이션 등장으로 선택의 폭이 넓어진 것처럼(애노테이션을 선언한 REST 컨트롤러나 유닛 테스트 등), 자바 8에서 추가된 람다 표현식덕분에 자바에서도 함수형 API를 작성할 수 있게 됐다. 이 기능은 논블로킹 어플리케이션을 만들 때도 요긴하게 쓰이며, 이제는 continuation-style API(`CompletableFuture`와 [ReactiveX](http://reactivex.io/)로 대중화된)로 비동기 로직을 선언적으로 작성할 수 있다. 프로그래밍 모델 관점에서 보면, 웹플럭스에서 애노테이션을 선언한 컨트롤러와 더불어 함수형 웹 엔드포인트를 사용할 수 있는 건 자바 8 덕분이다.
 
 ### 1.1.1. Define “Reactive”
 
@@ -127,7 +127,7 @@ API를 사용하기 어렵다. 이런 점때문에 어떤 논블로킹과도 잘
 
 ### 1.1.2. Reactive API
 
-리액티브 스트림은 컴포넌트 상호 작용에서 중요한 역할을 한다. 하지만 이건 라이브러리와 기반 구조에 사용되는 컴포넌트엔 유용해도, 어플리케이션 API에서 다루기엔 너무 저수준이다. 어플리케이션은 비동기 로직을 만들기 위한 풍부한 고수준 함수형 API가 필요하다(자바 8 스트림 API와 비슷하지만 collection만을 위한게 아니다). 이게 바로 리액티브 라이브러리가 하는 일이다.
+리액티브 스트림은 컴포넌트 상호 작용에서 중요한 역할을 한다. 하지만 이건 라이브러리와 기반 구조에 사용되는 컴포넌트엔 유용해도, 어플리케이션 API에서 다루기엔 너무 저수준이다. 어플리케이션은 비동기 로직을 만들기 위한 풍부한 고수준 함수형 API가 필요하다(자바 8 스트림 API와 비슷하지만 컬렉션만을 위한 게 아니다). 이게 바로 리액티브 라이브러리가 하는 일이다.
 
 [Reactor](https://github.com/reactor/reactor)는
 스프링 웹플럭스가 선택한 리액티브 라이브러리다. 리액터는 [`Mono`](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html)와 [`Flux`](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html) API 타입을 제공한다.
@@ -136,25 +136,25 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 웹플럭스는 리액터를 핵심 라이브러리로 사용하지만, 다른 리액티브 라이브러리를 써도 리액티브 스트림으로 상호작용 할 수 있다.
 웹플럭스 API의 일반적인 룰은, 순수한 `Publisher`를 입력으로 받아 내부적으로 리액터 타입으로 맞추고, 이걸 사용해서 `Flux`나 `Mono`를 반환한다. 따라서 어떤 `Publisher`든 입력으로 전달하고 연산할 수 있지만, 다른 리액티브 라이브러리를 사용하려면 출력 형식을 맞춰줘야 한다. 웹플럭스는 가능만 하다면(e.g. 애노테이션을 선언한 컨트롤러) 투명한 방식으로 RxJava나 다른 리액티브 라이브러리에 맞게 바꿔준다. 자세한 내용은 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
 
-> 리액티브 API와는 별개로 웹플럭스는 코틀린의 [코루틴](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#coroutines) API와도 사용할 수 있는데, 이를 사용하면 좀 더 명령적(imperative)인 프로그래밍이 가능하다. 아래 나오는 코틀린 코드 샘플은 코루틴 API를 사용할 것이다.
+> 리액티브 API와는 별개로 웹플럭스는 코틀린의 [코루틴](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#coroutines) API와도 사용할 수 있는데, 이를 사용하면 좀 더 명령적(imperative)인 프로그래밍이 가능하다. 뒤에 나오는 코틀린 코드 샘플은 코루틴 API를 사용할 것이다.
 
 ### 1.1.3. Programming Models
 
-`spring-web` 모듈에 있는 웹플럭스는, 여러 서버를 지원하기위한 HTTP 추상화와 리액티브 스트림 [어댑터](#121-httphandler),
+`spring-web` 모듈에 있는 웹플럭스는, 여러 서버를 지원하기 위한 HTTP 추상화와 리액티브 스트림 [어댑터](#121-httphandler),
 [코덱](#125-codecs), Servlet API에 상응하는 코어 [`WebHandler` API](#122-webhandler-api)를 아우르는 개념이며, 이는 모두 논블로킹이다.
 
 스프링 웹플럭스는 두 가지 프로그래밍 모델을 지원한다:
 
 - [Annotated Controllers](#14-annotated-controllers):
-스프링 MVC와 동일하며 `spring-web` 모듈에 있는 같은 애노테이션을 사용한다. 스프링 MVC와 웹플럭스 컨트롤러 모두 리액티브(Reactor, RxJava) 리턴 타입을 지원하기때문에 이 둘을 구분하기 어렵다. 한 가지 눈에 띄는 차이는 웹플럭스에선 `@RequestBody`로 리액티브 인자를 받을 수 있다는 것이다.
+스프링 MVC와 동일하며 `spring-web` 모듈에 있는 같은 애노테이션을 사용한다. 스프링 MVC와 웹플럭스 컨트롤러 모두 리액티브(Reactor, RxJava) 리턴 타입을 지원하기 때문에 이 둘을 구분하기 어렵다. 한 가지 눈에 띄는 차이는 웹플럭스에선 `@RequestBody`로 리액티브 인자를 받을 수 있다는 것이다.
 - [Functional Endpoints](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#15-functional-endpoints):
-경량화된 람다 기반 함수형 프로그래밍 모델. 요청을 라우팅해주는 조그만한 라이브러리나 유틸리티 모음이라고 생각하면 된다. annotated controller와 다른 점은 애노테이션으로 의도를 선언해서 콜백받기보단 요청을 어플리케이션이 처음부터 끝까지 다 제어한다는 것이다.
+경량화된 람다 기반 함수형 프로그래밍 모델. 요청을 라우팅해주는 조그만한 라이브러리나 유틸리티 모음이라고 생각하면 된다. annotated controller와 다른 점은 애노테이션으로 의도를 선언해서 콜백 받기보단 요청을 어플리케이션이 처음부터 끝까지 다 제어한다는 것이다.
 
 ### 1.1.4. Applicability
 
 스프링 MVC냐 웹플럭스냐?
 
-많이들 하는 질문이지만 이분법적 사고는 좋지 않다. 둘 모두 선택의 폭을 넓혀준다고 보는게 맞다. 이 둘은 지속성과 일관성을 위해 설계했으며, 함께 사용할 수 있고, 각자의 피드백이 서로에게 도움이 된다. 다음은 둘은 어떤 관련이 있는지, 공통점이 무엇이고 한쪽에서만 지원하는 게 무엇인지 나타낸 다이어그램이다:
+많이들 하는 질문이지만 이분법적 사고는 좋지 않다. 둘 모두 선택의 폭을 넓혀준다고 보는 게 맞다. 이 둘은 지속성과 일관성을 위해 설계했으며, 함께 사용할 수 있고, 각자의 피드백이 서로에게 도움이 된다. 다음은 둘은 어떤 관련이 있는지, 공통점이 무엇이고 한쪽에서만 지원하는 게 무엇인지 나타낸 다이어그램이다:
 
 ![Spring MVC VS WebFlux](./../../images/reactivespring/spring-mvc-and-webflux-venn.png)
 
@@ -182,7 +182,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 
 ### 1.1.6. Performance
 
-성능은 여러 의미로 해석할 수 있다. 리액티브랑 논블로킹을 사용한다고 해서 바로 어플리케이션이 빨라지는 건 아니다. 물론 빨라질 수도 있다(예를 들어 WebClient를 사용해서 외부 서비스 호출을 병렬로 처리한다면). 전반적으로 보면 논블로킹 방식이 처리할 일이 더 많다보니 처리 시간이 약간 더 길어질 수 있다.
+성능은 여러 의미로 해석할 수 있다. 리액티브랑 논블로킹을 사용한다고 해서 바로 어플리케이션이 빨라지는 건 아니다. 물론 빨라질 수도 있다(예를 들어 WebClient를 사용해서 외부 서비스 호출을 병렬로 처리한다면). 전반적으로 보면 논블로킹 방식이 처리할 일이 더 많다 보니 처리 시간이 약간 더 길어질 수 있다.
 
 리액티브와 논블로킹의 주된 이점은 고정된 적은 쓰레드와 적은 메모리로도 확장할 수 있다는 것이다. 예측할 수 있는 방법으로 확장하기 때문에 부하 속에서도 어플리케이션 복원 능력은 더 좋아진다. 하지만 이를 확인하려면 약간의 대기 시간이 필요하다 (느리고 예측 불가능한 네트워크 I/O 시간을 포함해서). 바로 여기서 리액티브 스택이 강점을 드러내며, 그 차이는 엄청나다.
 
@@ -202,7 +202,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 
 **Mutable State**
 
-리액터와 RxJava에서 로직은 연산자로 표현한다. 연산자를 사용하면 런타임에 분리된 환경에서 리액티브 파이프라인을 만들고, 각 파이프라인에서 데이터를 순차적으로 처리한다. 파이프라인 안에 있는 코드는 절대 동시에 실행되지 않으므로 더 이상 상태 공유(mutable state)를 신경쓰지 않아도 된다.
+리액터와 RxJava에서 로직은 연산자로 표현한다. 연산자를 사용하면 런타임에 분리된 환경에서 리액티브 파이프라인을 만들고, 각 파이프라인에서 데이터를 순차적으로 처리한다. 파이프라인 안에 있는 코드는 절대 동시에 실행되지 않으므로 더 이상 상태 공유(mutable state)를 신경 쓰지 않아도 된다.
 
 **Threading Model**
 
@@ -408,7 +408,7 @@ WAR에 [`AbstractReactiveWebInitializer`](https://docs.spring.io/spring-framewor
 |`webSessionManager`|`WebSessionManager`|0..1|`WebSession`의 매니저. `WebSession`은 `ServerWebExchange`로 접근할 수 있다. 디폴트는 `DefaultWebSessionManager`다.|
 |`serverCodecConfigurer`|`ServerCodecConfigurer`|0..1|form 데이터나 multipart 데이터를 파싱하는 `HttpMessageReader`를 설정하기 위한 인터페이스. 이 데이터는 `ServerWebExchange`로 접근할 수 있다. 디폴트는 `ServerCodecConfigurer.create()`를 사용한다.|
 |`localeContextResolver`|`LocaleContextResolver`|0..1|`LocaleContext` 리졸버. `LocaleContext`는 `ServerWebExchange`로 접근한다. 디폴트 리졸버는 `AcceptHeaderLocaleContextResolver`다.|
-|`forwardedHeaderTransformer`|`ForwardedHeaderTransformer`|0..1|forwarded 헤더를 파싱해서 추출 후 제거하거나, 제거만 하고 헤더 정보를 무시할수도 있다. 디폴트는 사용하지 않는 것이다.|
+|`forwardedHeaderTransformer`|`ForwardedHeaderTransformer`|0..1|forwarded 헤더를 파싱해서 추출 후 제거하거나, 제거만 하고 헤더 정보를 무시할 수도 있다. 디폴트는 사용하지 않는 것이다.|
 
 #### Form Data
 
@@ -453,7 +453,7 @@ suspend fun getMultipartData(): MultiValueMap<String, Part>
 
 `DefaultServerWebExchange`는 설정에 있는 `HttpMessageReader<MultiValueMap<String, Part>>`를 사용해
 `multipart/form-data` 컨텐츠를 `MultiValueMap`으로 파싱한다.
-현재로서는 [Synchronoss NIO Multipart](https://github.com/synchronoss/nio-multipart)가
+현재로써는 [Synchronoss NIO Multipart](https://github.com/synchronoss/nio-multipart)가
 유일하게 지원하는 서드파티 라이브러리이며, 논블로킹으로 multipart 요청을 파싱하는 유일한 라이브러리다.
 `ServerCodecConfigurer` 빈으로 활성화할 수 있다. 
 ([Web Handler API](#122-webhandler-api) 참고).
@@ -476,22 +476,22 @@ multipart 데이터를 한 번에 파싱해야 한다.
 [RFC 7239](https://tools.ietf.org/html/rfc7239)에 따르면
 Forwarded `HTTP` 헤더는 프록시가 원래 요청에 대한 정보를 추가하는 헤더다.
 물론 `X-Forwarded-Host`, `X-Forwarded-Port`, `X-Forwarded-Proto`, 
-`X-Forwarded-Ssl`, `X-Forwarded-Prefix`같은
-비 표준 헤더도 있다.
+`X-Forwarded-Ssl`, `X-Forwarded-Prefix` 같은
+비표준 헤더도 있다.
 
 `ForwardedHeaderTransformer`는 forwarded 헤더를 보고
 요청의 호스트, 포트, 스킴을 바꿔준 다음, 헤더를 제거하는 컴포넌트다.
 `forwardedHeaderTransformer`라는 이름으로 빈을 정의하면
 자동으로 [체인에 추가](#special-bean-types)된다.
 
-forwarded 헤더는 보안에 신경써야 할 요소가 있는데,
+forwarded 헤더는 보안에 신경 써야 할 요소가 있는데,
 프록시가 헤더를 추가한 건지, 클라이언트가 악의적으로 추가한 것인지
 어플리케이션에서는 알 수 없기 때문이다.
 이 때문에 외부에서 들어오는 신뢰할 수 없는 프록시 요청을 제거하고 싶을 수도 있다.
 `ForwardedHeaderTransformer`를 `removeOnly=true`로 설정하면
 헤더 정보를 사용하지 않고 제거해 준다.
 
-> 5.1 버전 부터 `ForwardedHeaderFilter`는 제거 대상에 올랐으며(deprecated),
+> 5.1 버전부터 `ForwardedHeaderFilter`는 제거 대상에 올랐으며(deprecated),
 > `ForwardedHeaderTransformer`로 대신한다.
 > 따라서 exchange(http 요청/응답과 세션 정보 등의 컨테이너)를
 > 만들 기 전에 forwarded 헤더를 처리할 수 있다.
@@ -534,7 +534,7 @@ CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작�
 |Exception Handler|Description|
 |:-----------------:	|:-------------:	|
 |`ResponseStatusExceptionHandler`|HTTP status code를 지정할 수 있는 [`ResponseStatusException`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/server/ResponseStatusException.html)을 처리한다.|
-|`WebFluxResponseStatusExceptionHandler`|`ResponseStatusExceptionHandler`를 확장한 것으로, 다른 exception 타입도 `@ResponseStatus`를 선언해서 HTTP staus code를 정할 수 있다.<br><br>이 핸들러는 [WebFlux Config](#111-webflux-config) 안에 선언 돼 있다.|
+|`WebFluxResponseStatusExceptionHandler`|`ResponseStatusExceptionHandler`를 확장한 것으로, 다른 exception 타입도 `@ResponseStatus`를 선언해서 HTTP staus code를 정할 수 있다.<br><br>이 핸들러는 [WebFlux Config](#111-webflux-config) 안에 선언돼 있다.|
 
 ### 1.2.5. Codecs
 
@@ -543,11 +543,11 @@ CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작�
 `spring-web`, `spring-core` 모듈을 사용하면
 리액티브 논블로킹 방식으로
 바이트 컨텐츠를 고수준 객체로 직렬화, 역직렬화할 수 있다.
-다음과 같은 내용을 지원 한다:
+다음과 같은 내용을 지원한다:
 
 - [`Encoder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/codec/Encoder.html),
 [`Decoder`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/codec/Decoder.html)는 
-HTTP와는 관계 없는 컨텐츠를 인코딩, 디코딩한다.
+HTTP와는 관계없는 컨텐츠를 인코딩, 디코딩한다.
 - [`HttpMessageReader`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/codec/HttpMessageReader.html),
 [`HttpMessageWriter`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/http/codec/HttpMessageWriter.html)는
 HTTP 메세지를 인코딩, 디코딩한다.
@@ -578,8 +578,8 @@ JSON, binary JSON([Smile](https://github.com/FasterXML/smile-format-specificatio
 
 - Jackson의 비동기, 논블로킹 파서가 `TokenBuffer`로 바이트 청크 스트림을 모아 JSON 객체로 변환한다.
 - 각 `TokenBuffer`는 Jackson의 `ObjectMapper`로 넘겨져 고수준 객체를 만든다.
-- single-value publisher(e.g. `Mono`)를 디코딩 할때는 `TokenBuffer`가 하나 뿐이다.
-- multi-value publisher(e.g. `Flux`)를 디코딩 할때는, 각 `TokenBuffer`에
+- single-value publisher(e.g. `Mono`)를 디코딩 할 때는 `TokenBuffer`가 하나뿐이다.
+- multi-value publisher(e.g. `Flux`)를 디코딩 할 때는, 각 `TokenBuffer`에
 객체를 구성할 수 있을 만큼 바이트가 모이면 그때그때 `ObjectMapper`로 전달한다.
 입력 컨텐츠는 JSON 배열이거나, 컨텐츠 타입이 `application/stream+json`이라면
 [line-delimited JSON](https://en.wikipedia.org/wiki/JSON_streaming)일 수도 있다.
@@ -589,7 +589,7 @@ JSON, binary JSON([Smile](https://github.com/FasterXML/smile-format-specificatio
 - single-value publisher(e.g. `Mono`)는 바로 `ObjectMapper`에서 직렬화한다.
 - multi-value publisher를 `application/json`로 직렬화할 땐
 기본적으로 `Flux#collectToList()`로 값을 수집한 다음 그 컬렉션을 직렬화한다.
-- `application/stream+json`, `application/stream+x-jackson-smile`같은
+- `application/stream+json`, `application/stream+x-jackson-smile` 같은
 스트리밍 타입을 multi-value publisher로 직렬화하면
 [line-delimited JSON](https://en.wikipedia.org/wiki/JSON_streaming) 포맷으로
 따로따로 인코딩하고, write, flush한다.
@@ -607,14 +607,14 @@ JSON, binary JSON([Smile](https://github.com/FasterXML/smile-format-specificatio
 `FormHttpMessageReader`, `FormHttpMessageWriter`는
 `application/x-www-form-urlencoded` 컨텐츠를 인코딩/디코딩한다.
 
-form 데이터는 어플리케이션에서 여러번 접근하는 경우가 많기 때문에,
+form 데이터는 어플리케이션에서 여러 번 접근하는 경우가 많기 때문에,
 `ServerWebExchange`는
 `FormHttpMessageReader`로 컨텐츠를 파싱한 뒤 캐시된 데이터를 반환하는
 `getFormData()` 메소드를 제공한다.
 [`Handler` API](#122-webhandler-api) 섹션의 [Form Data](#form-data)를 참고하라.
 
 `getFormData()`를 한번 호출하고 나면 원본 컨텐츠는 다시 읽을 수 없다.
-때문에 그 다음부터는 request body가 아닌 `ServerWebExchange`로 캐시된 데이터를 조회해야 한다.
+때문에 그다음부터는 request body가 아닌 `ServerWebExchange`로 캐시된 데이터를 조회해야 한다.
 
 #### Multipart
 
@@ -625,16 +625,16 @@ form 데이터는 어플리케이션에서 여러번 접근하는 경우가 많�
 실제 파싱은 [Synchronoss NIO Multipart](https://github.com/synchronoss/nio-multipart)를
 사용한다.
 
-multipart form 데이터는 어플리케이션에서 여러번 접근하는 경우가 많기 때문에,
+multipart form 데이터는 어플리케이션에서 여러 번 접근하는 경우가 많기 때문에,
 `ServerWebExchange`는 `MultipartHttpMessageReader`로
 컨텐츠를 파싱한 뒤 캐시된 데이터를 반환하는 `getMultipartData()` 메소드를 제공한다.
 [`WebHandler` API](#122-webhandler-api) 섹션의 [Multipart Data](#multipart-data)를 참고하라.
 
 `getMultipartData()`를 한번 호출하고 나면 원본 컨텐츠는 다시 읽을 수 없다.
-때문에 그 다음부터는 request body 대신,
+때문에 그다음부터는 request body 대신,
 Map을 리턴하는 `getMultipartData()`를 사용해야 한다.
 그게 아니라면 `SynchronossPartHttpMessageReader`를 사용해
-매번 파싱해야한다.
+매번 파싱해야 한다.
 
 #### Limits
 
@@ -657,9 +657,9 @@ Map을 리턴하는 `getMultipartData()`를 사용해야 한다.
 [Multipart 데이터를 파싱](#multipart)할 때는,
 먼저 파일이 아닌 part가 사용할 메모리 크기는 `maxInMemorySize` 프로퍼티로 제한한다.
 파일 part라면 이 프로퍼티는 디스크 크기를 제한한다.
-이 때는 `maxDiskUsagePerPart`로 part 별 디스크 크기도 제한할 수 있다.
+이때는 `maxDiskUsagePerPart`로 part 별 디스크 크기도 제한할 수 있다.
 multipart 요청에 사용할 전체 part 수를 제한하는 `maxParts`도 있다.
-웹플럭스에서 이같은 설정을 사용하려면
+웹플럭스에서 이 같은 설정을 사용하려면
 `ServerCodecConfigurer`에 `MultipartHttpMessageReader` 인스턴스가
 설정돼 있어야 한다.
 
@@ -671,7 +671,7 @@ HTTP 응답을 스트리밍할 땐
 (예를 들어 `text/event-stream`, `application/stream+json`),
 클라이언트 연결이 끊기면 가능한 빨리 알아챌 수 있도록
 주기적으로 데이터를 보내는 게 좋다.
-이 때 보내는 하트비트는 짧은 문자열이나, 비어있는 SSE 이벤트나,
+이때 보내는 하트비트는 짧은 문자열이나, 비어있는 SSE 이벤트나,
 "no-op"를 나타내는 데이터라면 어떤 것이든 사용할 수 있다.
 
 #### `DataBuffer`
@@ -691,10 +691,10 @@ WebFlux 애플리케이션은
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-logging)
 
 스프링 웹플럭스는 `DEBUG` 레벨 로그에 꼭 필요한 정보만 최소한으로 담았기 때문에 읽기 편할 것이다.
-어떤 이슈에서도 유용할만한 가치있는 정보만 추렸다.
+어떤 이슈에서도 유용할만한 가치 있는 정보만 추렸다.
 
 `TRACE` 레벨도 `DEBUG`와 원론적으로 동일하지만
-(예를 들어 `TRACE`도 불필요한 정보를 잔뜩 쏟아내선 안된다),
+(예를 들어 `TRACE`도 불필요한 정보를 잔뜩 쏟아내선 안 된다),
 이슈를 디버깅할 때 좀 더 유용할 만한 정보를 담았다.
 일부 `TRACE`, `DEBUG` 레벨 로그는 디테일한 정도가 다를 것이다.
 
@@ -721,7 +721,7 @@ WebFlux 애플리케이션은
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-logging-sensitive-data)
 
 `DEBUG`, `TRACE` 로그는 민감한 정보를 포함할 수 있다.
-따라서 form 파라미터와 헤더를 로깅하지 않는게 디폴트며,
+따라서 form 파라미터와 헤더를 로깅하지 않는 게 디폴트며,
 원한다면 직접 활성화시켜야 한다.
 
 다음은 서버 로그를 활성화 시키는 코드다:
@@ -783,7 +783,7 @@ val webClient = WebClient.builder()
 다른 미디어 타입이나 디폴트 코덱이 지원하지 않는 기능을 추가하고 싶으면
 커스텀 코덱을 사용한다.
 
-커스텀 코덱에서도 [버퍼 제한](#limits)이나 [form 데이터/헤더 로깅](#sensitive-data)같은
+커스텀 코덱에서도 [버퍼 제한](#limits)이나 [form 데이터/헤더 로깅](#sensitive-data) 같은
 설정을 그대로 사용하고 싶을 수 있는데,
 그럴 땐 디폴트 코덱에 설정한 일부 옵션을 재사용할 수 있다.
 
@@ -822,7 +822,7 @@ val webClient = WebClient.builder()
 스프링 웹플럭스도 스프링 MVC와 유사한 프론트 컨트롤러 패턴을 사용한다.
 중앙 `WebHandler`가 요청을 받아, 실제 처리는
 다른 컴포넌트에 위임하는데, `DispatcherHandler`가 바로 이 중앙 `WebHandler`다.
-이 모델덕분에 다양한 워크플로우를 지원할 수 있다.
+이 모델 덕분에 다양한 워크플로우를 지원할 수 있다.
 
 `DispatcherHandler`는 스프링 설정에 따라 그에 맞는 컴포넌트로 위임한다.
 `DispatcherHandler`도 스프링 빈이며, `ApplicationContextAware` 인터페이스를 구현했기 때문에
@@ -879,7 +879,7 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 |:-----------------:	|:-------------:	|
 |`HandlerMapping`|요청을 핸들러에 매핑한다. 매핑 기준은 `HandlerMapping` 구현체마다 다르다 (애노테이션을 선언한 컨트롤러, URL 패턴 매칭 등).<br><br>주로 쓰는 구현체는 `@RequestMapping`을 선언한 메소드를 찾는 `RequestMappingHandlerMapping`, 함수형 엔드포인트를 라우팅하는 `RouterFunctionMapping`, URI path 패턴으로 `WebHandler`를 찾는 `SimpleUrlHandlerMapping` 등이 있다.|
 |`HandlerAdapter`|`HandlerAdapter`가 핸들러를 실행하는 방법을 알고 있기 때문에, `DispatcherHandler`는 어떤 핸들러든지 받아 처리할 수 있다. 예를 들어 애노테이션을 선언한 컨트롤러를 실행하려면 리졸버가 필요한데, `HandlerAdapter`를 사용하면 `DispatcherHandler`는 이런 디테일을 몰라도 된다.|
-|`HandlerResultHandler`|핸들러가 건내준 결과를 처리하고 응답을 종료한다. [Result Handling](#134-result-handling)를 참고하라.|
+|`HandlerResultHandler`|핸들러가 건네 준 결과를 처리하고 응답을 종료한다. [Result Handling](#134-result-handling)를 참고하라.|
 
 ### 1.3.2. WebFlux Config
 
@@ -888,7 +888,7 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 프레임워크 내부에서 사용하는 빈([Web Handler API](#special-bean-types)에 있는 리스트와 [`DispatcherHandler`](#131-special-bean-types))도
 어플리케이션에서 직접 정의할 수 있다.
 하지만 특별한 이유가 없다면 [WebFlux Config](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#111-webflux-config)로
-시작하는게 가장 좋다.
+시작하는 게 가장 좋다.
 웹플럭스 config는 필요한 빈을 알아서 만들어주고,
 쉽게 설정을 커스텀할 수 있는 콜백 API를 제공한다.
 
@@ -901,7 +901,7 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 
 `DispatcherHandler`는 다음과 같이 요청을 처리한다:
 
-- `HandlerMapping`을 뒤져 매칭되는 핸들러를 찾는다. 첫번째로 매칭된 핸들러를 사용한다.
+- `HandlerMapping`을 뒤져 매칭되는 핸들러를 찾는다. 첫 번째로 매칭된 핸들러를 사용한다.
 - 핸들러를 찾으면 적당한 `HandlerAdapter`를 사용해 핸들러를 실행하고,
 `HandlerResult`를 돌려 받는다.
 - `HandlerResult`를 적절한 `HandlerResultHandler`로 넘겨
@@ -944,13 +944,13 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 `@ControllerAdvice`로 처리할 수 없다는 것에 주의하라.
 
 “Annotated Controller” 섹션의 [Managing Exceptions](#146-managing-exceptions)이나 
-WebHandler API 섹션의 [Exceptions](#124-exceptions)을 참고하라.
+WebHandler API 섹션의 [Exceptions](#124-exceptions)를 참고하라.
 
 ### 1.3.6. View Resolution
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-viewresolver)
 
-View resolution은 특정 view 기술에 얽매이지않고
+View resolution은 특정 view 기술에 얽매이지 않고
 HTML 템플릿이나 모델을 사용해 브라우저에 렌더링하는 기법을 말한다.
 Spring 웹플럭스에선 [HandlerResultHandler](#134-result-handling)가
 `ViewResolver` 인스턴스를 사용해
@@ -964,15 +964,15 @@ view의 논리적인 이름을 가리키는 String과 `View` 인스턴스를 매
 `ViewResolutionResultHandler`로 넘겨진 `HandlerResult`는
 핸들러가 리턴한 값과,
 요청을 처리하면서 추가한 attribute를 포함한 model을 가지고 있다.
-리턴값은 다음 중 하나로 사용된다:
+리턴 값은 다음 중 하나로 사용된다:
 
 - `String`, `CharSequence`: `ViewResolver`로 `View`를 만들 때 사용할 view의 논리적인 이름
-- `void`: 요청 path에 맞는 디폴트 view name에서 앞뒤 슬래쉬를 제거하고 `View`로 리졸브한다. view name이 제공되지 않았을 때나(e.g. model attribute를 리턴한 경우) 비동기 리턴값일 때도(e.g. `Mono`가 비어있을 때) 동일하게 처리한다.
+- `void`: 요청 path에 맞는 디폴트 view name에서 앞뒤 슬래쉬를 제거하고 `View`로 리졸브한다. view name이 제공되지 않았을 때나(e.g. model attribute를 리턴한 경우) 비동기 리턴 값일 때도(e.g. `Mono`가 비어있을 때) 동일하게 처리한다.
 - [Rendering](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/result/view/Rendering.html):
 여러 가지 view resolution 시나리오를 위한 API.
 IDE 자동 완성으로 옵션을 확인해봐라.
 - `Model`, `Map`: model에 추가로 넣을 model attributes
-- 그외: 그외 다른 리턴값은([BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)가
+- 그 외: 그 외 다른 리턴 값은([BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)가
 true를 리턴하는 값은 예외) model에 추가할 model attribute로 간주한다.
 `@ModelAttribute` 애노테이션이 없으면
 [conventions](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/Conventions.html)와
@@ -1003,7 +1003,7 @@ view resolution을 위한 설정 API를 제공한다.
 동작 자체는 컨트롤러가 `RedirectView`나 
 `Rendering.redirectTo("abc").build()`를 리턴했을 때와 동일하지만,
 이 방법을 사용하면 컨트롤러가 직접 view name을 보고 처리한다.
-`redirect:/some/resource`같은 값은
+`redirect:/some/resource` 같은 값은
 현재 어플리케이션에서 이동할 페이지를 찾고,
 `redirect:https://example.com/arbitrary/path`같이 사용하면
 해당 URL로 리다이렉트한다.
@@ -1014,7 +1014,7 @@ view resolution을 위한 설정 API를 제공한다.
 
 content negotiation은 `ViewResolutionResultHandler`가 담당한다.
 요청 미디어 타입과 `View`가 지원하는 미디어 타입을 비교해서,
-첫번째로 찾은 `View`를 사용한다.
+첫 번째로 찾은 `View`를 사용한다.
 
 스프링 웹플럭스는 [HttpMessageWriter](#125-codecs)로
 JSON, XML같은 미디어 타입을 만드는 `HttpMessageWriterView`를 지원한다.
@@ -1031,7 +1031,7 @@ JSON, XML같은 미디어 타입을 만드는 `HttpMessageWriterView`를 지원�
 스프링 웹플럭스는 애노테이션 기반 프로그래밍 모델을 지원하기 때문에,
 `@Controller`, `@RestController` 컴포넌트로
 요청을 매핑하고, 입력을 받고, exception을 처리할 수 있다.
-컨트롤러는 메소드를 여러가지로 활용할 수 있어서
+컨트롤러는 메소드를 여러 가지로 활용할 수 있어서
 클래스를 상속하거나 인터페이스를 구현하지 않아도 된다.
 
 다음은 아주 기본적인 예제다:
@@ -1243,13 +1243,13 @@ class OwnerController {
 URI 변수는 자동으로 선언한 타입으로 변환되는데,
 변환이 불가능하다면 `TypeMismatchException`이 발생한다. 
 기본적인 타입(`int`, `long`, `Date` 등)은 대부분 지원하고 있으며,
-컨트롤러에서 그외 데이터 타입을 사용하려면 바인더를 등록하면 된다.
+컨트롤러에서 그 외 데이터 타입을 사용하려면 바인더를 등록하면 된다.
 [Type Conversion](#type-conversion)과 [`DataBinder`](#145-databinder)를
 참고하라.
 
 URI 변수에 이름을 지정할 수 있지만(`@PathVariable("customId")`),
 파라미터 이름과 동일하다면 생략해도 된다.
-단, 컴파일할때 디버그 정보도 포함시키거나(`-g`)
+단, 컴파일할 때 디버그 정보도 포함시키거나(`-g`)
 자바 8의 `-parameters` 플래그를 사용해야 한다.
 
 `{*varName}`은 가장 뒤에 있는 0개 이상의 path segment를 나타내는 URI 변수다.
@@ -1302,7 +1302,7 @@ URL과 매칭되는 패턴이 여러 개라면,
 가장 구체적인 패턴을 선택한다.
 
 패턴을 비교할 땐 URI 변수와 와일드카드 수를 기반으로 점수를 계산한다.
-URI 변수가 와일드카드 보다 점수가 낮으며,
+URI 변수가 와일드카드보다 점수가 낮으며,
 점수가 가장 낮은 패턴을 선택한다.
 두 패턴이 점수가 같다면 더 긴 패턴을 사용한다.
 
@@ -1341,7 +1341,7 @@ consumes attribute는 부정 표현식을 지원한다.
 클래스 레벨에 `consumes` attribute를 지정해서 클래스 전체에서
 공유할 수도 있다.
 단, request mapping attribute는 대부분 클래스 레벨에 선언한 값을
-확장해 쓰지만, `consumes` attribute는 덮어 쓴다.
+확장해 쓰지만, `consumes` attribute는 덮어쓴다.
 
 > 자주 사용하는 미디어 타입은 `MediaType`에 상수로 선언돼 있다.
 > (e.g. `APPLICATION_JSON_VALUE`, `APPLICATION_XML_VALUE`).
@@ -1381,7 +1381,7 @@ produces 역시 부정 표현식을 지원한다.
 클래스 레벨에 `produces` attribute를 지정해서 클래스 전체에서
 공유할 수도 있다.
 단, request mapping attribute는 대부분 클래스 레벨에 선언한 값을
-확장해 쓰지만, `produces` attribute는 덮어 쓴다.
+확장해 쓰지만, `produces` attribute는 덮어쓴다.
 
 > 자주 사용하는 미디어 타입은 `MediaType`에 상수로 선언돼 있다.
 > (e.g. `APPLICATION_JSON_VALUE`, `APPLICATION_XML_VALUE`).
@@ -1470,7 +1470,7 @@ HTTP 메소드를 선언하지 않은 `@RequestMapping`이 있다면
 `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, 
 `@PatchMapping`이 그 예시이다.
 `@RequestMapping`은 HTTP 메소드를 지정하지 않으면 모든 메소드와 매칭되는데,
-컨트롤러 메소드는 왠만하면 HTTP 메소드를 하나만 지정해서 써야한다.
+컨트롤러 메소드는 웬만하면 HTTP 메소드를 하나만 지정해서 써야 한다.
 그렇기 때문에 이 애노테이션을 따로 지원한다.
 예제가 필요하다면, 애노테이션이 어떻게 선언되어 있는지 확인해 봐라.
 
@@ -1536,7 +1536,7 @@ class MyConfig {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-methods)
 
-`@RequestMapping` 핸들러는 다양한 컨트롤러 메소드 인자와 리턴값을 지원하므로
+`@RequestMapping` 핸들러는 다양한 컨트롤러 메소드 인자와 리턴 값을 지원하므로
 원하는 것을 선택하면 된다.
 
 #### Method Arguments
@@ -1569,13 +1569,13 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`@MatrixVariable`|URI path segment를 name/value 쌍으로 접근하는 용도. [Matrix Variables](#matrix-variables) 참고.|
 |`@RequestParam`|서블릿 request 파라미터에 접근할 수 있다. 파라미터 값은 메소드에 선언한 인자 타입으로 변환된다. [`@RequestParam`](#requestparam) 참고.<br><br>`@RequestParam`은 생략해도 된다. — 예를 들어 애노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다. 테이블 마지막에 나오는 “Any other argument” 참고.|
 |`@RequestHeader`|요청 헤더에 접근하는 용도. 헤더 값은 메소드에 선언한 인자 타입으로 변환된다. [@RequestHeader](#requestheader) 참고.|
-|`@CookieValue`|쿠키에 접근하는 용도. 쿠기 값은 메소드에 선언한 인자 타입으로 변환된다. [@CookieValue](#cookievalue) 참고.|
+|`@CookieValue`|쿠키에 접근하는 용도. 쿠키 값은 메소드에 선언한 인자 타입으로 변환된다. [@CookieValue](#cookievalue) 참고.|
 |`@RequestBody`|HTTP request body에 접근하는 용도. `HttpMessageReader`가 body를 메소드에 선언한 인자 타입으로 변환한다. 리액티브 타입을 지원한다. [@RequestBody](#requestbody) 참고.|
 |`HttpEntity<B>`|요청 헤더와 body에 접근하는 용도. `HttpMessageReader`가 body를 변환한다. 리액티브 타입을 지원한다. [HttpEntity](#httpentity) 참고.|
 |`@RequestPart`|`multipart/form-data` 요청에서 part에 접근하는 용도. 리액티브 타입을 지원한다. [Multipart Content](#multipart-content), [Multipart Data](#multipart-data) 참고.|
 |`java.util.Map`, `org.springframework.ui.Model`, `org.springframework.ui.ModelMap`|HTML 컨트롤러가 템플릿으로 뷰를 렌더링할 때 사용하는 모델에 접근할 수 있다.|
-|`@ModelAttribute`|model에 있는 attribute에 접근할 수 있다(attribute가 없다면 model 초기화만 한다). 이 때 데이터를 바인딩하면서 유효성도 함께 검사한다. [`@ModelAttribute`](#modelattribute), [Model](#144-model), [DataBinder](#145-databinder) 참고.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other argument”를 참고하라.|
-|`Errors`, `BindingResult`|커맨드 객체를 메소드 인자에 바인딩할 땐 유효성을 검증 할 수 있는데(e.g. `@ModelAttribute`), 이 때 발생한 에러에 접근하는 용도로 사용한다. `Errors`, `BindingResult` 인자는 유효성을 검증하는 인자 바로 뒤에 사용해야 한다.|
+|`@ModelAttribute`|model에 있는 attribute에 접근할 수 있다(attribute가 없다면 model 초기화만 한다). 이때 데이터를 바인딩하면서 유효성도 함께 검사한다. [`@ModelAttribute`](#modelattribute), [Model](#144-model), [DataBinder](#145-databinder) 참고.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other argument”를 참고하라.|
+|`Errors`, `BindingResult`|커맨드 객체를 메소드 인자에 바인딩할 땐 유효성을 검증할 수 있는데(e.g. `@ModelAttribute`), 이때 발생한 에러에 접근하는 용도로 사용한다. `Errors`, `BindingResult` 인자는 유효성을 검증하는 인자 바로 뒤에 사용해야 한다.|
 |`SessionStatus` + 클래스 레벨 `@SessionAttributes`|`@SessionAttributes` 애노테이션을 클래스에 선언하면 세션에 attribute를 저장하는데, `SessionStatus`를 인자로 받아 session 처리가 완료됐다고 알려주면 session attribute를 지운다. 자세한 내용은 [`@SessionAttributes`](#sessionattribute) 참고.|
 |`UriComponentsBuilder`|요청 호스트, 포트, 스킴, path로 URL을 만들 수 있다. [URI Links](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#161-uricomponents) 참고.|
 |`@SessionAttribute`|session attribute에 접근하는 용도. 클래스 레벨에 `@SessionAttributes`를 선언하면 세션에 model attribute를 저장하지만, 메소드 인자에 `@SessionAttribute`를 선언하면 session attribute에 접근할 수 있다. 자세한 내용은 [`@SessionAttribute`](#sessionattribute) 참고.|
@@ -1600,7 +1600,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`java.util.Map`, `org.springframework.ui.Model`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.
 |`@ModelAttribute`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other return value”를 참고하라.|
 |`Rendering`|model과 view를 만드는 API.|
-|`void`|void 메소드는 비동기 값(`Mono<Void>`)이나 null을 리턴한 경우도 포함이다. 이 때는 `ServerHttpResponse`, `ServerWebExchange` 인자가 있거나, `@ResponseStatus` 애노테이션을 선언했다면 요청을 완료한 것으로 간주한다. ETag나 `lastModified` 헤더로 클라이언트 캐시가 최신이라고 판단했을 때도 동일하다. 자세한 내용은 [Controllers](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1102-controllers)를 참조하라.<br><br>그 외엔 REST 컨트롤러에선 "response body가 없음"을 의미하고, HTML 컨트롤러에선 디폴트 view name을 선택한다.|
+|`void`|void 메소드는 비동기 값(`Mono<Void>`)이나 null을 리턴한 경우도 포함이다. 이때는 `ServerHttpResponse`, `ServerWebExchange` 인자가 있거나, `@ResponseStatus` 애노테이션을 선언했다면 요청을 완료한 것으로 간주한다. ETag나 `lastModified` 헤더로 클라이언트 캐시가 최신이라고 판단했을 때도 동일하다. 자세한 내용은 [Controllers](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1102-controllers)를 참조하라.<br><br>그 외엔 REST 컨트롤러에선 "response body가 없음"을 의미하고, HTML 컨트롤러에선 디폴트 view name을 선택한다.|
 |`Flux<ServerSentEvent>`, `Observable<ServerSentEvent>`, or other reactive type|서버 전송 이벤트(SSE)를 발생시킨다. 데이터만 전송하면 된다면 `ServerSentEvent` 래퍼는 생략해도 된다(단, 헤더에 `text/event-stream`을 사용하거나, `produces` attribute로 매핑해야 한다).|
 |Any other return value|`String`은 view name으로 사용하고, `void`면 디폴트 view name을 사용한다. 그 외에는 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 false면 모델 attribute로 사용하고, true면 리졸브하지 못한다.|
 
@@ -1609,7 +1609,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-typeconversion)
 
 컨트롤러 메소드에 사용하는 일부 인자는 문자열로 요청한 값을 매핑하기 때문에(`@RequestParam`, `@RequestHeader`, `@PathVariable`, `@MatrixVariable`, `@CookieValue` 등)
-`String`이 아닌 다른 타입으로 선언했다면 타입을 변환해야한다.
+`String`이 아닌 다른 타입으로 선언했다면 타입을 변환해야 한다.
 
 이런 경우엔 설정한 컨버터가 자동으로 변환해 준다.
 기본적인 타입은(`int`, `long`, `Date` 등) 디폴트로 지원한다.
@@ -1624,7 +1624,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 
 [RFC 3986](https://tools.ietf.org/html/rfc3986#section-3.3)에 따르면
 path segment에 name/value 쌍 변수를 사용할 수 있다.
-스프링 웹플럭스에선 Tim Berners-Lee가 오래 전 작성한 [문서](https://www.w3.org/DesignIssues/MatrixURIs.html)를
+스프링 웹플럭스에선 Tim Berners-Lee가 오래전 작성한 [문서](https://www.w3.org/DesignIssues/MatrixURIs.html)를
 따라 이를 “메트릭스 변수”라고 부르는데, URI path 파라미터라고도 한다.
 
 메트릭스 변수는 path segment 어디에든 사용할 수 있다.
@@ -2007,7 +2007,7 @@ fun processSubmit(@ModelAttribute("pet") pet: Pet, result: BindingResult): Strin
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `BindingResult`를 추가한다.</small>
 
 `javax.validation.Valid`나 스프링의 `@Validated` 애노테이션을
-선언하면, 데이터를 바인딩 한 후 자동으로 유효성을 검증한다
+선언하면, 데이터를 바인딩한 후 자동으로 유효성을 검증한다
 ([Bean Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation),
 [Spring validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation) 참고).
 다음 예제는 `@Valid` 애노테이션을 사용한다:
@@ -2114,7 +2114,7 @@ class EditPetForm {
 model에 `pet`이란 attribute를 한 번 저장하고 나면
 자동으로 `WebSession`에 추가된다.
 이 값은 다음 예제처럼 컨트롤러 메소드에서 `SessionStatus`를 인자로 받아
-지우기 전까지 유된한다:
+지우기 전까지 유지된다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -2705,14 +2705,14 @@ model을 생성, 접근하고 `WebDataBinder`로 객체에 바인딩한다.
 다른 `@RequestMapping` 메소드를 실행하기 전 모델을 초기화한다.
 - `@RequestMapping` 메소드에서 리턴하는 값을 model attribute로 만든다.
 
-이번 섹션에서는 두번째에 있는 `@ModelAttribute` 메소드를 설명한다.
+이번 섹션에서는 두 번째에 있는 `@ModelAttribute` 메소드를 설명한다.
 `@ModelAttribute` 메소드는 컨트롤러 안에 몇 개든지 만들 수 있다.
 이 메소드는 같은 컨트롤러에 있는 `@RequestMapping` 메소드를 실행 하기 전
 전부 실행된다.
 모든 컨트롤러에서 공유하려면 `@ControllerAdvice`에 만들면 된다.
 자세한 내용은 [Controller Advice](#147-controller-advice) 섹션을 참고하라.
 
-`@ModelAttribute` 메소드는 여러가지 방법으로 활용할 수 있다.
+`@ModelAttribute` 메소드는 여러 가지 방법으로 활용할 수 있다.
 지원하는 인자는 대부분 `@RequestMapping` 메소드와 동일하다
 (`@ModelAttribute` 자체와 reqeust body랑 관련된 것만 빼고).
 
@@ -2987,7 +2987,7 @@ class SimpleController {
 자세한 내용은 [MVC 섹션](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-exceptionhandler)을 참고하라.
 
 > request body나 `@ModelAttribute`와 관려된 인자만 제외하면,
-> `@RequestMapping` 메소드가 지원하는 모든 인자와 리턴값을
+> `@RequestMapping` 메소드가 지원하는 모든 인자와 리턴 값을
 > `@ExceptionHandler` 메소드에서도 사용할 수 있다.
 
 스프링 웹플럭스에선 `@RequestMapping` 메소드를
@@ -3070,7 +3070,7 @@ public class ExampleAdvice2 {}
 public class ExampleAdvice3 {}
 ```
 
-이 예제처럼 컨트롤러를 지정하면 런타임에 비교하기때문에,
+이 예제처럼 컨트롤러를 지정하면 런타임에 비교하기 때문에,
 과도한 사용은 성능에 좋지 않다.
 자세한 내용은 [`@ControllerAdvice`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html)
 javadoc을 참고하라.

@@ -66,7 +66,7 @@ lastmod: 2020-07-21T16:00:00+09:00
 
 ### 9.1.1. Using the `transform` Operator
 
-`transform` 연산자는 연산자 체인 일부를 하나의 함수로 캡슐화해 준다. 이 함수는 기존에 연결된 연산자 체인에 캡슐화한 연사자를 붙여준다. 이렇게 하면 시퀀스의 모든 구독자에 동일한 연산자를 적용하는데, 이는 기본적으로 직접 연산자를 체인에 추가하는 것과 동일하다. 예제는 아래 코드에 있다:
+`transform` 연산자는 연산자 체인 일부를 하나의 함수로 캡슐화해 준다. 이 함수는 기존에 연결된 연산자 체인에 캡슐화한 연산자를 붙여준다. 이렇게 하면 시퀀스의 모든 구독자에 동일한 연산자를 적용하는데, 이는 기본적으로 직접 연산자를 체인에 추가하는 것과 동일하다. 예제는 아래 코드에 있다:
 
 ```java
 Function<Flux<String>, Flux<String>> filterAndMap =
@@ -156,13 +156,13 @@ HTTP 요청을 생각해 보자. 구독자가 생길 때마다 HTTP 호출을 �
 
 반면 hot publisher는 구독자 수에 구애받지 않는다. 데이터 생산을 곧바로 시작하며, `Subscriber`가 언제 생기더라도 (이 경우엔 구독자는 구독 *이후* 방출한 새 데이터만 볼 수 있다) 계속 데이터 생산을 이어간다. 사실 hot publisher는, 구독하기 전에 *무언가가* 일어난다.
 
-리액터에서 몇 안되는 hot 연산자 중 하나는 `just`다: 단순히 체인에 연결될 때 값을 수집해 놓고 이후 구독하는 구독자에게 재전송한다. HTTP 호출에 다시 비유해보면, 수집한 데이터는 HTTP 호출 결과이고, 네트워크 호출은 `just`를 초기화할 때 딱 한 번만 발생한다.
+리액터에서 몇 안 되는 hot 연산자 중 하나는 `just`다: 단순히 체인에 연결될 때 값을 수집해 놓고 이후 구독하는 구독자에게 재전송한다. HTTP 호출에 다시 비유해보면, 수집한 데이터는 HTTP 호출 결과이고, 네트워크 호출은 `just`를 초기화할 때 딱 한 번만 발생한다.
 
 `just`를 cold publisher로 변환하려면 `defer`를 사용하면 된다. 이는 HTTP 요청을 구독 시간으로 연기해 준다 (그리고 구독자가 생길 때마다 별도로 네트워크 호출을 실행한다).
 
 >  리액터의 다른 hot publisher 대부분은 `Processor`를 상속하고 있다.
 
-두 가지 예제를 살펴 보자. 먼저 첫 번째 예제다:
+두 가지 예제를 살펴보자. 먼저 첫 번째 예제다:
 
 ```java
 Flux<String> source = Flux.fromIterable(Arrays.asList("blue", "green", "orange", "purple"))
@@ -226,13 +226,13 @@ Subscriber 2 to Hot Source: PURPLE
 
 ![Hot](./../../images/reactorcore/gs-hot.png)
 
-1번 구독자는 네 가지 색깔을 모두 전달 받는다. 앞선 색깔 두 개를 생산한 이후에 구독한 두 번째 구독자는 남은 두 색깔만 받는다. 따라서 `ORANGE`와 `PURPLE`이 두 번씩 출력됐다. 이 Flux에 사용한 연산자는 구독한 시점과는 상관 없이 실행된다.
+1번 구독자는 네 가지 색깔을 모두 전달받는다. 앞선 색깔 두 개를 생산한 이후에 구독한 두 번째 구독자는 남은 두 색깔만 받는다. 따라서 `ORANGE`와 `PURPLE`이 두 번씩 출력됐다. 이 Flux에 사용한 연산자는 구독한 시점과는 상관없이 실행된다.
 
 ---
 
 ## 9.3. Broadcasting to Multiple Subscribers with ConnectableFlux
 
-가끔은 단순히 구독자가 구독할 때까지 일부 처리를 지연시키기 보다, 미리 정해둔 시점에 구독과 데이터 생성을 트리거하고 싶을 수도 있다.
+가끔은 단순히 구독자가 구독할 때까지 일부 처리를 지연시키기보다, 미리 정해둔 시점에 구독과 데이터 생성을 트리거하고 싶을 수도 있다.
 
 그렇기 때문에 `ConnectableFlux`가 있는 것이다. `publish`,  `replay` 이 두 패턴으로 `ConnectableFlux`를 리턴하는 `Flux` API를 다룰 수 있다.
 
@@ -311,11 +311,11 @@ subscribed to source
 
 ## 9.4. Three Sorts of Batching
 
-데이터가 많아서 배치로 분류하고 싶다면 리액터의 세 가지 광범위한 솔루션 grouping, windowing, buffering 중 하나를 사용해라. 이 셋은 모두 `Flux<T>`를 집계해서 재분배하기 때문에 개념적으로는 유사하다. Grouping와 windowing은 `Flux<Flux<T>>`를 만들고 buffering은 `Collection<T>`으로 집계한다.
+데이터가 많아서 배치로 분류하고 싶다면 리액터의 세 가지 광범위한 솔루션 grouping, windowing, buffering 중 하나를 사용해라. 이 셋은 모두 `Flux<T>`를 집계해서 재분배하기 때문에 개념적으로는 유사하다. Grouping과 windowing은 `Flux<Flux<T>>`를 만들고 buffering은 `Collection<T>`으로 집계한다.
 
 ### 9.4.1. Grouping with `Flux<GroupedFlux<T>>`
 
-Grouping은 소스 `Flux<T>`를 각각의 키와 일치하는 배치 여러개로 나누는 것을 말한다.
+Grouping은 소스 `Flux<T>`를 각각의 키와 일치하는 배치 여러 개로 나누는 것을 말한다.
 
 Grouping에 해당하는 집계 연산자는 `groupBy`다.
 
@@ -354,7 +354,7 @@ Windowing은 소스 `Flux<T>`를 *윈도우*로 나누는 것으로, 크기나 �
 
 들어오는 키에 따라 무작위로 오버랩될 수 있는 `groupBy`와는 달리, 윈도우는 (대부분) 순차적으로 열린다.
 
-하지만 일부 오버로딩 메소드는 윈도우를 오버랩할 수 있다. 예를 들어 `window(int maxSize, int skip)`에서 `maxSize` 파라미터는 윈도우를 닫은 이후의 아이템 수고, `skip` 파라미터는 새 윈도우를 열고나서의 아이템 수다. 따라서 *`maxSize`가 `skip`보다 크면* 이전 윈도우를 닫기 전에 새 윈도우가 열리고 이 둘은 오버랩된다.
+하지만 일부 오버로딩 메소드는 윈도우를 오버랩할 수 있다. 예를 들어 `window(int maxSize, int skip)`에서 `maxSize` 파라미터는 윈도우를 닫은 이후의 아이템 수고, `skip` 파라미터는 새 윈도우를 열고 나서의 아이템 수다. 따라서 *`maxSize`가 `skip`보다 크면* 이전 윈도우를 닫기 전에 새 윈도우가 열리고 이 둘은 오버랩된다.
 
 다음 예제는 윈도우를 오버랩하는 예제다:
 
@@ -430,7 +430,7 @@ StepVerifier.create(
 
 어떤 `Flux`든지 `parallel()` 연산자를 사용하면 `ParallelFlux`를 얻을 수 있다. 이 자체로는 작업을 병렬화해주지 않는다. 그대신 작업 부하를 "레일(rail)"로 나눈다 (디폴트는 CPU 코어 수만큼).
 
-건내 받은 `ParallelFlux`에게 각 레일을 실행할 위치 (그리고 더 나아가 레일을 병렬로 실행할 위치)를 알려주려면 `runOn(Scheduler)`를 사용해야 한다. 병렬 처리를 위한 전용 `Scheduler`가 있다는 점을 알아 두자: `Schedulers.parallel()`. 
+건네받은 `ParallelFlux`에게 각 레일을 실행할 위치 (그리고 더 나아가 레일을 병렬로 실행할 위치)를 알려주려면 `runOn(Scheduler)`를 사용해야 한다. 병렬 처리를 위한 전용 `Scheduler`가 있다는 점을 알아 두자: `Schedulers.parallel()`. 
 
 다음 두 예제를 비교해 보자:
 
@@ -448,7 +448,7 @@ Flux.range(1, 10)
     .subscribe(i -> System.out.println(Thread.currentThread().getName() + " -> " + i));
 ```
 
-첫번째 예제는 다음을 출력한다:
+첫 번째 예제는 다음을 출력한다:
 
 ```
 main -> 1
@@ -480,7 +480,7 @@ parallel-2 -> 10
 
 시퀀스를 병렬로 처리하고 나서, 나머지 연산자 체인은 "일반" `Flux`로 돌아가 순차적으로 처리하고 싶다면 `ParallelFlux`의 `sequential()`을 호출하면 된다.
 
-`ParallelFlux`를 `Subscriber`로 `subscribe`하면 `sequential()`이 적용되지만, `subscribe`의 다른 람다 기반 메소드를 사용하면 그렇지 않는다는 것에 주의하라.
+`ParallelFlux`를 `Subscriber`로 `subscribe`하면 `sequential()`이 적용되지만, `subscribe`의 다른 람다 기반 메소드를 사용하면 그렇지 않다는 것에 주의하라.
 
 `subscribe(Consumer<T>)`는 모든 레일을 실행하는 반면, `subscribe(Subscriber<T>)`는 모든 레일을 머지한다는 것도 주의하자. `subscribe()` 메소드에 람다가 있으면, 레일 수만큼 각 람다를 실행한다.
 
@@ -520,7 +520,7 @@ parallel-2 -> 10
 
 Dropping 훅은 연산자의 소스가 리액티브 스트림 스펙을 지키지 않았을 때 실행한다. 이런 종류의 에러는 일반적인 실행 경로를 벗어난다 (즉, `onError`를 통해 전파할 수 없다).
 
-전형적으로 `onCompleted`를 호출한 이후에 `Publisher`가 `onNext`를 호출하는 경우가 그렇다. 이 때 `onNext` 값은 드랍된다. 관련 없는 `onError` 신호도 마찬가지다.
+전형적으로 `onCompleted`를 호출한 이후에 `Publisher`가 `onNext`를 호출하는 경우가 그렇다. 이때 `onNext` 값은 드랍된다. 관련 없는 `onError` 신호도 마찬가지다.
 
 `onNextDropped`, `onErrorDropped` 훅을 사용하면 버려지는 신호를 컨슘할 글로벌 `Consumer`를 설정할 수 있다. 예를 들어 로그를 남긴 다음 필요하다면 관련 리소스를 정리할 수 있다 (남은 리액티브 체인에서도 절대 사용하지 않기 때문).
 
@@ -530,11 +530,11 @@ Dropping 훅은 연산자의 소스가 리액티브 스트림 스펙을 지키�
 
 또 다른 훅 `onOperatorError`는 연산자의 `onNext`, `onError`, `onComplete` 메소드를 실행하는 동안 예상치 못한 `Exception`을 만났을 때 실행한다.
 
-앞에서 본 훅과는 달리 일반적인 실행 경로에 속한다. 대표적인 예는 `map` 연산자에 `Exception`을 던지는 map 함수를 사용하는 경우다 (0으로 나누는 등). 이 때는 평소처럼 `onError` 채널로 전달된다.
+앞에서 본 훅과는 달리 일반적인 실행 경로에 속한다. 대표적인 예는 `map` 연산자에 `Exception`을 던지는 map 함수를 사용하는 경우다 (0으로 나누는 등). 이때는 평소처럼 `onError` 채널로 전달된다.
 
 먼저 `Exception`을 `onOperatorError`로 전달한다. 훅을 통해 에러를 살펴본 뒤 (필요하다면 값을 증가시켜서) `Exception`을 바꿀 수 있다. 물론 로그를 남기고 기존 `Exception`을 리턴하는 것도 가능하다.
 
-`onOperatorError`를 여러번 설정하는 것도 가능하다. `BiFunction`을 식별할 `String`을 지정할 수 있으며, 다른 키를 사용해서 여러번 호출하면 모든 훅을 연쇄적으로 실행한다. 반면 같은 키를 두 번 사용하면 이전에 설정한 함수를 덮어쓴다.
+`onOperatorError`를 여러 번 설정하는 것도 가능하다. `BiFunction`을 식별할 `String`을 지정할 수 있으며, 다른 키를 사용해서 여러 번 호출하면 모든 훅을 연쇄적으로 실행한다. 반면 같은 키를 두 번 사용하면 이전에 설정한 함수를 덮어쓴다.
 
 따라서 훅은 완전히 리셋할 수도 있고 (`Hooks.resetOnOperatorError()`), 특정 `key`만 리셋할 수도 있다 (`Hooks.resetOnOperatorError(String)`).
 
@@ -544,7 +544,7 @@ Assembly 훅은 연산자의 생명 주기와 직결된다. 연산자 체인에 
 
 횡단 관심사를 구현한 `Subscriber`로 모든 연산자를 장식하고 싶다면, `Operators#lift*` 메소드가 지원하는 다양한 리액터 `Publisher` 타입과 (`Flux`, `Mono`, `ParallelFlux`, `GroupedFlux`, `ConnectableFlux`) `Fuseable` 버전을 살펴봐라.
 
-`onOperatorError`처럼 assembly 훅도 여러개를 누적할 수 있으며 키로 식별한다. 부분적으로나 완전히 리셋하는 것도 가능하다.
+`onOperatorError`처럼 assembly 훅도 여러 개를 누적할 수 있으며 키로 식별한다. 부분적으로나 완전히 리셋하는 것도 가능하다.
 
 ### 9.7.4. Hook Presets
 
@@ -559,7 +559,7 @@ Assembly 훅은 연산자의 생명 주기와 직결된다. 연산자 체인에 
 
 명령형 프로그래밍에서 리액티브 프로그래밍으로 사고방식을 전환할 때 만나는 기술적인 어려움 중 하나는 스레드 처리 방식에 있다.
 
-리액티브 프로그래밍에선 `Thread`가 거의 동시에 (정확하겐 논블로킹 잠금 단계에서) 비동기 시퀀스를 처리하기 때문에, 익숙하기 보단 오히려 그 정반대일 것이다. 실행 중에 자주, 그것도 쉽게 스레드 간 전환이 이루어진다.
+리액티브 프로그래밍에선 `Thread`가 거의 동시에 (정확하겐 논블로킹 잠금 단계에서) 비동기 시퀀스를 처리하기 때문에, 익숙하기보단 오히려 그 정반대일 것이다. 실행 중에 자주, 그것도 쉽게 스레드 간 전환이 이루어진다.
 
 이 때문에 `ThreadLocal`같이 더 "안정적인" 스레드 모델에 익숙한 개발자에겐 특히 더 어렵다. 이런 모델은 데이터를 스레드와 연결시켜 생각하게 만들기 때문에, 리액티브 컨텍스트 안에서 사용하긴 어렵다. 결과적으로 `ThreadLocal`에 의존하는 라이브러리는 리액터와 사용하면, 잘해도 결국 새로운 이슈를 직면하게 된다. 최악의 경우 잘못 동작하거나 심지어 실패할 수도 있다. 대표적으로 Logback의 MDC를 사용해서 관련 ID를 저장하고 함께 로깅하는 경우가 그렇다.
 
@@ -581,7 +581,7 @@ StepVerifier.create(r)
             .verifyComplete();
 ```
 
-아래 섹션에서 `Context`와 그 사용법을 읽고나면 위 예제를 이해할 수 있을 것이다.
+아래 섹션에서 `Context`와 그 사용법을 읽고 나면 위 예제를 이해할 수 있을 것이다.
 
 > 이는 일반 사용자보단 라이브러리 개발자를 타겟으로 둔 고급 기능이다. 이 기능을 사용하려면 `Subscription`의 생명 주기를 잘 이해하고 있어야 하며, 구독을 책임지는 라이브러리를 대상으로 만든 기능이다.
 
@@ -615,13 +615,13 @@ StepVerifier.create(r)
 
 ### 9.8.3. Reading a `Context`
 
-`Context`를 전달하고 나면 데이터를 조회할 수 있다. `Context`에 정보를 집어 넣는 건 대부분 엔드 사용자가 하는 일이지만, 정보 활용에 대한 책임은 보통 클라이언트 코드의 업스트림에 있는 서드 파티 라이브러리가 가지고 있다.
+`Context`를 전달하고 나면 데이터를 조회할 수 있다. `Context`에 정보를 집어넣는 건 대부분 엔드 사용자가 하는 일이지만, 정보 활용에 대한 책임은 보통 클라이언트 코드의 업스트림에 있는 서드 파티 라이브러리가 가지고 있다.
 
 컨텍스트 정보를 읽을 땐 스태틱 메소드 `Mono.subscriberContext()`를 사용한다.
 
 ### 9.8.4. Simple `Context` Examples
 
-이 섹션의 예제를 보고나면 `Context`를 사용할 때 주의해야 할 점을 더 잘 이해할 수 있다.
+이 섹션의 예제를 보고 나면 `Context`를 사용할 때 주의해야 할 점을 더 잘 이해할 수 있다.
 
 먼저 도입부에서 보여줬던 간단한 예제로 돌아가서 좀 더 설명해 보겠다:
 
@@ -638,7 +638,7 @@ StepVerifier.create(r)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `subscriberContext(Function)`을 호출해 `Context`에 `"message"`라는 키 아래 `"World"`를 넣는 것으로 연산자 체인을 종료한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 소스 아이템에 `flatMap`을 적용할 때 `Mono.subscriberContext()`로 `Context`를 얻어 온다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 그 다음 `map`을 사용해서 `"message"`에 해당하는 키를 추출하고 기존 단어와 연결한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 그다음 `map`을 사용해서 `"message"`에 해당하는 키를 추출하고 기존 단어와 연결한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 그 결과 `Mono<String>`은 `"Hello World"`를 방출한다.</small>
 
 > 위에 표시한 숫자와 선언 순서가 일치하지 않는 것은 실수가 아니다. 실행 순서를 나타낸 것이다. `subscriberContext`는 체인 마지막에 있지만 가장 먼저 실행된다 (구독 시점이란 특성과 구독 신호는 아래에서 위로 흐른다는 사실 때문에).
@@ -680,7 +680,7 @@ StepVerifier.create(r)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `Context`에 변경하려고 했던 키를 조회한다</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 이 키 값은 절대 `"Hello"`로 세팅되지 않는다.</small>
 
-유사하게 `Context`에 동일한 키를 여러번 쓴다면, 순서에 따라 달라질 수 있다. 다음 예제에서 알 수 있듯이, 연산자에서 `Context`를 읽을 때는 아래에 있는 가장 가까운 값을 건내 받는다:
+유사하게 `Context`에 동일한 키를 여러 번 쓴다면, 순서에 따라 달라질 수 있다. 다음 예제에서 알 수 있듯이, 연산자에서 `Context`를 읽을 때는 아래에 있는 가장 가까운 값을 건네받는다:
 
 ```java
 String key = "message";
@@ -698,7 +698,7 @@ StepVerifier.create(r)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 여기서도 `"message"` 키 값을 쓴다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `map`은 가장 가까운 곳에서 (바로 아래) 설정한 값을 전달받는다: `"Reactor"`.</small>
 
-위 예제에선 구독할 때 `Context`에 `"World"`가 추가된다. 그 다음 구독 신호가 위로 이동하면서 또 한 번 값을 쓰게 된다. 이 때 `"Reactor"`를 가지고 있는 두 번째 불변 `Context`를 생성한다. 그 다음 데이터 플로우가 시작된다. `flatMap`에선 가장 가까운 `Context`, 즉 `"Reactor"`를 가지고 있는 두 번째 `Context`를 조회한다.
+위 예제에선 구독할 때 `Context`에 `"World"`가 추가된다. 그다음 구독 신호가 위로 이동하면서 또 한 번 값을 쓰게 된다. 이 때 `"Reactor"`를 가지고 있는 두 번째 불변 `Context`를 생성한다. 그다음 데이터 플로우가 시작된다. `flatMap`에선 가장 가까운 `Context`, 즉 `"Reactor"`를 가지고 있는 두 번째 `Context`를 조회한다.
 
 `Context`가 데이터 신호와 함께 전파되는지 궁금할 것이다. 만약 그렇다면, 컨텍스트 값을 두 번 쓰면서 그 중간에 `flatMap`을 한 번 더 사용하면, 위에 있는 `Context` 값을 사용할 수도 있다. 하지만 아래 예제에서 보이는 것처럼, 실제로는 그렇지 않다.
 
@@ -719,10 +719,10 @@ StepVerifier.create(r)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 여기서 처음으로 값을 쓴다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 두 번째로 값을 쓴다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 첫 번째 `flatMap`은 두 번째로 썼던 컨텍스트를 조회한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 두 번째 `flatMap`은 첫 번재 결과에, 첫 번째로 썼던 컨텍스트 값을 연결한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 두 번째 `flatMap`은 첫 번째 결과에, 첫 번째로 썼던 컨텍스트 값을 연결한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> `Mono`는 `"Hello Reactor World"`를 방출한다.</small>
 
-그 이유는 `Context`는 `Subscriber`와 연관있으며, 각 연산자에선 접근할 `Context`를 다운스트림 `Subscriber`에 요청하기 때문이다.
+그 이유는 `Context`는 `Subscriber`와 연관 있으며, 각 연산자에선 접근할 `Context`를 다운스트림 `Subscriber`에 요청하기 때문이다.
 
 마지막으로 살펴볼 사례는 `flatMap` 안쪽에서도 `Context`에 값을 쓰는 케이스다:
 
@@ -746,11 +746,11 @@ StepVerifier.create(r)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 여기 `subscriberContext`는 `flatMap` 바깥에는 아무 영향도 주지 않는다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 여기 `subscriberContext`는 메인 시퀀스의 `Context`에 영향을 준다.</small>
 
-위 예제에서 최종적으로 방출하는 값은 "Hello Reactor World"가 아니라 `"Hello World Reactor"`다. `"Reactor"`를 쓰는 `subscriberContext`는 두 번째 `flatMap` 내부 시퀀스에만 적용되기 때문이다. 결과적으로 메인 시퀀스로 전파되지 않으며, 첫 번째 `flatMap`에서는 이 값을 볼 수 없다. 전파와 불변이라는 특성때문에 `Context`는 `flatMap`처럼 중간 내부 시퀀스를 만드는 연산자와는 분리된다.
+위 예제에서 최종적으로 방출하는 값은 "Hello Reactor World"가 아니라 `"Hello World Reactor"`다. `"Reactor"`를 쓰는 `subscriberContext`는 두 번째 `flatMap` 내부 시퀀스에만 적용되기 때문이다. 결과적으로 메인 시퀀스로 전파되지 않으며, 첫 번째 `flatMap`에서는 이 값을 볼 수 없다. 전파와 불변이라는 특성 때문에 `Context`는 `flatMap`처럼 중간 내부 시퀀스를 만드는 연산자와는 분리된다.
 
 ###  9.8.5. Full Example
 
-이제 `Context`에서 정보를 조회하는 좀 더 현실적인 라이브러리 예시를 살펴보자: 건내 받은 `Mono<String>`을 데이터 소스로 사용해 `PUT` 요청을 보내는 리액티브 HTTP 클라이언트. 요청 헤더에 관련 ID를 추가하기 위해 컨텍스트에서 특정 키 값을 조회할 것이다.
+이제 `Context`에서 정보를 조회하는 좀 더 현실적인 라이브러리 예시를 살펴보자: 건네받은 `Mono<String>`을 데이터 소스로 사용해 `PUT` 요청을 보내는 리액티브 HTTP 클라이언트. 요청 헤더에 관련 ID를 추가하기 위해 컨텍스트에서 특정 키 값을 조회할 것이다.
 
 사용자 관점에서는 작성하는 코드는 다음과 같다:
 
@@ -794,9 +794,9 @@ Mono<Tuple2<Integer, String>> doPut(String url, Mono<String> data) {
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> ID 키에 해당하는 값을 `Optional`로 추출한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 컨텍스트에 키가 존재하면 헤더의 ID로 사용한다.</small>
 
-이 라이브러리 코드는 데이터 `Mono`를 `Mono.subscriberContext()`와 합친다. 이는 `Tuple2<String, Context>`로 합쳐지며, 컨텍스트에는 다운스트림에서 보낸 `HTTP_CORRELATION_ID` 엔트리가 들어있다 (구독자에 직접 연결된 것 처럼).
+이 라이브러리 코드는 데이터 `Mono`를 `Mono.subscriberContext()`와 합친다. 이는 `Tuple2<String, Context>`로 합쳐지며, 컨텍스트에는 다운스트림에서 보낸 `HTTP_CORRELATION_ID` 엔트리가 들어있다 (구독자에 직접 연결된 것처럼).
 
-그 다음 `map`으로 키에 해당하는 값을 `Optional<String>`으로 추출하고, 엔트리가 있으면 `X-Correlation-ID` 헤더 값에 전달한다. 마지막은 `handle`에서 시연한다.
+그다음 `map`으로 키에 해당하는 값을 `Optional<String>`으로 추출하고, 엔트리가 있으면 `X-Correlation-ID` 헤더 값에 전달한다. 마지막은 `handle`에서 시연한다.
 
 ID 사용을 검증하는 전체 테스트 코드는 다음과 같이 작성할 수 있다:
 
@@ -820,7 +820,7 @@ public void contextForLibraryReactivePut() {
 
 매우 특이 케이스긴 하지만, 어플리케이션에서 사용하는 객체를 더 이상 사용하지 않는다면 어떤 방식으로든 cleanup해줘야 할 때가 있다. 참조를 카운팅하고 있는 객체나 힙 바깥에서 관리하는 객체 등의 고급 시나리오에 해당한다. 네티의 `ByteBuf`가 이 둘에 해당하는 대표적인 예시이다.
 
-이런 객체를 제대로 cleanup하려면 글로벌 훅 뿐 아니라 ([Using Global Hooks](#97-using-global-hooks) 참고), `Flux` 별로도 고려해볼 필요가 있다:
+이런 객체를 제대로 cleanup하려면 글로벌 훅뿐 아니라 ([Using Global Hooks](#97-using-global-hooks) 참고), `Flux` 별로도 고려해볼 필요가 있다:
 
 - `doOnDiscard` `Flux`/`Mono` 연산자
 - `onOperatorError` 훅
@@ -831,7 +831,7 @@ public void contextForLibraryReactivePut() {
 
 일부 연산자는 cleanup이 필요한 객체에 적합하지 않다는 것에 주의하라. 예를 들어 `bufferWhen`은 오버랩된 버퍼를 만들 수 있으며, 앞에서 사용한 discard "로컬 훅"이 첫 번째 버퍼는 버려지는 것으로 보고, 두 번째 버퍼와 겹치는 아이템을 유효한데도 cleanup해버릴 수 있다.
 
->  cleanup이 목적이라면 **모든 연산자는 멱등성을 보장해야 한다**. 같은 객체에 여러번 적용하는 경우가 그렇다. 클래스 레벨 `instanceOf`을 체크하는 `doOnDiscard` 연산자와는 달리, 글로벌 훅은 어떤 `Object`도 될 수 있는 인스턴스를 처리한다. 이는 사용자가 어떤 인스턴스를 cleanup하고 하지 않을지를 구현하는 방식에 달려있다.
+>  cleanup이 목적이라면 **모든 연산자는 멱등성을 보장해야 한다**. 같은 객체에 여러 번 적용하는 경우가 그렇다. 클래스 레벨 `instanceOf`을 체크하는 `doOnDiscard` 연산자와는 달리, 글로벌 훅은 어떤 `Object`도 될 수 있는 인스턴스를 처리한다. 이는 사용자가 어떤 인스턴스를 cleanup하고 하지 않을지를 구현하는 방식에 달려있다.
 
 ### 9.9.1. The `doOnDiscard` Operator or Local Hook
 
@@ -839,15 +839,15 @@ public void contextForLibraryReactivePut() {
 
 연산자를 통해 활성화되며, 주어진 `Flux`나 `Mono`에만 적용되기 때문에 로컬 훅이라고 할 수 있다.
 
-업스트림의 아이템을 필터링하는 연산자를 사용한다면 이는 더 명백해 진다. 이 아이템은 다음 연산자에 (혹은 최종 구독자에게) 전달되지 않지만, 정상적인 실행 경로라고 볼 수 있다. 따라서 필터링한 아이템도 `doOnDiscard` 훅에 전달된다. 다음과 같은 경우에 `doOnDiscard`를 사용할 수 있다:
+업스트림의 아이템을 필터링하는 연산자를 사용한다면 이는 더 명백해진다. 이 아이템은 다음 연산자에 (혹은 최종 구독자에게) 전달되지 않지만, 정상적인 실행 경로라고 볼 수 있다. 따라서 필터링한 아이템도 `doOnDiscard` 훅에 전달된다. 다음과 같은 경우에 `doOnDiscard`를 사용할 수 있다:
 
 - `filter`: 필터 조건에 일치하지 않은 아이템은 "폐기"할 것으로 간주한다.
-- `skip`: 건너 뛴 아이템을 폐기한다.
+- `skip`: 건너뛴 아이템을 폐기한다.
 - `buffer(maxSize, skip)` with `maxSize < skip`: “폐기할 버퍼” — 버퍼 사이에 있는 아이템을 폐기한다.
 
 `doOnDiscard`는 필터링 연산자만 가능한 것은 아니며, 내부적으로 backpressure 용으로 데이터 큐를 사용하는 연산자에서도 사용할 수 있다. 더 구체적으로 말하면, 대부분 취소할 때가 중요하다. 소스에서 데이터를 미리 가져와서 이후에 구독자 demand에 따라 데이터를 보내는 연산자는, 취소했을 때 아직 방출하지 않은 데이터를 가지고 있을 수 있다. 이런 연산자는 취소할 때 `doOnDiscard` 훅을 사용해서 내부 backpressure `Queue`를 비운다.
 
-> `doOnDiscard(Class, Consumer)`를 호출할 때마다 덮어 쓰지 않고 더해지지만 (additive), 업스트림 연산자에만 적용된다.
+> `doOnDiscard(Class, Consumer)`를 호출할 때마다 덮어쓰지 않고 더해지지만 (additive), 업스트림 연산자에만 적용된다.
 
 ### 9.9.2. The `onOperatorError` hook
 
@@ -875,7 +875,7 @@ cleanup이 필요한 아이템이라면 `onOperatorError`에 이를 구현하되
 
 리액터에서 이 애노테이션을 사용하지만, 모든 리액터 기반 자바 프로젝트에서도 똑같이 null-safe API를 선언할 수 있다. 메소드 내부에서 사용하는 타입에 대한 널 체크는 이 기능 범위를 벗어난다.
 
-이 애노테이션은 [JSR 305](https://jcp.org/en/jsr/detail?id=305) 애노테이션을 선언하고 있기 때문에 (IntelliJ IDEA 등의 툴에서 지원하는, 현재는 추가 개발이 진행되지 않는 JSR), 자바 개발자는 런타임 `NullPointerException`을 방지하기 위한 null-safety 관련 경고를 볼 수 있다. JSR 305 메타 애노테이션 덕분에 툴 벤더는 리액터 애노테이션 전용 하드 코딩없이, 일반적인 방식으로 null safety를 지원할 수 있다.
+이 애노테이션은 [JSR 305](https://jcp.org/en/jsr/detail?id=305) 애노테이션을 선언하고 있기 때문에 (IntelliJ IDEA 등의 툴에서 지원하는, 현재는 추가 개발이 진행되지 않는 JSR), 자바 개발자는 런타임 `NullPointerException`을 방지하기 위한 null-safety 관련 경고를 볼 수 있다. JSR 305 메타 애노테이션 덕분에 툴 벤더는 리액터 애노테이션 전용 하드 코딩 없이, 일반적인 방식으로 null safety를 지원할 수 있다.
 
 > 코틀린 1.1.5+에선 클래스패스에 JSR 305 의존성을 추가할 필요가 없으며, 권장하지도 않는다.
 
@@ -883,8 +883,8 @@ cleanup이 필요한 아이템이라면 `onOperatorError`에 이를 구현하되
 
 다음은 `reactor.util.annotation` 패키지에서 제공하는 애노테이션이다:
 
-- [`@NonNull`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/NonNull.html): 특정 파라미터나 리턴값, 필드가 `null`일 수 없음을 나타낸다. (`@NonNullApi`를 사용하면 파라미터나 리턴 값에는 생략해도 된다)
-- [`@Nullable`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/Nullable.html): 파라미터나, 리턴값, 필드가 `null`일 수 있음을 나타낸다.
+- [`@NonNull`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/NonNull.html): 특정 파라미터나 리턴 값, 필드가 `null`일 수 없음을 나타낸다. (`@NonNullApi`를 사용하면 파라미터나 리턴 값에는 생략해도 된다)
+- [`@Nullable`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/Nullable.html): 파라미터나, 리턴 값, 필드가 `null`일 수 있음을 나타낸다.
 - [`@NonNullApi`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/NonNullApi.html): 패키지 레벨 애노테이션으로, 파라미터와 리턴 값의 기본 동작은 non-null임을 나타낸다.
 
 > 제네릭 타입 인자, 가변 인자, 배열 요소는 아직 Nullability를 지원하지 않는다. 최신 정보는  [issue #878](https://github.com/reactor/reactor-core/issues/878)을 참고하라.

@@ -39,7 +39,7 @@ lastmod: 2020-07-19T16:40:00+09:00
 Schedulers.enableMetrics();
 ```
 
-> 스케줄러를 생성할 때 메트릭 수집을 시작한다. 이 메소드는 가능한한 빨리 호출하는 것이 좋다.
+> 스케줄러를 생성할 때 메트릭 수집을 시작한다. 이 메소드는 가능한 한 빨리 호출하는 것이 좋다.
 
 > 스프링 부트를 사용하고 있다면, 이 코드를 `SpringApplication.run(Application.class, args)` 앞에 두는 게 좋다.
 

@@ -30,7 +30,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 
 리액터 레퍼런스 가이드는 HTML 문서를 제공한다. 최신 버전은 [여기](https://projectreactor.io/docs/core/release/reference/index.html)에서 확인할 수 있다.
 
-이 문서 사본을 직접 만들어서 다른 사람에게 배포할 수 는 있지만, 문서에 대해 비용을 청구해선 안되며, 배포 형식이 인쇄물이든 디지털 파일이던지 관계 없이 저작권 표시를 포함해야 한다.
+이 문서 사본을 직접 만들어서 다른 사람에게 배포할 수 는 있지만, 문서에 대해 비용을 청구해선 안 되며, 배포 형식이 인쇄물이든 디지털 파일이던지 관계없이 저작권 표시를 포함해야 한다.
 
 ---
 
@@ -52,7 +52,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 
 - [Gitter](https://gitter.im/reactor/reactor) 커뮤니티를 이용하라.
 - stackoverflow.com([`project-reactor`](https://stackoverflow.com/tags/project-reactor))에 질문해라.
-- 버그 리포트는 깃허브 이슈에 올려라. 이 레포지토리는 면밀히 모니터링 하고 있다: [reactor-core](https://github.com/reactor/reactor-core/issues) (주요 피쳐 관련 이슈), [reactor-addons](https://github.com/reactor/reactor-addons/issues) (reactor-test와 어댑터 관련 이슈)
+- 버그 리포트는 깃허브 이슈에 올려라. 이 레포지토리는 면밀히 모니터링하고 있다: [reactor-core](https://github.com/reactor/reactor-core/issues) (주요 피쳐 관련 이슈), [reactor-addons](https://github.com/reactor/reactor-addons/issues) (reactor-test와 어댑터 관련 이슈)
 
 > [이 문서를 포함한](https://github.com/reactor/reactor-core/tree/master/docs/asciidoc) 모든 리액터 프로젝트는 오픈 소스다. 문서에 문제가 있거나 개선하고 싶은 점이 있다면 리액터에 [컨트리뷰트](https://github.com/reactor/.github/blob/master/CONTRIBUTING.md)할 수 있다.
 
@@ -66,7 +66,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 - 리액터의 핵심 기능을 자세히 알고 싶다면 [Reactor Core Features](../reactorcorefeatures)로 이동해서 다음을 학습하라:
   - 리액터의 리액티브 타입에 대한 자세한 내용 ([`Flux`, an Asynchronous Sequence of 0-N Items](../reactorcorefeatures#41-flux-an-asynchronous-sequence-of-0-n-items), [`Mono`, an Asynchronous 0-1 Result](../reactorcorefeatures/#42-mono-an-asynchronous-0-1-result) 섹션).
   - [스케줄러](https://projectreactor.io/docs/core/release/reference/#schedulers)로 스레드 컨텍스트를 전환하는 방법.
-  - 에러를 핸들링 하는 방법 ([Handling Errors](../reactorcorefeatures/#46-handling-errors) 섹션).
+  - 에러를 핸들링하는 방법 ([Handling Errors](../reactorcorefeatures/#46-handling-errors) 섹션).
 - 단위 테스트? `reactor-test` 프로젝트가 있다면 가능하다! [Testing](../testing)을 참고하라.
 - [Programmatically creating a sequence](../reactorcorefeatures/#44-programmatically-creating-a-sequence)에서는 리액티브 리소스를 생성하는 고급 방식을 자세히 다룬다.
 - 다른 고급 주제는 [Advanced Features and Concepts](../advancedfeaturesandconcepts)에서 다룬다.
