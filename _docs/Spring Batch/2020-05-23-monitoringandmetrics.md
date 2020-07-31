@@ -38,9 +38,9 @@ lastmod: 2020-06-08T19:00:00+09:00
 |`spring.batch.job`|`TIMER`|job 실행 소요 시간|
 |`spring.batch.job.active`|`LONG_TASK_TIMER`|현재 active 상태인 job|
 |`spring.batch.step`|`TIMER`|step 실행 소요 시간|
-|`spring.batch.item.read`|`TIMER`|아이템을 읽는데 걸린 시간|
-|`spring.batch.item.process`|`TIMER`|아이템을 처리하는데 걸린 시간|
-|`spring.batch.item.write`|`TIMER`|청크를 쓰는데 걸린 시간|
+|`spring.batch.item.read`|`TIMER`|아이템을 읽는 데 걸린 시간|
+|`spring.batch.item.process`|`TIMER`|아이템을 처리하는 데 걸린 시간|
+|`spring.batch.item.write`|`TIMER`|청크를 쓰는 데 걸린 시간|
 
 ---
 

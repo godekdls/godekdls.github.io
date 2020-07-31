@@ -30,8 +30,8 @@ priority: 0.8
 
 ---
 
-스프링 배치는 전반적으로 배치 설계를 해봤다면 익숙하고 편하게 느껴질만한 컨셉을 사용한다.
-Job과 Step, 개발자가 직접 제공해야하는 처리 유닛(`ItemReader` `ItemWriter`)으로 구성되어 있는데,
+스프링 배치는 전반적으로 배치 설계를 해봤다면 익숙하고 편하게 느껴질 만한 컨셉을 사용한다.
+Job과 Step, 개발자가 직접 제공해야 하는 처리 유닛(`ItemReader` `ItemWriter`)으로 구성되어 있는데,
 스프링 패턴, operation, 템플릿, 콜백 및 idiom으로 인한 다음과 같은 차별점이 있다.
 
 - 명확한 관심사 분리
@@ -39,13 +39,13 @@ Job과 Step, 개발자가 직접 제공해야하는 처리 유닛(`ItemReader` `
 - 빠르게 적용하고 쉽게 응용할 수 있는 간단한 디폴트 구현체
 - 크게 향상된 확장성
 
-아래는 수십년간 사용되어온 배치 아키텍처를 간단히 나타낸 다이어그램이다.
+아래는 수십 년간 사용되어온 배치 아키텍처를 간단히 나타낸 다이어그램이다.
 배치 프로세싱 도메인 언어를 구성하는 컴포넌트를 개략적으로 설명한다.
 이 아키텍처 프레임워크는 지난 몇 세대의 플랫폼(COBOL/Mainframe, C/Unix, and now Java/anywhere)에서 
 수십 년에 걸쳐 입증한 청사진이다.
-JCL, COBOL 개발자도 C, C#, Java 개발자만큼 이 개념에 익숙 할 것이다.
+JCL, COBOL 개발자도 C, C#, Java 개발자만큼 이 개념에 익숙할 것이다.
 스프링 배치는 견고하고 유지보수 가능한 시스템에서 일반적으로 사용하는
-레이어, 컴포넌트, 기술 서비스의 물리적 구현체를 제공는데,
+레이어, 컴포넌트, 기술 서비스의 물리적 구현체를 제공하는데,
 이를 복잡한 요구사항을 해결하기 위한 인프라와 함께 확장하면,
 단순한 배치부터 매우 복잡한 배치 응용 프로그램까지 개발할 수 있다.
 
@@ -53,8 +53,8 @@ JCL, COBOL 개발자도 C, C#, Java 개발자만큼 이 개념에 익숙 할 것
 
 이 다이어그램은 스프링 배치의 도메인 언어를 구성하는 핵심 개념을 나타내고 있다.
 Job 하나는 1~n개의 step을 가지고 있으며,
-각 step은 `ItemReader`, `ItemProcessor`, `ItemWrite`를 딱 한 개 씩 가지고 있다.
-각 Job은 `JobLauncher`가 실행하며, 현재 실행중인 프로세스의 메타정보는 `JobRepository`에 저장된다.
+각 step은 `ItemReader`, `ItemProcessor`, `ItemWrite`를 딱 한 개씩 가지고 있다.
+각 Job은 `JobLauncher`가 실행하며, 현재 실행 중인 프로세스의 메타정보는 `JobRepository`에 저장된다.
 
 ---
 
@@ -63,7 +63,7 @@ Job 하나는 1~n개의 step을 가지고 있으며,
 여기서는 배치 job과 관련된 개념을 설명한다.
 `Job`은 전체 배치 프로세스를 캡슐화한 엔터티다.
 다른 스프링 프로젝트와 마찬가지로, `Job`은 XML 기반이나 자바 기반 설정을 둘 다 지원한다.
-이 설정은 "job 설정"이라고도 할 수 있지만, `Job`은 아래 다이어그램에서 보여지듯이
+이 설정은 "job 설정"이라고도 할 수 있지만, `Job`은 아래 다이어그램에서 보이듯이
 전체 계층 구조에서 가장 위에 있는 개념일 뿐이다.
 
 ![Job Hierarchy](./../../images/springbatch/job-hierarchy.png)
@@ -94,20 +94,20 @@ public Job footballJob() {
 ### 3.1.1. JobInstance
 
 `JobInstance`는 논리적인 job 실행을 뜻한다.
-앞에 있는 다이어그램의 'EndOfDay' `Job`처럼 하루가 끝날 때마다 한번 실행되야하는 배치 job을 생각해보자.
+앞에 있는 다이어그램의 'EndOfDay' `Job`처럼 하루가 끝날 때마다 한번 실행돼야 하는 배치 job을 생각해보자.
 'EndOfDay' job은 하나지만, `Job`을 각각 실행할 때마다 따로 추적할 수 있어야 한다.
 이 예시에서는 매일 하나의 논리적인 `JobInstance`가 필요하다.
 예를 들어, 1월 1일 실행, 1월 2일 실행, 등등.
-1월 1일에 실행한 배치가 실패해서 다음날 다시 실행하는 경우, 1월 1일의 작업과 동일한 작업을 재실행해야 한다 
+1월 1일에 실행한 배치가 실패해서 다음 날 다시 실행하는 경우, 1월 1일의 작업과 동일한 작업을 재실행해야 한다 
 (보통 처리 날짜와 처리할 데이터가 일치하는데, 1월 1일에 실행하면 1월 1일의 데이터를 처리한다는 뜻이다).
-따라서 각 `JobInstance`는 실행 결과를 여럿 가질 수 있고(`JobExecution`은 이 챕터 뒷 부분에 자세히 나온다),
-특정 `Job`과 식별가능한 `JobParameters`에 상응하는 `JobInstance`는 단 한 개 뿐이다.
+따라서 각 `JobInstance`는 실행 결과를 여럿 가질 수 있고(`JobExecution`은 이 챕터 뒷부분에 자세히 나온다),
+특정 `Job`과 식별 가능한 `JobParameters`에 상응하는 `JobInstance`는 단 한 개뿐이다.
 
 `JobInstance`는 로드되는 데이터와는 아무런 관련이 없다.
 데이터가 로드되는 방법은 전적으로 `ItemReader` 구현에 달려있다.
 예를 들어 앞에서 나온 EndOfDay 케이스에서는, 데이터에 배치를 실행해야 하는 날짜를 의미하는 컬럼이 있을 것이다.
 즉 1월 1일 실행은 1일 데이터만 로드하고, 1월 2일 실행은 2일 데이터만 사용할 것이다.
-이러한 결정은 비지니스적 요구사항일 가능성이 높으므로 `ItemReader`가 결정하도록 설계되었다.
+이러한 결정은 비지니스적 요구사항일 가능성이 크므로 `ItemReader`가 결정하도록 설계되었다.
 그러나 `JobInstance` 재사용 여부는 이전 실행에서 사용된 상태(`ExecutionContext`는 이번 챕터의 뒷부분에 나온다)를 그대로 사용할지 말지를 결정한다.
 새 `JobInstance`를 사용한다는 것은 '처음부터 시작'을 의미하고, 이미 있는 instance를 쓴다는 것은 보통 '멈췄던 곳에서부터 시작'을 의미한다.
 
@@ -138,14 +138,14 @@ public Job footballJob() {
 종료되기 전까지는 완료되지 않은 것으로 간주한다.
 앞에 나온 EndOfDay `Job`을 실행하고 처음엔 실패한 2017/01/01의
 `JobInstance`를 생각해보자.
-첫번째 실행(2017/01/01)과 똑같은 job 파라미터로 재실행한다면,
+첫 번째 실행(2017/01/01)과 똑같은 job 파라미터로 재실행한다면,
 새 `JobExecution`이 생성된다.
 반면 `JobInstance`는 여전히 한 개다.
 
 `Job`은 job이 무엇인지와 어떻게 실행되어야 하는지를 설명하고,
 `JobInstance`는 주로 올바른 재시작을 위해 실행을 그룹화하는 순수한 구조적 오브젝트다.
 반면 `JobExecution`은 실제 실행 중에 필요한
-기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보여지듯 
+기본 스토리지 메커니즘을 제공하며, 아래 테이블에서 보이듯 
 더 많은 프로퍼티를 관리하고 유지해야 한다.
 
 **Table 1. JobExecution Properties**
@@ -154,7 +154,7 @@ public Job footballJob() {
 |:-----------------:	|:-------------:	|
 |Status|실행 상태를 나타내는 `BatchStatus` 오브젝트. 실행 중일 때는 `BatchStatus#STARTED`. 실패하면 `BatchStatus#FAILED`. 성공적으로 종료되면 `BatchStatus#COMPLETED`|
 |startTime|job을 실행할 때의 시스템 시간을 나타내는 `java.util.Date`. 아직 job이 시작되지 않았다면 이 필드는 비어있다.|
-|endTime|성공 여부와 상관 없이 실행이 종료될 때의 시스템 시간을 나타내는 `java.util.Date`. 아직 job이 종료되지 않았다면 이 필드는 비어있다.|
+|endTime|성공 여부와 상관없이 실행이 종료될 때의 시스템 시간을 나타내는 `java.util.Date`. 아직 job이 종료되지 않았다면 이 필드는 비어있다.|
 |exitStatus|실행 결과를 나타내는 `ExitStatus`. 호출자에게 리턴하는 종료 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 5장 참고. 아직 job이 종료되지 않았다면 이 필드는 비어있다.|
 |createTime|`JobExecution`이 처음 저장될 때의 시스템 시간을 나타내는 `java.util.Date`. job은 시작되지 않았을 수도 있는데(따라서 시작 시간이 없을 수도 있음), createTime은 프레임워크가 job 레벨의 `ExecutionContext`을 관리할 때 사용하기 때문에 항상 존재한다.|
 |lastUpdated|`JobExecution`이 저장된 마지막 시간을 나타내는 `java.util.Date`. 아직 job이 시작되지 않았다면 이 필드는 비어있다.|
@@ -187,9 +187,9 @@ public Job footballJob() {
 
 job이 실패했고, 밤새도록 문제를 찾느라 '배치 윈도우'가 이제야 닫혔다고 가정해보자.
 또한 윈도우는 9:00 PM에 시작하고,
-다음날 중단했던 위치에서부터 job을 다시 시작해서 
+다음 날 중단했던 위치에서부터 job을 다시 시작해서 
 9:30에 01-01 데이터를 모두 처리했다고 가정해보자.
-하루가 지났으므로 01-02 job도 실행해야하는데, 
+하루가 지났으므로 01-02 job도 실행해야 하는데, 
 9시 31분에 바로 시작해서 1시간이 걸려 10시 30분에 정상적으로 종료된 상황이다.
 두 job이 동일한 데이터에 접근해서 데이터베이스 레벨에서 잠금 문제를 일으킬 일이 없다면, `JobInstance` 한 개씩 순차적으로 진행할 필요는 없다.
 `Job`을 실행할지 말지 결정하는 일은 전적으로 스케줄러에 달려있다.
@@ -231,8 +231,8 @@ job이 실패했고, 밤새도록 문제를 찾느라 '배치 윈도우'가 이�
 `Step`은 실제 배치 처리를 정의하고 컨트롤하는 데 필요한 모든 정보를 가지고 있다.
 설명이 모호하게 느껴질 수도 있는데, `Step`의 모든 내용은 `Job`을 만드는 개발자 재량이기 때문에 그렇다.
 `Step`은 어떻게 개발하느냐에 따라 간단할 수도 있고 복잡할 수도 있다.
-즉, 단순히 데이터베이스에서 파일을 읽는, 코드가 거의 필요없거나 전혀 필요하지 않은(사용한 구현체에 따라 다름) 간단한 작업이 될 수도 있고,
-프로세싱의 일부를 처리하는 복잡한 비지니스 로직도 될 수 있다.
+즉, 단순히 데이터베이스에서 파일을 읽는, 코드가 거의 필요 없거나 전혀 필요하지 않은(사용한 구현체에 따라 다름) 간단한 작업이 될 수도 있고,
+프로세싱 일부를 처리하는 복잡한 비지니스 로직도 될 수 있다.
 아래 그림처럼 `Job`이 고유 `JobExecution`이 있듯, `Step`도 각자의 `StepExecution`이 있다.
 
 ![Job Hierarchy With Steps](./../../images/springbatch/job-hierarchy-with-steps.png)
@@ -245,8 +245,8 @@ job이 실패했고, 밤새도록 문제를 찾느라 '배치 윈도우'가 이�
 `Step`이 실제로 시작됐을 때만 `StepExecution`을 생성한다.
 
 `Step` execution은 `StepExecution` 클래스 객체다.
-각 execution은 실행/종료 시간이나 커밋/롤백 횟수를 포함한 해당 step, `JobExecution`, 트랜잭션 관련 데이터를 가지고 있다.
-추가로, 각 step execution은 `ExecutionContext`를 가지고 있는데 여기에는 통계나 재시작 시 필요한 상태 정보 등 배치 작업에서 유지해야하는 모든 데이터가 있다.
+각 execution은 실행/종료 시각이나 커밋/롤백 횟수를 포함한 해당 step, `JobExecution`, 트랜잭션 관련 데이터를 가지고 있다.
+추가로, 각 step execution은 `ExecutionContext`를 가지고 있는데 여기에는 통계나 재시작 시 필요한 상태 정보 등 배치 작업에서 유지해야 하는 모든 데이터가 있다.
 `StepExecution`의 프로퍼티는 아래 테이블에 있다.
 
 **Table 8. StepExecution Properties**
@@ -255,7 +255,7 @@ job이 실패했고, 밤새도록 문제를 찾느라 '배치 윈도우'가 이�
 |:-----------------:	|:-------------:	|
 |Status|실행 상태를 나타내는 `BatchStatus` 객체. 실행 중일 때는 `BatchStatus.STARTED`. 실패하면 `BatchStatus.FAILED`. 성공하면 `BatchStatus.COMPLETED.`|
 |startTime|step을 실행할 때의 시스템 시간을 나타내는 `java.util.Date`. 아직 step이 시작되지 않았다면 이 필드는 비어있다.|
-|endTime|성공 여부와 상관 없이 실행이 종료될 때의 시스템 시간을 나타내는 `java.util.Date`. 아직 step이 종료되지 않았다면 이 필드는 비어있다.|
+|endTime|성공 여부와 상관없이 실행이 종료될 때의 시스템 시간을 나타내는 `java.util.Date`. 아직 step이 종료되지 않았다면 이 필드는 비어있다.|
 |exitStatus|실행 결과를 나타내는 `ExitStatus`. 호출자에게 리턴하는 종료 코드를 포함하기 때문에 가장 중요하다. 자세한 내용은 5장 참고. 아직 job이 종료되지 않았다면 이 필드는 비어있다.|
 |executionContext|실행하는 동안 유지해야 하는 모든 사용자 데이터를 담고 있는 “property bag”.|
 |readCount|성공적으로 read한 아이템 수.|
@@ -319,7 +319,7 @@ executionContext.putLong(getKey(LINES_READ_COUNT), reader.getPosition());
 |1|{piece.count=40321}|
 
 위 예시에서 `Step`은 30분 동안 실행됐고, 40,321개의 'peices'(여기서는 이파일의 라인 수를 의미)를 처리했다.
-이 값은 프레임워크가 각 커밋 전 업데이트하며, `ExecutionContext` 내 엔터티에 해당하는 여러 row를 포함 할 수 있다.
+이 값은 프레임워크가 각 커밋 전 업데이트하며, `ExecutionContext` 내 엔터티에 해당하는 여러 row를 포함할 수 있다.
 커밋 전에 통지 받으려면 여러 `StepListener` 구현체(또는 `ItemStream`) 중 하나가 필요한데, 자세한 내용은 이 가이드 뒷부분에 나온다.
 이전 예시와 동일하게 다음 날 `Job`을 재실행했다고 가정한다.
 재시작할 때 데이터베이스로부터 마지막 실행을 가리키는 `ExecutionContext` 값을 조회한다.
@@ -342,19 +342,19 @@ if (executionContext.containsKey(getKey(LINES_READ_COUNT))) {
 
 위 코드를 실행하면 현재 라인은 40322이므로, 중단됐던 위치부터 `Step`을 다시 실행할 수 있다.
 실행 자체에 관한 통계 데이터도 `ExecutionContext`를 활용하면 된다. 
-예를 들어, 여러 줄을 한 번에 처리해야하고 그 처리에도 순서가 있다면 몇번째 순서까지 진행했는지도 기록해야한다
+예를 들어, 여러 줄을 한 번에 처리해야 하고 그 처리에도 순서가 있다면 몇 번째 순서까지 진행했는지도 기록해야 한다
 (단순히 읽어온 라인 수를 기록하는 것과는 다르다).
 따라서 `Step`이 끝날 때 몇 번째 순서까지 진행했는지를 메일로 보낸다고 해보자.
 프레임워크는 어떤 `JobInstance`를 사용하냐에 따라 그에 맞는 상태를 저장해주는데, 
 이미 있는 `ExecutionContext`를 사용할지 말지 판단하는 일은 쉽지만은 않다.
 위에 나온 'EndOfDay'로 예를 들면,
-01-01 배치를 두번째로 실행할 때는 동일한 `JobInstance`를 사용하기 때문에 
+01-01 배치를 두 번째로 실행할 때는 동일한 `JobInstance`를 사용하기 때문에 
 각 `Step`에서 데이터베이스로부터 `ExecutionContext`를 읽어와 함께 처리한다(`StepExecution`의 일부로).
 반대로 01-02 배치에선 다른 `JobInstance`를 사용하므로 `Step`은 빈 컨텍스트를 주입받는다.
 프레임워크는 여러 가지 상황을 고려해 job 인스턴스와 컨텍스트를 결정한다.
 `StepExecution`이 생길 때마다 `ExecutionContext`가 하나씩 생긴다는 점도 알아두자.
 `ExecutionContext`는 keyspace를 공유하기 때문에 주의해서 사용해야 한다.
-즉, 데이터가 겹쳐써지지 않도록 값을 넣을 때 주의해야 한다.
+즉, 데이터가 겹쳐 써지지 않도록 값을 넣을 때 주의해야 한다.
 반대로 `Step`은 데이터 저장하지 않으므로 별다른 영향을 주지 않는다.
 
 또한 `JobExecution` 당 `ExecutionContext`가 하나인 것처럼, 모든 `StepExecution` 마다 `ExecutionContext`를 한 개씩 가지고 있다는 점도 잊지 말자. 

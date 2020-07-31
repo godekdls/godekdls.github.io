@@ -119,7 +119,7 @@ lastmod: 2020-06-08T19:00:00+09:00
 대부분의 예제는 아래 예시를 포함한다:
 
 - 플랫(Flat) 파일: 플랫 파일 아이템 reader는
-일반적으로 필드가 고정된 위치에 있거나 특정한 특수문자(쉼표같은)로 필드를 구분하는 파일을 읽는다.
+일반적으로 필드가 고정된 위치에 있거나 특정한 특수문자(쉼표 같은)로 필드를 구분하는 파일을 읽는다.
 - XML: XML `ItemReader`는 파싱, 매핑, 검증에 사용되는 기술과는 독립적으로 XML을 처리한다.
 입력 데이터 유효성은 XSD 스키마로 검증한다.
 - Database: 데이터베이스에 접근해 처리할 객체에 매핑되는 결과 셋(resultset)을 얻어온다.
@@ -147,11 +147,11 @@ public interface ItemReader<T> {
 아이템 하나는 파일의 한 줄을 의미하거나, 데이터베이스의 로(row) 하나가 될 수도 있고,
 XML 파일에선 하나의 엘리먼트일 수도 있다.
 보통 아이템은 도메인 오브젝트로 매핑되는데 (`Trade`, `Foo` 등),
-꼭 그래야한다는 법은 없다.
+꼭 그래야 한다는 법은 없다.
 
-`ItemReader`의 구현체는 앞에서 뒤로만 읽고 역행하지 말아야한다 (forward only).
+`ItemReader`의 구현체는 앞에서 뒤로만 읽고 역행하지 말아야 한다 (forward only).
 그러나 별도의 트랜잭션 처리가 있는 리소스에서 데이터를 읽는다면 (JMS 큐같이)
-`read` 메소드는 롤백 후 다시 호출해도 같은 아이템을 리턴해야한다.
+`read` 메소드는 롤백 후 다시 호출해도 같은 아이템을 리턴해야 한다.
 `ItemReader`가 더 이상 처리할 아이템이 없어도 예외를 발생시키지 않는다는 점을 알아둘 필요가 있다.
 예를 들어 결과가 0개인 쿼리로 설정된 데이터베이스 `ItemReader`는 
 read를 처음 호출할 때부터 `null`을 반환한다.
@@ -162,7 +162,7 @@ read를 처음 호출할 때부터 `null`을 반환한다.
 
 `ItemWriter`는 `ItemReader`와 비슷하지만 하는 일은 정 반대다.
 리소스는 여전히 필요하고, 또 열리고 닫혀야 하지만,
-`ItemWriter`는 읽는게 아니라 쓴다는 점이 다르다.
+`ItemWriter`는 읽는 게 아니라 쓴다는 점이 다르다.
 데이터베이스나 큐를 사용한다면 이 동작은 insert, update 또는 send일 것이다.
 결과물의 직렬화 형식은 각 job마다 다르다.
 
@@ -181,9 +181,9 @@ public interface ItemWriter<T> {
 리소스가 열려있다면 전달받은 아이템 리스트를 write한다.
 일반적으로 아이템은 청크로 묶여서 결과물을 만들기 때문에,
 이 인터페이스는 아이템 하나가 아니라 아이템 리스트를 받는다.
-리스트를 전부 쓰고난 다음에 필요한 flush 처리는 write 메소드가 결과를 반환하기 전 수행한다.
+리스트를 전부 쓰고 난 다음에 필요한 flush 처리는 write 메소드가 결과를 반환하기 전 수행한다.
 예를 들어 하이버네이트 DAO로 쓴다면
-각 아이템마다 각각, 여러번 write 메소드를 호출한다.
+각 아이템마다 각각, 여러 번 write 메소드를 호출한다.
 그러면 writer는 결과를 리턴하기 전 하이버네이트 세션에서 `flush`를 호출한다.
 
 ---
@@ -192,7 +192,7 @@ public interface ItemWriter<T> {
 
 `ItemReader`와 `ItemWriter`는 각자 맡은 작업을 잘 수행하지만,
 write 전에 비지니스 로직을 추가하고 싶다면 어떻게 해야 하는가?
-한가지 방법은 composite 패턴을 사용하는 것이다:
+한 가지 방법은 composite 패턴을 사용하는 것이다:
 다른 `ItemWriter`를 포함하고 있는 `ItemWriter`를 만들거나, 반대로
 `ItemReader`가 다른 `ItemReader`를 포함하게 만들거나.
 아래 코드는 이 패턴을 사용한 예제이다:
@@ -220,7 +220,7 @@ public class CompositeItemWriter<T> implements ItemWriter<T> {
 앞의 클래스는 다른 `ItemWriter` 하나를 포함하고 있는데,
 비지니스 로직을 수행하고 나서 write 처리를 위임한다.
 이 패턴을 `ItemReader`에도 사용할 수 있는데, 이 경우는
-메인 `ItemReader`에서 읽은 데이터에 추가로 다른 참조 데이터를 읽어들일 수 있다.
+메인 `ItemReader`에서 읽은 데이터에 추가로 다른 참조 데이터를 읽어드릴 수 있다.
 `write` 메소드 호출을 직접 제어하고 싶을 때도 유용할 것이다.
 그렇지만 write 시에 넘겨받은 데이터를 실제로 쓰기 전에 '변환'만 하면 된다면,
 굳이 `write`를 직접 제어할 필요 없다.
@@ -294,7 +294,7 @@ public Step step1() {
 ### 6.3.1. Chaining ItemProcessors
 
 변환 하나로도 충분한 경우도 많지만
-여러 `ItemProcessor` 구현체를 '연결(chian')하고 싶으면 어떻게 해야할까?
+여러 `ItemProcessor` 구현체를 '연결(chian')하고 싶으면 어떻게 해야 할까?
 이전에 언급한 composite 패턴을 사용하면 된다.
 아래 예제는 앞서 나온 예제를 수정해
 `Foo`를 `Bar`로 변환하고, 다시 `Foobar` 변환해 write한다:
@@ -385,7 +385,7 @@ item processor는 `ItemWriter`로 데이터를 넘기기 전 필터링하는 데
 스킵은 데이터가 유효하지 않다는 거고,
 필터링은 단순히 데이터를 write하지 않겠다는 뜻이다.
 
-예를 들어 세 가지 유형의 파일을 읽어야하는 배치 job을 떠올려 봐라:
+예를 들어 세 가지 유형의 파일을 읽어야 하는 배치 job을 떠올려 봐라:
 insert할 데이터, update할 데이터, delete할 데이터.
 레코드 삭제를 지원하지 않는 시스템이라면, 
 `ItemWriter`에 삭제 대상 데이터를 넘기지 않으면 된다.
@@ -401,7 +401,7 @@ insert할 데이터, update할 데이터, delete할 데이터.
 
 청크가 롤백되면 데이터를 읽을 때 이미 캐시해둔 아이템이 다시 처리될 수도 있다.
 내결함성(fault tolerance)이 있는 step이라면 (보통 skip이나 retry가 설정된)
-모든 `ItemProcessor`는 멱등성(idempotence)을 보장해야한다.
+모든 `ItemProcessor`는 멱등성(idempotence)을 보장해야 한다.
 보통은 `ItemProcessor`의 입력 데이터는 바꾸지 않고 결과로 사용할 인스턴스만 바꾸는 식으로 구현한다.
 
 ---
@@ -445,13 +445,13 @@ Quartz에 비유하자면 `JobDataMap`과 유사하다.
 ## 6.5. The Delegate Pattern and Registering with the Step
 
 `CompositeItemWriter`는 스프링 배치에서 흔히 쓰는 위임(delegation) 패턴 중 하나다.
-위임받는 객체(delegate) 자체가 `StepListener`같은 콜백 인터페이스를 구현하는 경우도 있다.
+위임받는 객체(delegate) 자체가 `StepListener` 같은 콜백 인터페이스를 구현하는 경우도 있다.
 스프링 배치 코어의 `Step`에서 위임 패턴을 사용한다면 
 거의 모든 경우 수동으로 `Step`에 등록해야 한다.
 `ItemStream`이나 `StepListener` 인터페이스를
 `Step`과 직접 연결하는 reader, writer, processor로 구현하면 자동으로 등록된다.
 그러나 `Step`은 위임 객체(delegate)는 알 수 없으므로
-아래 보이는 예제처럼 listener 또는 stream으로 (필요하다면 둘 다) 직접 연결해야한다:
+아래 보이는 예제처럼 listener 또는 stream으로 (필요하다면 둘 다) 직접 연결해야 한다:
 
 ```java
 @Bean
@@ -504,7 +504,7 @@ public BarWriter barWriter() {
 ### 6.6.1. The `FieldSet`
 
 스프링 배치에서 플랫(flat) 파일을 다룬다면
-입력 데이터든 출력 데이터든 상관 없이 `FieldSet`이 제일 중요한 클래스 중 하나다.
+입력 데이터든 출력 데이터든 상관없이 `FieldSet`이 제일 중요한 클래스 중 하나다.
 파일을 읽기 위한 추상 클래스를 지원하는 아키텍처나 라이브러리는 많지만
 보통 `String`이나 `String` 객체의 배열을 리턴한다.
 이건 반만 처리한 거나 마찬가지다.
@@ -525,7 +525,7 @@ boolean booleanValue = fs.readBoolean(2);
 
 `FieldSet`는 `Date`, long, `BigDecimal` 등 다른 값도 지원한다.
 `FieldSet`의 가장 큰 장점은 일관성이다.
-여러 배치 job이 각자마다의 방법으로 파싱하는게 아니라,
+여러 배치 job이 각자마다의 방법으로 파싱하는 게 아니라,
 포맷 예외로 인한 에러를 처리할 때든, 간단한 데이터 변환을 할 때든 모두 같은 방법으로 파싱한다.
 
 ### 6.6.2. `FlatFileItemReader`
@@ -554,24 +554,24 @@ step으로 사용하는 경우도 드물지 않다.
 더 다양한 서비스를 제공한다.
 
 아래 테이블에 있는 `FlatFileItemReader`의 다른 프로퍼티로
-데이터를 어떻게 해석할 지를 더 상세하게 지정할 수 있다:  
+데이터를 어떻게 해석할지를 더 상세하게 지정할 수 있다:  
 
 **Table 15. `FlatFileItemReader` Properties**
 
 | Property 	| Type 	| Description |
 |:-----------------:	|:-------------:	|:-------------:	|
-|comments|String[]|행 전체를 주석처리하는 라인 프리픽스.|
+|comments|String[]|행 전체를 주석 처리하는 라인 프리픽스.|
 |encoding|String|사용할 텍스트 인코딩. 디폴트는 `Charset.defaultCharset()`. |
 |lineMapper|`LineMapper`|`String`을 item `Object`로 변환한다.|
 |linesToSkip|int|파일 상단에 있는 무시할 라인 수.|
 |recordSeparatorPolicy|RecordSeparatorPolicy|라인이 끝나는 지점과, 따옴표로 묶인 문자열 안에서 라인이 끝나면 같은 라인으로 처리할지 등을 결정할 때 사용.|
-|resource|`Resource`|읽어야할 리소스.|
+|resource|`Resource`|읽어야 할 리소스.|
 |skippedLinesCallback|LineCallbackHandler|건너뛸 라인의 원래 내용을 전달하는 인터페이스. `linesToSkip`이 2면 이 인터페이스를 두 번 호출한다.|	
 |strict|boolean|strict 모드에선 입력 리소스가 없으면 `ExecutionContext`에서 예외를 발생시킨다. 반대 경우는 로그를 남기고 넘어간다.|
 
 #### `LineMapper`
 
-`ResultSet`같은 저수준의 구조를 처리해 `Object`를 반환하는 `RowMapper`처럼
+`ResultSet` 같은 저수준의 구조를 처리해 `Object`를 반환하는 `RowMapper`처럼
 플랫(flat) 파일도 `String` 한 줄을 `Object`로 변환한다.
 인터페이스 정의는 다음과 같다:
 ```java
@@ -638,8 +638,8 @@ public interface FieldSetMapper<T> {
 
 #### `DefaultLineMapper`
 
-플랫(flat) 파일을 읽기위한 기본적인 인터페이스를 정의했으니,
-아래 세가지 기본적인 절차가 필요하다는 게 분명해졌다:
+플랫(flat) 파일을 읽기 위한 기본적인 인터페이스를 정의했으니,
+아래 세 가지 기본적인 절차가 필요하다는 게 분명해졌다:
 
 - 파일에서 라인 한 줄을 읽는다.
 - `String`을 `LineTokenizer#tokenize()` 메소드로 넘겨 `FieldSet`을 받는다.
@@ -674,7 +674,7 @@ public class DefaultLineMapper<T> implements LineMapper<>, InitializingBean {
 }
 ```
 
-위 기능은 reader 자체에 포함하지 않고 (이전 버전의 프레임워크에서 그래왔었다)
+위 기능은 reader 자체에 포함하지 않고 (이전 버전의 프레임워크에서 그래 왔었다)
 디폴트 구현체로 제공했는데, 이를 통해 더 유연하게 파싱을 제어할 수 있다. 
 특히 파일의 원본 라인에 접근해야 하는 경우 더 그렇다.
 
@@ -759,7 +759,7 @@ Player player = itemReader.read();
 `DelimitedLineTokenizer`, `FixedLengthTokenizer`는 다른 기능이
 하나 더 있는데, `ResultSet`과 유사한 기능이다.
 필드명을 이 두 `LineTokenizer` 구현체 중 하나에 주입해주면
-좀 더 가독성있게 매핑할 수 있다.
+좀 더 가독성 있게 매핑할 수 있다.
 가장 먼저, 아래 예제처럼 토크나이저에 파일 내 모든 필드의 컬럼명을 알려준다.
 
 ```java
@@ -792,7 +792,7 @@ public class PlayerMapper implements FieldSetMapper<Player> {
 #### Automapping FieldSets to Domain Objects
 
 매번 `FieldSetMapper`에 매핑 규칙을 나열하는 건
-`JdbcTemplate`의 `RowMapper`를 만드는 것 만큼이나 번거로운 작업이다.
+`JdbcTemplate`의 `RowMapper`를 만드는 것만큼이나 번거로운 작업이다.
 스프링 배치에선 그럴 필요가 없는데,
 `FieldSetMapper`가 자바빈 명세(JavaBean specification)를 사용해
 객체의 setter와 일치하는 필드명을 자동으로 매핑해주기 때문이다.
@@ -876,8 +876,8 @@ public FixedLengthTokenizer fixedLengthTokenizer() {
 지금까지 다룬 파일 읽기 예제는 모두 단순화를 위해
 파일의 모든 레코드 형식이 동일하다고 가정했었다.
 하지만 현실은 항상 그렇지 않다.
-파일 한개 안에서 다르게 토큰화하고 다른 객체로 매핑해야하는 경우도 흔하다.
-다음은 그런 파일의 일부다:
+파일 한 개 안에서 다르게 토큰화하고 다른 객체로 매핑해야 하는 경우도 흔하다.
+다음은 파일 일부 예시이다:
 
 ```
 USER;Smith;Peter;;T;20014539;F
@@ -892,7 +892,7 @@ LINEB;2134776319DEF422.99M005LI
 
 `ItemReader`는 각 라인을 따로 처리하지만,
 `ItemWriter`가 알맞은 item을 받으려면
-`LineTokenizer`와 `FieldSetMapper`를 다르게 지정해야한다.
+`LineTokenizer`와 `FieldSetMapper`를 다르게 지정해야 한다.
 아래 보이는 것처럼
 `PatternMatchingCompositeLineMapper`을 사용하면
 `LineTokenizer` 와 `FieldSetMapper` 인스턴스에 패턴을 각각 따로 지정할 수 있다: 
@@ -927,13 +927,13 @@ public PatternMatchingCompositeLineMapper orderFileLineMapper() {
 각 라인별로 그에 맞는 객체에 위임(delegate)하기 위해 
 `PatternMatcher#match` 메소드를 사용한다. 
 `PatternMatcher`는 특별한 의미를 가진 와일드 카드 문자 두 개를 허용한다:
-물음표("?")는 문자 한개를, 별("\*")은 0개 이상의 문자를 의미한다.
+물음표("?")는 문자 한 개를, 별("\*")은 0개 이상의 문자를 의미한다.
 앞에선 라인 프리픽스를 지정하기 위해 모든 패턴을 별로 끝냈다는 것에 주목하라.
 `PatternMatcher`는 설정된 순서에 상관없이 항상 가장 구체적인 패턴부터 처리한다.
 즉 패턴에 "LINE\*"과 "LINEA\*"가 둘 다 있다면,
 "LINEA"는 "LINEA\*"에, 
 "LINEB"는 "LINE\*"에 매칭된다. 
-덧붙이자면, 아래 예제처럼 별 한개("\*")만 사용하면
+덧붙이자면, 아래 예제처럼 별 한 개("\*")만 사용하면
 다른 패턴과 매칭되지 않은 모든 라인과 매칭된다.
 
 ```java
@@ -957,7 +957,7 @@ tokenizers.put("*", defaultLineTokenizer());
 이런 경우 파싱 예외를 처리할 수 있도록 스프링 배치는 exception 계층을 제공한다:
 `FlatFileParseException`과 `FlatFileFormatException`. 
 `FlatFileParseException`는 `FlatFileItemReader`가 
-파일을 읽어들이는 동안 에러가 발생했을 때 던져진다.
+파일을 읽어드리는 동안 에러가 발생했을 때 던져진다.
 `FlatFileFormatException`은 `LineTokenizer` 인터페이스 구현부에서
 던져지는데, 토큰화 중 좀 더 구체적인 에러가 발생한 케이스다. 
 
@@ -983,7 +983,7 @@ catch(IncorrectTokenCountException e){
 ```
 
 토크나이저에 컬럼명을 4개로 설정했는데
-파일에서 발견된 토큰이 3개 뿐이므로 `IncorrectTokenCountException`을 던진다.
+파일에서 발견된 토큰이 3개뿐이므로 `IncorrectTokenCountException`을 던진다.
 
 `IncorrectLineLengthException`
 
@@ -1010,7 +1010,7 @@ catch (IncorrectLineLengthException ex) {
 따라서 라인의 총 길이는 15다.
 하지만 앞의 예제에선 5글자짜리 라인을 넘겨받았으므로
 `IncorrectLineLengthException`이 발생한다.
-첫 번째 컬럼은 매핑할 수 있지만 그러지 않고 바로 예외를 던졌는데, 이렇게하면
+첫 번째 컬럼은 매핑할 수 있지만 그러지 않고 바로 예외를 던졌는데, 이렇게 하면
 `FieldSetMapper`에서 두 번째 컬럼을 처리하다 실패했을 때보다
 더 일찍 실패하고, 더 많은 정보를 담을 수 있다.
 하지만 라인 길이가 항상 같지 않은 파일도 있다.
@@ -1082,7 +1082,7 @@ public class PassThroughLineAggregator<T> implements LineAggregator<T> {
 1. write할 객체를 `LineAggregator`로 넘겨 `String`을 리턴받는다.
 2. `String`을 설정해둔 파일에 쓴다.
 
-다음 코드는 `FlatFileItemWriter`에서 가져온건데,
+다음 코드는 `FlatFileItemWriter`에서 가져온 건데,
 이 흐름을 코드로 나타내고 있다:
 
 ```java
@@ -1121,7 +1121,7 @@ public FlatFileItemWriter itemWriter() {
 2. item의 필드를 배열로 변환한다.
 3. 배열을 합쳐 문자열로 만든다.
 
-프레임워크에선 객체의 어떤 필드를 write해야할 지 알 수 없으므로
+프레임워크에선 객체의 어떤 필드를 write해야 할지 알 수 없으므로
 `FieldExtractor`를 구현해서 item을 배열로 바꿔야 한다.
 인터페이스 정의는 다음과 같다:
 
@@ -1138,7 +1138,7 @@ public interface FieldExtractor<T> {
 
 `PassThroughFieldExtractor`
 
-배열이나 `Collection`, `FieldSet`같은 컬렉션을 쓰는 경우도 자주 있다.
+배열이나 `Collection`, `FieldSet` 같은 컬렉션을 쓰는 경우도 자주 있다.
 이런 컬렉션에서 배열을 "추출"하기는 매우 쉽다.
 컬렉션을 배열로 바꾸면 그만이다.
 이런 경우 `PassThroughFieldExtractor`를 사용한다.
@@ -1149,7 +1149,7 @@ public interface FieldExtractor<T> {
 `BeanWrapperFieldExtractor`
 
 파일 read를 설명할 때 다뤘던 `BeanWrapperFieldSetMapper`처럼
-직접 도메인 객체를 변환하기 보단
+직접 도메인 객체를 변환하기보단
 도메인 객체를 객체 배열로 바꾸게끔 설정하는 게 더 좋다.
 아래 있는 `BeanWrapperFieldExtractor`로 그렇게 할 수 있다:
 
@@ -1174,7 +1174,7 @@ assertEquals(born, values[2]);
 매핑할 때 필드명이 필요한 것처럼
 `BeanWrapperFieldExtractor`도 객체의 배열을 만들 때
 getter와 매핑하기 위해 필드명이 필요하다.
-이름 순서대로 배열 내 필드 순서가 결정된 다는 점은 알아둘 필요가 있다.
+이름 순서대로 배열 내 필드 순서가 결정된다는 점은 알아둘 필요가 있다.
 
 #### Delimited File Writing Example
 
@@ -1307,7 +1307,7 @@ reader가 초기화되면 파일을 열고 (존재하면), 파일이 없으면 �
 얼핏 생각하면 `FlatFileItemWriter`도 유사하게 간단한 규칙이 있을 것 같다:
 파일이 이미 있다면 예외를 던지고, 없다면 생성해서 쓰는 것.
 하지만 `Job`을 재시작하면 문제가 시작된다.
-일반적인 재시작 시나리오라면 반대로 행동해야한다:
+일반적인 재시작 시나리오라면 반대로 행동해야 한다:
 파일이 있다면 마지막으로 썼던 위치에서부터 쓰고, 없다면 예외를 던진다.
 하지만 job의 파일명의 항상 동일하다면 어떻게 될까?
 이런 경우엔 재시작만 아니라면 이미 존재하는 파일을 지우고 싶을 것이다. 
@@ -1406,8 +1406,8 @@ public StaxEventItemReader itemReader() {
 ```
 
 이번 예제에서는 `XStreamMarshaller`를 사용하기로 했다. 
-`XStreamMarshaller`은 맵으로 alias를 지정할 수 있는데, 이 맵의 첫번째 키는
-첫번째 조각(fragment) 이름(즉 루트 엘리먼트), 값은 바인딩할 객체 타입이다. 
+`XStreamMarshaller`은 맵으로 alias를 지정할 수 있는데, 이 맵의 첫 번째 키는
+첫 번째 조각(fragment) 이름(즉 루트 엘리먼트), 값은 바인딩할 객체 타입이다. 
 따라서 `FieldSet`과 유사하게,
 객체의 필드에 매핑할 각 엘리먼트 이름을 맵의 키/값으로 표현한다.
 아래처럼 스프링 설정 유틸리티로 필요한 alias를 설정할 수 있다:
@@ -1496,9 +1496,9 @@ public StaxEventItemWriter itemWriter(Resource outputResource) {
 ```
 
 위에선 세 가지 프로퍼티와,
-이 챕터 앞부분에서 언급했던 이미 존재하는 파일을 덮어 쓸지를 결정하는 선택적인 속성
+이 챕터 앞부분에서 언급했던 이미 존재하는 파일을 덮어쓸지를 결정하는 선택적인 속성
 `overwriteOutput=true`를 설정했다.
-아래 예제에서 writer가 사용하는 마샬러는 앞에서 read때 사용한 마샬러와 동일하다:
+아래 예제에서 writer가 사용하는 마샬러는 앞에서 read 때 사용한 마샬러와 동일하다:
 
 ```java
 @Bean
@@ -1558,7 +1558,7 @@ staxItemWriter.write(trade);
 
 ## 6.8. JSON Item Readers And Writers
 
-스프링 배치를 사용하면 아래같은 JSON 리소스도 읽고 쓸 수 있다:
+스프링 배치를 사용하면 아래 같은 JSON 리소스도 읽고 쓸 수 있다:
 
 ```json
 [
@@ -1656,7 +1656,7 @@ file-1.txt  file-2.txt  ignored.txt
 
 `file-1.txt`와 `file-2.txt`는 같은 형식을 사용하며
 함께 처리해야 비지니스 요구사항을 만족시킬 수 있다.
-아래 보이는 예제처럼 와일카드를 사용하면 `MultiResourceItemReader`로
+아래 보이는 예제처럼 와일드카드를 사용하면 `MultiResourceItemReader`로
 두 파일을 함께 읽을 수 있다:
 
 ```java
@@ -1672,11 +1672,11 @@ public MultiResourceItemReader multiResourceReader() {
 참조된 위임 객체는 간단한 `FlatFileItemReader`다.
 위 설정대로면 롤백과 재시작을 고려해서 두 파일을 읽을 수 있다.
 `ItemReader`로 입력을 추가한다면 (여기서는 파일)
-재시작 할때 문제가 발생할 수 있다는 점을 알아둬야 한다.
+재시작 할 때 문제가 발생할 수 있다는 점을 알아둬야 한다.
 배치 job은 각자의 디렉토리에만 가지고 실행하는 게 좋다.
 
 > 입력 리소스는 `MultiResourceItemReader#setComparator(Comparator)`로 정렬돼서
-> job이 재시작되도 같은 순서로 실행된다. 
+> job이 재시작돼도 같은 순서로 실행된다. 
 
 ---
 
@@ -1684,7 +1684,7 @@ public MultiResourceItemReader multiResourceReader() {
 
 대부분의 엔터프라이즈 어플리케이션 스타일과 마찬가지로
 배치에서도 데이터베이스가 중앙 스토리지를 담당한다.
-하지만 배치는 시스템이 처리해야하는 데이터 셋 사이즈가 다르다는 점에서 다른 어플리케이션과 구분된다.
+하지만 배치는 시스템이 처리해야 하는 데이터 셋 사이즈가 다르다는 점에서 다른 어플리케이션과 구분된다.
 백만 개의 로(row)를 리턴하는 SQL을 사용하면 결과셋이 모든 로(row)를 다 읽을 때까지 메모리에 유지된다.
 스프링 배치는 이를 해결할 두 가지 솔루션을 제공한다:
 
@@ -1693,7 +1693,7 @@ public MultiResourceItemReader multiResourceReader() {
 
 ### 6.10.1. Cursor-based ItemReader Implementations
 
-데이터베이스 커서는 관계형 데이터를 '스트리밍'해주는 데이터베이스의 솔루션이기 때문에,
+데이터베이스 커서는 관계형 데이터를 '스트리밍' 해주는 데이터베이스의 솔루션이기 때문에,
 배치에서도 가장 일반적으로 사용하는 접근법이다.
 자바 `ResultSet` 클래스는 본질적으로 커서를 조작하기 위한 객체다. 
 `ResultSet`은 커서를 현재 로(row)에 유지한다. 
@@ -1701,7 +1701,7 @@ public MultiResourceItemReader multiResourceReader() {
 스프링 배치의 커서 기반 `ItemReader` 구현체는 초기화할 때 커서를 열고
 `read`를 호출할 때마다 커서를 한 행씩 이동시켜서,
 나중에 처리할 수 있는 매핑된 객체를 반환한다.
-그 다음 모든 리소스를 반환할 수 있게 `close` 메소드를 호출한다.
+그다음 모든 리소스를 반환할 수 있게 `close` 메소드를 호출한다.
 스프링 코어 `JdbcTemplate`은 콜백 패턴을 사용해서 `ResultSet`의 모든 로(row)를 매핑하고
 제어가 호출부로 넘어가기 전 close시킨다.
 하지만 배치에서는 step이 종료될 때까지 기다려야 한다.
@@ -1714,10 +1714,10 @@ public MultiResourceItemReader multiResourceReader() {
 이 예제는 기본적인 패턴을 보여준다.
 `ID`, `NAME`, `BAR` 필드를 가지고 있는 'FOO' 테이블에서
 ID가 1보다 크고 7보다 작은 모든 로(row)를 찾는다.
-그러면 커서의 시작점(첫번째 행)은 ID 2를 가리킨다.
+그러면 커서의 시작점(첫 번째 행)은 ID 2를 가리킨다.
 이 로(row)는 `Foo` 객체에 매핑된다.
 `read()`를 다시 호출하면 커서는 ID가 3인 다른 로(row)로 이동한다.
-`read`를 호출할 때마다 바로 결과를 쓰기때문에 가비지 컬렉터에 수집될 수 있다
+`read`를 호출할 때마다 바로 결과를 쓰기 때문에 가비지 컬렉터에 수집될 수 있다
 (다른 인스턴스가 참조를 유지하지 않는다고 가정하면).
 
 #### `JdbcCursorItemReader`
@@ -1823,25 +1823,25 @@ public JdbcCursorItemReader<CustomerCredit> itemReader() {
 **Table 16. JdbcCursorItemReader Properties**
 
 |ignoreWarnings|SQLWarnings를 로깅하고 넘어갈지 예외를 발생시킬지 결정한다. 디폴트는 `true`다 (warning을 로깅한다는 뜻).|
-|fetchSize|`ItemReader`에서 사용하는 `ResultSet`객체에 더 많은 로(row)가 필요한 경우 JDBC 드라이버에 데이터베이스에서 fetch해야하는 로(row) 수에 대한 힌트를 제공한다. 디폴트는 힌트를 제공하지 않는다.|
+|fetchSize|`ItemReader`에서 사용하는 `ResultSet`객체에 더 많은 로(row)가 필요한 경우 JDBC 드라이버에 데이터베이스에서 fetch해야 하는 로(row) 수에 대한 힌트를 제공한다. 디폴트는 힌트를 제공하지 않는다.|
 |maxRows|한 번에 `ResultSet`으로 가져올 수 있는 로(row) 수를 제한한다.|
-|queryTimeout|드라이버가 `Statement` 객체 실행을 얼마동안 기다릴지 초단위로 설정한다. 이 제한을 넘어가면 `DataAccessException`이 발생한다 (자세한 내용은 드라이버 벤더 문서를 참조하라).|
+|queryTimeout|드라이버가 `Statement` 객체 실행을 얼마 동안 기다릴지 초 단위로 설정한다. 이 제한을 넘어가면 `DataAccessException`이 발생한다 (자세한 내용은 드라이버 벤더 문서를 참조하라).|
 |verifyCursorPosition|`ItemReader`는 동일한 `ResultSet`을 `RowMapper`에 전달하므로, 사용자가 `ResultSet.next()`를 직접 호출하면 reader 내부 count에 이슈가 생길 수 있다. 이 값을 true로 지정하면 `RowMapper`를 호출한 후 커서 위치가 이전과 달라졌을 때 예외를 발생시킨다.| 
 |saveState|`ItemStream#update(ExecutionContext)` 메소드로  `ExecutionContext`에 reader의 상태를 저장할지 결정한다. 디폴트는 `true`다.|
 |driverSupportsAbsolute|JDBC 드라이버가 `ResultSet` 커서 강제 이동을 지원하는지를 나타낸다. `ResultSet.absolute()`를 지원하는 JDBC 드라이버를 사용한다면 성능을 위해 `true`로 설정하는 게 좋다. 특히 대규모 데이터셋을 다루는 step이 중간에 실패한다면 더 그렇다. 디폴트는 `false`다.|
-|setUseSharedExtendedConnection|커서에 사용된 커넥션을 다른 프로세싱에서도 사용하고 트랜잭션을 공유할지를 나타낸다. 이 값이 `false`면 커서는 소유한 커넥션에서만 열리며, step 내 다른 곳에서 트랜잭션이 시작돼도 관여하지 않는다. `true`로 설정하면 커넥션이 매 커밋마다 닫혀 반환되지 않도록 반드시 데이터소스를 `ExtendedConnectionDataSourceProxy`로 감싸야 한다. `true`로 설정했을 땐 커서를 열때 사용하는 statement를 'READ_ONLY'와 'HOLD_CURSORS_OVER_COMMIT' 상태로 생성한다. 이를 통해 step에서 트랜잭션이 시작되고 커밋되는 동안 커서를 열린 채로 유지할 수 있다. 이 기능을 사용하려면 이를 지원하는 데이터베이스와 JDBC 3.0 이상을 지원하는 JDBC 드라이버가 필요하다. 디폴트는 `false`다.|
+|setUseSharedExtendedConnection|커서에 사용된 커넥션을 다른 프로세싱에서도 사용하고 트랜잭션을 공유할지를 나타낸다. 이 값이 `false`면 커서는 소유한 커넥션에서만 열리며, step 내 다른 곳에서 트랜잭션이 시작돼도 관여하지 않는다. `true`로 설정하면 커넥션이 매 커밋마다 닫혀 반환되지 않도록 반드시 데이터소스를 `ExtendedConnectionDataSourceProxy`로 감싸야 한다. `true`로 설정했을 땐 커서를 열 때 사용하는 statement를 'READ_ONLY'와 'HOLD_CURSORS_OVER_COMMIT' 상태로 생성한다. 이를 통해 step에서 트랜잭션이 시작되고 커밋되는 동안 커서를 열린 채로 유지할 수 있다. 이 기능을 사용하려면 이를 지원하는 데이터베이스와 JDBC 3.0 이상을 지원하는 JDBC 드라이버가 필요하다. 디폴트는 `false`다.|
 
 #### `HibernateCursorItemReader`
 
-일반 스프링을 사용할 때 ORM 솔루션을 사용할 지 말지,
+일반 스프링을 사용할 때 ORM 솔루션을 사용할지 말지,
 즉 `JdbcTemplate`, `HibernateTemplate` 중 어떤 걸 쓸지 고민하는 것처럼
 스프링 배치에도 똑같은 옵션이 있다.
 `HibernateCursorItemReader`는 커서 테크닉을 사용하는 하이버네이트(Hibernate) 구현체다.
 하이버네이트를 스프링에서 사용하는 것은 상당히 논란거리였다.
 하이버네이트는 온라인 어플리케이션을 위해 개발됐기 때문이다.
 하지만 배치에서 사용할 수 없다는 뜻은 아니다.
-이 문제를 해결하는 가장 쉬운 방법은 표준 세션대신 `StatelessSession`을 사용하는 것이다.
-이걸 사용하면 배치에서 문제될 수 있는 하이버네이트의 캐싱과 엔터티 변경 체크(dirty checking)를 모두 제거해 준다.
+이 문제를 해결하는 가장 쉬운 방법은 표준 세션 대신 `StatelessSession`을 사용하는 것이다.
+이걸 사용하면 배치에서 문제 될 수 있는 하이버네이트의 캐싱과 엔터티 변경 체크(dirty checking)를 모두 제거해 준다.
 상태가 없는(stateless) 세션과 일반적인 하이버네이트 세션의 차이가 궁금하다면
 하이버네이트 릴리즈 문서를 참고해라.
 `HibernateCursorItemReader`에 HQL 문을 선언하면 `SessionFactory`로 전달하고,
@@ -1870,7 +1870,7 @@ itemReader.close();
 `CustomerCredit`를 리턴한다.
 'useStatelessSession' 프로퍼티는 디폴트값이 true지만 옵션을 끄고 킬 수 있다는 걸 보여주기 위해 추가했다.
 기본 커서의 페치 사이즈는 `setFetchSize`로 설정할 수 있다는 점도 알아두자.
-아래 보이는 것처럼 `JdbcCursorItemReader`만큼이나 설정하기 쉽다:
+아래 보이는 것처럼 `JdbcCursorItemReader` 만큼이나 설정하기 쉽다:
 
 ```java
 @Bean
@@ -1933,7 +1933,7 @@ public StoredProcedureItemReader reader(DataSource dataSource) {
 저장 함수에서 커서를 반환한다면 (옵션 3)
 "function" 프로퍼티를 `true`로 바꿔야 한다.
 디폴트는 `false`다.
-프로퍼티 설정법은 아래 코드에 나와있다:
+프로퍼티 설정법은 아래 코드에 나와 있다:
 
 ```java
 @Bean
@@ -1952,8 +1952,8 @@ public StoredProcedureItemReader reader(DataSource dataSource) {
 어떤 방식을 사용하더라도 `RowMapper`, `DataSource`와 실제 프로시저 이름을 정의해야 한다.
 
 저장 프로시저나 펑션이 파라미터를 받는다면 역시 `parameters` 프로퍼티로 설정해줘야 한다.
-오라클을 사용하는 아래 예제에서는 파라미터 세가지를 선언했다.
-첫번째는 ref-cursor를 리턴하는 out 파라미터고
+오라클을 사용하는 아래 예제에서는 파라미터 세 가지를 선언했다.
+첫 번째는 ref-cursor를 리턴하는 out 파라미터고
 나머지는 INTEGER 타입을 받는 파라미터다.
 
 ```java
@@ -1986,7 +1986,7 @@ public StoredProcedureItemReader reader(DataSource dataSource) {
 ### 6.10.2. Paging `ItemReader` Implementations
 
 데이터베이스 커서를 사용하는 다른 방법은 결과의 일부만 가져오는 쿼리를
-여러번 실행하는 것이다.
+여러 번 실행하는 것이다.
 이 결과의 일부를 페이지(page)라고 한다.
 각 쿼리는 로(row) 넘버와 페이지 안에 포함할 로(row) 갯수를 명시해야 한다.
 
@@ -2007,13 +2007,13 @@ public StoredProcedureItemReader reader(DataSource dataSource) {
 이것들과 필수 값인 `sortKey`로 SQL 구문을 만든다.
 
 > `sortKey`에 유니크키 제약 조건(unique key constraint)이 있어야
-> 실행간에 데이터를 누락시키지 않는다.
+> 실행 간에 데이터를 누락시키지 않는다.
 
 reader가 열리고 나면 `ItemReader`의 기본 방식대로
 `read`를 호출할 때마다 아이템을 하나씩 돌려준다.
 페이징은 추가 로(row)가 필요할 때마다 뒷단에서 처리한다.
 
-아래는 커서기반 `ItemReader`에서 사용했던 익숙한 '고객 잔고' 예시를 사용한 설정이다:
+아래는 커서 기반 `ItemReader`에서 사용했던 익숙한 '고객 잔고' 예시를 사용한 설정이다:
 
 ```java
 @Bean
@@ -2056,10 +2056,10 @@ public SqlPagingQueryProviderFactoryBean queryProvider() {
 #### `JpaPagingItemReader`
 
 `JpaPagingItemReader`는 페이징 처리를 지원하는 또 하나의 `ItemReader` 구현체다.
-JPA에는 하이버네이트의 `StatelessSession`같은 개념이 없기 때문에 
+JPA에는 하이버네이트의 `StatelessSession` 같은 개념이 없기 때문에 
 JPA 명세에서 제공하는 다른 기능을 사용해야 한다.
-JPA는 원래 페이징을 지원하기 때문에, 배치에서 JPA를 사용하할 때도 페이징이 자연스러운 선택이다.
-각 페이지를 읽고나면 엔터티는 준영속 상태(detached)가 되고
+JPA는 원래 페이징을 지원하기 때문에, 배치에서 JPA를 사용할 때도 페이징이 자연스러운 선택이다.
+각 페이지를 읽고 나면 엔터티는 준영속 상태(detached)가 되고
 영속성 컨텍스트(persistence context)는 비워지므로,
 해당 페이지를 다 처리하고 나면 가비지 컬렉션이 엔터티를 수집할 수 있다.
 
@@ -2090,20 +2090,20 @@ public JpaPagingItemReader itemReader() {
 플랫(flat) 파일과 XML 파일은 별도의 `ItemWriter` 인스턴스가 필요하지만
 데이터베이스 세계에선 그렇지 않다.
 데이터베이스가 트랜잭션이 필요한 모든 기능을 제공하기 때문이다. 
-파일에 쓸때는 트랜잭션 처리를 위해 쓴 아이템을 추적하고, 
+파일에 쓸 때는 트랜잭션 처리를 위해 쓴 아이템을 추적하고, 
 적절하게 flush 또는 clean해줘야 하므로 별도의 `ItemWriter`구현체가 필요했다.
-데이터베이스의 write는 이미 트랜잭션을 포함하고 있기 때문에 이런 기능이 필요없다.
+데이터베이스의 write는 이미 트랜잭션을 포함하고 있기 때문에 이런 기능이 필요 없다.
 `ItemWriter` 인터페이스를 구현하는 DAO를 만들거나
 일반적인 문제를 처리하는 커스텀 `ItemWriter`를 사용하면 된다.
 어느 쪽이든 처리에 문제가 없을 것이다.
-하지만 데이터베이스 출력을 배치로 처리할때는 성능과 에러 핸들링 능력에 주의해야 한다.
+하지만 데이터베이스 출력을 배치로 처리할 때는 성능과 에러 핸들링 능력에 주의해야 한다.
 하이버네이트를 `ItemWriter`로 사용하는 경우가 제일 많지만
 JDBC 배치 모드를 사용할 때와 동일한 이슈가 있다.
 데이터에 문제가 없고 데이터를 주의해서 flush한다면 
 데이터베이스 출력 배치 처리에 내제된 결함은 없다.
 하지만 아래 이미지에 나타낸 것처럼,
-쓰는동안 발생한 에러는 충돌을 일으킬 수 있다.
-즉, 아이템 하나때문에 문제가 발생했다 해도
+쓰는 동안 발생한 에러는 충돌을 일으킬 수 있다.
+즉, 아이템 하나 때문에 문제가 발생했다 해도
 어떤 아이템이 예외를 발생시켰는지 알 수 없다.
 
 ![Error On Flush](./../../images/springbatch/errorOnFlush.png)
@@ -2121,13 +2121,13 @@ JDBC 배치 모드를 사용할 때와 동일한 이슈가 있다.
 다시 write하지 않는다.
 하지만 배치 시나리오에서는 어떤 아이템이 문제인지 알 수 없다.
 exception이 발생하는 건 이미 전체 버퍼가 쓰여진 다음이다.
-이 문제를 해결하러면 아래 그림처럼 아이템마다 flush하는 방법밖에 없다:
+이 문제를 해결하려면 아래 그림처럼 아이템마다 flush하는 방법밖에 없다:
 
 ![Error On Write](./../../images/springbatch/errorOnWrite.png)
 
 이 방법은 하이버네이트에서도 흔히 사용하는 방법이고
 `write()`를 호출할 때마다 flush하는 식으로 `ItemWriter`를 구현하라고 가이드하고 있다.
-이렇게하면 스프링 배치 내부에서 에러가 발생한 `ItemWriter` 호출을 개별적으로 처리하기때문에
+이렇게 하면 스프링 배치 내부에서 에러가 발생한 `ItemWriter` 호출을 개별적으로 처리하기 때문에
 아이템을 안정적으로 건너뛸 수 있다.
 
 ---
@@ -2139,12 +2139,12 @@ exception이 발생하는 건 이미 전체 버퍼가 쓰여진 다음이다.
 각 어플리케이션이 사용하는 벌크 데이터를 이동시킴으로써
 심지어 하드웨어와 운영체제를 갖춘 클라이언트(thick client) 어플리케이션과도 통합할 수 있다.
 이런 이유로 배치 job 안에서 이미 있는 DAO나 다른 서비스를 사용하기도 한다.
-이런 요구사항은 스프링 컨테이너가 필요한 클래스를 주입해주기때문에 쉽게 달성할 수 있다.
-하지만 다른 스프링 배치 클래스의 의존성(dependency)때문에
+이런 요구사항은 스프링 컨테이너가 필요한 클래스를 주입해주기 때문에 쉽게 달성할 수 있다.
+하지만 다른 스프링 배치 클래스의 의존성 때문에
 혹은 사용하려는 서비스 자체가 step의 메인 `ItemReader`인 경우,
 이미 있는 서비스를 `ItemReader`나 `ItemWriter`으로 사용해야 할 때도 있다.
 필요한 서비스를 감싸서 어댑터(adapter) 클래스를 만드는 건 사소한 일이지만
-자주 사용하는 패턴이기때문에 스프링 배치는 `ItemReaderAdapter`와 `ItemWriterAdapter`
+자주 사용하는 패턴이기 때문에 스프링 배치는 `ItemReaderAdapter`와 `ItemWriterAdapter`
 구현체를 제공한다.
 두 클래스 모두 위임(delegate) 패턴으로 표준 스프링 메소드를 구현했으며
 설정하기도 매우 쉽다.
@@ -2203,7 +2203,7 @@ public FooService fooService() {
 하지만 리턴된 아이템이 유효한지 아닌지는 상관하지 않는다.
 예를 들어 나이를 나타내는 필드가 있다면 절대 음수일 수 없다.
 이 값은 존재하는 값이고 숫자이기 때문에 문제없이 파싱되며 예외를 던지지 않는다.
-검증 프레임워크는 이미 넘치기때문에 스프링 배치는 또 다른 검증 프레임워크를 제공하지 않는다.
+검증 프레임워크는 이미 넘치기 때문에 스프링 배치는 또 다른 검증 프레임워크를 제공하지 않는다.
 대신에 `Validator`라는 간단한 인터페이스를 제공하며
 어떤 프레임워크로도 구현할 수 있다.
 인터페이스 정의는 다음과 같다:
@@ -2285,12 +2285,12 @@ public BeanValidatingItemProcessor<Person> beanValidatingItemProcessor() throws 
 기본적으로 모든 `ItemReader`와 `ItemWriter` 구현체는
 커밋 전에 현재 상태를 `ExecutionContext`에 저장한다.
 하지만 이게 항상 바람직한 건 아니다.
-예를들어 많은 개발자가 처리 식별자를 사용해 데이터베이스 reader를 재사용할 수 있게 만든다.
+예를 들어 많은 개발자가 처리 식별자를 사용해 데이터베이스 reader를 재사용할 수 있게 만든다.
 이땐 입력 데이터가 처리됐는지를 식별하기 위한 별도 컬럼을 이용한다.
 특정 레코드를 읽으면 (혹은 쓰면) 이 플래그를 `false`에서 `true`로 바꾼다. 
-SQL 문에 `where PROCESSED_IND = false`같은 구문을 추가하면
+SQL 문에 `where PROCESSED_IND = false` 같은 구문을 추가하면
 재시작해도 이미 처리된 레코드는 조회되지 않는다.
-이런 경우라면 재시작할 때 현재 로(row) 넘버같은 상태값을 사용하지 않으므로 저장할 필요가 없다.
+이런 경우라면 재시작할 때 현재 로(row) 넘버 같은 상태 값을 사용하지 않으므로 저장할 필요가 없다.
 이런 이유로 아래 보이는 것처럼, 모든 reader와 writer는 'saveState'라는 프로퍼티가 있다:
 
 ```java
@@ -2370,11 +2370,11 @@ assertNull(itemReader.read());
 
 마지막 목표는 `ItemReader`를 재시작 가능한 구조로 만드는 것이다.
 지금까지 작성한 코드로는 처리 중간에 실패해서 다시 시작한다면
-`ItemReader`는 처음부터 다시 시작해야한다.
-이게 유효한 경우도 많지만 어떨 땐 배치 job을 처리를 중단했던 곳에서 부터 다시 시작하고 싶을 때도 있다.
+`ItemReader`는 처음부터 다시 시작해야 한다.
+이게 유효한 경우도 많지만 어떨 땐 배치 job을 처리를 중단했던 곳에서부터 다시 시작하고 싶을 때도 있다.
 이는 reader가 상태가 있는지(stateful) 없는지(stateless)에 따라 갈린다. 
 상태가 없는 reader는 재시작을 걱정할 필요 없지만,
-상태가 있다면 재시작할 때 알고 있는 마지막 상태로 재구성해야한다.
+상태가 있다면 재시작할 때 알고 있는 마지막 상태로 재구성해야 한다.
 이런 이유로 가능하다면 reader를 상태를 가지 않게 커스텀하길 권장한다.
 
 그래도 상태를 저장하고 싶다면 `ItemStream` 인터페이스를 사용해야 한다:
@@ -2523,7 +2523,7 @@ peek 메소드는 계속 호출해도 같은 아이템을 리턴하며,
 
 > SingleItemPeekableItemReader의 peak 메소드는 
 > 여러 쓰레드에게 미리보기를 제공하지 않으므로 thread safe하지 않다.
-> peek를 호출한 여러 쓰레드 중 하나만 다음 번 read에서 반환할 아이템을 받을 수 있다.
+> peek를 호출한 여러 쓰레드 중 하나만 다음번 read에서 반환할 아이템을 받을 수 있다.
 
 #### `MultiResourceItemWriter`
 

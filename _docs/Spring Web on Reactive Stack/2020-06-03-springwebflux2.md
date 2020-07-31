@@ -86,7 +86,7 @@ WebFlux.fn이라고도 하는 이 모델은,
 WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. `HandlerFunction`은 `ServerRequest`를 받아 비동기 `ServerResponse`(i.e. `Mono<ServerResponse>`)를 리턴하는 함수다. 요청, 응답 객체 모두 불변(immutable)이기 때문에 JDK 8 방식으로 HTTP 요청, 응답에 접근할 수 있다. `HandlerFunction` 역할은 애노테이션 프로그래밍 모델로 치면 `@RequestMapping` 메소드가 하던 일과 동일하다.
 
 요청은 `RouterFunction`이 핸들러 펑션에 라우팅한다. `RouterFunction`은 `ServerRequest`를 받아 비동기 `HandlerFunction`(i.e. `Mono<HandlerFunction>`)을 리턴하는 함수다. 매칭되는 라우터 펑션이 있으면 핸들러 펑션을 리턴하고 그 외는 비어있는 Mono를 리턴한다. `RouterFunction`이 하는 일은 `@RequestMapping` 애노테이션과 동일하지만,
-라우터 펑션은 데이터 뿐 아니라 행동까지 제공한다는 점이 다르다.
+라우터 펑션은 데이터뿐 아니라 행동까지 제공한다는 점이 다르다.
 
 라우터를 만들 때는 아래 예제처럼 `RouterFunctions.route()`가 제공하는 빌더를 사용할 수 있다:
 
@@ -172,7 +172,7 @@ class PersonHandler(private val repository: PersonRepository) {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#webmvc-fn-handler-functions)
 
-`ServerRequest`와 `ServerResponse`는 자바 8 방식으로 HTTP 요청과 응답에 접근할 수 있는 불변(immutable) 인터페이스다. 요청, 응답 body 모두 [리액티브 스트림](https://www.reactive-streams.org/) back pressure로 처리한다. request body는 리액터 `Flux`나 `Mono`로 표현한다. response body는 `Flux`와 `Mono`를 포함한 어떤 리액티브 스트림 `Publisher`든 상관 없다. 자세한 정보는 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
+`ServerRequest`와 `ServerResponse`는 자바 8 방식으로 HTTP 요청과 응답에 접근할 수 있는 불변(immutable) 인터페이스다. 요청, 응답 body 모두 [리액티브 스트림](https://www.reactive-streams.org/) back pressure로 처리한다. request body는 리액터 `Flux`나 `Mono`로 표현한다. response body는 `Flux`와 `Mono`를 포함한 어떤 리액티브 스트림 `Publisher`든 상관없다. 자세한 정보는 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
 
 #### `ServerRequest`
 
@@ -193,7 +193,7 @@ Mono<String> string = request.bodyToMono(String.class);
 val string = request.awaitBody<String>()
 ```
 
-다음 예제는 body를 `Flux<Person>`(코틀린은 `Flow<Person>`)으로 추출한다. `Person` 객체는 JSON이나 XML같은 직렬화된 데이터로 디코딩한다.
+다음 예제는 body를 `Flux<Person>`(코틀린은 `Flow<Person>`)으로 추출한다. `Person` 객체는 JSON이나 XML 같은 직렬화된 데이터로 디코딩한다.
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -225,7 +225,7 @@ val string = request.body(BodyExtractors.toMono(String::class.java)).awaitFirst(
 val people = request.body(BodyExtractors.toFlux(Person::class.java)).asFlow()
 ```
 
-다음 예제는 form 데이터를 접근하는 방법을 보여준다:
+다음 예제는 form 데이터에 접근하는 방법을 보여준다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -323,7 +323,7 @@ ServerResponse.ok().hint(Jackson2CodecSupport.JSON_VIEW_HINT, MyJacksonView::cla
 
 #### Handler Classes
 
-핸들러 펑션은 다음처럼 람다로 만들수 있다:
+핸들러 펑션은 다음처럼 람다로 만들 수 있다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -477,7 +477,7 @@ class PersonHandler(private val repository: PersonRepository) {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#webmvc-fn-router-functions)
 
-라우터 펑션은 요청을 그에 맞는 `HandlerFunction`으로 라우팅한다. 라우터 펑션을 직접 만들기보단, 보통 `RouterFunctions` 유틸리티 클래스를 사용한다. `RouterFunctions.route()`가 리턴하는 빌더를 사용하거나, `RouterFunctions.route(RequestPredicate, HandlerFunction)`으로 직접 라우터를 만들수 있다.
+라우터 펑션은 요청을 그에 맞는 `HandlerFunction`으로 라우팅한다. 라우터 펑션을 직접 만들기보단, 보통 `RouterFunctions` 유틸리티 클래스를 사용한다. `RouterFunctions.route()`가 리턴하는 빌더를 사용하거나, `RouterFunctions.route(RequestPredicate, HandlerFunction)`으로 직접 라우터를 만들 수 있다.
 
 `route()` 빌더를 사용하면 static 메소드를 직접 임포트하지 않아도 된다. 예를 들어 빌더에는 GET 요청을 매핑할 수 있는 `GET(String, HandlerFunction)` 메소드와, POST 요청을 매핑하는 `POST(String, HandlerFunction)` 메소드가 있다.
 
@@ -586,7 +586,7 @@ RouterFunction<ServerResponse> route = route()
     .build();
 ```
 <div class="description-for-java"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `path`의 두번째 파라미터는 라우터 빌더를 받는 컨슈머 인터페이스다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `path`의 두 번째 파라미터는 라우터 빌더를 받는 컨슈머 인터페이스다.</small>
 <div class="language-only-for-kotlin"></div>
 ```kotlin
 val route = coRouter {
@@ -637,7 +637,7 @@ HTTP 서버에선 어떻게 라우터 펑션을 실행할까?
 - `RouterFunctions.toHttpHandler(RouterFunction)`
 - `RouterFunctions.toHttpHandler(RouterFunction, HandlerStrategies)`
 
-리턴받은 `HttpHandler`를 서버 가이드에 따라 [서버 어댑터](https://godekdls.github.io/Reactive%20Spring/springwebflux/#121-httphandler)와 함께 사용하면 된다.
+리턴 받은 `HttpHandler`를 서버 가이드에 따라 [서버 어댑터](https://godekdls.github.io/Reactive%20Spring/springwebflux/#121-httphandler)와 함께 사용하면 된다.
 
 스프링 부트에서도 사용하는 좀 더 일반적인 옵션은, [WebFlux Config](#111-webflux-config)로 컴포넌트를 스프링 빈으로 정의하고, [`DispatcherHandler`](https://godekdls.github.io/Reactive%20Spring/springwebflux/#13-dispatcherhandler)와 함께 실행하는 것이다. 프레임워크는 다음과 같은 컴포넌트로 함수형 엔드포인트를 지원하는데, 웹플럭스 설정을 사용하면 이를 모두 스프링 빈으로 정의한다:
 
@@ -859,7 +859,7 @@ val uri = uriComponents.expand("Westin", "123").toUri() // (5)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> URI 컴포넌트를 추가하거나 변경한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> URI 템플릿과 변수를 인코딩하도록 요청한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `UriComponents`를 빌드한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 템플릿 변수를 치환하고 `URI`를 가져 온다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 템플릿 변수를 치환하고 `URI`를 가져온다.</small><br>
 
 `buildAndExpand` 메소드로 한 번에 URI를 가져올 수도 있다:
 
@@ -886,7 +886,7 @@ val uri = UriComponentsBuilder
         .toUri()
 ```
 
-아래 처럼 바로 URI를 만들면 코드를 더 줄일 수 있다:
+아래처럼 바로 URI를 만들면 코드를 더 줄일 수 있다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -1022,13 +1022,13 @@ URI 템플릿을 먼저 인코딩하고, 템플릿에 URI 변수를 적용할 �
 - [UriComponents#encode()](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/util/UriComponents.html#encode--):
 URI 변수 적용한 *후에* URI 컴포넌트를 인코딩한다.
 
-두 옵션 모두 ASCII 외의 문자나 허용하지 않는 문자를 옥텟으로 이스케이프한다. 하지만 첫번째 옵션은 URI 변수에 예약된 문자가 있으면 치환해 버린다.
+두 옵션 모두 ASCII 외의 문자나 허용하지 않는 문자를 옥텟으로 이스케이프한다. 하지만 첫 번째 옵션은 URI 변수에 예약된 문자가 있으면 치환해 버린다.
 
-> path에 사용할 순 있지만 예약된 문자인 ";"을 생각해 보자. 첫번째 옵션은 URI 변수에 있는 ";"을 "%3B"로 치환하지만, URI 템플릿에 있는 문자는 치환하지 않는다. 반대로 두번째 옵션에선 ";"은 path에 사용할 수 있는 문자기 때문에 절대 치환하지 않는다.
+> path에 사용할 순 있지만 예약된 문자인 ";"을 생각해 보자. 첫 번째 옵션은 URI 변수에 있는 ";"을 "%3B"로 치환하지만, URI 템플릿에 있는 문자는 치환하지 않는다. 반대로 두 번째 옵션에선 ";"은 path에 사용할 수 있는 문자기 때문에 절대 치환하지 않는다.
 
-첫번째 옵션은 URI 변수를 불투명한 데이터로 취급해 인코딩하기 때문에, 대부분 첫번째 옵션이 기대와 일치할 것이다. 두번째 옵션은 URI 변수에 의도적으로 예약 문자를 사용할 때만 유용하다.
+첫 번째 옵션은 URI 변수를 불투명한 데이터로 취급해 인코딩하기 때문에, 대부분 첫 번째 옵션이 기대와 일치할 것이다. 두 번째 옵션은 URI 변수에 의도적으로 예약 문자를 사용할 때만 유용하다.
 
-다음은 첫번째 옵션을 사용하는 예제다:
+다음은 첫 번째 옵션을 사용하는 예제다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -1055,7 +1055,7 @@ val uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
 // Result is "/hotel%20list/New%20York?q=foo%2Bbar"
 ```
 
-아래 처럼 바로 URI를 만들면 코드를 더 줄일 수 있다:
+아래처럼 바로 URI를 만들면 코드를 더 줄일 수 있다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -1128,9 +1128,9 @@ val client = WebClient.builder().uriBuilderFactory(factory).build()
 
 `DefaultUriBuilderFactory`는 내부에서 `UriComponentsBuilder`로 URI 템플릿을 확장하고 인코딩한다. 팩토리로 아래 있는 인코딩 모드 중 하나를 설정할 수 있다:
 
-- `TEMPLATE_AND_VALUES`: 위에 있는 첫번째 옵션 `UriComponentsBuilder#encode()`를 사용한다. URI 템플릿을 먼저 인코딩 한 후 URI 변수를 엄격하게 인코딩한다.
+- `TEMPLATE_AND_VALUES`: 위에 있는 첫 번째 옵션 `UriComponentsBuilder#encode()`를 사용한다. URI 템플릿을 먼저 인코딩한 후 URI 변수를 엄격하게 인코딩한다.
 - `VALUES_ONLY`: URI 템플릿은 인코딩하지 않는 대신 URI 변수를 템플릿에 적용하기 전에 `UriUtils#encodeUriUriVariables`로 엄격하게 인코딩한다.
-- `URI_COMPONENT`: 위에 있는 두번째 옵션 `UriComponents#encode()`를 사용한다. 템플릿에 URI 변수를 적용하고 난 후에 URI 컴포넌트를 인코딩한다.
+- `URI_COMPONENT`: 위에 있는 두 번째 옵션 `UriComponents#encode()`를 사용한다. 템플릿에 URI 변수를 적용하고 난 후에 URI 컴포넌트를 인코딩한다.
 - `NONE`: 인코딩을 하지 않는다.
 
 `RestTemplate`은 이전 버전과의 호환을 위해 `EncodingMode.URI_COMPONENT`로 설정돼 있다. `WebClient`는 `DefaultUriBuilderFactory`의 디폴트 값을 사용하는데, 5.0.x 버전에선 `EncodingMode.URI_COMPONENT`였지만, 5.1 버전에서 `EncodingMode.TEMPLATE_AND_VALUES`로 변경됐다.
@@ -1159,13 +1159,13 @@ CORS 요청은 preflight, simple, 본 요청(actual reqeust)으로 나뉜다. CO
 
 스프링 웹플럭스는 CORS를 지원하는 `HandlerMapping` 구현체를 내장하고 있다. 요청이 핸들러에 매핑되면 `HandlerMapping`이 CORS 설정을 확인하고 다음 처리를 이어간다. Preflight 요청은 바로 처리하고, simple, 본 요청은 가로채서 유효성을 확인한 후에 CORS 응답 헤더를 추가한다.
 
-cross-origin 요청(`Origin` 헤더와 호스트가 다른)을 허용하려면 몇 가지 CORS 설정이 필요하다. 매칭되는 CORS 설정이 없으면 preflight 요청은 거부하고, simple, 본 요청은 CORS 헤더를 추가하지 않으므로 브라우저단에서 요청을 차단한다.
+cross-origin 요청(`Origin` 헤더와 호스트가 다른)을 허용하려면 몇 가지 CORS 설정이 필요하다. 매칭되는 CORS 설정이 없으면 preflight 요청은 거부하고, simple, 본 요청은 CORS 헤더를 추가하지 않으므로 브라우저 단에서 요청을 차단한다.
 
 `HandlerMapping`마다 URL 패턴 기반 `CorsConfiguration`을 [설정](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/handler/AbstractHandlerMapping.html#setCorsConfigurations-java.util.Map-)할 수 있다. 보통은 웹플럭스 자바 설정에 글로벌 CORS 매핑을 선언해서 모든 `HandlerMapping` 구현체에 공통으로 적용한다.
 
 각 `HandlerMapping`에 있는 핸들러 레벨 CORS 설정과 글로벌 CORS 설정을 조합해서 쓸 수도 있다. 예를 들어 애노테이션을 선언한 컨트롤러는 클래스 레벨이나 메소드 레벨에 `@CrossOrigin`을 사용할 수 있다 (다른 핸들러는 `CorsConfigurationSource`를 구현할 수 있다).
 
-글로벌 설정과 로컬 설정은 서로 덮어쓰지 않고 합쳐진다(additive). — 예를 들어 글로벌 설정에 있는 origin과 로컬 origin을 모두 더한다. 단, `allowCredentials`, `maxAge`같이 값 하나만 사용하는 속성은 로컬 값이 글로벌 값을 덮어 쓴다. 자세한 내용은 [`CorsConfiguration#combine(CorsConfiguration)`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#combine-org.springframework.web.cors.CorsConfiguration-)을 참고하라.
+글로벌 설정과 로컬 설정은 서로 덮어쓰지 않고 합쳐진다(additive). — 예를 들어 글로벌 설정에 있는 origin과 로컬 origin을 모두 더한다. 단, `allowCredentials`, `maxAge`같이 값 하나만 사용하는 속성은 로컬 값이 글로벌 값을 덮어쓴다. 자세한 내용은 [`CorsConfiguration#combine(CorsConfiguration)`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#combine-org.springframework.web.cors.CorsConfiguration-)을 참고하라.
 
 > 소스 코드를 더 자세히 익히고 싶거나 커스텀하고 싶다면 다음을 참고하라:<br>
 > - `CorsConfiguration`<br>
@@ -1329,7 +1329,7 @@ class AccountController {
 - 모든 헤더.
 - `GET`, `HEAD`, `POST` 메소드.
 
-`allowedCredentials`는 기본적으로 비활성화 돼있다. 이 헤더를 사용하면 민감한 유저 식별 정보를(쿠키나 CSRF 토큰 같은) 노출하기 때문에 필요한 곳에서만 사용해야 한다.
+`allowedCredentials`는 기본적으로 비활성화 돼 있다. 이 헤더를 사용하면 민감한 유저 식별 정보를(쿠키나 CSRF 토큰 같은) 노출하기 때문에 필요한 곳에서만 사용해야 한다.
 
 `maxAge`는 30분으로 설정한다.
 
@@ -1387,7 +1387,7 @@ class WebConfig : WebFluxConfigurer {
 
 > `CorsFilter`를 Spring Security와 함께 사용한다면, Spring Security에는 [CORS 통합 설정](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#cors)이 있다는 것을 기억해 둬라.
 
-필터를 설정하려면, 다음 코드 처럼 `CorsWebFilter` 생성자에 `CorsConfigurationSource`를 주입하고 빈으로 정의한다:
+필터를 설정하려면, 다음 코드처럼 `CorsWebFilter` 생성자에 `CorsConfigurationSource`를 주입하고 빈으로 정의한다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -1456,15 +1456,15 @@ fun corsFilter(): CorsWebFilter {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view)
 
-스프링 웹플럭스에선 원하는 view 기술을 선택할 수 있다. Thymeleaf든 FreeMarker든, 그외 다른 뷰 기술이든 설정만 바꿔주면 된다. 이번 챕터에서는 스프링 웹플럭스에 통합된 뷰 기술을 다룬다. [View Resolution](https://godekdls.github.io/Reactive%20Spring/springwebflux/#136-view-resolution)은 이미 알고 있다고 가정한다.
+스프링 웹플럭스에선 원하는 view 기술을 선택할 수 있다. Thymeleaf든 FreeMarker든, 그 외 다른 뷰 기술이든 설정만 바꿔주면 된다. 이번 챕터에서는 스프링 웹플럭스에 통합된 뷰 기술을 다룬다. [View Resolution](https://godekdls.github.io/Reactive%20Spring/springwebflux/#136-view-resolution)은 이미 알고 있다고 가정한다.
 
 ### 1.9.1. Thymeleaf
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-thymeleaf)
 
-Thymeleaf는 모던 서버사이드 자바 템플릿 엔진이다. 브라우저 더블 클릭만으로 미리보기를 실행할 수 있는 natural HTML 템플릿을 피력하기 때문에, 서버를 실행하지 않고 독립적으로 UI 템플릿을 만들기 좋다(예를 들어 디자이가). Thymeleaf는 제공하는 기능도 아주 많고, 지금도 활발하게 개발되고 있다. 자세한 소개는 [Thymeleaf](https://www.thymeleaf.org/) 프로젝트 홈페이지를 참고하라.
+Thymeleaf는 모던 서버사이드 자바 템플릿 엔진이다. 브라우저 더블 클릭만으로 미리보기를 실행할 수 있는 natural HTML 템플릿을 피력하기 때문에, 서버를 실행하지 않고 독립적으로 UI 템플릿을 만들기 좋다(예를 들어 디자이너가). Thymeleaf는 제공하는 기능도 아주 많고, 지금도 활발하게 개발되고 있다. 자세한 소개는 [Thymeleaf](https://www.thymeleaf.org/) 프로젝트 홈페이지를 참고하라.
 
-Thymeleaf-스프링 웹플럭스 통합 모듈은 Thymeleaf 프로젝트에서 관리한다. 통합 설정은 `SpringResourceTemplateResolver`, `SpringWebFluxTemplateEngine`, `ThymeleafReactiveViewResolver`같은 몇 가지 빈을 정의한다. 자세한 정보는 [Thymeleaf+Spring](https://www.thymeleaf.org/documentation.html)과 WebFlux 통합 [공지](http://forum.thymeleaf.org/Thymeleaf-3-0-8-JUST-PUBLISHED-td4030687.html)에서 확인할 수 있다.
+Thymeleaf-스프링 웹플럭스 통합 모듈은 Thymeleaf 프로젝트에서 관리한다. 통합 설정은 `SpringResourceTemplateResolver`, `SpringWebFluxTemplateEngine`, `ThymeleafReactiveViewResolver` 같은 몇 가지 빈을 정의한다. 자세한 정보는 [Thymeleaf+Spring](https://www.thymeleaf.org/documentation.html)과 WebFlux 통합 [공지](http://forum.thymeleaf.org/Thymeleaf-3-0-8-JUST-PUBLISHED-td4030687.html)에서 확인할 수 있다.
 
 ### 1.9.2. FreeMarker
 
@@ -1576,7 +1576,7 @@ class WebConfig : WebFluxConfigurer {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-view-freemarker-forms)
 
-스프링은 JSP에서 사용하는 `<spring:bind/>` 엘리먼트같은 다양한 태그 라이브러리를 지원한다. 이 엘리먼트를 사용하면 객체에 form 데이터를 유지하기 때문에, 웹이나 비지니스 레이어 `Validator`에서 유효성 검증에 실패하더라도 사용자가 입력한 데이터를 화면에 그대로 보여줄 수 있다. 스프링은 FreeMarker에서도 같은 기능을 지원하며, form 입력 엘리먼트를 만들어주는 편리한 매크로도 함께 제공한다.
+스프링은 JSP에서 사용하는 `<spring:bind/>` 엘리먼트 같은 다양한 태그 라이브러리를 지원한다. 이 엘리먼트를 사용하면 객체에 form 데이터를 유지하기 때문에, 웹이나 비지니스 레이어 `Validator`에서 유효성 검증에 실패하더라도 사용자가 입력한 데이터를 화면에 그대로 보여줄 수 있다. 스프링은 FreeMarker에서도 같은 기능을 지원하며, form 입력 엘리먼트를 만들어주는 편리한 매크로도 함께 제공한다.
 
 #### The Bind Macros
 
@@ -1689,7 +1689,7 @@ class WebConfig : WebFluxConfigurer {
 - `Map model`: view 모델
 - `RenderingContext renderingContext`: 어플리케이션 컨텍스트, locale, 템플릿 로더, URL(5.0 부터)에 접근할 수 있는 [`RenderingContext`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/servlet/view/script/RenderingContext.html)
 
-`Mustache.render()`도 이 파리미터와 호환되므로, 직접 호출해도 된다.
+`Mustache.render()`도 이 파라미터와 호환되므로, 직접 호출해도 된다.
 
 스크립트를 추가하면 커스텀 렌더 함수를 사용할 수 있다. 예를 들어 [Handlerbars](https://handlebarsjs.com/)는 템플릿을 사용하기 전 먼저 컴파일해야 하고, 서버 사이드 스크립트 엔진에서 사용할 수 없는 일부 브라우저 기능은 [polyfill](https://en.wikipedia.org/wiki/Polyfill)이 필요하다. 다음은 커스텀 렌더 함수를 설정하는 예제다:
 
@@ -1739,7 +1739,7 @@ class WebConfig : WebFluxConfigurer {
 }
 ```
 
-> `sharedEngine` 프로퍼티를 `false`로 설정한 이유는 thread-safe하지 않은 템플릿 라이브러리를 사용하기 때문이다. Nashorn에서 실행하는 Handlebars나 React 등은 동시성을 고려해 설계되지 않았다. 이런 라이브러리를 사용한다면 자바 SE 8은 [버그](https://bugs.openjdk.java.net/browse/JDK-8076099)를 수정한 60업데이트 버전을 사용해야 한다. 물론 이 버그가 아니더라도 최신 패치 버전을 사용하는 게 좋다.
+> `sharedEngine` 프로퍼티를 `false`로 설정한 이유는 thread-safe하지 않은 템플릿 라이브러리를 사용하기 때문이다. Nashorn에서 실행하는 Handlebars나 React 등은 동시성을 고려해 설계되지 않았다. 이런 라이브러리를 사용한다면 자바 SE 8은 [버그](https://bugs.openjdk.java.net/browse/JDK-8076099)를 수정한 60 업데이트 버전을 사용해야 한다. 물론 이 버그가 아니더라도 최신 패치 버전을 사용하는 게 좋다.
 
 `polyfill.js`는 다음 코드에 보이는 것처럼, 단순히 Handlebars에서 필요한  `window` 객체만 정의한다:
 
@@ -1748,7 +1748,7 @@ class WebConfig : WebFluxConfigurer {
 var window = {};
 ```
 
-기본적으로 `render.js`가 템플릿을 사용하기 전에 컴파일한다. 실제 production 환경이라면, 템플릿을 캐시에 저장해놓고 쓰거나 미리 컴파일해둘 필요가 있다. 커스텀할 때 사용했던 스크립트로 이를 구현할 수 있다(예를 들어 템플릿 엔진 설정을 관리하는 스크립트). 다음 예제는 템플릿을 컴파일 하는 방법을 보여준다:
+기본적으로 `render.js`가 템플릿을 사용하기 전에 컴파일한다. 실제 production 환경이라면, 템플릿을 캐시에 저장해놓고 쓰거나 미리 컴파일해둘 필요가 있다. 커스텀할 때 사용했던 스크립트로 이를 구현할 수 있다(예를 들어 템플릿 엔진 설정을 관리하는 스크립트). 다음 예제는 템플릿을 컴파일하는 방법을 보여준다:
 
 <div class="language-only-for-java"></div>
 ```javascript
@@ -1766,7 +1766,7 @@ function render(template, model) {
 
 [Content Negotiation](https://godekdls.github.io/Reactive%20Spring/springwebflux/#content-negotiation)을 지원하는 서버는 클라이언트가 요청한 content-type에 따라 HTML 템플릿에 모델을 렌더링할 수도 있고, 다른 포맷(JSON, XML 등)으로 응답할 수도 있다. 스프링 웹플럭스가 제공하는 `HttpMessageWriterView`는 `spring-web`에 있는  `Jackson2JsonEncoder`, `Jackson2SmileEncoder`, `Jaxb2XmlEncoder` 등의 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)을 플러그인처럼 사용할 수 있다.
 
-다른 뷰 기술과는 달리, `HttpMessageWriterView`는 디폴트 뷰로 [설정](#1117-view-resolvers)돼 있기 때문에 `ViewResolver`가 필요없다. `HttpMessageWrite` 나 `Encoder` 인스턴스를 감싸면 디폴트 뷰를 여러 개 설정할 수 있다. 이때는 런타임에 들어온 요청 content-type과 일치하는 뷰를 사용한다.
+다른 뷰 기술과는 달리, `HttpMessageWriterView`는 디폴트 뷰로 [설정](#1117-view-resolvers)돼 있기 때문에 `ViewResolver`가 필요 없다. `HttpMessageWrite` 나 `Encoder` 인스턴스를 감싸면 디폴트 뷰를 여러 개 설정할 수 있다. 이때는 런타임에 들어온 요청 content-type과 일치하는 뷰를 사용한다.
 
 모델은 대부분 attribute가 여러 개다. 렌더링할 때 직렬화할 모델 attribute는 `HttpMessageWriterView`에 설정한다. 모델에 attibute가 하나밖에 없다면 해당 attribute를 사용한다.
 
@@ -1776,7 +1776,7 @@ function render(template, model) {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-caching)
 
-웹 어플리케이션에 HTTP 캐시를 적용하면 성능이 확실히 좋아진다. HTTP 캐시는 `Cache-Control` 응답 헤더와 `Last-Modified`, `ETag`같은 몇 가지 요청 헤더로 동작한다. `Cache-Control` 헤더는 클라이언트 캐시(private cache, e.g. 브라우저)와 공유 캐시(public cache, e.g. 프록시) 정책을 정의한다. `ETag` 헤더를 사용하면 컨텐츠가 변경되지 않았을 때 body 없이 304 (NOT_MODIFIED)로만 응답할 수 있다. `ETag`는 `Last-Modified` 헤더의 확장 버전이라고 생각하면 된다.
+웹 어플리케이션에 HTTP 캐시를 적용하면 성능이 확실히 좋아진다. HTTP 캐시는 `Cache-Control` 응답 헤더와 `Last-Modified`, `ETag` 같은 몇 가지 요청 헤더로 동작한다. `Cache-Control` 헤더는 클라이언트 캐시(private cache, e.g. 브라우저)와 공유 캐시(public cache, e.g. 프록시) 정책을 정의한다. `ETag` 헤더를 사용하면 컨텐츠가 변경되지 않았을 때 body 없이 304 (NOT_MODIFIED)로만 응답할 수 있다. `ETag`는 `Last-Modified` 헤더의 확장 버전이라고 생각하면 된다.
 
 이번 섹션에선 스프링 웹플럭스에서 사용할 수 있는 HTTP 캐시 관련 옵션을 다룬다.
 
@@ -1919,7 +1919,7 @@ fun myHandleMethod(exchange: ServerWebExchange, model: Model): String? {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config)
 
-애노테이션을 선언한 컨트롤러나 함수형 엔드포인트로 요청을 처리하는데 필요한 컴포넌트는 웹플럭스 설정으로 정의하고, 커스텀한다. 이 말은, 프레임워크가 사용하는 모든 빈을 이해하지 않아도 자바 설정만으로 어플리케이션을 실행할 수 있다는 뜻이다. 그래도 더 자세히 알고 싶다면, `WebFluxConfigurationSupport`를 살펴봐도 좋고, 아니면 [Special Bean Types](https://godekdls.github.io/Reactive%20Spring/springwebflux/#131-special-bean-types)에 어떤 게 있는 지 확인해 봐라.
+애노테이션을 선언한 컨트롤러나 함수형 엔드포인트로 요청을 처리하는 데 필요한 컴포넌트는 웹플럭스 설정으로 정의하고, 커스텀한다. 이 말은, 프레임워크가 사용하는 모든 빈을 이해하지 않아도 자바 설정만으로 어플리케이션을 실행할 수 있다는 뜻이다. 그래도 더 자세히 알고 싶다면, `WebFluxConfigurationSupport`를 살펴봐도 좋고, 아니면 [Special Bean Types](https://godekdls.github.io/Reactive%20Spring/springwebflux/#131-special-bean-types)에 어떤 게 있는지 확인해 봐라.
 
 API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configuration Mode](#11110-advanced-configuration-mode)를 사용해서 전체 설정을 제어하면 된다.
 
@@ -2055,9 +2055,9 @@ class WebConfig : WebFluxConfigurer {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config-validation)
 
-기본적로 [Bean Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation-overview)이 클래스패스 내에 있으면(Hibernate Validator 등) `LocalValidatorFactoryBean`이 글로벌 [validator](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validator)로 등록되기 때문에, `@Controller` 메소드 인자에 바로 `@Valid`와 `@Validated`를 사용할 수 있다.
+기본적으로 [Bean Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation-overview)이 클래스패스 내에 있으면(Hibernate Validator 등) `LocalValidatorFactoryBean`이 글로벌 [validator](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validator)로 등록되기 때문에, `@Controller` 메소드 인자에 바로 `@Valid`와 `@Validated`를 사용할 수 있다.
 
-글로벌 `Validator` 인스턴스를 커스텀하고 싶으면 다음 예제 처럼 자바 설정을 이용하면 된다:
+글로벌 `Validator` 인스턴스를 커스텀하고 싶으면 다음 예제처럼 자바 설정을 이용하면 된다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -2406,7 +2406,7 @@ class WebConfig : WebFluxConfigurer {
 
 리소스 핸들러는  [`ResourceResolver`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/resource/ResourceResolver.html), [`ResourceTransformer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/resource/ResourceTransformer.html) 구현체로 체인을 만들 수 있기 때문에, 리소스 서빙을 최적화할 수 있다.
 
-`VersionResourceResolver`를 사용하면 리소스 URL 버전을 컨텐츠의 MD5 해쉬값이나, 어플리케이션 고정 버전 등으로 관리할 수 있다. 자바스크립트 모듈 로더 등 몇가지 예외케이스만 아니라면  `ContentVersionStrategy`(MD5 hash)를 사용하는 것도 좋은 방법이다.
+`VersionResourceResolver`를 사용하면 리소스 URL 버전을 컨텐츠의 MD5 해쉬값이나, 어플리케이션 고정 버전 등으로 관리할 수 있다. 자바스크립트 모듈 로더 등 몇 가지 예외케이스만 아니라면  `ContentVersionStrategy`(MD5 hash)를 사용하는 것도 좋은 방법이다.
 
 다음 예제는 `VersionResourceResolver`를 사용한다:
 
@@ -2452,7 +2452,7 @@ class WebConfig : WebFluxConfigurer {
 
 `EncodedResourceResolver`(e.g. Gzip, Brotli 인코딩)와 `VersionedResourceResolver`를 함께 사용한다면, 파일을 인코딩하기 전 버전을 계산하도록, 반드시 이 순서대로 등록해야 한다.
 
-[WebJars](https://www.webjars.org/documentation)는 `WebJarsResourceResolver`가 지원하는데, 이 클래스는 클래스패스에  `org.webjars:webjars-locator-core` 라이브러리가 있으면 자동으로 등록된다. 이 리졸버는 URL에 jar 버전을 추가하기 때문에, 버전없이 요청한 URL도 각 필요한 버전에 매칭할 수 있다 — 예를 들어 `/jquery/jquery.min.js`는 `/jquery/1.2.0/jquery.min.js`로.
+[WebJars](https://www.webjars.org/documentation)는 `WebJarsResourceResolver`가 지원하는데, 이 클래스는 클래스패스에  `org.webjars:webjars-locator-core` 라이브러리가 있으면 자동으로 등록된다. 이 리졸버는 URL에 jar 버전을 추가하기 때문에, 버전 없이 요청한 URL도 각 필요한 버전에 매칭할 수 있다 — 예를 들어 `/jquery/jquery.min.js`는 `/jquery/1.2.0/jquery.min.js`로.
 
 ### 1.11.9. Path Matching
 

@@ -177,7 +177,7 @@ val webClient = WebClient.builder()
 
 #### Resources
 
-기본적으로 `HttpClient`는 `reactor.netty.http.HttpResources`에 묶여 있는 Reactor Netty의 글로벌 리소스를 사용한다. 이는 이벤트 루프 쓰레드와 커넥션 풀도 포함한다. 이벤트 루프로 동시성을 제어하려면 공유 리소스를 고정해 놓고 사용하는 게 좋기 때문에 권장하는 모드다. 이 모드에선 프로세스가 종료될 때까지 공유 자원을 active상태로 유지한다.
+기본적으로 `HttpClient`는 `reactor.netty.http.HttpResources`에 묶여 있는 Reactor Netty의 글로벌 리소스를 사용한다. 이는 이벤트 루프 쓰레드와 커넥션 풀도 포함한다. 이벤트 루프로 동시성을 제어하려면 공유 리소스를 고정해 놓고 사용하는 게 좋기 때문에 권장하는 모드다. 이 모드에선 프로세스가 종료될 때까지 공유 자원을 active 상태로 유지한다.
 
 서버가 프로세스와 함께 중단된다면 명시적으로 리소스를 종료시킬 필요는 없다. 하지만 프로세스 내에서 서버를 시작하거나 중단할 수 있다면(e.g. WAR로 배포한 스프링 MVC 어플리케이션), 다음 예제처럼 스프링이 관리하는 `ReactorResourceFactory`빈을 `globalResources=true`(디폴트)로 선언해야 스프링 `ApplicationContext`를 닫을 때 Reactor Netty 글로벌 리소스도 종료한다:
 
@@ -328,7 +328,7 @@ val connector = JettyClientHttpConnector(httpClient)
 val webClient = WebClient.builder().clientConnector(connector).build();
 ```
 
-`HttpClient`는 전용 리소스(`Executor`, `ByteBufferPool`, `Scheduler`)를 생성해서 기본적으로 프로세스가 종료되거나 `stop()`을 호출할 때 까지 유지한다.
+`HttpClient`는 전용 리소스(`Executor`, `ByteBufferPool`, `Scheduler`)를 생성해서 기본적으로 프로세스가 종료되거나 `stop()`을 호출할 때까지 유지한다.
 
 다음 예제처럼 스프링이 관리하는 `JettyResourceFactory` 빈을 정의하면, 여러 Jetty 클라이언트(그리고 서버도) 인스턴스에서 리소스를 공유할 수 있고, 스프링 `ApplicationContext`를 닫을 때 리소스도 종료시킬 수 있다:
 
@@ -499,7 +499,7 @@ val result = client.get()
 
 `exchange()`는 `retrieve()`와는 달리 4xx, 5xx 응답을 자동으로 에러로 처리해주지 않는다. 직접 상태 코드를 확인하고 어떻게 처리할지 결정해야 한다.
 
->  `retrieve()`와는 다르게 `exchange()`는 모든 시나리오에서(성공, 오류, 예기치 못한 데이터 등) 어플리케이션이 직접 response body를 consume해야 한다. 그렇지 않으면 메모리 릭이 발생할 수 있다. `ClientResponse` javadoc에 body를 consume할 수 있는 모든 옵션이 나와 있다. `exchange()`를 사용해서 응답 코드나 헤더를 봐야 로직을 결정할 수 있다거나, 아니면 직접 응답을 consume해야 한다거나 하는 특별한 이유가 없다면 `retrieve()`를 쓰는 게 좋다.
+>  `retrieve()`와는 다르게 `exchange()`는 모든 시나리오에서(성공, 오류, 예기치 못한 데이터 등) 어플리케이션이 직접 response body를 컨슘해야 한다. 그렇지 않으면 메모리 릭이 발생할 수 있다. `ClientResponse` javadoc에 body를 컨슘할 수 있는 모든 옵션이 나와 있다. `exchange()`를 사용해서 응답 코드나 헤더를 봐야 로직을 결정할 수 있다거나, 아니면 직접 응답을 컨슘해야 한다거나 하는 특별한 이유가 없다면 `retrieve()`를 쓰는 게 좋다.
 
 ---
 
@@ -889,7 +889,7 @@ val persons = runBlocking {
 }
 ```
 
-하지만 API 호출을 여러번 한다면, 각 응답을 따로 블로킹하기보단 전체 결과를 합쳐서 기다리는 게 더 효율적이다:
+하지만 API 호출을 여러 번 한다면, 각 응답을 따로 블로킹하기보단 전체 결과를 합쳐서 기다리는 게 더 효율적이다:
 
 <div class="switch-language-wrapper">
 <span class="switch-language java">java</span>
@@ -928,7 +928,7 @@ val data = runBlocking {
   }
 ```
 
-위 코드는 단지 한가지 예시일 뿐이다. 요청이 끝날 때까지 블로킹하지 않고, 리액티브 파이라인을 구축해서 상호 독립적으로 원격 호출을 여러번 실행하는(보통 감싸진 경우가 많다) 다른 패턴과 연산자도 많다.
+위 코드는 단지 한 가지 예시일 뿐이다. 요청이 끝날 때까지 블로킹하지 않고, 리액티브 파이라인을 구축해서 상호 독립적으로 원격 호출을 여러 번 실행하는(보통 감싸진 경우가 많다) 다른 패턴과 연산자도 많다.
 
 > 스프링 MVC나 웹플럭스 컨트롤러에서 `Flux`나 `Mono`를 사용한다면 블로킹할 필요가 없다. 단순히 컨트롤러 메소드에서 리액티브 타입을 리턴하기만 하면 된다. 코틀린 코루틴과 스프링 웹플럭스에서도 마찬가지다. 컨트롤러 메소드에서 suspend 함수를 사용하거나 `Flow`를 리턴하면 된다.
 

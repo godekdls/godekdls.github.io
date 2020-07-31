@@ -44,7 +44,7 @@ lastmod: 2020-06-08T19:00:00+09:00
 
 ## 11.1. Logging Item Processing and Failures
 
-step에서 에러가 발생하면 아이템 별로 특정 채널에 로그를 남기거나
+step에서 에러가 발생하면 아이템별로 특정 채널에 로그를 남기거나
 데이터베이스에 레코드를 넣는 식의 특별한 처리를 많이 한다.
 청크 지향 `Step`(step 팩토리 빈이 생성하는)을 사용하면
 `read` 메소드에서 생긴 에러는 `ItemReadListener`로,
@@ -80,7 +80,7 @@ public Step simpleStep() {
 
 > 리스너가 `onError()` 메소드 안에서 처리하는 일은
 > 트랜잭션 안에 있어야 롤백할 수 있다.
-> `onError()` 안에서 데이터베이스같은 트랜잭션 리소스를 사용한다면
+> `onError()` 안에서 데이터베이스 같은 트랜잭션 리소스를 사용한다면
 > 메소드에 선언적인 트랜잭션을 추가해서
 > (자세한 내용은 Spring Core Reference Guide 참고)
 > 전파(propagation) 속성을 `REQUIRES_NEW`로 설정해라.
@@ -217,7 +217,7 @@ public interface FlatFileFooterCallback {
 보통 꼬리말에 파일 요약 정보나 체크섬을 저장한다.
 
 예를 들어 플랫(flat) 파일에 `Trade` 레코드를 기록하고
-`Trade` 내역 총합을 꼬리말에 남기려면 아래 처럼 `ItemWriter`를 구현한다:
+`Trade` 내역 총합을 꼬리말에 남기려면 아래처럼 `ItemWriter`를 구현한다:
 
 ```java
 public class TradeItemWriter implements ItemWriter<Trade>,
@@ -290,7 +290,7 @@ public FlatFileItemWriter<String> flatFileItemWriter(Resource outputResource) {
 `totalAmount`를 데이터베이스에 저장하지 않기 때문이다.
 따라서 재시작하면 이 값을 얻어올 수 없다.
 이 클래스를 재시작할 수 있게 만들려면
-아래 예제처럼 `ItemStream` 인터페이스의 `open`,`update` 메소드를 구현해야한다:
+아래 예제처럼 `ItemStream` 인터페이스의 `open`,`update` 메소드를 구현해야 한다:
 
 ```java
 public void open(ExecutionContext executionContext) {
@@ -317,11 +317,11 @@ open 메소드는 처리 시작 전 `ExecutionContext`에서 `totalAmount` 값�
 [chapter on readers and writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)에서 
 페이징 기법으로 데이터베이스 데이터를 읽는 법을 다뤘다.
 DB2같이 극도로 비관적인(pessimistic) 잠금 기법을 사용하는 데이터베이스 벤더도 많기 때문에,  
-이미 배치에서 읽고 있는 테이블을 다른 온라인 어플리케이션에서도 사용한다면 문제될 수 있다.
+이미 배치에서 읽고 있는 테이블을 다른 온라인 어플리케이션에서도 사용한다면 문제 될 수 있다.
 또, 벤더에 따라 매우 큰 데이터셋에 커서를 사용하면 문제가 생길 수도 있다.
 그래서 'Driving Query' 기법으로 데이터를 조회하는 프로젝트도 많다.
 이 방법은 아래 그림에 보이는 것처럼
-리턴해야하는 전체 오브젝트가 아니라 키를 사용해 질의를 반복한다:
+리턴해야 하는 전체 오브젝트가 아니라 키를 사용해 질의를 반복한다:
 
 ![Driving Query Job](./../../images/springbatch/drivingQueryExample.png)
 
@@ -357,7 +357,7 @@ FOT;2;2;267.34
 여러 줄에 걸친 레코드를 전부 그룹으로 읽어서 `ItemWriter`에 전달한다.
 - 각 라인 유형별로 다르게 토큰화해야 한다.
 
-레코드 하나가 여러 줄에 걸쳐 있고 라인이 몇개나 되는지 알 수 없기 때문에
+레코드 하나가 여러 줄에 걸쳐 있고 라인이 몇 개나 되는지 알 수 없기 때문에
 `ItemReader`로 전체 레코드를 읽을 땐 항상 조심해야 한다.
 이를 위해서는 아래 예제처럼 `FlatFileItemReader`를 감싼
 커스텀 `ItemReader`를 구현해야 한다:
@@ -478,11 +478,11 @@ public SystemCommandTasklet tasklet() {
 
 ## 11.7. Handling Step Completion When No Input is Found
 
-많은 경우 데이터베이스 로(row)나 파일을 못 찾은게 문제되는 상황이 아니다.
-`Step`이 단순히 처리할 작업을 못찾아서 아이템 0개를 완료했다고 생각할 수 있다.
+많은 경우 데이터베이스 로(row)나 파일을 못 찾은 게 문제 되는 상황이 아니다.
+`Step`이 단순히 처리할 작업을 못 찾아서 아이템 0개를 완료했다고 생각할 수 있다.
 스프링 배치가 제공하는 모든 `ItemReader` 구현체는 기본적으로 이 방식대로 접근한다.
 입력이 있는데도 아무 처리도 하지 않았다면
-(파일 이름이 잘못 됐다거나 하는 이슈는 종종 있다) 혼란스러울 수 있다.
+(파일 이름이 잘못됐다거나 하는 이슈는 종종 있다) 혼란스러울 수 있다.
 이를 위해 메타 데이터로 프레임워크가 처리한 작업량을 확인해야 한다.
 하지만 입력 데이터를 못 찾았을 때 예외를 발생시켜야 한다면 어떻게 해야 할까?
 이럴 때는 메타 데이터를 체크해서 처리된 아이템이 없을 때
@@ -515,7 +515,7 @@ public class NoWorkFoundStepExecutionListener extends StepExecutionListenerSuppo
 
 ## 11.8. Passing Data to Future Steps
 
-현재 step에서 다음 step으로 특정 정보를 넘기는게 유용할 때가 많다.
+현재 step에서 다음 step으로 특정 정보를 넘기는 게 유용할 때가 많다.
 `ExecutionContext`를 사용하면 데이터를 넘길 수 있다.
 중요한 건 `ExecutionContext`가 `Step` 레벨에도 있고 `Job` 레벨에도 있다는 것이다.
 `Job` `ExecutionContext`는 `Job`을 실행하는 동안 계속 유지되지만
