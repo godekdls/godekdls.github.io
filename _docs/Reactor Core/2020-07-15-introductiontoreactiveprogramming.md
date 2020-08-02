@@ -6,6 +6,7 @@ permalink: /Reactor%20Core/introductiontoreactiveprogramming/
 description: 리액터 리액티브 프로그래밍 소개 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-15T00:00:00+09:00
+comments: true
 ---
 
 > [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#intro-reactive)를 한글로 번역한 문서입니다.

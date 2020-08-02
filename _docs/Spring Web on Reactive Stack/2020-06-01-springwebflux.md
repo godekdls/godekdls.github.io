@@ -7,6 +7,7 @@ description: 스프링5 웹 리액티브 스택 웹플럭스 한글 번역 1편 
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 priority: 0.8
+comments: true
 ---
 <script>var switchLanguage=true</script>
 

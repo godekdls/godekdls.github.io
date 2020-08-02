@@ -6,6 +6,7 @@ permalink: /Reactive%20Spring/springwebflux2/
 description: 스프링5 웹 리액티브 스택 웹플럭스 (함수형 엔드포인트, URI 링크, CORS, 보안, View 렌더링, HTTP 캐시, 웹플럭스 설정)
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
+comments: true
 ---
 <script>var switchLanguage=true</script>
 

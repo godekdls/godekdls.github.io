@@ -6,6 +6,7 @@ permalink: /Spring%20Batch/scalingandparallelprocessing/
 description: 스프링 배치 병렬 처리 한글 번역
 image: ./../../images/springbatch/remote-chunking.png
 lastmod: 2020-06-08T19:00:00+09:00
+comments: true
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#scalability)를 한글로 번역한 문서입니다.

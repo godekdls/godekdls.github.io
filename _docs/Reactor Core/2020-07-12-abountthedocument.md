@@ -6,6 +6,7 @@ permalink: /Reactor%20Core/aboutthedocument/
 description: 리액터 코어 문서 소개 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-12T21:00:00+09:00
+comments: true
 ---
 
 > [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#about-doc)를 한글로 번역한 문서입니다.

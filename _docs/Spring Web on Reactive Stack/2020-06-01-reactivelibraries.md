@@ -6,6 +6,7 @@ permalink: /Reactive%20Spring/reactivelibraries/
 description: 스프링5 웹 리액티브 라이브러리 한글 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
+comments: true
 ---
 
 > [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-reactive-libraries)를 한글로 번역한 문서입니다.

@@ -6,6 +6,7 @@ permalink: /Spring%20Batch/itemreadersanditemwriters/
 description: 스프링 배치 ItemReader, ItemWriter 한글 번역
 image: ./../../images/springbatch/errorOnWrite.png
 lastmod: 2020-06-08T19:00:00+09:00
+comments: true
 ---
 
 > [스프링 배치 공식 reference](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#readersAndWriters)를 한글로 번역한 문서입니다.

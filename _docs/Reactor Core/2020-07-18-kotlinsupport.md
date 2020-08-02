@@ -6,6 +6,7 @@ permalink: /Reactor%20Core/kotlinsupport/
 description: 리액터 코틀린 지원 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-18T10:51:00+09:00
+comments: true
 ---
 
 > [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#kotlin)를 한글로 번역한 문서입니다.

@@ -7,6 +7,7 @@ description: 리액터 코어 기능 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-17T23:49:00+09:00
 priority: 0.8
+comments: true
 ---
 
 > [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#core-features)를 한글로 번역한 문서입니다.

@@ -6,6 +6,7 @@ permalink: /Reactor%20Core/advancedfeaturesandconcepts/
 description: 리액터 고급 기능 한글 번역
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-07-21T16:00:00+09:00
+comments: true
 ---
 
 > [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#advanced)를 한글로 번역한 문서입니다.
