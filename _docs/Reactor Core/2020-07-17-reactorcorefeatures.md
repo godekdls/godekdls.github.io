@@ -671,7 +671,7 @@ hello thread Thread-0
 - 실행 컨텍스트가 없음 (`Schedulers.immediate()`): 처리 시간에 제출한 `Runnable`을 즉시 실행한다. 사실상 현재 `Thread`에서 실행한다 ("널 객체" 혹은 아무 일도 하지 않는 `Scheduler`라고 볼 수 있다).
 - 재사용할 수 있는 단일 스레드 (`Schedulers.single()`). 이 메소드는 스케줄러를 폐기하기 전까지 여러 번 호출해도 매번 동일한 스레드를 재사용한다는 점에 주의해라. 호출할 때마다 전용 스레드를 사용하고 싶다면 매번 `Schedulers.newSingle()`을 호출하라.
 - Unbounded elastic 스레드 풀 (`Schedulers.elastic()`). 이 메소드는 backpressure 이슈를 감추고 너무 많은 스레드를 사용하는 경향이 있어서 (아래 참고), `Schedulers.boundedElastic()`가 나온 이후론 잘 사용하지 않는다.
-- Bounded elastic 스레드 풀 (`Schedulers.boundedElastic()`). 이전의 `elastic()`처럼 필요하면 새 워커 풀을 만들고, 여유 있는 스레드가 있으면 재사용한다. 또한 너무 오랫동안 (디폴트는 60초) 놀고 있는 워커 풀이 있다면 폐기한다. 풀에 생성할 수 있는 스레드 수를 제한한다는 점은 (디폴트는 CPU 코어수 x 10) 이전의  `elastic()`과 다르다. 한도에 도달한 이후 제출한 태스크는 100,000개까지 큐에 담고, 스레드에 여유가 생기면 다시 스케줄링한다 (지연 스케줄링을 사용하면, 스레드가 이용 가능해진 이후부터 지연 시간을 계산한다). 블로킹 I/O가 필요하다면 더 나은 선택일 것이다. `Schedulers.boundedElastic()`을 사용하면 손쉽게 블로킹 프로세스에 별도 스레드를 할당해서 다른 리소스를 묶어두지 않을 수 있다. [How Do I Wrap a Synchronous, Blocking Call?](https://projectreactor.io/docs/core/release/reference/#faq.wrap-blocking)을 참고하되, 너무 많은 스레드를 사용해 시스템에 무리를 주지 않도록 주의하라.
+- Bounded elastic 스레드 풀 (`Schedulers.boundedElastic()`). 이전의 `elastic()`처럼 필요하면 새 워커 풀을 만들고, 여유 있는 스레드가 있으면 재사용한다. 또한 너무 오랫동안 (디폴트는 60초) 놀고 있는 워커 풀이 있다면 폐기한다. 풀에 생성할 수 있는 스레드 수를 제한한다는 점은 (디폴트는 CPU 코어수 x 10) 이전의  `elastic()`과 다르다. 한도에 도달한 이후 제출한 태스크는 100,000개까지 큐에 담고, 스레드에 여유가 생기면 다시 스케줄링한다 (지연 스케줄링을 사용하면, 스레드가 이용 가능해진 이후부터 지연 시간을 계산한다). 블로킹 I/O가 필요하다면 더 나은 선택일 것이다. `Schedulers.boundedElastic()`을 사용하면 손쉽게 블로킹 프로세스에 별도 스레드를 할당해서 다른 리소스를 묶어두지 않을 수 있다. [How Do I Wrap a Synchronous, Blocking Call?](../appendixbfaqbestpracticesandhowdoi)을 참고하되, 너무 많은 스레드를 사용해 시스템에 무리를 주지 않도록 주의하라.
 - 병렬 작업을 튜닝할 수 있는 워커의 고정 풀 (`Schedulers.parallel()`). CPU 코어 수 만큼 워커를 생성한다.
 
 추가적으로, `Schedulers.fromExecutorService(ExecutorService)`를 사용하면 기존의 모든 `ExecutorService`로 `Scheduler`를 생성할 수 있다. (`Executor`로도 생성할 수 있지만, 권장하지는 않는다.)
@@ -1334,7 +1334,7 @@ converted.subscribe(
 
 지금 해결해야 할 문제에 `Processor`가 적합하다고 생각된다면, 다음 두 가지 대안은 시도해 보았는지 먼저 검토해 봐라:
 
-1. 연산자나 연산자 조합으로 구현할 수 있는가? ([Which operator do I need?](https://projectreactor.io/docs/core/release/reference/#which-operator) 참고.)
+1. 연산자나 연산자 조합으로 구현할 수 있는가? ([Which operator do I need?](../appendixawhichoperatordoineed) 참고.)
 2. 대신 [“generator”](../reactorcorefeatures#44-programmatically-creating-a-sequence) 연산자를 사용할 순 없는가? (일반적으로 이 연산자들은 리액티브하지 않은 API를 연결하기 위한 것이므로 `Processor` 개념과 유사한 "sink"를 제공한다. 따라서 시퀀스에 데이터를 수동으로 넣거나 종료시킬 수 있다).
 
 위 대안을 검토해 보았는데도 `Processor`가 필요하다고 생각된다면 [Overview of Available Processors](#473-overview-of-available-processors) 섹션을 참고해 다양한 구현체에 대해 알아봐라.
