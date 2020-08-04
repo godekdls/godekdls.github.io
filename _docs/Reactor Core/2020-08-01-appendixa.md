@@ -33,8 +33,8 @@ comments: true
 
 - [새 시퀀스 생성하기](#a1-creating-a-new-sequence)
 - [기존 시퀀스 변형하기](#a2-transforming-an-existing-sequence)
-- [시퀀스 필터링하기](#a3-peeking-into-a-sequence)
-- [시퀀스 들여다보기](#a4-filtering-a-sequence)
+- [시퀀스 들여다보기](#a3-peeking-into-a-sequence)
+- [시퀀스 필터링하기](#a4-filtering-a-sequence)
 - [에러 처리하기](#a5-handling-errors)
 - [시간을 함께 처리하기](#a6-working-with-time)
 - [`Flux` 나누기](#a7-splitting-a-flux)
@@ -228,7 +228,7 @@ comments: true
   - 재시도
     - 간단한 정책을 사용해서 (최대 시도 횟수): `retry()`, `retry(long)`
     - companion control Flux로 트리거해서: `retryWhen`
-    - 표준 백오프 전략을 사용해서 (jitter를 사용한 exponential backoff): `retryWhen(Retry.backoff(…))` (`Retry`에 있는 다른 팩토리 메소드도 참고)
+    - 표준 백오프 전략을 사용해서 (jitter를 사용한 [exponential backoff](../appendixbfaqbestpracticesandhowdoi/#b5-how-can-i-use-retrywhen-for-exponential-backoff)): `retryWhen(Retry.backoff(…))` (`Retry`에 있는 다른 팩토리 메소드도 참고)
 - backpressure "에러"를 처리하고 싶을 때 (업스트림의 최대치를 요청하고, 다운스트림이 그만큼 요청을 생산하지 못하면 적용할 전략)
   - 특별한 `IllegalStateException` 던지기: `Flux#onBackpressureError`
   - 수용할 수 없는 값을 드랍: `Flux#onBackpressureDrop`

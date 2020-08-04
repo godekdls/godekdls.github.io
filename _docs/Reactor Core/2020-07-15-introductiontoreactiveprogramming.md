@@ -288,7 +288,7 @@ assertThat(results).containsExactly( // (8)
 
 리액터에서 연산자는 조립 라인으로 비유하자면 워크스테이션이다. 각 연산자는 `Publisher`에 동작을 추가하고, 이전 단계의 `Publisher`를 새 인스턴스로 래핑한다. 따라서 전체 체인이 연결돼고, 최초 `Publisher`에서 시작된 데이터를 변환해서 다음 체인으로 이동시킨다. 마지막엔 `Subscriber`가 처리를 종료한다. 곧 언급하겠지만, `Subscriber`가 `Publisher`를 구독하기 전까진 아무 일도 일어나지 않는다는 점을 기억하라.
 
-> 흔히들 하는 실수로, 종종 체인에 사용한 연산자가 적용되지 않는다는 오해를 하곤 한다. 연산자가 새 인스턴스를 만든다는 것을 이해하고 나면, 무엇이 문제인지 알 수 있을 것이다. FAQ의 이 [항목](https://projectreactor.io/docs/core/release/reference/#faq.chain)을 참고하라.
+> 흔히들 하는 실수로, 종종 체인에 사용한 연산자가 적용되지 않는다는 오해를 하곤 한다. 연산자가 새 인스턴스를 만든다는 것을 이해하고 나면, 무엇이 문제인지 알 수 있을 것이다. FAQ의 이 [항목](../appendixbfaqbestpracticesandhowdoi/#b2-i-used-an-operator-on-my-flux-but-it-doesnt-seem-to-apply-what-gives)을 참고하라.
 
 리액티브 스트림 스펙은 연산자를 정의하고 있지 않지만, 리액터 같은 리액티브 라이브러리의 가장 좋은 점 중 하나는 풍부한 연산자를 제공한다는 것이다. 이 연산자로 간단한 변환이나 필터링에서부터 복잡한 조율과 에러 처리까지 할 수 있다.
 

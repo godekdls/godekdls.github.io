@@ -63,10 +63,10 @@ comments: true
 
 - 코드로 바로 넘어가고 싶다면 [Getting Started](../gettingstarted)로 이동하라.
 - 리액티브 프로그램이 처음이라면 [Introduction to Reactive Programming](../introductiontoreactiveprogramming)부터 시작하라.
-- 리액터 개념에 익숙하고 적절한 툴을 찾고 있지만, 관련 오퍼레이터를 잘 모르겠다면 [Which operator do I need?](../appendixawhichoperatordoineed) 부록을 참고하라.
+- 리액터 개념에 익숙하고 적절한 툴을 찾고 있지만, 관련 오퍼레이터를 잘 모르겠다면 부록 [Which operator do I need?](../appendixawhichoperatordoineed)를 참고하라.
 - 리액터의 핵심 기능을 자세히 알고 싶다면 [Reactor Core Features](../reactorcorefeatures)로 이동해서 다음을 학습하라:
   - 리액터의 리액티브 타입에 대한 자세한 내용 ([`Flux`, an Asynchronous Sequence of 0-N Items](../reactorcorefeatures#41-flux-an-asynchronous-sequence-of-0-n-items), [`Mono`, an Asynchronous 0-1 Result](../reactorcorefeatures/#42-mono-an-asynchronous-0-1-result) 섹션).
-  - [스케줄러](https://projectreactor.io/docs/core/release/reference/#schedulers)로 스레드 컨텍스트를 전환하는 방법.
+  - [스케줄러](../reactorcorefeatures/#45-threading-and-schedulers)로 스레드 컨텍스트를 전환하는 방법.
   - 에러를 핸들링하는 방법 ([Handling Errors](../reactorcorefeatures/#46-handling-errors) 섹션).
 - 단위 테스트? `reactor-test` 프로젝트가 있다면 가능하다! [Testing](../testing)을 참고하라.
 - [Programmatically creating a sequence](../reactorcorefeatures/#44-programmatically-creating-a-sequence)에서는 리액티브 리소스를 생성하는 고급 방식을 자세히 다룬다.

@@ -59,7 +59,7 @@ blockingWrapper = blockingWrapper.subscribeOn(Schedulers.boundedElastic()); // (
 
 ## B.2. I Used an Operator on my `Flux` but it Doesn’t Seem to Apply. What Gives?
 
-`.subscribe()`하려는 변수가 적용하고 싶은 연산자의 영향 아래 있어야 한다.
+`.subscribe()`하려는 변수는 반드시 적용하고 싶은 연산자의 영향 아래 있어야 한다.
 
 리액터 연산자는 데코레이터다. 기존 시퀀스를 감싼 새 인스턴스를 리턴하고 행동을 추가한다. 그렇기 때문에 연산자를 적용할 땐 메소드 *체이닝*을 사용하는 게 좋다.
 

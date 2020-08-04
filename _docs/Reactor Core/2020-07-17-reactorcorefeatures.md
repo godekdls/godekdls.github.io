@@ -753,7 +753,7 @@ new Thread(() -> flux.subscribe(System.out::println)); // (5)
 
 ## 4.6. Handling Errors
 
-> 에러를 처리할 수 있는 연산자를 빠르게 훑어보고 싶다면 [상황별 연산자 결정 트리](https://projectreactor.io/docs/core/release/reference/#which.errors)를 참고하라.
+> 에러를 처리할 수 있는 연산자를 빠르게 훑어보고 싶다면 [상황별 연산자 결정 트리](../appendixawhichoperatordoineed/#a5-handling-errors)를 참고하라.
 
 리액티브 스트림에서 에러는 종료 이벤트다. 에러가 발생하는 즉시 시퀀스를 종료하고, 연산자 체인 아래 있는 마지막 스텝, 즉 정의한 `Subscriber`의 `onError` 메소드에 에러를 전파한다.
 
@@ -1201,7 +1201,7 @@ Flux<String> flux =
 
 > `Retry`에서 제공하는 빌더를 사용하면 좀 더 유연한 방식으로 동일한 작업을 수행할 수 있으며, 재시도 전략도 더 정교하게 조정할 수 있다. 예를 들어 `errorFlux.retryWhen(Retry.max(3));`.
 
-> [FAQ](https://projectreactor.io/docs/core/release/reference/#faq.exponentialBackoff)에 있는 것처럼, 유사한 코드로 "exponential backoff and retry" 패턴을 구현할 수도 있다.
+> [FAQ](../appendixbfaqbestpracticesandhowdoi/#b5-how-can-i-use-retrywhen-for-exponential-backoff)에 있는 것처럼, 유사한 코드로 "exponential backoff and retry" 패턴을 구현할 수도 있다.
 
 코어에서 제공하는 두 `Retry` 헬퍼, `RetrySpec`과 `RetryBackoffSpec`으로 다음과 같은 고급 커스텀도 가능하다:
 
