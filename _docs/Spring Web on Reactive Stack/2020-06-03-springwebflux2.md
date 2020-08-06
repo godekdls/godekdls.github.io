@@ -1448,8 +1448,8 @@ fun corsFilter(): CorsWebFilter {
 
 - [WebFlux Security](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#jc-webflux)
 - [WebFlux Testing Support](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#test-webflux)
-- [CSRF Protection](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#csrf)
-- [Security Response Headers](https://docs.spring.io/spring-security/site/docs/current/reference/html5/#headers)
+- [CSRF Protection](../../Spring%20Security/features#521-cross-site-request-forgery-csrf)
+- [Security Response Headers](../../Spring%20Security/features#522-security-http-response-headers)
 
 ---
 

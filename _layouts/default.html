@@ -76,6 +76,7 @@
 							<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
 							<ul>
 								{% for item in items %}
+								{% if item.boundary and group.name == page.category %} <li class="nav-item" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0;"><em>{{ item.boundary }}</em></li> {% endif %}
 									<li class="nav-item {% if item.url == page.url %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></li>
 								{% endfor %}
 							</ul>
@@ -167,10 +168,19 @@
 				document.querySelectorAll('.description-for-kotlin').forEach(function (el) {
 					el.nextElementSibling.style.display = 'none';
 				});
+				document.querySelectorAll('.language-only-for-xml').forEach(function(el) {
+					el.nextElementSibling.style.display = 'none'
+				})
+				document.querySelectorAll('.description-for-xml').forEach(function (el) {
+					el.nextElementSibling.style.display = 'none';
+				});
 				document.querySelectorAll('.switch-language.java').forEach(function (el) {
 					el.classList.add("selected")
 				});
 				document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
+					el.classList.remove("selected")
+				});
+				document.querySelectorAll('.switch-language.xml').forEach(function (el) {
 					el.classList.remove("selected")
 				});
 			}
@@ -188,18 +198,61 @@
 				document.querySelectorAll('.description-for-java').forEach(function (el) {
 					el.nextElementSibling.style.display = 'none';
 				});
+				document.querySelectorAll('.language-only-for-xml').forEach(function(el) {
+					el.nextElementSibling.style.display = 'none';
+				})
+				document.querySelectorAll('.description-for-xml').forEach(function (el) {
+					el.nextElementSibling.style.display = 'none';
+				});
 				document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
 					el.classList.add("selected")
 				});
 				document.querySelectorAll('.switch-language.java').forEach(function (el) {
 					el.classList.remove("selected")
 				});
+				document.querySelectorAll('.switch-language.xml').forEach(function (el) {
+					el.classList.remove("selected")
+				});
 			}
+
+			function showXml() {
+				document.querySelectorAll('.language-only-for-xml').forEach(function (el) {
+					el.nextElementSibling.style.display = 'block';
+				});
+				document.querySelectorAll('.description-for-xml').forEach(function (el) {
+					el.nextElementSibling.style.display = 'block';
+				});
+				document.querySelectorAll('.language-only-for-java').forEach(function(el) {
+					el.nextElementSibling.style.display = 'none';
+				})
+				document.querySelectorAll('.description-for-java').forEach(function (el) {
+					el.nextElementSibling.style.display = 'none';
+				});
+				document.querySelectorAll('.language-only-for-kotlin').forEach(function(el) {
+					el.nextElementSibling.style.display = 'none';
+				})
+				document.querySelectorAll('.description-for-kotlin').forEach(function (el) {
+					el.nextElementSibling.style.display = 'none';
+				});
+				document.querySelectorAll('.switch-language.xml').forEach(function (el) {
+					el.classList.add("selected")
+				});
+				document.querySelectorAll('.switch-language.java').forEach(function (el) {
+					el.classList.remove("selected")
+				});
+				document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
+					el.classList.remove("selected")
+				});
+			}
+
 			document.querySelectorAll('.switch-language.java').forEach(function (el) {
 				el.onclick = showJava
 			})
 			document.querySelectorAll('.switch-language.kotlin').forEach(function (el) {
 				el.onclick = showKotlin
+			})
+			document.querySelectorAll('.switch-language.xml').forEach(function (el) {
+				el.onclick = showXml
 			})
 			if (typeof switchLanguage !== 'undefined' && switchLanguage) showJava()
 		</script>
