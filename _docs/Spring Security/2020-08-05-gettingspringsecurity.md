@@ -47,7 +47,7 @@ comments: true
 
 ### 4.2.1. Spring Boot with Maven
 
-스프링 부트는 스프링 시큐리티 관련 의존성을 모두 함께 묶어놓은 `spring-boot-starter-security` 스타터를 제공한다. 스타터는 IDE 인테그레이션 ([Eclipse](https://joshlong.com/jl/blogPost/tech_tip_geting_started_with_spring_boot.html), [IntelliJ](https://www.jetbrains.com/help/idea/spring-boot.html#d1489567e2), [NetBeans](https://github.com/AlexFalappa/nb-springboot/wiki/Quick-Tour))이나 [https://start.spring.io](https://start.spring.io/)를 통해 [스프링 이니셜라이저](https://docs.spring.io/initializr/docs/current/reference/htmlsingle/)를 사용하는 게 가장 간단하면서도 권장하는 방법이다.
+스프링 부트는 스프링 시큐리티 관련 의존성을 모두 함께 묶어놓은 `spring-boot-starter-security` 스타터를 제공한다. 스타터는 IDE 인테그레이션 ([Eclipse](https://joshlong.com/jl/blogPost/tech_tip_geting_started_with_spring_boot.html), [IntelliJ](https://www.jetbrains.com/help/idea/spring-boot.html#d1489567e2), [NetBeans](https://github.com/AlexFalappa/nb-springboot/wiki/Quick-Tour))이나 [https://start.spring.io](https://start.spring.io/)를 통해 [스프링 이니셜라이저](https://docs.spring.io/initializr/docs/current/reference/html/)를 사용하는 게 가장 간단하면서도 권장하는 방법이다.
 
 아니면 다음 예제처럼 수동으로 스타터를 추가해도 된다:
 
