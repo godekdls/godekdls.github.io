@@ -34,7 +34,7 @@ comments: true
 
 이번 릴리즈에서 보게 될 내용은 다음과 같다:
 
-- [Servlet Security: The Big Picture](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-architecture) 섹션 추가
+- [Servlet Security: The Big Picture](../servletsecuritythebigpicture) 섹션 추가
 - [Servlet Authentication](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication) 섹션 업데이트
   - 재작성
   - [다이어그램](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-delegatingfilterproxy-figure)을 포함한 작동 방식 설명 추가

@@ -34,7 +34,7 @@ boundary: Servlet Applications
 
 ## 8.1. Updating Dependencies
 
-[메이븐](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#getting-maven-boot)이나 [그래들](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#getting-gradle-boot)로 의존성만 수정하면 끝이다.
+[메이븐](../gettingspringsecurity#421-spring-boot-with-maven)이나 [그래들](../gettingspringsecurity#431-spring-boot-with-gradle)로 의존성만 수정하면 끝이다.
 
 ---
 
