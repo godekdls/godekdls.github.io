@@ -9,7 +9,7 @@ lastmod: 2020-07-12T21:00:00+09:00
 comments: true
 ---
 
-> [프로젝트 리액터 코어 공식 reference](https://projectreactor.io/docs/core/release/reference/#getting-started)를 한글로 번역한 문서입니다.
+> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#getting-started)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 

@@ -10,7 +10,7 @@ comments: true
 boundary: Preface
 ---
 
-> [스프링 시큐리티 공식 reference](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#prerequisites)를 한글로 번역한 문서입니다.
+> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#prerequisites)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 

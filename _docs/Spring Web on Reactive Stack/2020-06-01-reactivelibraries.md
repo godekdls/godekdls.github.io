@@ -9,7 +9,7 @@ lastmod: 2020-07-12T16:00:00+09:00
 comments: true
 ---
 
-> [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-reactive-libraries)를 한글로 번역한 문서입니다.
+> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-reactive-libraries)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 

@@ -8,9 +8,9 @@ image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true
 ---
-<script>var switchLanguage=true</script>
+<script>defaultLanguages = ['java']</script>
 
-> [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-websocket)를 한글로 번역한 문서입니다.
+> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-websocket)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
@@ -106,11 +106,11 @@ HTTP 핸드셰이크 요청에 `Sec-WebSocket-Protocol` 헤더를 추가하면 �
 
 웹소켓 서버를 만들려면 먼저 `WebSocketHandler`가 필요하다. 다음은 웹소켓 핸들러를 만드는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import org.springframework.web.reactive.socket.WebSocketHandler;
 import org.springframework.web.reactive.socket.WebSocketSession;
@@ -123,7 +123,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin""></div>
 ```kotlin
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketSession
@@ -138,11 +138,11 @@ class MyWebSocketHandler : WebSocketHandler {
 
 그다음엔 핸들러를 URL에 매핑하고 `WebSocketHandlerAdapter`를 추가해야 한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 class WebConfig {
@@ -162,7 +162,7 @@ class WebConfig {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin""></div>
 ```kotlin
 @Configuration
 class WebConfig {
@@ -199,11 +199,11 @@ class WebConfig {
 
 가장 간단한 구현체는 인바운드 스트림을 처리하는 핸들러다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 class ExampleHandler implements WebSocketHandler {
 
@@ -220,7 +220,7 @@ class ExampleHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin""></div>
 ```kotlin
 class ExampleHandler : WebSocketHandler {
 
@@ -245,11 +245,11 @@ class ExampleHandler : WebSocketHandler {
 
 다음 예제는 인바운드, 아웃바운드 스트림을 함께 처리한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 class ExampleHandler implements WebSocketHandler {
 
@@ -269,7 +269,7 @@ class ExampleHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin""></div>
 ```kotlin
 class ExampleHandler : WebSocketHandler {
 
@@ -294,11 +294,11 @@ class ExampleHandler : WebSocketHandler {
 
 인바운드, 아웃바운드 스트림을 독립적으로 처리하고 완료됐을 때 합칠 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 class ExampleHandler implements WebSocketHandler {
 
@@ -321,7 +321,7 @@ class ExampleHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin""></div>
 ```kotlin
 class ExampleHandler : WebSocketHandler {
 
@@ -368,11 +368,11 @@ class ExampleHandler : WebSocketHandler {
 
 각 서버의 `RequestUpgradeStrategy` 구현체로 웹소켓 엔진 관련 옵션을 설정할 수 있다. 다음은 톰캣에서 사용할 웹소켓 옵션을 설정하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 class WebConfig {
@@ -390,7 +390,7 @@ class WebConfig {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin""></div>
 ```kotlin
 @Configuration
 class WebConfig {
@@ -425,11 +425,11 @@ CORS를 설정하고 웹소켓 엔드포인트 접근을 제한하는 가장 쉬
 
 클라이언트 인스턴스를 생성해서 `execute` 메소드를 실행하면 웹소켓 세션을 시작한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 WebSocketClient client = new ReactorNettyWebSocketClient();
 
@@ -439,7 +439,7 @@ client.execute(url, session ->
               .doOnNext(System.out::println)
               .then());
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin""></div>
 ```kotlin
 val client = ReactorNettyWebSocketClient()
 

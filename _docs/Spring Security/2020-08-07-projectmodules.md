@@ -9,7 +9,7 @@ lastmod: 2020-08-07T10:00:00+09:00
 comments: true
 ---
 
-> [스프링 시큐리티 공식 reference](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#modules)를 한글로 번역한 문서입니다.
+> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#modules)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
@@ -37,7 +37,7 @@ comments: true
 
 ## 6.1. Core — `spring-security-core.jar`
 
-이 모듈엔 핵심 인증 기능과 접근 제어를 담당하는 클래스와 인터페이스가 있으며, 원격 지원과 기본적인 프로비저닝 API를 제공한다. 스프링 시큐리티를 사용한다면 반드시 추가해야 한다. standalone 어플리케이션과 리모트 클라이언트, method security (서비스 레이어), JDBC 프로비저닝을 지원한다. 사용하는 상위 패키지는 다음과 같다:
+이 모듈엔 핵심 인증 기능과 접근 제어를 담당하는 클래스와 인터페이스가 있으며, 원격 지원과 기본적인 프로비저닝 API를 제공한다. 스프링 시큐리티를 사용한다면 반드시 추가해야 한다. standalone 어플리케이션과 리모트 클라이언트, 메소드 시큐리티 (서비스 레이어), JDBC 프로비저닝을 지원한다. 사용하는 상위 패키지는 다음과 같다:
 
 - `org.springframework.security.core`
 - `org.springframework.security.access`

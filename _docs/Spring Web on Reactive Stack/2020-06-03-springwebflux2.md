@@ -8,9 +8,9 @@ image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true
 ---
-<script>var switchLanguage=true</script>
+<script>defaultLanguages = ['java']</script>
 
-> [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux)를 한글로 번역한 문서입니다.
+> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
@@ -91,11 +91,11 @@ WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. `HandlerFunct
 
 라우터를 만들 때는 아래 예제처럼 `RouterFunctions.route()`가 제공하는 빌더를 사용할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
@@ -128,7 +128,7 @@ public class PersonHandler {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val repository: PersonRepository = ...
 val handler = PersonHandler(repository)
@@ -159,7 +159,7 @@ class PersonHandler(private val repository: PersonRepository) {
     }
 }
 ```
-<div class="description-for-kotlin"></div>
+<div class="description-for-kotlin java kotlin"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 코루틴 라우터 DSL로 라우터를 만든다. 리액티브 방식은 `router { }`를 사용한다.</small>
 
 `RouterFunction`을 실행하는 방법 중 하나는 `HttpHandler`로 변환해 내장된 [서버 어댑터](https://godekdls.github.io/Reactive%20Spring/springwebflux/#121-httphandler)에 등록하는 것이다 :
@@ -181,46 +181,46 @@ class PersonHandler(private val repository: PersonRepository) {
 
 다음은 request body를 `Mono<String>`으로 추출하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<String> string = request.bodyToMono(String.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val string = request.awaitBody<String>()
 ```
 
 다음 예제는 body를 `Flux<Person>`(코틀린은 `Flow<Person>`)으로 추출한다. `Person` 객체는 JSON이나 XML 같은 직렬화된 데이터로 디코딩한다.
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Flux<Person> people = request.bodyToFlux(Person.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val people = request.bodyToFlow<Person>()
 ```
 
 위 예제에서 사용한 메소드는 함수형 인터페이스 `BodyExtractor`를 받는 `ServerRequest.body(BodyExtractor)` 메소드의 축약 버전이다. `BodyExtractors` 유틸리티 클래스에 있는 인터페이스를 활용해도 된다. 예를 들어 앞의 예제는 다음과 같이 작성할 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<String> string = request.body(BodyExtractors.toMono(String.class));
 Flux<Person> people = request.body(BodyExtractors.toFlux(Person.class));
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val string = request.body(BodyExtractors.toMono(String::class.java)).awaitFirst()
 val people = request.body(BodyExtractors.toFlux(Person::class.java)).asFlow()
@@ -228,45 +228,45 @@ val people = request.body(BodyExtractors.toFlux(Person::class.java)).asFlow()
 
 다음 예제는 form 데이터에 접근하는 방법을 보여준다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<MultiValueMap<String, String> map = request.formData();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val map = request.awaitFormData()
 ```
 
 다음은 multipart 데이터를 map으로 가져오는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<MultiValueMap<String, Part> map = request.multipartData();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val map = request.awaitMultipartData()
 ```
 
 다음 예제는 multiparts를 스트리밍 방식으로 한 번에 하나씩 가져온다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Flux<Part> parts = request.body(BodyExtractors.toParts());
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val parts = request.body(BodyExtractors.toParts()).asFlow()
 ```
@@ -275,16 +275,16 @@ val parts = request.body(BodyExtractors.toParts()).asFlow()
 
 HTTP 응답은 `ServerResponse`로 접근할 수 있으며, 이 인터페이스는 불변이기 때문에(immutable) `build` 메소드로 생성한다. 빌더로 헤더를 추가하거나, 상태 코드, body를 설정할 수 있다. 다음은 JSON 컨텐츠로 200 (OK) 응답을 만드는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<Person> person = ...
 ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(person, Person.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val person: Person = ...
 ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(person)
@@ -292,16 +292,16 @@ ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(person)
 
 다음 예제는 body 없이 Location 헤더로만 201 (CREATED) 응답을 만든다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 URI location = ...
 ServerResponse.created(location).build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val location: URI = ...
 ServerResponse.created(location).build()
@@ -309,15 +309,15 @@ ServerResponse.created(location).build()
 
 hint 파라미터를 넘기면 사용하는 코덱에 따라 body 직렬화/역직렬화 방식을 커스텀할 수 있다. 예를 들어 [Jackson JSON view](https://www.baeldung.com/jackson-json-view-annotation)를 지정할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 ServerResponse.ok().hint(Jackson2CodecSupport.JSON_VIEW_HINT, MyJacksonView.class).body(...);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 ServerResponse.ok().hint(Jackson2CodecSupport.JSON_VIEW_HINT, MyJacksonView::class.java).body(...)
 ```
@@ -326,27 +326,27 @@ ServerResponse.ok().hint(Jackson2CodecSupport.JSON_VIEW_HINT, MyJacksonView::cla
 
 핸들러 펑션은 다음처럼 람다로 만들 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 HandlerFunction<ServerResponse> helloWorld =
   request -> ServerResponse.ok().bodyValue("Hello World");
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val helloWorld = HandlerFunction<ServerResponse> { ServerResponse.ok().bodyValue("Hello World") }
 ```
 
 편리한 방식이긴 하지만, 펑션을 여러 개 사용해야 한다면 인라인 람다로 만들기는 부담스럽다. 이럴 때는 핸들러 클래스로 관련 핸들러 펑션을 묶을 수 있다. 핸들러 클래스는 애노테이션 기반 어플리케이션의 `@Controller`와 비슷하다. 예를 들어 다음 클래스는 리액티브 `Person` 레포지토리와 관련된 요청을 처리한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
@@ -377,13 +377,13 @@ public class PersonHandler {
     }
 }
 ```
-<div class="description-for-java"></div>
+<div class="description-for-java java kotlin"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `listPeople`은 레포지토리에 있는 모든 `Person` 객체를 JSON으로 반환하는 핸들러 펑션이다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `createPerson`은 request body에 있는 `Person`을 저장하는 핸들러 펑션이다.<br>
 `PersonRepository.savePerson(Person)`은 `Mono<Void>`를 리턴한다는 점에 주의해라. 비어 있는 `Mono`는 요청 데이터를 읽어 저장하고 나면 완료됐다는 신호를 보낸다. 따라서 이 신호를 받았을 때(즉, `Person`이 저장됐을 때) 응답을 보내기 위해 `build(Publisher<Void>)`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `getPerson`은 path variable에 있는 `id`로 식별한 person 객체 하나를 리턴하는 핸들러 펑션이다.<br>
 레포지토리에서 `Person`을 찾으면 JSON 응답을 만든다. 찾지 못했다면 `switchIfEmpty(Mono<T>)`를 실행해 404 Not Found로 응답한다.</small>
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 class PersonHandler(private val repository: PersonRepository) {
 
@@ -406,7 +406,7 @@ class PersonHandler(private val repository: PersonRepository) {
     }
 }
 ```
-<div class="description-for-kotlin"></div>
+<div class="description-for-kotlin java kotlin"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `listPeople`은 레포지토리에 있는 모든 `Person` 객체를 JSON으로 반환하는 핸들러 펑션이다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `createPerson`은 request body에 있는 `Person`을 저장하는 핸들러 펑션이다.<br>`PersonRepository.savePerson(Person)`은 리턴 타입이 없는 suspend 함수라는 점에 주의해라.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `getPerson`은 path variable에 있는 `id`로 식별한 person 객체 하나를 리턴하는 핸들러 펑션이다.<br>
@@ -418,11 +418,11 @@ class PersonHandler(private val repository: PersonRepository) {
 사용해서 request body를 검증할 수 있다.
 다음 예제는 커스텀 스프링 Validator 구현체로 `person`을 검증한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 public class PersonHandler {
 
@@ -444,7 +444,7 @@ public class PersonHandler {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 class PersonHandler(private val repository: PersonRepository) {
 
@@ -488,17 +488,17 @@ class PersonHandler(private val repository: PersonRepository) {
 
 `RequestPredicate`를 직접 만들어도 되지만, 요청 path, HTTP 메소드, 컨텐츠 타입 등 자주 사용하는 구현체는 `RequestPredicates` 유틸리티 클래스에 준비돼 있다. 다음은 유틸리티 클래스로 `Accept` 헤더 조건을 추가하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 RouterFunction<ServerResponse> route = RouterFunctions.route()
     .GET("/hello-world", accept(MediaType.TEXT_PLAIN),
         request -> ServerResponse.ok().bodyValue("Hello World")).build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val route = coRouter {
     GET("/hello-world", accept(TEXT_PLAIN)) {
@@ -528,11 +528,11 @@ val route = coRouter {
 
 다음 예제는 라우터 펑션을 4개 사용한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.web.reactive.function.server.RequestPredicates.*;
@@ -549,7 +549,7 @@ RouterFunction<ServerResponse> route = route()
     .add(otherRoute) // (4)
     .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 import org.springframework.http.MediaType.APPLICATION_JSON
 
@@ -573,11 +573,11 @@ val route = coRouter {
 
 path가 같으면 대부분 같은 조건을 사용하므로, 라우터 펑션을 그룹핑하는 경우가 많다. 앞의 예제는 라우터 펑션 세 개가 `/person`을 path 조건으로 사용했다. 애노테이션을 사용했다면 클래스 레벨에 `@RequestMapping`을 선언해 중복 코드를 줄였을 거다. WebFlux.fn에선 빌더의 `path` 메소드로 path 조건을 공유한다. 예를 들어 위 코드는 아래 예제처럼 라우트 펑션을 한번 감싸 개선할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 RouterFunction<ServerResponse> route = route()
     .path("/person", builder -> builder // (1)
@@ -586,9 +586,9 @@ RouterFunction<ServerResponse> route = route()
         .POST("/person", handler::createPerson))
     .build();
 ```
-<div class="description-for-java"></div>
+<div class="description-for-java java kotlin"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `path`의 두 번째 파라미터는 라우터 빌더를 받는 컨슈머 인터페이스다.</small>
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val route = coRouter {
     "/person".nest {
@@ -601,11 +601,11 @@ val route = coRouter {
 
 path가 가장 흔하긴 하지만, 빌더의 `nest` 메소드는 다른 조건도 감쌀 수 있다. 위 코드는 여전히 `Accept` 헤더가 중복이다. `nest` 메소드를 함께 사용하면 코드를 한 층 더 개선할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 RouterFunction<ServerResponse> route = route()
     .path("/person", b1 -> b1
@@ -615,7 +615,7 @@ RouterFunction<ServerResponse> route = route()
         .POST("/person", handler::createPerson))
     .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val route = coRouter {
     "/person".nest {
@@ -650,11 +650,11 @@ HTTP 서버에선 어떻게 라우터 펑션을 실행할까?
 
 다음은 웹플럭스 자바 설정을 사용한 예시다(실행 방법은 [DispatcherHandler](https://godekdls.github.io/Reactive%20Spring/springwebflux/#13-dispatcherhandler)를 참고하라):
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -688,7 +688,7 @@ public class WebConfig implements WebFluxConfigurer {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -726,11 +726,11 @@ class WebConfig : WebFluxConfigurer {
 
 핸들러 펑션에 필터를 적용할 땐 라우터 빌더의 `before`, `after`, `filter` 메소드를 사용한다. 이 기능을 애노테이션 모델로 구현한다면 `@ControllerAdvice`나 `ServletFilter`를 사용했을 것이다. 필터는 빌더의 모든 라우터 펑션에 적용된다. 이 말은 필터를 감싸져 있는 라우터에서 정의하면, 상위 레벨에는 적용되지 않는다는 뜻이다. 예시로 다음 코드를 보라:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 RouterFunction<ServerResponse> route = route()
     .path("/person", b1 -> b1
@@ -744,7 +744,7 @@ RouterFunction<ServerResponse> route = route()
     .after((request, response) -> logResponse(response)) // (2) 
     .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val route = router {
     "/person".nest {
@@ -768,11 +768,11 @@ val route = router {
 
 이제 path를 보고 요청을 허가할지 말지 결정하는 `SecurityManager`가 있다고 가정하고, 간단한 보안 필터를 라우터에 적용해 보자:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 SecurityManager securityManager = ...
 
@@ -792,7 +792,7 @@ RouterFunction<ServerResponse> route = route()
     })
     .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val securityManager: SecurityManager = ...
 
@@ -832,11 +832,11 @@ val route = router {
 
 `UriComponentsBuilder`를 사용하면 URI 템플릿과 변수로 쉽게 URI를 만들 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 UriComponents uriComponents = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}") // (1)  
@@ -846,7 +846,7 @@ UriComponents uriComponents = UriComponentsBuilder
 
 URI uri = uriComponents.expand("Westin", "123").toUri(); // (5)  
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val uriComponents = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}") // (1)  
@@ -864,11 +864,11 @@ val uri = uriComponents.expand("Westin", "123").toUri() // (5)
 
 `buildAndExpand` 메소드로 한 번에 URI를 가져올 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 URI uri = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}")
@@ -877,7 +877,7 @@ URI uri = UriComponentsBuilder
         .buildAndExpand("Westin", "123")
         .toUri();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val uri = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}")
@@ -889,18 +889,18 @@ val uri = UriComponentsBuilder
 
 아래처럼 바로 URI를 만들면 코드를 더 줄일 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 URI uri = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}")
         .queryParam("q", "{q}")
         .build("Westin", "123");
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val uri = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}")
@@ -910,17 +910,17 @@ val uri = UriComponentsBuilder
 
 URI 전체를 템플릿으로 쓰면 코드를 한 번 더 줄일 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 URI uri = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}?q={q}")
         .build("Westin", "123");
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val uri = UriComponentsBuilder
         .fromUriString("https://example.com/hotels/{hotel}?q={q}")
@@ -935,11 +935,11 @@ val uri = UriComponentsBuilder
 
 다음 예제는 팩토리를 `RestTemplate`에 설정하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 // import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
 
@@ -950,7 +950,7 @@ factory.setEncodingMode(EncodingMode.TEMPLATE_AND_VALUES);
 RestTemplate restTemplate = new RestTemplate();
 restTemplate.setUriTemplateHandler(factory);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 // import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode
 
@@ -964,11 +964,11 @@ restTemplate.uriTemplateHandler = factory
 
 다음 예제는 `WebClient`를 설정한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 // import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
 
@@ -978,7 +978,7 @@ factory.setEncodingMode(EncodingMode.TEMPLATE_AND_VALUES);
 
 WebClient client = WebClient.builder().uriBuilderFactory(factory).build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 // import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode
 
@@ -991,11 +991,11 @@ val client = WebClient.builder().uriBuilderFactory(factory).build()
 
 `DefaultUriBuilderFactory`로 직접 URI를 만들어도 된다. `UriComponentsBuilder`를 사용하는 것과 비슷하지만, 팩토리는 스태틱 메소드가 아닌 설정을 가지고 있는 실제 인스턴스다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 String baseUrl = "https://example.com";
 DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(baseUrl);
@@ -1004,7 +1004,7 @@ URI uri = uriBuilderFactory.uriString("/hotels/{hotel}")
         .queryParam("q", "{q}")
         .build("Westin", "123");
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val baseUrl = "https://example.com"
 val uriBuilderFactory = DefaultUriBuilderFactory(baseUrl)
@@ -1031,11 +1031,11 @@ URI 변수 적용한 *후에* URI 컴포넌트를 인코딩한다.
 
 다음은 첫 번째 옵션을 사용하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 URI uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
         .queryParam("q", "{q}")
@@ -1045,7 +1045,7 @@ URI uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
 
 // Result is "/hotel%20list/New%20York?q=foo%2Bbar"
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
         .queryParam("q", "{q}")
@@ -1058,17 +1058,17 @@ val uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
 
 아래처럼 바로 URI를 만들면 코드를 더 줄일 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 URI uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
         .queryParam("q", "{q}")
         .build("New York", "foo+bar")
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
         .queryParam("q", "{q}")
@@ -1077,16 +1077,16 @@ val uri = UriComponentsBuilder.fromPath("/hotel list/{city}")
 
 URI 전체를 템플릿으로 쓰면 코드를 한 번 더 줄일 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 URI uri = UriComponentsBuilder.fromPath("/hotel list/{city}?q={q}")
         .build("New York", "foo+bar")
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val uri = UriComponentsBuilder.fromPath("/hotel list/{city}?q={q}")
         .build("New York", "foo+bar")
@@ -1094,11 +1094,11 @@ val uri = UriComponentsBuilder.fromPath("/hotel list/{city}?q={q}")
 
 `WebClient`와 `RestTemplate`은 내부에서 `UriBuilderFactory`를 사용해 URI 템플릿을 확장하고 인코딩한다. 아래 예제처럼 둘 다 팩토리 전략을 커스텀할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 String baseUrl = "https://example.com";
 DefaultUriBuilderFactory factory = new DefaultUriBuilderFactory(baseUrl)
@@ -1111,7 +1111,7 @@ restTemplate.setUriTemplateHandler(factory);
 // Customize the WebClient..
 WebClient client = WebClient.builder().uriBuilderFactory(factory).build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val baseUrl = "https://example.com"
 val factory = DefaultUriBuilderFactory(baseUrl).apply {
@@ -1177,11 +1177,11 @@ cross-origin 요청(`Origin` 헤더와 호스트가 다른)을 허용하려면 �
 
 다음과 같이 컨트롤러 메소드에 `@CrossOrigin`을 선언하면 cross-origin 요청을 허용한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @RestController
 @RequestMapping("/account")
@@ -1199,7 +1199,7 @@ public class AccountController {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @RestController
 @RequestMapping("/account")
@@ -1230,11 +1230,11 @@ class AccountController {
 
 `@CrossOrigin`을 클래스 레벨에 사용하면 모든 메소드에 상속한다. 다음은 특정 도메인을 지정하고 `maxAge`를 1시간으로 설정하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @CrossOrigin(origins = "https://domain2.com", maxAge = 3600)
 @RestController
@@ -1252,7 +1252,7 @@ public class AccountController {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @CrossOrigin("https://domain2.com", maxAge = 3600)
 @RestController
@@ -1273,11 +1273,11 @@ class AccountController {
 
 아래 예제처럼 `@CrossOrigin`을 클래스 레벨과 메소드 레벨에 동시에 선언해도 된다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @CrossOrigin(maxAge = 3600) // (1)
 @RestController
@@ -1296,7 +1296,7 @@ public class AccountController {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @CrossOrigin(maxAge = 3600) // (1)
 @RestController
@@ -1336,11 +1336,11 @@ class AccountController {
 
 웹플럭스 자바 설정으로 CORS를 활성화시키려면 다음 예제처럼 `CorsRegistry` 콜백을 사용한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -1360,7 +1360,7 @@ public class WebConfig implements WebFluxConfigurer {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -1390,11 +1390,11 @@ class WebConfig : WebFluxConfigurer {
 
 필터를 설정하려면, 다음 코드처럼 `CorsWebFilter` 생성자에 `CorsConfigurationSource`를 주입하고 빈으로 정의한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Bean
 CorsWebFilter corsFilter() {
@@ -1415,7 +1415,7 @@ CorsWebFilter corsFilter() {
     return new CorsWebFilter(source);
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Bean
 fun corsFilter(): CorsWebFilter {
@@ -1479,11 +1479,11 @@ Thymeleaf-스프링 웹플럭스 통합 모듈은 Thymeleaf 프로젝트에서 �
 
 다음은 FreeMarker를 설정하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -1504,7 +1504,7 @@ public class WebConfig implements WebFluxConfigurer {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -1531,11 +1531,11 @@ class WebConfig : WebFluxConfigurer {
 
 `FreeMarkerConfigurer` 빈 프로퍼티로 FreeMarker `Configuration` 객체(스프링이 관리하는)에 'Settings', 'SharedVariables' 값을 설정할 수 있다. `freemarkerSettings` 프로퍼티는 `java.util.Properties` 객체를, `freemarkerVariables` 프로퍼티는 `java.util.Map`을 사용한다. 다음은 `FreeMarkerConfigurer`를 사용하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -1555,7 +1555,7 @@ public class WebConfig implements WebFluxConfigurer {
     }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -1638,11 +1638,11 @@ FreeMarker를 위한 표준 매크로 셋은 `spring-webflux.jar` 파일에 들�
 
 `ScriptTemplateConfigurer` 빈으로 실행할 스크립트 엔진과, 로딩할 스크립트 파일, 템플릿을 렌더링할 때 실행할 함수 등을 설정할 수 있다. 다음 예제는 Mustache 템플릿과 Nashorn 자바스크립트 엔진을 사용한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -1664,7 +1664,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -1694,11 +1694,11 @@ class WebConfig : WebFluxConfigurer {
 
 스크립트를 추가하면 커스텀 렌더 함수를 사용할 수 있다. 예를 들어 [Handlerbars](https://handlebarsjs.com/)는 템플릿을 사용하기 전 먼저 컴파일해야 하고, 서버 사이드 스크립트 엔진에서 사용할 수 없는 일부 브라우저 기능은 [polyfill](https://en.wikipedia.org/wiki/Polyfill)이 필요하다. 다음은 커스텀 렌더 함수를 설정하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -1720,7 +1720,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -1744,14 +1744,14 @@ class WebConfig : WebFluxConfigurer {
 
 `polyfill.js`는 다음 코드에 보이는 것처럼, 단순히 Handlebars에서 필요한  `window` 객체만 정의한다:
 
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```javascript
 var window = {};
 ```
 
 기본적으로 `render.js`가 템플릿을 사용하기 전에 컴파일한다. 실제 production 환경이라면, 템플릿을 캐시에 저장해놓고 쓰거나 미리 컴파일해둘 필요가 있다. 커스텀할 때 사용했던 스크립트로 이를 구현할 수 있다(예를 들어 템플릿 엔진 설정을 관리하는 스크립트). 다음 예제는 템플릿을 컴파일하는 방법을 보여준다:
 
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```javascript
 function render(template, model) {
     var compiledTemplate = Handlebars.compile(template);
@@ -1792,11 +1792,11 @@ function render(template, model) {
 
 [RFC 7234](https://tools.ietf.org/html/rfc7234#section-5.2.2)는 `Cache-Control` 응답 헤더의 모든 것을 다룬다. 하지만 `CacheControl`을 사용하면 다음 예제처럼, 자주 사용하는 케이스별로 시나리오를 만들 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 // Cache for an hour - "Cache-Control: max-age=3600"
 CacheControl ccCacheOneHour = CacheControl.maxAge(1, TimeUnit.HOURS);
@@ -1809,7 +1809,7 @@ CacheControl ccNoStore = CacheControl.noStore();
 // "Cache-Control: max-age=864000, public, no-transform"
 CacheControl ccCustom = CacheControl.maxAge(10, TimeUnit.DAYS).noTransform().cachePublic();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 // Cache for an hour - "Cache-Control: max-age=3600"
 val ccCacheOneHour = CacheControl.maxAge(1, TimeUnit.HOURS)
@@ -1829,11 +1829,11 @@ val ccCustom = CacheControl.maxAge(10, TimeUnit.DAYS).noTransform().cachePublic(
 
 컨트롤러는 HTTP 캐시를 직접 명시할 수 있다. 요청 헤더와 비교하기 전에 `lastModified`나 `ETag` 값을 계산해야 하므로, 보통은 컨트롤러에 명시하는 게 맞다. 다음 예제처럼  `ResponseEntity`에 `ETag`,  `Cache-Control` 설정을 추가하면 된다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @GetMapping("/book/{id}")
 public ResponseEntity<Book> showBook(@PathVariable Long id) {
@@ -1848,7 +1848,7 @@ public ResponseEntity<Book> showBook(@PathVariable Long id) {
           .body(book);
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @GetMapping("/book/{id}")
 fun showBook(@PathVariable id: Long): ResponseEntity<Book> {
@@ -1868,11 +1868,11 @@ fun showBook(@PathVariable id: Long): ResponseEntity<Book> {
 
 다음 예제처럼 컨트롤러에서 직접 요청 헤더를 체크할 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @RequestMapping
 public String myHandleMethod(ServerWebExchange exchange, Model model) {
@@ -1887,7 +1887,7 @@ public String myHandleMethod(ServerWebExchange exchange, Model model) {
   return "myViewName";
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @RequestMapping
 fun myHandleMethod(exchange: ServerWebExchange, model: Model): String? {
@@ -1930,18 +1930,18 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 
 자바 설정에 `@EnableWebFlux` 애노테이션을 선언하면 웹플럭스 설정을 사용할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
 public class WebConfig {
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -1956,11 +1956,11 @@ class WebConfig
 
 자바 설정 파일은 `WebFluxConfigurer` 인터페이스를 구현할 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -1969,7 +1969,7 @@ public class WebConfig implements WebFluxConfigurer {
   // Implement configuration methods...
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -1987,11 +1987,11 @@ class WebConfig : WebFluxConfigurer {
 
 커스텀 포맷터와 컨버터는 다음과 같이 등록한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2004,7 +2004,7 @@ public class WebConfig implements WebFluxConfigurer {
 
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2018,11 +2018,11 @@ class WebConfig : WebFluxConfigurer {
 
 스프링 웹플럭스는 기본적으로 날짜를 파싱하고 포맷팅할 때 요청 Locale을 사용한다. 단, 이건 날짜를 "input" form의 String으로 표현했을 때의 동작이다. 브라우저는 "date", "time" form 필드는 HTML 스펙에 정의된 고정 포맷을 사용한다. 이런 경우 아래 예제처럼 포맷을 커스텀할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2036,7 +2036,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2060,11 +2060,11 @@ class WebConfig : WebFluxConfigurer {
 
 글로벌 `Validator` 인스턴스를 커스텀하고 싶으면 다음 예제처럼 자바 설정을 이용하면 된다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2077,7 +2077,7 @@ public class WebConfig implements WebFluxConfigurer {
 
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2092,11 +2092,11 @@ class WebConfig : WebFluxConfigurer {
 
 물론 원하는 곳에서만 사용할 `Validator`도 등록할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Controller
 public class MyController {
@@ -2108,7 +2108,7 @@ public class MyController {
 
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Controller
 class MyController {
@@ -2130,11 +2130,11 @@ class MyController {
 
 다음은 요청 content-type 매핑 방식을 커스텀하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2146,7 +2146,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2164,11 +2164,11 @@ class WebConfig : WebFluxConfigurer {
 
 다음 예제는 요청, 응답 body를 읽고 쓰는 방식을 커스텀한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2180,7 +2180,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2212,11 +2212,11 @@ Jackson JSON과 XML을 사용한다면, 다음과 같은 Jackson 디폴트 프�
 
 다음은 뷰 리졸버를 설정하는 코드다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2228,7 +2228,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2242,11 +2242,11 @@ class WebConfig : WebFluxConfigurer {
 
 `ViewResolverRegistry`로 간단하게 view 기술을 스프링 프레임워크에 통합할 수 있다. 다음 예제는 FreeMarker를 사용한다(별도 FreeMarker 설정이 필요하다):
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2268,7 +2268,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2289,11 +2289,11 @@ class WebConfig : WebFluxConfigurer {
 
 다음 예제처럼 `ViewResolver` 구현체를 직접 등록할 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2307,7 +2307,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2322,11 +2322,11 @@ class WebConfig : WebFluxConfigurer {
 
 [Content Negotiation](https://godekdls.github.io/Reactive%20Spring/springwebflux/#content-negotiation)을 위해 HTML 외 다른 포맷으로 렌더링한다면, `spring-web` 모듈에 있는 모든 [코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)과 호환되는 `HttpMessageWriterView` 구현체로 디폴트 뷰를 여러 개 설정하면 된다. 다음 예제를 보라:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2344,7 +2344,7 @@ public class WebConfig implements WebFluxConfigurer {
   // ...
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2372,11 +2372,11 @@ class WebConfig : WebFluxConfigurer {
 
 다음 예제에선  `/resources`로 시작하는 요청은 상대경로를 사용해서 클래스패스 `/static`에 있는 스태틱 리소스를 찾는다. 브라우저 캐시를 최대한 활용해서 HTTP 요청을 줄이기 위해 리소스 만료 기한은 1년 후로 잡았다. `Last-Modified` 헤더를 검사한 후 브라우저 캐시가 최신이라면 `304` 상태 코드를 리턴한다.
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2391,7 +2391,7 @@ public class WebConfig implements WebFluxConfigurer {
 
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2411,11 +2411,11 @@ class WebConfig : WebFluxConfigurer {
 
 다음 예제는 `VersionResourceResolver`를 사용한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2431,7 +2431,7 @@ public class WebConfig implements WebFluxConfigurer {
 
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2461,11 +2461,11 @@ class WebConfig : WebFluxConfigurer {
 
 Path 매칭 관련 옵션도 커스텀할 수 있다. 각 옵션에 대한 자세한 설명은 [`PathMatchConfigurer`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/config/PathMatchConfigurer.html) javadoc을 참고하라. 다음은 `PathMatchConfigurer`를 사용하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 @EnableWebFlux
@@ -2481,7 +2481,7 @@ public class WebConfig implements WebFluxConfigurer {
   }
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 @EnableWebFlux
@@ -2511,11 +2511,11 @@ class WebConfig : WebFluxConfigurer {
 
 더 많은 설정을 커스텀하고 싶다면, 다음 예제처럼 `@EnableWebFlux`를 지우고 `WebFluxConfigurer`를 구현하는 대신 `DelegatingWebFluxConfiguration`을 직접 상속하면 된다.
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Configuration
 public class WebConfig extends DelegatingWebFluxConfiguration {
@@ -2523,7 +2523,7 @@ public class WebConfig extends DelegatingWebFluxConfiguration {
   // ...
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 class WebConfig : DelegatingWebFluxConfiguration {

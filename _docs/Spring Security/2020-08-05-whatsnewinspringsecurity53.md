@@ -9,7 +9,7 @@ lastmod: 2020-08-05T10:00:00+09:00
 comments: true
 ---
 
-> [스프링 시큐리티 공식 reference](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#community)를 한글로 번역한 문서입니다.
+> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#community)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
@@ -30,18 +30,18 @@ comments: true
 
 ## 3.1. Documentation Updates
 
-우리는 문서를 재작성하는데 계속해서 노력을 기울일 것이다.
+우리는 계속해서 문서를 업데이트하려고 노력할 것이다.
 
 이번 릴리즈에서 보게 될 내용은 다음과 같다:
 
 - [Servlet Security: The Big Picture](../servletsecuritythebigpicture) 섹션 추가
-- [Servlet Authentication](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication) 섹션 업데이트
+- [Servlet Authentication](../authentication) 섹션 업데이트
   - 재작성
-  - [다이어그램](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-delegatingfilterproxy-figure)을 포함한 작동 방식 설명 추가
+  - [다이어그램](../servletsecuritythebigpicture#servlet-delegatingfilterproxy-figure)을 포함한 작동 방식 설명 추가
 - [코틀린 샘플](https://github.com/spring-projects/spring-security/tree/5.3.2.RELEASE/samples/boot/kotlin) 추가
 - UI 개선
   - 스크롤 메뉴 추가
-  - [토글](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication-userdetailsservice) 추가
+  - [토글](../authentication#10107-userdetailsservice) 추가
   - 스타일 업데이트
 
 ---
@@ -50,8 +50,8 @@ comments: true
 
 - [코틀린 DSL](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#kotlin-config-httpsecurity) 추가
 - OAuth 2.0 Client
-  - [OAuth 2.0 Client](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-client), [OAuth 2.0 Login](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-login), [OIDC Login](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oidc-login) 테스트 지원 추가
-  - [OAuth 2.0 Authorization 요청 커스텀 기능](https://github.com/spring-projects/spring-security/pull/7748) 개선
+  - [OAuth 2.0 클라이언트](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-client), [OAuth 2.0 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-login), [OIDC 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oidc-login) 테스트 지원 추가
+  - [OAuth 2.0 인가 요청 커스텀 기능](https://github.com/spring-projects/spring-security/pull/7748) 개선
   - 향상된 [OIDC logout success handler (`{baseUrl}` 지원)](https://github.com/spring-projects/spring-security/issues/7842)
   - [OAuth2Authorization success/failure handlers](https://github.com/spring-projects/spring-security/issues/7840) 추가
   - [XML 지원](https://github.com/spring-projects/spring-security/issues/5184) 추가
@@ -72,9 +72,9 @@ comments: true
 
 ## 3.3. WebFlux
 
-- [DSL support for 커스텀 헤더 writers를 위한 DSL 지원](https://github.com/spring-projects/spring-security/issues/7636) 추가
+- [커스텀 헤더 writers를 위한 DSL 지원](https://github.com/spring-projects/spring-security/issues/7636) 추가
 - OAuth 2.0 Client
-  - [OAuth 2.0 Client](https://github.com/spring-projects/spring-security/issues/7910), [OAuth 2.0 Login](https://github.com/spring-projects/spring-security/issues/7828), [OIDC Login](https://github.com/spring-projects/spring-security/issues/7680) 테스트 지원 추가
+  - [OAuth 2.0 클라이언트](https://github.com/spring-projects/spring-security/issues/7910), [OAuth 2.0 로그인](https://github.com/spring-projects/spring-security/issues/7828), [OIDC 로그인](https://github.com/spring-projects/spring-security/issues/7680) 테스트 지원 추가
   - 향상된 [OIDC logout success handler (`{baseUrl}` 지원)](https://github.com/spring-projects/spring-security/issues/7842)
   - [OAuth2Authorization success/failure handlers](https://github.com/spring-projects/spring-security/issues/7699) 추가
   - [OAuth 2.0 토큰을 위한 JSON 직렬화 지원](https://github.com/spring-projects/spring-security/issues/4886) 추가

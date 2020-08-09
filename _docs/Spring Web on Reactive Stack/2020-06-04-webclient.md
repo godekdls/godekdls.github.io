@@ -8,9 +8,9 @@ image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true
 ---
-<script>var switchLanguage=true</script>
+<script>defaultLanguages = ['java']</script>
 
-> [리액티브 스프링 공식 reference](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-client)를 한글로 번역한 문서입니다.
+> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-client)를 한글로 번역한 문서입니다.
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
@@ -60,11 +60,11 @@ comments: true
 
 다음 예제는 [HTTP 코덱](https://godekdls.github.io/Reactive%20Spring/springwebflux/#125-codecs)을 설정한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 WebClient client = WebClient.builder()
       .exchangeStrategies(builder -> {
@@ -74,7 +74,7 @@ WebClient client = WebClient.builder()
       })
       .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val webClient = WebClient.builder()
       .exchangeStrategies { strategies ->
@@ -87,11 +87,11 @@ val webClient = WebClient.builder()
 
 `WebClient`는 한 번 빌드하고 나면 상태를 변경할 수 없다(immutable). 단, 다음 예제처럼 원본 인스턴스는 그대로 두고 복사해 와서 설정을 추가할 수는 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 WebClient client1 = WebClient.builder()
       .filter(filterA).filter(filterB).build();
@@ -103,7 +103,7 @@ WebClient client2 = client1.mutate()
 
 // client2 has filterA, filterB, filterC, filterD
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val client1 = WebClient.builder()
       .filter(filterA).filter(filterB).build()
@@ -126,11 +126,11 @@ org.springframework.core.io.buffer.DataBufferLimitException: Exceeded limit on m
 
 다음 코드를 사용하면 모든 디폴트 코덱의 최대 버퍼 사이즈를 조절할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 WebClient webClient = WebClient.builder()
       .exchangeStrategies(builder ->
@@ -140,7 +140,7 @@ WebClient webClient = WebClient.builder()
       )
       .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val webClient = WebClient.builder()
   .exchangeStrategies { builder ->
@@ -155,11 +155,11 @@ val webClient = WebClient.builder()
 
 `HttpClient`는 Reactor Netty 설정을 커스텀할 수 있는 간단한 설정 프리셋을 가지고 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 HttpClient httpClient = HttpClient.create().secure(sslSpec -> ...);
 
@@ -167,7 +167,7 @@ WebClient webClient = WebClient.builder()
       .clientConnector(new ReactorClientHttpConnector(httpClient))
       .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val httpClient = HttpClient.create().secure { ... }
 
@@ -182,18 +182,18 @@ val webClient = WebClient.builder()
 
 서버가 프로세스와 함께 중단된다면 명시적으로 리소스를 종료시킬 필요는 없다. 하지만 프로세스 내에서 서버를 시작하거나 중단할 수 있다면(e.g. WAR로 배포한 스프링 MVC 어플리케이션), 다음 예제처럼 스프링이 관리하는 `ReactorResourceFactory`빈을 `globalResources=true`(디폴트)로 선언해야 스프링 `ApplicationContext`를 닫을 때 Reactor Netty 글로벌 리소스도 종료한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Bean
 public ReactorResourceFactory reactorResourceFactory() {
   return new ReactorResourceFactory();
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Bean
 fun reactorResourceFactory() = ReactorResourceFactory()
@@ -201,11 +201,11 @@ fun reactorResourceFactory() = ReactorResourceFactory()
 
 원한다면 글로벌 Reactor Netty 리소스를 사용하지 않게 만들 수도 있다. 하지만 이 모드에선, 다음 예제처럼 직접 모든 Reactor Netty 클라이언트와 서버 인스턴스가 공유 자원을 사용하게 만들어야 한다.
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Bean
 public ReactorResourceFactory resourceFactory() {
@@ -227,7 +227,7 @@ public WebClient webClient() {
   return WebClient.builder().clientConnector(connector).build(); // (3)
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Bean
 fun resourceFactory() = ReactorResourceFactory().apply {
@@ -254,11 +254,11 @@ fun webClient(): WebClient {
 
 다음은 커넥션 타임아웃을 설정하는 코드다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import io.netty.channel.ChannelOption;
 
@@ -266,7 +266,7 @@ HttpClient httpClient = HttpClient.create()
       .tcpConfiguration(client ->
               client.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000));
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 import io.netty.channel.ChannelOption
 
@@ -276,11 +276,11 @@ val httpClient = HttpClient.create()
 
 다음은 read/write 타임아웃을 설정한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
@@ -291,7 +291,7 @@ HttpClient httpClient = HttpClient.create()
                       .addHandlerLast(new ReadTimeoutHandler(10))
                       .addHandlerLast(new WriteTimeoutHandler(10))));
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 import io.netty.handler.timeout.ReadTimeoutHandler
 import io.netty.handler.timeout.WriteTimeoutHandler
@@ -308,11 +308,11 @@ val httpClient = HttpClient.create().tcpConfiguration {
 
 다음은 Jetty `HttpClient` 설정을 커스텀하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 HttpClient httpClient = new HttpClient();
 httpClient.setCookieStore(...);
@@ -320,7 +320,7 @@ ClientHttpConnector connector = new JettyClientHttpConnector(httpClient);
 
 WebClient webClient = WebClient.builder().clientConnector(connector).build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val httpClient = HttpClient()
 httpClient.cookieStore = ...
@@ -333,11 +333,11 @@ val webClient = WebClient.builder().clientConnector(connector).build();
 
 다음 예제처럼 스프링이 관리하는 `JettyResourceFactory` 빈을 정의하면, 여러 Jetty 클라이언트(그리고 서버도) 인스턴스에서 리소스를 공유할 수 있고, 스프링 `ApplicationContext`를 닫을 때 리소스도 종료시킬 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 @Bean
 public JettyResourceFactory resourceFactory() {
@@ -356,7 +356,7 @@ public WebClient webClient() {
   return WebClient.builder().clientConnector(connector).build(); // (2)
 }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Bean
 fun resourceFactory() = JettyResourceFactory()
@@ -381,11 +381,11 @@ fun webClient(): WebClient {
 
 `retrieve()`는 response body를 받아 디코딩하는 가장 간단한 메소드다. 사용 방법은 다음 예제에 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 WebClient client = WebClient.create("https://example.org");
 
@@ -394,7 +394,7 @@ Mono<Person> result = client.get()
       .retrieve()
       .bodyToMono(Person.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val client = WebClient.create("https://example.org")
 
@@ -406,18 +406,18 @@ val result = client.get()
 
 다음 예제처럼 응답을 객체 스트림으로도 디코딩할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Flux<Quote> result = client.get()
       .uri("/quotes").accept(MediaType.TEXT_EVENT_STREAM)
       .retrieve()
       .bodyToFlux(Quote.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val result = client.get()
       .uri("/quotes").accept(MediaType.TEXT_EVENT_STREAM)
@@ -427,11 +427,11 @@ val result = client.get()
 
 4xx, 5xx 응답 코드를 받으면 디폴트는 `WebClientResponseException` 또는 각 HTTP 상태에 해당하는 `WebClientResponseException.BadRequest`, `WebClientResponseException.NotFound` 등의 하위 exception을 던진다. 다음 예제처럼 `onStatus` 메소드로 상태별 exception을 커스텀할 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<Person> result = client.get()
       .uri("/persons/{id}", id).accept(MediaType.APPLICATION_JSON)
@@ -440,7 +440,7 @@ Mono<Person> result = client.get()
       .onStatus(HttpStatus::is5xxServerError, response -> ...)
       .bodyToMono(Person.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val result = client.get()
       .uri("/persons/{id}", id).accept(MediaType.APPLICATION_JSON)
@@ -458,18 +458,18 @@ val result = client.get()
 
 `exchange()` 메소드는 `retrieve`보다 더 많은 기능을 제공한다. 다음 예제는 `retrieve()` 예제와 동일하지만, `ClientResponse`에 접근한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<Person> result = client.get()
       .uri("/persons/{id}", id).accept(MediaType.APPLICATION_JSON)
       .exchange()
       .flatMap(response -> response.bodyToMono(Person.class));
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val result = client.get()
       .uri("/persons/{id}", id).accept(MediaType.APPLICATION_JSON)
@@ -479,18 +479,18 @@ val result = client.get()
 
 같은 레벨에서 `ResponseEntity`를 만들 수도 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<ResponseEntity<Person>> result = client.get()
       .uri("/persons/{id}", id).accept(MediaType.APPLICATION_JSON)
       .exchange()
       .flatMap(response -> response.toEntity(Person.class));
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val result = client.get()
       .uri("/persons/{id}", id).accept(MediaType.APPLICATION_JSON)
@@ -508,11 +508,11 @@ val result = client.get()
 
 request body는 `Mono`, 코틀린 코루틴 `Deferred` 등 `ReactiveAdapterRegistry`에 등록한 모든 비동기 타입으로 인코딩할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<Person> personMono = ... ;
 
@@ -523,7 +523,7 @@ Mono<Void> result = client.post()
       .retrieve()
       .bodyToMono(Void.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val personDeferred: Deferred<Person> = ...
 
@@ -536,11 +536,11 @@ client.post()
 ```
 
 다음 예제처럼 객체 스트림으로도 인코딩할 수 있다:
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Flux<Person> personFlux = ... ;
 
@@ -551,7 +551,7 @@ Mono<Void> result = client.post()
       .retrieve()
       .bodyToMono(Void.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val people: Flow<Person> = ...
 
@@ -565,11 +565,11 @@ client.post()
 
 비동기 타입이 아닌 실제 값을 가지고 있다면 `bodyValue`를 사용한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Person person = ... ;
 
@@ -580,7 +580,7 @@ Mono<Void> result = client.post()
       .retrieve()
       .bodyToMono(Void.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val person: Person = ...
 
@@ -596,11 +596,11 @@ client.post()
 
 form 데이터를 보내려면 `MultiValueMap<String, String>`을 body로 사용해야 한다. 이때는 `FormHttpMessageWriter`가 자동으로 content-type을 `application/x-www-form-urlencoded`로 설정한다. 다음은 `MultiValueMap<String, String>`을 사용하는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 MultiValueMap<String, String> formData = ... ;
 
@@ -610,7 +610,7 @@ Mono<Void> result = client.post()
       .retrieve()
       .bodyToMono(Void.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val formData: MultiValueMap<String, String> = ...
 
@@ -623,11 +623,11 @@ client.post()
 
 `BodyInserters`를 사용하면 인라인으로 form 데이터를 만들 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import static org.springframework.web.reactive.function.BodyInserters.*;
 
@@ -637,7 +637,7 @@ Mono<Void> result = client.post()
       .retrieve()
       .bodyToMono(Void.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 import org.springframework.web.reactive.function.BodyInserters.*
 
@@ -652,11 +652,11 @@ client.post()
 
 multipart 데이터를 보낼 때는 `MultiValueMap<String, ?>`을 사용해서, 각 value에 part 컨텐츠를 나타내는 `Object` 인스턴스나, part의 컨텐츠와 헤더를 나타내는 `HttpEntity`를 담아야 한다. `MultipartBodyBuilder`를 사용하면 좀 더 편리하다. 다음은 `MultiValueMap<String, ?>`을 만드는 예제다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 MultipartBodyBuilder builder = new MultipartBodyBuilder();
 builder.part("fieldPart", "fieldValue");
@@ -666,7 +666,7 @@ builder.part("myPart", part); // Part from a server request
 
 MultiValueMap<String, HttpEntity<?>> parts = builder.build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val builder = MultipartBodyBuilder().apply {
   part("fieldPart", "fieldValue")
@@ -682,11 +682,11 @@ val parts = builder.build()
 
 `MultiValueMap`을 만들었으면, 가장 간단하게는 다음 예제처럼 `body` 메소드로 `WebClient`에 넘길 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 MultipartBodyBuilder builder = ...;
 
@@ -696,7 +696,7 @@ Mono<Void> result = client.post()
       .retrieve()
       .bodyToMono(Void.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val builder: MultipartBodyBuilder = ...
 
@@ -711,11 +711,11 @@ client.post()
 
 `MultipartBodyBuilder`대신 `BodyInserters`를 사용하면 인라인으로 multipart 컨텐츠를 만들 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import static org.springframework.web.reactive.function.BodyInserters.*;
 
@@ -725,7 +725,7 @@ Mono<Void> result = client.post()
       .retrieve()
       .bodyToMono(Void.class);
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 import org.springframework.web.reactive.function.BodyInserters.*
 
@@ -742,11 +742,11 @@ client.post()
 
 `WebClient.Builder`로 클라이언트 필터(`ExchangeFilterFunction`)를 등록하면, 요청을 처리하기 전에 가로채서 수정할 수 있다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 WebClient client = WebClient.builder()
       .filter((request, next) -> {
@@ -759,7 +759,7 @@ WebClient client = WebClient.builder()
       })
       .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val client = WebClient.builder()
       .filter { request, next ->
@@ -775,11 +775,11 @@ val client = WebClient.builder()
 
 필터는 인증 처리 같은 횡단 관심사(cross-cutting concerns)를 처리할 때 유용하다. 다음 예제는 스태틱 팩토리 메소드를 사용해서 기본 인증 필터를 추가한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
@@ -787,7 +787,7 @@ WebClient client = WebClient.builder()
       .filter(basicAuthentication("user", "password"))
       .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 import org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication
 
@@ -798,11 +798,11 @@ val client = WebClient.builder()
 
 필터는 모든 요청에 전역으로 적용된다. 필터에서 특정 요청만 처리하고 싶다면, 다음 예제처럼 `ClientRequest`에 request attribute를 추가하고, 필터에서 이 attribute에 접근하면 된다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 WebClient client = WebClient.builder()
       .filter((request, next) -> {
@@ -818,7 +818,7 @@ client.get().uri("https://example.org/")
 
   }
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val client = WebClient.builder()
           .filter { request, _ ->
@@ -834,11 +834,11 @@ val client = WebClient.builder()
 
 `WebClient`를 복제해서 필터를 추가하거나 삭제하는 것도 가능하다. 다음 예제는 첫 번째 위치에 인증 필터를 추가한다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 import static org.springframework.web.reactive.function.client.ExchangeFilterFunctions.basicAuthentication;
 
@@ -848,7 +848,7 @@ WebClient client = webClient.mutate()
       })
       .build();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val client = webClient.mutate()
       .filters { it.add(0, basicAuthentication("user", "password")) }
@@ -861,11 +861,11 @@ val client = webClient.mutate()
 
 `WebClient`는 마지막에 결과를 블로킹하면 동기로(synchronous) 결과를 가져온다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Person person = client.get().uri("/person/{id}", i).retrieve()
   .bodyToMono(Person.class)
@@ -876,7 +876,7 @@ List<Person> persons = client.get().uri("/persons").retrieve()
   .collectList()
   .block();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val person = runBlocking {
   client.get().uri("/person/{id}", i).retrieve()
@@ -892,11 +892,11 @@ val persons = runBlocking {
 
 하지만 API 호출을 여러 번 한다면, 각 응답을 따로 블로킹하기보단 전체 결과를 합쳐서 기다리는 게 더 효율적이다:
 
-<div class="switch-language-wrapper">
+<div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
 <span class="switch-language kotlin">kotlin</span>
 </div>
-<div class="language-only-for-java"></div>
+<div class="language-only-for-java java kotlin"></div>
 ```java
 Mono<Person> personMono = client.get().uri("/person/{id}", personId)
       .retrieve().bodyToMono(Person.class);
@@ -912,7 +912,7 @@ Map<String, Object> data = Mono.zip(personMono, hobbiesMono, (person, hobbies) -
       })
       .block();
 ```
-<div class="language-only-for-kotlin"></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val data = runBlocking {
       val personDeferred = async {
