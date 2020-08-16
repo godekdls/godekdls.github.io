@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차:
 
 - [3.1. Documentation Updates](#31-documentation-updates)
