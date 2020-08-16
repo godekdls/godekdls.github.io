@@ -1845,9 +1845,9 @@ List<OpenIDAttribute> attributes = token.getAttributes();
 
 ### 10.14.2. Configuration
 
-Anonymous authentication support is provided automatically when using the HTTP configuration Spring Security 3.0 and can be customized (or disabled) using the `<anonymous>` element. You don’t need to configure the beans described here unless you are using traditional bean configuration.
+스프링 시큐리티 3.0 HTTP 설정을 사용하면 자동으로 익명 인증을 지원하며 `<anonymous>` 요소로 커스텀하거나 비활성화할 수 있다. 전통적인 빈 설정을 사용하고 있지 않으면 여기 있는 빈을 설정할 필요는 없다.
 
-Three classes that together provide the anonymous authentication feature. `AnonymousAuthenticationToken` is an implementation of `Authentication`, and stores the `GrantedAuthority` s which apply to the anonymous principal. There is a corresponding `AnonymousAuthenticationProvider`, which is chained into the `ProviderManager` so that `AnonymousAuthenticationToken` s are accepted. Finally, there is an `AnonymousAuthenticationFilter`, which is chained after the normal authentication mechanisms and automatically adds an `AnonymousAuthenticationToken` to the `SecurityContextHolder` if there is no existing `Authentication` held there. The definition of the filter and authentication provider appears as follows:
+익명 인증 기능은 세 가지 클래스가 함께 제공한다. `AnonymousAuthenticationToken`은 `Authentication` 구현체로, 익명 principal에 적용할 여러 `GrantedAuthority`를 저장한다. 이에 맞는 `AnonymousAuthenticationProvider`가 `ProviderManager`에 연결되면 `AnonymousAuthenticationToken`을 허용한다. 마지막으로 `AnonymousAuthenticationFilter`가 있다. 이 필터는 일반적인 인증 매커니즘 이후 연결되며, `SecurityContextHolder`에 `Authentication`이 없으면 자동으로 `AnonymousAuthenticationToken`을 추가한다. 필터와 인증 provider 정의는 다음과 같다:
 
 ```xml
 <bean id="anonymousAuthFilter"
@@ -1862,9 +1862,9 @@ Three classes that together provide the anonymous authentication feature. `Anony
 </bean>
 ```
 
-The `key` is shared between the filter and authentication provider, so that tokens created by the former are accepted by the latter [[4](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#_footnotedef_4)]. The `userAttribute` is expressed in the form of `usernameInTheAuthenticationToken,grantedAuthority[,grantedAuthority]`. This is the same syntax as used after the equals sign for the `userMap` property of `InMemoryDaoImpl`.
+필터와 인증 provider가 동일한 `key`를 공유하므로, 인증 provider는 필터가 생성한 토큰을 수용한다. `userAttribute`는 `usernameInTheAuthenticationToken,grantedAuthority[,grantedAuthority]` 형식으로 표현한다. `InMemoryDaoImpl`의 `userMap` 프로퍼티에서 등호 뒤에 사용하는 문법과 동일하다.
 
-As explained earlier, the benefit of anonymous authentication is that all URI patterns can have security applied to them. For example:
+앞에서 말했듯이 익명 인증을 사용하면 모든 URI 패턴에 보안을 적용할 수 있다. 예를 들어:
 
 ```xml
 <bean id="filterSecurityInterceptor"
