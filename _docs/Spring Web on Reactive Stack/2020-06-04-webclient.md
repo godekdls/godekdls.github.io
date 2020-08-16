@@ -14,6 +14,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [2.1. Configuration](#21-configuration)

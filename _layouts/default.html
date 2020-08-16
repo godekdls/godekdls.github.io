@@ -92,6 +92,7 @@
 <!--					</li>-->
 <!--				</ul>-->
 			</nav>
+			{% include adfit.html %}
 		</header>
 
 		<section class="main">
@@ -123,6 +124,8 @@
 			{% endif %}
 		{% endfor %}
 		</p>
+
+		{% include adsense.html %}
 
 		<!-- 댓글창 -->
 		{% if page.comments %}

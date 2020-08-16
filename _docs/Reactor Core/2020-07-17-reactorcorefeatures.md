@@ -14,6 +14,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [4.1. `Flux`, an Asynchronous Sequence of 0-N Items](#41-flux-an-asynchronous-sequence-of-0-n-items)

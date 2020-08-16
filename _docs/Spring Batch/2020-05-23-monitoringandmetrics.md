@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [14.1. Built-in metrics](#141-built-in-metrics)
