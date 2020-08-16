@@ -37,8 +37,6 @@ comments: true
 - [`publishOn()`을 사용할 땐 Thread Affinity를 어떻게 보장하나요?](#b6-how-do-i-ensure-thread-affinity-when-i-use-publishon)
 - [컨텍스트 로그를 남길만한 괜찮은 패턴이 있나요? (MDC)](#b7-what-is-a-good-pattern-for-contextual-logging-mdc)
 
-{% include adsense.html %}
-
 ---
 
 ## B.1. How Do I Wrap a Synchronous, Blocking Call?

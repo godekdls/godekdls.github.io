@@ -130,8 +130,6 @@ comments: true
 오브젝트를 리턴하고, 재시작을 대비해 현재 로(row)를 추적하고, 기본적인 통계를 저장하며, 
 뒤에서 설명할 개선된 트랜잭션을 제공한다.
 
-{% include adsense.html %}
-
 다른 예시도 많은데, 이번 챕터에서는 가장 기본적인 것들에 집중하겠다.
 사용 가능한 모든 `ItemReader` 구현체는 
 [Appendix A](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#listOfReadersAndWriters)에 있다.

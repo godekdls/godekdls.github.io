@@ -41,8 +41,6 @@ comments: true
 
 아래 stack trace를 한 번 살펴보자:
 
-{% include adsense.html %}
-
 **Example 20. A typical Reactor stack trace**
 
 ```java

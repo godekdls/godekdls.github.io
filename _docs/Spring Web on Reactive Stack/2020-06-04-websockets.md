@@ -42,8 +42,6 @@ comments: true
 
 웹소켓 통신이 가능해진 건 HTTP 요청의 프로토콜을 업그레이드해 주는 `Ugrade` 헤더 덕분이다. 이 헤더를 사용하면 웹 소켓 프로토콜로 전환할 수 있다. 다음은 웹소켓 프로토콜을 사용한 통신 예시다:
 
-{% include adsense.html %}
-
 ```yaml
 GET /spring-websocket-portfolio/portfolio HTTP/1.1
 Host: localhost:8080

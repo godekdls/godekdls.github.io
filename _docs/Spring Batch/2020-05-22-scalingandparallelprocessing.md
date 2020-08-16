@@ -40,8 +40,6 @@ comments: true
 - 싱글 프로세스, 멀티 쓰레드
 - 멀티 프로세스
 
-{% include adsense.html %}
-
 이 두 모델은 아래 카테고리로 나뉜다:
 
 - [Multi-threaded Step](#71-multi-threaded-step) (싱글 프로세스)

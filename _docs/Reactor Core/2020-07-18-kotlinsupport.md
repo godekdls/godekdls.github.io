@@ -37,8 +37,6 @@ comments: true
 
 ## 5.2. Extensions
 
-{% include adsense.html %}
-
 > `Dysprosium-M1` (ie. `reactor-core 3.3.0.M1`) 이후로 코틀린 익스텐션은 전용 [`reactor-kotlin-extensions`](https://github.com/reactor/reactor-kotlin-extensions) 모듈로 옮겨졌으며, 패키지명은 `reactor`에서 `reactor.kotlin`으로 변경됐다.
 >
 > 따라서 `reactor-core` 모듈에 있는 코틀린 익스텐션은 제거될 예정이다(deprecated). 새 의존성 groupId와 artifactId는 다음과 같다:

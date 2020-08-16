@@ -43,8 +43,6 @@ comments: true
 `ItemReader`나 `ItemWriter`는 필요하다면
 리스너 인터페이스도 구현할 수 있다는 점을 알아두면 좋다.
 
-{% include adsense.html %}
-
 ---
 
 ## 11.1. Logging Item Processing and Failures

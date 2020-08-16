@@ -92,8 +92,6 @@ for(int i = 0; i < commitInterval; i++){
 itemWriter.write(items);
 ```
 
-{% include adsense.html %}
-
 ### 5.1.1. Configuring a `Step`
 
 `Step`은 필수 의존성(dependency)이 상대적으로 적은 편이지만,

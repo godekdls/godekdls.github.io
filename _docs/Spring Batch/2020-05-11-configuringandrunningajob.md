@@ -75,8 +75,6 @@ public Job footballJob() {
 job 빌더로 step뿐 아니라 병렬화(`Split`), 선언적인 flow 제어(`Decision`),
 flow 정의 외부화(`Flow`) 같은 다른 요소도 설정할 수 있다.
 
-{% include adsense.html %}
-
 ### 4.1.1. Restartability
 
 배치 job을 실행할 때 발생하는 주요 이슈는 `Job`이 재시작할 때의 동작과 관련 있다.

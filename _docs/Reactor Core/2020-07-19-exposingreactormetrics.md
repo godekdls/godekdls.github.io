@@ -36,8 +36,6 @@ comments: true
 
 리액터에서 동작하는 모든 비동기 연산은 [Threading and Schedulers](../reactorcorefeatures#45-threading-and-schedulers)에서 설명한 스케줄러로 추상화한다. 때문에 스케줄러를 모니터링하고, 의심되는 핵심 메트릭에 집중해서 그에 맞게 대응하는 것이 중요하다.
 
-{% include adsense.html %}
-
 스케줄러 메트릭을 활성화하려면 다음 메소드를 호출해야 한다:
 
 ```java

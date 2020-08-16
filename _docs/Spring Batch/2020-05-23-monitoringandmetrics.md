@@ -36,8 +36,6 @@ comments: true
 등록된다. 
 모든 메트릭은 아래 테이블에서 설명한다:
 
-{% include adsense.html %}
-
 |Metric Name|Type|Description|
 |:-----------------:	|:-------------:	|:-------------:	|
 |`spring.batch.job`|`TIMER`|job 실행 소요 시간|

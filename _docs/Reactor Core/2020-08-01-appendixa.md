@@ -43,8 +43,6 @@ comments: true
 - [동기 세계로 돌아가기](#a8-going-back-to-the-synchronous-world)
 - [여러 `Subscriber`에게 `Flux` 멀티캐스트하기](#a9-multicasting-a-flux-to-several-subscribers)
 
-{% include adsense.html %}
-
 ---
 
 ## A.1. Creating a New Sequence…

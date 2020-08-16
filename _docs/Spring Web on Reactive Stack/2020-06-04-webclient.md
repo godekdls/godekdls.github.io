@@ -48,8 +48,6 @@ comments: true
 - `WebClient.create()`
 - `WebClient.create(String baseUrl)`
 
-{% include adsense.html %}
-
 위 메소드는 디폴트 세팅으로 Reactor Netty `HttpClient`를 사용하므로, 클래스패스에 `io.projectreactor.netty:reactor-netty`가 있어야 한다.
 
 다른 옵션을 사용하려면 `WebClient.builder()`를 사용한다:

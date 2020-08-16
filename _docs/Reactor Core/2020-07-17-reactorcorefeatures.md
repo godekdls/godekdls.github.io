@@ -64,8 +64,6 @@ comments: true
 
 이 둘은 비동기 처리에 대략적인 카디널리티 정보를 담는 식으로 타입을 구분한다. 예를 들어 HTTP 요청은 응답을 하나만 생성하기 때문에 굳이 `count` 연산을 실행할 필요가 없다. 이런 HTTP 호출 결과를 `Mono<HttpResponse>`로 표현하면 아이템이 0~1개일 때 사용할만한 연산자만 제공하기 때문에 `Flux<HttpResponse>`로 표현하는 것보다 더 낫다.
 
-{% include adsense.html %}
-
 최대 카디널리티를 바꿔 주는 연산자로 타입을 변환할 수도 있다. 예를 들어 `Flux`엔 `count` 연산자가 있는데, `Mono<Long>`을 리턴한다.
 
 ---

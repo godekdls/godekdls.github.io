@@ -59,8 +59,6 @@ Job 하나는 1~n개의 step을 가지고 있으며,
 각 step은 `ItemReader`, `ItemProcessor`, `ItemWrite`를 딱 한 개씩 가지고 있다.
 각 Job은 `JobLauncher`가 실행하며, 현재 실행 중인 프로세스의 메타정보는 `JobRepository`에 저장된다.
 
-{% include adsense.html %}
-
 ---
 
 ## 3.1. Job

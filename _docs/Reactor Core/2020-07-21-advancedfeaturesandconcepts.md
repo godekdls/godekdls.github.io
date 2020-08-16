@@ -82,8 +82,6 @@ Flux.fromIterable(Arrays.asList("blue", "green", "orange", "purple"))
 	.subscribe(d -> System.out.println("Subscriber to Transformed MapAndFilter: "+d));
 ```
 
-{% include adsense.html %}
-
 다음 이미지는 `transform` 연산자가 흐름을 캡슐화하는 방식을 보여준다:
 
 ![Transform](./../../images/reactorcore/gs-transform.png)
