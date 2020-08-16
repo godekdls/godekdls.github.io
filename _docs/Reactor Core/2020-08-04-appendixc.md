@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [C.1. `TupleUtils` and Functional Interfaces](#c1-tupleutils-and-functional-interfaces)
@@ -25,6 +27,8 @@ comments: true
 `reactor-extra` 아티팩트에는 `reactor-core`를 심화로 사용하는 사용자를 위한 추가 연산자와 유틸리티가 있다.
 
 이건 별도의 아티팩트이므로 명시적으로 빌드에 추가해 줘야 한다. 다음은 그래들을 사용한 예제다:
+
+{% include adsense.html %}
 
 ```groovy
 dependencies {

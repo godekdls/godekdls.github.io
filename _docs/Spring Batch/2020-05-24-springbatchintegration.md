@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [13.1. Spring Batch Integration Introduction](#131-spring-batch-integration-introduction)
@@ -44,6 +46,8 @@ Spring Batch Integration으로 이런 요구사항을 해결할 수 있다.
 이 두 가지 원칙을 기억해두면 도움이 될 것이다.
 잘게 쪼개서 생각하고, 공통 패턴을 적용해라.
 이번 장에서는 공통 패턴 몇 가지를 다뤄볼 것이다. 
+
+{% include adsense.html %}
 
 메세지를 보내 배치 프로세스 명령을 자동화하면 주요 관심사를 분리하고 전략화할 수 있다.
 예를 들어 메세지 전송으로 job 실행을 트리거링하는 등, 다양한 방법으로 활용할 수 있다.

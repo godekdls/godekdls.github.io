@@ -14,6 +14,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [3.1. Job](#31-job)
@@ -56,6 +58,8 @@ JCL, COBOL 개발자도 C, C#, Java 개발자만큼 이 개념에 익숙할 것�
 Job 하나는 1~n개의 step을 가지고 있으며,
 각 step은 `ItemReader`, `ItemProcessor`, `ItemWrite`를 딱 한 개씩 가지고 있다.
 각 Job은 `JobLauncher`가 실행하며, 현재 실행 중인 프로세스의 메타정보는 `JobRepository`에 저장된다.
+
+{% include adsense.html %}
 
 ---
 

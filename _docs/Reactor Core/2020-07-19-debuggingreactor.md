@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [7.1. The Typical Reactor Stack Trace](#71-the-typical-reactor-stack-trace)
@@ -38,6 +40,8 @@ comments: true
 비동기 코드로 전환하면 훨씬 더 복잡해진다.
 
 아래 stack trace를 한 번 살펴보자:
+
+{% include adsense.html %}
 
 **Example 20. A typical Reactor stack trace**
 

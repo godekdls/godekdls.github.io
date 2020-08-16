@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [6.1. ItemReader](#61-itemreader)
@@ -127,6 +129,8 @@ comments: true
 디폴트 SQL `ItemReader` 구현체는 `RowMapper`를 호출해서
 오브젝트를 리턴하고, 재시작을 대비해 현재 로(row)를 추적하고, 기본적인 통계를 저장하며, 
 뒤에서 설명할 개선된 트랜잭션을 제공한다.
+
+{% include adsense.html %}
 
 다른 예시도 많은데, 이번 챕터에서는 가장 기본적인 것들에 집중하겠다.
 사용 가능한 모든 `ItemReader` 구현체는 

@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [11.1. Logging Item Processing and Failures](#111-logging-item-processing-and-failures)
@@ -40,6 +42,8 @@ comments: true
 여기서 나오는 예제는 주로 리스너 인터페이스를 사용한다.
 `ItemReader`나 `ItemWriter`는 필요하다면
 리스너 인터페이스도 구현할 수 있다는 점을 알아두면 좋다.
+
+{% include adsense.html %}
 
 ---
 

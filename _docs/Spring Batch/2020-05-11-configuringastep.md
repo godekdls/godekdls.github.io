@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [5.1. Chunk-oriented Processing](#51-chunk-oriented-processing)
@@ -89,6 +91,8 @@ for(int i = 0; i < commitInterval; i++){
 }
 itemWriter.write(items);
 ```
+
+{% include adsense.html %}
 
 ### 5.1.1. Configuring a `Step`
 

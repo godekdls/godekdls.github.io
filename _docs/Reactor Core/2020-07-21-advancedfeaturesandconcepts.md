@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [9.1. Mutualizing Operator Usage](#91-mutualizing-operator-usage)
@@ -79,6 +81,8 @@ Flux.fromIterable(Arrays.asList("blue", "green", "orange", "purple"))
 	.transform(filterAndMap)
 	.subscribe(d -> System.out.println("Subscriber to Transformed MapAndFilter: "+d));
 ```
+
+{% include adsense.html %}
 
 다음 이미지는 `transform` 연산자가 흐름을 캡슐화하는 방식을 보여준다:
 

@@ -14,6 +14,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [2.1. Configuration](#21-configuration)
@@ -45,6 +47,8 @@ comments: true
 
 - `WebClient.create()`
 - `WebClient.create(String baseUrl)`
+
+{% include adsense.html %}
 
 위 메소드는 디폴트 세팅으로 Reactor Netty `HttpClient`를 사용하므로, 클래스패스에 `io.projectreactor.netty:reactor-netty`가 있어야 한다.
 

@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [B.1. How Do I Wrap a Synchronous, Blocking Call?](#b1-how-do-i-wrap-a-synchronous-blocking-call)
@@ -34,6 +36,8 @@ comments: true
 - [`retryWhen`으로 Exponential Backoff은 어떻게 설정하나요?](#b5-how-can-i-use-retrywhen-for-exponential-backoff)
 - [`publishOn()`을 사용할 땐 Thread Affinity를 어떻게 보장하나요?](#b6-how-do-i-ensure-thread-affinity-when-i-use-publishon)
 - [컨텍스트 로그를 남길만한 괜찮은 패턴이 있나요? (MDC)](#b7-what-is-a-good-pattern-for-contextual-logging-mdc)
+
+{% include adsense.html %}
 
 ---
 

@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [A.1. Creating a New Sequence…](#a1-creating-a-new-sequence)
@@ -40,6 +42,8 @@ comments: true
 - [`Flux` 나누기](#a7-splitting-a-flux)
 - [동기 세계로 돌아가기](#a8-going-back-to-the-synchronous-world)
 - [여러 `Subscriber`에게 `Flux` 멀티캐스트하기](#a9-multicasting-a-flux-to-several-subscribers)
+
+{% include adsense.html %}
 
 ---
 

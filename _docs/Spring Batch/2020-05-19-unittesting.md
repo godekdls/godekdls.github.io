@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [10.1. Creating a Unit Test Class](#101-creating-a-unit-test-class)
@@ -45,6 +47,8 @@ spring-batch-test 프로젝트는 end-to-end 테스트를 도와줄 클래스를
 4.1 버전부터 `@SpringBatchTest` 애노테이션을 사용하면
 `JobLauncherTestUtils`, `JobRepositoryTestUtils`를 포함한
 스프링 배치 테스트 유틸리티를 주입할 수 있다.
+
+{% include adsense.html %}
 
 아래는 이 애노테이션들을 사용하는 예제 코드다:
 

@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [2.1. Introducing Reactor](#21-introducing-reactor)
@@ -37,6 +39,8 @@ comments: true
 ## 2.1. Introducing Reactor
 
 리액터는 JVM 위에서 동작하는, 완전한 논블로킹 리액티브 프로그래밍을 위한 기반 라이브러리로, 요구(demand)를 효율적으로 관리해 준다("backpressure"를 관리하는 방식으로). 리액터는 자바 8의 함수형 API를(주로 `CompletableFuture`, `Stream`, `Duration`) 직접 통합한다. 이를 통해 비동기 시퀀스 API(`Flux` - N개의 요소, `Mono` - 0 혹은 1개의 요소)를 구성하고, [리액티브 스트림](https://www.reactive-streams.org/) 스펙을 폭넓게 구현한다.
+
+{% include adsense.html %}
 
 리액터를 사용하면 `reactor-netty` 프로젝트 프로세스와 논블로킹 방식으로 통신할 수 있다. 리액터 네티는 마이크로서비스 아키텍처에 적합한, backpressure를 지원하는 HTTP(웹소켓 포함), TCP, UDP 네트워크 엔진을 제공한다. 완전한 리액티브 방식 인코딩과 디코딩을 지원한다.
 

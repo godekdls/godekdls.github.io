@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [5.1. Requirements](#51-requirements)
@@ -34,6 +36,8 @@ comments: true
 ---
 
 ## 5.2. Extensions
+
+{% include adsense.html %}
 
 > `Dysprosium-M1` (ie. `reactor-core 3.3.0.M1`) 이후로 코틀린 익스텐션은 전용 [`reactor-kotlin-extensions`](https://github.com/reactor/reactor-kotlin-extensions) 모듈로 옮겨졌으며, 패키지명은 `reactor`에서 `reactor.kotlin`으로 변경됐다.
 >

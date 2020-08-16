@@ -14,6 +14,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [3.1. Introduction to WebSocket](#31-Introduction-to-websocket)
@@ -39,6 +41,8 @@ comments: true
 웹소켓 프로토콜([RFC 6455](https://tools.ietf.org/html/rfc6455))은 TCP 커넥션 하나로 클라이언트와 서버 사이 양방향 통신을 지원하는 표준 프로토콜이다. HTTP와는 또 다른 TCP 프로토콜이지만, HTTP와 동일한 80, 443 포트로 접속하기 때문에 방화벽을 새로 만들지 않아도 된다.
 
 웹소켓 통신이 가능해진 건 HTTP 요청의 프로토콜을 업그레이드해 주는 `Ugrade` 헤더 덕분이다. 이 헤더를 사용하면 웹 소켓 프로토콜로 전환할 수 있다. 다음은 웹소켓 프로토콜을 사용한 통신 예시다:
+
+{% include adsense.html %}
 
 ```yaml
 GET /spring-websocket-portfolio/portfolio HTTP/1.1

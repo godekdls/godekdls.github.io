@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [3.1. Blocking Can Be Wasteful](#31-blocking-can-be-wasteful)
@@ -34,6 +36,8 @@ comments: true
 > 
 >
 > — https://en.wikipedia.org/wiki/Reactive_programming
+
+{% include adsense.html %}
 
 마이크로소프트가 닷넷(.NET) 생태계에 만든 Reactive Extension(Rx) 라이브러리가 반응형 프로그래밍의 출발점이었다. 이후 RxJava는 JVM 위에서 실행하는 리액티브 프로그래밍을 구현했다. 시간이 지남에 따라, 리액티브 스트림 표준화의 일환으로 JVM 위에서 동작하는 리액티브 라이브러리의 인터페이스 셋과 상호작용 규칙을 정의한 자바 표준이 등장했다. 이 인터페이스들은 자바 9의 `Flow` 클래스로 통합됐다.
 

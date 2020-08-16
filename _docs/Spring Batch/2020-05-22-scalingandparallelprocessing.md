@@ -13,6 +13,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [7.1. Multi-threaded Step](#71-multi-threaded-step)
@@ -37,6 +39,8 @@ comments: true
 
 - 싱글 프로세스, 멀티 쓰레드
 - 멀티 프로세스
+
+{% include adsense.html %}
 
 이 두 모델은 아래 카테고리로 나뉜다:
 

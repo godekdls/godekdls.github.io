@@ -13,6 +13,9 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
 
+
+{% include adsense.html %}
+
 ### 목차
 
 - [4.1. Configuring a Job](#41-configuring-a-job)
@@ -71,6 +74,8 @@ public Job footballJob() {
 위에 보이는 예시에서 `Job`은 세 개의 `Step`을 가지고 있다.
 job 빌더로 step뿐 아니라 병렬화(`Split`), 선언적인 flow 제어(`Decision`),
 flow 정의 외부화(`Flow`) 같은 다른 요소도 설정할 수 있다.
+
+{% include adsense.html %}
 
 ### 4.1.1. Restartability
 

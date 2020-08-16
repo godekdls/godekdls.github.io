@@ -14,6 +14,8 @@ comments: true
 >
 > 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [1.5. Functional Endpoints](#15-functional-endpoints)
@@ -85,6 +87,8 @@ WebFlux.fn이라고도 하는 이 모델은,
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#webmvc-fn-overview)
 
 WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. `HandlerFunction`은 `ServerRequest`를 받아 비동기 `ServerResponse`(i.e. `Mono<ServerResponse>`)를 리턴하는 함수다. 요청, 응답 객체 모두 불변(immutable)이기 때문에 JDK 8 방식으로 HTTP 요청, 응답에 접근할 수 있다. `HandlerFunction` 역할은 애노테이션 프로그래밍 모델로 치면 `@RequestMapping` 메소드가 하던 일과 동일하다.
+
+{% include adsense.html %}
 
 요청은 `RouterFunction`이 핸들러 펑션에 라우팅한다. `RouterFunction`은 `ServerRequest`를 받아 비동기 `HandlerFunction`(i.e. `Mono<HandlerFunction>`)을 리턴하는 함수다. 매칭되는 라우터 펑션이 있으면 핸들러 펑션을 리턴하고 그 외는 비어있는 Mono를 리턴한다. `RouterFunction`이 하는 일은 `@RequestMapping` 애노테이션과 동일하지만,
 라우터 펑션은 데이터뿐 아니라 행동까지 제공한다는 점이 다르다.

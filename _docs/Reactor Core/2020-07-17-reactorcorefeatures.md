@@ -14,6 +14,8 @@ comments: true
 >
 > 전체 목차는 [여기](../contents/)에 있습니다.
 
+{% include adsense.html %}
+
 ### 목차
 
 - [4.1. `Flux`, an Asynchronous Sequence of 0-N Items](#41-flux-an-asynchronous-sequence-of-0-n-items)
@@ -61,6 +63,8 @@ comments: true
 리액터를 사용하면 `Publisher`를 구현하고 있는 리액티브 타입을 (`Flux`, `Mono`) 다양하게 구성할 수 있으며, 풍부한 연산자를 함께 제공한다. `Flux` 객체는 0~N개의 요소가 있는 리액티브 시퀀스를, `Mono` 객체는 결과가 단일 값 또는 빈 값 (0~1)일 때를 나타낸다.
 
 이 둘은 비동기 처리에 대략적인 카디널리티 정보를 담는 식으로 타입을 구분한다. 예를 들어 HTTP 요청은 응답을 하나만 생성하기 때문에 굳이 `count` 연산을 실행할 필요가 없다. 이런 HTTP 호출 결과를 `Mono<HttpResponse>`로 표현하면 아이템이 0~1개일 때 사용할만한 연산자만 제공하기 때문에 `Flux<HttpResponse>`로 표현하는 것보다 더 낫다.
+
+{% include adsense.html %}
 
 최대 카디널리티를 바꿔 주는 연산자로 타입을 변환할 수도 있다. 예를 들어 `Flux`엔 `count` 연산자가 있는데, `Mono<Long>`을 리턴한다.
 
