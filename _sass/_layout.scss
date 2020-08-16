@@ -12,6 +12,7 @@ body {
 		overflow: hidden;
 
 		nav,
+		header > div.dain-custom-adfit,
 		header > form {
 			display: block;
 		}
@@ -212,6 +213,7 @@ $nav-image: $baseurl + "/images/menu.svg";
 }
 
 nav,
+header > div.dain-custom-adfit,
 header > form {
 	display: none;
 
