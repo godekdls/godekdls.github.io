@@ -7,6 +7,7 @@ description: 스프링 시큐리티 프로젝트 모듈을 소개합니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-07T10:00:00+09:00
 comments: true
+completed: false
 ---
 
 > [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#modules)를 한글로 번역한 문서입니다.

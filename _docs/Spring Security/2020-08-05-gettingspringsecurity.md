@@ -7,6 +7,7 @@ description: 스프링 시큐리티를 시작하기 한글 번역
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-05T10:00:00+09:00
 comments: true
+completed: false
 ---
 
 > [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#getting)를 한글로 번역한 문서입니다.
@@ -29,7 +30,7 @@ comments: true
   
 ---
 
-이번 섹션에서는 스프링 시큐리티 바이너리 파일로 시작하기 위한 모든 것을 다룬다. 소스 코드를 보고 싶으면 [Source Code 섹션](../springsecuritycommunity#23-source-code)을 참고하라.
+이번 섹션에서는 스프링 시큐리티 바이너리 파일로 개발을 시작하기 위한 모든 것을 다룬다. 소스 코드를 보고 싶으면 [Source Code 섹션](../springsecuritycommunity#23-source-code)을 참고하라.
 
 ---
 

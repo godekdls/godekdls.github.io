@@ -3,10 +3,11 @@ title: Authentication
 category: Spring Security
 order: 11
 permalink: /Spring%20Security/authentication/
-description: 서블릿 기반 어플리케이션에서 스프링 시큐리티의 인증(authentication)을 적용하는 방법
+description: 서블릿 기반 어플리케이션에서 스프링 시큐리티로 여러 가지 인증(authentication)을 적용하는 방법
 image: ./../../images/springsecurity/securitycontextholder.png
 lastmod: 2020-08-08T10:00:00+09:00
 comments: true
+completed: false
 ---
 <script>defaultLanguages = ['java', 'maven']</script>
 
@@ -140,7 +141,7 @@ comments: true
 - [Remember Me](#1012-remember-me-authentication) - 세션이 만료된 사용자를 기억하는 방법
 - [JAAS Authentication](#1016-java-authentication-and-authorization-service-jaas-provider) - JAAS를 사용한 인증
 - [OpenID](#1013-openid-support) - OpenID 인증 (OpenID Connect와 혼동하지 말 것)
-- [Pre-Authentication Scenarios](#1015-pre-authentication-scenarios) - 인증은 [SiteMinder](https://www.siteminder.com/)나 Java EE security 같은 외부 메커니즘으로 처리하면서 스프링 시큐리티로 권한 인가와 주요 취약점 공격을 방어할 수 있다.
+- [Pre-Authentication Scenarios](#1015-pre-authentication-scenarios) - 인증은 [SiteMinder](https://www.siteminder.com/)나 Java EE security같은 외부 메커니즘으로 처리하면서 스프링 시큐리티로 권한 인가와 주요 취약점 공격을 방어할 수 있다.
 - [X509 Authentication](#1018-x509-authentication) - X509 인증
 
 ---
@@ -166,7 +167,7 @@ context.setAuthentication(authentication);
 SecurityContextHolder.setContext(context); // (3)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 비어있는 `SecurityContext`를 만드는 것으로 시작한다. 스레드 경합을 피하려면 `SecurityContextHolder.getContext().setAuthentication(authentication)`을 사용해선 안 되며, 새 `SecurityContext` 인스턴스를 생성해야 한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 그다음 새 [`Authentication`](#103-authentication) 객체를 생성한다. `Authentication` 구현체라면 전부 `SecurityContext`에 설정할 수 있다. 여기선 간단하게 `TestingAuthenticationToken`을 사용했다. 프로덕션 환경에선 `UsernamePasswordAuthenticationToken(userDetails, password, authorities)`를 주로 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 그다음 새 [`Authentication`](#103-authentication) 객체를 생성한다. `Authentication` 구현체라면 전부 `SecurityContext`에 담을 수 있다. 여기선 간단하게 `TestingAuthenticationToken`을 사용했다. 프로덕션 환경에선 `UsernamePasswordAuthenticationToken(userDetails, password, authorities)`를 주로 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 마지막으로 `SecurityContextHolder`에 `SecurityContext`를  설정해 준다. 스프링 시큐리티는 이 정보를 사용해서 권한을 [인가](../authentication)한다.</small>
 
 인증된 주체(principal) 정보를 얻어야 한다면 `SecurityContextHolder`에 접근하면 된다.
@@ -181,9 +182,9 @@ Object principal = authentication.getPrincipal();
 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 ```
 
-기본적으로 `SecurityContextHolder`는 `ThreadLocal`을 사용해서 정보를 저장하기 때문에 위 메소드에 `SecurityContext`를 넘기지 않아도 동일한 스레드에선 항상 `SecurityContext`에 접근할 수 있다. 기존 principal 요청을 처리한 다음에 비워주는 것만 잊지 않으면 `ThreadLocal`을 사용해도 안전하다. 스프링 시큐리티의 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)은 항상 `SecurityContext`를 비워준다.
+기본적으로 `SecurityContextHolder`는 `ThreadLocal`을 사용해서 정보를 저장하기 때문에 메소드에 직접 `SecurityContext`를 넘기지 않아도 동일한 스레드에선 항상 `SecurityContext`에 접근할 수 있다. 기존 principal 요청을 처리한 다음에 비워주는 것만 잊지 않으면 `ThreadLocal`을 사용해도 안전하다. 스프링 시큐리티의 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)은 항상 `SecurityContext`를 비워준다.
 
-어플리케이션의 스레드 처리 방식에 따라서 `ThreadLocal`이 전혀 적합하지 않을 때도 있다. 예를 들어 스윙 클라이언트에선 자바 가상머신에 있는 전체 스레드에서 보안 컨텍스트를 하나만 사용해야 할 수 있다. 이럴 때는 기동시점에 사용할 컨텍스트 저장 전략을 설정할 수 있다. standalone 어플리케이션에는 `SecurityContextHolder.MODE_GLOBAL` 전략을 적용할 수 있다. 인증 처리를 마친 스레드가 생성한 다른 스레드에서도 동일한 보안 컨텍스트를 사용해야 하는 어플리케이션이라면 `SecurityContextHolder.MODE_INHERITABLETHREADLOCAL`을 적용하면 된다. 디폴트 전략은 `SecurityContextHolder.MODE_THREADLOCAL`이며, 두 가지 방법으로 바꿀 수 있다. 첫 번째 방법은 시스템 프로퍼티를 설정하는 것이고, 두 번째 방법은 `SecurityContextHolder`에 있는 스태틱 메소드를 사용하는 것이다. 대부분은 디폴트 전략으로도 충분하지만, 바꿔야 한다면 `SecurityContextHolder` JavaDoc을 참고하라.
+어플리케이션의 스레드 처리 방식에 따라서 `ThreadLocal`이 전혀 적합하지 않을 때도 있다. 예를 들어 스윙 클라이언트에선 자바 가상머신에 있는 전체 스레드에서 보안 컨텍스트를 하나만 사용해야 할 수 있다. 이럴 때는 기동시점에 사용할 컨텍스트 저장 전략을 설정할 수 있다. standalone 어플리케이션에는 `SecurityContextHolder.MODE_GLOBAL` 전략을 적용할 수 있다. 인증 처리를 마친 스레드가 생성한 보안 컨텍스트를 다른 스레드에서도 그대로 사용해야 하는 어플리케이션이라면 `SecurityContextHolder.MODE_INHERITABLETHREADLOCAL`을 적용하면 된다. 디폴트 전략은 `SecurityContextHolder.MODE_THREADLOCAL`이며, 두 가지 방법으로 바꿀 수 있다. 첫 번째 방법은 시스템 프로퍼티를 설정하는 것이고, 두 번째 방법은 `SecurityContextHolder`에 있는 스태틱 메소드를 사용하는 것이다. 대부분은 디폴트 전략으로도 충분하지만, 바꿔야 한다면 `SecurityContextHolder` JavaDoc을 참고하라.
 
 ---
 
@@ -197,30 +198,30 @@ Collection<? extends GrantedAuthority> authorities = authentication.getAuthoriti
 
 스프링 시큐리티에서 [`Authentication`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/Authentication.html)이 주로 담당하는 일은 다음과 같다:
 
-- [`AuthenticationManager`](#105-authenticationmanager)의 입력으로 사용되어 사용자가 제공한 인증용 credential을 제공한다. 이 시나리오에선 `isAuthenticated()`는 `false`를 리턴한다.
+- [`AuthenticationManager`](#105-authenticationmanager)의 입력으로 사용되어, 사용자가 제공한 인증용 credential을 제공한다. 이 상황에선 `isAuthenticated()`는 `false`를 리턴한다.
 - 현재 인증된 사용자를 나타낸다. 현재 `Authentication`은 [SecurityContext](#102-securitycontext)에서 가져올 수 있다.
 
 `Authentication`은 다음을 가지고 있다:
 
 - `principal` - 사용자를 식별한다. 사용자 이름/비밀번호로 인증할 땐 보통 [`UserDetails`](#10106-userdetails) 인스턴스다.
 - `credentials` - 주로 비밀번호. 대부분은 유출되지 않도록 사용자를 인증한 다음 비운다.
-- `authorities` - 사용자에게 부여된 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 roles나 scopes가 있다.
+- `authorities` - 사용자에게 부여한 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 roles나 scopes가 있다.
 
 ---
 
 ## 10.4. GrantedAuthority
 
-사용자에게 부여된 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 roles나 scopes가 있다.
+사용자에게 부여한 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 roles나 scopes가 있다.
 
-`GrantedAuthority`는 [`Authentication.getAuthorities()`](#103-authentication) 메소드로 접근할 수 있다. 이 메소드는 `GrantedAuthority` 객체의 `Collection`을 리턴한다. `GrantedAuthority`는 말 그대로 주체(principal)에게 부여된 권한이다. 권한은 보통 `ROLE_ADMINISTRATOR`나 `ROLE_HR_SUPERVISOR`같은 "역할 (role)"이다. 이런 역할은 나중에 웹 인가, 메소드 인가, 도메인 객체 인가에서 설정한다. 스프링 시큐리티는 role을 해석하고 권한을 확인하는 기능도 지원한다. 이름/비밀번호 기반 인증을 사용한다면 보통 [`UserDetailsService`](#10107-userdetailsservice)가 `GrantedAuthority`를 로드한다.
+`GrantedAuthority`는 [`Authentication.getAuthorities()`](#103-authentication) 메소드로 접근할 수 있다. 이 메소드는 `GrantedAuthority` 객체의 `Collection`을 리턴한다. `GrantedAuthority`는 말 그대로 인증한 주체(principal)에게 부여된 권한이다. 권한은 보통 `ROLE_ADMINISTRATOR`나 `ROLE_HR_SUPERVISOR`같은 "역할 (role)"이다. 이런 역할은 이후에 웹 인가, 메소드 인가, 도메인 객체 인가에서 설정한다. 스프링 시큐리티는 role을 해석하고 권한을 확인하는 기능도 지원한다. 이름/비밀번호 기반 인증을 사용한다면 보통 [`UserDetailsService`](#10107-userdetailsservice)가 `GrantedAuthority`를 로드한다.
 
-`GrantedAuthority` 객체는 일반적으로 어플리케이션 전체에 걸친 권한을 의미한다. 특정 도메인 객체에 국한되지 않는다. 따라서 `Employee` 객체 번호 54의 권한을 나타내는 `GrantedAuthority`, 이런 식으로는 잘 쓰지 않는다. 이렇게 사용하면 권한을 수천 개 만들게 될 수도 있고 메모리가 부족해지기 십상이다 (그렇지 않더라도 최소한 사용자를 인증하는 시간이 길어진다). 물론, 스프링 시큐리티는 이런 일반적인 요구사항을 처리하도록 설계했지만, 원한다면 도메인 객체 보안을 적용할 수도 있다.
+`GrantedAuthority` 객체는 일반적으로 어플리케이션 전체에 걸친 권한을 의미한다. 특정 도메인 객체에 국한되지 않는다. 따라서 `Employee` 객체 번호 54의 권한을 나타내는 `GrantedAuthority`, 이런 식으로는 잘 쓰지 않는다. 이렇게 사용하면 권한을 수천 개 만들게 될 수도 있고, 메모리가 부족해지기 십상이다 (그렇지 않더라도 최소한 사용자를 인증하는 시간이 길어진다). 물론, 스프링 시큐리티는 이런 일반적인 요구사항을 처리하도록 설계했지만, 원한다면 도메인 객체 단위로 보안을 적용할 수도 있다.
 
 ---
 
 ## 10.5. AuthenticationManager
 
-[`AuthenticationManager`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/AuthenticationManager.html)는 스프링 시큐리티 필터의 [인증](../features#51-authentication) 수행 방식을 정의하는 API다. 리턴한 [`Authentication`](#103-authentication)을 [SecurityContextHolder](#101-securitycontextholder)에 설정하는 건, `AuthenticationManager`를 호출한 컨트롤러 (i.e. [스프링 시큐리티의 필터](../servletsecuritythebigpicture#95-security-filters))가 담당한다. *스프링 시큐리티의 `Filters`*를 사용하지 않는다면 `AuthenticationManager`를 사용할 필요 없이 직접 `SecurityContextHolder`를 설정하면 된다.
+[`AuthenticationManager`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/AuthenticationManager.html)는 스프링 시큐리티 필터의 [인증](../features#51-authentication) 수행 방식을 정의하는 API다. 매니저가 리턴한 [`Authentication`](#103-authentication)을 [SecurityContextHolder](#101-securitycontextholder)에 설정하는 건, `AuthenticationManager`를 호출한 객체 (i.e. [스프링 시큐리티의 필터](../servletsecuritythebigpicture#95-security-filters))가 담당한다. *스프링 시큐리티의 `Filters`*를 사용하지 않는다면 `AuthenticationManager`를 사용할 필요 없이 직접 `SecurityContextHolder`를 설정하면 된다.
 
 `AuthenticationManager` 구현체는 어떤 것을 사용해도 좋지만, 가장 많이 사용하는 구현체는 [`ProviderManager`](#106-providermanager)다.
 
@@ -228,23 +229,23 @@ Collection<? extends GrantedAuthority> authorities = authentication.getAuthoriti
 
 ## 10.6. ProviderManager
 
-[`ProviderManager`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)는 가장 많이 쓰는 [`AuthenticationManager`](#105-authenticationmanager) 구현체다. `ProviderManager`는 [`AuthenticationProvider`](#107-authenticationprovider)의 `List`에 위임한다. 모든 `AuthenticationProvider`는 인증을 성공시키거나, 실패시키거나, 아니면 결정을 내릴 수 없는 것으로 판단하고 다운스트림에 있는 `AuthenticationProvider`가 결정하도록 만들 수 있다. 설정한 `AuthenticationProvider`가 전부 인증하지 못하면 `ProviderNotFoundException`과 함께 실패한다. 이 예외는 특별한  `AuthenticationException`으로,  넘겨진 `Authentication` 유형을 지원하는 `ProviderManager`를 설정하지 않았음을 의미한다.
+[`ProviderManager`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)는 가장 많이 쓰는 [`AuthenticationManager`](#105-authenticationmanager) 구현체다. `ProviderManager`는 동작을 [`AuthenticationProvider`](#107-authenticationprovider)의 `List`에 위임한다. 모든 `AuthenticationProvider`는 인증을 성공시키거나, 실패시키거나, 아니면 결정을 내릴 수 없는 것으로 판단하고 다운스트림에 있는 `AuthenticationProvider`가 결정하도록 만들 수 있다. 설정해둔 `AuthenticationProvider`가 전부 인증하지 못하면 `ProviderNotFoundException`과 함께 실패한다. 이 예외는  `AuthenticationException`의 하위클래스로,  넘겨진 `Authentication` 유형을 지원하는 `ProviderManager`를 설정하지 않았음을 의미한다.
 
 ![ProviderManager](./../../images/springsecurity/providermanager.png)
 
-보통은 `AuthenticationProvider`마다 각자가 맡은 인증을 수행하는 법을 알고 있다. 예를 들어 `AuthenticationProvider` 하나는 이름/비밀번호를 검증할 수 있고, 다른 건 SAML 인증을 담당할 수 있다. 이렇게 하면 인증 유형마다 담당 `AuthenticationProvider`가 있기 때문에, `AuthenticationManager` 빈 하나만 외부로 노출하면서도 여러 인증 유형을 지원할 수 있다.
+보통은 `AuthenticationProvider`마다 각자가 맡은 인증을 수행하는 법을 알고 있다. 예를 들어 `AuthenticationProvider` 하나로 이름/비밀번호를 검증할 수 있고, 다른 하나로 SAML 인증을 담당할 수 있다. 이렇게 하면 인증 유형마다 담당 `AuthenticationProvider`가 있기 때문에, `AuthenticationManager` 빈 하나만 외부로 노출하면서도 여러 인증 유형을 지원할 수 있다.
 
-원한다면 `ProviderManager`에 인증을 수행할 수 있는 `AuthenticationProvider`가 없을 때 사용할 부모 `AuthenticationManager`를 설정할 수도 있다. 부모는 `AuthenticationManager`의 어떤 구현체든지 될 수 있지만 보통 `ProviderManager` 인스턴스를 많이 사용한다.
+`ProviderManager`는 원한다면 인증을 수행할 수 있는 `AuthenticationProvider`가 없을 때 사용할 부모 `AuthenticationManager`를 설정할 수도 있다. 부모는 `AuthenticationManager`의 어떤 구현체든지 될 수 있지만 보통 `ProviderManager` 인스턴스를 많이 사용한다.
 
 ![ProviderManager Parent](./../../images/springsecurity/providermanager-parent.png)
 
-사실 `ProviderManager` 인스턴스 여러 개에서 동일한 부모 `AuthenticationManager`를 공유하는 것도 가능하다. 공통 인증을 사용하는 (부모 `AuthenticationManager`를 공유) [`SecurityFilterChain`](../servletsecuritythebigpicture#94-securityfilterchain) 인스턴스가 여러 개 있고, 각각의 인증 메커니즘이 다른 경우  (다른 `ProviderManager` 인스턴스) 흔히 쓰는 패턴이다.
+사실 `ProviderManager` 인스턴스 여러 개에서 동일한 부모 `AuthenticationManager`를 공유하는 것도 가능하다. 각각 인증 메커니즘이 다른 (사용하는 `ProviderManager` 인스턴스들이 다른) [`SecurityFilterChain`](../servletsecuritythebigpicture#94-securityfilterchain) 여러 개가 공통 인증을 사용하는 경우에 (부모 `AuthenticationManager`를 공유) 흔히 쓰는 패턴이다.
 
 ![ProviderManagers Parent](./../../images/springsecurity/providermanagers-parent.png)
 
 기본적으로 `ProviderManager`는 인증 요청에 성공하면 리턴된 `Authentication` 객체에 있는 모든 민감한 credential 정보를 지운다. 이로써 비밀번호 같은 정보를 `HttpSession`에 필요 이상으로 길게 유지하지 않는 것이다.
 
-상태가 없는 어플리케이션에서 성능 향상 등을 위해 사용자 객체를 캐시한다면 문제가 될 수 있다. `Authentication`이 캐시 안에 있는 객체를 참조하고 있는데 (`UserDetails` 인스턴스 등) credential을 제거한다면, 캐시된 값으로는 더 이상 인증할 수 없다. 캐시를 사용한다면 이 점을 반드시 고려해야 한다. 캐시 구현부나 리턴된 `Authentication` 객체를 생성하는 `AuthenticationProvider`에서 객체의 복사본을 만들면 명쾌하게 해결된다. 아니면 `ProviderManager`의 `eraseCredentialsAfterAuthentication` 프로퍼티를 비활성화시켜도 된다. 자세한 정보는 [Javadoc](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)을 참고하라.
+하지만 상태가 없는 어플리케이션에서 성능 향상 등을 위해 사용자 객체를 캐시한다면 문제가 될 수 있다. `Authentication`이 캐시 안에 있는 객체를 참조하고 있는데 (`UserDetails` 인스턴스 등) credential을 제거한다면, 캐시된 값으로는 더 이상 인증할 수 없다. 캐시를 사용한다면 이 점을 반드시 고려해야 한다. 캐시 구현부나 리턴된 `Authentication` 객체를 생성하는 `AuthenticationProvider`에서 객체의 복사본을 만들면 명쾌하게 해결된다. 아니면 `ProviderManager`의 `eraseCredentialsAfterAuthentication` 프로퍼티를 비활성화시켜도 된다. 자세한 정보는 [Javadoc](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)을 참고하라.
 
 ---
 
@@ -260,7 +261,7 @@ Collection<? extends GrantedAuthority> authorities = authentication.getAuthoriti
 
 클라이언트가 리소스를 요청할 때 미리 이름/비밀번호 같은 credential을 함께 보낼 때도 있다. 이럴 때는 credential을 요청하는 HTTP 응답을 만들 필요가 없다.
 
-어떨 땐 클라이언트가 접근 권한이 없는 리소스에 인증되지 않은 요청을 보내기도 한다. 이때는 `AuthenticationEntryPoint` 구현체로 클라이언트에 credential을 요청한다. `AuthenticationEntryPoint`는 [로그인 페이지로 리다이렉트](#10101-form-login)하거나, [WWW-Authenticate](#10102-basic-authentication) 헤더로 응답하는 등의 일을 담당한다.
+하지만 어떨 땐 클라이언트가 접근 권한이 없는 리소스에 인증되지 않은 요청을 보내기도 한다. 이때는 `AuthenticationEntryPoint` 구현체가 클라이언트에 credential을 요청한다. `AuthenticationEntryPoint`는 [로그인 페이지로 리다이렉트](#10101-form-login)하거나, [WWW-Authenticate](#10102-basic-authentication) 헤더로 응답하는 등의 일을 담당한다.
 
 ---
 

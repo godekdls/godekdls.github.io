@@ -101,6 +101,7 @@
 				<h3>{{ page.title }}</h3>
 			</div>
 			<article class="content">
+				{% if page.completed == false %}{% include warning.html %}{% endif %}
 				{{ content }}
 			</article>
 		</section>

@@ -7,6 +7,7 @@ description: 스프링 시큐리티 5.3에서 추가된 내용을 설명합니�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-05T10:00:00+09:00
 comments: true
+completed: false
 ---
 
 > [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#community)를 한글로 번역한 문서입니다.
@@ -32,7 +33,7 @@ comments: true
 
 ## 3.1. Documentation Updates
 
-우리는 계속해서 문서를 업데이트하려고 노력할 것이다.
+문서를 업데이트는 계속해서 신경쓸 예정이다.
 
 이번 릴리즈에서 보게 될 내용은 다음과 같다:
 

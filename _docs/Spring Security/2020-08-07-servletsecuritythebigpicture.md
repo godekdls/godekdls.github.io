@@ -7,6 +7,7 @@ description: 스프링 시큐리티에서 사용하는 서블릿 필터를 설�
 image: ./../../images/springsecurity/filterchain.png
 lastmod: 2020-08-08T10:00:00+09:00
 comments: true
+completed: false
 ---
 
 > [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-architecture)를 한글로 번역한 문서입니다.
@@ -36,10 +37,10 @@ comments: true
 
 ![FilterChain](./../../images/springsecurity/filterchain.png)
 
-클라이언트는 어플리케이션으로 요청을 전송하고, 컨테이너는 `Servlet`과 여러 `Filter`로 구성된 `FilterChain`을 만들어 요청 URI path 기반으로 `HttpServletRequest`를 처리한다. 스프링 MVC 어플리케이션에서의 `Servlet`은 [`DispatcherServlet`](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet)이다. 단일 `HttpServletRequest`와 `HttpServletResponse` 처리는 최대 한 개의 `Servlet`이 담당한다. 하지만 `Filter`는 여러 개를 사용할 수 있다:
+클라이언트는 어플리케이션으로 요청을 전송하고, 컨테이너는 `Servlet`과 여러 `Filter`로 구성된 `FilterChain`을 만들어 요청 URI path 기반으로 `HttpServletRequest`를 처리한다. 스프링 MVC 어플리케이션에서의 `Servlet`은 [`DispatcherServlet`](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet)이다. 단일 `HttpServletRequest`와 `HttpServletResponse` 처리는 최대 한 개의 `Servlet`이 담당한다. 하지만 `Filter`는 여러 개를 사용할 수 있다. `Filter`의 사용 예는 다음과 같다:
 
-- 다운스트림의 여러 `Filter`와 `Servlet`의 실행을 막는다. 이 경우엔 보통 `Filter`에서 `HttpServletResponse`를 작성한다.
-- 다운스트림에 있는 여러 `Filter`와 `Servlet`으로 `HttpServletRequest`나 `HttpServletResponse`를 수정한다.
+- 다운스트림의 `Servlet`과 여러 `Filter`의 실행을 막는다. 이 경우엔 보통 `Filter`에서 `HttpServletResponse`를 작성한다.
+- 다운스트림에 있는 `Servlet`과 여러 `Filter`들로 `HttpServletRequest`나 `HttpServletResponse`를 수정한다.
 
 `Filter`는 `FilterChain` 안에 있을 때 효력을 발휘한다.
 
@@ -85,7 +86,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 
 ## 9.3. FilterChainProxy
 
-스프링 시큐리티는 `FilterChainProxy`로 서브릿을 지원한다. `FilterChainProxy`는 스프링 시큐리티가 제공하는 특별한 `Filter`로, [`SecurityFilterChain`](#94-securityfilterchain)을 통해 여러 `Filter` 인스턴스로 위임할 수 있다. `FilterChainProxy`는 빈이기 때문에 보통 [DelegatingFilterProxy](#92-delegatingfilterproxy)로 감싸져 있다.
+스프링 시큐리티는 `FilterChainProxy`로 서블릿을 지원한다. `FilterChainProxy`는 스프링 시큐리티가 제공하는 특별한 `Filter`로, [`SecurityFilterChain`](#94-securityfilterchain)을 통해 여러 `Filter` 인스턴스로 위임할 수 있다. `FilterChainProxy`는 빈이기 때문에 보통 [DelegatingFilterProxy](#92-delegatingfilterproxy)로 감싸져 있다.
 
 ![FilterChainProxy](./../../images/springsecurity/filterchainproxy.png)
 
@@ -97,7 +98,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 
 ![SecurityFilterChain](./../../images/springsecurity/securityfilterchain.png)
 
-`SecurityFilterChain`에 있는 [보안 필터들](#95-security-filters)은 전형적인 빈이지만, [DelegatingFilterProxy](#92-delegatingfilterproxy)가 아닌 `FilterChainProxy`로 등록한다. `FilterChainProxy`로 서블릿 컨테이너나 [DelegatingFilterProxy](#92-delegatingfilterproxy)에 직접 빈을 등록하면 여러 가지 장점이 있다. 먼저 스프링 시큐리티가 서블릿을 지원할 수 있는 시작점을 제공한다. 따라서 서블릿에 스프링 시큐리티를 적용하다 문제를 겪는다면 `FilterChainProxy`부터 디버그 포인트를 추가해 보는 것이 좋다.
+`SecurityFilterChain`에 있는 [보안 필터들](#95-security-filters)은 전형적인 빈이지만, [DelegatingFilterProxy](#92-delegatingfilterproxy)가 아닌 `FilterChainProxy`로 등록한다. `FilterChainProxy`로 서블릿 컨테이너나 [DelegatingFilterProxy](#92-delegatingfilterproxy)에 직접 빈을 등록하면 여러 가지 장점이 있다. 먼저 스프링 시큐리티가 서블릿을 지원할 수 있는 시작점 역할을 한다. 따라서 서블릿에 스프링 시큐리티를 적용하다 문제를 겪는다면 `FilterChainProxy`부터 디버그 포인트를 추가해 보는 것이 좋다.
 
 `FilterChainProxy`는 스프링 시큐리티의 중심점이기 때문에 필수로 여겨지는 작업을 수행할 수 있다는 장점도 있다. 예를 들어 `SecurityContext`를 비워 메모리 릭을 방지할 수 있다. 스프링 시큐리티의 [`HttpFirewall`](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-httpfirewall)을 적용해서 특정 공격 유형을 방어할 수도 있다.
 

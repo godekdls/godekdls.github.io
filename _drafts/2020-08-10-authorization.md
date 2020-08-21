@@ -7,6 +7,7 @@ description: 서블릿 기반 어플리케이션에서 스프링 시큐리티의
 image: ./../../images/springsecurity/filtersecurityinterceptor.png
 lastmod: 2020-08-10T10:00:00+09:00
 comments: true
+completed: false
 ---
 <script>defaultLanguages = ['java']</script>
 
@@ -51,9 +52,9 @@ comments: true
   
 ---
 
-The advanced authorization capabilities within Spring Security represent one of the most compelling reasons for its popularity. Irrespective of how you choose to authenticate - whether using a Spring Security-provided mechanism and provider, or integrating with a container or other non-Spring Security authentication authority - you will find the authorization services can be used within your application in a consistent and simple way.
+스프링 시큐리티의 고급 인가 기능은 가장 인기 있는 기능 중 하나다. 인증 방법과 상관없이 (스프링 시큐리티가 제공하는 메커니즘과 provider 사용 여부나, 컨테이너나 스프링 시큐리티 외의 인증 권한과의 통합 여부와는 상관없이) 어플리케이션에 일관적이고, 간단하게 인증 서비스를 적용할 수 있다.
 
-In this part we’ll explore the different `AbstractSecurityInterceptor` implementations, which were introduced in Part I. We then move on to explore how to fine-tune authorization through use of domain access control lists.
+이번 장에선 Part I에서 소개했던 `AbstractSecurityInterceptor`의 다양한 구현체를 살펴본다. 그다음 도메인 접근 제어 목록을 통해 인가 기능을 세부적으로 튜닝하는 방법을 살펴볼 것이다.
 
 ---
 
@@ -61,27 +62,27 @@ In this part we’ll explore the different `AbstractSecurityInterceptor` impleme
 
 ### 11.1.1. Authorities
 
-[`Authentication`](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication-authentication), discusses how all `Authentication` implementations store a list of `GrantedAuthority` objects. These represent the authorities that have been granted to the principal. the `GrantedAuthority` objects are inserted into the `Authentication` object by the `AuthenticationManager` and are later read by `AccessDecisionManager` s when making authorization decisions.
+[`Authentication`](../authentication#103-authentication) 섹션에선 어떻게 모든 `Authentication` 구현체가 `GrantedAuthority` 객체 리스트를 저장하는지를 설명한다. `GrantedAuthority` 객체는 principal에게 부여한 권한을 나타낸다. `AuthenticationManager`가 `GrantedAuthority` 객체를 `Authentication` 객체에 삽입하며, 이후 권한을 결정할 때 `AccessDecisionManager`가 `GrantedAuthority`를 읽어간다.
 
-`GrantedAuthority` is an interface with only one method:
+`GrantedAuthority`는 메소드가 하나 뿐인 인터페이스다:
 
 ```java
 String getAuthority();
 ```
 
-This method allows `AccessDecisionManager` s to obtain a precise `String` representation of the `GrantedAuthority`. By returning a representation as a `String`, a `GrantedAuthority` can be easily "read" by most `AccessDecisionManager` s. If a `GrantedAuthority` cannot be precisely represented as a `String`, the `GrantedAuthority` is considered "complex" and `getAuthority()` must return `null`.
+`AccessDecisionManager`들은 이 메소드로 `GrantedAuthority`를 정확한 `String`으로 얻을 수 있다. `GrantedAuthority`가 값을 `String`으로 리턴하기 때문에 `AccessDecisionManager` 대부분이 이를 쉽게 "읽어"갈 수 있다. `GrantedAuthority`를 명확하게 `String`으로 표현할 수 없다면 `GrantedAuthority`는 "복잡한" 것으로 간주하고 `getAuthority()`는 `null`을 리턴한다.
 
-An example of a "complex" `GrantedAuthority` would be an implementation that stores a list of operations and authority thresholds that apply to different customer account numbers. Representing this complex `GrantedAuthority` as a `String` would be quite difficult, and as a result the `getAuthority()` method should return `null`. This will indicate to any `AccessDecisionManager` that it will need to specifically support the `GrantedAuthority` implementation in order to understand its contents.
+"복잡한" `GrantedAuthority`의 예시로 고객 계정 번호에 적용할 작업과 권한 임계치 리스트를 저장하는 일이 있다. 이 복잡한 `GrantedAuthority`를 `String`으로 표현하긴 어렵기때문에 `getAuthority()`는 `null`을 리턴할 것이다. `null`을 리턴했다는 것은 `AccessDecisionManager`에 `GrantedAuthority`를 이해하기 위한 구체적인 코드가 있어야 한다는 뜻이다.
 
-Spring Security includes one concrete `GrantedAuthority` implementation, `SimpleGrantedAuthority`. This allows any user-specified `String` to be converted into a `GrantedAuthority`. All `AuthenticationProvider` s included with the security architecture use `SimpleGrantedAuthority` to populate the `Authentication` object.
+스프링 시큐리티는 한 가지 `GrantedAuthority` 구현체, `SimpleGrantedAuthority`를 제공한다. 이 클래스는 사용자가 지정한 `String`을 `GrantedAuthority`로 변환해 준다. 시큐리티 아키텍처에 속한 모든 `AuthenticationProvider`는 `Authentication` 객체 값을 채울 때 `SimpleGrantedAuthority`를 사용한다.
 
 ### 11.1.2. Pre-Invocation Handling
 
-Spring Security provides interceptors which control access to secure objects such as method invocations or web requests. A pre-invocation decision on whether the invocation is allowed to proceed is made by the `AccessDecisionManager`.
+스프링 시큐리티는 메소드 호출이나 웹 요청같은 보안 객체에 대한 접근을 제어하는 인터셉터를 제공한다. 호출을 허용할지 말지를 결정하는 pre-invocation 결정은 `AccessDecisionManager`에서 내린다.
 
 #### The AccessDecisionManager
 
-The `AccessDecisionManager` is called by the `AbstractSecurityInterceptor` and is responsible for making final access control decisions. The `AccessDecisionManager` interface contains three methods:
+`AccessDecisionManager`는 `AbstractSecurityInterceptor`에서 호출하며, 최종 접근 제어 결정을 담당한다. `AccessDecisionManager`는 세 가지 메소드가 있다:
 
 ```java
 void decide(Authentication authentication, Object secureObject,
@@ -92,7 +93,9 @@ boolean supports(ConfigAttribute attribute);
 boolean supports(Class clazz);
 ```
 
-The `AccessDecisionManager`'s `decide` method is passed all the relevant information it needs in order to make an authorization decision. In particular, passing the secure `Object` enables those arguments contained in the actual secure object invocation to be inspected. For example, let’s assume the secure object was a `MethodInvocation`. It would be easy to query the `MethodInvocation` for any `Customer` argument, and then implement some sort of security logic in the `AccessDecisionManager` to ensure the principal is permitted to operate on that customer. Implementations are expected to throw an `AccessDeniedException` if access is denied.
+`AccessDecisionManager`의 `decide` 메소드는 권한을 결정하기 위해 필요한 모든 정보를 건내 받는다. 특히, 보안 `Object`를 건내 받으면 실제 보안 객체를 실행할 때 넘긴 인자를 검사할 수 있다. 예를 들어 보안 객체가 `MethodInvocation`이었다고 가정해보자. 모든 `Customer` 인자에 관한 `MethodInvocation`은 쉽게 조회할 수 있으며, `AccessDecisionManager` 안에서 일련의 보안 로직으로 principal에 customer 관련 동작을 허가할 수 있다. 접근을 거절한 경우엔 `AccessDeniedException`을 던진다.
+
+`supports(ConfigAttribute)` 메소드는 기동 시점에  `AbstractSecurityInterceptor`에서 `AccessDecisionManager`가 건내받은 `ConfigAttribute`를 처리할 수 있는지 결정할 때 호출한다. `supports(Class)` 메소드는 시큐리티 인터셉터 구현체에서 설정한 `AccessDecisionManager`가 시큐리티 인터셉터가 제출할 보안 객체 타입을 지원하는지 확인할 때 호출한다.
 
 The `supports(ConfigAttribute)` method is called by the `AbstractSecurityInterceptor` at startup time to determine if the `AccessDecisionManager` can process the passed `ConfigAttribute`. The `supports(Class)` method is called by a security interceptor implementation to ensure the configured `AccessDecisionManager` supports the type of secure object that the security interceptor will present.
 
@@ -184,7 +187,7 @@ The [`FilterSecurityInterceptor`](https://docs.spring.io/spring-security/site/do
 
 ![Authorize HttpServletRequest](./../../images/springsecurity/filtersecurityinterceptor.png)
 
-- <span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> First, the `FilterSecurityInterceptor` obtains an [Authentication](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication-authentication) from the [SecurityContextHolder](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication-securitycontextholder).
+- <span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> First, the `FilterSecurityInterceptor` obtains an [Authentication](../authentication#103-authentication) from the [SecurityContextHolder](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication-securitycontextholder).
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> Second, `FilterSecurityInterceptor` creates a [`FilterInvocation`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/FilterInvocation.html) from the `HttpServletRequest`, `HttpServletResponse`, and `FilterChain` that are passed into the `FilterSecurityInterceptor`.
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> Next, it passes the `FilterInvocation` to `SecurityMetadataSource` to get the `ConfigAttribute`s.
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> Finally, it passes the `Authentication`, `FilterInvocation`, and `ConfigAttribute`s to the `AccessDecisionManager`.
@@ -896,3 +899,7 @@ In the example above, we’re retrieving the ACL associated with the "Foo" domai
 Spring Security does not provide any special integration to automatically create, update or delete ACLs as part of your DAO or repository operations. Instead, you will need to write code like shown above for your individual domain objects. It’s worth considering using AOP on your services layer to automatically integrate the ACL information with your services layer operations. We’ve found this quite an effective approach in the past.
 
 Once you’ve used the above techniques to store some ACL information in the database, the next step is to actually use the ACL information as part of authorization decision logic. You have a number of choices here. You could write your own `AccessDecisionVoter` or `AfterInvocationProvider` that respectively fires before or after a method invocation. Such classes would use `AclService` to retrieve the relevant ACL and then call `Acl.isGranted(Permission[] permission, Sid[] sids, boolean administrativeMode)` to decide whether permission is granted or denied. Alternately, you could use our `AclEntryVoter`, `AclEntryAfterInvocationProvider` or `AclEntryAfterInvocationCollectionFilteringProvider` classes. All of these classes provide a declarative-based approach to evaluating ACL information at runtime, freeing you from needing to write any code. Please refer to the sample applications to learn how to use these classes.
+
+---
+
+전체 목차는 [여기](../contents/)에 있습니다.

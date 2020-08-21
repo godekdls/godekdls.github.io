@@ -8,6 +8,7 @@ image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-07T10:00:00+09:00
 comments: true
 boundary: Servlet Applications
+completed: false
 ---
 
 > [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-hello)를 한글로 번역한 문서입니다.
@@ -66,11 +67,11 @@ Using generated security password: 8e557245-73e2-4286-969a-ff57fe326336
 - `user`라는 사용자 이름과 콘솔에도 출력되는 랜덤 생성한 비밀번호를 가지고 있는 `UserDetailsService` 빈을 만든다.
 - 서블릿 컨테이너에 `springSecurityFilterChain`이란 이름의 `Filter` 빈을 등록해 모든 요청에 적용한다.
 
-스프링 부트 설정은 많지 않지만 많은 것을 해 준다. 기능을 요약하면 다음과 같다:
+스프링 부트 설정은 간단하지만 많은 일을 해준다. 기능을 요약하면 다음과 같다:
 
 - 어플리케이션의 모든 상호작용에 사용자 인증 요구
 - 디폴트 로그인 폼 생성
-- 폼에서 `user`라는 이름과 콘솔에 출력한 비밀번호로 인증 지원 (위 예제에서 비밀번호는 `8e557245-73e2-4286-969a-ff57fe326336`이다).
+- 폼에서 `user`라는 이름과 콘솔에 출력한 비밀번호를 사용한 인증 지원 (위 예제에서 비밀번호는 `8e557245-73e2-4286-969a-ff57fe326336`이다).
 - BCrypt로 저장할 비밀번호 보호
 - 사용자 로그아웃 지원
 - [CSRF 공격](https://en.wikipedia.org/wiki/Cross-site_request_forgery) 방어
@@ -81,7 +82,7 @@ Using generated security password: 8e557245-73e2-4286-969a-ff57fe326336
   - Cache Control (어플리케이션에서 특정 스태틱 리소스에 캐시를 허용하도록 재정의할 수 있다)
   - [X-XSS-Protection](https://msdn.microsoft.com/en-us/library/dd565647(v=vs.85).aspx) 통합
   - X-Frame-Options 통합으로 [클릭재킹](https://en.wikipedia.org/wiki/Clickjacking) 방어 지원
-- 아래 서블릿 API 메소드 통합:
+- 서블릿 API 메소드 통합:
   - [`HttpServletRequest#getRemoteUser()`](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#getRemoteUser())
   - [`HttpServletRequest.html#getUserPrincipal()`](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#getUserPrincipal())
   - [`HttpServletRequest.html#isUserInRole(java.lang.String)`](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#isUserInRole(java.lang.String))
