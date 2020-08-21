@@ -5,7 +5,7 @@ order: 11
 permalink: /Spring%20Security/authentication/
 description: 서블릿 기반 어플리케이션에서 스프링 시큐리티로 여러 가지 인증(authentication)을 적용하는 방법
 image: ./../../images/springsecurity/securitycontextholder.png
-lastmod: 2020-08-08T10:00:00+09:00
+lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
 ---

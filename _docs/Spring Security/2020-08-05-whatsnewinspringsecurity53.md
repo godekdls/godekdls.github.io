@@ -5,7 +5,7 @@ order: 4
 permalink: /Spring%20Security/whatsnewinspringsecurity53/
 description: 스프링 시큐리티 5.3에서 추가된 내용을 설명합니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-08-05T10:00:00+09:00
+lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
 ---

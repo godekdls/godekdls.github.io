@@ -5,7 +5,7 @@ order: 5
 permalink: /Spring%20Security/gettingspringsecurity/
 description: 스프링 시큐리티를 시작하기 한글 번역
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-08-05T10:00:00+09:00
+lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
 ---

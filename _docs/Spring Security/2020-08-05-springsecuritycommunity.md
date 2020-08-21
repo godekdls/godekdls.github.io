@@ -5,7 +5,7 @@ order: 3
 permalink: /Spring%20Security/springsecuritycommunity/
 description: 스프링 시큐리티 커뮤니티 활용법을 소개합니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-08-05T10:00:00+09:00
+lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
 ---

@@ -5,7 +5,7 @@ order: 9
 permalink: /Spring%20Security/hellospringsecurity/
 description: 서블릿 어플리케이션에서 스프링 시큐리티를 시작하는 방법과 스프링 부트 자동 설정을 설명합니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-08-07T10:00:00+09:00
+lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 boundary: Servlet Applications
 completed: false

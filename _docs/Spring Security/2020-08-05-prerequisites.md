@@ -5,7 +5,7 @@ order: 2
 permalink: /Spring%20Security/prerequisites/
 description: 스프링 시큐리티에서 요구하는 환경을 설명합니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-08-05T10:00:00+09:00
+lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 boundary: Preface
 completed: false
