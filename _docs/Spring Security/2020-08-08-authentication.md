@@ -1256,7 +1256,7 @@ fun authenticationProvider(authenticator: LdapAuthenticator): LdapAuthentication
 }
 ```
 
-이 예제에서는 설정 패턴에 사용자의 로그인 이름을 적용하고, 비밀번호와 함께 사용자로 바인딩해 해당 사용자의 DN을 얻는다. 이 방법은 모든 사용자를 디렉토리 내 단일 노드에 저장했을 때 사용하는 방법이다. 사용자 위치를 찾기 위한 LDAP 검색 필터를 설정하려면 다음처럼 사용해야 한다:
+이 예제에서는 설정 패턴에 사용자의 로그인 이름을 적용하고, 비밀번호와 함께 사용자로 바인딩해 해당 사용자의 DN을 가져온다. 이 방법은 모든 사용자를 디렉토리 내 단일 노드에 저장했을 때 사용하는 방법이다. 사용자 위치를 찾기 위한 LDAP 검색 필터를 설정하려면 다음처럼 사용해야 한다:
 
 **Example 73. Bind Authentication with Search Filter**
 
@@ -1888,7 +1888,7 @@ List<OpenIDAttribute> attributes = token.getAttributes();
 
 익명 인증 처리에서 마지막으로 살펴볼 것은 `AuthenticationTrustResolver` 인터페이스로, 구현체는 `AuthenticationTrustResolverImpl`이 있다. 이 인터페이스의 `isAnonymous(Authentication)` 메소드를 사용하면 원하는 클래스에서 이 특별한 인증 상태도 계산에 넣을 수 있다. 바로 `ExceptionTranslationFilter`가 이 인터페이스를 사용해 `AccessDeniedException`을 처리한다. `AccessDeniedException`을 던졌고 인증 유형이 익명이라면, 403(forbidden)을 던지는 대신 `AuthenticationEntryPoint`를 시작해 principal을 올바르게 인증할 수 있다. 이 둘은 반드시 구별해야 한다. 그렇지 않으면 항상 principal을 "인증된 상태"로 인지해서 폼이나, 기본, 다이제스트, 아니면 다른 어떤 기본 인증 메커니즘으로도 로그인할 방법이 없다.
 
-위 인터셉터 설정에 있는 `ROLE_ANONYMOUS` 속성 대신 `IS_AUTHENTICATED_ANONYMOUSLY`를 사용하는 경우도 있다. 접근 제어를 정의할 땐 이 둘은 사실상 동일하다. 이는 [인가 챕터](../authorization#authenticatedvoter)에서 살펴볼 `AuthenticatedVoter`에서 사용하는 예시다. `AuthenticatedVoter`는 `AuthenticationTrustResolver`를 사용해서 특정 설정 속성을 처리하고 익명 사용자에게 접근 권한을 부여한다. `AuthenticatedVoter`로 접근하면 익명 사용자와 remember-me 사용자, 완전히 인증된 사용자를 구분할 수 있다. 그래도 이런 기능이 필요하지 않다면 `ROLE_ANONYMOUS`를 유지해서 스프링 시큐리티의 표준 `RoleVoter`가 처리하도록 놔두면 된다.
+위 인터셉터 설정에 있는 `ROLE_ANONYMOUS` 속성 대신 `IS_AUTHENTICATED_ANONYMOUSLY`를 사용하는 경우도 있다. 접근 제어를 정의할 땐 이 둘은 사실상 동일하다. 이는 [인가 챕터](../authorization#authenticatedvoter)에서 살펴볼 `AuthenticatedVoter`에서 사용하는 예시다. `AuthenticatedVoter`는 `AuthenticationTrustResolver`를 사용해서 이 `IS_AUTHENTICATED_ANONYMOUSLY` 설정 속성을 처리하고 익명 사용자에게 접근 권한을 부여한다. `AuthenticatedVoter`로 접근하면 익명 사용자와 remember-me 사용자, 완전히 인증된 사용자를 구분할 수 있다. 그래도 이런 기능이 필요하지 않다면 `ROLE_ANONYMOUS`를 유지해서 스프링 시큐리티의 표준 `RoleVoter`가 처리하도록 놔두면 된다.
 
 ---
 
@@ -1897,7 +1897,7 @@ List<OpenIDAttribute> attributes = token.getAttributes();
 스프링 시큐리티를 사용해서 인가를 구현하고 싶지만, 사용자가 어플리케이션에 접근하기 전에 이미 신뢰할 수 있는 외부 시스템에서 인증받았을 수도 있다. 이런 상황을 "pre-authenticated" 시나리오라고 부른다. 예를 들어 X.509, Siteminder나 실행 중인 어플리케이션 안에 있는 자바 EE 컨테이너 인증 등이 있다. pre-authentication을 사용하면 스프링 시큐리티에선 다음과 같은 처리를 한다:
 
 - 요청을 만든 사용자를 식별한다.
-- 사용자의 권한을 얻어온다.
+- 사용자의 권한을 가져온다.
 
 자세한 내용은 외부 인증 메커니즘에 따라 다르다. X.509는 인증서 정보로 사용자를 식별하며, Siteminder는 HTTP 요청 헤더로 식별한다. 컨테이너 인증을 사용하다면 요청받은 HTTP request의 `getUserPrincipal()`을 호출해서 사용자를 식별한다. 사용자의 role/authority 정보를 제공하는 외부 메커니즘도 있지만 `UserDetailsService`같은 별도 소스로 권한을 얻어야 하는 경우도 있다.
 
@@ -2002,7 +2002,7 @@ X.509 인증은 [별도 챕터](#1018-x509-authentication)에서 다룬다. 여�
 
 #### JAAS CallbackHandler
 
-JAAS `LoginModule` 대부분은 일종의 콜백이 필요하다. 보통 콜백으로 사용자 이름과 비밀번호를 얻어온다.
+JAAS `LoginModule` 대부분은 일종의 콜백이 필요하다. 보통 콜백으로 사용자 이름과 비밀번호를 가져온다.
 
 스프링 시큐리티와 함께라면, 스프링 시큐리티가 이런 사용자 상호작용을 담당한다 (인증 메커니즘으로). 따라서 인증 요청을 JAAS로 위임할 때쯤엔 스프링 시큐리티의 인증 메커니즘이 이미 `Authentication`에 JAAS `LoginModule`에서 필요한 모든 정보를 채웠을 것이다.
 
@@ -2014,7 +2014,7 @@ JAAS `LoginModule` 대부분은 일종의 콜백이 필요하다. 보통 콜백�
 
 JAAS는 principal로 동작한다. 심지어 JAAS에선 "role"도 principal로 표현한다. 하지만 스프링 시큐리티는 이와 달리 `Authentication` 객체로 동작한다. 각 `Authentication` 객체는 principal 하나와 `GrantedAuthority` 여러 개를 가진다. 스프링 시큐리티의 JAAS 패키지엔 각기 다른 개념을 매핑하기 위한 `AuthorityGranter` 인터페이스가 있다.
 
-`AuthorityGranter`는 JAAS principal을 검사해서 해당 princial에 할당된 권한을 나타내는 `String` 셋을 리턴한다. `AbstractJaasAuthenticationProvider`는 각 권한 문자열로 `JaasGrantedAuthority`을 생성한다 (스프링 시큐리티의 `GrantedAuthority` 인터페이스를 구현하고 있는). `JaasGrantedAuthority`는 권한 문자열과 `AuthorityGranter`에 전달한 JAAS principal을 가지고 있다. `AbstractJaasAuthenticationProvider`는 먼저 JAAS `LoginModule`로 사용자의 credential 인증에 성공한 다음 반환된 `LoginContext`에 접근해 JAAS principal을 얻어온다. 그 다음 `LoginContext.getSubject().getPrincipals()`을 호출해 결과로 받아온 각 principal을 `AbstractJaasAuthenticationProvider.setAuthorityGranters(List)` 프로퍼티에 정의한 각 `AuthorityGranter`로 전달한다.
+`AuthorityGranter`는 JAAS principal을 검사해서 해당 princial에 할당된 권한을 나타내는 `String` 셋을 리턴한다. `AbstractJaasAuthenticationProvider`는 각 권한 문자열로 `JaasGrantedAuthority`을 생성한다 (스프링 시큐리티의 `GrantedAuthority` 인터페이스를 구현하고 있는). `JaasGrantedAuthority`는 권한 문자열과 `AuthorityGranter`에 전달한 JAAS principal을 가지고 있다. `AbstractJaasAuthenticationProvider`는 먼저 JAAS `LoginModule`로 사용자의 credential 인증에 성공한 다음 반환된 `LoginContext`에 접근해 JAAS principal을 가져온다. 그 다음 `LoginContext.getSubject().getPrincipals()`을 호출해 결과로 받아온 각 principal을 `AbstractJaasAuthenticationProvider.setAuthorityGranters(List)` 프로퍼티에 정의한 각 `AuthorityGranter`로 전달한다.
 
 `AuthorityGranter`는 모든 JAAS principal마다 달라지기 때문에 스프링 시큐리티는 프로덕션용 구현체를 제공하지 않는다. 하지만 유닛 테스트에 있는 `TestAuthorityGranter`는 간단한 `AuthorityGranter` 구현을 보여주고 있다.
 
@@ -2312,7 +2312,7 @@ SingleSignOutFilter를 사용할 댄 인코딩 이슈가 발생할 수 있다. �
 
 상태가 없는 서비스를 인증하려면 어플리케이션은 프록시 승인 티켓 (PGT)를 획득해야 한다. 이번 섹션에선 [CAS ST](#service-ticket-authentication) 설정 기반으로 PGT를 획득할 수 있는 스프링 시큐리티 설정을 다룬다.
 
-첫 번째 단계는 스프링 시큐리티 설정에 `ProxyGrantingTicketStorage`를 추가하는 것이다. `CasAuthenticationFilter`에서 획득한 PGT를 저장할 때 사용하는 것으로, PGT로 프록시 티켓을 얻어올 때 사용할 수 있다. 아래는 설정 예시다.
+첫 번째 단계는 스프링 시큐리티 설정에 `ProxyGrantingTicketStorage`를 추가하는 것이다. `CasAuthenticationFilter`에서 획득한 PGT를 저장할 때 사용하는 것으로, PGT로 프록시 티켓을 가져올 때 사용할 수 있다. 아래는 설정 예시다.
 
 ```xml
 <!--
