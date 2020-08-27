@@ -3,7 +3,7 @@ title: Project Modules
 category: Spring Security
 order: 7
 permalink: /Spring%20Security/projectmodules/
-description: 스프링 시큐리티 프로젝트 모듈을 소개합니다.
+description: 스프링 시큐리티 프로젝트 모듈을 소개합니다. 공식 문서에 있는 "project modules" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
@@ -75,7 +75,7 @@ completed: false
 
 ## 6.6. OAuth 2.0 Core — `spring-security-oauth2-core.jar`
 
-`spring-security-oauth2-core.jar`에는 OAuth 2.0 프레임워크와 OpenID Connect Core 1.0 지원을 위한 핵심 클래스와 인터페이스가 있다. 클라이언트로써든, 리소스 서버나 authorization 서버로써든, OAuth 2.0이나 OpenID Connect Core 1.0을 사용한다면 이 모듈이 필요할 것이다. 상위 패키지는 `org.springframework.security.oauth2.core`다.
+`spring-security-oauth2-core.jar`에는 OAuth 2.0 프레임워크와 OpenID Connect Core 1.0 지원을 위한 핵심 클래스와 인터페이스가 있다. 클라이언트든, 리소스 서버나 인가 서버든, OAuth 2.0 또는 OpenID Connect Core 1.0을 사용한다면 이 모듈이 필요하다. 상위 패키지는 `org.springframework.security.oauth2.core`다.
 
 ---
 
@@ -87,7 +87,7 @@ completed: false
 
 ## 6.8. OAuth 2.0 JOSE — `spring-security-oauth2-jose.jar`
 
-`spring-security-oauth2-jose.jar`는 JOSE (Javascript Object Signing and Encryption) 프레임워크를 지원한다. JOSE 프레임워크는 양단 간 클레임(claim)을 안전하게 전송할 수 있는 방법을 제공하는 프레임워크다. 이는 다음과 같은 스펙으로 구성된다:
+`spring-security-oauth2-jose.jar`는 JOSE (Javascript Object Signing and Encryption) 프레임워크를 지원한다. JOSE 프레임워크는 양단 간 클레임을 안전하게 전송할 수 있는 방법을 제공하는 프레임워크다. 이는 다음과 같은 스펙으로 구성된다:
 
 - JSON Web Token (JWT)
 - JSON Web Signature (JWS)

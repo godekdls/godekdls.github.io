@@ -3,8 +3,9 @@ title: Authentication
 category: Spring Security
 order: 11
 permalink: /Spring%20Security/authentication/
-description: 서블릿 기반 어플리케이션에서 스프링 시큐리티로 여러 가지 인증(authentication)을 적용하는 방법
+description: 서블릿 기반 어플리케이션에 적용할 수 있는 스프링 시큐리티 인증을 설명합니다. 공식 문서에 있는 "authentication" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/securitycontextholder.png
+priority: 0.8
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
@@ -135,7 +136,7 @@ completed: false
 #### Authentication Mechanisms
 
 - [Username and Password](#1010-usernamepassword-authentication) - 사용자 이름/비밀번호로 인증하는 방법
-- [OAuth 2.0 Login](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2login) - OpenID Connect를 사용한 OAuth 2.0 로그인과 비표준 OAuth 2.0 로그인 (i.e. GitHub)
+- [OAuth 2.0 Login](../oauth2#121-oauth-20-login) - OpenID Connect를 사용한 OAuth 2.0 로그인과 비표준 OAuth 2.0 로그인 (i.e. GitHub)
 - [SAML 2.0 Login](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-saml2) - SAML 2.0 로그인
 - [Central Authentication Server (CAS)](#1017-cas-authentication) - Central Authentication Server (CAS) 지원
 - [Remember Me](#1012-remember-me-authentication) - 세션이 만료된 사용자를 기억하는 방법
@@ -1207,7 +1208,7 @@ LDAP bind 인증을 사용하면 클라이언트에선 비밀번호는 물론, �
 스프링 시큐리티는 두 가지 `LdapAuthenticator` 구현체를 제공한다.
 
 - [Using Bind Authentication](#using-bind-authentication)
-- [Using Password Authentication](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication-ldap-pwd)
+- [Using Password Authentication](#using-password-authentication)
 
 #### Using Bind Authentication
 

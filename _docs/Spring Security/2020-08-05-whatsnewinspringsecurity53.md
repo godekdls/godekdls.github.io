@@ -3,7 +3,7 @@ title: What’s New in Spring Security 5.3
 category: Spring Security
 order: 4
 permalink: /Spring%20Security/whatsnewinspringsecurity53/
-description: 스프링 시큐리티 5.3에서 추가된 내용을 설명합니다.
+description: 스프링 시큐리티 5.3에서 추가된 내용을 설명합니다. 공식 문서에 있는 "what's new" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
@@ -52,7 +52,7 @@ completed: false
 ## 3.2. Servlet
 
 - [코틀린 DSL](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#kotlin-config-httpsecurity) 추가
-- OAuth 2.0 Client
+- OAuth 2.0 클라이언트
   - [OAuth 2.0 클라이언트](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-client), [OAuth 2.0 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-login), [OIDC 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oidc-login) 테스트 지원 추가
   - [OAuth 2.0 인가 요청 커스텀 기능](https://github.com/spring-projects/spring-security/pull/7748) 개선
   - 향상된 [OIDC logout success handler (`{baseUrl}` 지원)](https://github.com/spring-projects/spring-security/issues/7842)
@@ -60,10 +60,10 @@ completed: false
   - [XML 지원](https://github.com/spring-projects/spring-security/issues/5184) 추가
   - [OAuth 2.0 토큰 저장을 위한 JDBC 지원](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#dbschema-oauth2-client) 추가
   - [OAuth 2.0을 위한 JSON 직렬화 지원](https://github.com/spring-projects/spring-security/issues/4886) 추가
-- OAuth 2.0 Resource Server
-  - [multiple issuers](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2resourceserver-multitenancy) 지원 추가
+- OAuth 2.0 리소스 서버
+  - [multiple issuers](../oauth2#12320-multi-tenancy) 지원 추가
   - [Opaque 토큰 테스트 지원](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-opaque-token) 추가
-  - [generic claim validator](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#oauth2resourceserver-jwt-validation-custom) 추가
+  - [종합적인 클레임 validator](../oauth2#configuring-a-custom-validator) 추가
   - [XML 지원](https://github.com/spring-projects/spring-security/issues/5185) 추가
   - JWT와 Opaque 토큰을 위한 [bearer 토큰 에러 핸들링](https://github.com/spring-projects/spring-security/pull/7826) 개선
 - SAML 2.0
@@ -76,13 +76,13 @@ completed: false
 ## 3.3. WebFlux
 
 - [커스텀 헤더 writers를 위한 DSL 지원](https://github.com/spring-projects/spring-security/issues/7636) 추가
-- OAuth 2.0 Client
+- OAuth 2.0 클라이언트
   - [OAuth 2.0 클라이언트](https://github.com/spring-projects/spring-security/issues/7910), [OAuth 2.0 로그인](https://github.com/spring-projects/spring-security/issues/7828), [OIDC 로그인](https://github.com/spring-projects/spring-security/issues/7680) 테스트 지원 추가
   - 향상된 [OIDC logout success handler (`{baseUrl}` 지원)](https://github.com/spring-projects/spring-security/issues/7842)
   - [OAuth2Authorization success/failure handlers](https://github.com/spring-projects/spring-security/issues/7699) 추가
   - [OAuth 2.0 토큰을 위한 JSON 직렬화 지원](https://github.com/spring-projects/spring-security/issues/4886) 추가
   - [AuthorizedClientService와 ReactiveOAuth2AuthorizedClientManager 통합 지원](https://github.com/spring-projects/spring-security/issues/7569) 추가
-- OAuth 2.0 Resource Server
+- OAuth 2.0 리소스 서버
   - [multiple issuers](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webflux-oauth2resourceserver-multitenancy) 지원 추가
   - [Opaque Tokens 테스트 지원](https://github.com/spring-projects/spring-security/issues/7827) 추가
   - JWT와 Opaque 토큰을 위한 [bearer 토큰 에러 핸들링](https://github.com/spring-projects/spring-security/pull/7826) 개선
