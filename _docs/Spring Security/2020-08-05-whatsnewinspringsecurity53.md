@@ -67,7 +67,7 @@ completed: false
   - [XML 지원](https://github.com/spring-projects/spring-security/issues/5185) 추가
   - JWT와 Opaque 토큰을 위한 [bearer 토큰 에러 핸들링](https://github.com/spring-projects/spring-security/pull/7826) 개선
 - SAML 2.0
-  - [AuthenticationManager](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-saml2-opensamlauthenticationprovider-authenticationmanager) 설정 추가
+  - [AuthenticationManager](../saml2#configure-opensamlauthenticationprovider-as-an-authentication-manager) 설정 추가
   - [AuthNRequest signatures](https://github.com/spring-projects/spring-security/issues/7711) 지원 추가
   - [AuthNRequest POST binding](https://github.com/spring-projects/spring-security/pull/7759) 지원 추가
 

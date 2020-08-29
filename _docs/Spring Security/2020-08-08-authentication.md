@@ -137,7 +137,7 @@ completed: false
 
 - [Username and Password](#1010-usernamepassword-authentication) - 사용자 이름/비밀번호로 인증하는 방법
 - [OAuth 2.0 Login](../oauth2#121-oauth-20-login) - OpenID Connect를 사용한 OAuth 2.0 로그인과 비표준 OAuth 2.0 로그인 (i.e. GitHub)
-- [SAML 2.0 Login](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-saml2) - SAML 2.0 로그인
+- [SAML 2.0 Login](../saml2) - SAML 2.0 로그인
 - [Central Authentication Server (CAS)](#1017-cas-authentication) - Central Authentication Server (CAS) 지원
 - [Remember Me](#1012-remember-me-authentication) - 세션이 만료된 사용자를 기억하는 방법
 - [JAAS Authentication](#1016-java-authentication-and-authorization-service-jaas-provider) - JAAS를 사용한 인증
