@@ -455,7 +455,7 @@ fun configure(http: HttpSecurity) {
 디폴트 HTML 폼은 몇 가지 핵심 규칙을 따른다:
 
 - `/login`에 `post` 요청을 보내야 한다.
-- [CSRF 토큰](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-csrf)을 포함해야 하며, 타임리프에서는 [자동으로 추가](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-csrf-include-form-auto)된다.
+- [CSRF 토큰](../protectionagainstexploits#141-cross-site-request-forgery-csrf-for-servlet-environments)을 포함해야 하며, 타임리프에서는 [자동으로 추가](../protectionagainstexploits#automatic-csrf-token-inclusion)된다.
 - 사용자 이름은 `username` 파라미터로 명시해야 한다.
 - 비밀번호는 `password` 파라미터로 명시해야 한다.
 - HTTP 파라미터 error가 있으면 사용자가 유효한 username / password를 제공하지 못했음을 나타낸다.
@@ -2609,7 +2609,7 @@ REST API를 사용한다면 `HttpStatusReturningLogoutSuccessHandler`가 괜찮�
 - [로그아웃 테스트](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#test-logout)
 - [HttpServletRequest.logout()](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servletapi-logout)
 - [Remember-Me 인터페이스와 구현체](#10124-remember-me-interfaces-and-implementations)
-- CSRF 주의사항 섹션에 있는 [로그아웃](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-considerations-csrf-logout) 문서
+- CSRF 주의사항 섹션에 있는 [로그아웃](../protectionagainstexploits#logging-out) 문서
 - [싱글 로그아웃](#single-logout) 섹션 (CAS 프로토콜)
 - 스프링 시큐리티 XML 네임스페이스 섹션에 있는 [logout 요소](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-logout) 문서
 

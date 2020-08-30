@@ -97,7 +97,7 @@ comments: true
 
 스프링 프레임워크, 스프링 웹 MVC를 포함한 기존 웹 프레임워크는 서블릿 API와 서블릿 컨테이너를 위해 개발됐다. 5.0 버전에 추가된 스프링 웹플럭스는 리액티브 스택 웹 프레임워크다. 완전하게 논블로킹으로 동작하며, [Reactive Streams](https://www.reactive-streams.org/) back pressure를 지원하고, Netty, Undertow, 서블릿 3.1+ 컨테이너 서버에서 실행된다.
 
-두 웹 프레임워크 모두 소스 모듈 이름과 동일하며([spring-webmvc](https://github.com/spring-projects/spring-framework/tree/master/spring-webmvc), [spring-webflux](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux)), 스프링 프레임워크에 공존한다. 원하는 모듈을 선택하면 된다. 둘 중 하나를 사용해 어플리케이션을 개발할 수 있고, 둘 다 사용할 수도 있다(예를 들어, 스프링 MVC 컨트롤러에서 리액티브 `WebClient`를 사용하는 식으로). 
+두 웹 프레임워크 모두 소스 모듈 이름과 동일하며([spring-webmvc](https://github.com/spring-projects/spring-framework/tree/master/spring-webmvc), [spring-webflux](https://github.com/spring-projects/spring-framework/tree/master/spring-webflux)), 스프링 프레임워크에 공존한다. 원하는 모듈을 선택하면 된다. 둘 중 하나를 사용해 어플리케이션을 개발할 수 있고, 둘 다 사용할 수도 있다 (예를 들어, 스프링 MVC 컨트롤러에서 리액티브 `WebClient`를 사용하는 식으로). 
 
 ---
 
@@ -115,7 +115,7 @@ API를 사용하기 어렵다. 이런 점 때문에 어떤 논블로킹과도 �
 
 이제 "논블로킹"과 "함수형"이 뭔지 알게 되었는데, 그러면 리액티브는 무슨 뜻일까?
 
-"리액티브"라는 용어는 변화에 반응하는 것을 중심에 두고 만든 프로그래밍 모델을 의미한다(I/O 이벤트에 반응하는 네트워크 컴포넌트, 마우스 이벤트에 반응하는 UI 컨트롤러 등). 논블로킹은 작업을 기다리기보단 완료되거나 데이터를 사용할 수 있게 되면 반응하므로, 이 말대로면 논블로킹도 리액티브다.
+"리액티브"라는 용어는 변화에 반응하는 것을 중심에 두고 만든 프로그래밍 모델을 의미한다 (I/O 이벤트에 반응하는 네트워크 컴포넌트, 마우스 이벤트에 반응하는 UI 컨트롤러 등). 논블로킹은 작업을 기다리기보단 완료되거나 데이터를 사용할 수 있게 되면 반응하므로, 이 말대로면 논블로킹도 리액티브다.
 
 스프링은 "리액티브"와 관련한 중요한 메커니즘이 하나 더 있는데, 논블로킹 back pressure다. 동기식 명령형(imperative) 코드에서 블로킹 호출은 호출자를 강제로 기다리게 하는 일종의 back pressure다. 논블로킹 코드에선, 프로듀셔 속도가 컨슈머 속도를 압도하지 않도록 이벤트 속도를 제어한다.
 
@@ -130,14 +130,14 @@ API를 사용하기 어렵다. 이런 점 때문에 어떤 논블로킹과도 �
 
 ### 1.1.2. Reactive API
 
-리액티브 스트림은 컴포넌트 상호 작용에서 중요한 역할을 한다. 하지만 이건 라이브러리와 기반 구조에 사용되는 컴포넌트엔 유용해도, 어플리케이션 API에서 다루기엔 너무 저수준이다. 어플리케이션은 비동기 로직을 만들기 위한 풍부한 고수준 함수형 API가 필요하다(자바 8 스트림 API와 비슷하지만 컬렉션만을 위한 게 아니다). 이게 바로 리액티브 라이브러리가 하는 일이다.
+리액티브 스트림은 컴포넌트 상호 작용에서 중요한 역할을 한다. 하지만 이건 라이브러리와 기반 구조에 사용되는 컴포넌트엔 유용해도, 어플리케이션 API에서 다루기엔 너무 저수준이다. 어플리케이션은 비동기 로직을 만들기 위한 풍부한 고수준 함수형 API가 필요하다 (자바 8 스트림 API와 비슷하지만 컬렉션만을 위한 게 아니다). 이게 바로 리액티브 라이브러리가 하는 일이다.
 
 [Reactor](https://github.com/reactor/reactor)는
 스프링 웹플럭스가 선택한 리액티브 라이브러리다. 리액터는 [`Mono`](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html)와 [`Flux`](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html) API 타입을 제공한다.
 ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.html)에 정리된 풍부한 연산자를 사용해 데이터 시퀀스를 0~1개는 `Mono`, 0~N개는 `Flux`로 표현할 수 있다. 리액터는 리액티브 스트림 라이브러리이기 때문에 모든 연산자는 논블로킹 back pressure를 지원한다. 리액터는 특히 서버 사이드 자바에 초점을 두고 스프링과 긴밀히 협력해서 개발됐다.
 
 웹플럭스는 리액터를 핵심 라이브러리로 사용하지만, 다른 리액티브 라이브러리를 써도 리액티브 스트림으로 상호작용 할 수 있다.
-웹플럭스 API의 일반적인 룰은, 순수한 `Publisher`를 입력으로 받아 내부적으로 리액터 타입으로 맞추고, 이걸 사용해서 `Flux`나 `Mono`를 반환한다. 따라서 어떤 `Publisher`든 입력으로 전달하고 연산할 수 있지만, 다른 리액티브 라이브러리를 사용하려면 출력 형식을 맞춰줘야 한다. 웹플럭스는 가능만 하다면(e.g. 애노테이션을 선언한 컨트롤러) 투명한 방식으로 RxJava나 다른 리액티브 라이브러리에 맞게 바꿔준다. 자세한 내용은 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
+웹플럭스 API의 일반적인 룰은, 순수한 `Publisher`를 입력으로 받아 내부적으로 리액터 타입으로 맞추고, 이걸 사용해서 `Flux`나 `Mono`를 반환한다. 따라서 어떤 `Publisher`든 입력으로 전달하고 연산할 수 있지만, 다른 리액티브 라이브러리를 사용하려면 출력 형식을 맞춰줘야 한다. 웹플럭스는 가능만 하다면 (e.g. 애노테이션을 선언한 컨트롤러) 투명한 방식으로 RxJava나 다른 리액티브 라이브러리에 맞게 바꿔준다. 자세한 내용은 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
 
 > 리액티브 API와는 별개로 웹플럭스는 코틀린의 [코루틴](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#coroutines) API와도 사용할 수 있는데, 이를 사용하면 좀 더 명령적(imperative)인 프로그래밍이 가능하다. 뒤에 나오는 코틀린 코드 샘플은 코루틴 API를 사용할 것이다.
 
@@ -185,7 +185,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 
 ### 1.1.6. Performance
 
-성능은 여러 의미로 해석할 수 있다. 리액티브랑 논블로킹을 사용한다고 해서 바로 어플리케이션이 빨라지는 건 아니다. 물론 빨라질 수도 있다(예를 들어 WebClient를 사용해서 외부 서비스 호출을 병렬로 처리한다면). 전반적으로 보면 논블로킹 방식이 처리할 일이 더 많다 보니 처리 시간이 약간 더 길어질 수 있다.
+성능은 여러 의미로 해석할 수 있다. 리액티브랑 논블로킹을 사용한다고 해서 바로 어플리케이션이 빨라지는 건 아니다. 물론 빨라질 수도 있다 (예를 들어 WebClient를 사용해서 외부 서비스 호출을 병렬로 처리한다면). 전반적으로 보면 논블로킹 방식이 처리할 일이 더 많다 보니 처리 시간이 약간 더 길어질 수 있다.
 
 리액티브와 논블로킹의 주된 이점은 고정된 적은 쓰레드와 적은 메모리로도 확장할 수 있다는 것이다. 예측할 수 있는 방법으로 확장하기 때문에 부하 속에서도 어플리케이션 복원 능력은 더 좋아진다. 하지만 이를 확인하려면 약간의 대기 시간이 필요하다 (느리고 예측 불가능한 네트워크 I/O 시간을 포함해서). 바로 여기서 리액티브 스택이 강점을 드러내며, 그 차이는 엄청나다.
 

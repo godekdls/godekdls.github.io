@@ -27,7 +27,7 @@ completed: false
 
 ---
 
-이번 섹션에선 서블릿 기반 어플리케이션에서 사용하는 스프링 시큐리티의 고수준 아키텍처를 다룬다. [인증](../authentication), [인가](../authorization), [취약점 공격 방어](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-exploits) 섹션에서 하나씩 심도 있게 살펴볼 것이다.
+이번 섹션에선 서블릿 기반 어플리케이션에서 사용하는 스프링 시큐리티의 고수준 아키텍처를 다룬다. [인증](../authentication), [인가](../authorization), [취약점 공격 방어](../protectionagainstexploits) 섹션에서 하나씩 심도 있게 살펴볼 것이다.
 
 ---
 
@@ -100,7 +100,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 
 `SecurityFilterChain`에 있는 [보안 필터들](#95-security-filters)은 전형적인 빈이지만, [DelegatingFilterProxy](#92-delegatingfilterproxy)가 아닌 `FilterChainProxy`로 등록한다. `FilterChainProxy`로 서블릿 컨테이너나 [DelegatingFilterProxy](#92-delegatingfilterproxy)에 직접 빈을 등록하면 여러 가지 장점이 있다. 먼저 스프링 시큐리티가 서블릿을 지원할 수 있는 시작점 역할을 한다. 따라서 서블릿에 스프링 시큐리티를 적용하다 문제를 겪는다면 `FilterChainProxy`부터 디버그 포인트를 추가해 보는 것이 좋다.
 
-`FilterChainProxy`는 스프링 시큐리티의 중심점이기 때문에 필수로 여겨지는 작업을 수행할 수 있다는 장점도 있다. 예를 들어 `SecurityContext`를 비워 메모리 릭을 방지할 수 있다. 스프링 시큐리티의 [`HttpFirewall`](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-httpfirewall)을 적용해서 특정 공격 유형을 방어할 수도 있다.
+`FilterChainProxy`는 스프링 시큐리티의 중심점이기 때문에 필수로 여겨지는 작업을 수행할 수 있다는 장점도 있다. 예를 들어 `SecurityContext`를 비워 메모리 릭을 방지할 수 있다. 스프링 시큐리티의 [`HttpFirewall`](../protectionagainstexploits#144-httpfirewall)을 적용해서 특정 공격 유형을 방어할 수도 있다.
 
 게다가 `SecurityFilterChain`을 어떨 때 실행해야 할지도 좀 더 유연하게 결정할 수 있다. 서블릿 컨테이너에선 URL로만 실행할 `Filter`들을 결정한다. 하지만 `FilterChainProxy`는 `RequestMatcher` 인터페이스를 사용하면  `HttpServletRequest`에 있는 어떤 것으로도 실행 여부를 결정할 수 있다.
 

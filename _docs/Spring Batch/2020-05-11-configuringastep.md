@@ -921,7 +921,7 @@ transition은 구체적인 것부터 그렇지 않은 순서로 적용된다.
 이 열거형 값 중 하나가 될 수 있다:
 `COMPLETED`, `STARTING`, `STARTED`, `STOPPING`, `STOPPED`, `FAILED`, `ABANDONED`, `UNKNOWN`.
 대부분 설명이 필요하지 않을 것이다:
-`COMPLETED`은 step이나 job이 성공적으로 완료된 상태를 나타낸다.
+`COMPLETED`는 step이나 job이 성공적으로 완료된 상태를 나타낸다.
 `FAILED`는 실패한 경우를 나타낸다.
 
 다음은 자바 기반 설정으로 'on' element를 사용한 예제다:

@@ -287,7 +287,7 @@ public void noWork() {
 
 스프링 배치 도메인은 객체 지향 원칙을 잘 따르기 때문에,
 `StepExecution`을 생성하려면 `JobExecution`이 필요하고,
-`JobExecution` 은 `JobInstance`와 `JobParameters`가 필요하다.
+`JobExecution`은 `JobInstance`와 `JobParameters`가 필요하다.
 견고한 도메인 모델로서는 장점일 수 있으나
 스텁(stub) 오브젝트가 많아 테스트가 장황해진다.
 스프링 배치 테스트 모듈은 이를 위해
