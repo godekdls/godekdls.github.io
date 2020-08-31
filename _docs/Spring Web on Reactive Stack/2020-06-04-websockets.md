@@ -125,7 +125,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin java kotlin""></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 import org.springframework.web.reactive.socket.WebSocketHandler
 import org.springframework.web.reactive.socket.WebSocketSession
@@ -164,7 +164,7 @@ class WebConfig {
   }
 }
 ```
-<div class="language-only-for-kotlin java kotlin""></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 class WebConfig {
@@ -222,7 +222,7 @@ class ExampleHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin java kotlin""></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 class ExampleHandler : WebSocketHandler {
 
@@ -271,7 +271,7 @@ class ExampleHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin java kotlin""></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 class ExampleHandler : WebSocketHandler {
 
@@ -323,7 +323,7 @@ class ExampleHandler implements WebSocketHandler {
   }
 }
 ```
-<div class="language-only-for-kotlin java kotlin""></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 class ExampleHandler : WebSocketHandler {
 
@@ -392,7 +392,7 @@ class WebConfig {
   }
 }
 ```
-<div class="language-only-for-kotlin java kotlin""></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 @Configuration
 class WebConfig {
@@ -441,7 +441,7 @@ client.execute(url, session ->
               .doOnNext(System.out::println)
               .then());
 ```
-<div class="language-only-for-kotlin java kotlin""></div>
+<div class="language-only-for-kotlin java kotlin"></div>
 ```kotlin
 val client = ReactorNettyWebSocketClient()
 
