@@ -81,7 +81,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 #### HttpServletRequest.getUserPrincipal()
 
-[HttpServletRequest.getUserPrincipal()](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#getUserPrincipal())은 `SecurityContextHolder.getContext().getAuthentication()` 결과 `Authentication`을 리턴한다. 사용자 이름과 비밀번호 기반 인증을 사용했다면 보통 `UsernamePasswordAuthenticationToken` 인스턴스다. 이 메소드는 사용자의 다른 정보를 확인할 때 유용하다. 예를 들어 사용자의 이름과 성을 가지고 있는 커스텀 `UserDetails`를 리턴하는 커스텀 `UserDetailsService`를 사용할 수 있다. 이 정보는 아래 코드로 가져올 수 있다:
+[HttpServletRequest.getUserPrincipal()](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#getUserPrincipal())은 `SecurityContextHolder.getContext().getAuthentication()` 결과 `Authentication`을 리턴한다. 사용자 이름과 비밀번호 기반 인증을 사용했다면 보통 `UsernamePasswordAuthenticationToken` 인스턴스를 리턴한다. 이 메소드는 사용자의 다른 정보를 확인할 때 유용하다. 예를 들어 커스텀 `UserDetailsService`를 사용해서 사용자의 이름과 성을 가지고 있는 커스텀 `UserDetails`를 리턴할 수 있다. 이 정보는 아래 코드로 가져올 수 있다:
 
 ```java
 Authentication auth = httpServletRequest.getUserPrincipal();
@@ -96,7 +96,7 @@ String lastName = userDetails.getLastName();
 
 #### HttpServletRequest.isUserInRole(String)
 
-[HttpServletRequest.isUserInRole(String)](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#isUserInRole(java.lang.String))은 `SecurityContextHolder.getContext().getAuthentication().getAuthorities()`에 `isUserInRole(String)`으로 넘겨받은 role을 가진 `GrantedAuthority`가 있는지 알려준다. 일반적으로 "ROLE\_" 프리픽스는 자동으로 추가되기 때문에 이 메소드를 사용할 때는 프리픽스를 사용하지 않는다. 예를 들어 현재 사용자가 "ROLE_ADMIN" 권한이 있는지 알고싶다면 다음 코드를 사용한다:
+[HttpServletRequest.isUserInRole(String)](https://docs.oracle.com/javaee/6/api/javax/servlet/http/HttpServletRequest.html#isUserInRole(java.lang.String))은 넘겨받은 role을 가진 `GrantedAuthority`가 `SecurityContextHolder.getContext().getAuthentication().getAuthorities()`에 있는지 알려준다. 일반적으로 "ROLE\_" 프리픽스는 자동으로 추가되기 때문에 이 메소드를 사용할 때는 프리픽스를 사용하지 않는다. 예를 들어 현재 사용자가 "ROLE_ADMIN" 권한이 있는지 알고싶다면 다음 코드를 사용한다:
 
 ```java
 boolean isAdmin = httpServletRequest.isUserInRole("ADMIN");
@@ -124,7 +124,7 @@ httpServletRequest.login("user","password");
 }
 ```
 
-> 스프링 시큐리티에서 실패한 인증을 처리하려면 ServletException을 캐치할 필요 없다.
+> 스프링 시큐리티에서 실패한 인증을 처리하고 싶다면 ServletException을 캐치할 필요 없다.
 
 #### HttpServletRequest.logout()
 
@@ -134,7 +134,7 @@ httpServletRequest.login("user","password");
 
 #### AsyncContext.start(Runnable)
 
-[AsyncContext.start(Runnable)](https://docs.oracle.com/javaee/6/api/javax/servlet/AsyncContext.html#start(java.lang.Runnable)) 메소드는 credential을 새 스레드로 전파해 준다. 스프링 시큐리티의 동시 처리 기능을 사용하면, 스프링 시큐리티는 현재 SecurityContext를 사용해서 Runnable을 처리하도록 AsyncContext.start(Runnable)을 재정의한다. 예를 들어 다음 코드는 현재 사용자의 인증 정보를 출력한다:
+[AsyncContext.start(Runnable)](https://docs.oracle.com/javaee/6/api/javax/servlet/AsyncContext.html#start(java.lang.Runnable)) 메소드는 credential을 새 스레드로 전파해 준다. 스프링 시큐리티의 동시 처리 기능을 사용하면, 스프링 시큐리티는 AsyncContext.start(Runnable)을 재정의해서 현재 SecurityContext를 사용해서 Runnable을 처리한다. 예를 들어 다음 코드는 현재 사용자의 인증 정보를 출력한다:
 
 ```java
 final AsyncContext async = httpServletRequest.startAsync();
@@ -155,7 +155,7 @@ async.start(new Runnable() {
 
 #### Async Servlet Support
 
-자바 설정을 사용 중이라면 이미 async 서블릿을 사용할 준비가 된 것이다. XML 설정을 사용한다면 몇 가지를 수정해야 한다. 먼저 web.xml에서 최소한 3.0 스키마를 사용하고 있는지를 확인해야 한다:
+자바 설정을 사용 중이라면 이미 async 서블릿을 사용할 준비가 된 것이다. XML 설정을 사용한다면 몇 가지를 수정해야 한다. 먼저 web.xml에서 최소 3.0 스키마를 사용하고 있는지를 확인해야 한다:
 
 ```xml
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
@@ -208,7 +208,7 @@ new Thread("AsyncThread") {
 
 문제는 스프링 시큐리티는 이 스레드를 알지 못하기 때문에 SecurityContext를 전파하지 않는다는 것이다. 즉 HttpServletResponse를 커밋할 때는 SecurityContext가 없다. 스프링 시큐리티가 HttpServletResponse를 커밋할 때 자동으로 SecurityContext를 저장하면 로그인한 사용자를 잃게 된다.
 
-3.2 버전부터 스프링 시큐리티는 더 이상 HttpServletRequest.startAsync()를 호출 직후 HttpServletResponse를 커밋할 때 자동으로 SecurityContext를 저장하지 않는다.
+3.2 버전부터 스프링 시큐리티는 더 이상 HttpServletRequest.startAsync() 호출 직후 HttpServletResponse를 커밋할 때 자동으로 SecurityContext를 저장하지 않는다.
 
 ### 15.1.3. Servlet 3.1+ Integration
 
@@ -222,7 +222,7 @@ new Thread("AsyncThread") {
 
 ## 15.2. Spring Data Integration
 
-스프링 시큐리티는 스프링 데이터와의 통합을 지원하므로 쿼리에서 현재 사용자를 참조할 수 있다. 유용한 것도 있지만, 쿼리에 사용자가 꼭 필요할 때도 있다. 페이지 처리를 하는 경우가 그런데, 결과를 나중에 필터링하면 원하는 페이지를 한 번에 조회할 수 없기 때문이다.
+스프링 시큐리티는 스프링 데이터와의 통합을 지원하므로 쿼리에서 현재 사용자를 참조할 수 있다. 유용하기도 하지만, 쿼리에 사용자가 꼭 필요할 때도 있다. 페이지 처리를 하는 경우가 그런데, 결과를 나중에 필터링하면 원하는 페이지를 한 번에 조회할 수 없기 때문이다.
 
 ### 15.2.1. Spring Data & Spring Security Configuration
 
@@ -263,26 +263,26 @@ public interface MessageRepository extends PagingAndSortingRepository<Message,Lo
 
 ### 15.3.1. DelegatingSecurityContextRunnable
 
-스프링 시큐리티의 동시 처리 기능 중 가장 기본적인 구성 요소 중 하나는 `DelegatingSecurityContextRunnable`이다. 위임할 `Runnable`을 감싸 `SecurityContextHolder`에서 특정 `SecurityContext`를 초기화한다. 그 다음 Runnable을 실행하고 이후 `SecurityContextHolder`를 비운다.  `DelegatingSecurityContextRunnable`은 다음과 같다:
+스프링 시큐리티의 동시 처리 기능에서 가장 기본적인 구성 요소 중 하나는 `DelegatingSecurityContextRunnable`이다. 이 클래스는 위임할 `Runnable`을 감싸 `SecurityContextHolder`에서 특정 `SecurityContext`를 초기화한다. 그 다음 Runnable을 실행하고 이후 `SecurityContextHolder`를 비운다.  `DelegatingSecurityContextRunnable`은 다음과 같다:
 
 ```java
 public void run() {
-try {
-    SecurityContextHolder.setContext(securityContext);
-    delegate.run();
-} finally {
-    SecurityContextHolder.clearContext();
-}
+    try {
+        SecurityContextHolder.setContext(securityContext);
+        delegate.run();
+    } finally {
+        SecurityContextHolder.clearContext();
+    }
 }
 ```
 
-매우 간단하면서도 매끄럽게 SecurityContext를 다른 스레드로 전달한다. 이는 대부분 SecurityContextHolder를 스레드별로 사용하기 때문에 중요한 기능이다. 예를 들어 스프링 시큐리티의 [\<global-method-security>](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-global-method-security)로 서비스를 보호할 수도 있다. 이제 현재 `Thread`의 `SecurityContext`를 보호 중인 서비스를 실행하는 `Thread`로 쉽게 전달할 수 있다. 다음 코드는 그 방법을 보여주고 있다:
+매우 간단하면서도 매끄럽게 SecurityContext를 다른 스레드로 전달해준다. 이 기능은 대부분이 스레드별로 SecurityContextHolder를 사용하기 때문에 중요하다. 예를 들어 스프링 시큐리티의 [\<global-method-security>](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-global-method-security)로 서비스를 보호하고 있을 수도 있다. 이제 현재 `Thread`의 `SecurityContext`를 보호 중인 서비스를 실행하는 `Thread`로 쉽게 전달할 수 있다. 다음 코드는 그 방법을 보여주고 있다:
 
 ```java
 Runnable originalRunnable = new Runnable() {
-public void run() {
-    // invoke secured service
-}
+    public void run() {
+        // invoke secured service
+    }
 };
 
 SecurityContext context = SecurityContextHolder.getContext();
@@ -303,9 +303,9 @@ new Thread(wrappedRunnable).start();
 
 ```java
 Runnable originalRunnable = new Runnable() {
-public void run() {
-    // invoke secured service
-}
+    public void run() {
+        // invoke secured service
+    }
 };
 
 DelegatingSecurityContextRunnable wrappedRunnable =
@@ -314,11 +314,11 @@ DelegatingSecurityContextRunnable wrappedRunnable =
 new Thread(wrappedRunnable).start();
 ```
 
-이 코드는 사용하기 쉽지만, 코드에 스프링 시큐리티를 사용 중이라는 점이 드러난다. 다음 섹션에선 `DelegatingSecurityContextExecutor`를 사용해서 스프링 시큐리티와 관련된 코드를 숨기는 방법을 살펴볼 것이다.
+이 코드는 사용하기는 쉽지만, 코드에 스프링 시큐리티를 사용 중이라는 점이 드러난다. 다음 섹션에선 `DelegatingSecurityContextExecutor`를 사용해서 스프링 시큐리티와 관련된 코드를 숨기는 방법을 알아볼 것이다.
 
 ### 15.3.2. DelegatingSecurityContextExecutor
 
-이전 섹션을 통해 쉽게 `DelegatingSecurityContextRunnable`을 사용할 수 있다는 걸 알게 됐지만, 스프링 시큐리티를 알아야 사용할 수 있기 때문에 이상적이지는 않았다. `DelegatingSecurityContextExecutor`는 어떻게 스프링 시큐리티를 사용하고 있다는 사실을 숨기는지 알아보자.
+이전 섹션을 통해 간단하게 `DelegatingSecurityContextRunnable`을 쓸 수 있다는 걸 알게 됐지만, 스프링 시큐리티를 알아야 사용할 수 있기 때문에 이상적이지는 않았다. `DelegatingSecurityContextExecutor`는 어떻게 스프링 시큐리티를 사용하고 있다는 사실을 숨기는지 알아보자.
 
 `DelegatingSecurityContextExecutor`는 `Runnable` 대신 `Executor`에 위임한다는 점만 빼면 `DelegatingSecurityContextRunnable`과 매우 유사하다. 사용 방법은 아래 예제를 보면 된다:
 
@@ -334,9 +334,9 @@ DelegatingSecurityContextExecutor executor =
     new DelegatingSecurityContextExecutor(delegateExecutor, context);
 
 Runnable originalRunnable = new Runnable() {
-public void run() {
-    // invoke secured service
-}
+    public void run() {
+        // invoke secured service
+    }
 };
 
 executor.execute(originalRunnable);
@@ -354,16 +354,16 @@ executor.execute(originalRunnable);
 private Executor executor; // becomes an instance of our DelegatingSecurityContextExecutor
 
 public void submitRunnable() {
-Runnable originalRunnable = new Runnable() {
-    public void run() {
-    // invoke secured service
-    }
-};
-executor.execute(originalRunnable);
+    Runnable originalRunnable = new Runnable() {
+        public void run() {
+        // invoke secured service
+        }
+    };
+    executor.execute(originalRunnable);
 }
 ```
 
-이제 코드를 보면 `SecurityContext`가 `Thread`로 전파되며, `originalRunnable`을 실행한 뒤 `SecurityContextHolder`를 지운다는 점을 알 수 없다. 이 예제에선 같은 사용자로 각 스레드를 실행한다. `executor.execute(Runnable)`을 실행하는 시점에 `SecurityContextHolder`에 있는 사용자(i.e. 현재 로그인한 사용자)로 `originalRunnable`을 처리하고 싶었다면? `DelegatingSecurityContextExecutor` 생성자에서 `SecurityContext` 인자를 제거하면 된다. 예를 들어:
+이제 코드를 보면 `SecurityContext`가 `Thread`로 전파되며, `originalRunnable`을 실행한 뒤 `SecurityContextHolder`를 비운다는 점을 알 수 없다. 이 예제에선 각 스레드를 같은 사용자로 실행한다. `executor.execute(Runnable)`을 실행하는 시점에 `SecurityContextHolder`에 있는 사용자로 (i.e. 현재 로그인한 사용자) `originalRunnable`을 처리하고 싶었다면? `DelegatingSecurityContextExecutor` 생성자에서 `SecurityContext` 인자를 제거하면 된다. 예를 들어:
 
 ```java
 SimpleAsyncTaskExecutor delegateExecutor = new SimpleAsyncTaskExecutor();
@@ -371,7 +371,7 @@ DelegatingSecurityContextExecutor executor =
     new DelegatingSecurityContextExecutor(delegateExecutor);
 ```
 
-이제 `executor.execute(Runnable)`을 호출할 때마다 가장 먼저 `SecurityContextHolder`에서 `SecurityContext`를 가져오고, 이 `SecurityContext`로 `DelegatingSecurityContextRunnable`을 만든다. 따라서 `executor.execute(Runnable)` 코드를 호출할 때 사용한 동일한 사용자로 `Runnable`을 실행할 수 있다.
+이제 `executor.execute(Runnable)`을 호출할 때마다 가장 먼저 `SecurityContextHolder`에서 `SecurityContext`를 가져오고, 이 `SecurityContext`로 `DelegatingSecurityContextRunnable`을 만든다. 따라서 `executor.execute(Runnable)` 코드를 호출할 때 사용한 동일한 사용자로 `Runnable`을 실행한다.
 
 ### 15.3.3. Spring Security Concurrency Classes
 
@@ -391,9 +391,9 @@ DelegatingSecurityContextExecutor executor =
 
 ## 15.4. Jackson Support
 
-스프링 시큐리티 관련 클래스를 영속화할 수 있도록 Jackson을 지원한다. 덕분에 분산 세션을 (i.e. 세션 복제, 스프링 세션 등) 사용할 때 스프링 시큐리티 관련 클래스를 직렬화하는 성능을 끌어올릴 수 있다.
+스프링 시큐리티 관련 클래스를 영속화할 수 있도록 Jackson을 지원한다. 덕분에 분산 세션을 (i.e. 세션 복제, 스프링 세션 등) 사용할 때 스프링 시큐리티 관련 클래스의 직렬화 성능을 끌어올릴 수 있다.
 
-Jackson을 사용하려면 `ObjectMapper`에 ([jackson-databind](https://github.com/FasterXML/jackson-databind)) `SecurityJackson2Modules.getModules(ClassLoader)`을 등록해라 :
+Jackson을 사용하려면 `ObjectMapper`에 ([jackson-databind](https://github.com/FasterXML/jackson-databind)) `SecurityJackson2Modules.getModules(ClassLoader)`를 등록해라 :
 
 ```java
 ObjectMapper mapper = new ObjectMapper();
@@ -407,7 +407,7 @@ SecurityContext context = new SecurityContextImpl();
 String json = mapper.writeValueAsString(context);
 ```
 
-> 다음은 Jackson을 지원하는 스프링 시큐리티 모듈이다:
+> Jackson을 지원하는 스프링 시큐리티 모듈은 다음과 같다:
 > - spring-security-core (`CoreJackson2Module`)
 > - spring-security-web (`WebJackson2Module`, `WebServletJackson2Module`, `WebServerJackson2Module`)
 > - [spring-security-oauth2-client](../oauth2#122-oauth-20-client) (`OAuth2ClientJackson2Module`)
@@ -421,7 +421,7 @@ String json = mapper.writeValueAsString(context);
 
 인증 실패나 접근 거절(인가 실패)과 관련한 모든 예외 메세지는 현지화할 수 있다. 어플리케이션 개발자나 시스템 개발자를 위한 예외나 로깅용 메세지는 (잘못된 속성, 인터페이스 제약 조건 위반, 잘못된 생성자 사용, 시작 시간 유효성 검증, 디버그 레벨 로그 등) 현지화하지 않으며 대신에 스프링 시큐리티 코드에 영어로 하드코딩돼 있다.
 
-`spring-security-core-xx.jar` 모듈을 보면 `org.springframework.security` 패키지에 `messages.properties` 파일과, 일부 대표적인 언어로 현지화한 파일이 순서대로 들어있다. 스프링 시큐리티엔 스프링의 `MessageSourceAware` 인터페이스를 구현한 클래스가 있고, 기동시 어플리케이션 컨텍스트에 메세지 리졸버가 주입되므로, `ApplicationContext`에서 메세지를 참조할 수 있다. 메세지를 참조하려면 보통 어플리케이션 내에 메세지를 참조할 빈을 등록하기만 하면 된다. 예를 들어:
+`spring-security-core-xx.jar` 모듈을 보면 `org.springframework.security` 패키지에 `messages.properties` 파일과, 일부 대표 언어로 현지화한 파일이 순서대로 들어있다. 스프링 시큐리티엔 스프링의 `MessageSourceAware` 인터페이스를 구현한 클래스가 있고, 기동 시 어플리케이션 컨텍스트에 메세지 리졸버를 주입하므로, `ApplicationContext`에서 메세지를 참조할 수 있다. 메세지를 참조하려면 보통 어플리케이션 내에 메세지를 참조할 빈을 등록하기만 하면 된다. 예를 들어:
 
 ```xml
 <bean id="messageSource"
@@ -432,7 +432,7 @@ String json = mapper.writeValueAsString(context);
 
 이 `messages.properties` 이름은 표준 리소스 번들에 따라 지정되며 스프링 시큐리티 메세지가 지원하는 디폴트 언어를 나타낸다. 디폴트 파일은 영어다.
 
-`messages.properties`을 커스텀하거나 다른 언어를 지원하고 싶으면, 파일을 복사해서 적절하게 이름을 변경하고 위에 있는 빈 정의에 등록해라. 이 파일에는 메세지 키가 그렇게 많지 않으므로, 이 파일을 주요 이니셔티브로 여기면 안 된다. 파일을 locale 버전에 맞게 새로 만든다면, JIRA 태스크에 로깅하고 적절한 이름으로 `messages.properties` 파일을 만들어 우리 커뮤니티에 공유해주면 좋겠다.
+`messages.properties`를 커스텀하거나 다른 언어를 지원하고 싶으면, 파일을 복사해서 적절하게 이름을 변경하고 위에 있는 빈 선언에 등록해라. 이 파일에는 메세지 키가 그렇게 많지 않으므로, 이 파일을 주요 이니셔티브로 여기면 안 된다. 파일을 locale 버전에 맞게 새로 만든다면, JIRA 태스크에 로깅하고 적절한 이름으로 `messages.properties` 파일을 만들어 우리 커뮤니티에 공유해주면 좋겠다.
 
 스프링 시큐리티에서 실제로 적절한 메세지를 찾을 때는 스프링의 localization 기능을 사용한다. 따라서 요청에 있는 locale 정보를 스프링의 `org.springframework.context.i18n.LocaleContextHolder`에 저장해야 한다. 스프링 MVC의 `DispatcherServlet`이 이를 자동으로 저장해주긴 하지만, 스프링 시큐리티의 필터는 그전에 실행되므로 필터를 호출하기 전에 `LocaleContextHolder`에 정확한 `Locale`을 설정해야 한다. 필터에서 직접 설정하거나 (`web.xml`에서 스프링 시큐리티 필터보다 앞에 있는 필터로), 스프링의 `RequestContextFilter`를 사용할 수 있다. 스프링의 localization을 사용하는 자세한 방법은 스프링 프레임워크 문서를 참고하라.
 
@@ -454,7 +454,7 @@ String json = mapper.writeValueAsString(context);
 
 ### 15.6.2. MvcRequestMatcher
 
-스프링 MVC에서 `MvcRequestMatcher`로 URL을 비교하던 방식을, 스프링 시큐리티에서도 그대로 사용할 수 있다. 요청을 처리하기 전에 보안 규칙과 매칭되는지 확인할 때 도움이 될 것이다.
+스프링 MVC에서 `MvcRequestMatcher`로 URL을 비교하던 방식을, 스프링 시큐리티에서도 그대로 사용할 수 있다. 요청을 처리하기 전에 보안 규칙과 매칭되는지 확인하는 식으로 활용할 수 있다.
 
 `MvcRequestMatcher`를 사용하려면 스프링 시큐리티 설정이 있는 `ApplicationContext`와  `DispatcherServlet`이 있는 `ApplicationContext`가 동일해야 한다. 스프링 시큐리티의 `MvcRequestMatcher`는 스프링 MVC 설정에 있는 `mvcHandlerMappingIntrospector`란 이름의 `HandlerMappingIntrospector`빈을 사용하기 때문이다.
 
@@ -511,9 +511,9 @@ public class SecurityInitializer extends
 }
 ```
 
-> 인가 조건은 항상 `HttpServletRequest` 매칭과 메소드 시큐리티를 사용하길 권장한다.
+> 인가 조건은 항상 `HttpServletRequest` 매칭과 메소드 시큐리티를 함께 사용하길 권장한다.
 >
-> 일단 `HttpServletRequest`로 매칭하면 앞 단에서 한 번 검사를 수행하기 때문에 [공격에 노출될 수 있는 지점(attack surface)](https://en.wikipedia.org/wiki/Attack_surface)을 최소화할 수 있다. 메소드 시큐리티는 누군가가 웹 인가 규칙을 통과하더라도 어플리케이션을 한 번 더 보호할 수 있다. 이는 [심층 방어(Defence in Depth)](https://en.wikipedia.org/wiki/Defense_in_depth_(computing))로 알려져 있다.
+> 일단 `HttpServletRequest` 매칭을 사용하면 앞 단에서 한 번 검사를 수행하기 때문에 [공격에 노출될 수 있는 지점(attack surface)](https://en.wikipedia.org/wiki/Attack_surface)을 최소화할 수 있다. 메소드 시큐리티는 누군가가 웹 인가 규칙을 통과하더라도 어플리케이션을 한 번 더 보호할 수 있다. 이는 [심층 방어(Defence in Depth)](https://en.wikipedia.org/wiki/Defense_in_depth_(computing))로 알려져 있다.
 
 다음과 같이 매핑한 컨트롤러를 생각해 보자:
 
@@ -522,7 +522,7 @@ public class SecurityInitializer extends
 public String admin() {
 ```
 
-이 컨트롤러 메소드엔 어드민 사용자만 접근하도록 제한하려면, 다음과 같이 `HttpServletRequest`를 매칭하는 인가 조건을 만들 수 있다:
+이 컨트롤러 메소드를 어드민 사용자만 접근할 수 있도록 제한하려면, 다음과 같이 `HttpServletRequest`를 매칭하는 인가 조건을 만들 수 있다:
 
 ```java
 protected configure(HttpSecurity http) throws Exception {
@@ -543,9 +543,9 @@ XML을 사용한다면
 
 두 설정 모두 어드민 사용자로 인증한 사용자만 `/admin` URL에 접근할 수 있도록 만든다. 하지만 스프링 MVC 설정에 따라 `/admin.html`도 `admin()` 메소드로 매핑될 수 있다. 심지어 스프링 MVC 설정에 따라 `/admin/`도 `admin()` 메소드로 매핑될 수 있다.
 
-문제는 보안 규칙에선 `/admin`만 보호하고 있다는 것이다. 스프링 MVC에 따라 가능한 모든 URL에 규칙을 추가할 수도 있지만 굉장히 장황하고 따분한 일이다.
+문제는 보안 규칙에선 `/admin`만 보호하고 있다는 것이다. 스프링 MVC에 따라 가능한 모든 URL에 규칙을 추가할 수도 있지만, 굉장히 장황하고 따분한 일이다.
 
-대신에 스프링 시큐리티의 `MvcRequestMatcher`를 사용할 수 있다. 아래 설정은 스프링 MVC가 URL을 매칭하는 방식과 동일한 방식으로 URL을 비교하기 때문에, 스프링 MVC가 매핑하는 모든 URL을 보호한다: 
+대신에 스프링 시큐리티의 `MvcRequestMatcher`를 활용할 수 있다. 아래 설정은 스프링 MVC가 URL을 매칭하는 방식과 동일한 방식으로 URL을 비교하기 때문에, 스프링 MVC가 매핑하는 모든 URL을 보호한다: 
 
 ```java
 protected configure(HttpSecurity http) throws Exception {
@@ -578,7 +578,7 @@ XML을 사용한다면
 
 `AuthenticationPrincipalArgumentResolver`를 제대로 설정했다면 스프링 MVC 레이어에서 스프링 시큐리티를 완전히 분리할 수 있다.
 
-커스텀 `UserDetailsService`가 `UserDetails`를 구현한 `Object`와 커스텀 `CustomUser` `Object`를 리턴하는 경우를 생각해 보자. 현재 인증한 사용자의 `CustomUser`는 아래 코드로 접근할 수 있다:
+커스텀 `UserDetailsService`가 `UserDetails`를 구현한 `Object`와, 커스텀 `CustomUser` `Object`를 리턴하는 경우를 생각해 보자. 현재 인증한 사용자의 `CustomUser`는 아래 코드로 접근할 수 있다:
 
 ```java
 @RequestMapping("/messages/inbox")
@@ -605,7 +605,7 @@ public ModelAndView findMessagesForUser(@AuthenticationPrincipal CustomUser cust
 }
 ```
 
-principal을 다른 식으로 변환해야 할 때도 있다. 예를 들어 `CustomUser`가 final 클래스라면 상속할 수 없다. 이럴때는 `UserDetailsService`는 `UserDetails`를 구현한 `Object`를 리턴하고 `CustomUser`에 접근할 수 있는 `getCustomUser` 메소드를 제공할 수 있다. 예를 들어 다음과 같다:
+principal을 다른 식으로 변환해야 할 때도 있다. 예를 들어 `CustomUser`가 final 클래스라면 상속할 수 없다. 이럴때는 `UserDetailsService`는 `UserDetails`를 구현한 `Object`를 리턴하고, `CustomUser`에 접근할 수 있는 `getCustomUser` 메소드를 따로 제공할 수 있다. 예를 들어 다음과 같다:
 
 ```java
 public class CustomUserUserDetails extends User {
@@ -648,7 +648,7 @@ public ModelAndView updateName(@AuthenticationPrincipal(expression = "@jpaEntity
 }
 ```
 
-자체 애노테이션에 `@AuthenticationPrincipal`을 메타 애노테이션으로 선언하면 스프링 시큐리티 의존성을 더 줄일 수 있다. 아래에서는 이 방법을 사용해 `@CurrentUser` 애노테이션을 만드는 방법을 보여주고 있다.
+자체 애노테이션에 `@AuthenticationPrincipal`을 메타 애노테이션으로 선언하면 스프링 시큐리티 의존성을 더 줄일 수 있다. 아래에서는 이 방법을 사용해 `@CurrentUser` 애노테이션을 만드는 방법을 설명한다.
 
 > 스프링 시큐리티 의존성을 줄이기 위해 `@CurrentUser`를 별도로 만드는 게 소모적일 수도 있다. 꼭 필요한 작업은 아니지만, 스프링 시큐리티와 관련한 코드를 한 곳에 모아 분리하는 데는 도움이 된다.
 
@@ -697,7 +697,7 @@ return new Callable<String>() {
 
 #### Automatic Token Inclusion
 
-폼에서 [스프링 MVC 폼 태그](https://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/view.html#view-jsp-formtaglib-formtag)를 사용하면 스프링 시큐리티가 자동으로 [CSRF 토큰을 넣어준다](../protectionagainstexploits#include-the-csrf-token). 예를 들어 아래 JSP는:
+폼에 [스프링 MVC 폼 태그](https://docs.spring.io/spring/docs/3.2.x/spring-framework-reference/html/view.html#view-jsp-formtaglib-formtag)를 사용하면 스프링 시큐리티가 자동으로 [CSRF 토큰을 넣어준다](../protectionagainstexploits#include-the-csrf-token). 예를 들어 아래 JSP는:
 
 ```xml
 <jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
@@ -764,11 +764,11 @@ public class CsrfController {
 
 > #### Direct JSR-356 Support
 >
-> JSR-356을 지원하는 건 크게 의미가 없어서 스프링 시큐리티는 이를 직접 지원하지 않는다. 포맷을 알 수 없기 때문인데, [알 수 없는 포맷을 보호하기 위해 스프링이 할 수 있는 일은 많지 않다](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-intro). 게다가 JSR-356에선 메세지를 가로챌 방법이 없기 때문에 보안을 적용하려면 비니지스 로직 영역을 침범할 수 밖에 없을 것이다.
+> JSR-356을 지원하는 건 크게 의미가 없어서 스프링 시큐리티는 이를 직접 지원하지 않는다. 포맷을 알 수 없기 때문인데, [알 수 없는 포맷을 보호하기 위해 스프링이 할 수 있는 일은 많지 않다](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-intro). 게다가 JSR-356에선 메세지를 가로챌 방법이 없기 때문에 보안을 적용하려면 비니지스 로직 영역을 침범할 수 밖에 없다.
 
 ### 15.7.1. WebSocket Configuration
 
-스프링 시큐리티 4.0에서 스프링 메세지 추상화를 이용한 웹소켓 인가 기능을 추가했다. 자바 설정을 사용한다면 간단하게 `AbstractSecurityWebSocketMessageBrokerConfigurer`를 상속해서 `MessageSecurityMetadataSourceRegistry`를 설정해라. 예를 들어:
+스프링 시큐리티 4.0에선 스프링 메세지 추상화를 이용한 웹소켓 인가 기능을 추가했다. 자바 설정을 사용한다면 간단하게 `AbstractSecurityWebSocketMessageBrokerConfigurer`를 상속해서 `MessageSecurityMetadataSourceRegistry`를 설정해라. 예를 들어:
 
 ```java
 @Configuration
@@ -782,7 +782,7 @@ public class WebSocketSecurityConfig
 }
 ```
 
-이렇게 설정하면 다음을 보장할 수 있다:
+이렇게 하면 다음을 보장할 수 있다:
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 모든 인바운드 CONNECT 메세지는 [동일 출처 정책](#1574-enforcing-same-origin-policy)에 따라 유효한 CSRF 토큰이 있어야 한다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> SecurityContextHolder는 인바운드 요청의 simpUser 헤더 속성 정보로 사용자 정보를 채운다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메세지엔 적당한 권한이 필요하다. 특히 "/user/"로 시작하는 모든 인바운드 메세지는 ROLE_USER 권한이 필요하다. 권한 인가에 대한 자세한 설명은 [WebSocket Authorization](#1573-websocket-authorization)에 있다.</small>
@@ -796,14 +796,14 @@ public class WebSocketSecurityConfig
 </websocket-message-broker>
 ```
 
-이렇게 설정하면 다음을 보장할 수 있다:
+이렇게 하면 다음을 보장할 수 있다:
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 모든 인바운드 CONNECT 메세지는 [동일 출처 정책](#1574-enforcing-same-origin-policy)에 따라 유효한 CSRF 토큰이 있어야 한다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> SecurityContextHolder는 인바운드 요청의 simpUser 헤더 속성 정보로 사용자 정보를 채운다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메세지엔 적당한 권한이 필요하다. 특히 "/user/"로 시작하는 모든 인바운드 메세지는 ROLE_USER 권한이 필요하다. 권한 인가에 대한 자세한 설명은 [WebSocket Authorization](#1573-websocket-authorization)에 있다.</small>
 
 ### 15.7.2. WebSocket Authentication
 
-웹소켓은 커넥션을 맺었을 때 HTTP 요청에 있는 인증 정보를 재사용한다. 즉 `HttpServletRequest`에 있는 `Principal`이 웹소켓으로도 전달된다는 뜻이다. 스프링 시큐리티를 사용한다면 `HttpServletRequest`의 `Principal`이 자동으로 재정의된다.
+웹소켓은 커넥션을 맺었을 때 HTTP 요청에 있는 인증 정보를 재사용한다. 즉, `HttpServletRequest`에 있는 `Principal`이 웹소켓으로도 전달된다는 뜻이다. 스프링 시큐리티를 사용한다면 `HttpServletRequest`의 `Principal`이 자동으로 재정의된다.
 
 좀 더 구체적으로 말하면, HTTP 기반 웹 어플리케이션에서 스프링 시큐리티로 인증 설정을 해 놨다면, 웹소켓 어플리케이션에서도 사용자를 인증할 수 있다.
 
@@ -834,7 +834,7 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 누구든지 /user/queue/errors를 구독할 수 있다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> "/app/"으로 시작하는 destination이 있는 모든 메세지는 ROLE_USER 권한이 필요하다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span>  "/user/"나 "/topic/friends/"로 시작하는 모든 SUBSCRIBE 타입 메세지는 ROLE_USER 권한이 필요하다.</small><br>
-- <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 다른 MESSAGE, SUBSCRIBE 타입 메세지는 모두 거절한다. 6번이 있어서 이부분은 없어도 되지만, 특정 메세지 타입을 매칭하는 방법을 보여준다.</small><br>
+- <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 다른 MESSAGE, SUBSCRIBE 타입 메세지는 모두 거절한다. 6번이 있어서 이 설정은 없어도 되지만, 특정 메세지 타입을 매칭하는 방법을 보여준다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 그 외 모든 메세지는 거절한다. 특정 메세지를 누락하지 않도록 이렇게 막아두는 게 좋다.</small>
 
 스프링 시큐리티는 웹소켓 보안을 위한 [XML 네임스페이스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-websocket-security)도 제공한다. 위와 동일한 XML 설정은 다음과 같다:
@@ -866,7 +866,7 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 누구든지 /user/queue/errors를 구독할 수 있다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> "/app/"으로 시작하는 destination이 있는 모든 메세지는 ROLE_USER 권한이 필요하다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> "/user/"나 "/topic/friends/"로 시작하는 모든 SUBSCRIBE 타입 메세지는 ROLE_USER 권한이 필요하다.</small><br>
-- <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 다른 MESSAGE, SUBSCRIBE 타입 메세지는 모두 거절한다. 6번이 있어서 이부분은 없어도 되지만, 특정 메세지 타입을 매칭하는 방법을 보여준다.</small><br>
+- <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 다른 MESSAGE, SUBSCRIBE 타입 메세지는 모두 거절한다. 6번이 있어서 이 설정은 없어도 되지만, 특정 메세지 타입을 매칭하는 방법을 보여준다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 그 외 destination이 있는 모든 메세지는 거절한다. 특정 메세지를 누락하지 않도록 이렇게 막아두는 게 좋다.</small>
 
 #### WebSocket Authorization Notes
@@ -879,10 +879,10 @@ SUBSCRIBE와 MESSAGE 타입이 어떻게 다르며 스프링에서 어떻게 동
 
 채팅 어플리케이션을 생각해 보자.
 
-- 시스템에선 "/topic/system/notifications"을 destination으로 가지고 있는 알림 **메세지**를 모든 사용자에게 전송할 수 있다.
-- 클라이언트는 "/topic/system/notifications"을 **구독**해서 알림을 받을 수 있다.
+- 시스템에선 "/topic/system/notifications"를 destination으로 가지고 있는 알림 **메세지**를 모든 사용자에게 전송할 수 있다.
+- 클라이언트는 "/topic/system/notifications"를 **구독**해서 알림을 받을 수 있다.
 
-클라이언트는 "/topic/system/notifications"을 **구독**할 순 있지만 여기로 **메세지**를 전송할 순 없어야 한다. 클라이언트가 "/topic/system/notifications"에 **메세지**를 보낼 수 있도록 허용하면, 클라이언트가 시스템을 사칭해 이 엔드포인트로 직접 메세지를 전송할 수도 있다.
+클라이언트는 "/topic/system/notifications"를 **구독**할 순 있지만 여기로 **메세지**를 전송할 순 없어야 한다. 클라이언트가 "/topic/system/notifications"에 **메세지**를 보낼 수 있도록 허용하면, 클라이언트가 시스템을 사칭해 이 엔드포인트로 직접 메세지를 전송할 수도 있다.
 
 보통은 [브로커 프리픽스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-stomp)로 (i.e. "/topic/", "/queue/") 시작하는 destination에 전송하는 모든 **메세지**를 거절하는 게 일반적이다.
 
@@ -892,12 +892,12 @@ destination이 어떻게 변경되는지도 알아두는 것이 좋다.
 
 채팅 어플리케이션을 생각해 보자.
 
-- 사용자가 다른 특정 사용자에게 메세지를 보낼 때는 "/app/chat"을 destination으로 가진 메세지를 전송한다.
+- 사용자가 다른 특정 사용자에게 메세지를 보낼 때는 "/app/chat"을 destination으로 설정한 메세지를 전송한다.
 - 어플리케이션에서 메세지를 받으면 "from" 속성을 현재 사용자로 명시했는지 확인한다 (클라이언트는 신뢰할 수 없다).
 - 그러면 어플리케이션에서 `SimpMessageSendingOperations.convertAndSendToUser("toUser", "/queue/messages", message)`를 사용해서 수신자에게 메세지를 전송한다.
 - 메세지의 destination은 "/queue/user/messages-\<sessionid\>"로 바뀐다.
 
-위 어플리케이션에서는 클라이언트가 "/queue/user/messages-\<sessionid\>"로 변환되는 "/user/queue"를 수신할 수 있게 만드려고 한다. 하지만 클라이언트는 모든 사용자의 메세지를 의미하는 "/queue/\*"는 수신할 수 없다.
+위 어플리케이션에서는 클라이언트가 "/queue/user/messages-\<sessionid\>"로 변환되는 "/user/queue"를 수신할 수 있게 만들려고 한다. 하지만 클라이언트는 모든 사용자의 메세지를 의미하는 "/queue/\*"는 수신할 수 없다.
 
 보통은 [브로커 프리픽스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-stomp)로 (i.e. "/topic/" or "/queue/") 시작하는 메세지는 **구독**할 수 없게 막는 것이 일반적이다. 물론 아래와 같은 상황에선 예외를 둘 수 있다.
 
@@ -905,7 +905,7 @@ destination이 어떻게 변경되는지도 알아두는 것이 좋다.
 
 스프링 문서에는 시스템에서 어떻게 메세지가 흘러가는지 설명하는 [Flow of Messages](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-stomp-message-flow) 섹션이 있다. 단, 스프링 시큐리티는 `clientInboundChannel`만 보호해준다는 점을 유의해야 한다. 스프링 시큐리티는 `clientOutboundChannel`은 보호하지 않는다.
 
-가장 큰 이유는 성능때문이다. 보통 들어오는 메세지에 비해 나가는 메세지가 더 많다. 아웃바운드를 메세지를 보호하기보단 엔드포인트 구독을 보호하는 게 더 낫다.
+가장 큰 이유는 성능 때문이다. 보통 들어오는 메세지에 비해 나가는 메세지가 더 많다. 아웃바운드를 메세지를 보호하기보단 엔드포인트 구독을 보호하는 게 더 낫다.
 
 ### 15.7.4. Enforcing Same Origin Policy
 
@@ -915,13 +915,13 @@ destination이 어떻게 변경되는지도 알아두는 것이 좋다.
 
 이 사례를 한 번 생각해 보자. bank.com에 방문한 사용자가 계정을 인증한다. 같은 사용자가 브라우저에서 다른 탭을 열어 evil.com을 방문한다. 동일 출처 정책에 따라 evil.com에선 bank.com에서 데이터를 읽거나 쓸 수 없다.
 
-웹소켓에선 동일 출처 정책을 시행하지 않는다. 실제로 bank.com에서 명시적으로 이를 막지 않는 한, evil.com은 사용 대신 데이터를 읽고 쓸 수 있다. 즉, 사용자가 웹소켓으로 할 수 있는 일은 (i.e. 송금) 전부 evil.com에서도 재현할 수 있다.
+웹소켓에선 동일 출처 정책을 시행하지 않는다. 실제로 bank.com에서 명시적으로 이를 막지 않는 한, evil.com은 사용자 대신 데이터를 읽고 쓸 수 있다. 즉, 사용자가 웹소켓으로 할 수 있는 일은 (i.e. 송금) 전부 evil.com에서도 재현할 수 있다.
 
-SockJS는 웹소켓을 모방하므로 이 역시 동일 출처 정책을 그냥 통과한다. 따라서 개발자가 직접 외부 도메인에서 SockJS를 사용해 어플리케이션에 접근할 수 없도록 방어해야 한다.
+SockJS는 웹소켓을 모방하므로 이 역시 동일 출처 정책을 그냥 통과한다. 따라서 외부 도메인에서 SockJS를 사용해 어플리케이션에 접근할 수 없도록 직접 방어 로직을 구현해야 한다.
 
 #### Spring WebSocket Allowed Origin
 
-다행히도 스프링은 4.1.5 버전부터 웹소켓과 SockJS를 사용할 때 [현재 도메인](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-server-allowed-origins)에서만 접근할 수 있도록 지원한다. 스프링 시큐리티는 [심층 방어(defence in depth)](https://en.wikipedia.org/wiki/Defense_in_depth_%28computing%29)를 위한 protection 레이어를 하나 더 추가했다.
+다행히도 스프링은 4.1.5 버전부터, 웹소켓과 SockJS를 사용할 때 [현재 도메인](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#websocket-server-allowed-origins)에서만 접근할 수 있도록 지원한다. 스프링 시큐리티는 [심층 방어(defence in depth)](https://en.wikipedia.org/wiki/Defense_in_depth_%28computing%29)를 위한 protection 레이어를 하나 더 추가했다.
 
 #### Adding CSRF to Stomp Headers
 
@@ -1025,7 +1025,7 @@ public class WebSecurityConfig extends
 
 SockJS는 HTTP 기반으로 CONNECT 메세지를 전송할 땐 POST를 사용한다. 보통은 HTTP 헤더나 HTTP 파라미터에 CSRF 토큰을 추가한다. 하지만 SockJS로는 불가능하다. 대신에 [Adding CSRF to Stomp Headers](#adding-csrf-to-stomp-headers)에서 설명한대로 Stomp 헤더에 토큰을 추가해야 한다.
 
-이 말은 웹 레이어에서 CSRF 방어를 완화해야 한다는 뜻이기도 하다. 특히, 커넥션 URL에서 CSRF 방어를 비활성화해야 한다. 모든 URL에서 CSRF 방어를 비활성화하려는 것은 *아니다*. 모든 URL에서 비활성화하면 CSRF 공격에 취약해질 수 있다.
+이 말은 웹 레이어에서 CSRF 방어를 완화해야 한다는 뜻이기도 하다. 특히, connect URL에서 CSRF 방어를 비활성화해야 한다. 모든 URL에서 CSRF 방어를 비활성화하려는 것은 *아니다*. 모든 URL에서 비활성화하면 CSRF 공격에 취약해질 수 있다.
 
 이땐 단순히 CSRF RequestMatcher를 설정하면 된다. 자바 설정을 사용한다면 매우 간단해 진다. 예를 들어 stomp 엔드포인트가 "/chat"라면 아래 설정으로 "/chat/"로 시작하는 URL만 CSRF 방어를 비활성화할 수 있다:
 
@@ -1209,7 +1209,7 @@ This content will only be visible to users who are authorized to send requests t
 
 ### 15.9.3. The authentication Tag
 
-이 태그는 보안 컨텍스트에 저장된 현재 `Authentication` 개체에 접근할 수 있게 해준다. JSP에서 객체 프로퍼티를 직접 렌더링한다. 예를 들어 `Authentication`의 `principal` 프로퍼티가 스프링 시큐리티의 `UserDetails` 객체 인스턴스라면, `<sec:authentication property="principal.username" />` 는 현재 사용자의 이름으로 런더링된다.
+이 태그는 보안 컨텍스트에 저장된 현재 `Authentication` 객체에 접근할 수 있게 해준다. JSP에서 객체 프로퍼티를 직접 렌더링한다. 예를 들어 `Authentication`의 `principal` 프로퍼티가 스프링 시큐리티의 `UserDetails` 객체 인스턴스라면, `<sec:authentication property="principal.username" />` 는 현재 사용자의 이름으로 렌더링된다.
 
 물론 이 때문에 JSP 태그를 사용할 필요는 없으며, 뷰에서는 가능한 한 로직을 최소화하는 것을 선호하는 사람들도 있다. MVC 컨트롤러에서 `Authentication` 객체에 접근해서 (`SecurityContextHolder.getContext().getAuthentication()` 호출) 뷰를 렌더링할 때 사용하는 모델에 직접 데이터를 추가하는 방법도 있다.
 
@@ -1227,7 +1227,7 @@ This will be shown if the user has all of the permissions represented by the val
 </sec:accesscontrollist>
 ```
 
-permission은 어플리케이션 컨텍스트에 정의한 `PermissionFactory` 전달돼 ACL `Permission` 인스턴스로 변환되므로, 팩토리가 지원하는 모든 형식을 사용할 수 있다 - 정수일 필요는 없으며 `READ`, `WRITE`같은 문자열도 사용할 수 있다. `PermissionFactory`가 없으면 `DefaultPermissionFactory` 인스턴스를 사용한다. 객체에 대한 `Acl` 인스턴스를 로드할 땐 어플리케이션 컨텍스트에 있는 `AclService`를 사용한다. 필요한 permission을 넘겨 `Acl`을 실행해서 해당 permissin이 전부 있는지 체크한다.
+permission은 어플리케이션 컨텍스트에 정의한 `PermissionFactory` 전달돼 ACL `Permission` 인스턴스로 변환되므로, 팩토리가 지원하는 모든 형식을 사용할 수 있다 - 정수여야 한다는 법은 없으며 `READ`, `WRITE`같은 문자열도 사용할 수 있다. `PermissionFactory`가 없으면 `DefaultPermissionFactory` 인스턴스를 사용한다. 객체에 대한 `Acl` 인스턴스를 로드할 땐 어플리케이션 컨텍스트에 있는 `AclService`를 사용한다. 필요한 permission을 넘겨 `Acl`을 실행해서 해당 permissin이 전부 있는지 체크한다.
 
 이 태그도 `authorize` 태그와 동일하게 `var` 속성을 지원한다.
 
@@ -1250,7 +1250,7 @@ CSRF 방어를 활성화하면, 이 태그는 CSRF 방어 토큰에 필요한 na
 
 ### 15.9.6. The csrfMetaTags Tag
 
-CSRF 방어를 활성화하면, 이 태그는 CSRF 방어 토큰 폼 필드와, 헤더 이름, CSRF 보호 토큰 값을 포함하는 메타 태그를 삽입한다. 이 메타 태그는 어플리케이션 내 자바스크립트에서 CSRF를 방어할 때 사용할 수 있다.
+CSRF 방어를 활성화하면, 이 태그는 CSRF 방어 토큰 폼 필드와, 헤더 이름, CSRF 보호 토큰 값을 포함하는 메타 태그를 삽입한다. 어플리케이션 내 자바스크립트에서 CSRF를 방어할 때 이 메타 태그를 활용할 수 있다.
 
 `csrfMetaTags`는 평소에 다른 메타 태그를 넣는 HTML `<head></head>` 블록 안에 배치해야 한다. 이 태그를 사용하면 자바스크립트에서 간단하게 폼 필드 이름, 헤더 이름, 토큰 값에 접근할 수 있다. 이 예제에서는 더 쉽게 활용할 수 있는 JQuery를 사용한다.
 
