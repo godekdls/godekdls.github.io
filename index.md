@@ -1,5 +1,7 @@
 ---
 title: Hello World!
+includeHeader: false
+includeFooter: false
 ---
 
 공식 개발 레퍼런스를 한글로 번역합니다.

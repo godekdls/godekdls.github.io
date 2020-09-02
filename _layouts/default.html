@@ -102,10 +102,10 @@
 			</div>
 			<article class="content">
 				{% if page.completed == false %}{% include warning.html %}{% endif %}
-				{% include header.html %}
-				{% include adsense.html %}
+				{% if page.includeHeader == false %}{% else %}{% include header.html %}{% endif %}
+				{% if page.includeHeader == false %}{% else %}{% include adsense.html %}{% endif %}
 				{{ content }}
-				{% include footer.html %}
+				{% if page.includeFooter == false %}{% else %}{% include footer.html %}{% endif %}
 			</article>
 		</section>
 
