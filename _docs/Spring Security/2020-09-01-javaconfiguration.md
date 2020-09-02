@@ -1,7 +1,7 @@
 ---
 title: Java Configuration
 category: Spring Security
-order: 16
+order: 17
 permalink: /Spring%20Security/javaconfiguration/
 description: 자바 코드로 스프링 시큐리티를 설정하는 방법을 설명합니다. 공식 문서에 있는 "Java Configuration" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png

@@ -47,7 +47,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 3.2. Servlet
 
-- [코틀린 DSL](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#kotlin-config-httpsecurity) 추가
+- [코틀린 DSL](../kotlinconfiguration#171-httpsecurity) 추가
 - OAuth 2.0 클라이언트
   - [OAuth 2.0 클라이언트](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-client), [OAuth 2.0 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-login), [OIDC 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oidc-login) 테스트 지원 추가
   - [OAuth 2.0 인가 요청 커스텀 기능](https://github.com/spring-projects/spring-security/pull/7748) 개선
