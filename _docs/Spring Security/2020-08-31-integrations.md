@@ -5,7 +5,7 @@ order: 15
 permalink: /Spring%20Security/integrations/
 description: 스프링 시큐리티를 서블릿 API, spring data, spring mvc, websocket 등과 통합하는 방법을 설명합니다. 공식 문서에 있는 "integrations" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-09-01T10:30:00+09:00
+lastmod: 2020-09-01T21:30:00+09:00
 comments: true
 completed: false
 originalRefName: 스프링 시큐리티
@@ -276,7 +276,7 @@ public void run() {
 }
 ```
 
-매우 간단하면서도 매끄럽게 SecurityContext를 다른 스레드로 전달해준다. 이 기능은 대부분이 스레드별로 SecurityContextHolder를 사용하기 때문에 중요하다. 예를 들어 스프링 시큐리티의 [\<global-method-security>](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-global-method-security)로 서비스를 보호하고 있을 수도 있다. 이제 현재 `Thread`의 `SecurityContext`를 보호 중인 서비스를 실행하는 `Thread`로 쉽게 전달할 수 있다. 다음 코드는 그 방법을 보여주고 있다:
+매우 간단하면서도 매끄럽게 SecurityContext를 다른 스레드로 전달해준다. 이 기능은 대부분이 스레드별로 SecurityContextHolder를 사용하기 때문에 중요하다. 예를 들어 스프링 시큐리티의 [\<global-method-security\>](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-global-method-security)로 서비스를 보호하고 있을 수도 있다. 이제 현재 `Thread`의 `SecurityContext`를 보호 중인 서비스를 실행하는 `Thread`로 쉽게 전달할 수 있다. 다음 코드는 그 방법을 보여주고 있다:
 
 ```java
 Runnable originalRunnable = new Runnable() {
@@ -737,7 +737,7 @@ return new Callable<String>() {
 
 #### Resolving the CsrfToken
 
-스프링 시큐리티는 스프링 MVC 인자에 자동으로 현재 `CsrfToken`을 리졸브해주는 `CsrfTokenArgumentResolver`를 제공한다. [@EnableWebSecurity](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#jc-hello-wsca)를 사용하면 자동으로 스프링 MVC 설정에 추가된다. XML 설정을 사용한다면 직접 추가해야 한다. 예를 들어:
+스프링 시큐리티는 스프링 MVC 인자에 자동으로 현재 `CsrfToken`을 리졸브해주는 `CsrfTokenArgumentResolver`를 제공한다. [@EnableWebSecurity](../javaconfiguration#jc-hello-wsca)를 사용하면 자동으로 스프링 MVC 설정에 추가된다. XML 설정을 사용한다면 직접 추가해야 한다. 예를 들어:
 
 `CsrfTokenArgumentResolver`를 제대로 설정했다면 스태틱 HTML 기반 어플리케이션에 `CsrfToken`을 사용할 수 있다.
 
