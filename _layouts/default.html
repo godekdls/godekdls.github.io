@@ -102,54 +102,16 @@
 			</div>
 			<article class="content">
 				{% if page.completed == false %}{% include warning.html %}{% endif %}
+				{% include header.html %}
+				{% include adsense.html %}
 				{{ content }}
+				{% include footer.html %}
 			</article>
 		</section>
 
-		<!-- 이전/다음 페이지 커스텀 (dain) -->
-		<p class="" style="text-align: center;">
-		{% for group in grouped %}
-			{% if group.name == page.category %}
-				{% assign items = group.items | sort: 'order' %}
-					{% if page.order == 1 %}
-						<span style="text-decoration:none; padding-left: 20px; padding-right: 20px; color: #9999;">&lt;&lt;</span>
-					{% else %}
-						{% assign prevIndex = page.order | minus: 2 %}
-						<a href="{{items[prevIndex].url}}" style="text-decoration:none; padding-left: 20px; padding-right: 20px;">&lt;&lt;</a>
-					{% endif %}
-					{% if page.order == items.size %}
-						<span style="text-decoration:none; padding-right: 20px; padding-left: 20px; color: #9999;">&gt;&gt;</span>
-					{% else %}
-						<a href="{{items[page.order].url}}" style="text-decoration:none; padding-right: 20px; padding-left: 20px;">&gt;&gt;</a>
-					{% endif %}
-			{% endif %}
-		{% endfor %}
-		</p>
-
+		{% include pagination.html %}
 		{% include adsense.html %}
-
-		<!-- 댓글창 -->
-		{% if page.comments %}
-		<div id="disqus_thread" style="width: 90%; margin: 0px auto;"></div>
-		<script>
-		/**
-		*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-		*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-		/*
-		var disqus_config = function () {
-		this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-		this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-		};
-		*/
-		(function() { // DON'T EDIT BELOW THIS LINE
-		var d = document, s = d.createElement('script');
-		s.src = 'https://https-godekdls-github-io.disqus.com/embed.js';
-		s.setAttribute('data-timestamp', +new Date());
-		(d.head || d.body).appendChild(s);
-		})();
-		</script>
-		<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-		{% endif %}
+		{% include comment.html %}
 
 		<script>
 			document.getElementById("open-nav").addEventListener("click", function () {

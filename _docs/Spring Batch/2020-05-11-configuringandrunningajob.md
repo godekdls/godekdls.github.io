@@ -7,13 +7,9 @@ description: 스프링 배치 job 설정하기 한글 번역
 image: ./../../images/springbatch/batch-stereotypes.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true
+originalRefName: 스프링 배치
+originalRefLink: https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureJob
 ---
-
-> [스프링 배치 공식 레퍼런스](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureJob)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -908,7 +904,3 @@ execution이 실패하거나 중단되었다고 판단되면 이를 수동으로
 이는 비지니스 요구사항이기 때문에 자동화할 수는 없다.
 재시작할 수 없는 job이거나(restartable=false) 데이터가 유효하다는 걸 확신할 수 있을 때만 status를 `FAILED`로 바꿔라.
 job을 중단시키는 유틸리티는 스프링 배치 어드민 `JobService`에 있다.
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

@@ -7,13 +7,9 @@ description: 리액터 코어 문서 소개 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-12T21:00:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#about-doc
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#about-doc)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -74,8 +70,3 @@ comments: true
 - 다른 고급 주제는 [Advanced Features and Concepts](../advancedfeaturesandconcepts)에서 다룬다.
 
 "[About the Documentation](https://projectreactor.io/docs/core/release/reference/#about-doc)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/aboutDoc.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.
-

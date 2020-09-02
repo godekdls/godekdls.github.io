@@ -7,13 +7,9 @@ description: 리액터 메트릭 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-19T16:40:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#metrics
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#metrics)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -129,7 +125,3 @@ listenToEvents()
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 모든 메트릭은 위에서 다룬 공통 태그 외에 `source=kafka` 태그가 있다.</small>
 
 "[Exposing Reactor metrics](https://projectreactor.io/docs/core/release/reference/#metrics)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/metrics.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

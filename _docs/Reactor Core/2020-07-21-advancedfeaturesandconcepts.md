@@ -7,13 +7,9 @@ description: 리액터 고급 기능 한글 번역
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-07-21T16:00:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#advanced
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#advanced)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -893,7 +889,3 @@ cleanup이 필요한 아이템이라면 `onOperatorError`에 이를 구현하되
 > 제네릭 타입 인자, 가변 인자, 배열 요소는 아직 Nullability를 지원하지 않는다. 최신 정보는  [issue #878](https://github.com/reactor/reactor-core/issues/878)을 참고하라.
 
 "[Advanced Features and Concepts](https://projectreactor.io/docs/core/release/reference/#advanced)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/advancedFeatures.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

@@ -7,11 +7,9 @@ description: 스프링5 웹 리액티브 라이브러리 한글 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true
+originalRefName: 스프링 리액티브 웹 스택
+originalRefLink: https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-reactive-libraries
 ---
-
-> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-reactive-libraries)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
 
 ---
 
@@ -23,7 +21,3 @@ comments: true
 함수형 API([함수형 엔드포인트](https://godekdls.github.io/Reactive%20Spring/springwebflux2/#15-functional-endpoints), `WebClient` 등)는 일반적인 웹플럭스 API와 룰이 동일하다 — 리액티브 스트림 `Publisher`를 입력으로 받고 `Flux`, `Mono`를 리턴한다. 다른 라이브러리의 `Publisher`나 커스텀 구현체는 의미를(0~N) 알 수 없는 스트림으로 처리할 수 밖에 없다. 하지만 카디널리티를 어떻게 표현하는지 알고 있다면 `Publisher`를 그대로 사용하는 대신 `Flux`나 `Mono.from(Publisher)`로 감쌀 수 있다.
 
 예를 들어 Jackson JSON message writer는 `Mono` 이외의 `Publisher`는 값이 여러 개라고 간주한다. 미디어 타입이 끝을 알 수 없는 스트림을 나타낸다면(e.g. `application/json+stream`), 따로따로 write하고 flush한다. 그 외는 리스트에 담아놨다가 JSON 배열로 만든다.
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.

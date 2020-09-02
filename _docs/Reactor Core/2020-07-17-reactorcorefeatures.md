@@ -8,13 +8,9 @@ image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-17T23:49:00+09:00
 priority: 0.8
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#core-features
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#core-features)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -1412,7 +1408,3 @@ replay `Processor`는 `sink()`로 직접 생성한 데이터와 업스트림 `Pu
 - 히스토리 크기와 시간 윈도우 조합으로 캐시한다 (`createSizeOrTimeout(int, Duration)`).
 
 "[Reactor Core Features](https://projectreactor.io/docs/core/release/reference/#core-features)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/coreFeatures.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

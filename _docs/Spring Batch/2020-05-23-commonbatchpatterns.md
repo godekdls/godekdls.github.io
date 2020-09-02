@@ -7,13 +7,9 @@ description: 스프링 배치 자주 사용하는 패턴 한글 번역
 image: ./../../images/springbatch/drivingQueryJob.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true
+originalRefName: 스프링 배치
+originalRefLink: https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#commonPatterns
 ---
-
-> [스프링 배치 공식 레퍼런스](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#commonPatterns)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -606,7 +602,3 @@ public class RetrievingItemWriter implements ItemWriter<Object> {
     }
 }
 ```
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

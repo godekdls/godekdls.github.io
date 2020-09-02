@@ -7,14 +7,10 @@ description: 스프링5 웹 리액티브 스택 웹소켓 한글 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true
+originalRefName: 스프링 리액티브 웹 스택
+originalRefLink: https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-websocket
 ---
 <script>defaultLanguages = ['java']</script>
-
-> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-websocket)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -454,7 +450,3 @@ val client = ReactorNettyWebSocketClient()
 ```
 
 Jetty같이 `Lifecycle` 인터페이스를 구현하고 있는 일부 클라이언트는 사용하기 전에 stop/start 메소드를 호출해야 한다. 모든 클라이언트는 각 웹소켓 클라이언트 관련 옵션을 설정할 수 있는 생성자를 가지고 있다.
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive Spring/contents/)에 있습니다.

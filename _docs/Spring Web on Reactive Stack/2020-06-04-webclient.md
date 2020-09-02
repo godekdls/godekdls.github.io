@@ -7,14 +7,10 @@ description: 스프링5 웹 리액티브 스택 WebClient 한글 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true
+originalRefName: 스프링 리액티브 웹 스택
+originalRefLink: https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-client
 ---
 <script>defaultLanguages = ['java']</script>
-
-> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux-client)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -940,8 +936,3 @@ val data = runBlocking {
 ## 2.7. Testing
 
 `WebClient`를 사용한 코드는 [OkHttp MockWebServer](https://github.com/square/okhttp#mockwebserver)같은 mock 웹 서버로 테스트할 수 있다. 예제 코드는 스프링 프레임워크 테스트 코드에 있는 [`WebClientIntegrationTests`](https://github.com/spring-projects/spring-framework/blob/master/spring-webflux/src/test/java/org/springframework/web/reactive/function/client/WebClientIntegrationTests.java)나, OkHttp 레포지토리에 있는 [`static-server`](https://github.com/square/okhttp/tree/master/samples/static-server)를 확인해 봐라.
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
-

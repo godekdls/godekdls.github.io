@@ -7,13 +7,9 @@ description: 리액터 리액티브 프로그래밍 소개 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-15T00:00:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#intro-reactive
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#intro-reactive)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -320,7 +316,3 @@ assertThat(results).containsExactly( // (8)
 리액터에서의 hot vs cold 개념에 대해 자세히 알고 싶다면, [여기 리액터 전용 섹션](../advancedfeaturesandconcepts#92-hot-versus-cold)을 참고하라.
 
 "[Introduction to Reactive Programming](https://projectreactor.io/docs/core/release/reference/#intro-reactive)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/reactiveProgramming.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

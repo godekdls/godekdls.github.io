@@ -8,13 +8,9 @@ image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
+originalRefName: 스프링 시큐리티
+originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#modules
 ---
-
-> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#modules)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차:
 
@@ -128,7 +124,3 @@ completed: false
 ## 6.13. Test — `spring-security-test.jar`
 
 이 모듈은 스프링 시큐리티 테스트를 지원한다.
-
----
-
-전체 목차는 [여기](../contents/)에 있습니다.

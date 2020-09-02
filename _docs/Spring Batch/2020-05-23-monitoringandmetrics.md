@@ -7,13 +7,9 @@ description: 스프링배치 모니터링, 메트릭 수집 한글 번역
 image: ./../../images/springbatch/batch-stereotypes.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true
+originalRefName: 스프링 배치
+originalRefLink: https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#monitoring-and-metrics
 ---
-
-> [스프링 배치 공식 레퍼런스](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#monitoring-and-metrics)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -83,7 +79,3 @@ public class MyTimedTasklet implements Tasklet {
 	}
 }
 ```
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

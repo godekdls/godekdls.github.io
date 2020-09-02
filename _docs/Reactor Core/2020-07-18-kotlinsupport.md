@@ -7,13 +7,9 @@ description: 리액터 코틀린 지원 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-18T10:51:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#kotlin
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#kotlin)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -80,7 +76,3 @@ comments: true
 > 제네릭 타입 인자, 가변 인자, 배열 요소는 아직 Nullability를 지원하지 않지만, 곧 있을 배포에서 지원할 예정이다. 최신 정보는 [여기 논의](https://github.com/Kotlin/KEEP/issues/79)를 참고하라.
 
 "[Kotlin support](https://projectreactor.io/docs/core/release/reference/#kotlin)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/kotlin.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

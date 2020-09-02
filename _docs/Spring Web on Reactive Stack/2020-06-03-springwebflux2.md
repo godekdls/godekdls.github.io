@@ -7,14 +7,10 @@ description: 스프링5 웹 리액티브 스택 웹플럭스 (함수형 엔드�
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true
+originalRefName: 스프링 리액티브 웹 스택
+originalRefLink: https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux
 ---
 <script>defaultLanguages = ['java']</script>
-
-> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -2543,7 +2539,3 @@ class WebConfig : DelegatingWebFluxConfiguration {
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-http2)
 
 리액터 Netty, 톰캣, Jetty, Undertow는 HTTP/2를 지원한다. HTTP/2를 사용하려면 몇 가지 서버 설정을 확인해 봐야 한다. 자세한 내용은 [HTTP/2 위키](https://github.com/spring-projects/spring-framework/wiki/HTTP-2-support)를 참조하라.
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.

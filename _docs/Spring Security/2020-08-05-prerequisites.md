@@ -9,11 +9,9 @@ lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 boundary: Preface
 completed: false
+originalRefName: 스프링 시큐리티
+originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#prerequisites
 ---
-
-> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#prerequisites)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
 
 ---
 
@@ -24,7 +22,3 @@ completed: false
 유사하게 EJB 컨테이너나 서블릿 컨테이너를 사용하더라도, 설정 파일을 추가하거나 서버 클래스 로더에 스프링 시큐리티를 포함시키지 않아도 된다. 필요한 모든 파일은 어플리케이션에 포함될 것이다.
 
 타겟 아티팩트를 (JAR든 WAR든 EAR이든 간에) 다른 시스템으로 복사하면 즉시 동작하게 설계했기 때문에 배포 시간의 유연성을 극대화할 수 있다.
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

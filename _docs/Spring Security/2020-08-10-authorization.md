@@ -9,14 +9,10 @@ priority: 0.8
 lastmod: 2020-08-25T23:10:00+09:00
 comments: true
 completed: false
+originalRefName: 스프링 시큐리티
+originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authorization
 ---
 <script>defaultLanguages = ['java']</script>
-
-> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authorization)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차:
 
@@ -898,7 +894,3 @@ aclService.updateAcl(acl);
 스프링 시큐리티는 ACL 생성, 수정, 삭제 기능을 DAO나 레포지토리 연산의 일부로 자동으로 통합해주지 않는다. 따라서 각 도메인 객체마다 위와 같은 코드를 작성해야 한다. 서비스 레이어에 AOP를 적용해서, 서비스 레이어 작업에 자동으로 ACL 정보를 통합하는 걸 고려해볼만 하다. 우린 이 방법이 꽤 효과가 있었다.
 
 위에 있는 방법을 사용해서 데이터베이스에 ACL 정보를 저장했다면, 이제 실제로 인가 결정 로직에 ACL 정보를 사용하는 일이 남았다. 여기에는 여러 가지 선택 사항이 있다. 메서드 호출 전후에 각각 호출할 `AccessDecisionVoter`나 `AfterInvocationProvider`를 직접 만들 수도 있다. 이 클래스는 `AclService`로 관련 ACL을 검색한 다음 `Acl.isGranted(Permission[] permission, Sid[] sids, boolean administrativeMode)`를 호출해서 권한을 부여할지 말지 결정한다. 아니면 `AclEntryVoter`나 `AclEntryAfterInvocationProvider`, `AclEntryAfterInvocationCollectionFilteringProvider` 클래스를 사용하는 방법도 있다. 이 클래스들은 모두 런타임에 ACL 정보를 평가하는 선언적인(declarative) 접근법을 제공하므로 코드를 작성하지 않아도 된다. 이 클래스들을 어떻게 사용하면 되는지 알아 보려면 샘플 애플리케이션을 참고해라.
-
----
-
-전체 목차는 [여기](../contents/)에 있습니다.

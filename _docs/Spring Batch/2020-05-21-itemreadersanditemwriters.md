@@ -7,13 +7,9 @@ description: 스프링 배치 ItemReader, ItemWriter 한글 번역
 image: ./../../images/springbatch/errorOnWrite.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true
+originalRefName: 스프링 배치
+originalRefLink: https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#readersAndWriters
 ---
-
-> [스프링 배치 공식 레퍼런스](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#readersAndWriters)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -2770,7 +2766,3 @@ read 메소드를 호출할 때마다 자바 클래스나 Avro 스키마로 명�
 `ScriptItemProcessor`는 현재 아이템을 스크립트로 전달해서 처리하고
 스크립트의 결과를 리턴하는 `ItemProcessor`다. 
 스프링 배치는 `ScriptItemProcessor` 인스턴스를 생성하는 `ScriptItemProcessorBuilder`를 제공한다.
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

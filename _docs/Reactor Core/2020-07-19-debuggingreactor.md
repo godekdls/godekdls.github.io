@@ -7,13 +7,9 @@ description: 리액터 디버깅 한글 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-19T15:44:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#debugging
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#debugging)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -426,7 +422,3 @@ flux.subscribe();
 (4)의 마지막 줄이 가장 흥미롭다. 여기엔 `take`가 있다. 이 연산자는 방출된 요소가 충분하면 시퀀스를 잘라낸다. 바로 이 `take()`가, 소스가 사용자 요청량만큼 방출한 다음에 `cancel()`하게 만든 것이다.
 
 "[Debugging Reactor](https://projectreactor.io/docs/core/release/reference/#debugging)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/debugging.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

@@ -8,14 +8,10 @@ image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 priority: 0.8
 comments: true
+originalRefName: 스프링 리액티브 웹 스택
+originalRefLink: https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux
 ---
 <script>defaultLanguages = ['java']</script>
-
-> [리액티브 스프링 공식 레퍼런스](https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -3077,7 +3073,3 @@ public class ExampleAdvice3 {}
 과도한 사용은 성능에 좋지 않다.
 자세한 내용은 [`@ControllerAdvice`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/bind/annotation/ControllerAdvice.html)
 javadoc을 참고하라.
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Reactive%20Spring/contents/)에 있습니다.

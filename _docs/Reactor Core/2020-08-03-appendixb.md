@@ -7,13 +7,9 @@ description: 리액터 FAQ, best practice 가이드를 한글로 번역했습니
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-04T00:47:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#faq
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/index.html#faq)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -331,7 +327,3 @@ public Flux<Restaurant> byPrice(@RequestParam Double maxPrice, @RequestHeader(re
 </small>
 
 "[FAQ, Best Practices, and "How do I…?"](https://projectreactor.io/docs/core/release/reference/index.html#faq)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/faq.adoc) 
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

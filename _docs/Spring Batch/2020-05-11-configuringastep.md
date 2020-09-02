@@ -7,13 +7,9 @@ description: 스프링 배치 step 설정하기 한글 번역
 image: ./../../images/springbatch/step.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true
+originalRefName: 스프링 배치
+originalRefLink: https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureStep
 ---
-
-> [스프링 배치 공식 레퍼런스](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#configureStep)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -1398,7 +1394,3 @@ scope는 스프링 컨테이너의 기본 기능이 아니기 때문에 명시�
 ```xml
 <bean class="org.springframework.batch.core.scope.JobScope" />
 ```
-
----
-
-> 전체 목차는 [여기](https://godekdls.github.io/Spring%20Batch/contents/)에 있습니다.

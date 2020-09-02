@@ -7,13 +7,9 @@ description: 리액터의 연산자 선택 가이드를 한글로 번역했습�
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-03T21:29:00+09:00
 comments: true
+originalRefName: 프로젝트 리액터 코어
+originalRefLink: https://projectreactor.io/docs/core/release/reference/#which-operator
 ---
-
-> [프로젝트 리액터 코어 공식 레퍼런스](https://projectreactor.io/docs/core/release/reference/#which-operator)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -315,7 +311,3 @@ comments: true
   - 소스를 즉시 트리거하지 않고: `Flux#replay` (`ConnectableFlux`를 리턴함)
 
 "[Which operator do I need?](https://projectreactor.io/docs/core/release/reference/#which-operator)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/apdx-operatorChoice.adoc)
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

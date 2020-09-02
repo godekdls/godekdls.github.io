@@ -8,13 +8,9 @@ image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
+originalRefName: 스프링 시큐리티
+originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#community
 ---
-
-> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#community)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차
 
@@ -62,7 +58,3 @@ completed: false
 ## 2.5. Social Media
 
 최신 소식을 받아보고 싶다면 트위터 계정 [@SpringSecurity](https://twitter.com/SpringSecurity)와 [Spring Security team](https://twitter.com/SpringSecurity/lists/team)을 팔로우하라. 스프링 전체 포트폴리오의 최신 정보가 궁금하다면 [@SpringCentral](https://twitter.com/SpringCentral)을 팔로우해라. 
-
----
-
-> 전체 목차는 [여기](../contents/)에 있습니다.

@@ -8,13 +8,9 @@ image: ./../../images/springsecurity/filterchain.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 completed: false
+originalRefName: 스프링 시큐리티
+originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-architecture
 ---
-
-> [스프링 시큐리티 공식 레퍼런스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-architecture)를 한글로 번역한 문서입니다.
->
-> 전체 목차는 [여기](../contents/)에 있습니다.
-
-{% include adsense.html %}
 
 ### 목차:
 
@@ -191,8 +187,3 @@ try {
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> [A Review of `Filter`s](#91-a-review-of-filters) 섹션에서 `FilterChain.doFilter(request, response)` 호출해서 어플리케이션의 나머지 작업을 이어 처리한다고 했던 게 기억날 것이다. 즉, 어플리케이션의 다른 곳에서 (i.e. [`FilterSecurityInterceptor`](../authorization#112-authorize-httpservletrequest-with-filtersecurityinterceptor) 또는 메소드 시큐리티) `AuthenticationException`이나 `AccessDeniedException`이 발생하면 여기서 예외를 캐치하고 처리한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 인증받지 않은 사용자거나 `AuthenticationException`이 발생했다면 *인증을 시작한다*.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 그렇지 않으면 *접근을 거부한다*.</small>
-
----
-
-전체 목차는 [여기](../contents/)에 있습니다.
-
