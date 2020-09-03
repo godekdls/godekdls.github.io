@@ -544,7 +544,7 @@ public @interface ContactPermission {}
 
 ### 11.4.1. AOP Alliance (MethodInvocation) Security Interceptor
 
-스프링 시큐리티 2.0 이전엔 `MethodInvocation`을 보호하려면 꽤 많은 보일러플레이트 설정이 필요했다. 현재 권장하는 메소드 시큐리티 설정 방법은 [네임스페이스 설정](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#ns-method-security)이다. 이 방법을 사용하면 메소드 시큐리티를 위한 빈들이 자동으로 설정되기 때문에 구현체를 알 필요가 정말 없다. 여기선 관련 클래스 개요만 간단하게 짚고 넘어간다.
+스프링 시큐리티 2.0 이전엔 `MethodInvocation`을 보호하려면 꽤 많은 보일러플레이트 설정이 필요했다. 현재 권장하는 메소드 시큐리티 설정 방법은 [네임스페이스 설정](../securitynamespaceconfiguration#184-method-security)이다. 이 방법을 사용하면 메소드 시큐리티를 위한 빈들이 자동으로 설정되기 때문에 구현체를 알 필요가 정말 없다. 여기선 관련 클래스 개요만 간단하게 짚고 넘어간다.
 
 메소드 시큐리티는 `MethodInvocation`을 보호해 주는 `MethodSecurityInterceptor`로 구현한다. 설정 방법에 따라 인터셉터를 특정한 빈 하나에서만 사용할 수도 있고, 인터셉터 하나를 여러 빈이 공유할 수도 있다. 인터셉터는 `MethodSecurityMetadataSource` 인스턴스를 사용해서 특정 method invocation에 적용할 설정 속성을 가져온다. `MapBasedMethodSecurityMetadataSource`로는 메소드 이름을 (와일드카드 지원) 키로 갖는 설정 속성을 저장하며, 내부적으로 `<intercept-methods>`나 `<protect-point>` 요소로 어플리케이션에 해당 속성을 정의했을 때 사용한다. 다른 구현체는 애노테이션 기반 설정에서 사용한다.
 
@@ -656,7 +656,7 @@ public aspect DomainObjectInstanceSecurityAspect implements InitializingBean {
 
 ## 11.5. Method Security
 
-2.0 버전 이후 스프링 시큐리티는 서비스 레이어 메소드를 보호하기 위한 기능을 대폭 개선했다. 프레임워크의 기존 `@Secured` 애노테이션 외에 JSR-250 애노테이션도 지원한다. 3.0부터는 새로운 [표현식 기반 애노테이션](#113-expression-based-access-control)도 사용할 수 있다. 원하는 빈을 선언한 곳을 `intercept-methods` 요소를 장식하면 단일 빈을 보호할 수도 있고, AspectJ 스타일 포인트컷으로 서비스 레이어 전체에 걸친 빈을 보호할 수도 있다.
+2.0 버전 이후 스프링 시큐리티는 서비스 레이어 메소드를 보호하기 위한 기능을 대폭 개선했다. 프레임워크의 기존 `@Secured` 애노테이션 외에 JSR-250 애노테이션도 지원한다. 3.0부터는 새로운 [표현식 기반 애노테이션](#113-expression-based-access-control)도 사용할 수 있다. 원하는 빈을 선언한 곳을 `intercept-methods` 요소로 장식하면 단일 빈을 보호할 수도 있고, AspectJ 스타일 포인트컷으로 서비스 레이어 전체에 걸친 빈을 보호할 수도 있다.
 
 ### 11.5.1. EnableGlobalMethodSecurity
 
@@ -893,4 +893,4 @@ aclService.updateAcl(acl);
 
 스프링 시큐리티는 ACL 생성, 수정, 삭제 기능을 DAO나 레포지토리 연산의 일부로 자동으로 통합해주지 않는다. 따라서 각 도메인 객체마다 위와 같은 코드를 작성해야 한다. 서비스 레이어에 AOP를 적용해서, 서비스 레이어 작업에 자동으로 ACL 정보를 통합하는 걸 고려해볼만 하다. 우린 이 방법이 꽤 효과가 있었다.
 
-위에 있는 방법을 사용해서 데이터베이스에 ACL 정보를 저장했다면, 이제 실제로 인가 결정 로직에 ACL 정보를 사용하는 일이 남았다. 여기에는 여러 가지 선택 사항이 있다. 메서드 호출 전후에 각각 호출할 `AccessDecisionVoter`나 `AfterInvocationProvider`를 직접 만들 수도 있다. 이 클래스는 `AclService`로 관련 ACL을 검색한 다음 `Acl.isGranted(Permission[] permission, Sid[] sids, boolean administrativeMode)`를 호출해서 권한을 부여할지 말지 결정한다. 아니면 `AclEntryVoter`나 `AclEntryAfterInvocationProvider`, `AclEntryAfterInvocationCollectionFilteringProvider` 클래스를 사용하는 방법도 있다. 이 클래스들은 모두 런타임에 ACL 정보를 평가하는 선언적인(declarative) 접근법을 제공하므로 코드를 작성하지 않아도 된다. 이 클래스들을 어떻게 사용하면 되는지 알아 보려면 샘플 애플리케이션을 참고해라.
+위에 있는 방법을 사용해서 데이터베이스에 ACL 정보를 저장했다면, 이제 실제로 인가 결정 로직에 ACL 정보를 사용하는 일이 남았다. 여기에는 여러 가지 선택 사항이 있다. 메소드 호출 전후에 각각 호출할 `AccessDecisionVoter`나 `AfterInvocationProvider`를 직접 만들 수도 있다. 이 클래스는 `AclService`로 관련 ACL을 검색한 다음 `Acl.isGranted(Permission[] permission, Sid[] sids, boolean administrativeMode)`를 호출해서 권한을 부여할지 말지 결정한다. 아니면 `AclEntryVoter`나 `AclEntryAfterInvocationProvider`, `AclEntryAfterInvocationCollectionFilteringProvider` 클래스를 사용하는 방법도 있다. 이 클래스들은 모두 런타임에 ACL 정보를 평가하는 선언적인(declarative) 접근법을 제공하므로 코드를 작성하지 않아도 된다. 이 클래스들을 어떻게 사용하면 되는지 알아 보려면 샘플 어플리케이션을 참고해라.

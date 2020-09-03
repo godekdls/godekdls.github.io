@@ -679,7 +679,7 @@ HTTP 응답을 스트리밍할 땐
 핵심은 Netty같은 일부 서버에선 메모리 풀을 사용해서 바이트 버퍼를 처리하고 레퍼런스를 카운팅하므로, 메모리 릭을 방지하려면 컨슈밍하고 나서 버퍼 메모리를 반환해야 한다는 것이다.
 
 코덱을 쓰는 대신 버퍼를 직접 처리하거나, 코덱을 커스텀하지만 않는다면
-WebFlux 애플리케이션은
+WebFlux 어플리케이션은
 이런 이슈는 신경쓰지 않아도 된다.
 예외 케이스에 해당한다면 [Data Buffers and Codecs](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers)를
 참고하라. 특히 [DataBuffer](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#databuffers-using)

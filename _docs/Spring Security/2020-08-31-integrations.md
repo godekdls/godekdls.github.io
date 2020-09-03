@@ -578,7 +578,7 @@ XML을 사용한다면
 
 `AuthenticationPrincipalArgumentResolver`를 제대로 설정했다면 스프링 MVC 레이어에서 스프링 시큐리티를 완전히 분리할 수 있다.
 
-커스텀 `UserDetailsService`가 `UserDetails`를 구현한 `Object`와, 커스텀 `CustomUser` `Object`를 리턴하는 경우를 생각해 보자. 현재 인증한 사용자의 `CustomUser`는 아래 코드로 접근할 수 있다:
+커스텀 `UserDetailsService`가 `UserDetails`와 커스텀 `UcstomUser`를 구현한 `Object`를 리턴하는 경우를 생각해 보자. 현재 인증한 사용자의 `CustomUser`는 아래 코드로 접근할 수 있다:
 
 ```java
 @RequestMapping("/messages/inbox")

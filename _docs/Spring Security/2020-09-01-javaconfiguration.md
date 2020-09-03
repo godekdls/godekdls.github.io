@@ -27,7 +27,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 스프링 프레임워크의 전반적인 [자바 설정](https://docs.spring.io/spring/docs/3.1.x/spring-framework-reference/html/beans.html#beans-java) 지원은 스프링 3.1에서 추가됐다. 스프링 시큐리티는 3.2 버전부터 자바 설정을 지원하므로 XML 없이도 손쉽게 스프링 시큐리티 설정을 만들할 수 있다.
 
-[시큐리티 네임스페이스 설정](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#ns-config)에 익숙하다면, 자바 설정도 네임스페이스 설정과 꽤 유사하다는 걸 알 수 있을 거다.
+[시큐리티 네임스페이스 설정](../securitynamespaceconfiguration)에 익숙하다면, 자바 설정도 네임스페이스 설정과 꽤 유사하다는 걸 알 수 있을 거다.
 
 > 스프링 시큐리티는 자바 설정을 사용하는 [많은 샘플 어플리케이션](https://github.com/spring-projects/spring-security/tree/master/samples/javaconfig)을 제공한다.
 

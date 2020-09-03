@@ -1703,7 +1703,7 @@ key:               remember-me 토큰 수정을 방지할 개인키
 
 따라서 remember-me 토큰은 명시한 기간에만 유효하며, 사용자 이름이나 비밀번호, 키가 변경되면 더 이상 유효하지 않다. 특히 remember-me 토큰은 유출되면 만료되기 전까지 모든 user agent에서 사용할 수 있다는 보안 이슈가 있다. 다이제스트 인증을 사용할 때와 같은 이슈다. 사용자(principal)가 토큰이 탈취됐음을 알 수 있다면 비밀번호를 바꿔서 즉시 모든 remember-me 토큰을 무효화시킬 수 있다. 보안이 더 중요한 서비스라면 다음 섹션에 있는 방법을 사용해야 한다. 아니면 차라리 remember-me 인증을 사용하지 말아야 한다.
 
-[네임스페이스 설정](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#ns-config) 챕터에 있는 주제가 익숙하다면, `<remember-me>` 요소만 더하면 remember-me 인증을 활성화할 수 있다:
+[네임스페이스 설정](../securitynamespaceconfiguration) 챕터에 있는 주제가 익숙하다면, `<remember-me>` 요소만 더하면 remember-me 인증을 활성화할 수 있다:
 
 ```xml
 <http>
@@ -1977,7 +1977,7 @@ X.509 인증은 [별도 챕터](#1018-x509-authentication)에서 다룬다. 여�
 </security:authentication-manager>
 ```
 
-여기선 [시큐리티 네임스페이스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#ns-config)로 설정한다고 가정했다. 또한 사용자의 role을 조회하는 `UserDetailsService`("userDetailsService"란 이름의)를 설정했다고 가정했다.
+여기선 [시큐리티 네임스페이스](../securitynamespaceconfiguration)로 설정한다고 가정했다. 또한 사용자의 role을 조회하는 `UserDetailsService`("userDetailsService"란 이름의)를 설정했다고 가정했다.
 
 #### Java EE Container Authentication
 
