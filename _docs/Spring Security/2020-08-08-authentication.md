@@ -2602,7 +2602,7 @@ REST API를 사용한다면 `HttpStatusReturningLogoutSuccessHandler`가 괜찮�
 ### 10.20.5. Further Logout-Related References
 
 - [로그아웃 핸들링](#10202-logout-xml-configuration)
-- [로그아웃 테스트](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#test-logout)
+- [로그아웃 테스트](../testing#testing-logout)
 - [HttpServletRequest.logout()](../integrations#httpservletrequestlogout)
 - [Remember-Me 인터페이스와 구현체](#10124-remember-me-interfaces-and-implementations)
 - CSRF 주의사항 섹션에 있는 [로그아웃](../protectionagainstexploits#logging-out) 문서

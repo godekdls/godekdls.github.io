@@ -49,7 +49,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 - [코틀린 DSL](../kotlinconfiguration#171-httpsecurity) 추가
 - OAuth 2.0 클라이언트
-  - [OAuth 2.0 클라이언트](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-client), [OAuth 2.0 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oauth2-login), [OIDC 로그인](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-oidc-login) 테스트 지원 추가
+  - [OAuth 2.0 클라이언트](../testing#testing-oauth-20-clients), [OAuth 2.0 로그인](../testing#testing-oauth-20-login), [OIDC 로그인](../testing#testing-oidc-login) 테스트 지원 추가
   - [OAuth 2.0 인가 요청 커스텀 기능](https://github.com/spring-projects/spring-security/pull/7748) 개선
   - 향상된 [OIDC logout success handler (`{baseUrl}` 지원)](https://github.com/spring-projects/spring-security/issues/7842)
   - [OAuth2Authorization success/failure handlers](https://github.com/spring-projects/spring-security/issues/7840) 추가
@@ -58,7 +58,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
   - [OAuth 2.0을 위한 JSON 직렬화 지원](https://github.com/spring-projects/spring-security/issues/4886) 추가
 - OAuth 2.0 리소스 서버
   - [multiple issuers](../oauth2#12320-multi-tenancy) 지원 추가
-  - [Opaque 토큰 테스트 지원](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#testing-opaque-token) 추가
+  - [Opaque 토큰 테스트 지원](../testing#testing-opaque-token-authentication) 추가
   - [종합적인 클레임 validator](../oauth2#configuring-a-custom-validator) 추가
   - [XML 지원](https://github.com/spring-projects/spring-security/issues/5185) 추가
   - JWT와 Opaque 토큰을 위한 [bearer 토큰 에러 핸들링](https://github.com/spring-projects/spring-security/pull/7826) 개선
