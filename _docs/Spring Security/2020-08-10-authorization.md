@@ -738,7 +738,7 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
 ### 11.5.3. The \<global-method-security\> Element
 
-이 요소는 애노테이션 기반 보안을 활성화하며 (요소에 적절한 속성을 설정해서), 어프리케이션 컨텍스트 전역에 적용할 포인트컷 선언을 함께 묶을 때도 사용한다. `<global-method-security>` 요소 하나만 선언하면 된다. 아래 선언문은 스프링 시큐리티의 `@Secured` 지원을 활성화한다:
+이 요소는 애노테이션 기반 보안을 활성화하며 (요소에 적절한 속성을 설정해서), 어플리케이션 컨텍스트 전역에 적용할 포인트컷 선언을 함께 묶을 때도 사용한다. `<global-method-security>` 요소 하나만 선언하면 된다. 아래 선언문은 스프링 시큐리티의 `@Secured` 지원을 활성화한다:
 
 ```xml
 <global-method-security secured-annotations="enabled" />

@@ -191,6 +191,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 필터와 이를 구성하는 별칭, 네임스페이스 요소/속성은 [Standard Filter Aliases and Ordering](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#filter-stack)에 나와있다. 아래 필터는 필터 체인에서 실행하는 순서로 나열했다.
 
+<span id="filter-stack"></span>**Table 2. Standard Filter Aliases and Ordering**
+
 | Alias                        | Filter Class                                          | Namespace Element or Attribute           |
 | :--------------------------- | :---------------------------------------------------- | :--------------------------------------- |
 | CHANNEL_FILTER               | `ChannelProcessingFilter`                             | `http/intercept-url@requires-channel`    |

@@ -179,7 +179,7 @@ Object principal = authentication.getPrincipal();
 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 ```
 
-기본적으로 `SecurityContextHolder`는 `ThreadLocal`을 사용해서 정보를 저장하기 때문에 메소드에 직접 `SecurityContext`를 넘기지 않아도 동일한 스레드에선 항상 `SecurityContext`에 접근할 수 있다. 기존 principal 요청을 처리한 다음에 비워주는 것만 잊지 않으면 `ThreadLocal`을 사용해도 안전하다. 스프링 시큐리티의 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)은 항상 `SecurityContext`를 비워준다.
+기본적으로 `SecurityContextHolder`는 `ThreadLocal`을 사용해서 정보를 저장하기 때문에 메소드에 직접 `SecurityContext`를 넘기지 않아도 동일한 스레드에선 항상 `SecurityContext`에 접근할 수 있다. 기존 principal 요청을 처리한 다음에 비워주는 것만 잊지 않으면 `ThreadLocal`을 사용해도 안전하다. 스프링 시큐리티의 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)는 항상 `SecurityContext`를 비워준다.
 
 어플리케이션의 스레드 처리 방식에 따라서 `ThreadLocal`이 전혀 적합하지 않을 때도 있다. 예를 들어 스윙 클라이언트에선 자바 가상머신에 있는 전체 스레드에서 보안 컨텍스트를 하나만 사용해야 할 수 있다. 이럴 때는 기동시점에 사용할 컨텍스트 저장 전략을 설정할 수 있다. standalone 어플리케이션에는 `SecurityContextHolder.MODE_GLOBAL` 전략을 적용할 수 있다. 인증 처리를 마친 스레드가 생성한 보안 컨텍스트를 다른 스레드에서도 그대로 사용해야 하는 어플리케이션이라면 `SecurityContextHolder.MODE_INHERITABLETHREADLOCAL`을 적용하면 된다. 디폴트 전략은 `SecurityContextHolder.MODE_THREADLOCAL`이며, 두 가지 방법으로 바꿀 수 있다. 첫 번째 방법은 시스템 프로퍼티를 설정하는 것이고, 두 번째 방법은 `SecurityContextHolder`에 있는 스태틱 메소드를 사용하는 것이다. 대부분은 디폴트 전략으로도 충분하지만, 바꿔야 한다면 `SecurityContextHolder` JavaDoc을 참고하라.
 
@@ -550,7 +550,7 @@ fun configure(http: HttpSecurity) {
 
 다이제스트 인증은 [기본 인증](#10102-basic-authentication)의 많은 문제점을 개선하기 위한 시도였다. 특히 네트워크 상에서 credential을 일반 텍스트로 전달하지 않게 만들 수 있다. 많은 [브라우저가 다이제스트 인증을 지원하고 있다](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest#Browser_compatibility).
 
-HTTP 다이제스트 인증 관리 표준은 [RFC 2617](https://tools.ietf.org/html/rfc2617)에 정의돼 있으며, [RFC 2069](https://tools.ietf.org/html/rfc2069)에서 업데이트됐다. user agent 대부분은 RFC 2617을 구현하고 있다. 스프링 시큐리티가 지원하는 다이제스트 인증은 RFC 2617에서 규정한 “auth" quality of protection (`qop`)과 호환되며, 이전 버전 RFC 2069와도 호환된다. 암호화하지 않은 HTTP (i.e. TLS/HTTPS 미적용) 통신에서 최대한 안전하게 인증을 처리하고 싶다면 다이제스트 인증이 더 매력적으로 느껴질 것이다. 하지만 [HTTPS](../features#523-http)는 무조건 적용하는 게 좋다.
+HTTP 다이제스트 인증 관리 표준은 [RFC 2617](https://tools.ietf.org/html/rfc2617)에 정의돼 있으며, [RFC 2069](https://tools.ietf.org/html/rfc2069)에서 업데이트됐다. user agent 대부분은 RFC 2617을 구현하고 있다. 스프링 시큐리티가 지원하는 다이제스트 인증은 RFC 2617에서 규정한 "auth" quality of protection (`qop`)과 호환되며, 이전 버전 RFC 2069와도 호환된다. 암호화하지 않은 HTTP (i.e. TLS/HTTPS 미적용) 통신에서 최대한 안전하게 인증을 처리하고 싶다면 다이제스트 인증이 더 매력적으로 느껴질 것이다. 하지만 [HTTPS](../features#523-http)는 무조건 적용하는 게 좋다.
 
 다이제스트 인증의 핵심은 "nonce"다. 서버에서 생성하는 값으로, 스프링 시큐리티의 nonce는 다음 형식을 따른다:
 
@@ -1727,7 +1727,7 @@ key:               remember-me 토큰 수정을 방지할 개인키
 
 데이터베이스엔 아래 SQL로 생성한 (또는 이에 상응하는) `persistent_logins` 테이블이 있어야 한다:
 
-```ddl
+```sql
 create table persistent_logins (username varchar(64) not null,
                                 series varchar(64) primary key,
                                 token varchar(64) not null,
@@ -1798,7 +1798,7 @@ remember-me 서비스를 활성화하려면 다음과 같은 빈을 어플리케
 </http>
 ```
 
-그다음엔 OpenID 제공자에 사용할 사이트를 등록하고 (myopenid.com 등) 인메모리 `<user-service>`에 사용자 정보를 추가해야 한다:
+그다음엔 OpenID provider에 사용할 사이트를 등록하고 (myopenid.com 등) 인메모리 `<user-service>`에 사용자 정보를 추가해야 한다:
 
 ```xml
 <user name="https://jimi.hendrix.myopenid.com/" authorities="ROLE_USER" />
@@ -1808,7 +1808,7 @@ remember-me 서비스를 활성화하려면 다음과 같은 빈을 어플리케
 
 ### 10.13.1. Attribute Exchange
 
-OpenID [attribute exchange](https://openid.net/specs/openid-attribute-exchange-1_0.html)를 지원한다. 예를 들어 다음 설정은 OpenID 제공자로부터 이메일과 이름 전체를 받아오기 위한 어플리케이션 설정이다:
+OpenID [attribute exchange](https://openid.net/specs/openid-attribute-exchange-1_0.html)를 지원한다. 예를 들어 다음 설정은 OpenID provider로부터 이메일과 이름 전체를 받아오기 위한 어플리케이션 설정이다:
 
 ```xml
 <openid-login>
@@ -1819,7 +1819,7 @@ OpenID [attribute exchange](https://openid.net/specs/openid-attribute-exchange-1
 </openid-login>
 ```
 
-OpenID 속성에서 사용한 "type"은 URL로, 특정 스키마로 정해진다 (여기선 https://axschema.org/). 인증에 꼭 필요한 속성은 `required`로 지정한다. 정확한 스키마와 속성은 OpenID 제공자에따라 다르다. 인증을 처리할 때 속성값을 반환하며, 이후엔 다음과 같은 코드로 접근할 수 있다:
+OpenID 속성에서 사용한 "type"은 URL로, 특정 스키마로 정해진다 (여기선 https://axschema.org/). 인증에 꼭 필요한 속성은 `required`로 지정한다. 정확한 스키마와 속성은 OpenID provider에따라 다르다. 인증을 처리할 때 속성값을 반환하며, 이후엔 다음과 같은 코드로 접근할 수 있다:
 
 ```java
 OpenIDAuthenticationToken token =
@@ -1827,7 +1827,7 @@ OpenIDAuthenticationToken token =
 List<OpenIDAttribute> attributes = token.getAttributes();
 ```
 
-`OpenIDAuthenticationToken`은 [SecurityContextHolder](#101-securitycontextholder)에서 얻을 수 있다. `OpenIDAttribute`는 속성 타입과 반환된 값을 가지고 있다 (속성에 따라 값이 여러 개일 수 있음). `attribute-exchange` 요소를 여러 개 사용할 수도 있는데, 이땐 요소마다 `identifier-matcher` 속성을 사용한다. 이 속성은 사용자가 제공하는 OpenID 식별자와 매치할 정규식을 가지고 있다. 설정 예시는 코드에 있는 OpenID 샘플 어플리케이션을 참고하라. 구글 야후, MyOpenID 제공자에서 지원하는 각 속성 리스트를 제공한다.
+`OpenIDAuthenticationToken`은 [SecurityContextHolder](#101-securitycontextholder)에서 얻을 수 있다. `OpenIDAttribute`는 속성 타입과 반환된 값을 가지고 있다 (속성에 따라 값이 여러 개일 수 있음). `attribute-exchange` 요소를 여러 개 사용할 수도 있는데, 이땐 요소마다 `identifier-matcher` 속성을 사용한다. 이 속성은 사용자가 제공하는 OpenID 식별자와 매치할 정규식을 가지고 있다. 설정 예시는 코드에 있는 OpenID 샘플 어플리케이션을 참고하라. 구글 야후, MyOpenID provider에서 지원하는 각 속성 리스트를 제공한다.
 
 ---
 
@@ -1918,7 +1918,7 @@ protected abstract Object getPreAuthenticatedCredentials(HttpServletRequest requ
 
 #### J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource
 
-필터의 `authenticationDetailsSource`를 이 클래스 인스턴스로 설정하면 `isUserInRole(String role)` 메소드를 호출해서 미리 결정해둔 "mappable roles" 셋으로 권한 정보를 조회한다. 이 클래스는 설정한 `MappableAttributesRetriever`에서 이를 가져온다. 어플리케이션 컨텍스트에 리스트를 하드 코딩하거나 `web.xml` 파일에 있는 `<security-role>`에서 role 정보를 읽는 식으로 구현할 수 있다. pre-authentication 샘플 어플리케이션은 두 번째 방법을 사용한다.
+필터의 `authenticationDetailsSource`를 이 클래스 인스턴스로 설정하면 `isUserInRole(String role)` 메소드를 호출해서 미리 결정해둔 "mappable roles" 셋으로 권한 정보를 조회한다. 이 클래스는 설정에 있는 `MappableAttributesRetriever`에서 이를 가져온다. 어플리케이션 컨텍스트에 리스트를 하드 코딩하거나 `web.xml` 파일에 있는 `<security-role>`에서 role 정보를 읽는 식으로 구현할 수 있다. pre-authentication 샘플 어플리케이션은 두 번째 방법을 사용한다.
 
 이 클래스는 하는 일이 하나 더 있는데, 설정한 `Attributes2GrantedAuthoritiesMapper`를 사용해서 roles를(또는 attributes) 스프링 시큐리티 `GrantedAuthority` 객체들로 매핑한다. 디폴트로는 이름에 일반적인 `ROLE_` 프리픽스를 추가하지만, 전체 동작을 직접 제어할 수도 있다.
 

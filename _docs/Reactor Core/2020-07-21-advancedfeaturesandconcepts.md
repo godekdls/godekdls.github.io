@@ -842,7 +842,7 @@ public void contextForLibraryReactivePut() {
 
 - `filter`: 필터 조건에 일치하지 않은 아이템은 "폐기"할 것으로 간주한다.
 - `skip`: 건너뛴 아이템을 폐기한다.
-- `buffer(maxSize, skip)` with `maxSize < skip`: “폐기할 버퍼” — 버퍼 사이에 있는 아이템을 폐기한다.
+- `buffer(maxSize, skip)` with `maxSize < skip`: "폐기할 버퍼" — 버퍼 사이에 있는 아이템을 폐기한다.
 
 `doOnDiscard`는 필터링 연산자만 가능한 것은 아니며, 내부적으로 backpressure 용으로 데이터 큐를 사용하는 연산자에서도 사용할 수 있다. 더 구체적으로 말하면, 대부분 취소할 때가 중요하다. 소스에서 데이터를 미리 가져와서 이후에 구독자 demand에 따라 데이터를 보내는 연산자는, 취소했을 때 아직 방출하지 않은 데이터를 가지고 있을 수 있다. 이런 연산자는 취소할 때 `doOnDiscard` 훅을 사용해서 내부 backpressure `Queue`를 비운다.
 

@@ -758,7 +758,7 @@ public class CsrfController {
 
 ## 15.7. WebSocket Security
 
-스프링 시큐리티 4에서 [스프링의 웹소켓](https://docs.spring.io/spring/docs/current/spring-framework-reference/html/websocket.html) 보안 추가했다. 이번 섹션에선 스프링 시큐리티로 웹 소켓을 보호하는 방법을 설명한다.
+스프링 시큐리티 4에서 [스프링의 웹소켓](https://docs.spring.io/spring/docs/current/spring-framework-reference/html/websocket.html) 보안을 추가했다. 이번 섹션에선 스프링 시큐리티로 웹 소켓을 보호하는 방법을 설명한다.
 
 > 실제로 동작하는 웹 소켓 보안 예제는 https://github.com/spring-projects/spring-session/tree/master/spring-session-samples/spring-session-sample-boot-websocket에서 볼 수 있다.
 

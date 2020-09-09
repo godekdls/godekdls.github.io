@@ -235,7 +235,7 @@ JMS가 가장 좋은 후보지만, 그리드 컴퓨팅이나 공유 메모리 �
 
 ![Partitioning SPI](./../../images/springbatch/partitioning-spi.png)
 
-여기선 오른쪽에 있는 `Step`이 “remote” 워커이므로 
+여기선 오른쪽에 있는 `Step`이 "remote" 워커이므로 
 step에 많은 오브젝트나 프로세스가 있을 것이고,
 `PartitionStep`가 실행을 주도한다.
 

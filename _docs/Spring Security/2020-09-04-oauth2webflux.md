@@ -87,7 +87,7 @@ OAuth 2.0 로그인 기능을 사용하면 어플리케이션의 사용자를 �
 
 “Set a redirect URI” 섹션에선 **승인된 리다이렉트 URL** 필드를 `http://localhost:8080/login/oauth2/code/google`로 설정해야 한다.
 
-> 디폴트 리다이렉트 URL 템플릿은 `{baseUrl}/login/oauth2/code/{registrationId}`다. ***registrationId\***는 [ClientRegistration](../oauth2/#clientregistration)을 식별하는 유니크한 값이다. 예를 들어 `registrationId`는 `google`이다.
+> 디폴트 리다이렉트 URL 템플릿은 `{baseUrl}/login/oauth2/code/{registrationId}`다. ***registrationId***는 [ClientRegistration](../oauth2/#clientregistration)을 식별하는 유니크한 값이다. 예를 들어 `registrationId`는 `google`이다.
 
 > OAuth 클라이언트 앞단에 프록시 서버를 둔다면 어플리케이션 설정에 문제가 없도록 [프록시 서버 설정](../features#proxy-server-configuration)을 확인해보길 권한다. `redirect-uri`에 사용할 수 있는 [`URI` 템플릿 변수](../oauth2/#oauth2Client-auth-code-redirect-uri)도 참고하면 좋다.
 
@@ -221,7 +221,7 @@ SecurityWebFilterChain configure(ServerHttpSecurity http) throws Exception {
 }
 ```
 
-이제 스프링 시큐리티의 [WebClient](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webclient)나 [@RegisteredOAuth2AuthorizedClient](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webflux-roac)를 사용해서 액세스 토큰을 가져와서 사용할 수 있다.
+이제 스프링 시큐리티의 [WebClient](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webclient)나 [@RegisteredOAuth2AuthorizedClient](../@registeredoauth2authorizedclient)를 사용해서 액세스 토큰을 가져와서 사용할 수 있다.
 
 ---
 
