@@ -1,0 +1,143 @@
+---
+title: Spring Security Dependencies
+category: Spring Security
+order: 24
+permalink: /Spring%20Security/springsecuritydependencies/
+description: 스프링 시큐리티에 있는 의존성을 설명합니다. 공식 문서에 있는 "Spring Security Dependencies" 챕터를 한글로 번역한 문서입니다.
+image: ./../../images/springsecurity/spring-security.png
+lastmod: 2020-09-04T20:00:00+09:00
+comments: true
+completed: false
+originalRefName: 스프링 시큐리티
+originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#appendix-dependencies
+---
+
+### 목차:
+
+- [22.6. Spring Security Dependencies](#226-spring-security-dependencies)
+  + [22.6.1. spring-security-core](#2261-spring-security-core)
+  + [22.6.2. spring-security-remoting](#2262-spring-security-remoting)
+  + [22.6.3. spring-security-web](#2263-spring-security-web)
+  + [22.6.4. spring-security-ldap](#2264-spring-security-ldap)
+  + [22.6.5. spring-security-config](#2265-spring-security-config)
+  + [22.6.6. spring-security-acl](#2266-spring-security-acl)
+  + [22.6.7. spring-security-cas](#2267-spring-security-cas)
+  + [22.6.8. spring-security-openid](#2268-spring-security-openid)
+  + [22.6.9. spring-security-taglibs](#2269-spring-security-taglibs)
+
+---
+
+## 22.6. Spring Security Dependencies
+
+This appendix provides a reference of the modules in Spring Security and the additional dependencies that they require in order to function in a running application. We don’t include dependencies that are only used when building or testing Spring Security itself. Nor do we include transitive dependencies which are required by external dependencies.
+
+The version of Spring required is listed on the project website, so the specific versions are omitted for Spring dependencies below. Note that some of the dependencies listed as "optional" below may still be required for other non-security functionality in a Spring application. Also dependencies listed as "optional" may not actually be marked as such in the project’s Maven POM files if they are used in most applications. They are "optional" only in the sense that you don’t need them unless you are using the specified functionality.
+
+Where a module depends on another Spring Security module, the non-optional dependencies of the module it depends on are also assumed to be required and are not listed separately.
+
+### 22.6.1. spring-security-core
+
+The core module must be included in any project using Spring Security.
+
+| Dependency        | Version | Description                                                  |
+| :---------------- | :------ | :----------------------------------------------------------- |
+| ehcache           | 1.6.2   | Required if the Ehcache-based user cache implementation is used (optional). |
+| spring-aop        |         | Method security is based on Spring AOP                       |
+| spring-beans      |         | Required for Spring configuration                            |
+| spring-expression |         | Required for expression-based method security (optional)     |
+| spring-jdbc       |         | Required if using a database to store user data (optional).  |
+| spring-tx         |         | Required if using a database to store user data (optional).  |
+| aspectjrt         | 1.6.10  | Required if using AspectJ support (optional).                |
+| jsr250-api        | 1.0     | Required if you are using JSR-250 method-security annotations (optional). |
+
+### 22.6.2. spring-security-remoting
+
+This module is typically required in web applications which use the Servlet API.
+
+| Dependency           | Version | Description                                           |
+| :------------------- | :------ | :---------------------------------------------------- |
+| spring-security-core |         |                                                       |
+| spring-web           |         | Required for clients which use HTTP remoting support. |
+
+### 22.6.3. spring-security-web
+
+This module is typically required in web applications which use the Servlet API.
+
+| Dependency           | Version | Description                                                  |
+| :------------------- | :------ | :----------------------------------------------------------- |
+| spring-security-core |         |                                                              |
+| spring-web           |         | Spring web support classes are used extensively.             |
+| spring-jdbc          |         | Required for JDBC-based persistent remember-me token repository (optional). |
+| spring-tx            |         | Required by remember-me persistent token repository implementations (optional). |
+
+### 22.6.4. spring-security-ldap
+
+This module is only required if you are using LDAP authentication.
+
+| Dependency                                                   | Version | Description                                                  |
+| :----------------------------------------------------------- | :------ | :----------------------------------------------------------- |
+| spring-security-core                                         |         |                                                              |
+| spring-ldap-core                                             | 1.3.0   | LDAP support is based on Spring LDAP.                        |
+| spring-tx                                                    |         | Data exception classes are required.                         |
+| apache-ds [[15](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#_footnotedef_15)] | 1.5.5   | Required if you are using an embedded LDAP server (optional). |
+| shared-ldap                                                  | 0.9.15  | Required if you are using an embedded LDAP server (optional). |
+| ldapsdk                                                      | 4.1     | Mozilla LdapSDK. Used for decoding LDAP password policy controls if you are using password-policy functionality with OpenLDAP, for example. |
+
+### 22.6.5. spring-security-config
+
+This module is required if you are using Spring Security namespace configuration.
+
+| Dependency             | Version | Description                                                  |
+| :--------------------- | :------ | :----------------------------------------------------------- |
+| spring-security-core   |         |                                                              |
+| spring-security-web    |         | Required if you are using any web-related namespace configuration (optional). |
+| spring-security-ldap   |         | Required if you are using the LDAP namespace options (optional). |
+| spring-security-openid |         | Required if you are using OpenID authentication (optional).  |
+| aspectjweaver          | 1.6.10  | Required if using the protect-pointcut namespace syntax (optional). |
+
+### 22.6.6. spring-security-acl
+
+The ACL module.
+
+| Dependency           | Version | Description                                                  |
+| :------------------- | :------ | :----------------------------------------------------------- |
+| spring-security-core |         |                                                              |
+| ehcache              | 1.6.2   | Required if the Ehcache-based ACL cache implementation is used (optional if you are using your own implementation). |
+| spring-jdbc          |         | Required if you are using the default JDBC-based AclService (optional if you implement your own). |
+| spring-tx            |         | Required if you are using the default JDBC-based AclService (optional if you implement your own). |
+
+### 22.6.7. spring-security-cas
+
+The CAS module provides integration with JA-SIG CAS.
+
+| Dependency           | Version | Description                                                  |
+| :------------------- | :------ | :----------------------------------------------------------- |
+| spring-security-core |         |                                                              |
+| spring-security-web  |         |                                                              |
+| cas-client-core      | 3.1.12  | The JA-SIG CAS Client. This is the basis of the Spring Security integration. |
+| ehcache              | 1.6.2   | Required if you are using the Ehcache-based ticket cache (optional). |
+
+### 22.6.8. spring-security-openid
+
+The OpenID module.
+
+| Dependency           | Version | Description                                            |
+| :------------------- | :------ | :----------------------------------------------------- |
+| spring-security-core |         |                                                        |
+| spring-security-web  |         |                                                        |
+| openid4java-nodeps   | 0.9.6   | Spring Security’s OpenID integration uses OpenID4Java. |
+| httpclient           | 4.1.1   | openid4java-nodeps depends on HttpClient 4.            |
+| guice                | 2.0     | openid4java-nodeps depends on Guice 2.                 |
+
+### 22.6.9. spring-security-taglibs
+
+Provides Spring Security’s JSP tag implementations.
+
+| Dependency           | Version | Description                                                  |
+| :------------------- | :------ | :----------------------------------------------------------- |
+| spring-security-core |         |                                                              |
+| spring-security-web  |         |                                                              |
+| spring-security-acl  |         | Required if you are using the `accesscontrollist` tag or `hasPermission()` expressions with ACLs (optional). |
+| spring-expression    |         | Required if you are using SPEL expressions in your tag access constraints. |
+
+---

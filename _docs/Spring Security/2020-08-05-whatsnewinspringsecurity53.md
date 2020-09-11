@@ -54,7 +54,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
   - 향상된 [OIDC logout success handler (`{baseUrl}` 지원)](https://github.com/spring-projects/spring-security/issues/7842)
   - [OAuth2Authorization success/failure handlers](https://github.com/spring-projects/spring-security/issues/7840) 추가
   - [XML 지원](https://github.com/spring-projects/spring-security/issues/5184) 추가
-  - [OAuth 2.0 토큰 저장을 위한 JDBC 지원](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#dbschema-oauth2-client) 추가
+  - [OAuth 2.0 토큰 저장을 위한 JDBC 지원](../securitydatabaseschema#224-oauth-20-client-schema) 추가
   - [OAuth 2.0을 위한 JSON 직렬화 지원](https://github.com/spring-projects/spring-security/issues/4886) 추가
 - OAuth 2.0 리소스 서버
   - [multiple issuers](../oauth2#12320-multi-tenancy) 지원 추가
@@ -79,7 +79,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
   - [OAuth 2.0 토큰을 위한 JSON 직렬화 지원](https://github.com/spring-projects/spring-security/issues/4886) 추가
   - [AuthorizedClientService와 ReactiveOAuth2AuthorizedClientManager 통합 지원](https://github.com/spring-projects/spring-security/issues/7569) 추가
 - OAuth 2.0 리소스 서버
-  - [multiple issuers](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webflux-oauth2resourceserver-multitenancy) 지원 추가
+  - [multiple issuers](../oauth2webflux#2534-multi-tenancy) 지원 추가
   - [Opaque Tokens 테스트 지원](https://github.com/spring-projects/spring-security/issues/7827) 추가
   - JWT와 Opaque 토큰을 위한 [bearer 토큰 에러 핸들링](https://github.com/spring-projects/spring-security/pull/7826) 개선
 

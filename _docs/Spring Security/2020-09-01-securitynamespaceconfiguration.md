@@ -3,7 +3,7 @@ title: Security Namespace Configuration
 category: Spring Security
 order: 19
 permalink: /Spring%20Security/securitynamespaceconfiguration/
-description: XML 네임스페이스로 스프링 시큐리티를 설정하는 방법을 설명합니다. 공식 문서에 있는 "Security Namespace Configuration" 챕터를 한글로 번역한 문서입니다.
+description: 스프링 시큐리티의 XML 네임스페이스를 소개합니다. 공식 문서에 있는 "Security Namespace Configuration" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-03T20:00:00+09:00
 comments: true
@@ -156,7 +156,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 >  프레임워크의 이전 버전 네임스페이스에 익숙하다면 여기에서 무슨 일이 벌어지고 있는지 대략 예상될 것이다. `<http>` 요소는 `FilterChainProxy`와 이를 사용하는 필터 빈을 생성해 준다. 필터 위치는 미리 정의돼 있기 때문에, 흔한 이슈 중 하나인 필터 순서를 잘못 정의하는 이슈를 피할 수 있다.
 >
->  `<authentication-provider>` 요소는 `DaoAuthenticationProvider` 빈을,  `<user-service>` 요소는 `InMemoryDaoImpl`을 생성한다. 모든 `authentication-provider` 요소는 `ProviderManager`를 만들고 여기에 인증 provider를 등록하는 `<authentication-manager>` 요소의 자식 요소여야 한다. 생성하는 빈들에 대한 자세한 정보는 [네임스페이스 부록](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#appendix-namespace)에서 찾을 수 있다. 프레임워크에서 중요한 클래스가 무엇인지, 그리고 클래스가 어떻게 사용되는지 이해하고 싶다면, 특히 나중에 커스텀해야 할 수도 있다면, 함께 확인해보는 게 좋다.
+>  `<authentication-provider>` 요소는 `DaoAuthenticationProvider` 빈을,  `<user-service>` 요소는 `InMemoryDaoImpl`을 생성한다. 모든 `authentication-provider` 요소는 `ProviderManager`를 만들고 여기에 인증 provider를 등록하는 `<authentication-manager>` 요소의 자식 요소여야 한다. 생성하는 빈들에 대한 자세한 정보는 [네임스페이스 부록](../thesecuritynamespace#225-the-security-namespace)에서 찾을 수 있다. 프레임워크에서 중요한 클래스가 무엇인지, 그리고 클래스가 어떻게 사용되는지 이해하고 싶다면, 특히 나중에 커스텀해야 할 수도 있다면, 함께 확인해보는 게 좋다.
 
 위 설정은 두 명의 사용자와, 사용자의 비밀번호, 어플리케이션 내 role을 (접근 제어에 사용할) 정의한다. `user-service`의 `properties` 속성으로 표준 properties 파일에서 사용자 정보를 로드할 수도 있다. 파일 형식에 대한 자세한 설명은 [인메모리 인증](../authentication#10104-in-memory-authentication) 섹션을 참고해라. `<authentication-provider>` 요소를 사용했다는 것은 인증 manager가 사용자 정보를 사용해서 인증 요청을 처리한다는 뜻이다. `<authentication-provider>` 요소를 여러 개 만들어서 다른 인증 소스를 정의할 수도 있으며, 각 소스는 순서대로 참조한다.
 
@@ -189,7 +189,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 > 이전 버전에선 필터 인스턴스를 생성한 이후, 어플리케이션 컨텍스트 후처리 로직에서 필터를 정렬했다. 3.0+ 버전에선, 이제 클래스를 인스턴스화하기 전에 빈 메타데이터를 가지고 정렬한다. 따라서 `<http>` 요소를 파싱할 때 전체 필터 리스트를 알고 있어야 하고, 자체 필터를 추가하는 방식에도 영향을 끼쳤다. 그로 인해 3.0에서 문법이 약간 달라졌다.
 
-필터와 이를 구성하는 별칭, 네임스페이스 요소/속성은 [Standard Filter Aliases and Ordering](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#filter-stack)에 나와있다. 아래 필터는 필터 체인에서 실행하는 순서로 나열했다.
+필터와 이를 구성하는 별칭, 네임스페이스 요소/속성은 [Standard Filter Aliases and Ordering](#filter-stack)에 나와있다. 아래 필터는 필터 체인에서 실행하는 순서로 나열했다.
 
 <span id="filter-stack"></span>**Table 2. Standard Filter Aliases and Ordering**
 

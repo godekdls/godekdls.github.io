@@ -1253,7 +1253,7 @@ fun authenticationProvider(authenticator: LdapAuthenticator): LdapAuthentication
 }
 ```
 
-이 예제에서는 설정 패턴에 사용자의 로그인 이름을 적용하고, 비밀번호와 함께 사용자로 바인딩해 해당 사용자의 DN을 가져온다. 이 방법은 모든 사용자를 디렉토리 내 단일 노드에 저장했을 때 사용하는 방법이다. 사용자 위치를 찾기 위한 LDAP 검색 필터를 설정하려면 다음처럼 사용해야 한다:
+이 예제에서는 설정 패턴에 로그인한 사용자 이름을 적용하고, 비밀번호와 함께 사용자로 바인딩해 해당 사용자의 DN을 가져온다. 이 방법은 모든 사용자를 디렉토리 내 단일 노드에 저장했을 때 사용하는 방법이다. 사용자 위치를 찾기 위한 LDAP 검색 필터를 설정하려면 다음처럼 사용해야 한다:
 
 **Example 73. Bind Authentication with Search Filter**
 
@@ -1305,7 +1305,7 @@ fun authenticationProvider(authenticator: LdapAuthenticator): LdapAuthentication
 }
 ```
 
-[위에서 정의한](#ldap-contextsource) `ContextSource`를 사용하면 DN `ou=people,dc=springframework,dc=org`에서 `(uid={0})` 필터로 검색할 것이다. 다시 한 번 말하자면, 필터 이름 안에 있는 파라미터는 사용자 로그인 이름으로 대체되기 때문에 사용자 이름과 동일한 `uid` 속성을 가진 엔트리를 검색할 것이다. search base를 제공하지 않으면 루트에서 검색한다.
+[위에서 정의한](#ldap-contextsource) `ContextSource`를 사용하면 DN `ou=people,dc=springframework,dc=org`에서 `(uid={0})` 필터로 검색할 것이다. 다시 한 번 말하자면, 필터 이름 안에 있는 파라미터는 로그인한 사용자 이름으로 대체되기 때문에 사용자 이름과 동일한 `uid` 속성을 가진 엔트리를 검색할 것이다. search base를 제공하지 않으면 루트에서 검색한다.
 
 #### Using Password Authentication
 
@@ -2110,7 +2110,7 @@ class="org.springframework.security.authentication.jaas.JaasAuthenticationProvid
 Subject subject = Subject.getSubject(AccessController.getContext());
 ```
 
-[jaas-api-provision](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-http-jaas-api-provision) 속성을 사용하면 쉽게 설정을 통합할 수 있다. 이 기능은 값을 채운 JAAS Subject에 의존하는 레거시나 외부 API와 통합할 때 유용하다.
+[jaas-api-provision](../thesecuritynamespace#nsa-http-jaas-api-provision) 속성을 사용하면 쉽게 설정을 통합할 수 있다. 이 기능은 값을 채운 JAAS Subject에 의존하는 레거시나 외부 API와 통합할 때 유용하다.
 
 ---
 
@@ -2195,7 +2195,7 @@ CAS 인증 프로세스를 시작하려면 다음과 같은 빈을 설정해야 
 </bean>
 ```
 
-CAS가 동작하려면 `ExceptionTranslationFilter`의 `authenticationEntryPoint` 프로퍼티를 `CasAuthenticationEntryPoint` 빈으로 설정해야 한다. 위 예시처럼 [entry-point-ref](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-http-entry-point-ref)를 사용하면 쉽게 구성할 수 있다. `CasAuthenticationEntryPoint`는 엔터프라이즈 환경에 있는 CAS 로그인 서버에 URL을 제공해 주는 `ServiceProperties` 빈(위에서 설명한)을 반드시 참조해야 한다. 사용자의 브라우저는 이 URL로 리다이렉트한다.
+CAS가 동작하려면 `ExceptionTranslationFilter`의 `authenticationEntryPoint` 프로퍼티를 `CasAuthenticationEntryPoint` 빈으로 설정해야 한다. 위 예시처럼 [entry-point-ref](../thesecuritynamespace#nsa-http-entry-point-ref)를 사용하면 쉽게 구성할 수 있다. `CasAuthenticationEntryPoint`는 엔터프라이즈 환경에 있는 CAS 로그인 서버에 URL을 제공해 주는 `ServiceProperties` 빈(위에서 설명한)을 반드시 참조해야 한다. 사용자의 브라우저는 이 URL로 리다이렉트한다.
 
 `CasAuthenticationFilter`가 가지고 있는 프로퍼티는 `UsernamePasswordAuthenticationFilter`(폼 기반 로그인에 사용하는)와 매우 유사하다. 이 프로퍼티로 인증 성공/실패 시 동작 등을 커스텀할 수 있다.
 
@@ -2563,7 +2563,7 @@ protected void configure(HttpSecurity http) throws Exception {
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> `LogoutHandler`를 추가한다. `SecurityContextLogoutHandler`는 기본적으로 마지막 `LogoutHandler`로 추가된다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 로그아웃에 성공하면 삭제할 쿠키 이름을 여러 개 지정할 수 있다. 직접 `CookieClearingLogoutHandler`를 추가하는 것과 동일하다.</small>
 
->  로그아웃 기능은 당연히 XML 네임스페이스 표기법으로도 설정할 수 있다. 자세한 내용은 스프링 시큐리티 XML 네임스페이스 섹션에 있는 [logout 요소](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-logout)를 참고하라.
+>  로그아웃 기능은 당연히 XML 네임스페이스 표기법으로도 설정할 수 있다. 자세한 내용은 스프링 시큐리티 XML 네임스페이스 섹션에 있는 [logout 요소](../thesecuritynamespace#logout)를 참고하라.
 
 일반적으로 로그아웃 기능을 커스텀할 땐 `LogoutHandler`나 `LogoutSuccessHandler` 구현체를 (또는 둘 다) 추가하는 식으로 구현한다. 스프링 시큐리티 설정 API를 사용하면 다양한 공통 시나리오 내부에서 이 핸들러를 사용한다.
 
@@ -2607,7 +2607,7 @@ REST API를 사용한다면 `HttpStatusReturningLogoutSuccessHandler`가 괜찮�
 - [Remember-Me 인터페이스와 구현체](#10124-remember-me-interfaces-and-implementations)
 - CSRF 주의사항 섹션에 있는 [로그아웃](../protectionagainstexploits#logging-out) 문서
 - [싱글 로그아웃](#single-logout) 섹션 (CAS 프로토콜)
-- 스프링 시큐리티 XML 네임스페이스 섹션에 있는 [logout 요소](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-logout) 문서
+- 스프링 시큐리티 XML 네임스페이스 섹션에 있는 [logout 요소](../thesecuritynamespace#logout) 문서
 
 ---
 

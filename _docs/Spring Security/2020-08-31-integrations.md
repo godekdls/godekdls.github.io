@@ -276,7 +276,7 @@ public void run() {
 }
 ```
 
-매우 간단하면서도 매끄럽게 SecurityContext를 다른 스레드로 전달해준다. 이 기능은 대부분이 스레드별로 SecurityContextHolder를 사용하기 때문에 중요하다. 예를 들어 스프링 시큐리티의 [\<global-method-security\>](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-global-method-security)로 서비스를 보호하고 있을 수도 있다. 이제 현재 `Thread`의 `SecurityContext`를 보호 중인 서비스를 실행하는 `Thread`로 쉽게 전달할 수 있다. 다음 코드는 그 방법을 보여주고 있다:
+매우 간단하면서도 매끄럽게 SecurityContext를 다른 스레드로 전달해준다. 이 기능은 대부분이 스레드별로 SecurityContextHolder를 사용하기 때문에 중요하다. 예를 들어 스프링 시큐리티의 [\<global-method-security\>](../thesecuritynamespace#global-method-security)로 서비스를 보호하고 있을 수도 있다. 이제 현재 `Thread`의 `SecurityContext`를 보호 중인 서비스를 실행하는 `Thread`로 쉽게 전달할 수 있다. 다음 코드는 그 방법을 보여주고 있다:
 
 ```java
 Runnable originalRunnable = new Runnable() {
@@ -787,7 +787,7 @@ public class WebSocketSecurityConfig
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> SecurityContextHolder는 인바운드 요청의 simpUser 헤더 속성 정보로 사용자 정보를 채운다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메세지엔 적당한 권한이 필요하다. 특히 "/user/"로 시작하는 모든 인바운드 메세지는 ROLE_USER 권한이 필요하다. 권한 인가에 대한 자세한 설명은 [WebSocket Authorization](#1573-websocket-authorization)에 있다.</small>
 
-스프링 시큐리티는 웹소켓 보안을 위한 [XML 네임스페이스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-websocket-security)도 제공한다. 위와 동일한 XML 설정은 다음과 같다:
+스프링 시큐리티는 웹소켓 보안을 위한 [XML 네임스페이스](../thesecuritynamespace#2252-websocket-security)도 제공한다. 위와 동일한 XML 설정은 다음과 같다:
 
 ```xml
 <websocket-message-broker> <!-- (1) (2) -->
@@ -837,7 +837,7 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 다른 MESSAGE, SUBSCRIBE 타입 메세지는 모두 거절한다. 6번이 있어서 이 설정은 없어도 되지만, 특정 메세지 타입을 매칭하는 방법을 보여준다.</small><br>
 - <small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 그 외 모든 메세지는 거절한다. 특정 메세지를 누락하지 않도록 이렇게 막아두는 게 좋다.</small>
 
-스프링 시큐리티는 웹소켓 보안을 위한 [XML 네임스페이스](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-websocket-security)도 제공한다. 위와 동일한 XML 설정은 다음과 같다:
+스프링 시큐리티는 웹소켓 보안을 위한 [XML 네임스페이스](../thesecuritynamespace#2252-websocket-security)도 제공한다. 위와 동일한 XML 설정은 다음과 같다:
 
 ```xml
 <websocket-message-broker>
@@ -988,7 +988,7 @@ public class WebSocketSecurityConfig extends AbstractSecurityWebSocketMessageBro
 
 SockJS는 메세지를 [아이프레임으로 전송](https://github.com/sockjs/sockjs-client/tree/v0.3.4)할 수도 있다. 스프링 시큐리티는 클릭재킹 공격을 막기 위해 기본적으로 사이트를 프레임에 넣을 수 없게 [막는다](../features#x-frame-options). SockJS의 프레임 기반 전송을 허용하려면 동일 출처에선 컨텐츠를 프레임에 넣을 수 있도록 스프링 시큐리티 설정을 바꿔야 한다.
 
-X-Frame-Options는 [frame-options](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-frame-options) 요소로 커스텀할 수 있다. 예를 들어 아래 설정은 스프링 시큐리티에 "X-Frame-Options: SAMEORIGIN"을 사용하도록 지시해서 동일한 도메인에서는 아이프레임을 허용한다.
+X-Frame-Options는 [frame-options](../thesecuritynamespace#frame-options) 요소로 커스텀할 수 있다. 예를 들어 아래 설정은 스프링 시큐리티에 "X-Frame-Options: SAMEORIGIN"을 사용하도록 지시해서 동일한 도메인에서는 아이프레임을 허용한다.
 
 ```xml
 <http>
@@ -1054,7 +1054,7 @@ public class WebSecurityConfig
             ...
 ```
 
-XML 설정을 사용한다면 [csrf@request-matcher-ref](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#nsa-csrf-request-matcher-ref)를 사용해라. 예를 들어:
+XML 설정을 사용한다면 [csrf@request-matcher-ref](../thesecuritynamespace#nsa-csrf-request-matcher-ref)를 사용해라. 예를 들어:
 
 ```xml
 <http ...>

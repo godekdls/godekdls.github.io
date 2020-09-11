@@ -1,7 +1,7 @@
 ---
 title: OAuth2 WebFlux
 category: Spring Security
-order: 25
+order: 28
 permalink: /Spring%20Security/oauth2webflux/
 description: 웹플럭스 어플리케이션에서 스프링 시큐리티로 OAuth2를 적용하는 방법을 설명합니다. 공식 문서에 있는 "OAuth2 WebFlux" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png

@@ -1,7 +1,7 @@
 ---
 title: WebFlux Security
 category: Spring Security
-order: 23
+order: 26
 permalink: /Spring%20Security/webfluxsecurity/
 description: 웹플럭스 어플리케이션에서 스프링 시큐리티를 시작하는 방법과 스프링 부트 자동 설정을 설명합니다. 공식 문서에 있는 "WebFlux Security" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
@@ -20,7 +20,7 @@ boundary: Reactive Applications
 
 ---
 
-스프링 시큐리티 웹플럭스 기능은 `WebFilter`를 사용하며, 스프링 웹플럭스와 및 스프링 WebFlux.Fn에서 동일하게 동작한다. 아래에서 설명하는 코드를 사용하는 샘플 어플리케이션을 참고하라:
+스프링 시큐리티 웹플럭스 기능은 `WebFilter`를 사용하며, 스프링 웹플럭스와 스프링 WebFlux.Fn에서 동일하게 동작한다. 아래에서 설명하는 코드를 사용하는 샘플 어플리케이션을 참고하라:
 
 - Hello WebFlux [hellowebflux](https://github.com/spring-projects/spring-security/tree/5.3.2.RELEASE/samples/boot/hellowebflux)
 - Hello WebFlux.Fn [hellowebfluxfn](https://github.com/spring-projects/spring-security/tree/5.3.2.RELEASE/samples/boot/hellowebfluxfn)
