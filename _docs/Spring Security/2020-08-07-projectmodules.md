@@ -53,7 +53,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 6.3. Web — `spring-security-web.jar`
 
-이 모듈은 필터와 관련 웹 보안 기반 코드를 제공한다. 서블릿 API 종속성이 있는 코드는 전부 여기에 있다. 스프링 시큐리티 웹 인증 서비스나 URL 기반 접근 제어가 필요하다면 이 모듈을 사용해라. 메인 패키지는 `org.springframework.security.web`이다.
+이 모듈은 필터와 관련 웹 보안 기반 코드를 제공한다. 서블릿 API 의존성이 있는 코드는 전부 여기에 있다. 스프링 시큐리티 웹 인증 서비스나 URL 기반 접근 제어가 필요하다면 이 모듈을 사용해라. 메인 패키지는 `org.springframework.security.web`이다.
 
 ---
 
