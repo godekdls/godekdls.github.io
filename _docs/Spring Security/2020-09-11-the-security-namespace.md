@@ -106,7 +106,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 #### \<http\>
 
-애플리케이션에서 `<http>` 요소를 사용하면 "springSecurityFilterChain"이라는 `FilterChainProxy` 빈을 생성하며, 이 요소에 있는 설정대로 `FilterChainProxy` 안에 필터 체인을 구축한다. 스프링 시큐리티 3.1부터 추가적인 `http` 요소로 필터 체인을 추가할 수 있다. 일부 핵심 필터는 항상 필터 체인에 추가되며, 다른 필터는 속성이나 하위 요소 존재 여부에 따라 스택에 추가한다. 표준 필터의 위치는 고정이기 때문에 (네임스페이스 소개 섹션에 있는 [필터 순서 테이블](../securitynamespaceconfiguration#filter-stack) 참고) 이전 처럼 사용자가 `FilterChainProxy` 빈에 필터 체인을 직접 명시해야 했을 때 흔히 발생하는 오류 요소를 제거했다. 물론 설정을 완전히 제어해야 한다면 직접 명시하는 것도 가능하다.
+어플리케이션에서 `<http>` 요소를 사용하면 "springSecurityFilterChain"이라는 `FilterChainProxy` 빈을 생성하며, 이 요소에 있는 설정대로 `FilterChainProxy` 안에 필터 체인을 구축한다. 스프링 시큐리티 3.1부터 `http` 요소를 더 추가해서 다른 필터 체인을 생성할 수 있다. 일부 핵심 필터는 항상 필터 체인에 추가되며, 속성이나 하위 요소 존재 여부에 따라 스택에 추가하는 필터도 있다. 표준 필터의 위치는 고정이기 때문에 (네임스페이스 소개 섹션에 있는 [필터 순서 테이블](../securitynamespaceconfiguration#filter-stack) 참고) 이전처럼 사용자가 `FilterChainProxy` 빈에 필터 체인을 직접 명시해야 했을 때 흔히 발생하는 오류 요소를 제거했다. 물론 설정을 완전히 제어해야 한다면 직접 명시하는 것도 가능하다.
 
 [`AuthenticationManager`](../authentication#105-authenticationmanager)를 참조해야 하는 필터는 전부 네임스페이스 설정으로 생성한 내부 인스턴스를 자동으로 주입받는다.
 
@@ -199,7 +199,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 - `X-Frame-Options` - [frame-options](#frame-options) 요소로 설정할 수 있다. [X-Frame-Options](https://en.wikipedia.org/wiki/Clickjacking#X-Frame-Options) 헤더는 클릭재킹 공격을 방어할 때 사용한다.
 - `X-XSS-Protection` - [xss-protection](#xss-protection) 요소로 설정할 수 있다. 브라우저는 [X-XSS-Protection](https://en.wikipedia.org/wiki/Cross-site_scripting) 헤더가 있으면 기본적인 제어를 시작한다.
 - `X-Content-Type-Options` - [content-type-options](#content-type-options) 요소로 설정할 수 있다. [X-Content-Type-Options](https://docs.microsoft.com/en-us/archive/blogs/ie/ie8-security-part-vi-beta-2-update) 헤더를 사용하면 인터넷 익스플로러는 응답에 선언한 content-type 외의 타입으로 MIME 스니핑을 하지 않는다. 구글 크롬 확장 프로그램을 다운로드할 때도 이 헤더를 사용한다.
-- `Public-Key-Pinning` or `Public-Key-Pinning-Report-Only` - [hpkp](#hpkp) 요소로 설정할 수 있다. This allows HTTPS websites to resist impersonation by attackers using mis-issued or otherwise fraudulent certificates.
+- `Public-Key-Pinning` or `Public-Key-Pinning-Report-Only` - [hpkp](#hpkp) 요소로 설정할 수 있다. HTTPS 웹사이트는 hpkp 헤더로 잘못 발급한 인증서나 허위 인증서를 사용하는 공격을 방지할 수 있다.
 - `Content-Security-Policy` or `Content-Security-Policy-Report-Only` - [content-security-policy](#content-security-policy) 요소로 설정할 수 있다. [컨텐츠 보안 정책(CSP)](https://www.w3.org/TR/CSP2/)은 웹 어플리케이션에서 XSS(cross-site scripting)같은 컨텐츠 인젝션 공격 취약성을 개선할 때 사용할 수 있는 메커니즘이다.
 - `Referrer-Policy` - [referrer-policy](#referrer-policy) 요소로 설정할 수 있다. [Referrer-Policy](https://www.w3.org/TR/referrer-policy/)는 웹 어플리케이션에서 사용자가 직전에 방문했던 페이지를 가리키는 레퍼러 필드를 관리할 수 있는 메커니즘이다.
 - `Feature-Policy` - [feature-policy](#feature-policy) 요소로 설정할 수 있다. [Feature-Policy](https://wicg.github.io/feature-policy/)는 브라우저의 특정 API나 웹 기능을 웹 개발자가 원하는대로 활성화, 비활성화, 수정할 수 있는 메커니즘이다.
@@ -258,7 +258,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 #### \<hpkp\>
 
-활성화하면 보호 중인 모든 요청에 대한 응답에 [Public Key Pinning Extension for HTTP](https://tools.ietf.org/html/rfc7469) 헤더를 추가한다. 이를 통해 HTTPS 웹 사이트는 잘못 발급한 인증서나 허위 인증서를 사용하는 공격을 방지할 수 있다.
+활성화하면 보호 중인 모든 요청에 대한 응답에 [Public Key Pinning Extension for HTTP](https://tools.ietf.org/html/rfc7469) 헤더를 추가한다. HTTPS 웹사이트는 hpkp 헤더로 잘못 발급한 인증서나 허위 인증서를 사용하는 공격을 방지할 수 있다.
 
 ##### \<hpkp\> Attributes
 
@@ -410,7 +410,7 @@ pin 리스트
 
 #### \<csrf\>
 
-이 요소는 애플리케이션에 [CSRF(Cross Site Request Forger)](https://en.wikipedia.org/wiki/Cross-site_request_forgery) 방어 기능을 추가한다. 또한 인증 성공 시 "GET" 요청만 캐시하도록 디폴트 RequestCache를 업데이트한다. 추가 정보는 이 문서의 [Cross Site Request Forgery (CSRF)](../features#521-cross-site-request-forgery-csrf) 섹션에서 확인할 수 있다.
+이 요소는 어플리케이션에 [CSRF(Cross Site Request Forger)](https://en.wikipedia.org/wiki/Cross-site_request_forgery) 방어 기능을 추가한다. 또한 인증 성공 시 "GET" 요청만 캐시하도록 디폴트 RequestCache를 업데이트한다. 추가 정보는 이 문서의 [Cross Site Request Forgery (CSRF)](../features#521-cross-site-request-forgery-csrf) 섹션에서 확인할 수 있다.
 
 ##### Parent Elements of \<csrf\>
 
@@ -650,7 +650,7 @@ opaque 토큰을 사용하는 OAuth 2.0 리소스 서버를 나타낸다.
 
 #### \<intercept-url\>
 
-이 요소로는 애플리케이션에서 관심있는 URL 패턴 셋을 정의하고, 이 URL을 처리하는 방법을 설정할 수 있다. `FilterSecurityInterceptor`에서 사용하는 `FilterInvocationSecurityMetadataSource`는 이 요소에 있는 값으로 설정한다. 예를 들어 특정 URL은 HTTPS로 접근해야 하는 경우엔 `ChannelProcessingFilter`를 설정할 수도 있다. 지정한 패턴과 요청을 매칭할 때는 요소를 선언한 순서대로 매칭한다. 따라서 가장 구체적인 패턴이 앞에 오고, 가장 일반적인 패턴이 마지막에 와야 한다.
+이 요소로는 어플리케이션에서 관심있는 URL 패턴 셋을 정의하고, 이 URL을 처리하는 방법을 설정할 수 있다. `FilterSecurityInterceptor`에서 사용하는 `FilterInvocationSecurityMetadataSource`는 이 요소에 있는 값으로 설정한다. 예를 들어 특정 URL은 HTTPS로 접근해야 하는 경우엔 `ChannelProcessingFilter`를 설정할 수도 있다. 지정한 패턴과 요청을 매칭할 때는 요소를 선언한 순서대로 매칭한다. 따라서 가장 구체적인 패턴이 앞에 오고, 가장 일반적인 패턴이 마지막에 와야 한다.
 
 ##### Parent Elements of \<intercept-url\>
 
@@ -1087,7 +1087,7 @@ properties 파일, 또는 자식 요소 "user" 리스트를 사용해서 인메�
 
 ##### \<global-method-security\> Attributes
 
-- **access-decision-manager-ref** 메소드 시큐리티는 웹 시큐리티와 동일한 `AccessDecisionManager` 설정을 사용하지만, 이 속성으로 재정의할 수 있다. 디폴트로는 RoleVotre와 AuthenticatedVoter를 사용하는 AffirmativeBased 구현체를 사용한다.
+- **access-decision-manager-ref** 메소드 시큐리티는 웹 시큐리티와 동일한 `AccessDecisionManager` 설정을 사용하지만, 이 속성으로 재정의할 수 있다. 디폴트로는 RoleVoter와 AuthenticatedVoter를 사용하는 AffirmativeBased 구현체를 사용한다.
 - **authentication-manager-ref** 메소드 시큐리티에서 사용할 `AuthenticationManager`에 대한 참조.
 - **jsr250-annotations** JSR-250 스타일 속성 사용 여부를 지정한다 (i.e. "RolesAllowed"). 이를 사용하려면 클래스패스에 javax.annotation.security 클래스가 있어야 한다. true로 설정하면 `AccessDecisionManager`에 `Jsr250Voter`도 추가하므로, 커스텀 구현체에서 JSR-250 애노테이션을 사용하고 싶다면 이에 맞는 속성을 추가해야 한다.
 - **metadata-source-ref** 다른 소스(디폴트 애노테이션 등)보다 우선시할 외부 `MethodSecurityMetadataSource`를 제공할 수 있다.

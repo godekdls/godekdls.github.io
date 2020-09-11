@@ -7,7 +7,6 @@ description: 공식 문서에 있는 "스프링 시큐리티 커뮤니티 활용
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#community
 ---

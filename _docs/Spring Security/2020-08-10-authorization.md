@@ -132,7 +132,7 @@ boolean supports(Class clazz);
 
 #### Custom Voters
 
-원한다면 당연히 커스텀 `AccessDecisionVoter`를 구현해서 원하는 곳에 접근 제어 로직을 넣을 수 있다. 보통 어플리케이션에 특화된 로직이나 (비지니스 로직 관련) 보안 관리 로직을 구현하는 데 사용한다. 예를 들어 스프링 웹 사이트에 있는 [블로그 문서](https://spring.io/blog/2009/01/03/spring-security-customization-part-2-adjusting-secured-session-in-real-time)에서 설명하는 방법으로, 계정이 정지된 사용자의 접근을 실시간으로 거절할 수 있다.
+원한다면 당연히 커스텀 `AccessDecisionVoter`를 구현해서 원하는 곳에 접근 제어 로직을 넣을 수 있다. 보통 어플리케이션에 특화된 로직이나 (비지니스 로직 관련) 보안 관리 로직을 구현하는 데 사용한다. 예를 들어 스프링 웹사이트에 있는 [블로그 문서](https://spring.io/blog/2009/01/03/spring-security-customization-part-2-adjusting-secured-session-in-real-time)에서 설명하는 방법으로, 계정이 정지된 사용자의 접근을 실시간으로 거절할 수 있다.
 
 ### 11.1.3. After Invocation Handling
 

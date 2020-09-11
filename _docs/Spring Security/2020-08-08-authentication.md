@@ -979,7 +979,7 @@ fun customUserDetailsService() = CustomUserDetailsService()
 
 LDAP은 조직에서 사용자 정보를 관리하기 위한 중앙 저장소와 인증 서비스로 많이 사용한다. 어플리케이션 사용자의 role을 저장할 때도 사용할 수 있다.
 
-스프링 시큐리티의 LDAP 기반 인증은 [username/password를 읽어](#servlet-authentication-unpwd-input) 인증할 때 사용한다. 하지만 username/password로 인증하더라도 `UserDetailsService`와 통합되지는 않는다. LDAP 서버는 [bind 인증](#using-bind-authentication)에서 비밀번호를 반환하지 않기 때문에 어플리케이션에서 비밀번호를 인증할 수 없기 때문이다.
+스프링 시큐리티의 LDAP 기반 인증은 [username/password로 인증하도록 설정](#servlet-authentication-unpwd-input)했을 때 사용한다. 하지만 username/password로 인증하더라도 `UserDetailsService`와 통합되지는 않는다. LDAP 서버는 [bind 인증](#using-bind-authentication)에서 비밀번호를 반환하지 않기 때문에 어플리케이션에서 비밀번호를 인증할 수 없기 때문이다.
 
 LDAP 서버의 설정 시나리오는 다양하므로 스프링 시큐리티는 전체 설정을 바꿀 수 있는 LDAP provider를 제공한다. 인증과 role을 조회할 때는 별도의 전략 인터페이스를 사용하며, 다양한 상황에서 설정할 수 있는 디폴트 구현체를 제공한다.
 
