@@ -221,7 +221,7 @@ SecurityWebFilterChain configure(ServerHttpSecurity http) throws Exception {
 }
 ```
 
-이제 스프링 시큐리티의 [WebClient](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webclient)나 [@RegisteredOAuth2AuthorizedClient](../@registeredoauth2authorizedclient)를 사용해서 액세스 토큰을 가져와서 사용할 수 있다.
+이제 스프링 시큐리티의 [WebClient](../webclient)나 [@RegisteredOAuth2AuthorizedClient](../@registeredoauth2authorizedclient)를 사용해서 액세스 토큰을 가져와서 사용할 수 있다.
 
 ---
 
