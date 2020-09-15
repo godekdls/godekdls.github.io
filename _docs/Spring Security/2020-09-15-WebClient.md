@@ -5,7 +5,7 @@ order: 31
 permalink: /Spring%20Security/webclient/
 description: 스프링 시큐리티로 WebClient를 통합해서, 액세스 토큰을 자동으로 설정하는 방법을 설명합니다. 공식 문서에 있는 "WebClient" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-09-15T23:00:00+09:00
+lastmod: 2020-09-15T22:00:00+09:00
 comments: true
 completed: false
 originalRefName: 스프링 시큐리티
