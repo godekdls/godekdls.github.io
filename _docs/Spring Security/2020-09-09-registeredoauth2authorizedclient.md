@@ -14,7 +14,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 스프링 시큐리티에선 `@RegisteredOAuth2AuthorizedClient`를 사용해 액세스 토큰을 리졸브할 수 있다.
 
-> 실제로 동작하는 예제는 [**OAuth 2.0 WebClient WebFlux sample**](https://github.com/spring-projects/spring-security/tree/5.3.2.RELEASE/samples/boot/oauth2webclient-webflux)에 있다.
+> 실제로 동작하는 예제는 [**OAuth 2.0 WebClient WebFlux 샘플**](https://github.com/spring-projects/spring-security/tree/5.3.2.RELEASE/samples/boot/oauth2webclient-webflux)에 있다.
 
 스프링 시큐리티로 [OAuth2 로그인](../oauth2webflux#251-oauth-20-login)이나 [OAuth2 클라이언트](../oauth2webflux#252-oauth2-client)를 설정했다면 다음과 같이 `OAuth2AuthorizedClient`를 리졸브할 수 있다:
 
