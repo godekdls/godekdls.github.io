@@ -8,7 +8,6 @@ image: ./../../images/springsecurity/securitycontextholder.png
 priority: 0.8
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authentication
 ---
@@ -113,20 +112,20 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ---
 
-스프링 시큐리티는 [인증](../features#51-authentication)을 종합적으로 지원한다. 이번 섹션에서 다루는 내용은 다음과 같다:
+스프링 시큐리티는 종합적인 [인증](../features#51-authentication)을 지원한다. 이번 섹션에서 다루는 내용은 다음과 같다:
 
 #### Architecture Components
 
-이 섹션에선 서블릿 인증에서 사용하는 스프링 시큐리티의 주요 아키텍처 컴포넌트를 설명한다. 이 컴포넌트가 어떻게 함께 동작하는지 구체적인 플로우를 그려보고 싶다면 [Authentication Mechanism](#authentication-mechanisms) 섹션을 참고하라.
+이 섹션에선 서블릿 인증에서 사용하는 스프링 시큐리티의 주요 아키텍처 컴포넌트를 설명한다. 이 컴포넌트가 어떻게 함께 동작하는지 구체적인 플로우를 그려보고 싶다면 [인증 메커니즘](#authentication-mechanisms) 섹션을 참고하라.
 
 - [SecurityContextHolder](#101-securitycontextholder) - 스프링 시큐리티에서 [인증한](../features#51-authentication) 대상에 대한 상세 정보는 `SecurityContextHolder`에 저장한다.
-- [SecurityContext](#102-securitycontext) - `SecurityContextHolder`로 접근할 수 있으며 현재 인증한 사용자의  `Authentication`을 가지고 있다.
+- [SecurityContext](#102-securitycontext) - `SecurityContextHolder`로 접근할 수 있으며, 현재 인증한 사용자의  `Authentication`을 가지고 있다.
 - [Authentication](#103-authentication) - 사용자가 제공한 인증용 credential이나 `SecurityContext`에 있는 현재 사용자의 credential을 제공하며, `AuthenticationManager`의 입력으로 사용한다.
-- [GrantedAuthority](#104-grantedauthority) - `Authentication`에서 접근 주체(principal)에 부여한 권한 (i.e. roles, scopes 등.)
+- [GrantedAuthority](#104-grantedauthority) - `Authentication`에서 접근 주체(principal)에 부여한 권한 (i.e. role, scope 등.)
 - [AuthenticationManager](#105-authenticationmanager) - 스프링 시큐리티의 필터가 [인증](../features#51-authentication)을 어떻게 수행할지를 정의하는 API.
 - [ProviderManager](#106-providermanager) - 가장 많이 사용하는 `AuthenticationManager` 구현체.
 - [AuthenticationProvider](#107-authenticationprovider) - `ProviderManager`가 특정 인증 유형을 수행할 때 사용한다.
-- [Request Credentials with `AuthenticationEntryPoint`](#108-request-credentials-with-authenticationentrypoint) - 클라이언트에 credential을 요청할 때 사용한다. (i.e. 로그인 페이지로 리다이렉트하거나 `WWW-Authenticate` 헤더를 전송하는 등)
+- [AuthenticationEntryPoint](#108-request-credentials-with-authenticationentrypoint) - 클라이언트에 credential을 요청할 때 사용한다. (i.e. 로그인 페이지로 리다이렉트하거나 `WWW-Authenticate` 헤더를 전송하는 등)
 - [AbstractAuthenticationProcessingFilter](#109-abstractauthenticationprocessingfilter) - 인증에 사용할 `Filter`의 베이스. 필터를 잘 이해하면 여러 컴포넌트를 조합해서 심도 있는 인증 플로우를 구성할 수 있다.
 
 #### Authentication Mechanisms
@@ -138,14 +137,14 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 - [Remember Me](#1012-remember-me-authentication) - 세션이 만료된 사용자를 기억하는 방법
 - [JAAS Authentication](#1016-java-authentication-and-authorization-service-jaas-provider) - JAAS를 사용한 인증
 - [OpenID](#1013-openid-support) - OpenID 인증 (OpenID Connect와 혼동하지 말 것)
-- [Pre-Authentication Scenarios](#1015-pre-authentication-scenarios) - 인증은 [SiteMinder](https://www.siteminder.com/)나 Java EE security같은 외부 메커니즘으로 처리하면서 스프링 시큐리티로 권한 인가와 주요 취약점 공격을 방어할 수 있다.
+- [사전 인증 시나리오](#1015-pre-authentication-scenarios) - 인증은 [SiteMinder](https://www.siteminder.com/)나 Java EE security같은 외부 메커니즘으로 처리하면서, 스프링 시큐리티로 권한 인가와 주요 취약점 공격을 방어할 수 있다.
 - [X509 Authentication](#1018-x509-authentication) - X509 인증
 
 ---
 
 ## 10.1. SecurityContextHolder
 
-스프링 시큐리티 인증 모델의 중심에는 `SecurityContextHolder`가 있다. 이 홀더는 [SecurityContext](#102-securitycontext)를 가지고 있다.
+스프링 시큐리티의 인증 모델 중심에는 `SecurityContextHolder`가 있다. 이 홀더는 [SecurityContext](#102-securitycontext)를 가지고 있다.
 
 ![SecurityContextHolder](./../../images/springsecurity/securitycontextholder.png)
 
@@ -164,8 +163,8 @@ context.setAuthentication(authentication);
 SecurityContextHolder.setContext(context); // (3)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 비어있는 `SecurityContext`를 만드는 것으로 시작한다. 스레드 경합을 피하려면 `SecurityContextHolder.getContext().setAuthentication(authentication)`을 사용해선 안 되며, 새 `SecurityContext` 인스턴스를 생성해야 한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 그다음 새 [`Authentication`](#103-authentication) 객체를 생성한다. `Authentication` 구현체라면 전부 `SecurityContext`에 담을 수 있다. 여기선 간단하게 `TestingAuthenticationToken`을 사용했다. 프로덕션 환경에선 `UsernamePasswordAuthenticationToken(userDetails, password, authorities)`를 주로 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 마지막으로 `SecurityContextHolder`에 `SecurityContext`를  설정해 준다. 스프링 시큐리티는 이 정보를 사용해서 권한을 [인가](../authentication)한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 그다음 새 [`Authentication`](#103-authentication) 객체를 생성한다. `Authentication` 구현체라면 모두 `SecurityContext`에 담을 수 있다. 여기선 간단하게 `TestingAuthenticationToken`을 사용했다. 프로덕션 환경에선 `UsernamePasswordAuthenticationToken(userDetails, password, authorities)`를 주로 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 마지막으로 `SecurityContextHolder`에 `SecurityContext`를  설정해 준다. 스프링 시큐리티는 이 정보를 사용해서 권한을 [인가](../authorization)한다.</small>
 
 인증된 주체(principal) 정보를 얻어야 한다면 `SecurityContextHolder`에 접근하면 된다.
 
@@ -179,7 +178,7 @@ Object principal = authentication.getPrincipal();
 Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 ```
 
-기본적으로 `SecurityContextHolder`는 `ThreadLocal`을 사용해서 정보를 저장하기 때문에 메소드에 직접 `SecurityContext`를 넘기지 않아도 동일한 스레드에선 항상 `SecurityContext`에 접근할 수 있다. 기존 principal 요청을 처리한 다음에 비워주는 것만 잊지 않으면 `ThreadLocal`을 사용해도 안전하다. 스프링 시큐리티의 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)는 항상 `SecurityContext`를 비워준다.
+기본적으로 `SecurityContextHolder`는 `ThreadLocal`을 사용해서 정보를 저장하기 때문에, 메소드에 직접 `SecurityContext`를 넘기지 않아도 동일한 스레드라면 항상 `SecurityContext`에 접근할 수 있다. 기존 principal 요청을 처리한 다음에 비워주는 것만 잊지 않으면 `ThreadLocal`을 사용해도 안전하다. 스프링 시큐리티의 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)는 항상 `SecurityContext`를 비워준다.
 
 어플리케이션의 스레드 처리 방식에 따라서 `ThreadLocal`이 전혀 적합하지 않을 때도 있다. 예를 들어 스윙 클라이언트에선 자바 가상머신에 있는 전체 스레드에서 보안 컨텍스트를 하나만 사용해야 할 수 있다. 이럴 때는 기동시점에 사용할 컨텍스트 저장 전략을 설정할 수 있다. standalone 어플리케이션에는 `SecurityContextHolder.MODE_GLOBAL` 전략을 적용할 수 있다. 인증 처리를 마친 스레드가 생성한 보안 컨텍스트를 다른 스레드에서도 그대로 사용해야 하는 어플리케이션이라면 `SecurityContextHolder.MODE_INHERITABLETHREADLOCAL`을 적용하면 된다. 디폴트 전략은 `SecurityContextHolder.MODE_THREADLOCAL`이며, 두 가지 방법으로 바꿀 수 있다. 첫 번째 방법은 시스템 프로퍼티를 설정하는 것이고, 두 번째 방법은 `SecurityContextHolder`에 있는 스태틱 메소드를 사용하는 것이다. 대부분은 디폴트 전략으로도 충분하지만, 바꿔야 한다면 `SecurityContextHolder` JavaDoc을 참고하라.
 
@@ -195,24 +194,24 @@ Collection<? extends GrantedAuthority> authorities = authentication.getAuthoriti
 
 스프링 시큐리티에서 [`Authentication`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/core/Authentication.html)이 주로 담당하는 일은 다음과 같다:
 
-- [`AuthenticationManager`](#105-authenticationmanager)의 입력으로 사용되어, 사용자가 제공한 인증용 credential을 제공한다. 이 상황에선 `isAuthenticated()`는 `false`를 리턴한다.
+- [`AuthenticationManager`](#105-authenticationmanager)의 입력으로 사용되어, 인증에 사용할 사용자의 credential을 제공한다. 이 상황에선 `isAuthenticated()`는 `false`를 리턴한다.
 - 현재 인증된 사용자를 나타낸다. 현재 `Authentication`은 [SecurityContext](#102-securitycontext)에서 가져올 수 있다.
 
-`Authentication`은 다음을 가지고 있다:
+`Authentication`은 다음과 같은 정보를 가지고 있다:
 
 - `principal` - 사용자를 식별한다. 사용자 이름/비밀번호로 인증할 땐 보통 [`UserDetails`](#10106-userdetails) 인스턴스다.
 - `credentials` - 주로 비밀번호. 대부분은 유출되지 않도록 사용자를 인증한 다음 비운다.
-- `authorities` - 사용자에게 부여한 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 roles나 scopes가 있다.
+- `authorities` - 사용자에게 부여한 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 role이나 scope가 있다.
 
 ---
 
 ## 10.4. GrantedAuthority
 
-사용자에게 부여한 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 roles나 scopes가 있다.
+사용자에게 부여한 권한은 [`GrantedAuthority`](#104-grantedauthority)로 추상화한다.  예시로 role이나 scope가 있다.
 
-`GrantedAuthority`는 [`Authentication.getAuthorities()`](#103-authentication) 메소드로 접근할 수 있다. 이 메소드는 `GrantedAuthority` 객체의 `Collection`을 리턴한다. `GrantedAuthority`는 말 그대로 인증한 주체(principal)에게 부여된 권한이다. 권한은 보통 `ROLE_ADMINISTRATOR`나 `ROLE_HR_SUPERVISOR`같은 "역할 (role)"이다. 이런 역할은 이후에 웹 인가, 메소드 인가, 도메인 객체 인가에서 설정한다. 스프링 시큐리티는 role을 해석하고 권한을 확인하는 기능도 지원한다. 이름/비밀번호 기반 인증을 사용한다면 보통 [`UserDetailsService`](#10107-userdetailsservice)가 `GrantedAuthority`를 로드한다.
+`GrantedAuthority`는 [`Authentication.getAuthorities()`](#103-authentication) 메소드로 접근할 수 있다. 이 메소드는 `GrantedAuthority` 객체의 `Collection`을 리턴한다. `GrantedAuthority`는 말 그대로 인증한 주체(principal)에게 부여된 권한이다. 권한은 보통 `ROLE_ADMINISTRATOR`나 `ROLE_HR_SUPERVISOR`같은 "역할 (role)"이다. 이런 역할은 이후에 웹 인가, 메소드 인가, 도메인 객체 인가에서 사용한다. 스프링 시큐리티의 다른 코드에선 role을 해석하고 필요한 권한을 확인한다. 이름/비밀번호 기반 인증을 사용한다면 보통 [`UserDetailsService`](#10107-userdetailsservice)가 `GrantedAuthority`를 로드한다.
 
-`GrantedAuthority` 객체는 일반적으로 어플리케이션 전체에 걸친 권한을 의미한다. 특정 도메인 객체에 국한되지 않는다. 따라서 `Employee` 객체 번호 54의 권한을 나타내는 `GrantedAuthority`, 이런 식으로는 잘 쓰지 않는다. 이렇게 사용하면 권한을 수천 개 만들게 될 수도 있고, 메모리가 부족해지기 십상이다 (그렇지 않더라도 최소한 사용자를 인증하는 시간이 길어진다). 물론, 스프링 시큐리티는 이런 일반적인 요구사항을 처리하도록 설계했지만, 원한다면 도메인 객체 단위로 보안을 적용할 수도 있다.
+`GrantedAuthority` 객체는 일반적으로 어플리케이션 전체에 걸친 권한을 의미한다. 특정 도메인 객체에 국한되지 않는다. 따라서 `Employee` 객체 번호 54의 권한을 나타내는 `GrantedAuthority`, 이런 식으로는 잘 쓰지 않는다. 이렇게 사용하면 권한을 수천 개 만들게 될 수도 있고, 메모리가 부족해지기 십상이다 (그렇지 않더라도 최소한 사용자를 인증하는 시간이 길어진다). 물론, 스프링 시큐리티는 이런 일반적인 요구사항을 처리하도록 설계했지만, 원한다면 도메인 객체 단위로도 보안을 적용할 수 있다.
 
 ---
 
@@ -226,23 +225,23 @@ Collection<? extends GrantedAuthority> authorities = authentication.getAuthoriti
 
 ## 10.6. ProviderManager
 
-[`ProviderManager`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)는 가장 많이 쓰는 [`AuthenticationManager`](#105-authenticationmanager) 구현체다. `ProviderManager`는 동작을 [`AuthenticationProvider`](#107-authenticationprovider)의 `List`에 위임한다. 모든 `AuthenticationProvider`는 인증을 성공시키거나, 실패시키거나, 아니면 결정을 내릴 수 없는 것으로 판단하고 다운스트림에 있는 `AuthenticationProvider`가 결정하도록 만들 수 있다. 설정해둔 `AuthenticationProvider`가 전부 인증하지 못하면 `ProviderNotFoundException`과 함께 실패한다. 이 예외는  `AuthenticationException`의 하위클래스로,  넘겨진 `Authentication` 유형을 지원하는 `ProviderManager`를 설정하지 않았음을 의미한다.
+[`ProviderManager`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)는 가장 많이 쓰는 [`AuthenticationManager`](#105-authenticationmanager) 구현체다. `ProviderManager`는 동작을 [`AuthenticationProvider`](#107-authenticationprovider) `List`에 위임한다. 모든 `AuthenticationProvider`는 인증을 성공시키거나, 실패시키거나, 아니면 결정을 내릴 수 없는 것으로 판단하고 다운스트림에 있는 `AuthenticationProvider`가 결정하도록 만들 수 있다. 설정해둔 `AuthenticationProvider`가 전부 인증하지 못하면 `ProviderNotFoundException`과 함께 실패한다. 이 예외는  `AuthenticationException`의 하위클래스로,  넘겨진 `Authentication` 유형을 지원하는 `ProviderManager`를 설정하지 않았음을 의미한다.
 
 ![ProviderManager](./../../images/springsecurity/providermanager.png)
 
-보통은 `AuthenticationProvider`마다 각자가 맡은 인증을 수행하는 법을 알고 있다. 예를 들어 `AuthenticationProvider` 하나로 이름/비밀번호를 검증할 수 있고, 다른 하나로 SAML 인증을 담당할 수 있다. 이렇게 하면 인증 유형마다 담당 `AuthenticationProvider`가 있기 때문에, `AuthenticationManager` 빈 하나만 외부로 노출하면서도 여러 인증 유형을 지원할 수 있다.
+보통은 `AuthenticationProvider`마다 각자가 맡은 인증을 수행하는 법을 알고 있다. 예를 들어 `AuthenticationProvider` 하나로 이름/비밀번호를 검증할 수 있고, 다른 하나는 SAML 인증을 담당할 수 있다. 이렇게 하면 인증 유형마다 담당 `AuthenticationProvider`가 있기 때문에, `AuthenticationManager` 빈 하나만 외부로 노출하면서도 여러 인증 유형을 지원할 수 있다.
 
-`ProviderManager`는 원한다면 인증을 수행할 수 있는 `AuthenticationProvider`가 없을 때 사용할 부모 `AuthenticationManager`를 설정할 수도 있다. 부모는 `AuthenticationManager`의 어떤 구현체든지 될 수 있지만 보통 `ProviderManager` 인스턴스를 많이 사용한다.
+원한다면 `ProviderManager`에 인증을 수행할 수 있는 `AuthenticationProvider`가 없을 때 사용할, 부모 `AuthenticationManager`를 설정할 수도 있다. 부모는 `AuthenticationManager`의 어떤 구현체도 될 수 있지만 보통 `ProviderManager` 인스턴스를 많이 사용한다.
 
 ![ProviderManager Parent](./../../images/springsecurity/providermanager-parent.png)
 
-사실 `ProviderManager` 인스턴스 여러 개에서 동일한 부모 `AuthenticationManager`를 공유하는 것도 가능하다. 각각 인증 메커니즘이 다른 (사용하는 `ProviderManager` 인스턴스들이 다른) [`SecurityFilterChain`](../servletsecuritythebigpicture#94-securityfilterchain) 여러 개가 공통 인증을 사용하는 경우에 (부모 `AuthenticationManager`를 공유) 흔히 쓰는 패턴이다.
+사실은 여러 `ProviderManager` 인스턴스에 동일한 부모 `AuthenticationManager`를 공유하는 것도 가능하다. 각각 인증 메커니즘이 다른 (`ProviderManager` 인스턴스가 다른) [`SecurityFilterChain`](../servletsecuritythebigpicture#94-securityfilterchain) 여러 개가 공통 인증을 사용하는 경우에 (부모 `AuthenticationManager`를 공유) 흔히 쓰는 패턴이다.
 
 ![ProviderManagers Parent](./../../images/springsecurity/providermanagers-parent.png)
 
-기본적으로 `ProviderManager`는 인증 요청에 성공하면 리턴된 `Authentication` 객체에 있는 모든 민감한 credential 정보를 지운다. 이로써 비밀번호 같은 정보를 `HttpSession`에 필요 이상으로 길게 유지하지 않는 것이다.
+기본적으로 `ProviderManager`는 인증에 성공하면 반환받은 `Authentication` 객체에 있는 모든 민감한 credential 정보를 지운다. 이로써 비밀번호같은 정보를 `HttpSession`에 필요 이상으로 길게 유지하지 않는 것이다.
 
-하지만 상태가 없는 어플리케이션에서 성능 향상 등을 위해 사용자 객체를 캐시한다면 문제가 될 수 있다. `Authentication`이 캐시 안에 있는 객체를 참조하고 있는데 (`UserDetails` 인스턴스 등) credential을 제거한다면, 캐시된 값으로는 더 이상 인증할 수 없다. 캐시를 사용한다면 이 점을 반드시 고려해야 한다. 캐시 구현부나 리턴된 `Authentication` 객체를 생성하는 `AuthenticationProvider`에서 객체의 복사본을 만들면 명쾌하게 해결된다. 아니면 `ProviderManager`의 `eraseCredentialsAfterAuthentication` 프로퍼티를 비활성화시켜도 된다. 자세한 정보는 [Javadoc](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)을 참고하라.
+하지만 상태가 없는 어플리케이션에서 성능 향상 등을 위해 사용자 객체를 캐시한다면 문제가 될 수 있다. `Authentication`이 캐시 안에 있는 객체를 참조하고 있는데 (`UserDetails` 인스턴스 등) credential을 제거한다면, 캐시된 값으로는 더 이상 인증할 수 없다. 캐시를 사용한다면 이 점을 반드시 고려해야 한다. 캐시 구현부나 `Authentication` 객체를 생성하는 `AuthenticationProvider`에서 객체의 복사본을 만들면 명쾌하게 해결된다. 아니면 `ProviderManager`의 `eraseCredentialsAfterAuthentication` 프로퍼티를 비활성화시켜도 된다. 자세한 정보는 [Javadoc](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/ProviderManager.html)을 참고하라.
 
 ---
 
@@ -376,7 +375,7 @@ fun configure(http: HttpSecurity) {
 
 이 설정에선 디폴트 로그인 페이지로 렌더링한다. 프로덕션에서 사용할 어플리케이션은 대부분 커스텀 로그인 폼이 필요하다.
 
-<span id="servlet-authentication-form-custom"></span>커스텀 로그인 폼을 설정하는 방법은 아래 설정에 있다.
+<span id="servlet-authentication-form-custom"></span>커스텀 로그인 폼을 설정하는 방법은 아래에 있다.
 
 **Example 52. Custom Log In Form Configuration**
 
@@ -506,9 +505,9 @@ class LoginController {
   + `RememberMeServices.loginSuccess`을 실행한다. remember me를 설정하지 않았다면 아무 동작도 하지 않는다.
   + `BasicAuthenticationFilter`에서 `FilterChain.doFilter(request,response)`를 호출해서 나머지 어플리케이션 로직을 실행한다.
 
-스프링 시큐리티에선 HTTP 기본 인증을 디폴트로 활성화한다. 하지만 서블릿 기반 설정을 사용한다면 HTTP 기본을 명시해야 한다.
+스프링 시큐리티에선 HTTP 기본 인증을 디폴트로 활성화한다. 하지만 서블릿 기반 설정을 하나라도 사용하고 있다면 HTTP Basic을 명시해야 한다.
 
-최소한 아래와 같은 설정이 필요하다:
+다음 코드는 최소한의 설정이다:
 
 **Example 55. Explicit HTTP Basic Configuration**
 
@@ -548,9 +547,9 @@ fun configure(http: HttpSecurity) {
 
 >  다이제스트 인증은 안전하지 않으므로 최신 어플리케이션에선 사용하지 말아야 한다. 비밀번호를 일반 텍스트나 암호화 형식 또는 MD5 형식으로 저장해야 한다는 게 가장 큰 문제다. 이 저장 형식은 전부 안전하지 않다. 그대신 다이제스트에선 지원하지 않는, 단방향 적응형 비밀번호 해시 (i.e. bCrypt, PBKDF2, SCrypt 등)를 사용해서 credential을 저장해야 한다.
 
-다이제스트 인증은 [기본 인증](#10102-basic-authentication)의 많은 문제점을 개선하기 위한 시도였다. 특히 네트워크 상에서 credential을 일반 텍스트로 전달하지 않게 만들 수 있다. 많은 [브라우저가 다이제스트 인증을 지원하고 있다](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest#Browser_compatibility).
+다이제스트 인증은 [기본 인증](#10102-basic-authentication)의 많은 문제점을 개선하기 위한 시도였다. 특히 네트워크 상에서 credential을 일반 텍스트로 전달하지 않아도 된다. 많은 [브라우저가 다이제스트 인증을 지원하고 있다](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Digest#Browser_compatibility).
 
-HTTP 다이제스트 인증 관리 표준은 [RFC 2617](https://tools.ietf.org/html/rfc2617)에 정의돼 있으며, [RFC 2069](https://tools.ietf.org/html/rfc2069)에서 업데이트됐다. user agent 대부분은 RFC 2617을 구현하고 있다. 스프링 시큐리티가 지원하는 다이제스트 인증은 RFC 2617에서 규정한 "auth" quality of protection (`qop`)과 호환되며, 이전 버전 RFC 2069와도 호환된다. 암호화하지 않은 HTTP (i.e. TLS/HTTPS 미적용) 통신에서 최대한 안전하게 인증을 처리하고 싶다면 다이제스트 인증이 더 매력적으로 느껴질 것이다. 하지만 [HTTPS](../features#523-http)는 무조건 적용하는 게 좋다.
+HTTP 다이제스트 인증 관리 표준은 [RFC 2617](https://tools.ietf.org/html/rfc2617)에 정의돼 있으며, [RFC 2069](https://tools.ietf.org/html/rfc2069)에서 업데이트됐다. user agent 대부분은 RFC 2617을 구현하고 있다. 스프링 시큐리티가 지원하는 다이제스트 인증은 RFC 2617에서 규정한 "auth" quality of protection(`qop`)과 호환되며, 이전 버전 RFC 2069와도 호환된다. 암호화하지 않은 HTTP (i.e. TLS/HTTPS 미적용) 통신에서 최대한 안전하게 인증을 처리하고 싶다면 다이제스트 인증이 더 매력적으로 느껴질 것이다. 하지만 [HTTPS](../features#523-http)는 무조건 적용하는 게 좋다.
 
 다이제스트 인증의 핵심은 "nonce"다. 서버에서 생성하는 값으로, 스프링 시큐리티의 nonce는 다음 형식을 따른다:
 
@@ -616,7 +615,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
 ### 10.10.4. In-Memory Authentication
 
-스프링 시큐리티의 `InMemoryUserDetailsManager`는 메모리 기반으로 username/password를 인증하는 [UserDetailsService](#10107-userdetailsservice) 구현체다. `InMemoryUserDetailsManager`는 `UserDetailsManager` 인터페이스도 구현했기 때문에 `UserDetails`를 관리할 수 있다. 스프링 시큐리티는 [username/password를 읽어](#servlet-authentication-unpwd-input) 인증할 때 `UserDetails`를 사용한다.
+스프링 시큐리티의 `InMemoryUserDetailsManager`는 메모리 기반으로 username/password를 인증하는 [UserDetailsService](#10107-userdetailsservice) 구현체다. `InMemoryUserDetailsManager`는 `UserDetailsManager` 인터페이스도 구현했기 때문에 `UserDetails`를 관리할 수 있다. [username/password를 읽어](#servlet-authentication-unpwd-input) 인증하도록 설정하면 스프링 시큐리티는 `UserDetails`를 통해 인증한다.
 
 이 예제에선 [스프링 부트 CLI](../features#encode-with-spring-boot-cli)로 비밀번호 `password`를 인코딩했으며, 인코딩된 값 `{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW`를 얻었다.
 
@@ -675,7 +674,7 @@ fun users(): UserDetailsService {
 
 위 예제는 비밀번호를 안전한 포맷으로 저장하지만, 아직 아쉬운 점이 많다.
 
-아래 예제는 [User.withDefaultPasswordEncoder](../features#getting-started-experience)로 메모리에 저장할 비밀번호를 보호한다. 하지만 소스 코드를 디컴파일하면 비밀번호를 쉽게 탈취할 수 있다. 따라서 `User.withDefaultPasswordEncoder`는 스프링 시큐리티를 시작해볼 때만 사용해야 하며, 프로덕션 코드엔 사용하면 안 된다.
+아래 예제는 [User.withDefaultPasswordEncoder](../features#getting-started-experience)로 메모리에 저장할 비밀번호를 보호한다. 하지만 소스 코드를 디컴파일하면 비밀번호를 쉽게 탈취할 수 있다. 따라서 `User.withDefaultPasswordEncoder`는 스프링 시큐리티를 처음 접할 때만 사용해야 하며, 프로덕션 코드엔 사용하면 안 된다.
 
 **Example 59. InMemoryUserDetailsManager with User.withDefaultPasswordEncoder**
 
@@ -739,7 +738,7 @@ XML 기반으로는 간단하게 `User.withDefaultPasswordEncoder`를 설정할 
 
 ### 10.10.5. JDBC Authentication
 
-스프링 시큐리티의 `JdbcDaoImpl`는 JDBC기반으로 username/password를 인증하는 [UserDetailsService](#10107-userdetailsservice) 구현체다. `JdbcDaoImpl`을 상속한 `JdbcUserDetailsManager`는 `UserDetailsManager` 인터페이스도 구현했기 때문에 `UserDetails`를 관리할 수 있다. 스프링 시큐리티는 [username/password를 읽어](#servlet-authentication-unpwd-input) 인증할 때 `UserDetails`를 사용한다.
+스프링 시큐리티의 `JdbcDaoImpl`은 JDBC기반으로 username/password를 인증하는 [UserDetailsService](#10107-userdetailsservice) 구현체다. `JdbcDaoImpl`을 상속한 `JdbcUserDetailsManager`는 `UserDetailsManager` 인터페이스도 구현했기 때문에 `UserDetails`를 관리할 수 있다. [username/password를 읽어](#servlet-authentication-unpwd-input) 인증하도록 설정하면 스프링 시큐리티는 `UserDetails`를 통해 인증한다.
 
 아래에서는 다음과 같은 내용을 다룬다:
 
@@ -751,7 +750,7 @@ XML 기반으로는 간단하게 `User.withDefaultPasswordEncoder`를 설정할 
 
 스프링 시큐리티는 JDBC 기반 인증을 위한 기본 쿼리를 제공한다. 여기에선 디폴트 쿼리에서 사용되는 디폴트 스키마를 다룬다. 쿼리나 데이터베이스 방언(dialect)을 커스텀한다면 스키마도 함께 바꿔야 한다.
 
-#### User Schema
+##### User Schema
 
 `JdbcDaoImpl`에서 사용자의 비밀번호, 계정 상태 (활성화/비활성화), 권한 (roles) 리스트를 로드하려면 테이블이 있어야 한다. 필요한 디폴트 사용자 스키마는 다음과 같다:
 
@@ -794,7 +793,7 @@ ALTER TABLE AUTHORITIES ADD CONSTRAINT AUTHORITIES_UNIQUE UNIQUE (USERNAME, AUTH
 ALTER TABLE AUTHORITIES ADD CONSTRAINT AUTHORITIES_FK1 FOREIGN KEY (USERNAME) REFERENCES USERS (USERNAME) ENABLE;
 ```
 
-#### Group Schema
+##### Group Schema
 
 그룹을 사용하는 어플리케이션은 그룹 스키마도 필요하다. 디폴트 그룹 스키마는 다음과 같다:
 
@@ -822,7 +821,7 @@ create table group_members (
 
 #### Setting up a DataSource
 
-`JdbcUserDetailsManager`를 설정하려면 먼저 `DataSource`가 있어야 한다. 예제에서는 [디폴트 사용자 스키마](#default-schema)로 초기화하는 [임베디드 데이터소스](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/data-access.html#jdbc-embedded-database-support)를 설정한다.
+`JdbcUserDetailsManager`를 설정하려면 먼저 `DataSource`가 있어야 한다. 이 예제에서는 [디폴트 사용자 스키마](#default-schema)로 초기화하는 [임베디드 데이터소스](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/data-access.html#jdbc-embedded-database-support)를 설정한다.
 
 **Example 64. Embedded Data Source**
 
@@ -886,7 +885,9 @@ UserDetailsManager users(DataSource dataSource) {
         .roles("USER", "ADMIN")
         .build();
     JdbcUserDetailsManager users = new JdbcUserDetailsManager(dataSource);
-    users.createUser()
+    users.createUser(user);
+    users.createUser(admin);
+    return users;
 }
 ```
 <div class="language-only-for-xml java xml kotlin"></div>
@@ -931,7 +932,7 @@ fun users(dataSource: DataSource): UserDetailsManager {
 
 커스텀 인증을 정의하려면 커스텀 `UserDetailsService`를 빈으로 만들면 된다. 예를 들어 `CustomUserDetailsService`가 `UserDetailsService`를 구현했다고 가정하고, 인증을 커스텀해보자:
 
-> `AuthenticationManagerBuilder`를 사용하지 않고 `AuthenticationProviderBean` 빈을 정의하지도 않았을 때 사용하는 방법이다.
+> `AuthenticationManagerBuilder`를 사용하지 않고 `AuthenticationProviderBean` 빈도 정의하지 않았을 때 사용하는 방법이다.
 
 **Example 66. Custom UserDetailsService Bean**
 
@@ -965,12 +966,12 @@ fun customUserDetailsService() = CustomUserDetailsService()
 
 [`DaoAuthenticationProvider`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/authentication/dao/DaoAuthenticationProvider.html)는 [`UserDetailsService`](#10107-userdetailsservice)와 [`PasswordEncoder`](../authentication#10108-passwordencoder)로 username/password를 인증하는 [`AuthenticationProvider`](#107-authenticationprovider) 구현체다.
 
-스프링 시큐리티에서 `DaoAuthenticationProvider`가 동작하는 방식을 살펴보자. 다음은 [Username & Password 조회](#servlet-authentication-unpwd-input)를 설명할 때 다룬 이미지에서 [`AuthenticationManager`](#105-authenticationmanager)가 동작하는 방식을 자세히 나타낸 그림이다.
+스프링 시큐리티에서 `DaoAuthenticationProvider`가 동작하는 방식을 살펴보자. 다음은 [Username & Password 조회](#servlet-authentication-unpwd-input)를 설명할 때 다룬 이미지에서 [`AuthenticationManager`](#105-authenticationmanager)가 동작하는 방식을 더 상세히 나타낸 그림이다.
 
 ![DaoAuthenticationProvider Usage](./../../images/springsecurity/daoauthenticationprovider.png)
 
-- <span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> [Username & Password를 조회](#servlet-authentication-unpwd-input)하는 인증 `Filter`에서 `UsernamePasswordAuthenticationToken`을 [`ProviderManager`](#106-providermanager)가 구현하고 있는 `AuthenticationManager`로 넘긴다.
-- <span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 이 `ProviderManager`는 [AuthenticationProvider](#107-authenticationprovider)로 `DaoAuthenticationProvider`를 사용하도록 설정돼 있다.
+- <span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> [Username & Password를 조회](#servlet-authentication-unpwd-input)하는 인증 `Filter`에서 `UsernamePasswordAuthenticationToken`을 `AuthenticationManager`로 넘긴다. `AuthenticationManager`는 [`ProviderManager`](#106-providermanager)가 구현하고 있다.
+- <span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 이 `ProviderManager`는 `DaoAuthenticationProvider`를 [AuthenticationProvider](#107-authenticationprovider)로 사용하도록 설정돼 있다.
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `DaoAuthenticationProvider`는 `UserDetailsService`에서 `UserDetails`를 조회한다.
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 그다음 `DaoAuthenticationProvider`는 이전 단계에서 얻은 `UserDetails`에 있는 비밀번호를 [`PasswordEncoder`](../authentication#10108-passwordencoder)로 검증한다.
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 인증에 성공하면 `UsernamePasswordAuthenticationToken` 타입의 [`Authentication`](#103-authentication)을 반환하며, 이 객체는 `UserDetailsService`가 리턴한 `UserDetails`를 principal로 가지고 있다. 결국에 리턴한 `UsernamePasswordAuthenticationToken`은 인증 `Filter`에서 [`SecurityContextHolder`](#101-securitycontextholder)로 세팅된다.
@@ -981,20 +982,20 @@ LDAP은 조직에서 사용자 정보를 관리하기 위한 중앙 저장소와
 
 스프링 시큐리티의 LDAP 기반 인증은 [username/password로 인증하도록 설정](#servlet-authentication-unpwd-input)했을 때 사용한다. 하지만 username/password로 인증하더라도 `UserDetailsService`와 통합되지는 않는다. LDAP 서버는 [bind 인증](#using-bind-authentication)에서 비밀번호를 반환하지 않기 때문에 어플리케이션에서 비밀번호를 인증할 수 없기 때문이다.
 
-LDAP 서버의 설정 시나리오는 다양하므로 스프링 시큐리티는 전체 설정을 바꿀 수 있는 LDAP provider를 제공한다. 인증과 role을 조회할 때는 별도의 전략 인터페이스를 사용하며, 다양한 상황에서 설정할 수 있는 디폴트 구현체를 제공한다.
+LDAP 서버의 설정 시나리오는 다양하므로 스프링 시큐리티는 전체 설정을 바꿀 수 있는 LDAP provider를 제공한다. 인증을 처리할 때와 role을 조회할 때는 별도의 전략 인터페이스를 사용하며, 다양한 상황에서 설정할 수 있는 디폴트 구현체를 제공한다.
 
 #### Prerequisites
 
-스프링 시큐리티에서 LDAP을 적용하기 전에 먼저 LDAP을 숙지해야 한다. 이 페이지는 관련 개념을 소개하고 무료 LDAP 서버 OpenLDAP으로 디렉토리를 설정하는 가이드를 제공하고 있다: [https://www.zytrax.com/books/ldap/](https://www.zytrax.com/books/ldap/). 자바에서 LDAP에 접근할 때 사용하는 JNDI API를 알아두면 유용할 때도 있다. 스프링 시큐리티의 LDAP provider에선 외부 LDAP 라이브러리를 사용하지 않지만 (Mozilla, JLDAP 등), 스프링 LDAP을 종합적으로 사용하므로 스프링 LDAP 프로젝트를 잘 알아두면 커스텀할 때 도움이 될 것이다.
+스프링 시큐리티에서 LDAP을 적용하기 전에 먼저 LDAP을 숙지해야 한다. 이 페이지에선 관련 개념을 소개하고 무료 LDAP 서버 OpenLDAP으로 디렉토리를 설정하는 가이드를 제공하고 있다: [https://www.zytrax.com/books/ldap/](https://www.zytrax.com/books/ldap/). 자바에서 LDAP에 접근할 때 사용하는 JNDI API를 알아두면 유용할 때도 있다. 스프링 시큐리티의 LDAP provider에선 외부 LDAP 라이브러리를 사용하지 않지만 (Mozilla, JLDAP 등), 스프링 LDAP을 종합적으로 사용하므로 스프링 LDAP 프로젝트를 잘 알아두면 커스텀할 때 도움이 될 것이다.
 
 LDAP 인증을 사용한다면 LDAP 커넥션 풀을 제대로 설정하는 것도 중요하다. 방법을 잘 모르겠다면 [자바 LDAP 문서](https://docs.oracle.com/javase/jndi/tutorial/ldap/connect/config.html)를 참고하라.
 
 #### Setting up an Embedded LDAP Server
 
-가장 먼저 설정에서 가리킬 LDAP 서버가 필요하다. 보통 임베디드 LDAP 서버로 시작하는 게 가장 간단하다. 스프링 시큐리티는 아래 두 가지를 지원한다:
+가장 먼저 설정에서 가리킬 LDAP 서버가 필요하다. 보통 임베디드 LDAP 서버로 시작하는 게 가장 간단하다. 스프링 시큐리티는 두 가지 임베디드 서버를 지원한다:
 
-- [Embedded UnboundID Server](#embedded-unboundid-server)
-- [Embedded ApacheDS Server](#embedded-apacheds-server)
+- [임베디드 UnboundID 서버](#embedded-unboundid-server)
+- [임베디드 ApacheDS 서버](#embedded-apacheds-server)
 
 아래 있는 샘플은 `password`란 비밀번호를 가진 `user`와 `admin` 사용자로 임베디드 LDAP 서버를 초기화하며, 이 `users.ldif` 파일은 클래스패스 리소스에서도 볼 수 있다.
 
@@ -1170,7 +1171,7 @@ fun ldapContainer(): ApacheDSContainer {
 
 #### LDAP ContextSource
 
-설정에서 사용할 LDAP 서버가 있다면, 스프링 시큐리티에서도 사용자를 인증할 때 사용할 LDAP 서버를 가리키도록 해야 한다. LDAP `ContextSource`를 생성하면 되는데, 이는 JDBC의 `DataSource`와 동일하다고 보면 된다.
+LDAP 서버를 설정했다면, 스프링 시큐리티에서도 사용자를 인증할 때 사용할 LDAP 서버를 가리키도록 해야 한다. LDAP `ContextSource`를 생성하면 되는데, 이는 JDBC의 `DataSource`와 동일하다고 보면 된다.
 
 <div class="switch-language-wrapper java xml kotlin">
 <span class="switch-language java">java</span>
@@ -1197,18 +1198,18 @@ fun contextSource(container: UnboundIdContainer): ContextSource {
 
 #### Authentication
 
-LDAP bind 인증을 사용하면 클라이언트에선 비밀번호는 물론, 비밀번호 해시값도 조회할 수 없으므로, 스프링 시큐리티의 LDAP은 [UserDetailsService](#10107-userdetailsservice)를 사용하지 않는다. 즉, 스프링 시큐리티에선 비밀번호를 조회한 후 인증할 수 없다는 뜻이다.
+LDAP bind 인증을 사용하면 클라이언트에선 비밀번호는 물론, 비밀번호 해시값도 조회할 수 없으므로, 스프링 시큐리티에선 LDAP 인증에 [UserDetailsService](#10107-userdetailsservice)를 사용하지 않는다. 즉, 스프링 시큐리티가 직접 비밀번호를 조회해서 인증하진 못한다.
 
-따라서 `LdapAuthenticator` 인터페이스로 LDAP을 지원한다. `LdapAuthenticator`는 필요한 모든 사용자의 속성을 조회하는 일도 담당한다. 사용하는 인증 유형에 따라 속성에 대한 권한이 다르기 때문이다. 예를 들어 사용자로 바인딩한다면 사용자 고유 권한으로 읽어야 할 수 있다.
+그대신 LDAP 전용 `LdapAuthenticator` 인터페이스를 지원한다. `LdapAuthenticator`는 필요한 모든 사용자의 속성을 조회하는 일도 담당한다. 사용하는 인증 유형에 따라 속성에 대한 권한이 다르기 때문이다. 예를 들어 사용자로 바인딩한다면 사용자의 permission으로 읽어야 할 수 있다.
 
 스프링 시큐리티는 두 가지 `LdapAuthenticator` 구현체를 제공한다.
 
-- [Using Bind Authentication](#using-bind-authentication)
-- [Using Password Authentication](#using-password-authentication)
+- [Bind 인증 사용하기](#using-bind-authentication)
+- [비밀번호 인증 사용하기](#using-password-authentication)
 
 #### Using Bind Authentication
 
-[Bind 인증](https://ldap.com/the-ldap-bind-operation/)은 LDAP에서 가장 많이 사용하는 사용자 인증 메커니즘이다. bind 인증에선 LDAP 서버로 사용자 credential을 (i.e. username/password) 전송하면 서버에서 이를 인증한다. bind 인증의 장점은 사용자의 비밀 정보 (i.e. 비밀번호)를 클라이언트에 노출할 필요가 없어서 유출될 가능성이 적다는 것이다.
+[Bind 인증](https://ldap.com/the-ldap-bind-operation/)은 LDAP에서 가장 많이 사용하는 사용자 인증 메커니즘이다. bind 인증에선 LDAP 서버로 사용자 credential을 (i.e. username/password) 전송하고, 서버에서 이를 인증한다. bind 인증의 장점은 사용자의 비밀 정보를 (i.e. 비밀번호) 클라이언트에 노출할 필요가 없어서 유출될 가능성이 적다는 것이다.
 
 다음은 bind 인증 설정 예시다:
 
@@ -1253,7 +1254,7 @@ fun authenticationProvider(authenticator: LdapAuthenticator): LdapAuthentication
 }
 ```
 
-이 예제에서는 설정 패턴에 로그인한 사용자 이름을 적용하고, 비밀번호와 함께 사용자로 바인딩해 해당 사용자의 DN을 가져온다. 이 방법은 모든 사용자를 디렉토리 내 단일 노드에 저장했을 때 사용하는 방법이다. 사용자 위치를 찾기 위한 LDAP 검색 필터를 설정하려면 다음처럼 사용해야 한다:
+이 예제에서는 설정 패턴에 로그인한 사용자 이름을 반영하고, 비밀번호와 함께 사용자로 바인딩해 해당 사용자의 DN을 가져온다. 이 방법은 모든 사용자를 디렉토리 내 단일 노드에 저장했을 때 사용하는 방법이다. 사용자 위치를 찾기 위한 LDAP 검색 필터를 설정하려면 아래처럼 사용해야 한다:
 
 **Example 73. Bind Authentication with Search Filter**
 
@@ -1493,7 +1494,7 @@ fun authenticationProvider(): ActiveDirectoryLdapAuthenticationProvider {
 
 ## 10.11. Session Management
 
-HTTP 세션 관련 기능은 `SessionManagementFilter`와 필터가 위임하는 `SessionAuthenticationStrategy` 인터페이스가 처리한다. 전형적으로 session-fixation 공격을 방어하고, 세션 타임아웃을 감지하고, 인증된 사용자가 동시에 열 수 있는 세션 수를 제한하는 등에 사용한다.
+HTTP 세션 관련 기능은 `SessionManagementFilter`와, 이 필터가 위임하는 `SessionAuthenticationStrategy` 인터페이스가 처리한다. 전형적으로 session-fixation 공격을 방어하고, 세션 타임아웃을 감지하고, 인증된 사용자가 동시에 열 수 있는 세션 수를 제한하는 등에 사용한다.
 
 ### 10.11.1. Detecting Timeouts
 
@@ -1560,14 +1561,14 @@ HTTP 세션 관련 기능은 `SessionManagementFilter`와 필터가 위임하는
 
 이제 두 번째 로그인부터는 거부한다. "거부"란, 폼 기반으로 로그인한 사용자는 `authentication-failure-url`로 이동됨을 의미한다. 두 번째 인증이 "remember-me"같은, 상호작용이 없는 다른 메커니즘을 통한 인증이었다면, "unauthorized" (401) 에러로 응답한다. 에러 페이지가 따로 있다면 `session-management` 요소에 `session-authentication-error-url` 속성을 추가하면 된다.
 
-폼 기반 로그인에서 사용할 커스텀 인증 필터가 있다면 세션 동시 제어 설정을 명시해야 한다. 자세한 정보는 [세션 관리 챕터](#1011-session-management)를 참고하라.
+폼 기반 로그인에서 사용하는 커스텀 인증 필터가 따로 있다면, 세션 동시 제어 설정을 명시해야 한다. 자세한 정보는 [세션 관리 챕터](#1011-session-management)를 참고하라.
 
 ### 10.11.3. Session Fixation Attack Protection
 
-[Session fixation](https://en.wikipedia.org/wiki/Session_fixation) 공격은 사이트에 접근해서 세션을 생성한 뒤, 다른 사용자가 이 세션으로 로그인하도록 유도한다 (세션 식별자를 파라미터로 가지고 있는 링크를 보내는 식으로). 스프링 시큐리티는 사용자가 로그인하면 자동적으로 새 세션을 만들거나 세션 ID를 바꿔서 이 공격을 방어한다. 방어할 필요 없거나 다른 요구사항과 충돌된다면, `<session-management>`의 `session-fixation-protection` 속성으로 설정을 바꿀 수 있다. 사용할 수 있는 옵션은 네 가지다.
+[Session fixation](https://en.wikipedia.org/wiki/Session_fixation) 공격은 사이트에 접근해서 세션을 생성한 뒤, 다른 사용자가 이 세션으로 로그인하도록 유도한다 (세션 식별자를 파라미터로 가지고 있는 링크를 보내는 식으로). 스프링 시큐리티는 사용자가 로그인하면 자동으로 새 세션을 만들거나, 세션 ID를 바꿔서 이 공격을 방어한다. 방어할 필요 없거나 다른 요구사항과 충돌된다면, `<session-management>`의 `session-fixation-protection` 속성으로 설정을 바꿀 수 있다. 사용할 수 있는 옵션은 네 가지다.
 
 - `none` - 아무 일도 하지 않는다. 기존 세션을 유지한다.
-- `newSession` - "깨끗한"새 세션을 만들고 기존 세션 데이터는 복사해 가지 않는다 (스프링 시큐리티 관련 속성은 복사한다).
+- `newSession` - "깨끗한" 새 세션을 만들고 기존 세션 데이터는 복사해 가지 않는다 (스프링 시큐리티 관련 속성은 복사한다).
 - `migrateSession` - 새 세션을 만들고 기존 세션 속성을 모두 새 세션으로 복사한다. 서블릿 3.0과 이전 컨테이너에서 디폴트로 사용한다.
 - `changeSessionId` - 새 세션을 만들지 않는다. 대신에 서블릿 컨테이너가 제공하는 방식으로 session fixation 공격을 방어한다 (`HttpServletRequest#changeSessionId()`). 이 옵션은 서블릿 3.1 (자바 EE 7)과 그 이상의 컨테이너에서만 사용할 수 있다. 구버전 컨테이너에서 이 옵션을 사용하면 예외가 발생한다. 서블릿 3.1과 이후 컨테이너에서 디폴트로 사용한다.
 
@@ -1603,13 +1604,13 @@ session fixation을 방어할 땐 어플리케이션 컨텍스트에서 `Session
 
 ### 10.11.6. Concurrency Control
 
-스프링 시큐리티는 인증 사용자(principal)가 같은 어플리케이션에 동시에 인증할 수 있는 횟수를 제한할 수 있다. 많은 ISV는 이를 사용해서 라이센스를 관리하며, 네트워크 관리자들은 이를 통해 사람들이 로그인 이름을 공유하는 것을 막는다. 예를 들어 "Batman"이란 사용자가 세션 2개로 웹 어플리케이션에 로그인하지 못하게 막을 수 있다. 이전 로그인을 만료시키거나 재로그인 시 에러를 발생시킬 수 있다. 두 번째 방법을 사용한다면 직접 로그아웃하지 않은 사용자는 (예를 들어 단순히 브라우저를 닫은 경우) 기존 세션이 만료되기 전까진 다시 로그인 할 수 없다는 점에 주의해야 한다.
+스프링 시큐리티는 사용자(principal)가 같은 어플리케이션에 동시에 인증할 수 있는 횟수를 제한할 수 있다. 많은 ISV는 이를 사용해서 라이센스를 관리하며, 네트워크 관리자들은 이를 통해 사람들이 로그인 이름을 공유하는 것을 막는다. 예를 들어 "Batman"이란 사용자가 세션 2개로 웹 어플리케이션에 로그인하지 못하게 막을 수 있다. 이전 로그인을 만료시키거나 재로그인 시 에러를 발생시키는 식으로 말이다. 두 번째 방법을 사용한다면 직접 로그아웃하지 않은 사용자는 (예를 들어 단순히 브라우저를 닫은 경우) 기존 세션이 만료되기 전까진 다시 로그인 할 수 없다는 점에 주의해야 한다.
 
-동시성 제어는 네임스페이스로 지원한다. 최소 설정은 이전 네임스페이스 쳅터를 확인하라. 설정 일부를 커스텀해야 할 때도 있다.
+동시성 제어는 네임스페이스로 지원한다. 최소 설정은 이전 네임스페이스 챕터를 확인하라. 설정 일부를 커스텀해야 할 수도 있다.
 
 동시성 제어는 `SessionAuthenticationStrategy`를 구현한 `ConcurrentSessionControlAuthenticationStrategy`가 담당한다.
 
-> 이전에는 `ProviderManager`에 `ConcurrentSessionController`를 설정해서 동시 인증을 체크했다. `ConcurrentSessionController`는 사용자가 허용하는 세션 횟수를 넘겼는지 체크한다. 하지만 이 방법은 HTTP 세션을 미리 만들어야 해서 바람직하지 않다. 스프링 시큐리티 3에서는 `AuthenticationManager`가 먼저 사용자를 인증한 다음, 인증에 성공하면 세션을 만들고 다른 세션을 열수 있는지를 체크한다.
+> 이전에는 `ProviderManager`에 `ConcurrentSessionController`를 설정해서 동시 인증을 체크했다. `ConcurrentSessionController`는 사용자가 허용하는 세션 횟수를 넘겼는지 체크한다. 하지만 이 방법은 HTTP 세션을 미리 만들어야 해서 바람직하지 않다. 스프링 시큐리티 3에서는 `AuthenticationManager`가 먼저 사용자를 인증한 다음, 인증에 성공하면 세션을 만들고 다른 세션을 열 수 있는지를 체크한다.
 
 동시 세션을 제어하려면 먼저 `web.xml`에 다음을 추가해야 한다:
 
@@ -1675,7 +1676,7 @@ class="org.springframework.security.web.session.ConcurrentSessionFilter">
 
 네임스페이스을 사용했던 일반 빈을 사용했던, 동시성 제어를 설정했다면 어플리케이션에서 직접 `SessionRegistry`를 참조할 수 있다. 따라서 사용자의 세션 수를 제한하고 싶지 않더라도 동시성 제어를 설정하는 건 나름의 가치가 있다. 세션을 제한하지 않으려면 `maximumSession` 프로퍼티를 -1로 설정하면 된다. 네임스페이스를 사용한다면 `session-registry-alias` 속성으로 내부에서 생성한 `SessionRegistry`의 alias를 설정할 수 있으며, 다른 원하는 빈에 주입할 때 참조로 사용할 수 있다.
 
-`getAllPrincipals()` 메소드는 현재 인증된 사용자 리스트를 제공한다. `getAllSessions(Object principal, boolean includeExpiredSessions)` 메소드는 사용자의 세션 리스트를 `SessionInformation` 객체 리스트로 리턴한다. `SessionInformation` 인스턴스의 `expireNow()` 메소드를 호출하면 세션을 만료시킬 수도 있다. 사용자가 다시 돌아왔을 때는 다른 작업을 이어갈 수 없을 것이다. 어드민성 어플리케이션 등에선 이 메런 메소드가 유용할 것이다. 자세한 정보는 Javadoc을 참고하라.
+`getAllPrincipals()` 메소드는 현재 인증된 사용자 리스트를 제공한다. `getAllSessions(Object principal, boolean includeExpiredSessions)` 메소드는 사용자의 세션 리스트를 `SessionInformation` 객체 리스트로 리턴한다. `SessionInformation` 인스턴스의 `expireNow()` 메소드를 호출하면 세션을 만료시킬 수도 있다. 세션을 만료시키면 사용자가 다시 돌아왔을 때는 다른 작업을 이어갈 수 없다. 어드민성 어플리케이션 등에선 이 메런 메소드가 유용할 것이다. 자세한 정보는 Javadoc을 참고하라.
 
 ---
 
@@ -1683,7 +1684,7 @@ class="org.springframework.security.web.session.ConcurrentSessionFilter">
 
 ### 10.12.1. Overview
 
-Remember-me 또는 persistent-login 인증은 인증 주체(principal)의 식별자를 기억하고 여러 세션에 사용할 수 있는 웹사이트를 말한다. 보통 브라우저에서 전송한 쿠키를 이후 세션에서 감지하고 자동으로 로그인하는 식으로 동작한다. 스프링 시큐리티는 이를 위한 훅과 두 가지 remember-me 구현체를 제공한다. 구현체 하나는 쿠키 기반 토큰을 해시로 보호하고, 다른 하나는 데이터베이스 등의 영구 스토리지 메커니즘으로 토큰을 저장한다.
+Remember-me 또는 persistent-login 인증은 인증 주체(principal)의 식별자를 기억하고 여러 세션에 사용할 수 있는 웹사이트를 말한다. 보통 브라우저에서 전송한 쿠키를 이후 세션에서 감지하고 자동으로 로그인하는 식으로 동작한다. 스프링 시큐리티는 이를 위한 훅과 두 가지 remember-me 구현체를 제공한다. 구현체 하나는 해시처리한 쿠키로 토큰을 유지하고, 다른 하나는 데이터베이스 등의 영구 스토리지 메커니즘으로 토큰을 저장한다.
 
 두 구현체 모두 `UserDetailsService`가 있어야 한다는 점을 주의해라. `UserDetailsService`를 사용하지 않는 인증 provider를 쓴다면 (LDAP provider 등), 어플리케이션 컨텍스트에 `UserDetailsService` 빈을 따로 추가해야 한다.
 
@@ -1736,7 +1737,7 @@ create table persistent_logins (username varchar(64) not null,
 
 ### 10.12.4. Remember-Me Interfaces and Implementations
 
-Remember-me는`UsernamePasswordAuthenticationFilter`와 함께 사용하며, `AbstractAuthenticationProcessingFilter` 클래스에 있는 훅으로 구현한다. `BasicAuthenticationFilter`와도 사용할 수 있다. 훅에선 적당할 때 `RememberMeServices` 구현체를 실행한다. `RememberMeServices` 인터페이스는 다음과 같다:
+Remember-me는 `UsernamePasswordAuthenticationFilter`와 함께 사용하며, `AbstractAuthenticationProcessingFilter` 클래스에 있는 훅으로 구현한다. `BasicAuthenticationFilter`와도 사용할 수 있다. 훅에선 적당할 때 `RememberMeServices` 구현체를 실행한다. `RememberMeServices` 인터페이스는 다음과 같다:
 
 ```java
 Authentication autoLogin(HttpServletRequest request, HttpServletResponse response);
@@ -1747,11 +1748,11 @@ void loginSuccess(HttpServletRequest request, HttpServletResponse response,
     Authentication successfulAuthentication);
 ```
 
-여기선 `AbstractAuthenticationProcessingFilter`는 `loginFail()`과 `loginSuccess()`만 호출한다는 점만 기억해두자. 메소드가 하는 일은 Javadoc에 자세히 나와있다. `SecurityContextHolder`에 `Authentication`이 없으면 `RememberMeAuthenticationFilter`는 항상 `autoLogin()` 메소드를 호출한다. 따라서 이 인터페이스는 기본적으로 remember-me 구현체를 제공하며, 인증 관련 이벤트를 통지해주고, 웹 요청에 있는 쿠키를 기억해야할 때 구현체에 위임해 준다. 이 설계 덕분에 remember-me 구현 전략을 얼마든지 적용할 수 있다. 위에서 스프링 시큐리티는 두 구현체를 제공한다고 했는데, 이제 차례대로 살펴볼 것이다.
+여기선 `AbstractAuthenticationProcessingFilter`는 `loginFail()`과 `loginSuccess()`만 호출한다는 점만 기억해두자. 메소드가 하는 일은 Javadoc에 자세히 나와 있다. `RememberMeAuthenticationFilter`는 `SecurityContextHolder`에 `Authentication`이 없으면 항상 `autoLogin()` 메소드를 호출한다. 따라서 이 필터가 기본적인 remember-me 기능을 제공하며, 인증 관련 이벤트를 통지해주고, 웹 요청에 있는 쿠키를 기억해야 할 땐 구현체에 위임해 준다. 이 설계 덕분에 remember-me 구현 전략은 얼마든지 적용할 수 있다. 위에서 스프링 시큐리티는 두 가지 구현체를 제공한다고 했는데, 이제 차례대로 살펴볼 것이다.
 
 #### TokenBasedRememberMeServices
 
-이 구현체는 [Simple Hash-Based Token Approach](#10122-simple-hash-based-token-approach)에서 설명한 더 간단한 방식을 구현한다. `TokenBasedRememberMeServices`는 `RememberMeAuthenticationToken`을 생성하며, 이는 `RememberMeAuthenticationProvider`가 처리한다. 이 인증 provider와 `TokenBasedRememberMeServices`는 `key`를 공유한다. `TokenBasedRememberMeServices`는 서명을 비교할 때 사용자 이름과 비밀번호를 조회하기 위해 UserDetailsService 하나가 필요하며, 정확한 `GrantedAuthority`들을 가지고 있는 `RememberMeAuthenticationToken`을 생성한다. 로그아웃 명령은 사용자가 요청했을 때 어플리케이션에서 쿠키를 무효화하는 식으로 구현해야 한다. `TokenBasedRememberMeServices`는 스프링 시큐리티의 `LogoutHandler`도 구현하고 있기 때문에 `LogoutFilter`를 함께 사용하면 자동으로 쿠키를 비울 수 있다.
+이 구현체는 [Simple Hash-Based Token Approach](#10122-simple-hash-based-token-approach)에서 설명한 더 간단한 방식을 구현한다. `TokenBasedRememberMeServices`는 `RememberMeAuthenticationToken`을 생성하며, 이는 `RememberMeAuthenticationProvider`가 처리한다. 이 인증 provider와 `TokenBasedRememberMeServices`는 `key`를 공유한다. `TokenBasedRememberMeServices`는 서명을 비교할 때 사용자 이름과 비밀번호를 조회할 UserDetailsService 하나가 필요하며, 정확한 `GrantedAuthority` 컬렉션을 가지고 있는 `RememberMeAuthenticationToken`을 생성한다. 로그아웃 명령은 사용자가 요청했을 때 어플리케이션에서 쿠키를 무효화하는 식으로 구현해야 한다. `TokenBasedRememberMeServices`는 스프링 시큐리티의 `LogoutHandler`도 구현하고 있기 때문에 `LogoutFilter`를 함께 사용하면 자동으로 쿠키를 비울 수 있다.
 
 remember-me 서비스를 활성화하려면 다음과 같은 빈을 어플리케이션 컨텍스트에 추가해야 한다:
 
@@ -1804,11 +1805,11 @@ remember-me 서비스를 활성화하려면 다음과 같은 빈을 어플리케
 <user name="https://jimi.hendrix.myopenid.com/" authorities="ROLE_USER" />
 ```
 
-인증하려면 `myopenid.com` 사이트로 로그인할 수 있어야 한다. `openid-login` 요소에 있는 `user-service-ref` 속성을 설정하면 OpenID를 사용할 `UserDetailsService`를 지정할 수 있다. 위에 있는 사용자 데이터는 해당 사용자의 권한을 로드할때만 사용하기 때문에, 비밀번호 속성은 생략했다. 내부적으로는 비밀번호를 랜덤으로 생성해서 다른 설정에서 이 사용자 데이터로 인증할 수 없게 방지한다.
+인증하려면 `myopenid.com` 사이트로 로그인할 수 있어야 한다. `openid-login` 요소에 있는 `user-service-ref` 속성을 설정하면 OpenID를 사용할 `UserDetailsService`를 지정할 수 있다. 위에 있는 사용자 데이터는 해당 사용자의 권한을 로드할때만 사용하기 때문에, 비밀번호 속성은 생략했다. 내부에서 랜덤 비밀번호를 생성해서, 다른 설정에서 실수로 이 사용자 데이터로 인증하지 않도록 방지한다.
 
 ### 10.13.1. Attribute Exchange
 
-OpenID [attribute exchange](https://openid.net/specs/openid-attribute-exchange-1_0.html)를 지원한다. 예를 들어 다음 설정은 OpenID provider로부터 이메일과 이름 전체를 받아오기 위한 어플리케이션 설정이다:
+OpenID [attribute exchange](https://openid.net/specs/openid-attribute-exchange-1_0.html)를 지원한다. 예를 들어 다음 설정은 OpenID provider로부터 이메일과 성명(full name)을 받아오기 위한 어플리케이션 설정이다:
 
 ```xml
 <openid-login>
@@ -1819,7 +1820,7 @@ OpenID [attribute exchange](https://openid.net/specs/openid-attribute-exchange-1
 </openid-login>
 ```
 
-OpenID 속성에서 사용한 "type"은 URL로, 특정 스키마로 정해진다 (여기선 https://axschema.org/). 인증에 꼭 필요한 속성은 `required`로 지정한다. 정확한 스키마와 속성은 OpenID provider에따라 다르다. 인증을 처리할 때 속성값을 반환하며, 이후엔 다음과 같은 코드로 접근할 수 있다:
+각 OpenID 속성의 "type" 값은 URL로, 특정 스키마로 정해진다 (여기선 https://axschema.org/). 인증에 꼭 필요한 속성은 `required`로 지정한다. 정확한 스키마와 속성은 OpenID provider에 따라 다르다. 속성값은 인증을 처리할 때 반환하며, 이후엔 다음과 같은 코드로 접근할 수 있다:
 
 ```java
 OpenIDAuthenticationToken token =
@@ -1827,7 +1828,7 @@ OpenIDAuthenticationToken token =
 List<OpenIDAttribute> attributes = token.getAttributes();
 ```
 
-`OpenIDAuthenticationToken`은 [SecurityContextHolder](#101-securitycontextholder)에서 얻을 수 있다. `OpenIDAttribute`는 속성 타입과 반환된 값을 가지고 있다 (속성에 따라 값이 여러 개일 수 있음). `attribute-exchange` 요소를 여러 개 사용할 수도 있는데, 이땐 요소마다 `identifier-matcher` 속성을 사용한다. 이 속성은 사용자가 제공하는 OpenID 식별자와 매치할 정규식을 가지고 있다. 설정 예시는 코드에 있는 OpenID 샘플 어플리케이션을 참고하라. 구글 야후, MyOpenID provider에서 지원하는 각 속성 리스트를 제공한다.
+`OpenIDAuthenticationToken`은 [SecurityContextHolder](#101-securitycontextholder)에서 얻을 수 있다. `OpenIDAttribute`는 속성 타입과 반환된 값을 가지고 있다 (속성에 따라 값이 여러 개일 수 있음). `attribute-exchange` 요소를 여러 개 사용할 수도 있는데, 이땐 요소마다 `identifier-matcher` 속성을 사용한다. 이 속성에는 OpenID 식별자와 매치할 정규식을 지정한다. 설정 예시는 코드에 있는 OpenID 샘플 어플리케이션을 참고하라. 구글 야후, MyOpenID provider에서 지원하는 각 속성 리스트를 제공한다.
 
 ---
 
@@ -1835,7 +1836,7 @@ List<OpenIDAttribute> attributes = token.getAttributes();
 
 ### 10.14.1. Overview
 
-보안에서 주로 권장하는 방식은 허용할 것을 명시하고 나머지는 허용하지 않는 "deny-by-default"다. 같은 맥락으로 웹 어플리케이션이라면, 인증하지 않은 사용자가 접근할 수 있는 페이지를 정의할 수 있다. 많은 사이트에서 몇 가지 URL만 (홈이나 로그인 페이지) 제외하고는 인증을 요구한다. 이럴 때는 모든 안전한 리소스를 명시하는 것보다 접근을 허용할 몇 가지 URL만 가지고 접근 속성을 설정하는 게 가장 쉽다. 달리 말하면, 디폴트로 `ROLE_SOMETHING`이 필요하다고 정의하고 로그인이나 로그아웃, 기본 홈 등에서만 이 룰에 예외를 적용하는 게 나을 때가 많다. 원한다면 이런 예외 페이지에 접근할 땐 필터 체인을 완전히 생략해서 접근 제어를 우회하도록 만들 수 있지만, 해당 페이지가 인증된 사용자에게는 다른 정보를 보여주는 페이지라면 바람직한 방법은 아니다.
+보안에서 주로 권장하는 방식은 허용할 것을 명시하고 나머지는 허용하지 않는 "deny-by-default"다. 같은 맥락으로 웹 어플리케이션이라면, 인증하지 않은 사용자가 접근할 수 있는 페이지를 따로 정의할 수 있다. 많은 사이트에서 몇 가지 URL만 (홈이나 로그인 페이지) 제외하고는 인증을 요구한다. 이럴 때는 모든 안전한 리소스를 명시하는 것보다 접근을 허용할 몇 가지 URL만 가지고 접근 속성을 설정하는 게 가장 쉽다. 달리 말하면, 디폴트로 `ROLE_SOMETHING`이 필요하다고 정의하고 로그인이나 로그아웃, 기본 홈 등에서만 이 룰에 예외를 적용하는 게 나을 때가 많다. 원한다면 이런 예외 페이지에 접근할 땐 필터 체인을 완전히 생략해서 접근 제어를 우회하도록 만들 수 있지만, 해당 페이지가 인증된 사용자에게는 다른 정보를 보여주는 페이지라면 바람직한 방법은 아니다.
 
 따라서 익명 인증이란 개념이 있는 것이다. "익명으로 인증된" 사용자와 "인증되지 않은 사용자"는 개념적으로 아무 차이가 없다. 스프링 시큐리티의 익명 인증은 그저 접근 제어 속성을 좀 더 편리하게 설정하게 해줄 뿐이다. 예를 들어 `getCallerPrincipal`같은 서블릿 API를 호출하면 null을 리턴하는 건 마찬가지지만, 실제로 `SecurityContextHolder`에는 익명 인증 객체가 담겨있다.
 
@@ -1845,7 +1846,7 @@ List<OpenIDAttribute> attributes = token.getAttributes();
 
 스프링 시큐리티 3.0 HTTP 설정을 사용하면 자동으로 익명 인증을 지원하며 `<anonymous>` 요소로 커스텀하거나 비활성화할 수 있다. 전통적인 빈 설정을 사용하고 있지 않으면 여기 있는 빈을 설정할 필요는 없다.
 
-익명 인증 기능은 세 가지 클래스가 함께 제공한다. `AnonymousAuthenticationToken`은 `Authentication` 구현체로, 익명 principal에 적용할 여러 `GrantedAuthority`를 저장한다. 이에 맞는 `AnonymousAuthenticationProvider`가 `ProviderManager`에 연결되면 `AnonymousAuthenticationToken`을 허용한다. 마지막으로 `AnonymousAuthenticationFilter`가 있다. 이 필터는 일반적인 인증 메커니즘 이후 연결되며, `SecurityContextHolder`에 `Authentication`이 없으면 자동으로 `AnonymousAuthenticationToken`을 추가한다. 필터와 인증 provider 정의는 다음과 같다:
+익명 인증 기능은 세 가지 클래스가 함께 제공한다. `AnonymousAuthenticationToken`은 `Authentication` 구현체로, 익명 principal에 적용할 여러 `GrantedAuthority`를 저장한다. 이에 맞는 `AnonymousAuthenticationProvider`가 `ProviderManager`에 연결되면 `AnonymousAuthenticationToken`을 허용한다. 마지막으로 `AnonymousAuthenticationFilter`가 있다. 이 필터는 필터 체인에서 다른 평범한 인증 메커니즘보다 뒤에 있으며, `SecurityContextHolder`에 `Authentication`이 없으면 자동으로 `AnonymousAuthenticationToken`을 추가한다. 필터와 인증 provider 정의는 다음과 같다:
 
 ```xml
 <bean id="anonymousAuthFilter"
@@ -1860,9 +1861,9 @@ List<OpenIDAttribute> attributes = token.getAttributes();
 </bean>
 ```
 
-필터와 인증 provider가 동일한 `key`를 공유하므로, 인증 provider는 필터가 생성한 토큰을 수용한다. `userAttribute`는 `usernameInTheAuthenticationToken,grantedAuthority[,grantedAuthority]` 형식으로 표현한다. `InMemoryDaoImpl`의 `userMap` 프로퍼티에서 등호 뒤에 사용하는 문법과 동일하다.
+필터와 인증 provider가 동일한 `key`를 공유하므로, 인증 provider는 필터가 생성한 토큰을 허용한다. `userAttribute`는 `usernameInTheAuthenticationToken,grantedAuthority[,grantedAuthority]` 형식으로 표현한다. `InMemoryDaoImpl`의 `userMap` 프로퍼티에서 등호 뒤에 사용하는 문법과 동일하다.
 
-앞에서 말했듯이 익명 인증을 사용하면 모든 URI 패턴에 보안을 적용할 수 있다. 예를 들어:
+앞에서 말했듯이 익명 인증을 사용하면 모든 URI 패턴에 보안 로직을 적용할 수 있다. 예를 들어:
 
 ```xml
 <bean id="filterSecurityInterceptor"
@@ -1883,28 +1884,28 @@ List<OpenIDAttribute> attributes = token.getAttributes();
 
 ### 10.14.3. AuthenticationTrustResolver
 
-익명 인증 처리에서 마지막으로 살펴볼 것은 `AuthenticationTrustResolver` 인터페이스로, 구현체는 `AuthenticationTrustResolverImpl`이 있다. 이 인터페이스의 `isAnonymous(Authentication)` 메소드를 사용하면 원하는 클래스에서 이 특별한 인증 상태도 계산에 넣을 수 있다. 바로 `ExceptionTranslationFilter`가 이 인터페이스를 사용해 `AccessDeniedException`을 처리한다. `AccessDeniedException`을 던졌고 인증 유형이 익명이라면, 403(forbidden)을 던지는 대신 `AuthenticationEntryPoint`를 시작해 principal을 올바르게 인증할 수 있다. 이 둘은 반드시 구별해야 한다. 그렇지 않으면 항상 principal을 "인증된 상태"로 인지해서 폼이나, 기본, 다이제스트, 아니면 다른 어떤 기본 인증 메커니즘으로도 로그인할 방법이 없다.
+익명 인증 처리에서 마지막으로 살펴볼 것은 `AuthenticationTrustResolver` 인터페이스로, 구현체는 `AuthenticationTrustResolverImpl`이 있다. 이 인터페이스의 `isAnonymous(Authentication)` 메소드를 사용하면 다른 클래스에서도 이 특별한 인증 상태를 계산에 넣을 수 있다. 바로 `ExceptionTranslationFilter`가 이 인터페이스를 사용해 `AccessDeniedException`을 처리한다. `AccessDeniedException`이 던져졌고 인증 유형이 익명이라면, 403(forbidden)을 던지는 대신 `AuthenticationEntryPoint`를 시작해 principal을 올바르게 인증할 수 있다. 이 둘은 반드시 구별해야 한다. 그렇지 않으면 항상 principal을 "인증된 상태"로 인지해서 폼이나, 기본, 다이제스트, 아니면 다른 어떤 기본 인증 메커니즘으로도 로그인할 수 없다.
 
-위 인터셉터 설정에 있는 `ROLE_ANONYMOUS` 속성 대신 `IS_AUTHENTICATED_ANONYMOUSLY`를 사용하는 경우도 있다. 접근 제어를 정의할 땐 이 둘은 사실상 동일하다. 이는 [인가 챕터](../authorization#authenticatedvoter)에서 살펴볼 `AuthenticatedVoter`에서 사용하는 예시다. `AuthenticatedVoter`는 `AuthenticationTrustResolver`를 사용해서 이 `IS_AUTHENTICATED_ANONYMOUSLY` 설정 속성을 처리하고 익명 사용자에게 접근 권한을 부여한다. `AuthenticatedVoter`로 접근하면 익명 사용자와 remember-me 사용자, 완전히 인증된 사용자를 구분할 수 있다. 그래도 이런 기능이 필요하지 않다면 `ROLE_ANONYMOUS`를 유지해서 스프링 시큐리티의 표준 `RoleVoter`가 처리하도록 놔두면 된다.
+위 인터셉터 설정에 있는 `ROLE_ANONYMOUS` 속성 대신 `IS_AUTHENTICATED_ANONYMOUSLY`를 사용하는 경우도 있다. 접근 제어를 정의할 땐 이 둘은 사실상 동일하다. 이는 [인가 챕터](../authorization#authenticatedvoter)에서 살펴볼 `AuthenticatedVoter`에서 활용하는 속성이다. `AuthenticatedVoter`는 `AuthenticationTrustResolver`를 사용해서 이 `IS_AUTHENTICATED_ANONYMOUSLY` 설정 속성을 처리하고 익명 사용자에게 접근 권한을 부여한다. `AuthenticatedVoter`로 접근하면 익명 사용자와 remember-me 사용자, 완전히 인증된 사용자를 구분할 수 있다. 그래도 이런 기능이 필요하지 않다면 `ROLE_ANONYMOUS`를 유지해서 스프링 시큐리티의 표준 `RoleVoter`가 처리하도록 놔두면 된다.
 
 ---
 
 ## 10.15. Pre-Authentication Scenarios
 
-스프링 시큐리티를 사용해서 인가를 구현하고 싶지만, 사용자가 어플리케이션에 접근하기 전에 이미 신뢰할 수 있는 외부 시스템에서 인증받았을 수도 있다. 이런 상황을 "pre-authenticated" 시나리오라고 부른다. 예를 들어 X.509, Siteminder나 실행 중인 어플리케이션 안에 있는 자바 EE 컨테이너 인증 등이 있다. pre-authentication을 사용하면 스프링 시큐리티에선 다음과 같은 처리를 한다:
+스프링 시큐리티를 사용해서 인가를 구현하고 싶지만, 사용자가 어플리케이션에 접근하기 전에 이미 신뢰할 수 있는 외부 시스템에서 인증받았을 수도 있다. 이런 상황을 "사전에 인증된" 시나리오라고 부른다. 예를 들어 X.509, Siteminder나 실행 중인 어플리케이션 안에 있는 자바 EE 컨테이너 인증 등이 있다. 사전 인증을 사용하면 스프링 시큐리티에선 다음과 같은 처리를 한다:
 
 - 요청을 만든 사용자를 식별한다.
 - 사용자의 권한을 가져온다.
 
-자세한 내용은 외부 인증 메커니즘에 따라 다르다. X.509는 인증서 정보로 사용자를 식별하며, Siteminder는 HTTP 요청 헤더로 식별한다. 컨테이너 인증을 사용하다면 요청받은 HTTP request의 `getUserPrincipal()`을 호출해서 사용자를 식별한다. 사용자의 role/authority 정보를 제공하는 외부 메커니즘도 있지만 `UserDetailsService`같은 별도 소스로 권한을 얻어야 하는 경우도 있다.
+자세한 내용은 외부 인증 메커니즘에 따라 다르다. X.509는 인증서 정보로 사용자를 식별하며, Siteminder는 HTTP 요청 헤더로 식별한다. 컨테이너 인증을 사용한다면 HTTP request의 `getUserPrincipal()`을 호출해서 사용자를 식별한다. 사용자의 role/authority 정보를 제공하는 외부 메커니즘도 있지만 `UserDetailsService`같은 별도 소스로 권한을 얻어야 하는 경우도 있다.
 
 ### 10.15.1. Pre-Authentication Framework Classes
 
-pre-authentication 메커니즘은 대부분 같은 패턴을 사용하므로, 스프링 시큐리티는 pre-authenticated 인증 프로바이더 구현을 위한 내부 뼈대를 제공하는 몇 가지 클래스 셋을 제공한다. 이를 사용하면 중복을 제거할 수 있으며, 모든 것을 처음부터 작성하지 않고도 새 구현체를 구조화된 방식으로 추가할 수 있다. [X.509 인증](#1018-x509-authentication)같은 걸 사용한다면, 사용하기도 시작하기도 쉬운 네임스페이스 설정 옵션이 있기 때문에 이 클래스를 알아야 할 필욘 없다. 빈 설정을 명시하거나 자체 구현체를 사용할 예정이라면, 이 구현체들이 어떻게 동작하는 지 알아두는 게 유용하다. 이 클래스들은 `org.springframework.security.web.authentication.preauth` 패키지 밑에 있다. 여기에선 개요만 다루기 때문에 javadoc이나 소스 코드를 참고하도록 해라.
+사전 인증 메커니즘은 대부분 같은 패턴을 사용하므로, 스프링 시큐리티는 사전 인증 프로바이더를 구현하기 위한 내부 뼈대로, 몇 가지 클래스 셋을 제공한다. 이 클래스를 사용하면 중복을 제거할 수 있으며, 모든 것을 처음부터 작성하지 않고도 구조화된 틀 안에 새 구현체를 추가할 수 있다. [X.509 인증](#1018-x509-authentication) 등을  사용한다면, 사용하기도 시작하기도 쉬운 네임스페이스 설정 옵션이 있기 때문에 이 클래스를 알아야 할 필욘 없다. 물론, 빈 설정을 지정하거나 자체 구현체를 사용할 거라면, 구현체들이 어떻게 동작하는 지 알아두면 유용하다. 이 클래스들은 `org.springframework.security.web.authentication.preauth` 패키지 밑에 있다. 여기에선 개요만 다루기 때문에 javadoc이나 소스 코드를 참고하도록 해라.
 
 #### AbstractPreAuthenticatedProcessingFilter
 
-이 클래스는 현재 있는 보안 컨텍스트에 있는 정보를 확인하고, 비어있다면 HTTP 요청에서 사용자 정보를 추출해 `AuthenticationManager`로 제출한다. 하위 클래스는 정보를 얻어 오는 다음 메소드를 오버라이드한다:
+이 클래스는 현재 보안 컨텍스트에 있는 정보를 확인하고, 비어있다면 HTTP 요청에서 사용자 정보를 추출해 `AuthenticationManager`로 제출한다. 인증 정보를 가져오는 아래 메소드는 하위 클래스에서 재정의한다:
 
 ```java
 protected abstract Object getPreAuthenticatedPrincipal(HttpServletRequest request);
@@ -1912,19 +1913,19 @@ protected abstract Object getPreAuthenticatedPrincipal(HttpServletRequest reques
 protected abstract Object getPreAuthenticatedCredentials(HttpServletRequest request);
 ```
 
-필터는 이 메소드들을 호출한 다음, 돌려받은 데이터를 가지고 있는 `PreAuthenticatedAuthenticationToken`을 만들어 인증을 위해 제출한다. 여기서 "인증"이란, 단순히 사용자의 권한을 로드하기 위한 이후 처리를 의미하지만, 표준 스프링 시큐리티 인증 아키텍처를 따른다.
+필터는 이 두 메소드를 호출한 다음, 반환받은 데이터로 `PreAuthenticatedAuthenticationToken`을 만들어 인증 매니저에 제출한다. 여기서 "인증"이란, 단순히 사용자 권한을 로드하기 위한 부가적인 처리를 의미하지만, 표준 스프링 시큐리티 인증 아키텍처를 따른다.
 
-다른 스프링 시큐리티 인증 필터처럼 pre-authentication 필터도 기본적으로 `WebAuthenticationDetails` 객체를 만드는 `authenticationDetailsSource` 프로퍼티를 가지고 있다. 이를 통해 `Authentication` 객체의 `details` 프로퍼티 안에 세션 식별자, 요청 IP 주소같은 정보를 저장한다. pre-authentication 메커니즘으로 사용자의 role 정보를 가져올 수 있으면, `GrantedAuthoritiesContainer` 인터페이스 구현체를 사용해 이 데이터도 프로퍼티에 함께 저장한다. 이렇게 하면 외부에서 사용자에게 할당한 권한을 인증 provider에서  조회할 수 있다. 구체적인 예제는 더 밑에서 살펴보겠다.
+다른 스프링 시큐리티 인증 필터처럼 사전 인증 필터도 기본적으로 `WebAuthenticationDetails` 객체를 만드는 `authenticationDetailsSource` 프로퍼티를 가지고 있다. 이 프로퍼티를 통해 `Authentication` 객체의 `details` 프로퍼티 안에 세션 식별자, 요청 IP 주소 등의 정보를 저장한다. 사전 인증 메커니즘으로 사용자의 role 정보를 가져올 수 있으면, `GrantedAuthoritiesContainer` 인터페이스 구현체를 사용해 이 데이터도 프로퍼티에 함께 저장한다. 이렇게 하면 인증 provider는 외부에서 사용자에 할당한 권한을 조회할 수 있다. 구체적인 예제는 더 밑에서 살펴보겠다.
 
 #### J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource
 
-필터의 `authenticationDetailsSource`를 이 클래스 인스턴스로 설정하면 `isUserInRole(String role)` 메소드를 호출해서 미리 결정해둔 "mappable roles" 셋으로 권한 정보를 조회한다. 이 클래스는 설정에 있는 `MappableAttributesRetriever`에서 이를 가져온다. 어플리케이션 컨텍스트에 리스트를 하드 코딩하거나 `web.xml` 파일에 있는 `<security-role>`에서 role 정보를 읽는 식으로 구현할 수 있다. pre-authentication 샘플 어플리케이션은 두 번째 방법을 사용한다.
+필터의 `authenticationDetailsSource` 프로퍼티를 이 클래스 인스턴스로 설정하면, 미리 결정해둔 "mappable roles" 셋을 사용하는 `isUserInRole(String role)` 메소드로 권한 정보를 확인한다. role 셋은 설정해둔 `MappableAttributesRetriever`에서 가져온다. `MappableAttributesRetriever`는 어플리케이션 컨텍스트에 리스트를 하드 코딩하거나 `web.xml` 파일에 있는 `<security-role>`에서 role 정보를 읽는 식으로 구현할 수 있다. pre-authentication 샘플 어플리케이션은 두 번째 방법을 사용한다.
 
 이 클래스는 하는 일이 하나 더 있는데, 설정한 `Attributes2GrantedAuthoritiesMapper`를 사용해서 roles를(또는 attributes) 스프링 시큐리티 `GrantedAuthority` 객체들로 매핑한다. 디폴트로는 이름에 일반적인 `ROLE_` 프리픽스를 추가하지만, 전체 동작을 직접 제어할 수도 있다.
 
 #### PreAuthenticatedAuthenticationProvider
 
-이 pre-authenticated provider는 사용자의 `UserDetails` 객체를 로드하는 것 외에 하는 일이 조금 더 있다. 객체를 로드하는 일은 `AuthenticationUserDetailsService`에 위임한다. 이 객체는 표준 `UserDetailsService`와 유사하지만 단순한 사용자 이름 대신 `Authentication` 객체를 받는다.
+사전 인증 provider는 사용자의 `UserDetails` 객체를 로드하는 것 외에도 하는 일이 조금 더 있다. 객체를 로드하는 일은 `AuthenticationUserDetailsService`에 위임한다. `AuthenticationUserDetailsService`는 표준 `UserDetailsService`와 유사하지만 단순한 사용자 이름 대신 `Authentication` 객체를 받는다.
 
 ```java
 public interface AuthenticationUserDetailsService {
@@ -1932,21 +1933,21 @@ public interface AuthenticationUserDetailsService {
 }
 ```
 
-이 인터페이스는 다른 용도로 사용할 수도 있지만, pre-authentication에서 사용하면 이전 섹션에서 본 것처럼 `Authentication` 객체에 있는 권한에 접근할 수 있다. 이 일은 `PreAuthenticatedGrantedAuthoritiesUserDetailsService` 클래스가 한다. 또는 `UserDetailsByNameServiceWrapper` 구현체를 통해 표준 `UserDetailsService`에 위임할 수 있다.
+이 인터페이스는 다른 용도로도 사용할 수 있지만, 사전 인증에선 이전 섹션에서 살펴본 것처럼 `Authentication` 객체에 있는 권한에 접근할 수 있게 해준다. 사전 인증에서 사용하는 구현체는 `PreAuthenticatedGrantedAuthoritiesUserDetailsService` 클래스다. 또는 `UserDetailsByNameServiceWrapper` 구현체를 통해 표준 `UserDetailsService`에 위임할 수도 있다.
 
 #### Http403ForbiddenEntryPoint
 
-[`AuthenticationEntryPoint`](#108-request-credentials-with-authenticationentrypoint)는 인증되지 않은 사용자의 인증 처리를 시작하지만 (인증이 필요한 리소스에 접근하려고 할 때), pre-authentication으로 인증하는 경우엔 적용되지 않는다. pre-authentication을 다른 인증 메커니즘과 함께 사용하지 않는다면 `ExceptionTranslationFilter`와  `Http403ForbiddenEntryPoint` 클래스 인스턴스만 설정할 것이다. 이 클래스는 `AbstractPreAuthenticatedProcessingFilter`에서 null authentication을 리턴해 사용자 요청을 거절했을 때 호출한다. 이때는 항상 `403`-forbidden 응답을 리턴한다.
+[`AuthenticationEntryPoint`](#108-request-credentials-with-authenticationentrypoint)는 인증되지 않은 사용자의 인증 처리를 시작하지만 (인증이 필요한 리소스에 접근하려고 할 때), 사전 인증 메커니즘에는 적용되지 않는다. 사전 인증이 유일한 인증 메커니즘이라면, `ExceptionTranslationFilter`와  `Http403ForbiddenEntryPoint` 클래스 인스턴스만 설정할 것이다. `Http403ForbiddenEntryPoint`를 호출하는 시점은 authentication이 null이어서 `AbstractPreAuthenticatedProcessingFilter`에서 사용자 요청을 거절했을 때다. 이때는 항상 `403`-forbidden 응답을 리턴한다.
 
 ### 10.15.2. Concrete Implementations
 
-X.509 인증은 [별도 챕터](#1018-x509-authentication)에서 다룬다. 여기선 다른 pre-authenticated 시나리오를 지원하는 몇 가지 클래스를 살펴볼 것이다.
+X.509 인증은 [별도 챕터](#1018-x509-authentication)에서 다룬다. 여기선 다른 사전 인증 시나리오를 지원하는 몇 가지 클래스를 살펴볼 것이다.
 
 #### Request-Header Authentication (Siteminder)
 
-외부 인증 시스템은 HTTP 요청에 특정 헤더를 설정하는 식으로 어플리케이션에 정보를 제공할 수도 있다. 잘 알려진 예로는 Siteminder가 있으며, `SM_USER` 헤더에 username을 전달한다. 이 메커니즘은 단순히 헤더에서 username을 추출하는 `RequestHeaderAuthenticationFilter`가 제공한다. 디폴트로 사용하는 헤더 이름은 `SM_USER`다. 자세한 내용은 Javadoc을 참고하라.
+외부 인증 시스템은 HTTP 요청에 특정 헤더를 설정하는 식으로 어플리케이션에 정보를 제공할 수도 있다. 잘 알려진 예로는 `SM_USER` 헤더로 username을 전달하는 Siteminder가 있다. 이 메커니즘은 단순히 헤더에서 username을 추출하는 `RequestHeaderAuthenticationFilter`가 제공한다. 디폴트로 사용하는 헤더 이름은 `SM_USER`다. 자세한 내용은 Javadoc을 참고하라.
 
->  이런 시스템을 사용한다면 프레임워크에선 인증을 전혀 확인하지 않는다는 점에 주의해라. 외부 시스템을 제대로 설정했는지, 어플리케이션의 모든 접근을 보호하고 있는지가 *극도로* 중요하다. 기존 요청 헤더를 위조한 공격을 감지하지 못하면, 결국은 원하는 username을 골라 공격할 수 있게 된다.
+>  이렇게 외부 인증 시스템을 사용한다면 프레임워크에선 전혀 인증을 체크하지 않는다는 점에 주의해라. *반드시* 외부 시스템을 제대로 설정하고, 어플리케이션의 모든 접근을 보호해야 한다. 공격 감지해내지 못하면 기존 요청 헤더를 위조하는 식으로 username을 마음대로 변경할 수도 있다.
 
 #### Siteminder Example Configuration
 
@@ -1977,13 +1978,13 @@ X.509 인증은 [별도 챕터](#1018-x509-authentication)에서 다룬다. 여�
 </security:authentication-manager>
 ```
 
-여기선 [시큐리티 네임스페이스](../securitynamespaceconfiguration)로 설정한다고 가정했다. 또한 사용자의 role을 조회하는 `UserDetailsService`("userDetailsService"란 이름의)를 설정했다고 가정했다.
+여기선 [시큐리티 네임스페이스](../securitynamespaceconfiguration)로 설정한다고 가정한다. 또한 사용자의 role을 조회하는, "userDetailsService"란 이름을 가진 `UserDetailsService`를 설정했다고 가정했다.
 
 #### Java EE Container Authentication
 
 `J2eePreAuthenticatedProcessingFilter` 클래스는 `HttpServletRequest`의 `userPrincipal` 속성에서 username을 추출한다. 보통 이 필터를 사용할 땐 [J2eeBasedPreAuthenticatedWebAuthenticationDetailsSource](#j2eebasedpreauthenticatedwebauthenticationdetailssource)에서 설명한 자바 EE role을 함께 사용한다.
 
-이 방식을 사용하는 샘플 어플리케이션을 제공하므로, 관심 있다면 깃허브 코드를 받아 어플리케이션 컨텍스트 파일을 살펴봐라. 해당 코드는 `samples/xml/preauth` 디렉토리 안에 있다.
+이 방식을 사용하는 샘플 어플리케이션도 있으므로, 관심 있다면 깃허브 코드를 받아 어플리케이션 컨텍스트 파일을 살펴봐라. 코드는 `samples/xml/preauth` 디렉토리 안에 있다.
 
 ---
 
@@ -1995,33 +1996,33 @@ X.509 인증은 [별도 챕터](#1018-x509-authentication)에서 다룬다. 여�
 
 ### 10.16.2. AbstractJaasAuthenticationProvider
 
-`AbstractJaasAuthenticationProvider`는 스프링 시큐리티가 제공하는 JAAS `AuthenticationProvider` 구현체의 기반이 되는 클래스다. 하위 클래스는 `LoginContext`를 생성하는 메소드를 반드시 구현해야 한다. `AbstractJaasAuthenticationProvider`는 주입할 수 있는 의존성이 아주 많으며, 아래에서 설명한다.
+`AbstractJaasAuthenticationProvider`는 스프링 시큐리티가 제공하는 JAAS `AuthenticationProvider` 구현체의 기반 클래스다. 하위 클래스는 `LoginContext`를 생성하는 메소드를 반드시 구현해야 한다. `AbstractJaasAuthenticationProvider`는 주입할 수 있는 의존성이 아주 많으며, 아래에서 설명한다.
 
 #### JAAS CallbackHandler
 
 JAAS `LoginModule` 대부분은 일종의 콜백이 필요하다. 보통 콜백으로 사용자 이름과 비밀번호를 가져온다.
 
-스프링 시큐리티와 함께라면, 스프링 시큐리티가 이런 사용자 상호작용을 담당한다 (인증 메커니즘으로). 따라서 인증 요청을 JAAS로 위임할 때쯤엔 스프링 시큐리티의 인증 메커니즘이 이미 `Authentication`에 JAAS `LoginModule`에서 필요한 모든 정보를 채웠을 것이다.
+스프링 시큐리티를 사용한다면, 스프링 시큐리티가 이런 사용자 상호작용을 대신 처리해 준다 (인증 메커니즘으로). 따라서 인증 요청을 JAAS로 위임할 때쯤엔 스프링 시큐리티의 인증 메커니즘이 이미 `Authentication`에 JAAS `LoginModule`에서 필요한 모든 정보를 채웠을 것이다.
 
 따라서 스프링 시큐리티의 JAAS 패키지는 `JaasNameCallbackHandler`와 `JaasPasswordCallbackHandler`라는 두 가지 디폴트 콜백 핸들러를 제공한다. 둘 모두 `JaasAuthenticationCallbackHandler`를 구현하고 있다. 대부분은 내부 메커니즘은 몰라도 쉽게 사용할 수 있다.
 
-`AbstractJaasAuthenticationProvider`는 내부적으로 여러 `JaasAuthenticationCallbackHandler`를 `InternalCallbackHandler`로 감싸기 때문에, 콜백 동작을 완전히 제어할 수도 있다. `InternalCallbackHandler`는 실제로 JAAS의 일반적인 `CallbackHandler` 인터페이스를 구현한 클래스다. `LoginModule`을 사용할 때마다 어플리케이션 컨텍스트에 설정한 `InternalCallbackHandler` 리스트를 전달한다. `LoginModule`에서 `InternalCallbackHandler`들로 콜백을 요청하면 감싸고 있는 `JaasAuthenticationCallbackHandler`에 차례대로 전달한다.
+`AbstractJaasAuthenticationProvider`는 내부적으로 여러 `JaasAuthenticationCallbackHandler`를 `InternalCallbackHandler`로 감싸기 때문에, 콜백 동작을 완전히 제어할 수도 있다. `InternalCallbackHandler`는 실제로 일반적인 JAAS `CallbackHandler` 인터페이스를 구현한 클래스다. `LoginModule`을 사용할 때마다 어플리케이션 컨텍스트에 설정한 `InternalCallbackHandler` 리스트를 전달한다. `LoginModule`에서 `InternalCallbackHandler`로 콜백을 요청하면 감싸고 있는 `JaasAuthenticationCallbackHandler`에 차례대로 전달한다.
 
 #### JAAS AuthorityGranter
 
 JAAS는 principal로 동작한다. 심지어 JAAS에선 "role"도 principal로 표현한다. 하지만 스프링 시큐리티는 이와 달리 `Authentication` 객체로 동작한다. 각 `Authentication` 객체는 principal 하나와 `GrantedAuthority` 여러 개를 가진다. 스프링 시큐리티의 JAAS 패키지엔 각기 다른 개념을 매핑하기 위한 `AuthorityGranter` 인터페이스가 있다.
 
-`AuthorityGranter`는 JAAS principal을 검사해서 해당 princial에 할당된 권한을 나타내는 `String` 셋을 리턴한다. `AbstractJaasAuthenticationProvider`는 각 권한 문자열로 `JaasGrantedAuthority`을 생성한다 (스프링 시큐리티의 `GrantedAuthority` 인터페이스를 구현하고 있는). `JaasGrantedAuthority`는 권한 문자열과 `AuthorityGranter`에 전달한 JAAS principal을 가지고 있다. `AbstractJaasAuthenticationProvider`는 먼저 JAAS `LoginModule`로 사용자의 credential 인증에 성공한 다음 반환된 `LoginContext`에 접근해 JAAS principal을 가져온다. 그 다음 `LoginContext.getSubject().getPrincipals()`을 호출해 결과로 받아온 각 principal을 `AbstractJaasAuthenticationProvider.setAuthorityGranters(List)` 프로퍼티에 정의한 각 `AuthorityGranter`로 전달한다.
+`AuthorityGranter`는 JAAS principal을 검사해서 해당 princial에 할당된 권한을 나타내는 `String` 셋을 리턴한다. `AbstractJaasAuthenticationProvider`는 각 권한 문자열로 `JaasGrantedAuthority`을 생성한다 (스프링 시큐리티의 `GrantedAuthority` 인터페이스를 구현하고 있는). `JaasGrantedAuthority`는 권한 문자열과 `AuthorityGranter`에 전달한 JAAS principal을 가지고 있다. `AbstractJaasAuthenticationProvider`는 먼저 JAAS `LoginModule`로 사용자의 credential 인증에 성공한 다음 반환된 `LoginContext`에 접근해 JAAS principal을 가져온다. 그 다음 `LoginContext.getSubject().getPrincipals()`를 호출해 결과로 받아온 각 principal을 `AbstractJaasAuthenticationProvider.setAuthorityGranters(List)`로 정의한 프로퍼티에 있는 각 `AuthorityGranter`에 전달한다.
 
-`AuthorityGranter`는 모든 JAAS principal마다 달라지기 때문에 스프링 시큐리티는 프로덕션용 구현체를 제공하지 않는다. 하지만 유닛 테스트에 있는 `TestAuthorityGranter`는 간단한 `AuthorityGranter` 구현을 보여주고 있다.
+모든 JAAS principal은 구현체마다 의미가 다르기 때문에 스프링 시큐리티는 프로덕션용 `AuthorityGranter`를 제공하진 않는다. 대신에 유닛 테스트에 `TestAuthorityGranter`라는 간단한 `AuthorityGranter` 구현체가 있다.
 
 ### 10.16.3. DefaultJaasAuthenticationProvider
 
-`DefaultJaasAuthenticationProvider`엔 JAAS `Configuration` 객체를 의존성으로 주입할 수 있다. JAAS `Configuration`을 주입받으면 이를 사용해 `LoginContext`를 생성한다. 즉, `DefaultJaasAuthenticationProvider`는 `JaasAuthenticationProvider`와 달리 `Configuration`의 특정 구현체에 얽매이지 않는다.
+`DefaultJaasAuthenticationProvider`엔 JAAS `Configuration` 객체를 의존성으로 주입할 수 있으며, 이 `Configuration`을 사용해서 `LoginContext`를 생성한다. 즉, `DefaultJaasAuthenticationProvider`는 `JaasAuthenticationProvider`와는 달리 `Configuration` 구현체에 얽매이지 않는다.
 
 #### InMemoryConfiguration
 
-`InMemoryConfiguration`이란 디폴트 인메모리 구현체를 제공하기 때문에 쉽게 `DefaultJaasAuthenticationProvider`에 `Configuration`을 주입할 수 있다. 구현체의 생성자는 `Map`을 받으며, 각 키는 로그인 설정 이름을, 값은 `AppConfigurationEntry`의 `Array`를 나타낸다.  `InMemoryConfiguration`은 `Map`으로 매핑을 제공하지 않았을 때 사용할 디폴트 `AppConfigurationEntry` 객체의 `Array`도 지원한다. 자세한 내용은 `InMemoryConfiguration`의 클래스 레벨  javadoc을 참고하라.
+스프링 시큐리티는 `DefaultJaasAuthenticationProvider`에 쉽게 주입할 수 있는 `InMemoryConfiguration`이란 디폴트 인메모리 `Configuration` 구현체를 제공한다. 구현체의 생성자는 `Map`을 받으며, 각 키는 로그인 설정 이름을, 값은 `AppConfigurationEntry`의 `Array`를 나타낸다.  `InMemoryConfiguration`은 `Map`으로 매핑을 제공하지 않았을 때 사용할 디폴트 `AppConfigurationEntry` 객체의 `Array`도 지원한다. 자세한 내용은 `InMemoryConfiguration`의 클래스 레벨  javadoc을 참고하라.
 
 #### DefaultJaasAuthenticationProvider Example Configuration
 
@@ -2073,7 +2074,7 @@ class="org.springframework.security.authentication.jaas.DefaultJaasAuthenticatio
 
 다음과 같은 JAAS 로그인 설정 파일 `/WEB-INF/login.conf`가 있다고 가정해보자:
 
-```txt
+```groovy
 JAASTest {
     sample.SampleLoginModule required;
 };
@@ -2104,13 +2105,13 @@ class="org.springframework.security.authentication.jaas.JaasAuthenticationProvid
 
 ### 10.16.5. Running as a Subject
 
-설정하고 나면 `JaasApiIntegrationFilter`는 `JaasAuthenticationToken`에서 얻은 `Subject`로 작업을 실행한다. 즉 다음과 같이 `Subject`에 접근할 수 있다는 뜻이다:
+설정하고 나면 `JaasApiIntegrationFilter`는 `JaasAuthenticationToken`에서 얻은 `Subject`로 동작을 실행한다. 즉 다음과 같이 `Subject`에 접근할 수 있다는 뜻이다:
 
 ```java
 Subject subject = Subject.getSubject(AccessController.getContext());
 ```
 
-[jaas-api-provision](../thesecuritynamespace#nsa-http-jaas-api-provision) 속성을 사용하면 쉽게 설정을 통합할 수 있다. 이 기능은 값을 채운 JAAS Subject에 의존하는 레거시나 외부 API와 통합할 때 유용하다.
+[jaas-api-provision](../thesecuritynamespace#nsa-http-jaas-api-provision) 속성을 사용하면 쉽게 설정을 통합할 수 있다. 이 기능은 값을 채운 JAAS Subject에 의존하는 레거시 API나 외부 API와 통합할 때 유용하다.
 
 ---
 
@@ -2124,11 +2125,11 @@ CAS에 대해 더 알고 싶으면 [https://www.apereo.org](https://www.apereo.o
 
 ### 10.17.2. How CAS Works
 
-CAS 웹사이트엔 CAS 아키텍처를 자세히 설명하는 문서가 있지만, 여기선 스프링 시큐리티 컨텍스트에서 필요한 전반적인 개요만 다룬다. 스프링 시큐리티 3.X는 CAS 3을 지원한다. 이 문서를 쓰는 시점에는 CAS 서버는 3.4 버전이다.
+CAS 웹사이트엔 CAS 아키텍처를 자세히 설명하는 문서가 있지만, 여기선 스프링 시큐리티 컨텍스트에서 필요한 전반적인 개요만 다룬다. 스프링 시큐리티 3.X는 CAS 3을 지원한다. 이 문서를 작성하는 시점의 CAS 서버는 3.4 버전이다.
 
 엔터프라이즈 환경 내에 어딘가엔 CAS 서버를 세팅해야 한다. CAS 서버는 간단한 표준 WAR 파일이기 때문에 서버를 세팅하는 게 어렵진 않다. 사용자에게 보여지는 로그인이나 다른 싱글사인온 페이지는 WAR 파일 안에서 커스텀한다.
 
-CAS 3.4 서버를 배포할 땐 CAS에 포함되어 있는 `deployerConfigContext.xml`에 `AuthenticationHandler`를 지정해야 한다. `AuthenticationHandler`엔 주어진 Credentials 셋이 유효한지를 나타내는 간단한 메소드가 하나 있다. `AuthenticationHandler` 구현체는 LDAP 서버나 데이터베이스 같은 백엔드 인증 레포지토리를 연결해야 한다. CAS 자체에서 지원하는 `AuthenticationHandler`도 아주 많다. war 파일을 다운로드해서 서버를 배포하면, 사용자 이름과 일치하는 비밀번호를 입력한 사용자를 인증할 수 있도록 세팅되기 때문에 테스트할 때 유용할 것이다.
+CAS 3.4 서버를 배포할 땐 CAS에 포함되어 있는 `deployerConfigContext.xml`에 `AuthenticationHandler`를 지정해야 한다. `AuthenticationHandler`엔 주어진 Credentials 셋이 유효한지를 나타내는 간단한 메소드가 하나 있다. `AuthenticationHandler` 구현체는 LDAP 서버나 데이터베이스같은 백엔드 인증 레포지토리를 연결해야 한다. CAS 자체에서 지원하는 `AuthenticationHandler`도 아주 많다. war 파일을 다운로드해서 서버를 배포하면, 사용자 이름과 일치하는 비밀번호를 입력한 사용자를 인증할 수 있도록 세팅되기 때문에 테스트할 때 유용할 것이다.
 
 CAS 서버 자체를 제외하면 당연히 엔터프라이즈 환경 내에 배포된 안전한 웹 어플리케이션이 핵심 역할을 담당한다. 이런 웹 어플리케이션은 "서비스"라고 한다. 서비스엔 세 종류가 있다. 서비스 티켓을 인증하는 서비스와 프록시 티켓을 받아오는 서비스, 프록시 티켓을 인증하는 서비스다. 프록시 티켓을 인증하는 것은 또 다른 일이다. 프록시 리스트를 반드시 검증해야 하고 종종 프록시 티켓을 재사용하기 때문이다.
 
@@ -2137,13 +2138,13 @@ CAS 서버 자체를 제외하면 당연히 엔터프라이즈 환경 내에 배
 웹 브라우저와 CAS 서버, 스프링 시큐리티로 보호 중인 서비스의 기본 상호작용은 다음과 같다:
 
 - 웹 사용자가 서비스의 공개된 페이지를 탐색하고 있다. CAS나 스프링 시큐리티는 관여하지 않는다.
-- 사용자가 드디어 보호 중인 페이지, 또는 사용 중인 빈 일부가 보호 중인 페이지를 요청한다. 스프링 시큐리티의 `ExceptionTranslationFilter`에서 `AccessDeniedException`이나 `AuthenticationException`을 감지할 것이다.
-- 사용자의 `Authentication` 객체가 (또는 이 객체가 없어서) `AuthenticationException`을 유발했기 때문에 `ExceptionTranslationFilter`는 설정해논 `AuthenticationEntryPoint`를 호출할 것이다. CAS를 사용한다면 해당 클래스는  `CasAuthenticationEntryPoint`다.
+- 드디어 사용자가 보호 중인 페이지, 또는 사용 중인 빈 일부가 보호 중인 페이지를 요청한다. 스프링 시큐리티의 `ExceptionTranslationFilter`에서 `AccessDeniedException`이나 `AuthenticationException`을 감지한다.
+- 사용자의 `Authentication` 객체가 (또는 이 객체가 없어서) `AuthenticationException`을 유발했기 때문에 `ExceptionTranslationFilter`는 설정해둔 `AuthenticationEntryPoint`를 호출할 것이다. CAS를 사용한다면 해당 클래스는  `CasAuthenticationEntryPoint`다.
 - `CasAuthenticationEntryPoint`는 사용자의 브라우저를 CAS 서버로 리다이렉트한다. 스프링 시큐리티 서비스(당신의 어플리케이션)에 대한 콜백 URL을 의미하는 `service` 파라미터도 함께 지정한다. 예를 들어 브라우저가 리다이렉트하는 URL은 https://my.company.com/cas/login?service=https%3A%2F%2Fserver3.company.com%2Fwebapp%2Flogin/cas가 될 수 있다.
 - 사용자의 브라우저가 CAS로 리다이렉트하고 나면, 사용자 이름과 비밀번호를 입력하라는 메세지가 표시된다. 이전에 로그인했음을 나타내는 세션 쿠키가 있다면 다시 로그인하지 않아도 된다 (여기엔 예외가 있는데, 뒤에서 설명한다). CAS는 위에서 설명한 `PasswordHandler`로 (CAS 3.0은 `AuthenticationHandler`) 사용자 이름과 비밀번호가 유효한지 판단한다.
-- 로그인에 성공하면 CAS는 사용자의 브라우저를 다시 기존 서비스로 리다이렉트한다. 이땐 "서비스 티켓"을 나타내는 알아보기 힘든 문자열을 `ticket` 파라미터를 사용한다. 위에서 사용한 예시대로면 브라우저가 리다이렉트하는 URL은 https://server3.company.com/webapp/login/cas?ticket=ST-0-ER94xMJmn6pha35CQRoZ다.
-- 다시 서비스 웹 어플리케이션으로 돌아가서, `CasAuthenticationFilter`는 항상 `/login/cas` 요청을 수신하고 있다 (설정을 바꿀 수 있지만 이 예시에선 디폴트를 사용할 것이다). 이 필터는 서비스 티켓을 나타내는 `UsernamePasswordAuthenticationToken`을 생성한다. 이때 principal은 `CasAuthenticationFilter.CAS_STATEFUL_IDENTIFIER`이며, credential은 서비스 티켓 문자열이다. 이 인증 요청은 설정한 `AuthenticationManager`가 처리한다.
-- `AuthenticationManager` 구현체는 `CasAuthenticationProvider`를 차례대로 구성하고 있는 `ProviderManager`다. `CasAuthenticationProvider`는 CAS 전용 princiapal(`CasAuthenticationFilter.CAS_STATEFUL_IDENTIFIER` 등)과 `CasAuthenticationToken`(뒤에서 설명한다)을 가지고 있는 `UsernamePasswordAuthenticationToken`에만 응답한다.
+- 로그인에 성공하면 CAS는 사용자의 브라우저를 다시 기존 서비스로 리다이렉트한다. 이땐 "서비스 티켓"을 나타내는 알아보기 힘든 문자열을 `ticket` 파라미터로 사용한다. 위에서 사용한 예시대로면 브라우저가 리다이렉트하는 URL은 https://server3.company.com/webapp/login/cas?ticket=ST-0-ER94xMJmn6pha35CQRoZ다.
+- 다시 서비스 웹 어플리케이션으로 돌아가서, `CasAuthenticationFilter`는 항상 `/login/cas` 요청을 수신하고 있다 (설정을 바꿀 수 있지만 이 예시에선 디폴트를 사용할 것이다). 이 필터는 서비스 티켓을 나타내는 `UsernamePasswordAuthenticationToken`을 생성한다. 이때 principal은 `CasAuthenticationFilter.CAS_STATEFUL_IDENTIFIER`이며, credential은 서비스 티켓 문자열이다. 이 인증 요청은 설정에 있는 `AuthenticationManager`가 처리한다.
+- `AuthenticationManager` 구현체는 `CasAuthenticationProvider`를 가지고 있는 `ProviderManager`다. `CasAuthenticationProvider`는 CAS 전용 princiapal(`CasAuthenticationFilter.CAS_STATEFUL_IDENTIFIER` 등)과 `CasAuthenticationToken`(뒤에서 설명한다)을 가지고 있는 `UsernamePasswordAuthenticationToken`에만 응답한다.
 - `CasAuthenticationProvider`는 `TicketValidator` 구현체로 서비스 티켓을 검증한다. 보통 CAS 클라이언트 라이브러리에 있는 클래스 중 하나인 `Cas20ServiceTicketValidator`를 사용한다. `Cas20ProxyTicketValidator`는 어플리케이션에서 프록시 티켓을 검증할 때 사용한다. 이 `TicketValidator`은 서비스 티켓 검증을 위해 CAS 서버에 HTTPS 요청을 보낸다. 이땐 프록시 콜백 URL을 함께 보내며, 위 예시대로면 https://my.company.com/cas/proxyValidate?service=https%3A%2F%2Fserver3.company.com%2Fwebapp%2Flogin/cas&ticket=ST-0-ER94xMJmn6pha35CQRoZ&pgtUrl=https://server3.company.com/webapp/login/cas/proxyreceptor다.
 - CAS 서버로 돌아와서, 이제 검증 요청을 받는다. 제출한 서비스 티켓이 발행된 서비스 URL과 일치하면, CAS는 사용자 이름을 표시한 XML로 긍정의 응답을 보낸다. 인증에 프록시가 관여한다면 (아래에서 설명) 프록시 리스트도 XML 응답에 포함된다.
 - [OPTIONAL] CAS 검증 서비스에 보낸 요청에 프록시 콜백 URL이 있으면 (`pgtUrl` 파라미터) CAS는 XML 응답에 `pgtIou`란 문자열을 포함시킨다. `pgtIou`는 프록시 승인 티켓 IOU를 나타낸다. CAS 서버는 `pgtUrl`에 자체 HTTPS 커넥션을 만든다. 덕분에 CAS 서버와 요청한 서비스 URL을 상호 인증할 수 있다. 이 HTTPS 커넥션으로 기존 웹 어플리케이션에 프록시 승인 티켓을 전송한다. 예를 들어 https://server3.company.com/webapp/login/cas/proxyreceptor?pgtIou=PGTIOU-0-R0zlgrl4pdAQwBvJWO3vnNpevwqStbSGcq3vKB2SqSFFRnjPHt&pgtId=PGT-1-si9YkkHLrtACBo64rmsi3v2nf7cpCResXg5MpESZFArbaZiOKH.
@@ -2154,11 +2155,11 @@ CAS 서버 자체를 제외하면 당연히 엔터프라이즈 환경 내에 배
 - 그다음 `CasAuthenticationFilter`로 제어가 넘어가서 생성한 `CasAuthenticationToken`을 시큐리티 컨텍스트에 담는다.
 - 사용자의 브라우저는 `AuthenticationException`을 일으켰던 기존 페이지로 리다이렉트 한다 (설정에 따라 커스텀할 수 있음).
 
-여기까지 왔다면 잘 한 것이다! CAS를 이제 설정하는 법을 알아보자.
+여기까지 왔다면 잘 한 것이다! 이제 CAS를 설정하는 법을 알아보자.
 
 ### 10.17.3. Configuration of CAS Client
 
-스프링 시큐리티덕분에 쉽게 CAS의 웹 어플리케이션 사이드를 만들 수 있다. 스프링 시큐리티 기초를 이미 알고있다고 가정하므로 아래에서 다시 다루진 않는다. 네임스페이스 기반 설정을 사용한다고 가정하고 필요한 CAS 빈을 추가할 것이다. 각 섹션은 이전 섹션 설정을 토대로 이어나갈 것이다. 전체 CAS 샘플 어플리케이션은 스프링 시큐리티 [샘플](../samples)에서 찾아볼 수 있다.
+스프링 시큐리티덕분에 쉽게 CAS의 웹 어플리케이션 사이드를 만들 수 있다. 스프링 시큐리티 기초를 이미 알고있다고 가정하고 아래에서 기본적인 내용을 다시 다루진 않는다. 네임스페이스 기반 설정을 사용한다고 가정하고 필요한 CAS 빈을 추가할 것이다. 각 섹션은 이전 섹션 설정을 토대로 이어나갈 것이다. 전체 CAS 샘플 어플리케이션은 스프링 시큐리티 [샘플](../samples)에서 찾아볼 수 있다.
 
 #### Service Ticket Authentication
 
@@ -2237,11 +2238,11 @@ Normally passwords should be hashed using BCrypt -->
 
 [How CAS Works](#10172-how-cas-works) 섹션을 다시 보면 이 빈들이 하는 일이 뭔지 바로 알 수 있을 거다.
 
-이것으로 CAS의 가장 기본적인 설정은 마쳤다. 실수하지만 않았다면 웹 어플리케이션은 CAS 싱글사인온 프레임워크 내에서 잘 동작할 것이다. 스프링 시큐리티를 사용하는 다른 코드에선 CAS로 인증한다는 사실을 신경쓰지 않아도 된다. 이어지는 섹션에선 몇 가지 (optional) 고급 설정을 다룬다.
+이것으로 CAS의 가장 기본적인 설정은 마쳤다. 실수만 없었다면 웹 어플리케이션은 CAS 싱글사인온 프레임워크 내에서 잘 동작할 것이다. 다른 코드에서 스프링 시큐리티를 사용할 땐 CAS로 인증한다는 사실을 신경쓰지 않아도 된다. 이어지는 섹션에선 몇 가지 고급 설정을 다룬다 (생략 가능).
 
 #### Single Logout
 
-CAS 프로토콜은 싱글 로그아웃을 지원하며, 스프링 시큐리티 설정에 간단하게 추가할 수 있다. 다음은 스프링 시큐리티 설정에 싱글 로그아웃 처리 추가한 것이다:
+CAS 프로토콜은 싱글 로그아웃을 지원하며, 스프링 시큐리티 설정에 간단하게 추가할 수 있다. 다음은 스프링 시큐리티 설정에 싱글 로그아웃 처리를 추가한 것이다:
 
 ```xml
 <security:http entry-point-ref="casEntryPoint">
@@ -2299,7 +2300,7 @@ CAS 프로토콜은 싱글 로그아웃을 지원하며, 스프링 시큐리티 
 </listener>
 ```
 
-SingleSignOutFilter를 사용할 댄 인코딩 이슈가 발생할 수 있다. 따라서 `SingleSignOutFilter`를 사용할 땐 올바르게 문자를 인코딩할 수 있도록 `CharacterEncodingFilter`를 추가하는 것을 권장한다. 역시 자세한 내용은 JASIG의 문서를 참고하라. `SingleSignOutHttpSessionListener`는 `HttpSession`을 만료할 때 싱글 로그아웃에 사용한 매핑을 제거한다.
+SingleSignOutFilter를 사용할 땐 인코딩 이슈가 발생할 수 있다. 따라서 `SingleSignOutFilter`를 사용한다면 올바르게 문자를 인코딩할 수 있도록 `CharacterEncodingFilter`를 추가하는 것을 권장한다. 역시 자세한 내용은 JASIG의 문서를 참고하라. `SingleSignOutHttpSessionListener`는 `HttpSession`을 만료할 때 싱글 로그아웃에 사용한 매핑을 제거한다.
 
 #### Authenticating to a Stateless Service with CAS
 
@@ -2307,9 +2308,9 @@ SingleSignOutFilter를 사용할 댄 인코딩 이슈가 발생할 수 있다. �
 
 #### Configuring CAS to Obtain Proxy Granting Tickets
 
-상태가 없는 서비스를 인증하려면 어플리케이션은 프록시 승인 티켓 (PGT)를 획득해야 한다. 이번 섹션에선 [CAS ST](#service-ticket-authentication) 설정 기반으로 PGT를 획득할 수 있는 스프링 시큐리티 설정을 다룬다.
+상태가 없는 서비스를 인증하려면 어플리케이션은 프록시 승인 티켓(PGT)을 획득해야 한다. 이번 섹션에선 [CAS ST](#service-ticket-authentication) 설정 기반으로 PGT를 획득할 수 있는 스프링 시큐리티 설정을 다룬다.
 
-첫 번째 단계는 스프링 시큐리티 설정에 `ProxyGrantingTicketStorage`를 추가하는 것이다. `CasAuthenticationFilter`에서 획득한 PGT를 저장할 때 사용하는 것으로, PGT로 프록시 티켓을 가져올 때 사용할 수 있다. 아래는 설정 예시다.
+첫 번째 단계는 스프링 시큐리티 설정에 `ProxyGrantingTicketStorage`를 추가하는 것이다. `CasAuthenticationFilter`에서 획득한 PGT는 `ProxyGrantingTicketStorage`에 저장하므로, `ProxyGrantingTicketStorage`로 프록시 티켓을 가져올 수 있다. 아래는 설정 예시다.
 
 ```xml
 <!--
@@ -2373,9 +2374,9 @@ String proxyResponse = CommonUtils.getResponseFromServer(serviceUrl, "UTF-8");
 
 `CasAuthenticationProvider`는 상태가 있는(stateful) 클라이언트와 상태가 없는(stateless) 클라이언트를 구분한다. `CasAuthenticationFilter`의 `filterProcessUrl`로 요청하면 상태가 있는 클라이언트로 간주한다. `filterProcessUrl`이 아닌 다른 URL로 `CasAuthenticationFilter`에 인증을 요청하면 상태가 없는 클라이언트로 간주한다.
 
-원격 프로토콜은 `HttpSession` 컨텍스트로 자신을 표현할 방법이 없기 때문에, 여러 요청에 걸쳐 사용하는 세션에 보안 컨텍스트를 저장하는 기본 전략에 의존할 수 없다. 게다가 CAS 서버는 `TicketValidator`로 티켓을 검증하고 나면 티켓을 무효화시키기 때문에 이후 요청에서 같은 프록시 티켓을 재사용할 수 없다.
+원격 프로토콜은 `HttpSession` 컨텍스트로 자신을 표현할 방법이 없기 때문에, 여러 요청에 걸쳐 사용하는 세션에 보안 컨텍스트를 저장하는 기본 전략에 의존할 수 없다. 게다가 CAS 서버는 `TicketValidator`로 티켓을 검증하고 나면 티켓을 무효화시키기 때문에 이후 다른 요청에서 같은 프록시 티켓을 재사용할 수 없다.
 
-원격 프로토콜 클라이언트에선 CAS를 아예 사용하지 않는 것도 확실한 선택지다. 하지만 이렇게 하면 CAS의 많은 기능을 포기하는 것이다. 절충안으로 `CasAuthenticationProvider`는 `StatelessTicketCache`를 사용한다. 단, `CasAuthenticationFilter.CAS_STATELESS_IDENTIFIER`와 동일한 principal을 사용하는 상태가 없는 클라이언트일 때만 사용한다. 캐시를 사용하면 `CasAuthenticationProvider`는 `StatelessTicketCache`에 키값 프록시 티켓과 함께 결과 `CasAuthenticationToken`을 저장한다. 따라서 원격 프로토콜 클라이언트는 같은 프록시 티켓을 표현할 수 있으며, `CasAuthenticationProvider`는 CAS 서버에 검증 요청을 보내지 않아도 된다 (첫 번째 요청은 제외). 한 번 인증되면 기존 타켓 서비스가 아닌 다른 URL에서도 프록시 티켓을 사용할 수 있다.
+원격 프로토콜 클라이언트에선 CAS를 아예 사용하지 않는 것도 확실한 선택지다. 하지만 이렇게 하면 CAS의 많은 기능을 포기하는 것이다. 절충안으로 `CasAuthenticationProvider`는 `StatelessTicketCache`를 사용한다. 단, `CasAuthenticationFilter.CAS_STATELESS_IDENTIFIER`와 동일한 principal을 사용하는 상태가 없는 클라이언트일 때만 사용한다. 캐시를 사용하면 `CasAuthenticationProvider`는 `StatelessTicketCache`에 프록시 티켓 키와 함께 결과 `CasAuthenticationToken`을 저장한다. 따라서 원격 프로토콜 클라이언트는 같은 프록시 티켓을 표현할 수 있으며, `CasAuthenticationProvider`는 CAS 서버에 검증 요청을 보내지 않아도 된다 (첫 번째 요청은 제외). 한 번 인증되면 기존 타켓 서비스가 아닌 다른 URL에서도 프록시 티켓을 사용할 수 있다.
 
 이 설정은 이전 섹션에 사용한 설정을 토대로 하며, 이어서 프록시 티켓 인증을 설정한다. 먼저 아래와 같이 모든 아티팩트를 인증하도록 명시해 준다.
 
@@ -2479,7 +2480,7 @@ X.509 클라이언트 인증을 설정하는 건 매우 쉽다. http 시큐리�
 />
 ```
 
-클라이언트가 인증서를 제출하지 않아도 SSL 커넥션을 맺고 싶다면 `clientAuth`를 `want`로 설정해도 된다. 인증서를 제출하지 않은 클라이언트는 폼 인증 등 X.509 인증 외의 다른 메커니즘을 사용해야만 스프링 시큐리티가 보호하는 모든 객체에 접근할 수 있다.
+클라이언트가 인증서를 제출하지 않아도 SSL 커넥션을 맺고 싶다면 `clientAuth`를 `want`로 설정해도 된다. 이렇게하면, 인증서를 제출하지 않은 클라이언트는 폼 인증 등 X.509 인증 외의 다른 메커니즘을 사용해야만 스프링 시큐리티가 보호하는 모든 객체에 접근할 수 있다.
 
 ---
 
@@ -2532,7 +2533,7 @@ boolean supports(Class clazz);
 
 ### 10.20.1. Logout Java Configuration
 
-`WebSecurityConfigurerAdapter`를 사용했다면 자동으로 로그아웃 기능이 지원된다. 디폴트로는 `/logout` URL에 접근했을 때 다음과 같이 사용자를 로그아웃 시킨다:
+`WebSecurityConfigurerAdapter`를 사용했다면 자동으로 로그아웃 기능을 추가한다. 디폴트로는 `/logout` URL에 접근했을 때 다음과 같이 사용자를 로그아웃 시킨다:
 
 - HTTP 세션 무효화
 - 관련한 모든 RememberMe 인증 제거
@@ -2584,18 +2585,18 @@ protected void configure(HttpSecurity http) throws Exception {
 
 자세한 내용은 [Remember-Me 인터페이스와 구현체](#10124-remember-me-interfaces-and-implementations) 섹션을 참고하라.
 
-설정 API는 `LogoutHandler` 구현체를 직접 추가하는 대신, 내부에서 해당하는 `LogoutHandler` 구현체를 적용해 주는 간단 메소드도 제공한다. 예를 들어 `deleteCookies()` 메소드로 로그아웃에 성공하면 삭제할 쿠키를 하나 이상 지정할 수 있다. 이 메소드는 직접 `CookieClearingLogoutHandler`를 추가하는 것보다 간단하다.
+설정 API에 `LogoutHandler` 구현체를 직접 추가할 수도 있지만, 내부에서 대신 `LogoutHandler` 구현체를 적용해 주는 간단 메소드도 제공한다. 예를 들어 `deleteCookies()` 메소드로 로그아웃에 성공하면 삭제할 쿠키를 하나 이상 지정할 수 있다. 이 메소드는 직접 `CookieClearingLogoutHandler`를 추가하는 것보다 간단하다.
 
 ### 10.20.4. LogoutSuccessHandler
 
-`LogoutSuccessHandler`는 로그아웃에 성공한 다음 `LogoutFilter`에서 호출하며, 적절한 곳으로 리다이렉트 또는 포워딩시키는 용도로 사용한다. 이 인터페이스는 `LogoutHandler`와 거의 동일하지만 예외를 던질 수 있다는 점에 주의해라.
+`LogoutSuccessHandler`는 로그아웃에 성공한 다음 `LogoutFilter`에서 호출하며, 적절한 곳으로 리다이렉트 또는 포워딩시키는 용도로 사용한다. 이 인터페이스는 `LogoutHandler`와 거의 동일하지만 예외를 던질 수 있다는 점에 유의해라.
 
 스프링 시큐리티는 아래 구현체를 제공한다:
 
 - [SimpleUrlLogoutSuccessHandler](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/logout/SimpleUrlLogoutSuccessHandler.html)
 - HttpStatusReturningLogoutSuccessHandler
 
-위에서 말했듯이 직접 `SimpleUrlLogoutSuccessHandler`를 지정하지 않아도 된다. 대신에 `logoutSuccessUrl()` 메소드로 간단하게 설정할 수 있다. 이 메소드 내부에서 `SimpleUrlLogoutSuccessHandler`를 세팅한다. 로그아웃되면 설정해둔 URL로 리다이렉트한다. 디폴트는 `/login?logout`이다.
+위에서 말했듯이 직접 `SimpleUrlLogoutSuccessHandler`를 지정하지 않아도 된다. 대신에 간단히 `logoutSuccessUrl()` 메소드로 설정할 수 있다. 이 메소드 내부에서 `SimpleUrlLogoutSuccessHandler`를 세팅한다. 로그아웃되면 설정해둔 URL로 리다이렉트한다. 디폴트는 `/login?logout`이다.
 
 REST API를 사용한다면 `HttpStatusReturningLogoutSuccessHandler`가 괜찮을 것이다. 이 `LogoutSuccessHandler`는 로그아웃에 성공하면 URL로 리다이렉트하는 대신 반환할 HTTP 상태코드를 지정할 수 있다. 상태 코드를 지정하지 않으면 디폴트로 200을 반환한다.
 
@@ -2660,7 +2661,7 @@ public class AuthenticationEvents {
 | `CredentialsExpiredException`    | `AuthenticationFailureCredentialsExpiredEvent` |
 | `InvalidBearerTokenException`    | `AuthenticationFailureBadCredentialsEvent`     |
 
-publisher는 `Exception`이 정확하게 매치해야 해당 이벤트를 발행한다. 즉, 이 exception 클래스의 하위 클래스는 이벤트를 발생시키지 않는다. 
+publisher는 `Exception`이 정확하게 일치해야 해당 이벤트를 발행한다. 즉, 이 예외 클래스를 상속한 클래스에선 이벤트를 발생시키지 않는다. 
 
 따라서 하위 클래스를 매핑하고 싶다면 publisher의 `setAdditionalExceptionMappings` 메소드로 매핑을 추가해야 한다:
 
