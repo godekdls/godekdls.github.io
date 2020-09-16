@@ -8,7 +8,6 @@ image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
 boundary: Servlet Applications
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-hello
 ---
@@ -21,7 +20,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ---
 
-스프링 시큐리티는 표준 서블릿 필터로 서블릿 컨테이너와 통합할 수 있다. 서블릿 컨테이너에서 실행하는 모든 어플리케이션에서 동작한다는 뜻이기도 하다. 더 구체적으로 말하자면, 서블릿 기반 어플리케이션에서 스프링 시큐리티때문에 스프링을 사용할 필요가 없다는 말이다.
+스프링 시큐리티는 표준 서블릿 필터로 서블릿 컨테이너와 통합된다. 서블릿 컨테이너에서 실행하는 모든 어플리케이션에서 동작한다는 뜻이기도 하다. 더 구체적으로 말하자면, 서블릿 기반 어플리케이션에서 스프링 시큐리티 때문에 굳이 스프링을 사용할 필요가 없다는 말이다.
 
 ---
 

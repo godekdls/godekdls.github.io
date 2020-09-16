@@ -7,7 +7,6 @@ description: 스프링 시큐리티에서 사용하는 서블릿 필터를 설�
 image: ./../../images/springsecurity/filterchain.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-architecture
 ---
@@ -29,14 +28,14 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 9.1. A Review of `Filter`s
 
-스프링 시큐리티는 서블릿 `Filter`를 기반으로 서블릿을 지원하므로, 먼저 일반적인 `Filter` 역할을 살펴보면 이해하기 좀 더 쉬울 것이다. 아래 이미지는 단일 HTTP 요청을 처리하는 전형적인 레이어를 나타내고 있다:
+스프링 시큐리티는 서블릿 `Filter`를 기반으로 서블릿을 지원하므로, 먼저 일반적인 `Filter` 역할을 살펴보면 좀 더 이해하기 쉬울 것이다. 아래 이미지는 단일 HTTP 요청을 처리하는 전형적인 레이어를 나타내고 있다:
 
 ![FilterChain](./../../images/springsecurity/filterchain.png)
 
-클라이언트는 어플리케이션으로 요청을 전송하고, 컨테이너는 `Servlet`과 여러 `Filter`로 구성된 `FilterChain`을 만들어 요청 URI path 기반으로 `HttpServletRequest`를 처리한다. 스프링 MVC 어플리케이션에서의 `Servlet`은 [`DispatcherServlet`](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet)이다. 단일 `HttpServletRequest`와 `HttpServletResponse` 처리는 최대 한 개의 `Servlet`이 담당한다. 하지만 `Filter`는 여러 개를 사용할 수 있다. `Filter`의 사용 예는 다음과 같다:
+클라이언트는 어플리케이션으로 요청을 전송하고, 컨테이너는 `Servlet`과 여러 `Filter`로 구성된 `FilterChain`을 만들어 요청 URI path 기반으로 `HttpServletRequest`를 처리한다. 스프링 MVC 어플리케이션에서의 `Servlet`은 [`DispatcherServlet`](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet)이다. 단일 `HttpServletRequest`와 `HttpServletResponse` 처리는 최대 한 개의 `Servlet`이 담당한다. 하지만 `Filter`는 여러 개를 사용할 수 있다. `Filter`는 보통 다음과 같이 사용한다:
 
 - 다운스트림의 `Servlet`과 여러 `Filter`의 실행을 막는다. 이 경우엔 보통 `Filter`에서 `HttpServletResponse`를 작성한다.
-- 다운스트림에 있는 `Servlet`과 여러 `Filter`들로 `HttpServletRequest`나 `HttpServletResponse`를 수정한다.
+- 다운스트림에 있는 `Servlet`과 여러 `Filter`로 `HttpServletRequest`나 `HttpServletResponse`를 수정한다.
 
 `Filter`는 `FilterChain` 안에 있을 때 효력을 발휘한다.
 
@@ -62,7 +61,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 
 ![DelegatingFilterProxy](./../../images/springsecurity/delegatingfilterproxy.png)
 
-`DelegatingFilterProxy`는 `ApplicationContext`에서 *Bean Filter<sub>0</sub>*을 찾아 실행한다. 다음은 `DelegatingFilterProxy`의 슈도코드다.
+`DelegatingFilterProxy`는 `ApplicationContext`에서 *Bean Filter<sub>0</sub>*를 찾아 실행한다. 아래 코드는 `DelegatingFilterProxy`의 슈도코드다.
 
 **Example 48. `DelegatingFilterProxy` Pseudo Code**
 
@@ -76,7 +75,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 }
 ```
 
-`DelegatingFilterProxy`를 사용하면 `Filter` 빈 인스턴스를 찾는 것을 지연시킬 수도 있다. 컨테이너 기동 전에  `Filter`를 등록해야 하기 때문에 중요한 기능이다. 하지만 스프링은 보통 `Filter` 인스턴스들을 등록한 이후에 필요한 스프링 빈은 `ContextLoaderListener`로 로드한다.
+`DelegatingFilterProxy`를 사용하면 `Filter` 빈 인스턴스를 참조를 지연시킬 수도 있다. 컨테이너는 기동하기 전에  `Filter`를 등록해야 하기 때문에 중요한 기능이다. 하지만 스프링은 보통 `Filter` 인스턴스들을 등록하는 시점 이후에 필요한 스프링 빈은 `ContextLoaderListener`로 로드한다.
 
 ----
 
@@ -94,25 +93,25 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 
 ![SecurityFilterChain](./../../images/springsecurity/securityfilterchain.png)
 
-`SecurityFilterChain`에 있는 [보안 필터들](#95-security-filters)은 전형적인 빈이지만, [DelegatingFilterProxy](#92-delegatingfilterproxy)가 아닌 `FilterChainProxy`로 등록한다. `FilterChainProxy`로 서블릿 컨테이너나 [DelegatingFilterProxy](#92-delegatingfilterproxy)에 직접 빈을 등록하면 여러 가지 장점이 있다. 먼저 스프링 시큐리티가 서블릿을 지원할 수 있는 시작점 역할을 한다. 따라서 서블릿에 스프링 시큐리티를 적용하다 문제를 겪는다면 `FilterChainProxy`부터 디버그 포인트를 추가해 보는 것이 좋다.
+`SecurityFilterChain`에 있는 [보안 필터들](#95-security-filters)은 전형적인 빈이지만, [DelegatingFilterProxy](#92-delegatingfilterproxy)가 아닌 `FilterChainProxy`로 등록한다. `FilterChainProxy`을 직접 서블릿 컨테이너에 등록하거나 [DelegatingFilterProxy](#92-delegatingfilterproxy)에 등록하면 좋은 점이 있다. 먼저 스프링 시큐리티가 서블릿을 지원할 수 있는 시작점이 돼준다. 따라서 서블릿에 스프링 시큐리티를 적용하다 문제를 겪는다면 `FilterChainProxy`부터 디버그 포인트를 추가해 보는 것이 좋다.
 
 `FilterChainProxy`는 스프링 시큐리티의 중심점이기 때문에 필수로 여겨지는 작업을 수행할 수 있다는 장점도 있다. 예를 들어 `SecurityContext`를 비워 메모리 릭을 방지할 수 있다. 스프링 시큐리티의 [`HttpFirewall`](../protectionagainstexploits#144-httpfirewall)을 적용해서 특정 공격 유형을 방어할 수도 있다.
 
 게다가 `SecurityFilterChain`을 어떨 때 실행해야 할지도 좀 더 유연하게 결정할 수 있다. 서블릿 컨테이너에선 URL로만 실행할 `Filter`들을 결정한다. 하지만 `FilterChainProxy`는 `RequestMatcher` 인터페이스를 사용하면  `HttpServletRequest`에 있는 어떤 것으로도 실행 여부를 결정할 수 있다.
 
-사실 사용할 `SecurityFilterChain`을 결정할 때도 `FilterChainProxy`를 사용한다. 이 덕분에 어플리케이션에선 완전히 설정을 분리해서 여러 *슬라이스*를 구성할 수 있다.
+사실 사용할 `SecurityFilterChain` 자체를 결정할 때도 `FilterChainProxy`를 사용한다. 이 덕분에 어플리케이션에선 완전히 설정을 분리해서 여러 *슬라이스*를 구성할 수 있다.
 
 ![Multiple SecurityFilterChain](./../../images/springsecurity/multi-securityfilterchain.png)
 
-이 이미지에는 `SecurityFilterChain`이 여러 개 있다. 어떤 `SecurityFilterChain`을 사용할지는 `FilterChainProxy`가 결정하며, 가장 먼저 매칭한 `SecurityFilterChain`을 실행한다. `/api/messages/` URL을 요청하면 `SecurityFilterChain`<sub>0</sub>의 `/api/**` 패턴과 제일 먼저 매칭되므로, `SecurityFilterChain`<sub>n</sub>도 일치하긴 하지만 `SecurityFilterChain`<sub>0</sub>만 실행한다. `/messages/` URL로 요청하면, `SecurityFilterChain`<sub>0</sub>의 `/api/**` 패턴과는 매칭되지 않기 때문에 `FilterChainProxy`는 계속해서 다른 `SecurityFilterChain`을 시도해 본다. 매칭되는 다른 `SecurityFilterChain` 인스턴스가 없다고 가정하면, `SecurityFilterChain`<sub>n</sub>을 실행한다.
+이 이미지에는 `SecurityFilterChain`이 여러 개 있다. 어떤 `SecurityFilterChain`을 사용할지는 `FilterChainProxy`가 결정하며, 가장 먼저 매칭한 `SecurityFilterChain`을 실행한다. `/api/messages/` URL을 요청하면 `SecurityFilterChain`<sub>0</sub>의 `/api/**` 패턴과 제일 먼저 매칭되므로, `SecurityFilterChain`<sub>n</sub>도 일치하긴 하지만 `SecurityFilterChain`<sub>0</sub>만 실행한다. `/messages/` URL로 요청하면, `SecurityFilterChain`<sub>0</sub>의 `/api/**` 패턴과는 매칭되지 않기 때문에 `FilterChainProxy`는 계속해서 다른 `SecurityFilterChain`을 시도해 본다. 매칭되는 또다른 `SecurityFilterChain` 인스턴스가 없다고 가정하면, `SecurityFilterChain`<sub>n</sub>을 실행한다.
 
-`SecurityFilterChain`<sub>0</sub>은 보안 `Filter` 인스턴스를 세 개만 설정했다는 점에 주목하라. 하지만 `SecurityFilterChain`<sub>n</sub>은 보안 `Filter`를 4개 설정했다. `SecurityFilterChain`은 유니크하고 격리된 상태로 설정할 수 있다는 점을 알아야 한다. 사실 어플리케이션에서 스프링 시큐리티가 특정 요청을 무시하길 바란다면,  `SecurityFilterChain`에 보안 `Filter`를 0개 설정하는 것도 가능하다.
+`SecurityFilterChain`<sub>0</sub>은 보안 `Filter` 인스턴스를 세 개만 설정했다는 점에 주목하라. 하지만 `SecurityFilterChain`<sub>n</sub>은 보안 `Filter`를 4개 설정했다. `SecurityFilterChain`은 고유한, 격리된 설정을 가질 수 있다는 점을 알아두자. 사실, 어플리케이션의 특정 요청은 스프링 시큐리티가 무시하길 바란다면,  `SecurityFilterChain`에 보안 `Filter`를 0개 설정하는 것도 가능하다.
 
 ---
 
 ## 9.5. Security Filters
 
-보안 필터는 [SecurityFilterChain](#94-securityfilterchain) API를 사용해서 [FilterChainProxy](#93-filterchainproxy)에 추가한다. 이때 [`Filter`의 순서](#91-a-review-of-filters)가 중요하다. 보통은 스프링 시큐리티의 `Filter` 순서를 알아야 할 필요는 없다. 하지만 순서를 알아두면 좋을 때도 있다.
+보안 필터는 [SecurityFilterChain](#94-securityfilterchain) API를 사용해서 [FilterChainProxy](#93-filterchainproxy)에 추가한다. 이땐 [`Filter`의 순서](#91-a-review-of-filters)가 중요하다. 보통은 스프링 시큐리티의 `Filter` 순서를 알아야 할 필요는 없다. 하지만 순서를 알아두면 좋을 때도 있다.
 
 다음은 전체 스프링 시큐리티 필터의 순서를 나타낸 것이다:
 
@@ -175,7 +174,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 
 ```java
 try {
-    filterChain.doFilter(request, response); //(1)
+    filterChain.doFilter(request, response); // (1)
 } catch (AccessDeniedException | AuthenticationException e) {
     if (!authenticated || e instanceof AuthenticationException) {
         startAuthentication(); // (2)
@@ -184,6 +183,6 @@ try {
     }
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> [A Review of `Filter`s](#91-a-review-of-filters) 섹션에서 `FilterChain.doFilter(request, response)` 호출해서 어플리케이션의 나머지 작업을 이어 처리한다고 했던 게 기억날 것이다. 즉, 어플리케이션의 다른 곳에서 (i.e. [`FilterSecurityInterceptor`](../authorization#112-authorize-httpservletrequest-with-filtersecurityinterceptor) 또는 메소드 시큐리티) `AuthenticationException`이나 `AccessDeniedException`이 발생하면 여기서 예외를 캐치하고 처리한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> [`Filter` 리뷰](#91-a-review-of-filters) 섹션에서 `FilterChain.doFilter(request, response)`를 호출해서 어플리케이션의 나머지 작업을 이어 처리한다고 했던 게 기억날 것이다. 즉, 어플리케이션에 있는 다른 코드에서 (i.e. [`FilterSecurityInterceptor`](../authorization#112-authorize-httpservletrequest-with-filtersecurityinterceptor) 또는 메소드 시큐리티) `AuthenticationException`이나 `AccessDeniedException`이 발생하면 여기서 예외를 캐치하고 처리한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 인증받지 않은 사용자거나 `AuthenticationException`이 발생했다면 *인증을 시작한다*.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 그렇지 않으면 *접근을 거부한다*.</small>
