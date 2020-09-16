@@ -1,7 +1,7 @@
 ---
 title: RSocket Security
 category: Spring Security
-order: 33
+order: 34
 permalink: /Spring%20Security/rsocketsecurity/
 description: 스프링 시큐리티와 RSocket을 통합하는 방법을 설명합니다. 공식 문서에 있는 "RSocket Security" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png

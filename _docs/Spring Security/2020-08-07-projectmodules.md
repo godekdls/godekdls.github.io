@@ -7,7 +7,6 @@ description: 스프링 시큐리티 프로젝트 모듈을 소개합니다. 공�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-08-21T21:30:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#modules
 ---
@@ -30,7 +29,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ---
 
-스프링 시큐리티는 3.0 버전에서 코드를 분류해서 기능 범위와 외부 의존성을 좀 더 세분화한 jar를 제공했다. 메이븐으로 프로젝트를 빌드한다면 `pom.xml`에 추가해야 하는 모듈이 더 있다. 메이븐을 사용하지 않더라도 `pom.xml` 파일을 보고 외부 의존성과 버전을 관리하는 방법을 파악해 보길 권한다. 샘플 어플리케이션에 있는 라이브러리를 파악해 보는 것도 좋은 생각이다.
+스프링 시큐리티는 3.0 버전에서 코드를 분류해서, 기능 범위와 외부 의존성을 좀 더 세분화한 jar를 제공했다. 메이븐으로 프로젝트를 빌드한다면 이 jar 모듈을 `pom.xml`에 추가해야 한다. 메이븐을 사용하지 않더라도 `pom.xml` 파일을 보고 외부 의존성과 버전을 관리하는 방법을 파악해 보길 바란다. 샘플 어플리케이션에 있는 라이브러리를 파악해 보는 것도 좋은 방법이다.
 
 ---
 
@@ -71,7 +70,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 6.6. OAuth 2.0 Core — `spring-security-oauth2-core.jar`
 
-`spring-security-oauth2-core.jar`에는 OAuth 2.0 프레임워크와 OpenID Connect Core 1.0 지원을 위한 핵심 클래스와 인터페이스가 있다. 클라이언트든, 리소스 서버나 인가 서버든, OAuth 2.0 또는 OpenID Connect Core 1.0을 사용한다면 이 모듈이 필요하다. 상위 패키지는 `org.springframework.security.oauth2.core`다.
+`spring-security-oauth2-core.jar`에는 OAuth 2.0 프레임워크와 OpenID Connect Core 1.0 지원을 위한 핵심 클래스와 인터페이스가 있다. 클라이언트든, 리소스 서버든, 인가 서버든, OAuth 2.0이나 OpenID Connect Core 1.0을 사용한다면 이 모듈이 필요하다. 상위 패키지는 `org.springframework.security.oauth2.core`다.
 
 ---
 
@@ -83,7 +82,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 6.8. OAuth 2.0 JOSE — `spring-security-oauth2-jose.jar`
 
-`spring-security-oauth2-jose.jar`는 JOSE (Javascript Object Signing and Encryption) 프레임워크를 지원한다. JOSE 프레임워크는 양단 간 클레임을 안전하게 전송할 수 있는 방법을 제공하는 프레임워크다. 이는 다음과 같은 스펙으로 구성된다:
+`spring-security-oauth2-jose.jar`는 JOSE (Javascript Object Signing and Encryption) 프레임워크를 지원한다. JOSE 프레임워크는 양단 간 클레임을 안전하게 전송할 수 있는 방법을 제공하는 프레임워크다. 다음과 같은 스펙으로 구성돼있다:
 
 - JSON Web Token (JWT)
 - JSON Web Signature (JWS)
@@ -105,7 +104,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 6.10. ACL — `spring-security-acl.jar`
 
-이 모듈은 도메인 객체 ACL 구현에 특화된 구현체를 제공한다. 어플리케이션에 있는 특정 도메인 객체 인스턴스에 보안을 적용할 때 사용한다. 상위 패키지는 `org.springframework.security.acls`다.
+이 모듈은 도메인 객체 ACL 구현에 특화된 구현체를 제공한다. 어플리케이션에 있는 특정 도메인 객체 인스턴스를 보호할 때 사용한다. 상위 패키지는 `org.springframework.security.acls`다.
 
 ---
 
