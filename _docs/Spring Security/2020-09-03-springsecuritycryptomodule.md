@@ -7,7 +7,6 @@ description: 스프링 시큐리티 암호화(Crypto) 모듈을 소개합니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-04T20:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#crypto
 ---
@@ -33,7 +32,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 20.2. Encryptors
 
-Encryptors 클래스는 대칭 encryptor를 생성하는 팩토리 메소드를 제공한다. 이 클래스를 사용하면 데이터를 로 byte[] 형식으로 암호화하는 ByteEncryptor를 만들 수 있다. TextEncryptor를 만들어 텍스트 문자열을 암호화할 수도 있다. Encryptor는 thread-safe하다.
+Encryptors 클래스는 대칭 encryptor를 생성하는 팩토리 메소드를 제공한다. 이 클래스로 데이터를 저수준 byte[] 형식으로 암호화하는 ByteEncryptor를 만들 수 있다. TextEncryptor를 만들어서 텍스트 문자열을 암호화할 수도 있다. Encryptor는 thread-safe하다.
 
 ### 20.2.1. BytesEncryptor
 
@@ -69,7 +68,7 @@ TextEncryptor는 표준 BytesEncryptor로 텍스트 데이터를 암호화한다
 Encryptors.queryableText("password", "salt");
 ```
 
-질의할 수 있는 TextEncryptor와 표준 TextEncryptor의 차이는 초기화 벡터(iv) 처리와 관련 있다. 질의할 수 있는 TextEncryptor#encrypt 연산에 사용하는 iv는 공유할 수도 있고, 또는 무작위로 생성하지 않는 고정값이다. 즉, 같은 텍스트를 여러 번 암호화하면 항상 동일한 결과를 만든다. 이는 덜 안전하지만 암호화 데이터를 질의해야 할 때 필요하다. 질의 가능한 암호화 텍스트의 예로는 OAuth apiKey가 있다.
+질의할 수 있는 TextEncryptor와 표준 TextEncryptor의 차이는 초기화 벡터(iv) 처리와 관련 있다. 질의할 수 있는 TextEncryptor#encrypt 연산에 사용하는 iv는 공유하거나 고정된 값이며, 무작위로 생성하지 않는다. 즉, 같은 텍스트를 여러 번 암호화하면 항상 동일한 결과를 만든다. 이는 덜 안전하지만 암호화 데이터를 질의해야 할 때 필요하다. 질의 가능한 암호화 텍스트의 예로는 OAuth apiKey가 있다.
 
 ---
 
@@ -86,7 +85,7 @@ BytesKeyGenerator generator = KeyGenerators.secureRandom();
 byte[] key = generator.generateKey();
 ```
 
-키 길이는 디폴트로 8 바이트를 사용한다. 키 길이를 지정하고 싶을 땐 다른 KeyGenerators.secureRandom 메소드를 사용할 수 있다:
+키 길이는 디폴트로 8 바이트를 사용한다. 키 길이를 지정하고 싶을 땐 다른 KeyGenerators.secureRandom 메소드를 사용하면 된다:
 
 ```java
 KeyGenerators.secureRandom(16);
@@ -132,7 +131,7 @@ String result = encoder.encode("myPassword");
 assertTrue(encoder.matches("myPassword", result));
 ```
 
-`Pbkdf2PasswordEncoder` 구현체은 PBKDF2 알고리즘으로 비밀번호를 해싱한다. PBKDF2는 패스워드 크래킹을 방지하기 위해 의도적으로 느리게 동작하는 알고리즘이며, 시스템에서 비밀번호 하나를 검증하는 데 0.5초가량 걸리도록 설정해야 한다.
+`Pbkdf2PasswordEncoder` 구현체는 PBKDF2 알고리즘으로 비밀번호를 해싱한다. PBKDF2는 패스워드 크래킹을 방지하기 위해 의도적으로 느리게 동작하는 알고리즘이며, 시스템에서 비밀번호 하나를 검증하는 데 0.5초가량 걸리도록 설정해야 한다.
 
 ```java
 // Create an encoder with all the defaults
