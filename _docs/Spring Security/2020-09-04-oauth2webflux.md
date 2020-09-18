@@ -56,7 +56,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 25.1. OAuth 2.0 Login
 
-OAuth 2.0 로그인 기능을 사용하면 어플리케이션의 사용자를 외부 OAuth 2.0 Provider나 (e.g. 깃허브) OpenID Connect 1.0 Provider의 (구글) 계정으로 로그인할 수 있다. “구글 계정으로 로그인”, “깃허브 계정으로 로그인”은 바로 이 OAuth 2.0 로그인을 구현한 것이다.
+OAuth 2.0 로그인 기능을 사용하면 어플리케이션의 사용자를 외부 OAuth 2.0 Provider나 (e.g. 깃허브) OpenID Connect 1.0 Provider (구글) 계정으로 로그인할 수 있다. “구글 계정으로 로그인”, “깃허브 계정으로 로그인”은 바로 이 OAuth 2.0 로그인을 구현한 것이다.
 
 > OAuth 2.0 로그인은 [OAuth 2.0 인가 프레임워크](https://tools.ietf.org/html/rfc6749#section-4.1)와 [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth)에 명시된 대로 **인가 코드 부여 (Authorization Code Grant)** 방식을 사용한다.
 
@@ -269,7 +269,7 @@ spring:
 
 결정적으로 기동 시점에 아래와 같은 처리를 하기 때문이다:
 
-1. Provider 설정 엔드포인트 또는 인가 서버 메타데이터 엔드포인트를 찔러서 응답을 `jwks_url` 프로퍼티에 담는다.
+1. Provider 설정 엔드포인트 또는 인가 서버 메타데이터 엔드포인트를 찔러서 응답으로 `jwks_url` 프로퍼티를 처리한다.
 2. `jwks_url`에 유효한 공개키를 질의하기 위한 검증 전략을 설정한다.
 3. `https://idp.example.com`에 대한 각 JWT `iss` 클레임을 검증할 전략을 설정한다.
 
@@ -344,7 +344,7 @@ SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
 어플리케이션에서 따로 정의한 `SecurityWebFilterChain` 빈이 없다면 스프링 부트가 위에 있는 디폴트 빈을 등록한다.
 
-이를 바꾸려면 어플리케이션에 빈을 정의하기만 하면 되다:
+빈을 바꾸려면 어플리케이션에 빈을 정의하기만 하면 되다:
 
 ```java
 @Bean
@@ -435,7 +435,7 @@ public ReactiveJwtDecoder jwtDecoder() {
 
 ### 25.3.3. Configuring Trusted Algorithms
 
-디폴트로 `NimbusReactiveJwtDecoder`를 사용하기 때문에 리소스 서버는 `RS256`을 사용한 토큰만 신뢰하고 검증할 수 있다.
+디폴트로 `NimbusReactiveJwtDecoder`를 사용하기 때문에 리소스 서버는 `RS256`을 사용한 토큰만 신뢰하고 이 토큰만 검증할 수 있다.
 
 알고리즘은 [스프링 부트](#via-spring-boot)나 [NimbusJwtDecoder 빌더](#using-a-builder)로 커스텀할 수 있다.
 
@@ -714,7 +714,7 @@ ReactiveJwtDecoder jwtDecoder() {
 
 #### Minimal Configuration for Introspection
 
-opaque 토큰은 보통 인가 서버에서 호스트하는 [OAuth 2.0 Introspection 엔드포인트](https://tools.ietf.org/html/rfc7662)로 검증한다. 이는 토큰을 취소해야 할 때 유용하다.
+opaque 토큰은 보통 인가 서버에서 호스트하는 [OAuth 2.0 Introspection 엔드포인트](https://tools.ietf.org/html/rfc7662)로 검증한다. 이 엔드포인트는 토큰을 취소해야 할 때 유용하다.
 
 [스프링 부트](https://spring.io/projects/spring-boot)를 사용하면 두 가지만으로 어플리케이션을 introspection을 사용하는 인가 서버가로 만들 수 있다. 먼저 필요한 의존성을 추가하고, 그 다음 introspection 엔드포인트 상세 정보를 설정한다.
 
@@ -784,7 +784,7 @@ public Mono<String> foo(BearerTokenAuthentication authentication) {
 }
 ```
 
-`BearerTokenAuthentication`엔 `OAuth2AuthenticatedPrincipal`이 있기 때문에 컨트롤러 메소드에서 이 값도 사용할 수 있다:
+`BearerTokenAuthentication`엔 `OAuth2AuthenticatedPrincipal`이 있기 때문에 이 값도 컨트롤러 메소드에서 사용할 수 있다:
 
 ```java
 @GetMapping("/foo")
@@ -826,7 +826,7 @@ SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
 어플리케이션에서 따로 정의한 `SecurityWebFilterChain` 빈이 없다면 스프링 부트가 위에 있는 디폴트 빈을 등록한다.
 
-이를 바꾸려면 어플리케이션에 빈을 정의하기만 하면 되다:
+빈을 바꾸려면 어플리케이션에 빈을 정의하기만 하면 되다:
 
 ```java
 @EnableWebFluxSecurity
@@ -1135,7 +1135,7 @@ ReactiveOpaqueTokenIntrospector introspector() {
 
 테넌트 식별자에 따라 bearer 토큰을 검증하는 전략이 다르다면 리소스 서버를 멀티 테넌트로 간주한다.
 
-예를 들어 리소스 서버가 두 개의 다른 인가 서버에서 bearer 토큰을 받을 수도 있다. 아니면 인가 서버가 여러 issuer를 나타낼 수도 있다.
+예를 들어 리소스 서버가 두 개의 다른 인가 서버에서 bearer 토큰을 받을 수도 있다. 아니면 인가 서버에 issuer가 여러 개 있을 수도 있다.
 
 이럴 때 할 수 있는 일은 두 가지가 있으며, 선택하는 방법에 따라 장단점이 있다:
 
@@ -1189,7 +1189,7 @@ http
     );
 ```
 
-여기선 `JwtIssuerReactiveAuthenticationManagerResolver`에 issuer에 따라 `ReactiveAuthenticationManager`를 선택하는 전략을 설정한다. 이 방식을 사용하면 런타임에 저장소에서 (위 코드에선 `Map`으로 나타냄) 요소를 추가하고 제거할 수 있다.
+여기선 `JwtIssuerReactiveAuthenticationManagerResolver`에 issuer에 따라 `ReactiveAuthenticationManager`를 선택하는 전략을 설정한다. 이렇게 하면 런타임에 저장소에서 (위 코드에선 `Map`으로 나타냄) 요소를 추가하고 제거할 수 있다.
 
 > 단순히 issuer를 가져와서 바로 `ReactiveAuthenticationManager`를 구성하는 건 안전한 방법이 아니다. issuer는 화이트리스트같은 신뢰할 수 있는 출처에서 가져오고, 코드에서 이를 검증할 수 있어야 한다.
 
