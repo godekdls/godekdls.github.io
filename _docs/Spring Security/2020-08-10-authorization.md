@@ -8,7 +8,6 @@ image: ./../../images/springsecurity/filtersecurityinterceptor.png
 priority: 0.8
 lastmod: 2020-08-25T23:10:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authorization
 ---
@@ -49,7 +48,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
   
 ---
 
-스프링 시큐리티의 고급 인가 기능은 가장 인기 있는 기능 중 하나다. 인증 방법과 상관없이 (스프링 시큐리티가 제공하는 메커니즘과 provider 사용 여부나, 컨테이너나 스프링 시큐리티 외의 인증 권한과의 통합 여부와는 상관없이) 어플리케이션에 일관적이고, 간단하게 인증 서비스를 적용할 수 있다.
+스프링 시큐리티의 고급 인가 기능은 가장 인기 있는 기능 중 하나다. 인증 방법과 상관없이 (스프링 시큐리티가 제공하는 메커니즘과 provider 사용 여부나, 컨테이너와의 통합 여부, 스프링 시큐리티 외의 인증 권한과의 통합 여부와는 상관없이) 어플리케이션에 일관적이고, 간단하게 인증 서비스를 적용할 수 있다.
 
 이번 장에선 Part I에서 소개했던 `AbstractSecurityInterceptor`의 다양한 구현체를 살펴본다. 그다음 도메인 접근 제어 목록을 통해 인가 기능을 세부적으로 튜닝하는 방법을 살펴볼 것이다.
 
@@ -67,11 +66,11 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 String getAuthority();
 ```
 
-`AccessDecisionManager`들은 이 메소드로 `GrantedAuthority`를 정확한 `String`으로 얻을 수 있다. `GrantedAuthority`가 값을 `String`으로 리턴하기 때문에 `AccessDecisionManager` 대부분이 이를 쉽게 "읽어"갈 수 있다. `GrantedAuthority`를 명확하게 `String`으로 표현할 수 없다면 `GrantedAuthority`는 "복잡한 케이스"로 간주하고 `getAuthority()`는 `null`을 리턴한다.
+`AccessDecisionManager`에선 이 메소드로 `GrantedAuthority`를 명확한 `String`으로 조회할 수 있다. `GrantedAuthority`가 값을 `String`으로 리턴하기 때문에 `AccessDecisionManager` 대부분이 이를 쉽게 "읽어"갈 수 있다. `GrantedAuthority`를 명확하게 `String`으로 표현할 수 없다면 `GrantedAuthority`는 "복잡한 케이스"로 간주하고, `getAuthority()`에선 `null`을 리턴한다.
 
 "복잡한" `GrantedAuthority`의 예시로는 고객 계정 번호에 따라 적용할 작업과 권한 임계치 리스트를 저장하는 일이 있다. 이 복잡한 `GrantedAuthority`를 `String`으로 표현하긴 어렵기때문에 `getAuthority()`는 `null`을 리턴할 것이다. `null`을 리턴했다는 것은 `AccessDecisionManager`에 `GrantedAuthority`를 이해하기 위한 구체적인 코드가 있어야 한다는 뜻이다.
 
-스프링 시큐리티는 한 가지 `GrantedAuthority` 구현체, `SimpleGrantedAuthority`를 제공한다. 이 클래스는 사용자가 지정한 `String`을 `GrantedAuthority`로 변환해 준다. 시큐리티 아키텍처에 속한 모든 `AuthenticationProvider`는 `Authentication` 객체 값을 채울 때 `SimpleGrantedAuthority`를 사용한다.
+스프링 시큐리티는 한 가지 `GrantedAuthority` 구현체, `SimpleGrantedAuthority`를 제공한다. 이 클래스는 사용자가 지정한 `String`을 `GrantedAuthority`로 변환해 준다. 시큐리티 아키텍처에 속한 모든 `AuthenticationProvider`는 `Authentication` 객체에 값을 채울 때 `SimpleGrantedAuthority`를 사용한다.
 
 ### 11.1.2. Pre-Invocation Handling
 
@@ -90,9 +89,9 @@ boolean supports(ConfigAttribute attribute);
 boolean supports(Class clazz);
 ```
 
-`AccessDecisionManager`의 `decide` 메소드는 권한을 결정하기 위해 필요한 모든 정보를 건내 받는다. 특히, 보안 `Object`를 건내 받으면 실제 보안 객체를 실행할 때 넘긴 인자를 검사할 수 있다. 예를 들어 보안 객체가 `MethodInvocation`이었다고 가정해보자. 모든 `Customer` 인자에 관한 `MethodInvocation`은 쉽게 찾을 수 있으며, `AccessDecisionManager` 안에선 일련의 보안 로직으로 principal이 customer 관련 동작을 실행하도록 허가할 수 있다. 접근을 거절한 경우엔 `AccessDeniedException`을 던진다.
+`AccessDecisionManager`의 `decide` 메소드는 권한을 결정하기 위해 필요한 모든 정보를 건내 받는다. 특히, 보안 `Object`를 건내 받으면 실제 보안 객체를 실행할 때 넘긴 인자를 검사할 수 있다. 예를 들어 보안 객체가 `MethodInvocation`이었다고 가정해보자. `MethodInvocation`으로 모든 `Customer` 인자를 쉽게 찾을 수 있으며, `AccessDecisionManager` 안에선 일련의 보안 로직으로 principal이 customer 관련 동작을 실행하도록 허가할 수 있다. 접근을 거절한 경우엔 `AccessDeniedException`을 던진다.
 
-`supports(ConfigAttribute)` 메소드는 기동 시점에  `AbstractSecurityInterceptor`가 호출하며, `AccessDecisionManager`가 건내받은 `ConfigAttribute`를 처리할 수 있는지 여부를 결정한다. `supports(Class)` 메소드는 시큐리티 인터셉터 구현체가 호출하며, 설정해둔 `AccessDecisionManager`가 시큐리티 인터셉터가 제출할 보안 객체 타입을 지원하는지 확인한다.
+`supports(ConfigAttribute)` 메소드는 기동 시점에  `AbstractSecurityInterceptor`가 호출하며, `AccessDecisionManager`가 건내받은 `ConfigAttribute`의 처리 가능 여부를 결정한다. `supports(Class)` 메소드는 시큐리티 인터셉터 구현체가 호출하며, 설정해둔 `AccessDecisionManager`가 시큐리티 인터셉터가 제출할 보안 객체 타입을 지원하는지 확인한다.
 
 #### Voting-Based AccessDecisionManager Implementations
 
@@ -100,7 +99,7 @@ boolean supports(Class clazz);
 
 <span id="authz-access-voting">**Figure 11. Voting Decision Manager**</span><br>![Voting Decision Manager](./../../images/springsecurity/access-decision-voting.png)
 
-이 방식에선 권한을 결정할 때 일련의 `AccessDecisionVoter` 구현체에 의견을 묻는다. 그러고나면 `AccessDecisionManager`가 투표 결과를 평가해서 `AccessDeniedException`을 던질지 말지 결정을 내린다.
+투표 방식에선 권한을 결정할 때 일련의 `AccessDecisionVoter` 구현체에 의견을 묻는다. 그러고나서 `AccessDecisionManager`가 투표 결과를 취합해서 `AccessDeniedException`을 던질지 말지를 결정한다.
 
 `AccessDecisionVoter`는 메소드 세 개를 가진  인터페이스다:
 
@@ -112,9 +111,9 @@ boolean supports(ConfigAttribute attribute);
 boolean supports(Class clazz);
 ```
 
-구현체는 `AccessDecisionVoter`의 스태틱 필드 `ACCESS_ABSTAIN`, `ACCESS_DENIED`, `ACCESS_GRANTED` 중 하나를 의미하는 `int` 값을 리턴한다. 인가에 대해서 특별한 의견이 없을 때 구현체는 `ACCESS_ABSTAIN`을 리턴한다. 의견이 있다면 반드시 `ACCESS_DENIED`나 `ACCESS_GRANTED`를 리턴해야 한다.
+구현체는 `AccessDecisionVoter`의 스태틱 필드 `ACCESS_ABSTAIN`, `ACCESS_DENIED`, `ACCESS_GRANTED` 중 하나를 의미하는 `int` 값을 리턴한다. 인가에 대해서 특별한 의견이 없을 때는 `ACCESS_ABSTAIN`을 리턴한다. 의견이 있다면 반드시 `ACCESS_DENIED`나 `ACCESS_GRANTED`를 리턴해야 한다.
 
-스프링 시큐리티는 투표 결과를 집계하는 `AccessDecisionManager` 구현체 세 가지를 제공한다. `ConsensusBased`는 기권표가 아닌 투표 결과를 합산해 접근을 허가하거나 거절한다. 투표 결과가 동점이거나 모두 기권표일 때의 동작은 프로퍼티로 조절할 수 있다. `AffirmativeBased`는 `ACCESS_GRANTED`를 하나 이상 받으면 권한을 부여한다 (i.e. 찬성표가 하나라도 있으면 거절표는 무시한다). `ConsensusBased`와 마찬가지로 모두 기권했을 때의 동작을 제어할 수 있는 파라미터를 제공한다. `UnanimousBased`는 기권을 제외한 모든 표가 만장일치로 `ACCESS_GRANTED`일 때만 접근을 허가한다. `ACCESS_DENIED`가 하나라도 있으면 접근을 거부한다. 다른 구현체와 마찬가지로 모두 기권했을 때의 동작을 제어하는 파라미터가 있다.
+스프링 시큐리티는 투표 결과를 집계하는 세 가지 `AccessDecisionManager` 구현체를 제공한다. `ConsensusBased`는 기권표를 제외한 투표 결과를 합산해 접근을 허가하거나 거절한다. 투표 결과가 동점이거나 모두 기권표일 때의 동작은 프로퍼티로 조절할 수 있다. `AffirmativeBased`는 `ACCESS_GRANTED`가 하나라도 있으면 권한을 부여한다 (i.e. 찬성표가 하나라도 있으면 거절표는 무시한다). `ConsensusBased`와 마찬가지로 모두 기권했을 때의 동작을 제어할 수 있는 파라미터를 제공한다. `UnanimousBased`는 기권을 제외한 모든 표가 만장일치로 `ACCESS_GRANTED`일 때만 접근을 허가한다. `ACCESS_DENIED`가 하나라도 있으면 접근을 거부한다. 다른 구현체와 마찬가지로 모두 기권했을 때의 동작을 제어하는 파라미터가 있다.
 
 다른 방식으로 투표 결과를 집계하는 커스텀 `AccessDecisionManager`를 구현해도 된다. 예를 들어, 특정 `AccessDecisionVoter`의 투표에는 가중치를 두고, 특정 voter의 거절표는 기각시킬 수도 있다.
 
@@ -122,7 +121,7 @@ boolean supports(Class clazz);
 
 스프링 시큐리티가 제공하는 `AccessDecisionVoter` 중 가장 많이 사용하는 건 간단한 `RoleVoter`다. `RoleVoter`는 설정 속성을 간단한 role 이름으로 취급하고, 사용자가 해당 role을 할당받았으면 접근 허가에 투표한다.
 
-프리픽스 `ROLE_`로 시작하는 `ConfigAttribute`이 있을 때 투표에 참여한다. `GrantedAuthority`가 리턴하는 `String`이 (`getAuthority()` 메소드 사용) `ROLE_`로 시작하는 `ConfigAttributes` 중 하나라도 완전히 일치하면 찬성표를 던진다. `ROLE_`로 시작하는 `ConfigAttribute`와 일치하는 게 하나도 없으면 `RoleVoter`는 반대표를 던진다. `ROLE_`로 시작하는 `ConfigAttribute`가 없으면 기권한다.
+프리픽스 `ROLE_`로 시작하는 `ConfigAttribute`이 있을 때 투표에 참여한다. `GrantedAuthority`가 리턴하는 `String`이 (`getAuthority()` 메소드) `ROLE_`로 시작하는 `ConfigAttributes` 중 하나라도 완전히 일치하면 찬성표를 던진다. `ROLE_`로 시작하는 `ConfigAttribute`와 일치하는 게 하나도 없으면 `RoleVoter`는 반대표를 던진다. `ROLE_`로 시작하는 `ConfigAttribute`가 없으면 기권한다.
 
 #### AuthenticatedVoter
 
@@ -132,23 +131,23 @@ boolean supports(Class clazz);
 
 #### Custom Voters
 
-원한다면 당연히 커스텀 `AccessDecisionVoter`를 구현해서 원하는 곳에 접근 제어 로직을 넣을 수 있다. 보통 어플리케이션에 특화된 로직이나 (비지니스 로직 관련) 보안 관리 로직을 구현하는 데 사용한다. 예를 들어 스프링 웹사이트에 있는 [블로그 문서](https://spring.io/blog/2009/01/03/spring-security-customization-part-2-adjusting-secured-session-in-real-time)에서 설명하는 방법으로, 계정이 정지된 사용자의 접근을 실시간으로 거절할 수 있다.
+당연히 커스텀 `AccessDecisionVoter`로도 원하는 곳에 접근 제어 로직을 넣을 수 있다. 보통 어플리케이션에 특화된 로직이나 (비지니스 로직 관련) 보안 관리 로직을 구현하는 데 사용한다. 예를 들어 스프링 웹사이트에 있는 [블로그 문서](https://spring.io/blog/2009/01/03/spring-security-customization-part-2-adjusting-secured-session-in-real-time)에서 설명하는 방법으로, 실시간으로 정지된 계정의 접근을 거절할 수 있다.
 
 ### 11.1.3. After Invocation Handling
 
-보안 객체를 실행하기 전에는 `AbstractSecurityInterceptor`가 `AccessDecisionManager`를 호출하는데, 반면에 보안 객체가 실제로 리턴하는 객체를 바꿔야 하는 어플리케이션도 있다. 이땐 직접 AOP 관심사를 구현해도 되지만, 스프링 시큐리티는 ACL 기능과 통합되는 몇 가지 구현체를 가진 편리한 훅을 제공한다.
+보안 객체를 실행하기 전에는 `AbstractSecurityInterceptor`가 `AccessDecisionManager`를 호출하는데, 반면에 실제로 보안 객체가 리턴하는 객체를 바꿔야 하는 어플리케이션도 있다. 이땐 직접 AOP 관심사를 구현해도 되지만, 스프링 시큐리티는 ACL 기능과 통합되는 몇 가지 구현체를 가진 편리한 훅을 제공한다.
 
-아래 있는 [After Invocation Implementation](#authz-after-invocation)은 스프링 시큐리티의 `AfterInvocationManager`와 해당 구현체를 도식화한 그림이다.
+아래 있는 [After Invocation Implementation](#authz-after-invocation)은 스프링 시큐리티의 `AfterInvocationManager` 인터페이스와 구현체를 도식화한 그림이다.
 
 <span id="authz-after-invocation">**Figure 12. After Invocation Implementation**</span><br>![After Invocation Implementation](./../../images/springsecurity/after-invocation.png)
 
-스프링 시큐리티의 설계가 대부분 그렇듯, `AfterInvocationManager`도 `AfterInvocationProviderManager`라는 구현체가 하나 있으며, 이 구현체는 `AfterInvocationProvider` 리스트를 폴링한다. 각 `AfterInvocationProvider`는 리턴 객체를 수정하거나 `AccessDeniedException`을 던질 수 있다. 사실 여러 provider가 객체를 수정할 수 있기 때문에, provider에 전달하는 객체는 리스트에 있는 이 전 provider가 리턴한 결과다.
+스프링 시큐리티의 설계가 대부분 그렇듯, `AfterInvocationManager`도 `AfterInvocationProviderManager`라는 구현체가 하나 있으며, 이 구현체는 `AfterInvocationProvider` 리스트를 폴링한다. 각 `AfterInvocationProvider`는 리턴 객체를 수정하거나 `AccessDeniedException`을 던질 수 있다. 사실 여러 provider가 객체를 수정할 수 있기 때문에, provider에 전달하는 객체는 리스트에 있는 이 전 provider가 리턴한 객체다.
 
-`AfterInvocationManager`를 사용하더라도, `MethodSecurityInterceptor`의 `AccessDecisionManager`가 동작을 허용하도록 만들 설정 속성이 필요하다는 점을 알아둬야 한다. `AccessDecisionManager` 구현체 등 전형적인 스프링 시큐리티 설정을 사용했다면, 특정 보안 method invocation을 위해 정의한 설정 속성이 없는 경우 모든 `AccessDecisionVoter`가 투표를 기권할 것이다. 결국 `AccessDecisionManager`의 "allowIfAllAbstainDecisions" 프로퍼티가 `false`였다면 `AccessDeniedException`을 던질 것이다. 이 이슈를 피하려면 (1) "allowIfAllAbstainDecisions"를 `true`로 설정하거나 (보통 이 방법은 추천하지 않긴 하지만), (2) `AccessDecisionVoter`가 접근 허용에 투표할 수 있도록 해당하는 설정 속성을 최소 한 개 사용해야 한다. 후자는 (권장하는 방법) 보통 `ROLE_USER`나 `ROLE_AUTHENTICATED` 설정 속성을 이용한다.
+`AfterInvocationManager`를 사용하더라도, 똑같이 `MethodSecurityInterceptor`의 `AccessDecisionManager`가 동작을 허용하려면 설정 속성이 필요하다. `AccessDecisionManager` 구현체 등 전형적인 스프링 시큐리티 설정을 사용했다면, 특정 method invocation을 보호하기 위해 정의한 설정 속성이 없는 경우 모든 `AccessDecisionVoter`가 투표를 기권할 거다. `AccessDecisionManager`의 "allowIfAllAbstainDecisions" 프로퍼티가 `false`였다면 결국엔 `AccessDeniedException`을 던진다. 이 이슈를 피하려면 (1) "allowIfAllAbstainDecisions"를 `true`로 설정하거나 (보통 이 방법은 추천하지 않지만), (2) `AccessDecisionVoter`가 접근 허용에 투표할만한 설정 속성을 최소 한 개는 사용해야 한다. 후자는 (권장하는 방법) 보통 `ROLE_USER`나 `ROLE_AUTHENTICATED` 설정 속성을 이용한다.
 
 ### 11.1.4. Hierarchical Roles
 
-특정 role은 자동으로 다른 role도 "포함"해야 한다는 건 일반적인 요구사항이다. 예를 들어 "admin" role과 "user" role이 있는 어플리케이션에선, 일반 user가 할 수 있는 모든 일은 admin도 할 수 있길 바랄 수 있다. 이를 위해선 먼저, 모든 admin 사용자에게 "user" role도 부여하는 방법이 있다. 아니면 "user" role이 필요한 모든 접근 제약 조건을 "admin" role도 포함하도록 수정하는 방법도 있다. 어플리케이션이 관리하는 role이 많다면 이 방법은 꽤나 복잡해질 것이다.
+어떤 role은 자동으로 다른 role도 "포함"해야 한다는 건 일반적인 요구사항이다. 예를 들어 "admin" role과 "user" role이 있는 어플리케이션에선, 일반 user가 할 수 있는 일은 전부 admin도 할 수 있길 바랄 수 있다. 이를 위해선 먼저, 모든 admin 사용자에게 "user" role도 부여하는 방법이 있다. 아니면 "user" role이 필요한 모든 접근 제약 조건을 "admin" role도 포함하도록 수정해도 된다. 하지만 어플리케이션이 관리하는 role이 많다면 꽤나 복잡해진다.
 
 role-hierarchy를 사용하면 특정 role이 (또는 권한이) 다른 role을 포함하도록 설정할 수 있다. 스프링 시큐리티의 [RoleVoter](#rolevoter)를 확장한 `RoleHierarchyVoter`는 `RoleHierarchy`를 설정할 수 있으며, 이 값을 통해 사용자에게 할당할 모든 "reachable authorities"를 가져올 수 있다. 전형적인 설정은 다음과 같다:
 
@@ -170,15 +169,15 @@ role-hierarchy를 사용하면 특정 role이 (또는 권한이) 다른 role을 
 
 여기서 사용한 계층 구조에는 네 가지 역할이 있다 (`ROLE_ADMIN ⇒ ROLE_STAFF ⇒ ROLE_USER ⇒ ROLE_GUEST`). `AccessDecisionManager`에 위 `RoleHierarchyVoter`를 설정하면 제약 조건을 평가할 때, `ROLE_ADMIN`으로 인증한 사용자는 마치 네 가지 role을 모두 가진 것처럼 행동할 수 있다. `>` 부호는 "포함한다"로 해석하면 된다.
 
-Role hierarchy는 어플리케이션의 접근 제어 설정을 단순화하고, 사용자마다 할당할 권한을 줄일 수 있는 편리한 수단이다. 좀 더 복잡한 요구사항이 있다면 어플리케이션에 필요한 특정 접근 권한과 사용자에게 할당할 role을 매핑하는 로직을 정의해서 사용자 정보를 로드할 때 이 둘을 변환하면 된다.
+Role hierarchy는 어플리케이션의 접근 제어 설정을 단순화하고, 사용자마다 할당할 권한을 줄일 수 있는 편리한 수단이다. 좀 더 복잡한 요구사항이 있다면 어플리케이션에 필요한 접근 권한과 사용자에게 할당할 role을 매핑하는 로직을 정의해서 사용자 정보를 로드할 때 이 둘을 변환하면 된다.
 
 ---
 
 ## 11.2. Authorize HttpServletRequest with FilterSecurityInterceptor
 
-이번 섹션은 [서블릿 아키텍처와 구현체](../servletsecuritythebigpicture)를 기반으로 서블릿 기반 어플리케이션에서 어떻게  [인가](#)를 처리하는지 자세히 설명한다.
+이번 섹션은 [서블릿 아키텍처와 구현체](../servletsecuritythebigpicture)를 기반으로 서블릿 기반 어플리케이션에서 [권한을 부여](#)하는 방법을 자세히 설명한다.
 
-[`FilterSecurityInterceptor`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/access/intercept/FilterSecurityInterceptor.html)는 `HttpServletRequest`에 [인가](#)를 제공한다. 이 인터셉터는 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)에 하나의 [보안 필터](../servletsecuritythebigpicture#95-security-filters)로 추가된다.
+[`FilterSecurityInterceptor`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/access/intercept/FilterSecurityInterceptor.html)는 `HttpServletRequest`를 사용해서 권한을 [인가](#)한다. 이 인터셉터는 [FilterChainProxy](../servletsecuritythebigpicture#93-filterchainproxy)에 하나의 [보안 필터](../servletsecuritythebigpicture#95-security-filters)로 추가된다.
 
 ![Authorize HttpServletRequest](./../../images/springsecurity/filtersecurityinterceptor.png)
 
@@ -186,10 +185,10 @@ Role hierarchy는 어플리케이션의 접근 제어 설정을 단순화하고,
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 두 번째는 `FilterSecurityInterceptor`가 넘겨받은 `HttpServletRequest`, `HttpServletResponse`, `FilterChain`으로  [`FilterInvocation`](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/FilterInvocation.html)을 만든다.
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 그다음 `FilterInvocation`을 `SecurityMetadataSource`로 넘겨 `ConfigAttribute` 컬렉션을 가져온다.
 - <span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 마지막으로 `Authentication`, `FilterInvocation`, `ConfigAttribute` 컬렉션을 `AccessDecisionManager`로 넘긴다.
-  - <span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 인가를 거절하면 `AccessDeniedException`을 던진다. 이땐 [`ExceptionTranslationFilter`](../servletsecuritythebigpicture#96-handling-security-exceptions)가 `AccessDeniedException`을 처리한다.
-  - <span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 인가를 승인하면 `FilterSecurityInterceptor`는 일반적인 어플리케이션 프로세스를 실행할 수 있게 [FilterChain](../servletsecuritythebigpicture#91-a-review-of-filters)을 이어간다.
+  - <span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 인가를 거절하면 `AccessDeniedException`을 던진다. `AccessDeniedException`은 [`ExceptionTranslationFilter`](../servletsecuritythebigpicture#96-handling-security-exceptions)가 처리한다.
+  - <span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 인가를 승인하면 `FilterSecurityInterceptor`는 일반적인 어플리케이션 프로세스를 실행할 수 있도록 [FilterChain](../servletsecuritythebigpicture#91-a-review-of-filters)을 이어간다.
 
-기본적으로 스프링 시큐리티에서 권한을 인가하려면 모든 요청을 인증해야 한다. 명시적으로 설정하면 다음과 같다:
+기본적으로 스프링 시큐리티에서 권한을 인가하려면 모든 요청을 인증해야 한다. 다음 코드로 설정을 명시할 수도 있다:
 
 **Example 78. Every Request Must be Authenticated**
 
@@ -227,7 +226,7 @@ fun configure(http: HttpSecurity) {
 }
 ```
 
-우선순위에 따라 다른 규칙을 추가할 수도 있다:
+여러 가지 규칙에 우선순위를 부여할 수도 있다:
 
 **Example 79. Authorize Requests**
 
@@ -241,11 +240,11 @@ fun configure(http: HttpSecurity) {
 protected void configure(HttpSecurity http) throws Exception {
     http
         // ...
-        .authorizeRequests(authorize -> authorize        // (1)
-            .mvcMatchers("/resources/**", "/signup", "/about").permitAll()         // (2)
-            .mvcMatchers("/admin/**").hasRole("ADMIN")        // (3)
-            .mvcMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')")        // (4)
-            .anyRequest().denyAll()        // (5)         
+        .authorizeRequests(authorize -> authorize // (1)
+            .mvcMatchers("/resources/**", "/signup", "/about").permitAll() // (2)
+            .mvcMatchers("/admin/**").hasRole("ADMIN") // (3)
+            .mvcMatchers("/db/**").access("hasRole('ADMIN') and hasRole('DBA')") // (4)
+            .anyRequest().denyAll() // (5)         
         );
 }
 ```
@@ -279,11 +278,11 @@ fun configure(http: HttpSecurity) {
     }
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인가 조건을 여러 개 명시했다. 각 규칙은 선언한 순서대로 적용된다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 모든 사용자가 접근할 수 있는 URL 패턴을 여러 개 지정했다. 구체적으로 말하면 "/resources/"로 시작하는 URL이나, "/signup", "/about" 요청은 모든 사용자가 접근할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 인가 조건을 여러 개 지정했다. 각 규칙은 선언한 순서대로 적용된다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 모든 사용자가 접근할 수 있는 몇 가지 URL 패턴을 지정한다. 구체적으로 말하면 "/resources/"로 시작하는 URL이나, "/signup", "/about" 요청은 모든 사용자가 접근할 수 있다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> "/admin/"으로 시작하는 모든 요청은 "ROLE_ADMIN"을 가진 사용자로 제한한다. `hasRole` 메소드를 사용했기 때문에 "ROLE\_" 프리픽스는 지정할 필요 없다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> "/db/"로 시작하는 모든 요청은 "ROLE_ADMIN"과 "ROLE_DBA" 모두 필요하다. `hasRole` 메소드를 사용했기 때문에 "ROLE\_" 프리픽스는 지정할 필요 없다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 위 조건에 충족하지 않는 다른 URL은 접근을 거절한다. 실수로 인증 조건을 누락하는 것을 방지하려면 이 전략을 사용하는 게 좋다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 위 조건에 충족하지 않는 다른 URL은 접근을 거절한다. 인증 조건을 누락하는 실수를 방지하는 좋은 전략이다.</small>
 
 ---
 
@@ -293,18 +292,18 @@ fun configure(http: HttpSecurity) {
 
 ### 11.3.1. Overview
 
-스프링 시큐리티는 스프링 EL 표현식을 사용하며, 이 주제를 자세히 알고싶다면 동작 방식을 살펴보는게 좋다. 표현식을 평가할 땐 평가 컨텍스트의 일부로 "루트 객체" 사용한다. 스프링 시큐리티는 웹과 메소드 시큐리티 전용 클래스를 루트 객체로 사용하기 때문에, 별도의 내장 표현식을 사용할 수 있으며 현재 principal 등에 접근할 수 있다.
+스프링 시큐리티는 스프링 EL 표현식을 사용한다. 이 주제를 자세히 알고싶다면 EL 표현식의 동작 방식을 살펴보는게 좋다. 표현식을 평가할 땐 평가 컨텍스트의 일부로 "루트 객체"를 사용한다. 스프링 시큐리티는 웹과 메소드 시큐리티 전용 클래스를 루트 객체로 사용하기 때문에, 별도의 내장 표현식을 사용할 수 있으며 현재 principal 등에 접근할 수 있다.
 
 #### Common Built-In Expressions
 
-표현식 루트 객체를 위한 베이스 클래스는 `SecurityExpressionRoot`다. 이 클래스는 웹, 메소드 시큐리티에서 공통적으로 사용할 수 있는 공통 표현식 몇 가지를 제공한다.
+표현식 루트 객체를 위한 베이스 클래스는 `SecurityExpressionRoot`다. 이 클래스는 웹, 메소드 시큐리티에서 공통적으로 사용할 수 있는 공통 표현식을 몇 가지 제공한다.
 
 **Table 1. Common built-in expressions**
 
 | Expression                                                   | Description                                                  |
 | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| `hasRole(String role)`                                       | 현재 principal이 명시한 role을 가지고 있으면 `true`를 리턴한다.<br><br>예를 들어,  `hasRole('admin')`<br><br>기본적으로 파라미터로 넘긴 role이 'ROLE\_'로 시작하지 않으면 이 프리픽스를 추가한다. `DefaultWebSecurityExpressionHandler`의 `defaultRolePrefix`를 수정하면 이를 커스텀할 수 있다. |
-| `hasAnyRole(String… roles)`                                  | 현재 principal이 명시한 role 중 하나라도 가지고 있으면 `true`를 리턴한다 (문자열 리스트를 콤마로 구분해서 전달한다).<br><br>예를 들어 `hasAnyRole('admin', 'user')`<br><br>기본적으로 파라미터로 넘긴 role이 'ROLE\_'로 시작하지 않으면 이 프리픽스를 추가한다. `DefaultWebSecurityExpressionHandler`의 `defaultRolePrefix`를 수정하면 이를 커스텀할 수 있다. |
+| `hasRole(String role)`                                       | 현재 principal이 명시한 role을 가지고 있으면 `true`를 리턴한다.<br><br>예를 들어,  `hasRole('admin')`<br><br>기본적으로 파라미터로 넘긴 role이 'ROLE\_'로 시작하지 않으면 이 프리픽스를 추가한다. `DefaultWebSecurityExpressionHandler`의 `defaultRolePrefix`를 수정하면 커스텀할 수 있다. |
+| `hasAnyRole(String… roles)`                                  | 현재 principal이 명시한 role 중 하나라도 가지고 있으면 `true`를 리턴한다 (문자열 리스트를 콤마로 구분해서 전달한다).<br><br>예를 들어 `hasAnyRole('admin', 'user')`<br><br>기본적으로 파라미터로 넘긴 role이 'ROLE\_'로 시작하지 않으면 이 프리픽스를 추가한다. `DefaultWebSecurityExpressionHandler`의 `defaultRolePrefix`를 수정하면 커스텀할 수 있다. |
 | `hasAuthority(String authority)`                             | 현재 principal이 명시한 권한이 있으면 `true`를 리턴한다.<br><br>예를 들어 `hasAuthority('read')` |
 | `hasAnyAuthority(String… authorities)`                       | 현재 principal이 명시한 권한 중 하나라도 있으면 `true`를 리턴한다 (문자열 리스트를 콤마로 구분해서 전달한다).<br><br>예를 들어 `hasAnyAuthority('read', 'write')` |
 | `principal`                                                  | 현재 사용자를 나타내는 principal 객체에 직접 접근할 수 있다. |
@@ -330,11 +329,11 @@ URL별로 표현식을 적용하려면 먼저 `<http>` 요소의 `use-expression
 </http>
 ```
 
-여기서는 어플리케이션의 "admin" 영역은 (URL 패턴으로 정의함) "admin" 권한을 부여받은 사용자가 로컬 서브넷으로 접근할 때만 사용할 수 있도록 정의했다. 내장된 `hasRole` 표현식은 이미 이전 섹션에서 살펴봤다. `hasIpAddress` 표현식은 웹 보안에서 사용할 수 있는 또다른 내장 표현식이다. `WebSecurityExpressionRoot` 클래스에 정의돼 있으며, 이 클래스의 인스턴스를 웹 접근 표현식을 평가할 때의 루트 객체로 사용한다. 또한 이 객체는 `HttpServletRequest` 객체를 `request`란 이름으로 직접 노출하므로 표현식에서 직접 request를 실행할 수도 있다. 표현식을 사용하면 네임스페이스에 있는 `AccessDecisionManager`에 `WebExpressionVoter`가 추가된다. 따라서 네임스페이스 없이 표현식을 사용한다면 이 중 하나를 설정에 직접 추가해야 한다.
+여기서는 어플리케이션의 "admin" 영역은 (URL 패턴으로 정의함) "admin" 권한을 부여받은 사용자가 로컬 서브넷으로 접근할 때만 사용할 수 있도록 정의했다. 내장된 `hasRole` 표현식은 이미 이전 섹션에서 살펴봤다. `hasIpAddress` 표현식은 웹 보안에서 사용할 수 있는 또다른 내장 표현식이다. `WebSecurityExpressionRoot` 클래스에 정의돼 있으다. 웹 접근 표현식을 평가할 땐 이 클래스 인스턴스를 루트 객체로 사용한다. 또한 이 객체는 `HttpServletRequest` 객체를 `request`란 이름으로 직접 노출하므로 표현식에서 직접 request를 호출할 수도 있다. 표현식을 사용하면 네임스페이스에 있는 `AccessDecisionManager`에 `WebExpressionVoter`가 추가된다. 따라서 네임스페이스 없이 표현식을 사용한다면 이 중 하나를 설정에 직접 추가해야 한다.
 
 #### Referring to Beans in Web Security Expressions
 
-사용할 수 있는 표현식을 늘리고 싶다면, 어떤 객체든지 스프링 빈으로 정의하면 쉽게 참조할 수 있다. 예를 들어 `webSecurity`란 이름의 빈이 있고, 이 빈의 메소드 시그니처는 다음과 같다고 가정해보자:
+사용할 수 있는 표현식을 늘리고 싶다면, 어떤 객체든지 스프링 빈으로 정의하면 쉽게 참조할 수 있다. 예를 들어 `webSecurity`란 이름의 빈이 있고, 이 빈의 메소드 시그니처는 아래와 같다고 가정해보자:
 
 ```java
 public class WebSecurity {
@@ -366,9 +365,9 @@ http
 
 #### Path Variables in Web Security Expressions
 
-어땔 땐 URL에 있는 path variable을 참조하고 싶을 수도 있다. 예를 들어 `/user/{userId}` 형식의 URL path에서 id를 가져와 사용자를 검색하는 RESTful 어플리케이션을 생각해 보자.
+URL에 있는 path variable을 참조해야 할 때도 있다. 예를 들어 `/user/{userId}` 형식의 URL path에서 id를 가져와 사용자를 검색하는 RESTful 어플리케이션을 생각해 보자.
 
-path variable도 패턴에 지정해서 쉽게 참조할 수 있다. 예를 들어 `webSecurity`란 이름의 빈이 있고, 이 빈의 메소드 시그니처는 다음과 같다고 가정해보자:
+path variable도 간단하게 패턴에 지정해서 참조할 수 있다. 예를 들어 `webSecurity`란 이름의 빈이 있고, 이 빈의 메소드 시그니처는 아래와 같다고 가정해보자:
 
 ```java
 public class WebSecurity {
@@ -421,18 +420,18 @@ http
 public void create(Contact contact);
 ```
 
-이는 "ROLE_USER" 권한이 있는 사용자만 접근할 수 있다는 뜻이다. 물론 전통적인 설정과 간단한 설정 속성으로도 동일한 권한 조건을 쉽게 구성할 수 있다. 하지만 이건 어떨까:
+이 애노테이션은 "ROLE_USER" 권한이 있는 사용자만 접근할 수 있다는 뜻이다. 물론 전통적인 설정과 간단한 설정 속성으로도 동일한 권한 조건을 쉽게 구성할 수 있다. 하지만 이건 어떨까:
 
 ```java
 @PreAuthorize("hasPermission(#contact, 'admin')")
 public void deletePermission(Contact contact, Sid recipient, Permission permission);
 ```
 
-여기선 현재 사용자가 실제로 주어진 연락처에 "admin" 권한이 있는지를 확인하기 위해 메소드 인자를 표현식 일부로 사용하고 있다. 내장 표현식 `hasPermission()`은 어플리케이션 컨텍스트를 통해 스프링 시큐리티의 ACL 모듈로 연결되며, [아래에서 다룬다](#the-permissionevaluator-interface). 메소드 인자는 이름을 기준으로 표현식 변수로 접근할 수 있다.
+여기선 현재 사용자가 실제로 주어진 연락처에 "admin" 권한이 있는지를 확인하기 위해 메소드 인자를 표현식 일부로 사용하고 있다. 내장 표현식 `hasPermission()`은 어플리케이션 컨텍스트를 통해 스프링 시큐리티의 ACL 모듈로 연결되며, [아래에서 설명한다](#the-permissionevaluator-interface). 메소드 인자는 인자 이름을 기준으로 표현식 변수로 사용할 수 있다.
 
 스프링 시큐리티가 메소드 인자를 리졸브하는 방법은 여러 가지가 있다. 스프링 시큐리티는 `DefaultSecurityParameterNameDiscoverer`를 사용해서 파라미터 이름을 발견한다. 디폴트로 메소드 전체에 대해 다음 옵션을 시도해 본다.
 
-- 메소드의 단일 인자에 `@P` 애노테이션이 있는 경우 이 값을 사용한다. 이 애노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
+- 메소드의 단일 인자에 `@P` 애노테이션이 있는 경우 이 인자 값을 사용한다. 이 애노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
 
   ```java
   import org.springframework.security.access.method.P;
@@ -443,9 +442,9 @@ public void deletePermission(Contact contact, Sid recipient, Permission permissi
   public void doSomething(@P("c") Contact contact);
   ```
 
-  이를 사용하면 내부적으로 어떤 애노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
+  이 애노테이션을 사용하면 내부에선 어떤 애노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
 
-- 메소드 파라미터 한 개라도 스프링 데이터의 `@Param` 애노테이션이 있으면 이 값을 사용한다. 이 애노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
+- 메소드 파라미터 중 한 개라도 스프링 데이터의 `@Param` 애노테이션이 있으면 이 파라미터 값을 사용한다. 이 애노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
 
   ```java
   import org.springframework.data.repository.query.Param;
@@ -456,7 +455,7 @@ public void deletePermission(Contact contact, Sid recipient, Permission permissi
   Contact findContactByName(@Param("n") String name);
   ```
 
-  이를 사용하면 내부적으로 어떤 애노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
+  이 애노테이션을 사용하면 내부에선 어떤 애노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
 
 - -parameters 인자를 사용해서 JDK 8로 소스 코드를 컴파일하고 스프링 4+를 사용했다면, 표준 JDK 리플렉션 API로 파라미터 이름을 찾는다. 클래스와 인터페이스 둘 모두에서 동작한다.
 
@@ -469,7 +468,7 @@ public void deletePermission(Contact contact, Sid recipient, Permission permissi
 public void doSomething(Contact contact);
 ```
 
-여기선 또 다른 내장 표현식 `authentication`을 사용했으며, 이는 보안 컨텍스트에 저장된 `Authentication`을 나타낸다. `principal` 표현식을 사용하면 "principal" 프로퍼티에 직접 접근할 수도 있다. 보통 이 값은 `UserDetails` 인스턴스이므로 `principal.username`이나 `principal.enabled`같은 표현식을 사용하면 된다.
+여기선 또 다른 내장 표현식 `authentication`을 사용했으며, 이는 보안 컨텍스트에 저장된 `Authentication`을 나타낸다. `principal` 표현식을 사용하면 "principal" 프로퍼티에 직접 접근할 수도 있다. principal은 보통 `UserDetails` 인스턴스이므로 `principal.username`이나 `principal.enabled`같은 표현식을 사용하면 된다.
 
 일반적이진 않지만, 메소드를 실행한 다음에 접근 제어를 확인하고 싶을 수도 있다. 이땐 `@PostAuthorize` 애노테이션을 사용하면 된다. 메소드가 리턴한 값에 접근하려면 표현식에 내장된 이름 `returnObject`를 사용해라.
 
@@ -483,7 +482,7 @@ public void doSomething(Contact contact);
 public List<Contact> getAll();
 ```
 
-`@PostFilter` 애노테이션을 사용하면, 스프링 시큐리티는 리턴된 컬렉션을 순회해서 표현식 결과가 false인 모든 요소를 제거한다. `filterObject`는 컬렉션의 현재 객체를 참조한다. `@PreFilter`를 사용하면 메소드 호출 전에 필터링할 수도 있지만, 흔한 요구사항은 아니다. 기본 문법은 동일하지만, 컬렉션 타입 인자가 둘 이상이라면 애노테이션의 `filterTarget` 프로퍼티로 이름을 지정해야 한다.
+`@PostFilter` 애노테이션을 사용하면, 스프링 시큐리티는 리턴된 컬렉션을 순회해서 표현식 결과가 false인 모든 요소를 제거한다. `filterObject`는 컬렉션의 현재 객체를 참조한다. `@PreFilter`를 사용하면 메소드 호출 전에 필터링할 수도 있지만, 흔한 요구사항은 아니다. 기본 문법은 동일하지만, 컬렉션 타입 인자가 둘 이상이라면 애노테이션의 `filterTarget` 프로퍼티에 인자 이름을 지정해야 한다.
 
 필터링은 데이터 조회 쿼리를 튜닝하는 용도가 아니라는 점을 명심해야 한다. 사이즈가 큰 컬렉션을 필터링하고 많은 엔트리를 제거하는 것은 비효율적이다.
 
@@ -493,7 +492,7 @@ public List<Contact> getAll();
 
 #### The PermissionEvaluator interface
 
-`hasPermission()` 표현식은 `PermissionEvaluator` 인스턴스로 위임된다. 이는 표현식 시스템과 스프링 시큐리티의 ACL 시스템을 연결하기 위한 것으로, 추상적인 permission 기반으로 도메인 객체에 인가 조건을 명시할 수 있다. ACL 모듈에 직접적인 의존성은 없으므로 필요하다면 다른 구현체로 바꿀 수 있다. 이 인터페이스엔 두 가지 메소드가 있다:
+`hasPermission()` 표현식은 `PermissionEvaluator` 인스턴스로 위임된다. 이 인터페이스는 표현식 시스템과 스프링 시큐리티의 ACL 시스템을 연결하기 위한 것으로, 추상적인 permission 기반으로 도메인 객체에 인가 조건을 지정할 수 있다. ACL 모듈에 직접적인 의존성은 없으므로 필요하다면 다른 구현체로 바꿀 수 있다. 이 인터페이스엔 두 가지 메소드가 있다:
 
 ```java
 boolean hasPermission(Authentication authentication, Object targetDomainObject,
@@ -503,7 +502,7 @@ boolean hasPermission(Authentication authentication, Serializable targetId,
                             String targetType, Object permission);
 ```
 
-첫 번째 인자 (`Authentication` 객체)를 제공하지 않은 경우만 제외하면 모두 가능한 표현식으로 매핑된다. 첫 번째 메소드는 접근을 제어하는 도메인 객체를 이미 로드한 경우에 사용된다. 현재 사용자가 이 객체에 대한 주어진 permission이 있다면 표현식은 true를 리턴할 것이다. 두 번째 버전은 객체를 로드하진 않았지만 그 식별자를 알 때 사용한다. 올바른 ACL permission을 로드하려면 도메인 객체에 대한 추상적인 "type" 지정자도 필요하다. 보통은 그 객체의 자바 클래스를 사용하지만, permission을 로드하는 방식과 일치하기만 하면 꼭 그래야 한다는 법은 없다.
+첫 번째 인자를 (`Authentication` 객체) 제공하지 않은 경우만 제외하면 모두 가능한 표현식으로 매핑된다. 첫 번째 메소드는 접근을 제어하는 도메인 객체를 이미 로드한 경우에 사용한다. 현재 사용자가 이 객체에 주어진 permission이 있다면 표현식은 true를 리턴한다. 두 번째 메소드는 객체를 로드하진 않았지만 그 식별자를 알 때 사용한다. 올바른 ACL permission을 로드하려면 도메인 객체에 대한 추상적인 "type" 지정자도 필요하다. 보통은 도메인 객체의 자바 클래스를 사용하지만, permission을 로드하는 방식과 일치하기만 하면 꼭 그래야 한다는 법은 없다.
 
 `hasPermission()` 표현식을 사용하려면 어플리케이션 컨텍스트에 `PermissionEvaluator`를 명시해야 한다. 예를 들어 다음과 같다:
 
@@ -518,17 +517,17 @@ boolean hasPermission(Authentication authentication, Serializable targetId,
 </bean>
 ```
 
-`myPermissionEvaluator`는 `PermissionEvaluator`를 구현한 빈이다. 보통 `AclPermissionEvaluator`라고 하는 ACL 모듈에 있는 구현체를 사용한다. 자세한 내용은 ["Contacts" 샘플 어플리케이션 설정](https://github.com/spring-projects/spring-security/blob/master/samples/xml/contacts/src/main/resources/applicationContext-security.xml)을 참고해라.
+`myPermissionEvaluator`는 `PermissionEvaluator`를 구현한 빈이다. 보통 ACL 모듈에 있는 구현체 `AclPermissionEvaluator`를 사용한다. 자세한 내용은 ["Contacts" 샘플 어플리케이션 설정](https://github.com/spring-projects/spring-security/blob/master/samples/xml/contacts/src/main/resources/applicationContext-security.xml)을 참고해라.
 
 #### Method Security Meta Annotations
 
-메소드 시큐리티에 메타 애노테이션을 사용하면 코드를 좀 더 가독성있게 만들 수 있다. 코드 전체에 걸쳐 똑같은 복잡한 표현식을 반복하고 있다면 특히 유용할 것이다. 예를 들어 아래 코드를 생각해 보자:
+메소드 시큐리티에 메타 애노테이션을 사용하면 코드를 좀 더 가독성있는 코드로 만들 수 있다. 똑같은 복잡한 표현식을 코드 전체에 반복하고 있다면 특히 유용할 것이다. 예를 들어 아래 코드를 생각해 보자:
 
 ```java
 @PreAuthorize("#contact.name == authentication.name")
 ```
 
-이 코드를 모든 곳에 반복하는 대신, 이 코드 대신 사용할 메타 애노테이션을 만들 수 있다.
+이 코드를 여기저기 반복하는 대신, 이 코드 대신 사용할 메타 애노테이션을 만들 수 있다.
 
 ```java
 @Retention(RetentionPolicy.RUNTIME)
@@ -544,7 +543,7 @@ public @interface ContactPermission {}
 
 ### 11.4.1. AOP Alliance (MethodInvocation) Security Interceptor
 
-스프링 시큐리티 2.0 이전엔 `MethodInvocation`을 보호하려면 꽤 많은 보일러플레이트 설정이 필요했다. 현재 권장하는 메소드 시큐리티 설정 방법은 [네임스페이스 설정](../securitynamespaceconfiguration#184-method-security)이다. 이 방법을 사용하면 메소드 시큐리티를 위한 빈들이 자동으로 설정되기 때문에 구현체를 알 필요가 정말 없다. 여기선 관련 클래스 개요만 간단하게 짚고 넘어간다.
+스프링 시큐리티 2.0 이전엔 `MethodInvocation`을 보호하려면 꽤 많은 보일러플레이트 설정이 필요했다. 현재 권장하는 메소드 시큐리티 설정 방법은 [네임스페이스 설정](../securitynamespaceconfiguration#184-method-security)이다. 네임스페이스를 사용하면 메소드 시큐리티를 위한 빈들이 자동으로 설정되기 때문에 정말로 구현체를 알 필요가 없다. 여기선 관련 클래스 개요만 간단하게 짚고 넘어간다.
 
 메소드 시큐리티는 `MethodInvocation`을 보호해 주는 `MethodSecurityInterceptor`로 구현한다. 설정 방법에 따라 인터셉터를 특정한 빈 하나에서만 사용할 수도 있고, 인터셉터 하나를 여러 빈이 공유할 수도 있다. 인터셉터는 `MethodSecurityMetadataSource` 인스턴스를 사용해서 특정 method invocation에 적용할 설정 속성을 가져온다. `MapBasedMethodSecurityMetadataSource`로는 메소드 이름을 (와일드카드 지원) 키로 갖는 설정 속성을 저장하며, 내부적으로 `<intercept-methods>`나 `<protect-point>` 요소로 어플리케이션에 해당 속성을 정의했을 때 사용한다. 다른 구현체는 애노테이션 기반 설정에서 사용한다.
 
@@ -813,12 +812,12 @@ public Account post(Account account, double amount);
 
 ### 11.6.1. Overview
 
-복잡한 어플리케이션은 단순히 웹 요청이나 메소드 실행 단위로 접근 권한을 관리할 수 없을 때도 있다. 대신에 누가 (`Authentication`), 언제 (`MethodInvocation`) 무엇을 (`SomeDomainObject`)을 하는가를 전부 고려해야 한다. 다시 말해 메소드를 실행하는 실제 도메인 객체 인스턴를 고려해서 인가 여부를 결정해야 한다.
+복잡한 어플리케이션은 단순히 웹 요청이나 메소드 실행 단위로 접근 권한을 관리할 수 없을 때도 있다. 대신에 누가 (`Authentication`), 언제 (`MethodInvocation`) 무엇을 (`SomeDomainObject`) 하는가를 전부 고려해야 한다. 다시 말해 메소드를 실행하는 실제 도메인 객체 인스턴를 고려해서 인가 여부를 결정해야 한다.
 
 동물 병원에서 필요한 어플리케이션을 설계한다고 생각해보자. 스프링 기반 어플리케이션에서 사용할 사용자는 크게 동물 병원 직원과 손님으로 나뉜다. 직원은 모든 데이터에 접근할 수 있지만 손님은 본인의 기록만 볼 수 있다. 조금 더 재미 있게, 손님은 "강아지 유치원" 멘토나 지역 "포니 클럽" 회장같은 자신의 기록을 다른 사용자도 볼 수 있게 만들 수 있다고 해보자. 스프링 시큐리티를 기반으로 만든다면 고려해볼 수 있는 옵션이 몇 가지 있다:
 
 - 비지니스 메소드에 보안 로직을 작성한다. `Customer` 도메인 객체 인스턴스 안에 있는 컬렉션을 참조해서 어떤 사용자가 권한이 있는지 결정할 수 있다.  `SecurityContextHolder.getContext().getAuthentication()`을 사용해서 `Authentication` 객체에 접근한다.
-- `Authentication` 객체에 저장된 `GrantedAuthority[]`를 사용하는 `AccessDecisionVoter`를 만든다. 이 말은 `AuthenticationManager`에서 `Authentication`에 princial이 접근할 수 있는 각 `Customer` 도메인 객체 인스턴스를 의미하는 커스텀 `GrantedAuthority[]`를 채워 넣어야 한다는 뜻이다.
+- `Authentication` 객체에 저장된 `GrantedAuthority[]`를 사용하는 `AccessDecisionVoter`를 만든다. 이 말은 `AuthenticationManager`에서 `Authentication`에, princial이 접근할 수 있는 각 `Customer` 도메인 객체 인스턴스를 의미하는 커스텀 `GrantedAuthority[]`를 채워 넣어야 한다는 뜻이다.
 - `AccessDecisionVoter`가 타겟 `Customer` 도메인 객체를 직접 열도록 만든다. 이 말은 voter에서 DAO에 접근해 `Customer` 객체를 가져와야 한다는 뜻이다. 그러면 voter는 `Customer` 객체의 승인된 사용자 컬렉션에 접근해서 그에 따른 결정을 내릴 것이다.
 
 여기 있는 해결책 모두 정당한 방법이다. 하지만 첫 번째 방법은 인가 권한 확인 로직과 비지니스 코드의 결합도가 올라간다. 이로 인한 주요 문제점은 단위 테스트가 어려워지며, `Customer` 인가 로직을 어디에도 재사용하기 어렵다는 것이다. `Authentication` 객체에서 `GrantedAuthority[]`를 가져오는 것도 괜찮지만, `Customer`가 많아지면 확장하기 어렵다. 사용자가 5000명의 `Customer`에 접근할 수 있다면 (불가능할 것 같지만, 대형 포니 클럽의 유명한 수의사라고 생각해보라!), `Authentication` 객체를 구성하는데 그만큼의 메모리와 시간이 필요하며, 이는 결코 바람직한 일이 아니다. 세 번째 방법은 외부 코드에서 직접 `Customer`를 열기 때문에 이 셋 중엔 가장 나은 방법처럼 보인다. 관심사를 분리했고, 메모리나 CPU 사이클을 낭비하진 않지만, `AccessDecisionVoter`와 마지막 비지니스 메소드 자체에서 `Customer` 객체를 가져오는 DAO를 호출한다는 점은 여전히 비효율적이다. 메소드를 호출할 때마다 두번씩 접근하는 건 분명히 바람직하지 않다. 게다가 여기 있는 모든 방법은 접근 제어 리스트(access control list, ACL) 저장 로직과 비지니스 로직을 직접 처음부터 작성해야 한다.
@@ -835,7 +834,7 @@ public Account post(Account account, double amount);
 - 메소드를 호출하기 전에 principal이 해당 객체로 작업을 수행할 권한이 있는지 확인하는 기능
 - 메소드를 호출한 후에 principal이 해당 객체로 (아니면 그 객체가 리턴한 값으로) 작업을 수행할 권한이 있는지 확인하는 기능
 
-첫 번째 기능에서 알 수 있듯이, 스프링 시큐리티 ACL 모듈의 핵심 기능 중 하나는 ACL을 빠르게 조회하는 것이다. 이 ACL 저장소 기능은 매우 중요한 것 중 하나인데, 모든 도메인 객체 인스턴스는 접근 제어 엔트리를 여러 개 가질 것이고, 각 ACL은 트리같은 구조로 다른 ACL들을 상속기 때문에 그렇다 (매우 흔하게 사용하는 패턴이고, 스프링 시큐리티도 기본적으로 지원한다). 스프링 시큐리티의 ACL 기능은 ACL 고성능 검색 외에도, 플러그인처럼 쉽게 사용할 수 있는 캐시, 데드락을 최소화한 데이터베이스 업데이트, ORM 프레임워크와의 독립성 (직접 JDBC를 사용한다), 적절한 캡슐화, 투명한 데이터베이스 업데이트를 함께 고려해서 설계했다.
+첫 번째 기능에서 알 수 있듯이, 스프링 시큐리티 ACL 모듈의 핵심 기능 중 하나는 ACL을 빠르게 조회하는 것이다. 이 ACL 저장소 기능은 매우 중요한 것 중 하나인데, 모든 도메인 객체 인스턴스는 접근 제어 엔트리를 여러 개 가질 것이고, 각 ACL은 트리같은 구조로 다른 ACL들을 상속기 때문에 그렇다 (매우 흔하게 사용하는 패턴이고, 스프링 시큐리티도 기본적으로 지원한다). 스프링 시큐리티의 ACL 기능은 고성능 ACL 검색 외에도, 플러그인처럼 쉽게 사용할 수 있는 캐시, 데드락을 최소화한 데이터베이스 업데이트, ORM 프레임워크와의 독립성 (직접 JDBC를 사용한다), 적절한 캡슐화, 투명한 데이터베이스 업데이트를 함께 고려해서 설계했다.
 
 데이터베이스가 ACL 모듈 작동의 중심에 있으므로, 구현체에서 디폴트로 사용하는 네 가지 메인 테이블을 살펴보겠다. 다음은 전형적인 스프링 시큐리티 ACL에서 사용하는 테이블이며, 밑으로 갈수록 로우(row)가 많은 테이블이다:
 
@@ -860,13 +859,13 @@ ACL 시스템이 하는 일과 테이블 구조에 대해 기본적인 내용은
 
 즉시 사용할 수 있는 AclService와 관련 데이터베이스 클래스는 모두 ANSI SQL을 사용한다는 점에 주의해라. 따라서 주요 데이터베이스에서는 모두 동작할 것이다. 이 글을 쓰는 시점에는 Hypersonic SQL, PostgreSQL, Microsoft SQL Server, Oracle로 테스트를 완료했다.
 
-스프링 시큐리티는 ACL 모듈을 사용하는 두 가지 샘플을 제공한다. Contacts 샘플과 Document Management System (DMS) 샘플이다. 이 샘플을 살펴보길 추천한다.
+스프링 시큐리티는 ACL 모듈을 사용하는 두 가지 샘플을 제공한다. Contacts 샘플과 Document Management System (DMS) 샘플이다. 이 샘플을 살펴보길 권한다.
 
 ### 11.6.3. Getting Started
 
 스프링 시큐리티의 ACL 기능을 사용하려면, 어딘가엔 ACL 정보를 저장해야 한다. 즉 스프링을 사용하는 `DataSource` 인스턴스가 필요하다. 그러면 `DataSource`를 `JdbcMutableAclService`, `BasicLookupStrategy` 인스턴스에 주입한다. 후자는 고성능 ACL 검색 기능, 전자는 수정 기능을 제공한다. 설정 예시는 스프링 시큐리티가 함께 제공하는 샘플 중 하나를 참고하라. 또한 마지막 섹션에 있는 ACL 관련 테이블 4개를 데이터베이스에 추가해야 한다 (적당한 SQL 문은 ACL 샘플 참고).
 
-필요한 스키마와 `JdbcMutableAclService` 인스턴스를 만들었다면, 도메인 모델이 스프링 시큐리티 ACL 패키지와 호환되는지를 확인해야 한다. `ObjectIdentityImpl`은 다양하게 사용할 수 있으므로, 아마 이것 만으로 충분할 것이다. 도메인 객체엔 대부분 `public Serializable getId()` 메소드가 있을 것이다. 리턴 타입이 long이거나 long과 호환되는 경우엔 (eg int), `ObjectIdentity` 문제는 더 이상 생각하지 않아도 된다. ACL 모듈은 많은 곳에서 long 식별자를 사용한다. long (또는 int, byte 등)을 사용하지 않는 다면 클래스를 대량 다시 구현해야 할 가능성이 높다. long은 이미 모든 데이터베이스 시퀀스와 호환되고, 가장 많이 사용하는 식별자 데이터 타입이며, 일반적인 사용 시나리오에서 전부 수용할 수 있는 길이이므로, 스프링 시큐리티의 ACL 모듈은 long 이외의 식별자를 지원하지 않는다.
+필요한 스키마와 `JdbcMutableAclService` 인스턴스를 만들었다면, 도메인 모델이 스프링 시큐리티 ACL 패키지와 호환되는지를 확인해야 한다. `ObjectIdentityImpl`은 다양하게 사용할 수 있으므로, 아마 이것 만으로 충분할 것이다. 도메인 객체엔 대부분 `public Serializable getId()` 메소드가 있을 것이다. 리턴 타입이 long이거나 long과 호환되는 경우엔 (eg int), `ObjectIdentity` 문제는 더 이상 생각하지 않아도 된다. ACL 모듈은 많은 곳에서 long 식별자를 사용한다. long (또는 int, byte 등)을 사용하지 않는 다면 클래스를 대량 다시 구현해야 할 가능성이 크다. long은 이미 모든 데이터베이스 시퀀스와 호환되고, 가장 많이 사용하는 식별자 데이터 타입이며, 일반적인 사용 시나리오에서 전부 수용할 수 있는 길이이므로, 스프링 시큐리티의 ACL 모듈은 long 이외의 식별자를 지원하지 않는다.
 
 다음 코드는 `Acl`을 만들고 기존 `Acl`을 수정하는 방법을 보여준다:
 
@@ -893,4 +892,4 @@ aclService.updateAcl(acl);
 
 스프링 시큐리티는 ACL 생성, 수정, 삭제 기능을 DAO나 레포지토리 연산의 일부로 자동으로 통합해주지 않는다. 따라서 각 도메인 객체마다 위와 같은 코드를 작성해야 한다. 서비스 레이어에 AOP를 적용해서, 서비스 레이어 작업에 자동으로 ACL 정보를 통합하는 걸 고려해볼만 하다. 우린 이 방법이 꽤 효과가 있었다.
 
-위에 있는 방법을 사용해서 데이터베이스에 ACL 정보를 저장했다면, 이제 실제로 인가 결정 로직에 ACL 정보를 사용하는 일이 남았다. 여기에는 여러 가지 선택 사항이 있다. 메소드 호출 전후에 각각 호출할 `AccessDecisionVoter`나 `AfterInvocationProvider`를 직접 만들 수도 있다. 이 클래스는 `AclService`로 관련 ACL을 검색한 다음 `Acl.isGranted(Permission[] permission, Sid[] sids, boolean administrativeMode)`를 호출해서 권한을 부여할지 말지 결정한다. 아니면 `AclEntryVoter`나 `AclEntryAfterInvocationProvider`, `AclEntryAfterInvocationCollectionFilteringProvider` 클래스를 사용하는 방법도 있다. 이 클래스들은 모두 런타임에 ACL 정보를 평가하는 선언적인(declarative) 접근법을 제공하므로 코드를 작성하지 않아도 된다. 이 클래스들을 어떻게 사용하면 되는지 알아 보려면 샘플 어플리케이션을 참고해라.
+위에 있는 방법을 사용해서 데이터베이스에 ACL 정보를 저장했다면, 이제 실제로 인가 결정 로직에 ACL 정보를 사용하는 일이 남았다. 여기에는 여러 가지 선택 사항이 있다. 메소드 호출 전후에 각각 호출할 `AccessDecisionVoter`나 `AfterInvocationProvider`를 직접 만들 수도 있다. 이 클래스는 `AclService`로 관련 ACL을 검색한 다음 `Acl.isGranted(Permission[] permission, Sid[] sids, boolean administrativeMode)`를 호출해서 권한을 부여할지 말지 결정한다. 아니면 `AclEntryVoter`나 `AclEntryAfterInvocationProvider`, `AclEntryAfterInvocationCollectionFilteringProvider` 클래스를 사용하는 방법도 있다. 이 클래스들은 모두 런타임에 ACL 정보를 평가하는 선언적인(declarative) 접근법을 제공하므로 코드를 작성하지 않아도 된다. 클래스 사용법은 샘플 어플리케이션을 참고해라.
