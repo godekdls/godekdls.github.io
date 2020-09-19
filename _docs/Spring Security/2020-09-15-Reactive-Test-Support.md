@@ -194,7 +194,7 @@ public Mono<String> foo(@AuthenticationPrincipal OidcUser user) {
 
 ### 30.2.4. Testing OIDC Login
 
-`WebTestClient`로 위 메소드를 테스트하려면 인가 서버로 일종의 권한 부여 플로우를 시뮬레이션해야 한다. 이 일은 확실히 벅찬 일이다. 스프링 시큐리티는 이런 보일러플레이트 없이도 테스트할 수 있도록 지원한다.
+`WebTestClient`로 위 메소드를 테스트하려면 인가 서버로 일종의 권한 부여 플로우를 시뮬레이션해야 한다. 시뮬레이션은 확실히 벅찬 일이다. 스프링 시큐리티는 이런 보일러플레이트 없이도 테스트할 수 있도록 지원한다.
 
 예를 들어 아래처럼 `SecurityMockServerConfigurers#oidcLogin` 메소드를 사용해서 스프링 시큐리티에 디폴트 `OidcUser`를 추가할 수 있다:
 
@@ -274,7 +274,7 @@ client
 
 - `userInfo(OidcUserInfo.Builder)` - `OidcUserInfo` 인스턴스 설정
 - `clientRegistration(ClientRegistration)` - `ClientRegistration`으로 관련 `OAuth2AuthorizedClient` 설정
-- `oidcUser(OidcUser)` - 완성된 `OidcUser` 인스턴스 설정
+- `oidcUser(OidcUser)` - 완전한 `OidcUser` 인스턴스 설정
 
 마지막 메소드는 1. `OidcUser` 자체 구현체를 쓰거나, 2. name 속성을 바꿔야 할 때 유용하다.
 
@@ -314,7 +314,7 @@ client
 
 이렇게 하면 관련 `MockServerRequest`에, 간단한 속성 `Map`과 부여받은 권한 `Collection`을 가지고 있는 `OAuth2User`를 설정한다.
 
-특히, `Map`에 `sub`/`user` 키/값을 추가해 준다:
+특히, `Map`에 키/값 `sub`/`user`를 추가해 준다:
 
 ```java
 assertThat((String) user.getAttribute("sub")).isEqualTo("user");
@@ -374,7 +374,7 @@ client
 다른 메소드로도 인증 정보를 설정할 수 있다. 컨트롤러에서 사용하는 데이터에 따라 필요한 메소드를 사용하면 된다.
 
 - `clientRegistration(ClientRegistration)` - `ClientRegistration`으로 관련 `OAuth2AuthorizedClient` 설정
-- `oauth2User(OAuth2User)` - 완성된 `OAuth2User` 인스턴스 설정
+- `oauth2User(OAuth2User)` - 완전한 `OAuth2User` 인스턴스 설정
 
 마지막 메소드는 1. `OAuth2User` 자체 구현체를 쓰거나, 2. name 속성을 바꿔야 할 때 유용하다.
 
@@ -447,7 +447,7 @@ assertThat(authorizedClient.getAccessToken().getScopes()).hasSize(1);
 assertThat(authorizedClient.getAccessToken().getScopes()).containsExactly("read");
 ```
 
-스프링 시큐리티는 `OAuth2AuthorizedClient` 인스턴스를 관련 `HttpSession`에서 사용할 수 있도록 필요한 일을 해준다. 즉, `WebSessionOAuth2ServerAuthorizedClientRepository`에서 `OAuth2AuthorizedClient`를 조회할 수 있다.
+스프링 시큐리티는 `OAuth2AuthorizedClient` 인스턴스를 관련 `HttpSession`에서 사용할 수 있도록 필요한 일을 해준다. 덕분에 `WebSessionOAuth2ServerAuthorizedClientRepository`에서 `OAuth2AuthorizedClient`를 조회할 수 있다.
 
 #### Configuring Scopes
 
@@ -483,7 +483,7 @@ client
 
 - `principalName(String)` - 리소스 소유자 이름 설정
 - `clientRegistration(Consumer<ClientRegistration.Builder>)` - 관련 `ClientRegistration` 설정
-- `clientRegistration(ClientRegistration)` - 완성된 `ClientRegistration` 설정
+- `clientRegistration(ClientRegistration)` - 완전한 `ClientRegistration` 설정
 
 마지막 메소드는 실제 `ClientRegistration`을 사용하고 싶을 때 유용하다.
 
@@ -607,7 +607,7 @@ client
 
 ### 30.2.8. Testing Opaque Token Authentication
 
-opaque 토큰도 [JWT](#3027-testing-jwt-authentication)와 유사하게 유효성 검증을 위해서는 인가 서버가 필요하므로, 테스트가 더 까다롭다. 이를 위해 스프링 시큐리티는 opaque 토큰을 위한 테스트 기능을 지원한다.
+opaque 토큰도 [JWT](#3027-testing-jwt-authentication)와 유사하게 유효성 검증을 위해서는 인가 서버가 필요하므로, 테스트하기가 더 까다롭다. 이를 위해 스프링 시큐리티는 opaque 토큰을 위한 테스트 기능을 지원한다.
 
 `BearerTokenAuthentication`으로 인증 정보를 가져오는 컨트롤러가 있다고 가정해보자:
 
@@ -628,7 +628,7 @@ client
 
 이렇게 하면 관련 `MockHttpServletRequest`에, 간단한 `OAuth2AuthenticatedPrincipal`과, 속성 `Map`, 부여받은 권한 `Collection`을 가지고 있는 `BearerTokenAuthentication`을 설정한다.
 
-특히, `Map`에 `sub`/`user` 키/값을 추가해 준다:
+특히, `Map`에 키/값 `sub`/`user`를 추가해 준다:
 
 ```java
 assertThat((String) token.getTokenAttributes().get("sub")).isEqualTo("user");

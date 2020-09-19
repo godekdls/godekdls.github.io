@@ -26,7 +26,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 이번 섹션에선 스프링 부트에서 스프링 시큐리티를 사용하기 위한 최소한의 설정을 다룬다.
 
->  완성된 어플리케이션 코드는 [samples/boot/helloworld](https://github.com/spring-projects/spring-security/tree/5.3.2.RELEASE/samples/boot/helloworld)에서 찾아볼 수 있다. 좀 더 편리하게는, [여기를 클릭](https://start.spring.io/starter.zip?type=maven-project&language=java&packaging=jar&jvmVersion=1.8&groupId=example&artifactId=hello-security&name=hello-security&description=Hello Security&packageName=example.hello-security&dependencies=web,security)하면 최소 버전의 스프링 부트 + 스프링 시큐리티 어플리케이션을 다운로드할 수 있다.
+> 완성된 어플리케이션 코드는 [samples/boot/helloworld](https://github.com/spring-projects/spring-security/tree/5.3.2.RELEASE/samples/boot/helloworld)에서 찾아볼 수 있다. 좀 더 편리하게는, [여기를 클릭](https://start.spring.io/starter.zip?type=maven-project&language=java&packaging=jar&jvmVersion=1.8&groupId=example&artifactId=hello-security&name=hello-security&description=Hello Security&packageName=example.hello-security&dependencies=web,security)하면 최소 버전의 스프링 부트 + 스프링 시큐리티 어플리케이션을 다운로드할 수 있다.
 
 ---
 
