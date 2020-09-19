@@ -7,7 +7,6 @@ description: 스프링 시큐리티가 의존하는 라이브러리를 설명합
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-04T20:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#appendix-dependencies
 ---
@@ -29,9 +28,9 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 22.6. Spring Security Dependencies
 
-이 부록은 스프링 시큐리티의 모듈과, 어플리케이션 실행을 위해 필요한 기타 의존성을 설명한다. 스프링 시큐리티 자체를 빌드하거나 테스트할 때만 사용하는 의존성은 포함하지 않았다. 더불어 외부 라이브러리에서 필요한 전이 의존성(transitive dependencies)도 포함하지 않았다.
+이 부록에선 스프링 시큐리티의 모듈과, 어플리케이션 실행을 위해 필요한 기타 의존성을 설명한다. 스프링 시큐리티 자체를 빌드하거나 테스트할 때만 사용하는 의존성은 포함하지 않았다. 더불어 외부 라이브러리에서 필요한 전이 의존성(transitive dependencies)도 포함하지 않았다.
 
-필요한 스프링 버전은 프로젝트 웹사이트에 나와있으므로, 아래에선 스프링 의존성 버전을 생략했다. "optional"로 표기한 의존성 중에는, 스프링 어플리케이션에서 시큐리티 외 다른 기능때문에 필요한 의존성도 있다. 또한 어플리케이션 대부분이 사용하는 의존성은 아래엔 "optional"로 표기돼 있더라도, 실제 프로젝트의 Maven POM 파일에는 optional로 표기하지 않았을 수도 있다. 특정 기능을 사용하지 않으면 필요하지 않다는 의미에서 "optional"이다.
+필요한 스프링 버전은 프로젝트 웹사이트에 나와 있으므로, 아래에선 스프링 의존성 버전을 생략했다. "optional"로 표기한 의존성 중에는, 스프링 어플리케이션에서 시큐리티 외 다른 기능 때문에 필요한 의존성도 있다. 또한 어플리케이션 대부분이 사용하는 의존성은 아래엔 "optional"로 표기돼 있더라도, 실제 프로젝트의 Maven POM 파일에는 optional로 표기하지 않았을 수도 있다. 특정 기능을 사용하지 않으면 필요하지 않다는 의미에서 "optional"이다.
 
 모듈 하나가 다른 스프링 시큐리티 모듈을 사용하는 경우, 당연히 해당 모듈의 필수 의존성도 필요하며, 별도로 표기하진 않았다.
 
@@ -66,7 +65,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 | Dependency           | Version | Description                                                  |
 | :------------------- | :------ | :----------------------------------------------------------- |
 | spring-security-core |         |                                                              |
-| spring-web           |         | 스프링 웹관련 클래스는 광범위하게 사용한다.                  |
+| spring-web           |         | 스프링 웹 관련 클래스는 광범위하게 사용하고 있다.                  |
 | spring-jdbc          |         | JDBC 기반 remember-be 토큰 레포지토리에 필요하다 (optional). |
 | spring-tx            |         | remember-me 토큰 레포지토리 구현체에 필요하다 (optional).    |
 
