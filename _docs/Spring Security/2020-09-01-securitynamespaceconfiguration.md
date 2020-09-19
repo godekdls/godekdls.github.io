@@ -7,7 +7,6 @@ description: 스프링 시큐리티의 XML 네임스페이스를 소개합니다
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-03T20:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#ns-config
 ---
@@ -70,7 +69,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 ### 18.1.1. Design of the Namespace
 
-네임스페이스는 프레임워크에서 가장 많이 쓰는 기능을 지원하도록 설계했으며, 어플리케이션에선 단순화한 간결한 문법을 사용할 수 있도록 만들었다. 프레임워크 내에 있는 대규모 의존성을 기반으로 설계했으며, 다음 영역으로 나눌 수 있다:
+네임스페이스는 프레임워크에서 가장 많이 쓰는 기능을 지원하도록 설계했으며, 어플리케이션에선 단순화한 간결한 문법을 사용하도록 만들었다. 프레임워크 내에 있는 대규모 의존성을 기반으로 설계했으며, 다음 영역으로 나눌 수 있다:
 
 - *Web/HTTP Security* - 가장 복잡한 부분. URL 보호, 로그인/에러 페이지 렌더링 등의 인증 메커니즘 적용에 필요한 필터와 관련 서비스 빈을 설정한다.
 - *Business Object (Method) Security* - 서비스 레이어를 보호하는 옵션.
@@ -85,7 +84,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 ## 18.2. Getting Started with Security Namespace Configuration
 
-이번 섹션에선 네임스페이스 설정으로 일부 프레임워크 주요 기능을 사용하는 방법을 살펴본다. 일단은 최대한 빨리 어플리케이션을 기동해보고, 기존 웹 어플리케이션에 네임스페이스로 몇 가지 테스트 로그인을 지원하는 인증, 접근 제어 기능을 추가해 보겠다. 데이터베이스나 다른 보안 레포지토리로 인증을 전환하는 방법은 그 다음에 살펴보겠다. 이후 섹션에선 좀 더 복잡한 네임스페이스 설정 옵션을 소개한다.
+이번 섹션에선 네임스페이스 설정으로 프레임워크 주요 기능 일부를 사용하는 방법을 살펴본다. 일단은 최대한 빨리 어플리케이션을 기동해보고, 기존 웹 어플리케이션에 네임스페이스로 몇 가지 테스트 로그인을 지원하는 인증, 접근 제어 기능을 추가해 보겠다. 데이터베이스나 다른 보안 레포지토리로 인증을 전환하는 방법은 그 다음에 살펴보겠다. 이후 섹션에선 좀 더 복잡한 네임스페이스 설정 옵션을 소개한다.
 
 ### 18.2.1. web.xml Configuration
 
@@ -154,9 +153,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 </authentication-manager>
 ```
 
->  프레임워크의 이전 버전 네임스페이스에 익숙하다면 여기에서 무슨 일이 벌어지고 있는지 대략 예상될 것이다. `<http>` 요소는 `FilterChainProxy`와 이를 사용하는 필터 빈을 생성해 준다. 필터 위치는 미리 정의돼 있기 때문에, 흔한 이슈 중 하나인 필터 순서를 잘못 정의하는 이슈를 피할 수 있다.
+>  프레임워크의 이전 버전 네임스페이스에 익숙하다면 여기에서 무슨 일이 벌어지고 있는지 대략 예상될 것이다. `<http>` 요소는 `FilterChainProxy`와 이를 사용하는 필터 빈을 생성해 준다. 필터 위치는 미리 정의돼 있기 때문에, 흔히 겪는 필터 순서를 잘못 정의하는 이슈를 방지할 수 있다.
 >
->  `<authentication-provider>` 요소는 `DaoAuthenticationProvider` 빈을,  `<user-service>` 요소는 `InMemoryDaoImpl`을 생성한다. 모든 `authentication-provider` 요소는 `ProviderManager`를 만들고 여기에 인증 provider를 등록하는 `<authentication-manager>` 요소의 자식 요소여야 한다. 생성하는 빈들에 대한 자세한 정보는 [네임스페이스 부록](../thesecuritynamespace#225-the-security-namespace)에서 찾을 수 있다. 프레임워크에서 중요한 클래스가 무엇인지, 그리고 클래스가 어떻게 사용되는지 이해하고 싶다면, 특히 나중에 커스텀해야 할 수도 있다면, 함께 확인해보는 게 좋다.
+>  `<authentication-provider>` 요소는 `DaoAuthenticationProvider` 빈을,  `<user-service>` 요소는 `InMemoryDaoImpl`을 생성한다. 모든 `authentication-provider` 요소는 `ProviderManager`를 만들고 여기에 인증 provider를 등록하는 `<authentication-manager>` 요소의 자식 요소여야 한다. 생성하는 빈들에 대한 자세한 정보는 [네임스페이스 부록](../thesecuritynamespace#225-the-security-namespace)에서 찾을 수 있다. 프레임워크에서 중요한 클래스가 무엇인지, 그리고 어떻게 그 클래스를 사용하는지 이해하고 싶다면, 특히 나중에 커스텀해야 할 수도 있다면, 함께 확인해보는 게 좋다.
 
 위 설정은 두 명의 사용자와, 사용자의 비밀번호, 어플리케이션 내 role을 (접근 제어에 사용할) 정의한다. `user-service`의 `properties` 속성으로 표준 properties 파일에서 사용자 정보를 로드할 수도 있다. 파일 형식에 대한 자세한 설명은 [인메모리 인증](../authentication#10104-in-memory-authentication) 섹션을 참고해라. `<authentication-provider>` 요소를 사용했다는 것은 인증 manager가 사용자 정보를 사용해서 인증 요청을 처리한다는 뜻이다. `<authentication-provider>` 요소를 여러 개 만들어서 다른 인증 소스를 정의할 수도 있으며, 각 소스는 순서대로 참조한다.
 
@@ -189,7 +188,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 > 이전 버전에선 필터 인스턴스를 생성한 이후, 어플리케이션 컨텍스트 후처리 로직에서 필터를 정렬했다. 3.0+ 버전에선, 이제 클래스를 인스턴스화하기 전에 빈 메타데이터를 가지고 정렬한다. 따라서 `<http>` 요소를 파싱할 때 전체 필터 리스트를 알고 있어야 하고, 자체 필터를 추가하는 방식에도 영향을 끼쳤다. 그로 인해 3.0에서 문법이 약간 달라졌다.
 
-필터와 이를 구성하는 별칭, 네임스페이스 요소/속성은 [Standard Filter Aliases and Ordering](#filter-stack)에 나와있다. 아래 필터는 필터 체인에서 실행하는 순서로 나열했다.
+필터와 이를 구성하는 별칭, 네임스페이스 요소/속성은 [Standard Filter Aliases and Ordering](#filter-stack) 테이블에 나와있다. 아래 테이블은 필터 체인에서 실행하는 순서로 나열했다.
 
 <span id="filter-stack"></span>**Table 2. Standard Filter Aliases and Ordering**
 
@@ -247,7 +246,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 이번 섹션에선 스프링 시큐리티 내 접근 제어를 위한 기본 아키텍처를 알고 있다고 가정한다. 이 섹션은 간단히 role을 기반으로 권한을 확인하는 대신 더 복잡한 로직을 커스텀할 사람들을 위한 섹션이므로, 접근 제어 아키텍처를 잘 모르면 일단은 건너 뛰고 다음에 다시 와도 좋다.
 
-네임스페이스 설정을 사용하면 `AccessDecisionManager`의 디폴트 인스턴스가 자동으로 등록되며, 이를 사용해서 `intercept-url`과 `protect-pointcut` 선언에 지정한 access 속성을 기반으로 (애노테이션으로 보호하는 메소드가 있다면 애노테이션도) 메소드 실행과 웹 URL 접근 권한을 결정한다.
+네임스페이스 설정을 사용하면 `AccessDecisionManager`의 디폴트 인스턴스가 자동으로 등록되며, 이 인스턴스를 사용해서 `intercept-url`과 `protect-pointcut` 선언에 지정한 access 속성을 기반으로 (애노테이션으로 보호하는 메소드가 있다면 애노테이션도) 메소드 실행과 웹 URL 접근 권한을 결정한다.
 
 디폴트 전략은 `RoleVoter`와 `AuthenticatedVoter`를 사용하는 `AffirmativeBased` `AccessDecisionManager`다. 자세한 설명은 [인가](../authorization#111-authorization-architecture) 챕터에서 찾아볼 수 있다.
 
