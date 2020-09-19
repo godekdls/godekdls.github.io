@@ -7,7 +7,6 @@ description: 자바 코드로 스프링 시큐리티를 설정하는 방법을 �
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-01T21:30:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#jc
 ---
@@ -25,7 +24,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ---
 
-스프링 프레임워크의 전반적인 [자바 설정](https://docs.spring.io/spring/docs/3.1.x/spring-framework-reference/html/beans.html#beans-java) 지원은 스프링 3.1에서 추가됐다. 스프링 시큐리티는 3.2 버전부터 자바 설정을 지원하므로 XML 없이도 손쉽게 스프링 시큐리티 설정을 만들할 수 있다.
+스프링 프레임워크의 전반적인 [자바 설정](https://docs.spring.io/spring/docs/3.1.x/spring-framework-reference/html/beans.html#beans-java) 지원은 스프링 3.1에서 추가됐다. 스프링 시큐리티는 3.2 버전부터 자바 설정을 지원하므로 XML 없이도 손쉽게 스프링 시큐리티 설정을 만들 수 있다.
 
 [시큐리티 네임스페이스 설정](../securitynamespaceconfiguration)에 익숙하다면, 자바 설정도 네임스페이스 설정과 꽤 유사하다는 걸 알 수 있을 거다.
 
@@ -108,7 +107,7 @@ public class SecurityWebApplicationInitializer
 
 ### 16.1.3. AbstractSecurityWebApplicationInitializer with Spring MVC
 
-어플리케이션의 다른 곳에서 스프링을 사용하고 있다면 아마 스프링 설정을 로딩하는 `WebApplicationInitializer`가 이미 있을 거다. 이전 설정을 그대로 사용하면 오류가 생긴다. 대신에 기존 `ApplicationContext`에 스프링 시큐리티를 등록해야 한다. 예를 들어 스프링 MVC를 사용하고 있다면 `SecurityWebApplicationInitializer`는 다음과 같을 것이다:
+이미 다른 곳에서 스프링을 사용하고 있다면 아마 스프링 설정을 로딩하는 `WebApplicationInitializer`가 있을 거다. 이전 설정을 그대로 사용하면 오류가 생긴다. 대신에 기존 `ApplicationContext`에 스프링 시큐리티를 등록해야 한다. 예를 들어 스프링 MVC를 사용하고 있다면 `SecurityWebApplicationInitializer`는 다음과 같을 것이다:
 
 ```java
 import org.springframework.security.web.context.*;
@@ -171,7 +170,7 @@ protected void configure(HttpSecurity http) throws Exception {
 
 ## 16.3. Multiple HttpSecurity
 
-`<http>` 블록을 여러 개 만들 수 있듯이, HttpSecurity 인스턴스도 여러 개 설정할 수 있다. 핵심은 `WebSecurityConfigurerAdapter`를 여러 번 상속하는 것이다. 예를 들어 다음 예제에선 `/api/`로 시작하는 URL은 다른 설정을 사용한다:
+`<http>` 블록을 여러 개 만들 수 있듯이, HttpSecurity 인스턴스도 여러 개 설정할 수 있다. 핵심은 `WebSecurityConfigurerAdapter`를 여러 번 상속하는 것이다. 예를 들어 다음 예제에선 `/api/`로 시작하는 URL에선 다른 설정을 사용한다:
 
 ```java
 @EnableWebSecurity
@@ -256,7 +255,7 @@ public class MyCustomDsl extends AbstractHttpConfigurer<MyCustomDsl, HttpSecurit
 }
 ```
 
-> 실제로 `HttpSecurity.authorizeRequests()` 같은 메소드를 구현하는 방식과 동일하다.
+> 실제로 `HttpSecurity.authorizeRequests()` 같은 메소드도 동일한 방식으로 구현하고 있다.
 
 이 커스텀 DSL은 다음과 같이 사용할 수 있다:
 
