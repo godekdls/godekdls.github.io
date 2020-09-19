@@ -7,7 +7,6 @@ description: 스프링 시큐리티에서 사용하는 데이터 베이스 스�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-04T20:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#appendix-schema
 boundary: Appendix
@@ -37,7 +36,7 @@ HSQLDB 데이터베이스용 DDL 문을 제공하니, 사용 중인 데이터베
 
 ## 22.1. User Schema
 
-`UserDetailsService`(`JdbcDaoImpl`)의 표준 JDBC 구현체는 사용자의 비밀번호, 계정 상태 (활성화 여부), 권한(role) 목록을 불러올 테이블이 있어야 한다. 사용 중인 데이터베이스 방언(dialect)에 맞게 스키마를 조정해야 한다.
+`UserDetailsService`(`JdbcDaoImpl`)의 표준 JDBC 구현체를 사용하라면 사용자의 비밀번호, 계정 상태 (활성화 여부), 권한(role) 목록을 불러올 테이블이 있어야 한다. 사용 중인 데이터베이스 방언(dialect)에 맞게 스키마를 조정해야 한다.
 
 ```sql
 create table users(
