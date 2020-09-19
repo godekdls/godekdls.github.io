@@ -7,7 +7,6 @@ description: 코틀린 코드로 스프링 시큐리티를 설정하는 방법�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-01T21:30:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#kotlin-config
 ---
@@ -29,7 +28,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 17.1. HttpSecurity
 
-스프링 시큐리티는 모든 사용자를 인증해야 한다는 걸 어떻게 알 수 있을까? 폼 기반 인증을 지원해야 한다는 것은 또 어떻게 알까? 사실은 뒷단에서 실행하는 `WebSecurityConfigurerAdapter`라는 설정 클래스가 있다. 이 클래스는 디폴트로 아래와 같이 구현돼 있는 `configure`라는 메소드가 있다:
+스프링 시큐리티는 모든 사용자를 인증해야 한다는 걸 어떻게 알 수 있을까? 폼 기반 인증을 지원해야 한다는 것은 또 어떻게 알까? 사실은 뒷단에서 실행하는 `WebSecurityConfigurerAdapter`라는 설정 클래스가 있다. 이 클래스엔 디폴트로 아래와 같이 구현돼 있는 `configure`라는 메소드가 있다:
 
 ```kotlin
 fun configure(http: HttpSecurity) {
@@ -63,7 +62,7 @@ fun configure(http: HttpSecurity) {
 
 ## 17.2. Multiple HttpSecurity
 
-`<http>` 블록을 여러 개 만들 수 있듯이, HttpSecurity 인스턴스도 여러 개 설정할 수 있다. 핵심은 `WebSecurityConfigurerAdapter`를 여러 번 상속하는 것이다. 예를 들어 다음 예제에선 `/api/`로 시작하는 URL은 다른 설정을 사용한다:
+`<http>` 블록을 여러 개 만들 수 있듯이, HttpSecurity 인스턴스도 여러 개 설정할 수 있다. 핵심은 `WebSecurityConfigurerAdapter`를 여러 번 상속하는 것이다. 예를 들어 다음 예제에선 `/api/`로 시작하는 URL에선 다른 설정을 사용한다:
 
 ```kotlin
 @EnableWebSecurity

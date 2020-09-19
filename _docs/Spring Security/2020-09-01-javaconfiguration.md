@@ -137,7 +137,7 @@ public class MvcWebApplicationInitializer extends
 
 ## 16.2. HttpSecurity
 
-지금까지 [WebSecurityConfig](#jc-hello-wsca)에는 사용자를 인증하는 방법에 대한 정보만 있었다. 스프링 시큐리티는 모든 사용자를 인증해야 한다는 걸 어떻게 알 수 있을까? 폼 기반 인증을 지원해야 한다는 것은 또 어떻게 알까? 사실은 뒷단에서 실행하는 `WebSecurityConfigurerAdapter`라는 설정 클래스가 있다. 이 클래스는 디폴트로 아래와 같이 구현돼 있는 `configure`라는 메소드가 있다:
+지금까지 [WebSecurityConfig](#jc-hello-wsca)에는 사용자를 인증하는 방법에 대한 정보만 있었다. 스프링 시큐리티는 모든 사용자를 인증해야 한다는 걸 어떻게 알 수 있을까? 폼 기반 인증을 지원해야 한다는 것은 또 어떻게 알까? 사실은 뒷단에서 실행하는 `WebSecurityConfigurerAdapter`라는 설정 클래스가 있다. 이 클래스엔 디폴트로 아래와 같이 구현돼 있는 `configure`라는 메소드가 있다:
 
 ```java
 protected void configure(HttpSecurity http) throws Exception {
