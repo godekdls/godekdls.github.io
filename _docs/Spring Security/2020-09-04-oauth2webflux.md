@@ -656,7 +656,7 @@ JWT는 보통 `nbf` 클레임으로 시작하고 `exp` 클레임으로 끝나는
 
 하지만 모든 서버는 [클럭 드리프트](https://ko.wikipedia.org/wiki/클럭_드리프트)가 발생할 수 있으므로, 서버 하나에선 토큰이 만료되지만 다른 서버에선 아닐 수도 있다. 따라서 분산 시스템에 있는 서버가 많아지면 문제가 될 수 있다.
 
-리소스 서버는 `JwtTimestampValidator`로 토큰의 유효 기간을 검증하며, `clockSkew`를 설정하면 이 문제를 어느정도 해결할 수 있다:
+리소스 서버는 `JwtTimestampValidator`로 토큰의 유효 기간을 검증하며, `clockSkew`를 설정하면 이 문제를 어느 정도 해결할 수 있다:
 
 ```java
 @Bean
