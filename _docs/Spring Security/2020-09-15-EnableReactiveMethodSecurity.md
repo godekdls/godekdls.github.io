@@ -7,7 +7,6 @@ description: 리액티브 환경에서 스프링 시큐리티의 메소드 시�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-15T22:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#jc-erms
 ---
