@@ -6,7 +6,7 @@ permalink: /Spring%20Security/authorization/
 description: 서블릿 기반 어플리케이션에 적용할 수 있는 스프링 시큐리티 인가를 설명합니다. 공식 문서에 있는 "authorization" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/filtersecurityinterceptor.png
 priority: 0.8
-lastmod: 2020-08-25T23:10:00+09:00
+lastmod: 2020-09-20T23:18:12+09:00
 comments: true
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#servlet-authorization

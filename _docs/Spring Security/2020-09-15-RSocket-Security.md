@@ -5,9 +5,8 @@ order: 34
 permalink: /Spring%20Security/rsocketsecurity/
 description: 스프링 시큐리티와 RSocket을 통합하는 방법을 설명합니다. 공식 문서에 있는 "RSocket Security" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-09-15T22:50:00+09:00
+lastmod: 2020-09-20T23:18:12+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#rsocket
 ---
@@ -223,7 +222,7 @@ rsocket
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 라우팅 정보가 `fetch.profile.me`면 사용자 인증만 요구한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 여기에선 `ROLE_CUSTOM` 권한이 있어야 권한을 인가하도록 커스텀 matcher를 설정한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 여기선 권한 인가 규칙을 커스텀한다. 이 matcher는 `context`에 있는 username을 변수로 사용한다. 커스텀 인가 규칙은 `checkFriends` 메소드로 제공한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 여기선 별다른 규칙이 없는 요청에서도 사용자를 인증하도록 설정한다. 요청에는 메타데이터가 있다. 요청은 별도 페이로드를 포함하지 않는다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 여기선 별다른 규칙이 없는 request에서도 사용자를 인증하도록 설정한다. request에는 메타데이터가 있다. request는 별도 페이로드를 포함하지 않는다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 여기선 별다른 규칙이 없는 exchange는 누구나 요청할 수 있도록 허용한다. 이 예시에선 메타데이터가 없는 페이로드에는 인가 규칙이 없다는 뜻이다.</small>
 
 인가 규칙은 순서대로 적용된다는 점을 알고 있어야 한다. 첫 번째로 매칭된 인가 규칙만 적용된다.

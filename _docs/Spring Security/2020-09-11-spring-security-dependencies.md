@@ -5,7 +5,7 @@ order: 24
 permalink: /Spring%20Security/springsecuritydependencies/
 description: 스프링 시큐리티가 의존하는 라이브러리를 설명합니다. 공식 문서에 있는 "Spring Security Dependencies" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-09-04T20:00:00+09:00
+lastmod: 2020-09-20T23:18:12+09:00
 comments: true
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#appendix-dependencies

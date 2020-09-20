@@ -5,7 +5,7 @@ order: 2
 permalink: /Spring%20Security/prerequisites/
 description: 스프링 시큐리티에서 요구하는 환경을 설명합니다. 공식 문서에 있는 "prerequisites" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-08-21T21:30:00+09:00
+lastmod: 2020-09-20T23:18:12+09:00
 comments: true
 boundary: Preface
 originalRefName: 스프링 시큐리티

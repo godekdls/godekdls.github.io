@@ -5,7 +5,7 @@ order: 26
 permalink: /Spring%20Security/webfluxsecurity/
 description: 웹플럭스 어플리케이션에서 스프링 시큐리티를 시작하는 방법과 스프링 부트 자동 설정을 설명합니다. 공식 문서에 있는 "WebFlux Security" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
-lastmod: 2020-09-04T20:00:00+09:00
+lastmod: 2020-09-20T23:18:12+09:00
 comments: true
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#jc-webflux
