@@ -7,7 +7,6 @@ description: 스프링 시큐리티에서 리액티브로 x509 인증을 적용�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-15T21:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#reactive-x509
 ---
