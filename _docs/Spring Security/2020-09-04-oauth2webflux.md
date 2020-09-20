@@ -7,7 +7,6 @@ description: 웹플럭스 어플리케이션에서 스프링 시큐리티로 OAu
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-04T20:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webflux-oauth2
 ---
@@ -146,7 +145,7 @@ spring:
 
 > 스프링 시큐리티는 각 엔드포인트를 하나씩 질의해서 처음 200 응답을 받으면 멈춘다.
 
-`keycloak`은 provider와 registration 모두에서 사용하므로 `client-id`와 `client-secret`은 provider에 연결된다.
+provider와 registration 모두 `keycloak`을 사용하므로 `client-id`와 `client-secret`은 provider에 연결된다.
 
 ### 25.1.3. Explicit OAuth2 Login Configuration
 
@@ -221,7 +220,7 @@ SecurityWebFilterChain configure(ServerHttpSecurity http) throws Exception {
 }
 ```
 
-이제 스프링 시큐리티의 [WebClient](../webclient)나 [@RegisteredOAuth2AuthorizedClient](../@registeredoauth2authorizedclient)를 사용해서 액세스 토큰을 가져와서 사용할 수 있다.
+이제 스프링 시큐리티의 [WebClient](../webclient)나 [@RegisteredOAuth2AuthorizedClient](../@registeredoauth2authorizedclient)로 액세스 토큰을 가져와서 사용할 수 있다.
 
 ---
 
@@ -734,7 +733,7 @@ security:
 
 `https://idp.example.com/introspect`는 인가 서버가 호스트하는 introspection 엔드포인트이며, `client-id`와 `client-secret`은 엔드포인트 요청에 사용할 credential이다.
 
-리소스 서버는 이 프로퍼티로 자체 설정을 만들어 이후 전달받은 JWT를 검증할 때 사용한다
+리소스 서버는 이 프로퍼티로 자체 설정을 만들어 이후 전달받은 JWT를 검증할 때 사용한다.
 
 > introspection을 사용한다면, 인가 서버의 말이 곧 법이다. 인가 서버가 토큰이 유효하다고 응답한다면 유효한 것이다.
 
@@ -1011,7 +1010,7 @@ public ReactiveOpaqueTokenIntrospector introspector() {
 
 #### Using Introspection with JWTs
 
-흔히들 introspection을 JWT와 사용할 수 있는지 묻곤 한다. 스프링 시큐리티의 Opaque 토큰 기능은 토큰 형식과는 상관없이 설계했다. 즉 설정에 있는 introspection 엔드포인트엔 어떤 토큰이든 전달할 수 있다.
+흔히들 introspection을 JWT와 사용할 수 있는지 묻곤 한다. 스프링 시큐리티의 Opaque 토큰 기능은 토큰 형식과는 상관없이 설계했다. 즉, 설정에 있는 introspection 엔드포인트엔 어떤 토큰이든 전달할 수 있다.
 
 JWT가 취소되면 모든 요청을 인가 서버로 검증해야 하는 요구사항이 있다고 가정해보자.
 
@@ -1195,7 +1194,7 @@ http
 
 ### 25.3.5. Bearer Token Propagation
 
-이제 bearer이 있으므로, 다운스트림 서비스로 편하게 넘겨도 된다. 다음 예제처럼 `ServerBearerExchangeFilterFunction`을 사용하면 매우 간단해진다.
+이제 bearer 토큰이 있으므로, 다운스트림 서비스로 편하게 넘겨도 된다. 다음 예제처럼 `ServerBearerExchangeFilterFunction`을 사용하면 매우 간단해진다.
 
 ```java
 @Bean
