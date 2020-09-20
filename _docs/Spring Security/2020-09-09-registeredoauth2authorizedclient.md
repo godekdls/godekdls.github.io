@@ -7,7 +7,6 @@ description: 스프링 시큐리티에서 @RegisteredOAuth2AuthorizedClient 애�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-09T23:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webflux-roac
 ---
@@ -29,7 +28,7 @@ Mono<String> explicit(@RegisteredOAuth2AuthorizedClient("client-id") OAuth2Autho
 
 - 스프링 시큐리티가 자동으로 만료된 토큰을 갱신한다 (refresh 토큰이 있다면).
 - 액세스 토큰을 요청했지만 토큰이 없는 경우, 스프링 시큐리티가 자동으로 액세스 토큰을 요청한다.
-  - `authorization_code`에선, 리다이렉션을 수행한 다음 기존 요청을 다시 이어간다.
+  - `authorization_code`에선, 리다이렉션을 수행한 다음 기존 요청을 다시 이어가는 것까지 포함한다.
   - `client_credentials`에선, 단순히 토큰을 요청하고 저장한다.
 
 `oauth2Login()`으로 사용자를 인증했다면 `client-id`를 생략해도 된다. 예를 들어 다음 코드도 동작한다:
@@ -41,4 +40,4 @@ Mono<String> implicit(@RegisteredOAuth2AuthorizedClient OAuth2AuthorizedClient a
 }
 ```
 
-사용자가 항상 OAuth2 로그인으로 인증하고, 동일한 인가 서버의 액세스 토큰만 필요한 경우에 편리하다.
+항상 OAuth2 로그인으로 사용자를 인증하고, 동일한 인가 서버의 액세스 토큰만 필요한 경우에 편리하다.
