@@ -7,7 +7,6 @@ description: 리액티브 환경에서 지원하는 스프링 시큐리티 테�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-15T22:50:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#test-webflux
 ---
