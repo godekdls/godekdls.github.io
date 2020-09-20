@@ -7,7 +7,6 @@ description: 웹플럭스 어플리케이션에서 스프링 시큐리티를 시
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-04T20:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#jc-webflux
 boundary: Reactive Applications
@@ -84,4 +83,4 @@ public class HelloWebfluxSecurityConfig {
 }
 ```
 
-이 코드는 위에 있는 최소한의 설정과 동일한 설정을 명시적으로 정의한다. 여기에선 디폴트 값을 쉽게 변경할 수 있다.
+이 코드는 위에 있는 최소한의 설정과 동일한 설정을 명시적으로 정의한 코드다. 여기에선 디폴트 값을 쉽게 변경할 수 있다.
