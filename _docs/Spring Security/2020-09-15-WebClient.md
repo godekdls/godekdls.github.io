@@ -7,7 +7,6 @@ description: 스프링 시큐리티로 WebClient를 통합해서, 액세스 토�
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-15T22:00:00+09:00
 comments: true
-completed: false
 originalRefName: 스프링 시큐리티
 originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/#webclient
 ---
@@ -65,7 +64,7 @@ WebClient webClient(ReactiveClientRegistrationRepository clientRegistrations,
 
 ## 28.2. Implicit OAuth2AuthorizedClient
 
-위 설정에서 `defaultOAuth2AuthorizedClient`를 `true`로 설정했다면, oauth2Login(i.e. OIDC)으로 인증한 현재 사용자의 인증 정보를 사용해서 자동으로 액세스 토큰을 공급한다. 또는 `defaultClientRegistrationId`를 유효한 `ClientRegistration` id로 설정했다면, 클라이언트 등록 정보를 사용해서 액세스 토큰을 공급한다. 이 방식은 편리하긴 하지만, 모든 엔드포인트에서 액세스 토큰이 필요한 게 아니라면 위험한 방법이다 (액세스 토큰이 필요 없는 엔드포인트에 액세스 토큰을 전송할 수 있다).
+위 설정에서 `defaultOAuth2AuthorizedClient`를 `true`로 설정했다면, oauth2Login(i.e. OIDC)으로 인증한 현재 사용자의 인증 정보를 사용해서 자동으로 액세스 토큰을 공급한다. 또는 `defaultClientRegistrationId`를 유효한 `ClientRegistration` id로 설정했다면, 클라이언트 등록 정보를 사용해서 액세스 토큰을 공급한다. 편리한 방식이긴 하지만, 모든 엔드포인트에 액세스 토큰이 필요한 게 아니라면 위험한 방법이다 (액세스 토큰이 필요 없는 엔드포인트에 액세스 토큰을 전송할 수 있다).
 
 ```java
 Mono<String> body = this.webClient
