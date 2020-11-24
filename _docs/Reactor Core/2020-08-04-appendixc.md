@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-04T19:07:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#reactor-extra
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#reactor-extra
 ---
 
 ### 목차
@@ -87,4 +87,4 @@ Reactor-extra는 몇 가지 특화된 스케줄러를 제공한다:
 - `SwingScheduler` (`reactor.swing` 패키지): 태스크를 스윙 UI 이벤트 루프 스레드 `EDT`에서 실행한다.
 - `SwtScheduler` (`reactor.swing` 패키지): 태스크를 SWT UI 이벤트 루프 스레드에서 실행한다.
 
-"[Reactor-Extra](https://projectreactor.io/docs/core/release/reference/#reactor-extra)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/apdx-reactorExtra.adoc)
+"[Reactor-Extra](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#reactor-extra)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/apdx-reactorExtra.adoc)

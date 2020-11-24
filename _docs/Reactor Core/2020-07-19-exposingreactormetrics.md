@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-19T16:40:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#metrics
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#metrics
 ---
 
 ### 목차
@@ -124,4 +124,4 @@ listenToEvents()
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> "source"라는 커스텀 태그 값을 "kafka"로 설정한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 모든 메트릭은 위에서 다룬 공통 태그 외에 `source=kafka` 태그가 있다.</small>
 
-"[Exposing Reactor metrics](https://projectreactor.io/docs/core/release/reference/#metrics)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/metrics.adoc)
+"[Exposing Reactor metrics](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#metrics)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/metrics.adoc)

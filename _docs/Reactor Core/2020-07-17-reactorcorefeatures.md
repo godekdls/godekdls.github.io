@@ -9,7 +9,7 @@ lastmod: 2020-07-17T23:49:00+09:00
 priority: 0.8
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#core-features
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#core-features
 ---
 
 ### 목차
@@ -717,7 +717,7 @@ new Thread(() -> flux.subscribe(System.out::println)); // (5)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 첫 번째 `map`은 (5)에서 생성한 익명 스레드에서 실행한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `publishOn`은 (1)에서 생성한 스레드 중 하나로 전체 시퀀스를 전환한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 두 번째 `map`은 (1)에서 생성한 스레드 중 하나에서 실행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 이 익명 `Thread`에서 *구독*이 일어난다. 출력은 마지막 컨텍스트, 중 `publishOn` 중 하나에서 일어난다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 이 익명 `Thread`에서 *구독*이 일어난다. 출력은 마지막 컨텍스트, `publishOn` 중 하나에서 일어난다.</small>
 
 ### 4.5.2. The `subscribeOn` Method
 
@@ -1407,4 +1407,4 @@ replay `Processor`는 `sink()`로 직접 생성한 데이터와 업스트림 `Pu
 - 시간을 기반으로 반복되는 윈도우를 캐시한다 (`createTimeout(Duration)`).
 - 히스토리 크기와 시간 윈도우 조합으로 캐시한다 (`createSizeOrTimeout(int, Duration)`).
 
-"[Reactor Core Features](https://projectreactor.io/docs/core/release/reference/#core-features)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/coreFeatures.adoc)
+"[Reactor Core Features](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#core-features)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/coreFeatures.adoc)

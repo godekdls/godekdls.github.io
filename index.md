@@ -51,12 +51,12 @@ includeFooter: false
 
 - 2020/06
 - 5.2.6.RELEASE
-- https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html
+- https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spring-framework-reference/web-reactive.html 
 
 #### [Reactor Core](/Reactor%20Core/contents/)
 - 2020/07
 - 3.3.7.RELEASE
-- https://projectreactor.io/docs/core/release/reference/
+- https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html
 
 #### [Spring Security](/Spring%20Security/contents/)
 - 2020/09

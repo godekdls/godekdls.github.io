@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-04T00:47:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#faq
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#faq
 ---
 
 ### 목차
@@ -326,4 +326,4 @@ public Flux<Restaurant> byPrice(@RequestParam Double maxPrice, @RequestHeader(re
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `restaurantService`가 에러를 방출하면 여기에서 MDC 컨텍스트에 로깅한다.
 </small>
 
-"[FAQ, Best Practices, and "How do I…?"](https://projectreactor.io/docs/core/release/reference/index.html#faq)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/faq.adoc) 
+"[FAQ, Best Practices, and "How do I…?"](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.htmlindex.html#faq)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/faq.adoc) 

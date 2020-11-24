@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-19T15:44:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#debugging
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#debugging
 ---
 
 ### 목차
@@ -421,4 +421,4 @@ flux.subscribe();
 
 (4)의 마지막 줄이 가장 흥미롭다. 여기엔 `take`가 있다. 이 연산자는 방출된 요소가 충분하면 시퀀스를 잘라낸다. 바로 이 `take()`가, 소스가 사용자 요청량만큼 방출한 다음에 `cancel()`하게 만든 것이다.
 
-"[Debugging Reactor](https://projectreactor.io/docs/core/release/reference/#debugging)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/debugging.adoc)
+"[Debugging Reactor](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#debugging)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/debugging.adoc)

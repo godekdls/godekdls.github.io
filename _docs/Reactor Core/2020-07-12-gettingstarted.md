@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-12T21:00:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#getting-started
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#getting-started
 ---
 
 ### 목차
@@ -216,4 +216,4 @@ repositories {
 }
 ```
 
-"[Getting Started](https://projectreactor.io/docs/core/release/reference/#getting-started)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/gettingStarted.adoc)
+"[Getting Started](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#getting-started)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/gettingStarted.adoc)

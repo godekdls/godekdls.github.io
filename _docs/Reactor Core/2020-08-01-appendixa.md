@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-03T21:29:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#which-operator
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#which-operator
 ---
 
 ### 목차
@@ -310,4 +310,4 @@ originalRefLink: https://projectreactor.io/docs/core/release/reference/#which-op
     - 단, 최대 `n`개만 유지하고 싶다면: `cache(int, Duration)`
   - 소스를 즉시 트리거하지 않고: `Flux#replay` (`ConnectableFlux`를 리턴함)
 
-"[Which operator do I need?](https://projectreactor.io/docs/core/release/reference/#which-operator)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/apdx-operatorChoice.adoc)
+"[Which operator do I need?](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#which-operator)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/apdx-operatorChoice.adoc)

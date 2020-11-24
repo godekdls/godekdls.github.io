@@ -9,7 +9,7 @@ lastmod: 2020-07-12T16:00:00+09:00
 priority: 0.8
 comments: true
 originalRefName: 스프링 리액티브 웹 스택
-originalRefLink: https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html#webflux
+originalRefLink: https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spring-framework-reference/web-reactive.html#webflux
 ---
 <script>defaultLanguages = ['java']</script>
 

@@ -8,7 +8,7 @@ image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-15T00:00:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 코어
-originalRefLink: https://projectreactor.io/docs/core/release/reference/#intro-reactive
+originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#intro-reactive
 ---
 
 ### 목차
@@ -315,4 +315,4 @@ assertThat(results).containsExactly( // (8)
 
 리액터에서의 hot vs cold 개념에 대해 자세히 알고 싶다면, [여기 리액터 전용 섹션](../advancedfeaturesandconcepts#92-hot-versus-cold)을 참고하라.
 
-"[Introduction to Reactive Programming](https://projectreactor.io/docs/core/release/reference/#intro-reactive)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/reactiveProgramming.adoc)
+"[Introduction to Reactive Programming](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html#intro-reactive)" [수정 제안하기](https://github.com/reactor/reactor-core/edit/master/docs/asciidoc/reactiveProgramming.adoc)
