@@ -38,7 +38,7 @@ originalRefLink: https://projectreactor.io/docs/netty/1.0.1/reference/index.html
 
 ## 4.1. Connect and Disconnect
 
-**TCP** 클라이언트를 주어진 엔드포인트로 연결하려면, 일단 [`TcpClient`](https://projectreactor.io/docs/netty/release/api/reactor/netty/tcp/TcpClient.html) 인스턴스를 만들어 설정해야 한다. 기본적으로 **호스트**는 `localhost`, **포트**는 `12012`로 설정된다. 다음은 `TcpClient` 인스턴스를 생성하고 설정하는 예시다:
+**TCP** 클라이언트를 주어진 엔드포인트로 연결하려면, 일단 [`TcpClient`](https://projectreactor.io/docs/netty/release/api/reactor/netty/tcp/TcpClient.html) 인스턴스를 만들어 설정해야 한다. 기본적으로 **호스트**는 `localhost`, **포트**는 `12012`로 설정된다. 다음은 `TcpClient` 인스턴스를 생성하는 예시다:
 
 <small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/client/create/Application.java**</small>
 
