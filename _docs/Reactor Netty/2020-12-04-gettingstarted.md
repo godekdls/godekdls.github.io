@@ -17,6 +17,9 @@ originalRefLink: https://projectreactor.io/docs/netty/1.0.1/reference/index.html
 - [2.2. Prerequisites](#22-prerequisites)
 - [2.3. Understanding the BOM and versioning scheme](#23-understanding-the-bom-and-versioning-scheme)
 - [2.4. Getting Reactor Netty](#24-getting-reactor-netty)
+  + [2.4.1. Maven Installation](#241-maven-installation)
+  + [2.4.2. Gradle Installation](#242-gradle-installation)
+  + [2.4.3. Milestones and Snapshots](#243-milestones-and-snapshots)
 
 ---
 
