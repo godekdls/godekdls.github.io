@@ -145,7 +145,7 @@ public class Application {
 
 ## 3.4. Lifecycle Callbacks
 
-아래 라이프사이클 콜백을 사용해서 **TCP**서버를 확장할 수도 있다:
+아래 라이프사이클 콜백을 사용해서 **TCP** 서버를 확장할 수도 있다:
 
 - `doOnBind`: 서버 채널이 바운드되려고 할 때 호출한다.
 - `doOnBound`: 서버 채널이 바운드될 때 호출한다.
