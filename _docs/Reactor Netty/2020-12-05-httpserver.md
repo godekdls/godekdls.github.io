@@ -362,7 +362,7 @@ public class Application {
 
 ### 5.4.1. Reading Headers, URI Params, and other Metadata
 
-연결된 클라이언트로부터 데이터를 수신할 땐, 별도의 헤더, 파라미터나 다른 기타 메타데이터를 확인해야 할 수도 한다. 이런 별도 메타데이터는 [`HttpServerRequest`](https://projectreactor.io/docs/netty/release/api/reactor/netty/http/server/HttpServerRequest.html)로 가져올 수 있다. 다음 예제는 그 방법을 보여준다:
+연결된 클라이언트로부터 데이터를 수신할 땐, 별도의 헤더, 파라미터나 다른 기타 메타데이터를 확인해야 할 수도 있다. 이런 별도 메타데이터는 [`HttpServerRequest`](https://projectreactor.io/docs/netty/release/api/reactor/netty/http/server/HttpServerRequest.html)로 가져올 수 있다. 다음 예제는 그 방법을 보여준다:
 
 <small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/http/server/read/headers/Application.java**</small>
 
