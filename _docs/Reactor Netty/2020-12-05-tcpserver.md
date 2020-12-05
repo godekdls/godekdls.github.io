@@ -37,7 +37,7 @@ originalRefLink: https://projectreactor.io/docs/netty/1.0.1/reference/index.html
 
 **TCP** 서버를 시작하려면 일단 [`TcpServer`](https://projectreactor.io/docs/netty/release/api/reactor/netty/tcp/TcpServer.html) 인스턴스를 만들어 설정해야 한다. 기본적으로 **호스트**는 모든 로컬 주소로 설정되며, `bind` 연산이 실행될 때 시스템에서 임의의 포트(ephemeral port)를 선택한다. 다음은 `TcpServer` 인스턴스를 생성하고 설정하는 예시다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/create/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/create/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -64,7 +64,7 @@ public class Application {
 
 특정 **호스트**와 **포트**로 서빙하고 싶다면, **TCP** 서버를 다음과 같이 설정하면 된다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/address/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/address/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -93,7 +93,7 @@ public class Application {
 
 연결된 클라이언트에 데이터를 전송하려면 I/O 핸들러를 연결해야 한다. I/O 핸들러는 [`NettyOutbound`](https://projectreactor.io/docs/netty/release/api/reactor/netty/NettyOutbound.html)에 접근할 수 있어 데이터를 write할 수 있다. 다음은 I/O 핸들러를 연결하는 예시다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/send/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/send/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -120,7 +120,7 @@ public class Application {
 
 연결된 클라이언트로부터 데이터를 받으려면 I/O 핸들러를 연결해야 한다. I/O 핸들러는 [`NettyInbound`](https://projectreactor.io/docs/netty/release/api/reactor/netty/NettyInbound.html)에 접근할 수 있어 데이터를 읽을 수 있다. 다음은 I/O 핸들러를 연결하는 예시다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/read/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/read/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -154,7 +154,7 @@ public class Application {
 
 아래 예제는 `doOnConnection` 콜백을 사용한다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/lifecycle/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/lifecycle/Application.java**</small>
 
 ```java
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -192,7 +192,7 @@ public class Application {
 
 **TCP** 서버는 디폴트로 다음과 같은 옵션으로 설정된다:
 
-**./../../reactor-netty-core/src/main/java/reactor/netty/tcp/TcpServerBind.java**
+<small>**./../../reactor-netty-core/src/main/java/reactor/netty/tcp/TcpServerBind.java**</small>
 
 ```java
 TcpServerBind() {
@@ -208,7 +208,7 @@ TcpServerBind() {
 
 다른 옵션이 더 필요하거나 현재 옵션을 바꾸고 싶다면, 다음과 같이 설정할 수 있다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/channeloptions/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/channeloptions/Application.java**</small>
 
 ```java
 import io.netty.channel.ChannelOption;
@@ -238,7 +238,7 @@ public class Application {
 
 리액터 네티는 피어 간의 트래픽을 살펴보기 위한 wire 로깅을 제공한다. 기본적으로 wire 로깅은 비활성화돼 있다. 활성화하려면 로거의 `reactor.netty.tcp.TcpServer` 레벨을 `DEBUG`로 설정하고 아래 설정을 적용해야 한다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/wiretap/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/wiretap/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -266,7 +266,7 @@ public class Application {
 
 **이벤트 루프 그룹**의 디폴트 설정은 다음과 같다:
 
-**./../../reactor-netty-core/src/main/java/reactor/netty/ReactorNetty.java**
+<small>**./../../reactor-netty-core/src/main/java/reactor/netty/ReactorNetty.java**</small>
 
 ```java
 /**
@@ -302,7 +302,7 @@ public static final String SHUTDOWN_TIMEOUT = "reactor.netty.ioShutdownTimeout";
 
 이 설정을 바꾸려면 다음과 같이 설정해라:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/eventloop/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/eventloop/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -333,7 +333,7 @@ SSL나 TLS가 필요하다면 아래에 있는 설정을 사용하면 된다. �
 
 다음 예제는 `SslContextBuilder`를 사용한다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/security/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/security/Application.java**</small>
 
 ```java
 import io.netty.handler.ssl.SslContextBuilder;
@@ -366,7 +366,7 @@ public class Application {
 
 아래 예제는 와일드카드가 있는 도메인명을 사용한다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/sni/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/sni/Application.java**</small>
 
 ```java
 import io.netty.handler.ssl.SslContext;
@@ -405,7 +405,7 @@ public class Application {
 
 ## 3.7. Metrics
 
-TCP서버는 [**Micrometer**](https://micrometer.io/) 통합 지원을 내장하고 있다. 프리픽스로 `reactor.netty.tcp.server`를 사용하는 모든 메트릭에 해당한다.
+TCP 서버는 [**Micrometer**](https://micrometer.io/) 통합 지원을 내장하고 있다. 프리픽스로 `reactor.netty.tcp.server`를 사용하는 모든 메트릭에 해당한다.
 
 아래 테이블은 TCP 서버 메트릭에 대한 정보를 담고 있다:
 
@@ -434,7 +434,7 @@ TCP서버는 [**Micrometer**](https://micrometer.io/) 통합 지원을 내장하
 
 다음은 메트릭 통합을 활성화하는 예시다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/metrics/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/metrics/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -458,7 +458,7 @@ public class Application {
 
 **Micrometer** 외에 다른 시스템과 통합해서 TCP 서버 메트릭을 보고 싶거나, 자체적으로 **Micrometer**를 통합하고 싶다면, 다음과 같이 자체 메트릭 레코더를 제공하면 된다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/metrics/custom/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/metrics/custom/Application.java**</small>
 
 ```java
 import reactor.netty.DisposableServer;
@@ -490,7 +490,7 @@ native transport를 사용한다면, **TCP** 서버는 [유닉스 도메인 소�
 
 다음은 UDS 지원을 사용하는 예제다:
 
-**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/uds/Application.java**
+<small>**./../../reactor-netty-examples/src/main/java/reactor/netty/examples/documentation/tcp/server/uds/Application.java**</small>
 
 ```java
 import io.netty.channel.unix.DomainSocketAddress;
