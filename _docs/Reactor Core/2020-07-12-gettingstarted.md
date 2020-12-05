@@ -56,7 +56,7 @@ originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/ind
 
 ## 2.3. Understanding the BOM
 
-리액터 3는 BOM(Bill Of Materials) 모델을 사용한다(`reactor-core 3.0.4`에서 `Aluminium` 릴리즈 트레인을 사용한 이후부터). 이를 통해 각 아티팩트의 버전 관리 체계가 다르더라도, 함께 잘 동작하는 아티팩트 그룹을 엄선해서 관련 버전을 함께 제공한다.
+리액터 3는 BOM(Bill Of Materials) 모델을 사용한다(`reactor-core 3.0.4`에서 `Aluminium` 릴리즈 트레인을 사용한 이후부터). 이를 통해 각 아티팩트의 버전 관리 체계가 다르더라도, 함께 동작하는 데 문제가 없는 아티팩트를 엄선해 관련 버전을 묶어 제공한다.
 
 BOM 자체는 코드명과 식별용 수식어를 사용하는 릴리즈 트레인으로 버전을 정한다. 예를 들어 다음과 같다:
 
@@ -164,7 +164,7 @@ dependencies {
      implementation 'io.projectreactor:reactor-core' 
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> </small>`:`<small>로 구분된 섹션에서 버전을 명시하는 세 번째 자리가 비어있다. 버전은 BOM에서 가져온다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> </small>`:`<small>로 구분된 섹션 중, 버전을 명시하는 세 번째 자리가 비어있다. 버전은 BOM에서 가져온다.</small>
 
 ### 2.4.3. Milestones and Snapshots
 
