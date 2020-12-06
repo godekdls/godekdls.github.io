@@ -83,7 +83,7 @@ originalRefLink: https://projectreactor.io/docs/netty/1.0.1/reference/index.html
 
 ## 2.4. Getting Reactor Netty
 
-[앞서 언급]((#23-understanding-the-bom-and-versioning-scheme))했듯, **리액터 네티**를 사용하는 가장 쉬운 방법은 **BOM**을 통해 프로젝트에 관련 의존성을 추가하는 것이다. 단, 버전을 생략해야 **BOM**에 정의된 버전이 추가된다는 점에 주의하라.
+[앞서 언급](#23-understanding-the-bom-and-versioning-scheme)했듯, **리액터 네티**를 사용하는 가장 쉬운 방법은 **BOM**을 통해 프로젝트에 관련 의존성을 추가하는 것이다. 단, 버전을 생략해야 **BOM**에 정의된 버전이 추가된다는 점에 주의하라.
 
 하지만 특정 아티팩트의 버전을 강제하고 싶다면, 평소에 의존성을 추가할 때처럼 명시하면 된다. **BOM**을 완전히 버리고 원하는 아티팩트 버전으로 의존성을 추가할 수도 있다.
 
