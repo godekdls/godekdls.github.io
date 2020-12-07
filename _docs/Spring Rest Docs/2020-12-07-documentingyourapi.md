@@ -52,7 +52,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ## 3.1. Hypermedia
 
-스프링 REST Doc을 사용하면 [hypermedia 기반](https://en.wikipedia.org/wiki/HATEOAS) API에서의 링크도 문서화할 수 있다. 다음 예제는 그 방법을 보여준다:
+스프링 REST Doc을 사용하면 [하이퍼미디어 기반](https://en.wikipedia.org/wiki/HATEOAS) API에서의 링크도 문서화할 수 있다. 다음 예제는 그 방법을 보여준다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -160,7 +160,7 @@ public static LinksSnippet links(LinkDescriptor... descriptors) {
 
 ## 3.2. Request and Response Payloads
 
-[앞서 설명한](#31-hypermedia) hypermedia 전용 기능 외에도 일반적인 요청, 응답 페이로드도 문서화할 수 있다.
+[앞서 설명한](#31-하이퍼미디어) 하이퍼미디어 전용 기능 외에도 일반적인 요청, 응답 페이로드도 문서화할 수 있다.
 
 기본적으로 스프링 REST Doc은 요청과 응답 바디를 위한 스니펫을 자동으로 만들어준다. 각 스니펫 이름은 `request-body.adoc`과 `response-body.adoc`이다.
 
