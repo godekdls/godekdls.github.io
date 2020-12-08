@@ -152,7 +152,7 @@
 			if (typeof defaultLanguages != 'undefined') {
 				defaultLanguages.forEach(function (defaultLanguage) {
 					showLanguage(defaultLanguage);
-					['java', 'xml', 'kotlin', 'maven', 'gradle'].forEach(function (language) {
+					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured'].forEach(function (language) {
 						if (!defaultLanguages.includes(language)) {
 							hideLanguage(language, defaultLanguage)
 						}
@@ -162,7 +162,7 @@
 			document.querySelectorAll('.switch-language').forEach(function (el) {
 				el.addEventListener('click', function() {
 					showLanguage(el.classList[1]);
-					['java', 'xml', 'kotlin', 'maven', 'gradle'].forEach(function (language) {
+					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured'].forEach(function (language) {
 						if (el.classList[1] !== language) {
 							hideLanguage(language, el.classList[1])
 						}
