@@ -103,9 +103,9 @@ RestAssured.given(this.spec)
 
 > 응답에서 `title`이 있는 링크는 descriptor 설명을 생략할 수 있으며, 이땐 `title`을 사용한다. `title`이 없는 링크의 설명을 생략하면 실패한다.
 
-링크를 문서화할 땐, 응답에 있는 모든 링크를 문서화하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 링크가 응답에 없을 땐, 해당 링크를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
+링크를 문서화할 땐, 응답에 있는 모든 링크를 작성하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 링크가 응답에 없을 땐, 해당 링크를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
 
-링크를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 생성한 스니펫에서도 제외할 수 있다.
+링크를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
 모든 링크를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 링크를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 `relaxedLinks` 메소드를 사용해라. 일부 링크만 중요한 특정 시나리오를 문서화하기 유용하다.
 
@@ -113,8 +113,8 @@ RestAssured.given(this.spec)
 
 스프링 REST Doc은 기본적으로 두 가지 형태의 링크를 처리한다:
 
-- Atom: `links`라는 이름의 배열에 링크가 있다고 가정한다. 응답 컨텐츠 타입이 `application/json`과 호환되면 디폴트로 이 방식을 사용한다.
-- HAL: `_links`라는 이름의 맵에 링크가 있다고 가정한다. 응답 컨텐츠 타입이 `application/hal+json`과 호환되면 디폴트로 이 방식을 사용한다.
+- Atom: `links`라는 배열에 링크가 있다고 가정한다. 응답 컨텐츠 타입이 `application/json`과 호환되면 디폴트로 이 방식을 사용한다.
+- HAL: `_links`라는 맵에 링크가 있다고 가정한다. 응답 컨텐츠 타입이 `application/hal+json`과 호환되면 디폴트로 이 방식을 사용한다.
 
 Atom이나 HAL 형식 링크를 사용하는데 컨텐츠 타입이 다르다면, `links`에 빌트인 `LinkExtractor` 구현체 중 하나를 제공하면 된다. 다음 예제는 그 방법을 보여준다:
 
@@ -147,7 +147,7 @@ API가 Atom도 HAL도 아닌 다른 형식으로 링크를 표현하고 있다�
 
 ### 3.1.2. Ignoring Common Links
 
-HAL을 사용할 땐 `self`, `curies`같이 모든 응답에 들어있는 링크를 문서화하는 대신, 개요 섹션에 한 번만 문서화하고 나머지 API 문서에선 공통 링크를 무시하고 싶을 수 있다. 이럴 땐 [스니펫 재사용 기능](#38-reusing-snippets)을 활용해서 미리 특정 링크를 무시하게끔 설정해둔 스니펫에 링크 descriptor를 추가할 수 있다. 다음 예제는 그 방법을 보여준다:
+HAL을 사용할 땐 `self`, `curies`같이 모든 응답에 들어있는 링크를 문서화하는 대신, 개요 섹션에 한 번만 문서화하고 나머지 API 문서에선 공통 링크를 무시하고 싶을 수 있다. 이럴 때 [스니펫 재사용 기능](#38-reusing-snippets)을 활용하면 미리 특정 링크를 무시하게끔 스니펫을 설정해두고, 필요할 때 링크 descriptor를 추가할 수 있다. 다음 예제를 참고해라:
 
 ```java
 public static LinksSnippet links(LinkDescriptor... descriptors) {
@@ -160,13 +160,13 @@ public static LinksSnippet links(LinkDescriptor... descriptors) {
 
 ## 3.2. Request and Response Payloads
 
-[앞서 설명한](#31-하이퍼미디어) 하이퍼미디어 전용 기능 외에도 일반적인 요청, 응답 페이로드도 문서화할 수 있다.
+[앞서 설명한](#31-hypermedia) 하이퍼미디어 전용 기능 외에도, 일반적인 요청/응답 페이로드 문서도 작성할 수 있다.
 
 기본적으로 스프링 REST Doc은 요청과 응답 바디를 위한 스니펫을 자동으로 만들어준다. 각 스니펫 이름은 `request-body.adoc`과 `response-body.adoc`이다.
 
 ### 3.2.1. Request and Response Fields
 
-요청, 응답 페이로드를 좀 더 자세히 문서화하고 싶다면, 페이로드의 필드를 문서화할 수 있다.
+요청, 응답 페이로드 문서를 좀 더 자세히 작성하고 싶다면, 페이로드 필드를 문서화할 수 있다.
 
 아래 페이로드를 생각해 보자:
 
@@ -218,11 +218,11 @@ RestAssured.given(this.spec).accept("application/json")
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `contact.email` 패스에 필드가 있는지 검증한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `fieldWithPath`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `contact.name` 패스에 필드가 있는지 검증한다.</small>
 
-결과로 만들어지는 스니펫은 필드를 설명하는 테이블을 가지고 있다. 해당 스니펫 이름은 요청을 문서화했다면 `request-fields.adoc`, 응답은 `response-fields.adoc`이다.
+결과로 만들어지는 스니펫엔 필드를 설명하는 테이블이 추가된다. 요청 문서에서 해당 스니펫 이름은 `request-fields.adoc`, 응답은 `response-fields.adoc`이다.
 
-필드를 문서화할 땐, 페이로드에 있는 모든 필드를 문서화하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 필드가 페이로드에 없을 땐, 해당 필드를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
+필드를 문서화할 땐, 페이로드에 있는 모든 필드를 작성하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 필드가 페이로드에 없을 땐, 해당 필드를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
 
-모든 필드를 상세하게 문서화하고 싶지 않다면 하위 패스를 하나로 묶어서 문서화하는 것도 가능하다. 다음은 그 방법을 보여준다:
+문서에 모든 필드를 상세하게 적고 싶지 않다면 하위 패스를 하나로 묶어서 문서화하는 것도 가능하다. 다음은 그 방법을 보여준다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -256,9 +256,9 @@ RestAssured.given(this.spec).accept("application/json")
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `contact` 패스 하위 섹션을 문서화한다. 이렇게 하면 `contact.email`과 `contact.name`도 문서화한다고 보면 된다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `subsectionWithPath`를 사용한다.</small>
 
-`subsectionWithPath`는 특정 페이로드 섹션에 대한 개요를 제공하는 식으로 활용할 수 있다. 그런 다음 하위 섹션은 별도로 더 자세히 문서화해도 된다. [요청, 응답 페이로드 하위 섹션 문서화하기](#322-documenting-a-subsection-of-a-request-or-response-payload)를 참고해라.
+`subsectionWithPath`는 특정 페이로드 섹션에 대한 개요를 제공하는 식으로 활용할 수 있다. 그런 다음 하위 섹션은 별도로 더 자세히 문서화해도 된다. [요청, 응답 페이로드 하위 섹션 문서 작성하기](#322-documenting-a-subsection-of-a-request-or-response-payload)를 참고해라.
 
-필드나 하위 섹션을 아예 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 생성한 스니펫에서도 제외할 수 있다.
+필드나 하위 섹션을 아예 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
 모든 필드를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 필드를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 메소드 `relaxedRequestFields`, `relaxedResponseFields`를 사용해라. 페이로드 일부만 중요한 특정 시나리오를 문서화하기 유용하다.
 
@@ -350,7 +350,7 @@ JSON 필드 패스는 점 표기법(dot notation)이나 괄호 표기법(bracket
 | `string`  | 필드에 사용한 값이 모두 문자열일 때                          |
 | `varies`  | 페이로드 내에서 필드를 각기 다른 타입으로 여러 번 사용하는 경우 |
 
-`FieldDescriptor`의 `type(Object)` 메소드로 직접 타입을 설정해도 된다. 넘겨준 `Object`의 `toString` 메소드 호출 결과로 문서화한다. 전형적으로는 `JsonFieldType` enum 값 중 하나를 사용한다. 다음 예제는 그 방법을 보여준다:
+`FieldDescriptor`의 `type(Object)` 메소드로 직접 타입을 설정해도 된다. 문서화할 땐 넘겨준 `Object`에서 `toString` 메소드를 호출한다. 전형적으로는 `JsonFieldType` enum 값 중 하나를 사용한다. 다음 예제는 그 방법을 보여준다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -609,7 +609,7 @@ RestAssured.given(this.spec).accept("application/json")
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답 페이로드에서 `weather.temperature` 패스 밑에 있는 섹션 필드를 설명하는 스니펫을 만든다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `beneathPath`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `high`와 `low` 필드를 문서화한다.</small>
 
-결과로 만들어지는 스니펫은 `weather.temperature`의 `high`, `low` 필드를 설명하는 테이블을 가지고 있다. 스니펫 이름은 하위 섹션 식별자로 구분한다. 기본적으로 `beneath-${path}`를 식별자로 사용한다. 예를 들어 이전 코드는 `response-fields-beneath-weather.temperature.adoc`이란 스니펫을 만든다.
+결과로 만들어지는 스니펫엔 `weather.temperature`의 `high`, `low` 필드를 설명하는 테이블이 있다. 스니펫 이름은 하위 섹션 식별자로 구분한다. 기본적으로 `beneath-${path}`를 식별자로 사용한다. 예를 들어 이전 코드는 `response-fields-beneath-weather.temperature.adoc`이란 스니펫을 만든다.
 
 ---
 
@@ -650,21 +650,22 @@ RestAssured.given(this.spec)
 	.then().assertThat().statusCode(is(200));
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 쿼리 스트링에 파라미터 두 개 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 쿼리 스트링에 두 파라미터 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `page` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `per_page` 파라미터를 문서화한다.</small>
 
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 쿼리 스트링에 파라미터 두 개 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 쿼리 스트링에 두 파라미터 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `page` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `per_page` 파라미터를 문서화한다.</small>
+
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `page` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `per_page` 파라미터를 문서화한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 쿼리 스트링에 파라미터 두 개 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 쿼리 스트링에 두 파라미터 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small>
 
 요청 파라미터를 POST 요청 바디에 폼 데이터로 넣어도 된다. 다음은 그 방법을 보여준다:
 
@@ -710,9 +711,9 @@ RestAssured.given(this.spec)
 
 어떤 방법으로 테스트하든, `request-parameters.adoc`이란 스니펫이 만들어지며, 이 스니펫은 리소스가 지원하는 파라미터를 설명하는 테이블을 가지고 있다. 여기서도 마찬가지로 문서화한 요청 파라미터가 실제 요청에 없을 땐, 해당 파라미터를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
 
-요청 파라미터를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 생성한 스니펫에서도 제외할 수 있다.
+요청 파라미터를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
-모든 요청 파라미터를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 파라미터를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedRequestParameters` 메소드를 사용해라. 일부 요청 파라미터에만 중요한 특정 시나리오를 문서화하기 유용하다.
+모든 요청 파라미터를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 파라미터를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedRequestParameters` 메소드를 사용해라. 일부 요청 파라미터만 중요한 특정 시나리오를 문서화하기 유용하다.
 
 ---
 
@@ -753,30 +754,32 @@ RestAssured.given(this.spec)
 	.then().assertThat().statusCode(is(200));
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 패스 파라미터 두 개 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 두 패스 파라미터 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `latitude` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `longitude` 파라미터를 문서화한다.</small>
+
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 패스 파라미터 두 개 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 두 패스 파라미터 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `latitude` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `longitude` 파라미터를 문서화한다.</small>
+
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `latitude` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `longitude` 파라미터를 문서화한다</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 패스 파라미터 두 개 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 두 패스 파라미터 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small>
 
 `path-parameters.adoc`이란 스니펫이 만들어지며, 이 스니펫은 리소스가 지원하는 패스 파라미터를 설명하는 테이블을 가지고 있다.
 
 > MockMvc로 패스 파라미터를 문서화한다면, `MockMvcRequestBuilders` 대신 `RestDocumentationRequestBuilders`에 있는 메소드 중 하나로 요청을 빌드해야 한다.
 
-패스 파라미터를 문서화할 땐, 요청에 있는 모든 패스 파라미터를 문서화하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 패스 파라미터가 요청에 없을 땐, 해당 패스 파라미터를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
+패스 파라미터를 문서화할 땐, 요청에 있는 모든 패스 파라미터를 작성하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 패스 파라미터가 요청에 없을 땐, 해당 패스 파라미터를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
 
 모든 파라미터를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 패스 파라미터를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedPathParameters` 메소드를 사용해라. 일부 패스 파라미터만 중요한 특정 시나리오를 문서화하기 유용하다.
 
-패스 파라미터를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 생성한 스니펫에서도 제외할 수 있다.
+패스 파라미터를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
 ---
 
@@ -832,11 +835,11 @@ RestAssured.given(this.spec)
 
 `request-parts.adoc`이란 스니펫이 만들어지며, 이 스니펫은 리소스가 지원하는 요청 part를 설명하는 테이블을 가지고 있다.
 
-요청 part를 문서화할 땐, 요청에 있는 모든 part를 문서화하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 part가 요청에 없을 땐, 해당 part를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
+요청 part를 문서화할 땐, 요청에 있는 모든 part를 작성하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 part가 요청에 없을 땐, 해당 part를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
 
 모든 part를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 요청 part를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedRequestParts` 메소드를 사용해라. 일부 요청 part만 중요한 특정 시나리오를 문서화하기 유용하다.
 
-요청 part를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 생성한 스니펫에서도 제외할 수 있다.
+요청 part를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
 ---
 
@@ -955,13 +958,13 @@ RestAssured.given(this.spec).accept("application/json")
 
 결과로 만들어지는 스니펫은 part 필드를 설명하는 테이블을 가지고 있다. 스니펫 이름은 `request-part-${part-name}-fields.adoc`이 된다. 예를 들어 `metadata`란 part를 문서화하면 `request-part-metadata-fields.adoc`이란 스니펫이 생긴다.
 
-필드를 문서화할 땐, part 페이로드에 있는 모든 필드를 문서화하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 필드가 part 페이로드에 없을 땐, 해당 필드를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다. 계층 구조를 쓰는 페이로드는 필드 하나만 문서화해도 하위 필드도 문서화한 것으로 처리한다.
+필드를 문서화할 땐, part 페이로드에 있는 모든 필드를 작성하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 필드가 part 페이로드에 없을 땐, 해당 필드를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다. 계층 구조를 쓰는 페이로드는 필드 하나만 작성해도 하위 필드도 문서화한 것으로 처리한다.
 
-필드를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 생성한 스니펫에서도 제외할 수 있다.
+필드를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
 모든 필드를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 필드를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 `relaxedRequestPartFields` 메소드를 사용해라. 일부 part 페이로드만 중요한 특정 시나리오를 문서화하기 유용하다.
 
-필드에 대한 설명이나 XML을 쓰는 페이로드 문서화 등에 대한 자세한 정보는 [요청과 응답 페이로드 문서화하기 섹션](#32-request-and-response-payloads)을 참고해라.
+필드에 대한 설명이나 XML을 쓰는 페이로드 문서화 등에 대한 자세한 정보는 [요청과 응답 페이로드 문서 작성하기 섹션](#32-request-and-response-payloads)을 참고해라.
 
 ---
 
@@ -1039,17 +1042,17 @@ RestAssured.given(this.spec)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 헤더를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `requestHeaders`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `Authorization` 헤더를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `headerWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 응답 헤더를 설명하는 스니펫을 만든다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `responseHeaders`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span>요청에 basic 인증을 위한 `Authorization` 헤더를 설정한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 요청에 basic 인증을 위한 `Authorization` 헤더를 설정한다.</small>
 
 결과로 `request-headers.adoc`과 `response-headers.adoc` 스니펫이 만들어진다. 두 스니펫 모두 헤더를 설명하는 테이블을 가지고 있다.
 
-HTTP 헤더를 문서화할 땐, 요청이나 응답에 있는 모든 헤더를 문서화하지 않으면 테스트는 실패한다.
+HTTP 헤더를 문서화할 땐 요청, 응답에 있는 모든 헤더를 작성하지 않으면 테스트는 실패한다.
 
 ---
 
 ## 3.8. Reusing Snippets
 
-보통 문서화하는 API에는 여러 리소스에서 사용하는 공통 기능이 있기 마련이다. 이런 리소스를 문서화할 땐 공통 요소로 설정한 `Snippet`을 재사용해 중복 코드를 피할 수 있다.
+보통 문서화하는 API에는 여러 리소스에서 사용하는 공통 기능이 있기 마련이다. 이런 리소스를 문서화할 땐 공통 요소로 설정한 `Snippet`을 재사용하면 중복 코드를 피할 수 있다.
 
 먼저 공통 요소를 설명하는 `Snippet`을 만들어야 한다. 다음은 그 방법을 보여준다:
 
@@ -1061,7 +1064,7 @@ protected final LinksSnippet pagingLinks = links(
 		linkWithRel("prev").optional().description("The previous page of results"));
 ```
 
-그다음엔 이 스니펫을 사용해서 리소스에 특화된 descriptor를 별도로 추가하면 된다. 다음은 그 방법을 보여준다:
+그 다음엔 이 스니펫을 사용해서 리소스에 특화된 descriptor를 별도로 추가하면 된다. 다음 예제를 참고해라:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -1095,13 +1098,13 @@ RestAssured.given(this.spec)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `pagingLinks` `Snippet`을 재사용하고, 문서화할 리소스에 특화된 descriptor를 `and`로 추가한다.</small>
 
-이 예제를 실행하면 `first`, `last`, `next`, `previous`, `alpha`, `bravo`를 `rel`로 가지고 있는 링크를 전부 문서화한다.
+이 예제를 실행하면 `rel`이  `first`, `last`, `next`, `previous`, `alpha`, `bravo`인 링크를 전부 문서화한다.
 
 ---
 
 ## 3.9. Documenting Constraints
 
-스프링 REST Doc은 여러 가지 클래스로 제약 조건을 문서화할 수 있도록 도와준다. 클래스 제약 조건 설명은 `ConstraintDescriptions` 인스턴스로 접근할 수 있다. 다음은 그 방법을 보여준다:
+스프링 REST Doc은 여러 가지 클래스로 제약 조건 문서화를 돕는다. 클래스 제약 조건 설명은 `ConstraintDescriptions` 인스턴스로 접근할 수 있다. 다음은 그 방법을 보여준다:
 
 ```java
 public void example() {
@@ -1128,11 +1131,11 @@ static class UserInput {
 
 ### 3.9.1. Finding Constraints
 
-기본적으로 제약 조건은 Bean Validation `Validator`를 사용해 찾는다. 현재는 프로퍼티 제약조건만 지원한다. 커스텀 `ValidatorConstraintResolver` 인스턴스로 `ConstraintDescriptions`를 만들면 이 때 사용할 `Validator`를 커스텀할 수 있다. 제약 조건 리졸브를 완전히 제어하고 싶으면 `ConstraintResolver`를 직접 구현하면 된다.
+기본적으로 제약 조건은 Bean Validation `Validator`를 사용해 찾는다. 현재는 프로퍼티 제약조건만 지원한다. 커스텀 `ValidatorConstraintResolver` 인스턴스로 `ConstraintDescriptions`를 만들면 이 때 사용할 `Validator`를 커스텀할 수 있다. 제약 조건 resolution을 완전히 제어하고 싶으면 `ConstraintResolver`를 직접 구현하면 된다.
 
 ### 3.9.2. Describing Constraints
 
-Bean Validation 2.0에 있는 모든 제약조건은 기본 설명을 제공한다:
+Bean Validation 2.0에 있는 모든 제약 조건은 디폴트로 설명을 제공한다:
 
 - `AssertFalse`
 - `AssertTrue`
@@ -1157,7 +1160,7 @@ Bean Validation 2.0에 있는 모든 제약조건은 기본 설명을 제공한�
 - `PositiveOrZero`
 - `Size`
 
-Hibernate Validator에 있는 아래 제약조건에 대한 기본 설명도 함께 지원한다:
+Hibernate Validator에 있는 아래 제약 조건에 대한 기본 설명도 함께 지원한다:
 
 - `CodePointLength`
 - `CreditCardNumber`
@@ -1175,17 +1178,17 @@ Hibernate Validator에 있는 아래 제약조건에 대한 기본 설명도 함
 - `SafeHtml`
 - `URL`
 
-기본 설명을 재정의하거나 다른 설명을 사용하고 싶다면, base name이 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.constraints.ConstraintDescriptions</span>인 리소스 번들을 만들면 된다. [리소스 번들을 사용하는 예시](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas/src/test/resources/org/springframework/restdocs/constraints/ConstraintDescriptions.properties)는 스프링 HATEOAS 기반 샘플에서 확인할 수 있다.
+디폴트 설명을 재정의하거나 다른 설명을 사용하고 싶다면, base name이 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.constraints.ConstraintDescriptions</span>인 리소스 번들을 만들면 된다. [리소스 번들을 사용하는 예시](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas/src/test/resources/org/springframework/restdocs/constraints/ConstraintDescriptions.properties)는 스프링 HATEOAS 기반 샘플에서 확인할 수 있다.
 
-리소스 번들에 있는 각 키에 `.description`을 더한 게 제약조건의 풀 네임이다. 예를 들어 표준 `@NotNull` 제약조건의 키는 `javax.validation.constraints.NotNull.description`이다.
+리소스 번들에 있는 각 키에 `.description`을 더한 게 제약 조건의 풀 네임이다. 예를 들어 표준 `@NotNull` 제약 조건의 키는 `javax.validation.constraints.NotNull.description`이다.
 
-설명 부분에선 제약조건의 속성을 가리키는 프로퍼티 플레이스홀더를 사용할 수 있다. 예를 들어 `@Min` 제약조건의 기본 설명 `Must be at least ${value}`에선 제약조건의 `value` 속성을 참조하고 있다.
+설명 부분에선 제약 조건의 속성을 가리키는 프로퍼티 플레이스홀더를 사용할 수 있다. 예를 들어 `@Min` 제약 조건의 기본 설명 `Must be at least ${value}`에선 제약 조건의 `value` 속성을 참조하고 있다.
 
 제약 조건 설명 처리를 좀 더 제어하고 싶으면, 커스텀 `ResourceBundleConstraintDescriptionResolver`로 `ConstraintDescriptions`를 만들면 된다. 완전히 제어하려면 커스텀 `ConstraintDescriptionResolver` 구현체로 `ConstraintDescriptions`를 만들어라.
 
 ### 3.9.3. Using Constraint Descriptions in Generated Snippets
 
-제약 조건에 대한 설명이 있다면 생성할 스니펫에서 원하는대로 자유롭게 사용할 수 있다. 예를 들어 필드 설명에 제약 조건에 대한 설명을 넣고 싶을 수 있다. 아니면 요청 필드 스니펫 [추가 정보](#3122-including-extra-information)에 제약 조건을 넣을 수도 있다. 스프링 HATEOAS 기반 샘플에 있는 [`ApiDocumentation`](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas/src/test/java/com/example/notes/ApiDocumentation.java) 클래스는 후자의 접근 방식을 보여준다.
+제약 조건에 대한 설명이 있다면 생성할 스니펫에서 원하는대로 사용할 수 있다. 예를 들어 필드를 설명하면서 제약 조건을 함께 설명하고 싶을 수 있다. 아니면 요청 필드 스니펫 [추가 정보](#3122-including-extra-information)에 제약 조건을 넣을 수도 있다. 스프링 HATEOAS 기반 샘플에 있는 [`ApiDocumentation`](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas/src/test/java/com/example/notes/ApiDocumentation.java) 클래스는 후자의 접근 방식을 보여준다.
 
 ---
 
@@ -1195,12 +1198,12 @@ Hibernate Validator에 있는 아래 제약조건에 대한 기본 설명도 함
 
 | Snippet               | Description                                                  |
 | :-------------------- | :----------------------------------------------------------- |
-| `curl-request.adoc`   | 문서화하는 `MockMvc` 호출과 동일한 [`curl`](https://curl.haxx.se/) 명령어를 가지고 있다. |
-| `httpie-request.adoc` | 문서화하는 `MockMvc` 호출과 동일한 [`HTTPie`](https://httpie.org/) 명령어를 가지고 있다. |
-| `http-request.adoc`   | 문서화하는 `MockMvc` 호출과 동일한 HTTP 요청을 가지고 있다.  |
-| `http-response.adoc`  | 반환된 HTTP 응답을 가지고 있다.                              |
-| `request-body.adoc`   | 전송한 요청 바디를 가지고 있다.                              |
-| `response-body.adoc`  | 반환된 응답 바디를 가지고 있다.                              |
+| `curl-request.adoc`   | 문서화하는 `MockMvc` 호출과 동일한 [`curl`](https://curl.haxx.se/) 명령어가 있다. |
+| `httpie-request.adoc` | 문서화하는 `MockMvc` 호출과 동일한 [`HTTPie`](https://httpie.org/) 명령어가 있다. |
+| `http-request.adoc`   | 문서화하는 `MockMvc` 호출과 동일한 HTTP 요청이 있다.         |
+| `http-response.adoc`  | 반환된 HTTP 응답이 있다.                                     |
+| `request-body.adoc`   | 전송한 요청 바디가 있다.                                     |
+| `response-body.adoc`  | 반환된 응답 바디가 있다.                                     |
 
 디폴트로 생성할 스니펫을 설정해도 된다. 자세한 정보는 [설정 섹션](../configuration)을 참고해라.
 
@@ -1208,7 +1211,7 @@ Hibernate Validator에 있는 아래 제약조건에 대한 기본 설명도 함
 
 ## 3.11. Using Parameterized Output Directories
 
-MockMvc나 REST Assured를 사용할 땐, `document`가 사용하는 출력 디렉토리를 파랄미터로 만들 수 있다. `WebTestClient`를 사용할 때는 불가능하다.
+MockMvc나 REST Assured를 사용할 땐, `document`에서 쓸 출력 디렉토리를 파라미터로 만들 수 있다. `WebTestClient`를 사용할 때는 불가능하다.
 
 다음 파라미터를 지원한다:
 
@@ -1224,7 +1227,7 @@ MockMvc나 REST Assured를 사용할 땐, `document`가 사용하는 출력 디�
 
 예를 들어 테스트 클래스가 `GettingStartedDocumentation`이고 테스트 메소드는 `creatingANote`라면,  `document("{class-name}/{method-name}")`은 `getting-started-documentation/creating-a-note`란 디렉토리에 스니펫을 생성한다.
 
-출력 디렉토리를 파라미터하는 건 특히 `@Before` 메소드와 함께 쓸 때 유용하다. 설정 메소드에서 문서를 한 번만 설정한 다음 클래스 내 모든 테스트에서 재사용할 수 있기 때문이다. 다음은 그 방법을 보여준다:
+출력 디렉토리를 파라미터로 만드는 건 특히 `@Before` 메소드와 함께 쓸 때 유용하다. 초기 세팅 메소드에서 문서를 한 번만 설정하고, 클래스 내 모든 테스트에 재사용할 수 있기 때문이다. 다음은 그 방법을 보여준다:
 
 <div class="switch-language-wrapper mockmvc restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -1265,14 +1268,14 @@ public void setUp() {
 
 ### 3.12.2. Including Extra Information
 
-두 가지 방법으로 생성한 스니펫에 추가 정보를 넣을 수 있다:
+스니펫에는 두 가지 방법으로 추가 정보를 넣을 수 있다:
 
 - descriptor의 `attributes` 메소드로 하나 이상의 속성을 추가한다.
-- `curlRequest`, `httpRequest`, `httpResponse` 등을 호출할 때 속성을 전달한다. 전체 스니펫과 관련있는 스니펫은 이렇게 넘긴다.
+- `curlRequest`, `httpRequest`, `httpResponse` 등을 호출할 때 속성을 전달한다. 전체 스니펫과 관련있는 스니펫은 여기로 넘긴다.
 
-이렇게 추가한 속성은 템플릿 렌더링을 처리할 때도 사용할 수 있다. 커스텀 스니펫 템플릿을 함께 사용하면 생성한 스니펫에 추가 정보를 넣을 수 있다.
+이렇게 추가한 속성은 템플릿을 렌더링할 때 접근할 수 있다. 커스텀 스니펫 템플릿을 함께 사용하면 스니펫에 추가 정보를 넣을 수 있다.
 
-구체적으로 예를 들자면, 요청 필드 문서에 제약조건 컬럼과 제목을 추가할 수 있다. 먼저 문서화할 각 필드에 `constraints` 속성을 주고, `title` 속성도 추가한다. 다음은 그 방법을 보여준다:
+구체적으로 예를 들자면, 요청 필드 문서에 제약 조건 컬럼과 제목을 추가할 수 있다. 먼저 문서화할 각 필드에 `constraints` 속성을 주고, `title` 속성도 추가한다. 다음은 그 방법을 보여준다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -1317,7 +1320,7 @@ consumeWith(document("create-user",
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `name` 필드에 `constraints` 속성을 설정한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `email` 필드에 `constraints` 속성을 설정한다.</small>
 
-다음 단계에선 생성한 스니펫 테이블에 필드 제약 조건 정보와 제목을 추가하는 커스텀 템플릿 `request-fields.snippet`을 제공한다. 다음은 그 방법을 보여준다:
+다음 할 일은 만들어진 스니펫 테이블에 필드 제약 조건과 제목을 추가하는 커스텀 템플릿 `request-fields.snippet`을 제공하는 거다. 다음 예제를 참고해라:
 
 ```
 {% raw %}.{{title}}{% endraw %} // (1)

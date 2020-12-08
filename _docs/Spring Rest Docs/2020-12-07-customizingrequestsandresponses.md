@@ -25,7 +25,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ---
 
-전송한 요청이나 전송받은 응답과 완벽하게 일치하지 않는 문서를 작성하고 싶을 수도 있다. 스프링 REST Doc은 문서 작성 전에 요청과 응답을 수정할 수 있는 여러가지 전처리기를 제공한다.
+전송한 요청이나 받은 응답과는 완벽하게 일치하지 않는 문서를 작성하고 싶을 수도 있다. 스프링 REST Doc은 문서 작성 전에 요청과 응답을 수정할 수 있는 여러 가지 전처리기를 제공한다.
 
 전처리는 `OperationRequestPreprocessor` 또는 `OperationResponsePreprocessor`와 함께 `document`를 호출해 설정한다. `Preprocessors`에 있는 스태틱 메소드 `preprocessRequest`, `preprocessResponse`로 인스턴스를 가져올 수 있다. 다음은 그 방법을 보여준다:
 
@@ -55,10 +55,10 @@ RestAssured.given(this.spec)
 .when().get("/")
 .then().assertThat().statusCode(is(200));
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Foo` 해더를 제거하는 요청 전처리기를 적용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 컨텐츠를 보기좋게 출력해주는(pretty print) 응답 전처러기를 적용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Foo` 헤더를 제거하는 요청 전처리기를 적용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 컨텐츠를 보기 좋게 출력해주는(pretty print) 응답 전처리기를 적용한다.</small>
 
-어떨 때는 모든 테스트에 같은 전처리기를 적용하고 싶을 수도 있다. 이땐 `@Before` 메소드에서 `RestDocumentationConfigurer` API를 사용해 전처리기를 설정하면 된다. 예를 들어 모든 요청에서 `Foo` 헤더를 제거하고 모든 요청을 보기좋게 출력하고(pretty print) 싶다면, 다음 방법을 사용해라 (각자의 테스트 환경에 맞게):
+모든 테스트에 같은 전처리기를 적용하고 싶을 수도 있다. 이럴 땐 `@Before` 메소드에서 `RestDocumentationConfigurer` API를 사용해 전처리기를 설정하면 된다. 예를 들어 모든 요청에서 `Foo` 헤더를 제거하고 모든 요청을 보기 좋게 출력하고(pretty print) 싶다면, 다음 방법을 사용해라 (각자의 테스트 환경에 맞게):
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -106,8 +106,8 @@ public void setup() {
 		.build();
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Foo` 해더를 제거하는 요청 전처리기를 적용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 컨텐츠를 보기좋게 출력해주는(pretty print) 응답 전처러기를 적용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Foo` 헤더를 제거하는 요청 전처리기를 적용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 컨텐츠를 보기 좋게 출력해주는(pretty print) 응답 전처리기를 적용한다.</small>
 
 그 다음 각 테스트에 필요한 설정을  적용하면 된다. 적용 방법은 다음 예제를 참고해라:
 
@@ -155,9 +155,9 @@ RestAssured.given(this.spec)
 
 ### 4.1.3 Removing Headers
 
-`Preprocessors`의 `removeHeaders`는 요청, 응답에서 전달받은 헤더명과 일치하는 모든 헤더를 제거한다.
+`Preprocessors`의 `removeHeaders`는 요청, 응답에서 전달 받은 헤더명과 일치하는 모든 헤더를 제거한다.
 
-`Preprocessors`의 `removeMatchingHeaders`는 요청, 응답에서 전달받은 정규식 패턴과 일치하는 모든 헤더를 제거한다.
+`Preprocessors`의 `removeMatchingHeaders`는 요청, 응답에서 전달 받은 정규식 패턴과 일치하는 모든 헤더를 제거한다.
 
 ### 4.1.4. Replacing Patterns
 
@@ -171,10 +171,10 @@ RestAssured.given(this.spec)
 
 > 서버에 바운드되지 않은 MockMvc나 WebTestClient를 사용한다면 [이 설정을 바꿔서](../configuration#51-documented-uris) URI를 커스텀해야 한다.
 
-`Preprocessors`의 `modifyUris`로는 요청, 응답의 모든 URI를 수정할 수 있다. 서버에 바운드된 REST Assured나 WebTestClient를 사용한다면, 서비스 로컬 인스턴스를 테스트하면서 문서에 보이는 URI를 커스텀할 수 있다.
+`Preprocessors`의 `modifyUris`로는 요청, 응답의 모든 URI를 수정할 수 있다. 서버에 바운드된 REST Assured나 WebTestClient를 사용한다면, 서비스 로컬 인스턴스를 테스트하면서 문서에 보이는 URI만 따로 커스텀할 수도 있다.
 
 ### 4.1.7. Writing Your Own Preprocessor
 
-내장 전처리기로 해결할 수 없는 요구사항이 있다면 `OperationPreprocessor` 인터페이스를 직접 구현하면 된다. 커스텀 전처리기도 다른 내장 전처리기와 똑같이 사용할 수 있다.
+내장 전처리기로 해결할 수 없는 요구사항이 있다면 `OperationPreprocessor` 인터페이스를 직접 구현하면 된다. 커스텀 전처리기 사용법도 다른 내장 전처리기와 동일하다.
 
 요청이나 응답 컨텐츠(바디)만 수정하고 싶다면, `ContentModifier` 인터페이스를 구현해서 내장 `ContentModifyingOperationPreprocessor`와 함께 쓰는 걸 고려해봐라.

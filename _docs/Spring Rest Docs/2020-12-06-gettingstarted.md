@@ -164,7 +164,7 @@ asciidoctor { // (6)
 
 ### 2.3.1. Packaging the Documentation
 
-생성한 문서를 프로젝트 jar 파일에 함께 패키징하고 싶을 거다 — 예를 들어 스프링 부트에서 [스태틱 컨텐츠로 서빙](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-spring-mvc-static-content)하는 식으로. 이렇게 하려먼 프로젝트의 빌드 환경을 다음과 같이 설정해라:
+생성한 문서를 프로젝트 jar 파일에 함께 패키징하고 싶을 거다 — 예를 들어 스프링 부트에서 [스태틱 컨텐츠로 서빙](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-spring-mvc-static-content)하는 식으로. 함께 패키징하려면 프로젝트의 빌드 환경을 다음과 같이 설정해라:
 
 1. jar 빌드 전에 문서를 생성한다.
 2. 생성한 문서는 jar에 포함시킨다.
@@ -238,7 +238,7 @@ bootJar {
 
 #### Setting up Your JUnit 4 Tests
 
-JUnit 4에서 문서 스니펫을 만드려면 가장 먼저 `public` `JUnitRestDocumentation` 필드에 JUnit의 `@Rule` 애노테이션을 선언해야 한다. 다음 예제를 보라:
+JUnit 4로 문서 스니펫을 만들려면 가장 먼저 `public` `JUnitRestDocumentation` 필드에 JUnit의 `@Rule` 애노테이션을 선언해야 한다. 다음 예제를 보라:
 
 ```java
 @Rule
@@ -319,7 +319,7 @@ configurer는 적절한 디폴트 설정을 사용하며, 커스텀 설정을 �
 
 #### Setting up Your JUnit 5 Tests
 
-JUnit 5에서 문서 스니펫을 만드려면 가장 먼저 테스트 클래스에 `RestDocumentationExtension`을 적용해야 한다. 다음 예제를 보라:
+JUnit 5로 문서 스니펫을 만들려면 가장 먼저 테스트 클래스에 `RestDocumentationExtension`을 적용해야 한다. 다음 예제를 보라:
 
 ```java
 @ExtendWith(RestDocumentationExtension.class)
@@ -406,15 +406,15 @@ configurer는 적절한 디폴트 설정을 사용하며, 커스텀 설정을 �
 
 #### Setting up your tests without JUnit
 
-JUnit을 사용하지 않더라도 설정이 크게 달라지지 않는다. 이번 섹션은 주요 차이점을 설명한다. 여기서 설명하는 내용은 [TestNG 샘플](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/testng)에서도 확인할 수 있다.
+JUnit을 사용하지 않더라도 설정이 크게 달라지지 않는다. 이번 섹션에서 주요 차이점을 설명한다. 여기서 설명하는 내용은 [TestNG 샘플](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/testng)에서도 확인할 수 있다.
 
-첫 번째 차이점은 `JUnitRestDocumentation` 대신 `ManualRestDocumentation`을 사용한다는 점이다. `@Rule` 애노테이션도 필요가 없다. 다음은 `ManualRestDocumentation`을 사용하는 예제다:
+첫 번째 차이점은 `JUnitRestDocumentation` 대신 `ManualRestDocumentation`을 사용한다는 점이다. `@Rule` 애노테이션도 필요 없다. 다음은 `ManualRestDocumentation`을 사용하는 예제다:
 
 ```java
 private ManualRestDocumentation restDocumentation = new ManualRestDocumentation();
 ```
 
-두 번째로는, 반드시 각 테스트 전에 `ManualRestDocumentation.beforeTest(Class, String)`을 호출해야 한다. MockMvc, WebTestClient, REST Assured 모두 설정하는 메소드에서 호출해주면 된다. 다음 예제를 참고해라:
+두 번째로는, 반드시 각 테스트 전에 `ManualRestDocumentation.beforeTest(Class, String)`을 호출해야 한다. MockMvc, WebTestClient, REST Assured 모두 초기 세팅 메소드에서 호출해주면 된다. 다음 예제를 참고해라:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -465,7 +465,7 @@ public void setUp(Method method) {
 }
 ```
 
-마지막 차이점은 각 테스트 후에 `ManualRestDocumentation.afterTest`를 호출해야 한다는 점이다. 다음은 TestNG를 활용하는 예시다:
+마지막으로 다른점은 각 테스트 후에 `ManualRestDocumentation.afterTest`를 호출해야 한다는 점이다. 다음은 TestNG를 활용하는 예시다:
 
 ```java
 @AfterMethod
@@ -476,7 +476,7 @@ public void tearDown() {
 
 ### 2.4.2. Invoking the RESTful Service
 
-테스트 프레임워크를 설정했으므로 이제 RESTful 서비스를 실행해서 요청과 응답을 문서화할 수 있다. 다음은 그 방법을 보여준다:
+테스트 프레임워크를 세팅했으므로 이제 RESTful 서비스를 실행해서 요청과 응답을 문서화할 수 있다. 다음은 그 방법을 보여준다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -506,15 +506,17 @@ RestAssured.given(this.spec) // (1)
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 서비스의 루트(`/`)를 호출하며 `application/json` 응답이 필요하다고 알린다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 서비스가 기대한 결과를 생산했는지를 검증한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 스니펫을 `index`라는 디렉토리(설정한 출력 디렉토리 아래 있는)에 작성해 서비스 호출을 문서화한다. 스니펫은 `RestDocumentationResultHandler`가 작성한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은 `RestDocumentationResultHandler`가 작성한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
+
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 서비스의 루트(`/`)를 호출하며 `application/json` 응답이 필요하다고 알린다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 서비스가 기대한 결과를 생산했는지를 검증한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 스니펫을 `index`라는 디렉토리(설정한 출력 디렉토리 아래 있는)에 작성해 서비스 호출을 문서화한다. 스니펫은 `ExchangeResult`의 `Consumer`가 작성한다. 이 컨슈머는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은 `ExchangeResult`의 `Consumer`가 작성한다. 이 컨슈머는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
+
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@Before` 메소드로 초기화한 스펙을 적용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `application/json` 응답이 필요하다고 알린다</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 스니펫을 `index`라는 디렉토리(설정한 출력 디렉토리 아래 있는)에 작성해 서비스 호출을 문서화한다. 스니펫은  `RestDocumentationFilter`가 작성한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `document`로 가져올 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은  `RestDocumentationFilter`가 작성한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `document`로 가져올 수 있다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 서비스의 루트(`/`)를 호출한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 서비스가 기대한 결과를 생산했는지를 검증한다.</small>
 
@@ -533,14 +535,14 @@ RestAssured.given(this.spec) // (1)
 
 ## 2.5. Using the Snippets
 
-생성된 스니펫을 사용하려먼 먼저 `.adoc` 소스 파일을 만들어야 한다. `.adoc`으로 끝나기만 하면 어떤 이름이든지 상관 없다. 만들어지는 HTML 파일도 같은 이름으로 생성되지만 `.html`로 끝난다. 소스 파일과 결과 HTML 파일의 디폴트 경로는 메이븐, 그래들 중 무엇을 사용했느냐에 따라 다르다:
+생성된 스니펫을 사용하려면 일단 `.adoc` 소스 파일을 만들어야 한다. `.adoc`으로 끝나기만 하면 어떤 이름이든지 상관 없다. 만들어지는 HTML 파일도 같은 이름으로 생성되지만 `.html`로 끝난다. 소스 파일과 결과 HTML 파일의 디폴트 경로는 메이븐, 그래들 중 무엇을 사용했느냐에 따라 다르다:
 
 | Build tool | Source files               | Generated files                |
 | :--------- | :------------------------- | :----------------------------- |
 | Maven      | `src/main/asciidoc/*.adoc` | `target/generated-docs/*.html` |
 | Gradle     | `src/docs/asciidoc/*.adoc` | `build/asciidoc/html5/*.html`  |
 
-그런 다음 include 매크로를 사용해 수동으로 만든 Asciidoc 파일(이 섹션 앞에서 설명한)에 생성된 스니펫을 넣을 수 있다. [빌드 설정](#23-build-configuration)에 추가했던 `spring-restdocs-asciidoctor`가 자동으로 스니펫 출력 디렉토리를 참조하는 `snippets` 속성을 추가해주므로, 이 속성을 활용해도 된다. 다음은 그 방법을 보여준다:
+이렇게 만든 스니펫은 [include 매크로](https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/#include-files)를 사용해 수동으로 만든 Asciidoc 파일에 (이 섹션 앞에서 설명한) 넣을 수 있다. [빌드 설정](#23-build-configuration)에 추가했던 `spring-restdocs-asciidoctor`가 자동으로 스니펫 출력 디렉토리를 참조하는 `snippets` 속성을 추가해주므로, 이 속성을 활용해도 된다. 다음은 그 방법을 보여준다:
 
 ```adoc
 include::{snippets}/index/curl-request.adoc[]

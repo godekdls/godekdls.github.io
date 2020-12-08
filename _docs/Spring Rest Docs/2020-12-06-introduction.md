@@ -4,6 +4,7 @@ category: Spring REST Docs
 order: 2
 permalink: /Spring%20REST%20Docs/introduction/
 description: 스프링 REST Doc 소개 한글 번역
+priority: 0.7
 image: ./../../images/springrestdocs/logo.png
 lastmod: 2020-12-06T12:00:00+09:00
 comments: true
@@ -17,4 +18,4 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 스프링 REST Doc은 스프링 MVC의 [테스트 프레임워크](https://docs.spring.io/spring-framework/docs/5.0.x/spring-framework-reference/testing.html#spring-mvc-test-framework)나, 스프링 웹플럭스의 [WebTestClient](https://docs.spring.io/spring-framework/docs/5.0.x/spring-framework-reference/testing.html#webtestclient), [REST Assured 3](http://rest-assured.io/)로 작성한 테스트 코드를 사용한다. 이렇게 테스트 중심으로 접근하면 서비스 문서의 정확성을 보장하는 데 보탬이 된다. 올바르지 않은 스니펫을 생성한 테스트는 실패하기 때문이다.
 
-RESTful 서비스를 문서화한다는 것은 보통 해당 리소스를 설명한다는 뜻이다. 각 리소스를 문서화할 때 핵심은 컨슈밍할 HTTP 요청과 생산하는 HTTP 응답에 대한 디테일이다. 스프링 REST Doc은 이 리소스와 HTTP 요청, 응답을 사용해서 문서를 작성하면서도, 내부에 있는 상세 구현 정보를 문서에서 가려준다. 이렇게 분리함으로써 서비스 구현보다는 서비스 API 자체를 문서화할 수 있다. 뿐만 아니라 문서를 재작성하지 않고도 실제 구현 코드를 개선할 수도 있다.
+RESTful 서비스 문서를 작성한다는 것은 보통 해당 리소스를 설명한다는 뜻이다. 각 리소스 문서에서 핵심은 컨슈밍할 HTTP 요청과 생산하는 HTTP 응답에 대한 디테일이다. 스프링 REST Doc은 이 리소스와 HTTP 요청, 응답을 사용해서 문서를 작성하면서도, 내부에 있는 상세 구현 정보를 문서에서 가려준다. 이렇게 분리함으로써 서비스 구현보다는 서비스 API 자체를 문서화할 수 있다. 뿐만 아니라 문서를 재작성하지 않고도 실제 구현 코드를 개선할 수도 있다.
