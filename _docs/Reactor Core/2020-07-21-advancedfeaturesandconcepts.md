@@ -870,21 +870,21 @@ cleanup이 필요한 아이템이라면 `onOperatorError`에 이를 구현하되
 
 ## 9.10. Null Safety
 
-자바의 타입 시스템에서는 널을 안전하게 표현할 수 있는 방법이 없지만, 이제 리액터는 스프링 프레임워크 5와 유사하게 API의 널 가능 여부를 선언할 수 있는 애노테이션을 제공한다.
+자바의 타입 시스템에서는 널을 안전하게 표현할 수 있는 방법이 없지만, 이제 리액터는 스프링 프레임워크 5와 유사하게 API의 널 가능 여부를 선언할 수 있는 어노테이션을 제공한다.
 
-리액터에서 이 애노테이션을 사용하지만, 모든 리액터 기반 자바 프로젝트에서도 똑같이 null-safe API를 선언할 수 있다. 메소드 내부에서 사용하는 타입에 대한 널 체크는 이 기능 범위를 벗어난다.
+리액터에서 이 어노테이션을 사용하지만, 모든 리액터 기반 자바 프로젝트에서도 똑같이 null-safe API를 선언할 수 있다. 메소드 내부에서 사용하는 타입에 대한 널 체크는 이 기능 범위를 벗어난다.
 
-이 애노테이션은 [JSR 305](https://jcp.org/en/jsr/detail?id=305) 애노테이션을 선언하고 있기 때문에 (IntelliJ IDEA 등의 툴에서 지원하는, 현재는 추가 개발이 진행되지 않는 JSR), 자바 개발자는 런타임 `NullPointerException`을 방지하기 위한 null-safety 관련 경고를 볼 수 있다. JSR 305 메타 애노테이션 덕분에 툴 벤더는 리액터 애노테이션 전용 하드 코딩 없이, 일반적인 방식으로 null safety를 지원할 수 있다.
+이 어노테이션은 [JSR 305](https://jcp.org/en/jsr/detail?id=305) 어노테이션을 선언하고 있기 때문에 (IntelliJ IDEA 등의 툴에서 지원하는, 현재는 추가 개발이 진행되지 않는 JSR), 자바 개발자는 런타임 `NullPointerException`을 방지하기 위한 null-safety 관련 경고를 볼 수 있다. JSR 305 메타 어노테이션 덕분에 툴 벤더는 리액터 어노테이션 전용 하드 코딩 없이, 일반적인 방식으로 null safety를 지원할 수 있다.
 
 > 코틀린 1.1.5+에선 클래스패스에 JSR 305 의존성을 추가할 필요가 없으며, 권장하지도 않는다.
 
 자체적으로 [null safety](https://kotlinlang.org/docs/reference/null-safety.html)를 지원하는 코틀린과도 사용할 수 있다. 자세한 내용은 [전용 섹션](../kotlinsupport#53-null-safety)을 참고하라.
 
-다음은 `reactor.util.annotation` 패키지에서 제공하는 애노테이션이다:
+다음은 `reactor.util.annotation` 패키지에서 제공하는 어노테이션이다:
 
 - [`@NonNull`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/NonNull.html): 특정 파라미터나 리턴 값, 필드가 `null`일 수 없음을 나타낸다. (`@NonNullApi`를 사용하면 파라미터나 리턴 값에는 생략해도 된다)
 - [`@Nullable`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/Nullable.html): 파라미터나, 리턴 값, 필드가 `null`일 수 있음을 나타낸다.
-- [`@NonNullApi`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/NonNullApi.html): 패키지 레벨 애노테이션으로, 파라미터와 리턴 값의 기본 동작은 non-null임을 나타낸다.
+- [`@NonNullApi`](https://projectreactor.io/docs/core/release/api/reactor/util/annotation/NonNullApi.html): 패키지 레벨 어노테이션으로, 파라미터와 리턴 값의 기본 동작은 non-null임을 나타낸다.
 
 > 제네릭 타입 인자, 가변 인자, 배열 요소는 아직 Nullability를 지원하지 않는다. 최신 정보는  [issue #878](https://github.com/reactor/reactor-core/issues/878)을 참고하라.
 

@@ -531,11 +531,11 @@ public Step step1() {
 다른 컴포넌트 안에 감싸져 있는(nested) 리스너는 명시적으로 등록해야 한다
 ([Registering ItemStream with a Step](#519-registering-itemstream-with-a-step) 예제처럼).
 
-`StepListener`가 아니어도 애노테이션으로 같은 관심사를 처리할 수 있다.
-일반 자바 객체 메소드 위에 이 애노테이션을 선언하면 그에 맞는 `StepListener`로 변환된다.
-`ItemReader`, `ItemWriter`, `Tasklet` 같은 청크 컴포넌트를 커스텀해서 애노테이션을 다는 방법도 많이 쓰인다.
+`StepListener`가 아니어도 어노테이션으로 같은 관심사를 처리할 수 있다.
+일반 자바 객체 메소드 위에 이 어노테이션을 선언하면 그에 맞는 `StepListener`로 변환된다.
+`ItemReader`, `ItemWriter`, `Tasklet` 같은 청크 컴포넌트를 커스텀해서 어노테이션을 다는 방법도 많이 쓰인다.
 빌더의 `listener` 메소드로 리스너를 등록하듯,
-애노테이션을 선언하면 XML 파서가 `<listener/>` 요소로 처리하므로,
+어노테이션을 선언하면 XML 파서가 `<listener/>` 요소로 처리하므로,
 XML 네임스페이스나 빌더 둘 중 하나만 사용하면 step에 리스너를 등록할 수 있다.
 
 #### `StepExecutionListener`
@@ -555,7 +555,7 @@ public interface StepExecutionListener extends StepListener {
 
 `afterStep`에서 인자로 받는 `ExitStatus`로 종료 코드를 수정할 수 있다.
 
-위 인터페이스와 동일한 애노테이션:
+위 인터페이스와 동일한 어노테이션:
 
 - `@BeforeStep`
 - `@AfterStep`
@@ -580,7 +580,7 @@ public interface ChunkListener extends StepListener {
 `beforeChunk` 메소드는 트랜잭션이 시작된 후 호출되는데, 아직 `ItemReader`의 read 메소드를 호출하기 전이다.
 반대로 `afterChunk` 메소드는 청크가 커밋된 후 호출된다 (롤백됐다면 호출되지 않는다).
 
-위 인터페이스와 동일한 애노테이션:
+위 인터페이스와 동일한 어노테이션:
 
 - `@BeforeChunk`
 - `@AfterChunk`
@@ -610,7 +610,7 @@ public interface ItemReadListener<T> extends StepListener {
 읽는 도중 에러가 발생하면 `onReadError` 메소드가 호출된다.
 발생한 exception 정보도 함께 전달되므로 여기서 로그에 남길 수 있다.
 
-위 인터페이스와 동일한 애노테이션:
+위 인터페이스와 동일한 어노테이션:
 
 - `@BeforeRead`
 - `@AfterRead`
@@ -636,7 +636,7 @@ public interface ItemProcessListener<T, S> extends StepListener {
 처리 중 에러가 발생하면 `onProcessError` 메소드를 호출한다.
 exception과 처리하려고 했던 아이템 정보를 함께 넘겨받으므로 로그에 남길 수 있다.
 
-위 인터페이스와 동일한 애노테이션:
+위 인터페이스와 동일한 어노테이션:
 
 - `@BeforeProcess`
 - `@AfterProcess`
@@ -661,7 +661,7 @@ public interface ItemWriteListener<S> extends StepListener {
 아이템을 쓰는 중 에러가 발생하면 `onWriteError` 메소드를 호출한다.
 exception과 쓰려고 했던 아이템 정보를 함께 넘겨받으므로 로그에 남길 수 있다.
 
-위 인터페이스와 동일한 애노테이션:
+위 인터페이스와 동일한 어노테이션:
 
 - `@BeforeWrite`
 - `@AfterWrite`
@@ -690,7 +690,7 @@ public interface SkipListener<T,S> extends StepListener {
 `onSkipInWrite` 메소드는 아이템을 쓰는 동안 아이템을 스킵할 때 호출한다.
 이때는 아이템을 읽는 데는 성공했으므로 (읽는 도중 스킵되지 않고), 메소드 인자로 아이템을 제공한다.
 
-위 인터페이스와 동일한 애노테이션:
+위 인터페이스와 동일한 어노테이션:
 
 - `@OnSkipInRead`
 - `@OnSkipInWrite`

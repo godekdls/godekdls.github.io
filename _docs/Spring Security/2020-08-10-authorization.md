@@ -401,11 +401,11 @@ http
 
 ### 11.3.3. Method Security Expressions
 
-메소드 시큐리티는 단순한 허가 또는 거절보다 조금 더 복잡한 규칙을 사용한다. 스프링 시큐리티 3.0은 표현식을 종합적으로 지원하기 위한 새 애노테이션을 도입했다.
+메소드 시큐리티는 단순한 허가 또는 거절보다 조금 더 복잡한 규칙을 사용한다. 스프링 시큐리티 3.0은 표현식을 종합적으로 지원하기 위한 새 어노테이션을 도입했다.
 
 #### @Pre and @Post Annotations
 
-네 가지 애노테이션이 표현식 속성을 지원한다. 사전/사후 권한 체크를 지원하며, 제출한 컬렉션 인자나 리턴한 값을 필터링할 수도 있다. 이 애노테이션은 바로 `@PreAuthorize`, `@PreFilter`, `@PostAuthorize`, `@PostFilter`다. 애노테이션 사용은 네임스페이스의 `global-method-security` 요소로 활성화한다.
+네 가지 어노테이션이 표현식 속성을 지원한다. 사전/사후 권한 체크를 지원하며, 제출한 컬렉션 인자나 리턴한 값을 필터링할 수도 있다. 이 어노테이션은 바로 `@PreAuthorize`, `@PreFilter`, `@PostAuthorize`, `@PostFilter`다. 어노테이션 사용은 네임스페이스의 `global-method-security` 요소로 활성화한다.
 
 ```xml
 <global-method-security pre-post-annotations="enabled"/>
@@ -413,14 +413,14 @@ http
 
 #### Access Control using @PreAuthorize and @PostAuthorize
 
-가장 유용할 애노테이션은 실제로 메소드를 실행할 수 있는지 없는지를 결정하는 `@PreAuthorize`다. 예를 들어 (["contacts" 샘플 어플리케이션](https://github.com/spring-projects/spring-security/tree/master/samples/xml/contacts) 코드 일부 발췌)
+가장 유용할 어노테이션은 실제로 메소드를 실행할 수 있는지 없는지를 결정하는 `@PreAuthorize`다. 예를 들어 (["contacts" 샘플 어플리케이션](https://github.com/spring-projects/spring-security/tree/master/samples/xml/contacts) 코드 일부 발췌)
 
 ```java
 @PreAuthorize("hasRole('USER')")
 public void create(Contact contact);
 ```
 
-이 애노테이션은 "ROLE_USER" 권한이 있는 사용자만 접근할 수 있다는 뜻이다. 물론 전통적인 설정과 간단한 설정 속성으로도 동일한 권한 조건을 쉽게 구성할 수 있다. 하지만 이건 어떨까:
+이 어노테이션은 "ROLE_USER" 권한이 있는 사용자만 접근할 수 있다는 뜻이다. 물론 전통적인 설정과 간단한 설정 속성으로도 동일한 권한 조건을 쉽게 구성할 수 있다. 하지만 이건 어떨까:
 
 ```java
 @PreAuthorize("hasPermission(#contact, 'admin')")
@@ -431,7 +431,7 @@ public void deletePermission(Contact contact, Sid recipient, Permission permissi
 
 스프링 시큐리티가 메소드 인자를 리졸브하는 방법은 여러 가지가 있다. 스프링 시큐리티는 `DefaultSecurityParameterNameDiscoverer`를 사용해서 파라미터 이름을 발견한다. 디폴트로 메소드 전체에 대해 다음 옵션을 시도해 본다.
 
-- 메소드의 단일 인자에 `@P` 애노테이션이 있는 경우 이 인자 값을 사용한다. 이 애노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
+- 메소드의 단일 인자에 `@P` 어노테이션이 있는 경우 이 인자 값을 사용한다. 이 어노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
 
   ```java
   import org.springframework.security.access.method.P;
@@ -442,9 +442,9 @@ public void deletePermission(Contact contact, Sid recipient, Permission permissi
   public void doSomething(@P("c") Contact contact);
   ```
 
-  이 애노테이션을 사용하면 내부에선 어떤 애노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
+  이 어노테이션을 사용하면 내부에선 어떤 어노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
 
-- 메소드 파라미터 중 한 개라도 스프링 데이터의 `@Param` 애노테이션이 있으면 이 파라미터 값을 사용한다. 이 애노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
+- 메소드 파라미터 중 한 개라도 스프링 데이터의 `@Param` 어노테이션이 있으면 이 파라미터 값을 사용한다. 이 어노테이션은 파라미터 이름에 관한 정보를 담지 않는 JDK 8 이전 버전으로 컴파일한 인터페이스에 유용하다. 예를 들어:
 
   ```java
   import org.springframework.data.repository.query.Param;
@@ -455,11 +455,11 @@ public void deletePermission(Contact contact, Sid recipient, Permission permissi
   Contact findContactByName(@Param("n") String name);
   ```
 
-  이 애노테이션을 사용하면 내부에선 어떤 애노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
+  이 어노테이션을 사용하면 내부에선 어떤 어노테이션이든지 value 속성을 지원하도록 커스텀할 수 있는 `AnnotationParameterNameDiscoverer`를 사용한다.
 
 - -parameters 인자를 사용해서 JDK 8로 소스 코드를 컴파일하고 스프링 4+를 사용했다면, 표준 JDK 리플렉션 API로 파라미터 이름을 찾는다. 클래스와 인터페이스 둘 모두에서 동작한다.
 
-- 마지막으로 debug symbol을 포함해서 컴파일했다면, 이 debug symbol을 사용해서 파라미터 이름을 찾는다. 인터페이스는 파라미터 이름과 관련한 디버그 정보가 없으므로 동작하지 않는다. 인터페이스를 사용한다면 애노테이션이나 JDK 8 방식을 사용해야 한다.
+- 마지막으로 debug symbol을 포함해서 컴파일했다면, 이 debug symbol을 사용해서 파라미터 이름을 찾는다. 인터페이스는 파라미터 이름과 관련한 디버그 정보가 없으므로 동작하지 않는다. 인터페이스를 사용한다면 어노테이션이나 JDK 8 방식을 사용해야 한다.
 
 표현식 내에선 모든 스프링 EL 기능을 사용할 수 있으므로 인자의 프로퍼티에도 접근할 수 있다. 예를 들어 특정 메소드를, username이 연락처의 이름과 일치하는 사용자에게만 허가하고 싶다면 다음과 같이 작성할 수 있다.
 
@@ -470,7 +470,7 @@ public void doSomething(Contact contact);
 
 여기선 또 다른 내장 표현식 `authentication`을 사용했으며, 이는 보안 컨텍스트에 저장된 `Authentication`을 나타낸다. `principal` 표현식을 사용하면 "principal" 프로퍼티에 직접 접근할 수도 있다. principal은 보통 `UserDetails` 인스턴스이므로 `principal.username`이나 `principal.enabled`같은 표현식을 사용하면 된다.
 
-일반적이진 않지만, 메소드를 실행한 다음에 접근 제어를 확인하고 싶을 수도 있다. 이땐 `@PostAuthorize` 애노테이션을 사용하면 된다. 메소드가 리턴한 값에 접근하려면 표현식에 내장된 이름 `returnObject`를 사용해라.
+일반적이진 않지만, 메소드를 실행한 다음에 접근 제어를 확인하고 싶을 수도 있다. 이땐 `@PostAuthorize` 어노테이션을 사용하면 된다. 메소드가 리턴한 값에 접근하려면 표현식에 내장된 이름 `returnObject`를 사용해라.
 
 #### Filtering using @PreFilter and @PostFilter
 
@@ -482,7 +482,7 @@ public void doSomething(Contact contact);
 public List<Contact> getAll();
 ```
 
-`@PostFilter` 애노테이션을 사용하면, 스프링 시큐리티는 리턴된 컬렉션을 순회해서 표현식 결과가 false인 모든 요소를 제거한다. `filterObject`는 컬렉션의 현재 객체를 참조한다. `@PreFilter`를 사용하면 메소드 호출 전에 필터링할 수도 있지만, 흔한 요구사항은 아니다. 기본 문법은 동일하지만, 컬렉션 타입 인자가 둘 이상이라면 애노테이션의 `filterTarget` 프로퍼티에 인자 이름을 지정해야 한다.
+`@PostFilter` 어노테이션을 사용하면, 스프링 시큐리티는 리턴된 컬렉션을 순회해서 표현식 결과가 false인 모든 요소를 제거한다. `filterObject`는 컬렉션의 현재 객체를 참조한다. `@PreFilter`를 사용하면 메소드 호출 전에 필터링할 수도 있지만, 흔한 요구사항은 아니다. 기본 문법은 동일하지만, 컬렉션 타입 인자가 둘 이상이라면 어노테이션의 `filterTarget` 프로퍼티에 인자 이름을 지정해야 한다.
 
 필터링은 데이터 조회 쿼리를 튜닝하는 용도가 아니라는 점을 명심해야 한다. 사이즈가 큰 컬렉션을 필터링하고 많은 엔트리를 제거하는 것은 비효율적이다.
 
@@ -521,13 +521,13 @@ boolean hasPermission(Authentication authentication, Serializable targetId,
 
 #### Method Security Meta Annotations
 
-메소드 시큐리티에 메타 애노테이션을 사용하면 코드를 좀 더 가독성있는 코드로 만들 수 있다. 똑같은 복잡한 표현식을 코드 전체에 반복하고 있다면 특히 유용할 것이다. 예를 들어 아래 코드를 생각해 보자:
+메소드 시큐리티에 메타 어노테이션을 사용하면 코드를 좀 더 가독성있는 코드로 만들 수 있다. 똑같은 복잡한 표현식을 코드 전체에 반복하고 있다면 특히 유용할 것이다. 예를 들어 아래 코드를 생각해 보자:
 
 ```java
 @PreAuthorize("#contact.name == authentication.name")
 ```
 
-이 코드를 여기저기 반복하는 대신, 이 코드 대신 사용할 메타 애노테이션을 만들 수 있다.
+이 코드를 여기저기 반복하는 대신, 이 코드 대신 사용할 메타 어노테이션을 만들 수 있다.
 
 ```java
 @Retention(RetentionPolicy.RUNTIME)
@@ -535,7 +535,7 @@ boolean hasPermission(Authentication authentication, Serializable targetId,
 public @interface ContactPermission {}
 ```
 
-메타 애노테이션은 스프링 시큐리티의 모든 메소드 시큐리티 애노테이션에 사용할 수 있다. 스펙 준수를 위해 JSR-250 애노테이션은 메타 애노테이션을 지원하지 않는다.
+메타 어노테이션은 스프링 시큐리티의 모든 메소드 시큐리티 어노테이션에 사용할 수 있다. 스펙 준수를 위해 JSR-250 어노테이션은 메타 어노테이션을 지원하지 않는다.
 
 ---
 
@@ -545,7 +545,7 @@ public @interface ContactPermission {}
 
 스프링 시큐리티 2.0 이전엔 `MethodInvocation`을 보호하려면 꽤 많은 보일러플레이트 설정이 필요했다. 현재 권장하는 메소드 시큐리티 설정 방법은 [네임스페이스 설정](../securitynamespaceconfiguration#184-method-security)이다. 네임스페이스를 사용하면 메소드 시큐리티를 위한 빈들이 자동으로 설정되기 때문에 정말로 구현체를 알 필요가 없다. 여기선 관련 클래스 개요만 간단하게 짚고 넘어간다.
 
-메소드 시큐리티는 `MethodInvocation`을 보호해 주는 `MethodSecurityInterceptor`로 구현한다. 설정 방법에 따라 인터셉터를 특정한 빈 하나에서만 사용할 수도 있고, 인터셉터 하나를 여러 빈이 공유할 수도 있다. 인터셉터는 `MethodSecurityMetadataSource` 인스턴스를 사용해서 특정 method invocation에 적용할 설정 속성을 가져온다. `MapBasedMethodSecurityMetadataSource`로는 메소드 이름을 (와일드카드 지원) 키로 갖는 설정 속성을 저장하며, 내부적으로 `<intercept-methods>`나 `<protect-point>` 요소로 어플리케이션에 해당 속성을 정의했을 때 사용한다. 다른 구현체는 애노테이션 기반 설정에서 사용한다.
+메소드 시큐리티는 `MethodInvocation`을 보호해 주는 `MethodSecurityInterceptor`로 구현한다. 설정 방법에 따라 인터셉터를 특정한 빈 하나에서만 사용할 수도 있고, 인터셉터 하나를 여러 빈이 공유할 수도 있다. 인터셉터는 `MethodSecurityMetadataSource` 인스턴스를 사용해서 특정 method invocation에 적용할 설정 속성을 가져온다. `MapBasedMethodSecurityMetadataSource`로는 메소드 이름을 (와일드카드 지원) 키로 갖는 설정 속성을 저장하며, 내부적으로 `<intercept-methods>`나 `<protect-point>` 요소로 어플리케이션에 해당 속성을 정의했을 때 사용한다. 다른 구현체는 어노테이션 기반 설정에서 사용한다.
 
 #### Explicit MethodSecurityInterceptor Configuration
 
@@ -655,11 +655,11 @@ public aspect DomainObjectInstanceSecurityAspect implements InitializingBean {
 
 ## 11.5. Method Security
 
-2.0 버전 이후 스프링 시큐리티는 서비스 레이어 메소드를 보호하기 위한 기능을 대폭 개선했다. 프레임워크의 기존 `@Secured` 애노테이션 외에 JSR-250 애노테이션도 지원한다. 3.0부터는 새로운 [표현식 기반 애노테이션](#113-expression-based-access-control)도 사용할 수 있다. 원하는 빈을 선언한 곳을 `intercept-methods` 요소로 장식하면 단일 빈을 보호할 수도 있고, AspectJ 스타일 포인트컷으로 서비스 레이어 전체에 걸친 빈을 보호할 수도 있다.
+2.0 버전 이후 스프링 시큐리티는 서비스 레이어 메소드를 보호하기 위한 기능을 대폭 개선했다. 프레임워크의 기존 `@Secured` 어노테이션 외에 JSR-250 어노테이션도 지원한다. 3.0부터는 새로운 [표현식 기반 어노테이션](#113-expression-based-access-control)도 사용할 수 있다. 원하는 빈을 선언한 곳을 `intercept-methods` 요소로 장식하면 단일 빈을 보호할 수도 있고, AspectJ 스타일 포인트컷으로 서비스 레이어 전체에 걸친 빈을 보호할 수도 있다.
 
 ### 11.5.1. EnableGlobalMethodSecurity
 
-`@Configuration` 인스턴스 중 아무곳에나 `@EnableGlobalMethodSecurity` 애노테이션을 붙이면 애노테이션 기반 보안 기능을 활성화할 수 있다. 예를 들어 아래 코드는 스프링 시큐리티의 `@Secured` 애노테이션을 활성화한다.
+`@Configuration` 인스턴스 중 아무곳에나 `@EnableGlobalMethodSecurity` 어노테이션을 붙이면 어노테이션 기반 보안 기능을 활성화할 수 있다. 예를 들어 아래 코드는 스프링 시큐리티의 `@Secured` 어노테이션을 활성화한다.
 
 ```java
 @EnableGlobalMethodSecurity(securedEnabled = true)
@@ -668,7 +668,7 @@ public class MethodSecurityConfig {
 }
 ```
 
-메소드에 (클래스나 인터페이스에 있는) 애노테이션을 달면 이제 해당 메소드의 조건에 따라 접근을 제한할 것이다. 스프링 시큐리티의 네이티브 애노테이션은 메소드의 속성 셋을 정의한다. 이 값은 실제 결정을 내리는 `AccessDecisionManager`로 전달된다:
+메소드에 (클래스나 인터페이스에 있는) 어노테이션을 달면 이제 해당 메소드의 조건에 따라 접근을 제한할 것이다. 스프링 시큐리티의 네이티브 어노테이션은 메소드의 속성 셋을 정의한다. 이 값은 실제 결정을 내리는 `AccessDecisionManager`로 전달된다:
 
 ```java
 public interface BankService {
@@ -684,7 +684,7 @@ public Account post(Account account, double amount);
 }
 ```
 
-JSR-250 애노테이션은 다음과 같이 활성화할 수 있다.
+JSR-250 어노테이션은 다음과 같이 활성화할 수 있다.
 
 ```java
 @EnableGlobalMethodSecurity(jsr250Enabled = true)
@@ -693,7 +693,7 @@ public class MethodSecurityConfig {
 }
 ```
 
-이는 표준을 따르며 간단한 role기반 제약 조건을 적용할 순 있지만, 스프링 시큐리티의 네이티브 애노테이션같은 기능은 없다. 새로운 표현식 기반 문법을 사용하려면 다음과 같이 작성해야 한다.
+이는 표준을 따르며 간단한 role기반 제약 조건을 적용할 순 있지만, 스프링 시큐리티의 네이티브 어노테이션같은 기능은 없다. 새로운 표현식 기반 문법을 사용하려면 다음과 같이 작성해야 한다.
 
 ```java
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -720,7 +720,7 @@ public Account post(Account account, double amount);
 
 ### 11.5.2. GlobalMethodSecurityConfiguration
 
-`@EnableGlobalMethodSecurity` 애노테이션이 지원하는 것보다 더 복잡한 작업이 필요할 때도 있을 것이다. 이런 인스턴스는 `GlobalMethodSecurityConfiguration`을 확장해서 하위 클래스에도 `@EnableGlobalMethodSecurity` 애노테이션을 달아주면 된다. 예를 들어 커스텀 `MethodSecurityExpressionHandler`를 사용하고 싶다면 아래 설정을 사용할 수 있다:
+`@EnableGlobalMethodSecurity` 어노테이션이 지원하는 것보다 더 복잡한 작업이 필요할 때도 있을 것이다. 이런 인스턴스는 `GlobalMethodSecurityConfiguration`을 확장해서 하위 클래스에도 `@EnableGlobalMethodSecurity` 어노테이션을 달아주면 된다. 예를 들어 커스텀 `MethodSecurityExpressionHandler`를 사용하고 싶다면 아래 설정을 사용할 수 있다:
 
 ```java
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -737,13 +737,13 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 
 ### 11.5.3. The \<global-method-security\> Element
 
-이 요소는 애노테이션 기반 보안을 활성화하며 (요소에 적절한 속성을 설정해서), 어플리케이션 컨텍스트 전역에 적용할 포인트컷 선언을 함께 묶을 때도 사용한다. `<global-method-security>` 요소 하나만 선언하면 된다. 아래 선언문은 스프링 시큐리티의 `@Secured` 지원을 활성화한다:
+이 요소는 어노테이션 기반 보안을 활성화하며 (요소에 적절한 속성을 설정해서), 어플리케이션 컨텍스트 전역에 적용할 포인트컷 선언을 함께 묶을 때도 사용한다. `<global-method-security>` 요소 하나만 선언하면 된다. 아래 선언문은 스프링 시큐리티의 `@Secured` 지원을 활성화한다:
 
 ```xml
 <global-method-security secured-annotations="enabled" />
 ```
 
-메소드에 (클래스나 인터페이스에 있는) 애노테이션을 달면 이제 해당 메소드의 조건에 따라 접근을 제한할 것이다. 스프링 시큐리티의 네이티브 애노테이션은 메소드의 속성 셋을 정의한다. 이 값은 실제 결정을 내리는 `AccessDecisionManager`로 전달된다:
+메소드에 (클래스나 인터페이스에 있는) 어노테이션을 달면 이제 해당 메소드의 조건에 따라 접근을 제한할 것이다. 스프링 시큐리티의 네이티브 어노테이션은 메소드의 속성 셋을 정의한다. 이 값은 실제 결정을 내리는 `AccessDecisionManager`로 전달된다:
 
 ```java
 public interface BankService {
@@ -759,13 +759,13 @@ public Account post(Account account, double amount);
 }
 ```
 
-JSR-250 애노테이션은 다음과 같이 활성화할 수 있다.
+JSR-250 어노테이션은 다음과 같이 활성화할 수 있다.
 
 ```xml
 <global-method-security jsr250-annotations="enabled" />
 ```
 
-이는 표준을 따르며 간단한 role기반 제약 조건을 적용할 순 있지만, 스프링 시큐리티의 네이티브 애노테이션같은 기능은 없다. 새로운 표현식 기반 문법을 사용하려면 다음과 같이 작성해야 한다.
+이는 표준을 따르며 간단한 role기반 제약 조건을 적용할 순 있지만, 스프링 시큐리티의 네이티브 어노테이션같은 기능은 없다. 새로운 표현식 기반 문법을 사용하려면 다음과 같이 작성해야 한다.
 
 ```xml
 <global-method-security pre-post-annotations="enabled" />
@@ -787,11 +787,11 @@ public Account post(Account account, double amount);
 }
 ```
 
-사용자의 권한 리스트로 role 이름을 확인하는 것 외에 다른 규칙을 간단하게 정의해야 한다면 표현식 기반 애노테이션을 사용하는 게 좋다.
+사용자의 권한 리스트로 role 이름을 확인하는 것 외에 다른 규칙을 간단하게 정의해야 한다면 표현식 기반 어노테이션을 사용하는 게 좋다.
 
-> 애노테이션을 붙인 메소드는 스프링 빈으로 정의한 (메소드 시큐리티가 활성화된 어플리케이션 컨텍스트 내에 있는) 인스턴스일 때만 보안이 적용된다. 스프링이 생성하지 않는 인스턴스를 (예를 들어 `new` 연산자로 생성한 인스턴스) 보호하고 싶다면 AspectJ를 사용해야 한다.
+> 어노테이션을 붙인 메소드는 스프링 빈으로 정의한 (메소드 시큐리티가 활성화된 어플리케이션 컨텍스트 내에 있는) 인스턴스일 때만 보안이 적용된다. 스프링이 생성하지 않는 인스턴스를 (예를 들어 `new` 연산자로 생성한 인스턴스) 보호하고 싶다면 AspectJ를 사용해야 한다.
 
->  어플리케이션 내에선 애노테이션 유형을 여러 개 활성화해도 되지만, 특정 인터페이스나 클래스에는 한 가지 유형만 적용해야 한다. 그렇지 않으면 의도한 대로 정의되지 않을 것이다. 메소드 하나에서 두 애노테이션을 발견하면 둘 중 하나만 적용한다.
+>  어플리케이션 내에선 어노테이션 유형을 여러 개 활성화해도 되지만, 특정 인터페이스나 클래스에는 한 가지 유형만 적용해야 한다. 그렇지 않으면 의도한 대로 정의되지 않을 것이다. 메소드 하나에서 두 어노테이션을 발견하면 둘 중 하나만 적용한다.
 
 ### 11.5.4. Adding Security Pointcuts using protect-pointcut
 
@@ -804,7 +804,7 @@ public Account post(Account account, double amount);
 </global-method-security>
 ```
 
-여기선 어플리케이션 컨텍스트에 선언한 빈 중 `com.mycompany` 패키지에 있으며 "Service"로 끝나는 클래스의 모든 메소드를 보호한다. `ROLE_USER` role이 있는 사용자만 이 메소드를 실행할 수 있다. URL 매칭과 마찬가지로, 첫 번째로 매칭되는 표현식을 사용하기 때문에 가장 구체적인 조건이 앞에 있어야 한다. 시큐리티 애노테이션이 포인트컷보다 우선시된다.
+여기선 어플리케이션 컨텍스트에 선언한 빈 중 `com.mycompany` 패키지에 있으며 "Service"로 끝나는 클래스의 모든 메소드를 보호한다. `ROLE_USER` role이 있는 사용자만 이 메소드를 실행할 수 있다. URL 매칭과 마찬가지로, 첫 번째로 매칭되는 표현식을 사용하기 때문에 가장 구체적인 조건이 앞에 있어야 한다. 시큐리티 어노테이션이 포인트컷보다 우선시된다.
 
 ---
 

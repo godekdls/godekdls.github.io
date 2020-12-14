@@ -796,7 +796,7 @@ public Mono<String> foo(@AuthenticationPrincipal OAuth2AuthenticatedPrincipal pr
 
 당연히 SpEL로도 속성에 접근할 수 있다.
 
-예를 들어 `@EnableReactiveMethodSecurity`를 사용한다면 아래처럼 `@PreAuthorize` 애노테이션을 사용할 수 있다:
+예를 들어 `@EnableReactiveMethodSecurity`를 사용한다면 아래처럼 `@PreAuthorize` 어노테이션을 사용할 수 있다:
 
 ```java
 @PreAuthorize("principal?.attributes['sub'] == 'foo'")

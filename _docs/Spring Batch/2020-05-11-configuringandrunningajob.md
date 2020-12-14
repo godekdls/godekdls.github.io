@@ -154,7 +154,7 @@ public void afterJob(JobExecution jobExecution){
 }
 ```
 
-인터페이스와 동일한 애노테이션도 지원한다:
+인터페이스와 동일한 어노테이션도 지원한다:
 
 - `@BeforeJob`
 - `@AfterJob`
@@ -184,9 +184,9 @@ public Job job1() {
 Spring 3부터 XML뿐 아니라 자바 코드로도 어플리케이션을 설정할 수 있는데,
 이와 동일하게 스프링 배치 2.2.0부터 자바 코드로 배치 job을 설정할 수 있다.
 자바 기반 설정을 위한 두 가지 컴포넌트를 지원한다:
-`@EnableBatchProcessing` 애노테이션과 두 개의 빌더
+`@EnableBatchProcessing` 어노테이션과 두 개의 빌더
 
-`@EnableBatchProcessing`는 자바 진영의 다른 @Enable* 애노테이션과 유사하게 동작한다.
+`@EnableBatchProcessing`는 자바 진영의 다른 @Enable* 어노테이션과 유사하게 동작한다.
 여기선 `@EnableBatchProcessing`이 배치 job 생성을 위한 기반 설정이라고 할 수 있다.
 이 기반 설정 내에서 주입받은 여러 빈과 함께 `StepScope` 인스턴스를 생성한다:
 
@@ -218,8 +218,8 @@ public BatchConfigurer batchConfigurer() {
 }
 ```
 
-> 설정 클래스에 필요한 건 `@EnableBatchProcessing` 애노테이션 하나다.
-> 이 애노테이션을 선언한 클래스만 있으면 위에 있는 모든 기능을 사용할 수 있다.
+> 설정 클래스에 필요한 건 `@EnableBatchProcessing` 어노테이션 하나다.
+> 이 어노테이션을 선언한 클래스만 있으면 위에 있는 모든 기능을 사용할 수 있다.
 
 이 기반 설정만 해주면 기본으로 제공하는 빌더 팩토리로 job을 만들 수 있다.
 아래 예제에서는 `JobBuilderFactory`와 `StepBuilderFactory`로 두 개의 step을 가지고 있는 job을 구성한다.

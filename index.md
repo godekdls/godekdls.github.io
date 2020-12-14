@@ -72,3 +72,8 @@ includeFooter: false
 - 2020/12
 - 2.0.5.RELEASE
 - https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/
+
+#### [Spring Data R2DBC](/Spring%20Data%20R2DBC/contents/)
+- 2020/12
+- 1.2.2
+- https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#

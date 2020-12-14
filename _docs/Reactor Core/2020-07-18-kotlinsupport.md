@@ -67,7 +67,7 @@ originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/ind
 
 코틀린의 핵심 기능 중 하나는 [null safety](https://kotlinlang.org/docs/reference/null-safety.html)로, 런타임에 그 유명한 `NullPointerException`을 만나는 대신 컴파일 타임에 깔끔하게 `null` 값을 핸들링할 수 있다. `Optional` 같은 래퍼를 사용하지 않고도 널이 될 수 있는지를 선언하고, 값이 있을 때와 없을 때를 구분해서 표현할 수 있어서, 어플리케이션은 더 안전해진다. (코틀린은 함수형 구조에서도 nullable 값을 허용한다. [comprehensive guide to Kotlin null-safety](https://www.baeldung.com/kotlin-null-safety)를 참고하라.)
 
-자바의 타입 시스템에서는 널을 안전하게 표현할 수 있는 방법이 없지만, 리액터는 `reactor.util.annotation`  패키지에 사용하기 편한 애노테이션이 있기 때문에, 이제는 전체 리액터 API에서 [null safety를 지원한다](../advancedfeaturesandconcepts#910-null-safety). 코틀린에서 사용하는 자바 API 타입은 기본적으로 널 체크를 완화시키는 [플랫폼 타입](https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types)으로 인지한다. [코틀린은 JSR 305 애노테이션을 지원하며](https://github.com/Kotlin/KEEP/blob/jsr-305/proposals/jsr-305-custom-nullability-qualifiers.md), 리액터 nullability 애노테이션으로 전체 리액터 API에 대해 null-safety를 제공하고,  코틀린 개발자는 컴파일 타임에 `null` 관련 이슈를 더 잘 처리할 수 있다.
+자바의 타입 시스템에서는 널을 안전하게 표현할 수 있는 방법이 없지만, 리액터는 `reactor.util.annotation`  패키지에 사용하기 편한 어노테이션이 있기 때문에, 이제는 전체 리액터 API에서 [null safety를 지원한다](../advancedfeaturesandconcepts#910-null-safety). 코틀린에서 사용하는 자바 API 타입은 기본적으로 널 체크를 완화시키는 [플랫폼 타입](https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types)으로 인지한다. [코틀린은 JSR 305 어노테이션을 지원하며](https://github.com/Kotlin/KEEP/blob/jsr-305/proposals/jsr-305-custom-nullability-qualifiers.md), 리액터 nullability 어노테이션으로 전체 리액터 API에 대해 null-safety를 제공하고,  코틀린 개발자는 컴파일 타임에 `null` 관련 이슈를 더 잘 처리할 수 있다.
 
 다음 옵션과 함께 컴파일러 플래그에 `-Xjsr305`를 사용하면 JSR 305를 체크할 수 있다: `-Xjsr305={strict|warn|ignore}`.
 

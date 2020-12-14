@@ -28,7 +28,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 30.1. Testing Reactive Method Security
 
-[EnableReactiveMethodSecurity](../enablereactivemethodsecurity)에서 다뤘던 예제는 [메소드 시큐리티 테스트](../testing#191-testing-method-security) 섹션에서 사용했던 설정과 애노테이션으로 똑같이 테스트할 수 있다. 여기서는 최소한의 샘플 코드만 보여주겠다:
+[EnableReactiveMethodSecurity](../enablereactivemethodsecurity)에서 다뤘던 예제는 [메소드 시큐리티 테스트](../testing#191-testing-method-security) 섹션에서 사용했던 설정과 어노테이션으로 똑같이 테스트할 수 있다. 여기서는 최소한의 샘플 코드만 보여주겠다:
 
 ```java
 @RunWith(SpringRunner.class)
@@ -93,7 +93,7 @@ public class HelloWebfluxMethodApplicationTests {
 
 ### 30.2.1. Authentication
 
-`WebTestClient`에 스프링 시큐리티 기능을 추가했으면 애노테이션이나 `mutateWith`를 사용할 수 있다. 예를 들어:
+`WebTestClient`에 스프링 시큐리티 기능을 추가했으면 어노테이션이나 `mutateWith`를 사용할 수 있다. 예를 들어:
 
 ```java
 @Test
@@ -223,9 +223,9 @@ assertThat(user.getAuthorities()).hasSize(1);
 assertThat(user.getAuthorities()).containsExactly(new SimpleGrantedAuthority("SCOPE_read"));
 ```
 
-스프링 시큐리티는 `OidcUser` 인스턴스를 [`@AuthenticationPrincipal` 애노테이션](../integrations#1563-authenticationprincipal)에서 사용할 수 있도록 필요한 일을 해준다.
+스프링 시큐리티는 `OidcUser` 인스턴스를 [`@AuthenticationPrincipal` 어노테이션](../integrations#1563-authenticationprincipal)에서 사용할 수 있도록 필요한 일을 해준다.
 
-게다가 `OidcUser`를 `WebSessionOAuth2ServerAuthorizedClientRepository`에 보관하는 간단한 `OAuth2AuthorizedClient` 인스턴스로 연결해 준다. [`@RegisteredOAuth2AuthorizedClient` 애노테이션을 사용](#3026-testing-oauth-20-clients)해서 테스트할 때 유용하다.
+게다가 `OidcUser`를 `WebSessionOAuth2ServerAuthorizedClientRepository`에 보관하는 간단한 `OAuth2AuthorizedClient` 인스턴스로 연결해 준다. [`@RegisteredOAuth2AuthorizedClient` 어노테이션을 사용](#3026-testing-oauth-20-clients)해서 테스트할 때 유용하다.
 
 #### Configuring Authorities
 
@@ -326,9 +326,9 @@ assertThat(user.getAuthorities()).hasSize(1);
 assertThat(user.getAuthorities()).containsExactly(new SimpleGrantedAuthority("SCOPE_read"));
 ```
 
-스프링 시큐리티는 `OAuth2User` 인스턴스를 [`@AuthenticationPrincipal` 애노테이션](../integrations#1563-authenticationprincipal)에서 사용할 수 있도록 필요한 일을 해준다.
+스프링 시큐리티는 `OAuth2User` 인스턴스를 [`@AuthenticationPrincipal` 어노테이션](../integrations#1563-authenticationprincipal)에서 사용할 수 있도록 필요한 일을 해준다.
 
-게다가 `OAuth2User`를 `WebSessionOAuth2ServerAuthorizedClientRepository`에 보관하는 간단한 `OAuth2AuthorizedClient` 인스턴스로 연결해 준다. [`@RegisteredOAuth2AuthorizedClient` 애노테이션을 사용](#3026-testing-oauth-20-clients)해서 테스트할 때 유용하다.
+게다가 `OAuth2User`를 `WebSessionOAuth2ServerAuthorizedClientRepository`에 보관하는 간단한 `OAuth2AuthorizedClient` 인스턴스로 연결해 준다. [`@RegisteredOAuth2AuthorizedClient` 어노테이션을 사용](#3026-testing-oauth-20-clients)해서 테스트할 때 유용하다.
 
 #### Configuring Authorities
 
@@ -602,7 +602,7 @@ client
     .get().uri("/endpoint").exchange();
 ```
 
-이 두 가지 방법 외에도 `@MockBean` 애노테이션으로 `ReactiveJwtDecoder` 빈 자체를 모킹하는 방법도 있다.
+이 두 가지 방법 외에도 `@MockBean` 어노테이션으로 `ReactiveJwtDecoder` 빈 자체를 모킹하는 방법도 있다.
 
 ### 30.2.8. Testing Opaque Token Authentication
 
@@ -702,5 +702,5 @@ client
     .get().uri("/endpoint").exchange();
 ```
 
-`mockOpaqueToken()`을 사용하는 방법 외에도 `@MockBean` 애노테이션으로 `OpaqueTokenIntrospector` 빈 자체를 모킹하는 방법도 있다.
+`mockOpaqueToken()`을 사용하는 방법 외에도 `@MockBean` 어노테이션으로 `OpaqueTokenIntrospector` 빈 자체를 모킹하는 방법도 있다.
 

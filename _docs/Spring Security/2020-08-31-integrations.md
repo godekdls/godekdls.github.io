@@ -447,7 +447,7 @@ String json = mapper.writeValueAsString(context);
 
 > 스프링 시큐리티 4.0부터 `@EnableWebMvcSecurity`는 제거 대상에 올랐다 (deprecated). 대신 클래스패스를 기반으로 스프링 MVC 기능을 추가하는 `@EnableWebSecurity`를 사용해라.
 
-스프링 시큐리티와 스프링 MVC를 통합하려면 설정에 `@EnableWebSecurity` 애노테이션을 추가해라.
+스프링 시큐리티와 스프링 MVC를 통합하려면 설정에 `@EnableWebSecurity` 어노테이션을 추가해라.
 
 > 스프링 시큐리티는 스프링 MVC의 [WebMvcConfigurer](https://docs.spring.io/spring/docs/5.0.0.RELEASE/spring-framework-reference/web.html#mvc-config-customize)를 사용하는 설정을 제공한다. 따라서 `WebMvcConfigurationSupport`를 직접 통합하는 등 좀 더 세세한 옵션을 변경하고 싶다면, 스프링 시큐리티 설정을 직접 제공해야 한다.
 
@@ -590,7 +590,7 @@ public ModelAndView findMessagesForUser() {
 }
 ```
 
-스프링 시큐리티 3.2부터는 애노테이션을 사용해서 메소드 인자를 직접 리졸브할 수 있다. 예를 들어:
+스프링 시큐리티 3.2부터는 어노테이션을 사용해서 메소드 인자를 직접 리졸브할 수 있다. 예를 들어:
 
 ```java
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -647,7 +647,7 @@ public ModelAndView updateName(@AuthenticationPrincipal(expression = "@jpaEntity
 }
 ```
 
-자체 애노테이션에 `@AuthenticationPrincipal`을 메타 애노테이션으로 선언하면 스프링 시큐리티 의존성을 더 줄일 수 있다. 아래에서는 이 방법을 사용해 `@CurrentUser` 애노테이션을 만드는 방법을 설명한다.
+자체 어노테이션에 `@AuthenticationPrincipal`을 메타 어노테이션으로 선언하면 스프링 시큐리티 의존성을 더 줄일 수 있다. 아래에서는 이 방법을 사용해 `@CurrentUser` 어노테이션을 만드는 방법을 설명한다.
 
 > 스프링 시큐리티 의존성을 줄이기 위해 `@CurrentUser`를 별도로 만드는 게 소모적일 수도 있다. 꼭 필요한 작업은 아니지만, 스프링 시큐리티와 관련한 코드를 한 곳에 모아 분리하는 데는 도움이 된다.
 

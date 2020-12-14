@@ -47,7 +47,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 | spring-jdbc       |         | 데이터베이스로 사용자 데이터를 저장할 때 필요하다 (optional). |
 | spring-tx         |         | 데이터베이스로 사용자 데이터를 저장할 때 필요하다 (optional). |
 | aspectjrt         | 1.6.10  | AspectJ 기능을 사용할 때 필요하다 (optional).                |
-| jsr250-api        | 1.0     | JSR-250 메소드 시큐리티 애노테이션을 사용할 때 필요하다 (optional). |
+| jsr250-api        | 1.0     | JSR-250 메소드 시큐리티 어노테이션을 사용할 때 필요하다 (optional). |
 
 ### 22.6.2. spring-security-remoting
 
