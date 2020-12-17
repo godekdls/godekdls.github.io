@@ -5,7 +5,7 @@ order: 3
 permalink: /Spring%20Data%20R2DBC/whatisr2dbc/
 description: R2DBC 기본 개념
 image: ./../../images/spring/logo.png
-lastmod: 2020-12-10T12:00:00+09:00
+lastmod: 2020-12-19T23:00:00+09:00
 comments: true
 originalRefName: 스프링 데이터 R2DBC
 originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#get-started:first-steps:what

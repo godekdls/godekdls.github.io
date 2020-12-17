@@ -66,6 +66,11 @@
 						{% assign home = site.html_pages | where: 'url', '/' | first %}
 						<a href="{{ site.baseurl }}/">{{ home.title }}</a>
 					</li>
+					<!--- 커스텀 영역 --->
+					<li class="nav-item top-level {% if page.url == '/whoami/' %}current{% endif %}">
+						{% assign whoami = site.html_pages | where: 'url', '/whoami/' | first %}
+						<a href="{{ site.baseurl }}/whoami/">{{ whoami.title }}</a>
+					</li>
 				</ul>
 
 				<ul>

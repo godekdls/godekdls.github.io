@@ -5,7 +5,7 @@ order: 10
 permalink: /Spring%20Data%20R2DBC/newandnoteworthy/
 description: 스프링 데이터 R2DBC 1.X 버전에서 추가된 기능들
 image: ./../../images/spring/logo.png
-lastmod: 2020-12-10T12:00:00+09:00
+lastmod: 2020-12-19T23:00:00+09:00
 comments: true
 originalRefName: 스프링 데이터 R2DBC
 originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#new-features
@@ -22,8 +22,8 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 ## 9.1. What’s New in Spring Data R2DBC 1.2.0
 
 - 스프링 데이터 R2DBC `DatabaseClient` deprecate, 스프링 R2DBC에서 deprecated API를 제거. 자세한 내용은 [마이그레이션 가이드](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#upgrading.1.1-1.2) 참고.
-- [엔티티 콜백](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#entity-callbacks) 지원.
-- `@EnableR2dbcAuditing`을 통한 [Auditing](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#r2dbc.auditing).
+- [엔티티 콜백](../r2dbcrepositories#143-entity-callbacks) 지원.
+- `@EnableR2dbcAuditing`을 통한 [Auditing](../auditing#152-general-auditing-configuration-for-r2dbc).
 - persistence 생성자에 `@Value` 지원.
 
 ---
@@ -31,7 +31,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 ## 9.2. What’s New in Spring Data R2DBC 1.1.0
 
 - 엔티티 기반 연산을 지원하는 `R2dbcEntityTemplate` 도입
-- [쿼리 파생(Query derivation)](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#r2dbc.repositories.queries).
+- [쿼리 파생(Query derivation)](../r2dbcrepositories#142-query-methods).
 - `DatabaseClient.as(…)`를 통한 인터페이스 projection 지원.
 - [`DatabaseClient.filter(…)`를 통한 `ExecuteFunction`, `StatementFilterFunction` 지원](https://docs.spring.io/spring-data/r2dbc/docs/1.1.0.RELEASE/reference/html/#r2dbc.datbaseclient.filter).
 
@@ -48,7 +48,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 - `ResourceDatabasePopulator`와 `ScriptUtils`를 이용한 스키마 초기화 유틸리티.
 - `TransactionDefinition`을 통한 자동 커밋 전파/리셋과 격리 수준 제어.
 - 엔티티 레벨 컨버터 지원.
-- reified 제네릭과 [코루틴](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#kotlin.coroutines)을 위한 코틀린 익스텐션.
+- reified 제네릭과 [코루틴](../kotlinsupport#175-coroutines)을 위한 코틀린 익스텐션.
 - 방언(dialect)을 직접 등록할 수 있는 매커니즘 추가.
 - 파라미터 이름 지정 (named 파라미터) 지원.
 - `DatabaseClient`를 통한 R2DBC 첫 지원.

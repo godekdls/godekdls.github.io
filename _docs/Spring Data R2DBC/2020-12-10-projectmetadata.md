@@ -5,7 +5,7 @@ order: 9
 permalink: /Spring%20Data%20R2DBC/projectmetadata/
 description: 스프링 R2DBC 프로젝트 레포지토리, 릴리즈 노트, 이슈 링크
 image: ./../../images/spring/logo.png
-lastmod: 2020-12-10T12:00:00+09:00
+lastmod: 2020-12-19T23:00:00+09:00
 comments: true
 originalRefName: 스프링 데이터 R2DBC
 originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#project-metadata

@@ -5,7 +5,7 @@ order: 8
 permalink: /Spring%20Data%20R2DBC/followingdevelopment/
 description: 스프링 데이터 R2DBC 관련 개발 정보를 팔로우하는 방법
 image: ./../../images/spring/logo.png
-lastmod: 2020-12-10T12:00:00+09:00
+lastmod: 2020-12-19T23:00:00+09:00
 comments: true
 originalRefName: 스프링 데이터 R2DBC
 originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#get-started:up-to-date

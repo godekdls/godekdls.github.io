@@ -5,7 +5,7 @@ order: 2
 permalink: /Spring%20Data%20R2DBC/learningspring/
 description: 스프링 데이터 R2DBC를 사용하기 앞서 필요한 스프링 관련 지식
 image: ./../../images/spring/logo.png
-lastmod: 2020-12-10T12:00:00+09:00
+lastmod: 2020-12-19T23:00:00+09:00
 comments: true
 boundary: Preface
 originalRefName: 스프링 데이터 R2DBC

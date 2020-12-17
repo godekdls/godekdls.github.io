@@ -5,8 +5,9 @@ order: 12
 permalink: /Spring%20Data%20R2DBC/workingwithspringdatarepositories/
 description: 스프링 R2DBC 적용에 앞서 알아둬야 할 스프링 데이터 모듈 기본 개념과 레포지토리 인터페이스 사용법
 image: ./../../images/spring/logo.png
-lastmod: 2020-12-11T12:00:00+09:00
+lastmod: 2020-12-19T23:00:00+09:00
 comments: true
+priority: 0.6
 originalRefName: 스프링 데이터 R2DBC
 originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#repositories
 ---
@@ -23,7 +24,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
   + [11.4.2. Query Creation](#1142-query-creation)
   + [11.4.3. Property Expressions](#1143-property-expressions)
   + [11.4.4. Special parameter handling](#1144-special-parameter-handling)
-       * [Paging and Sorting](#paging-and-sorting)
+    * [Paging and Sorting](#paging-and-sorting)
   + [11.4.5. Limiting Query Results](#1145-limiting-query-results)
   + [11.4.6. Repository Methods Returning Collections or Iterables](#1146-repository-methods-returning-collections-or-iterables)
     * [Using Streamable as Query Method Return Type](#using-streamable-as-query-method-return-type)
@@ -1242,7 +1243,7 @@ assembler는 정확한 URI를 만들었고, 다음 요청에 사용할 파라미
 
 #### Web Databinding Support
 
-스프링 데이터 프로젝션([Projections 섹션](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#projections)에서 설명)을 사용하면, 다음 예제처럼 요청 페이로드를 [JSONPath](https://goessner.net/articles/JsonPath/) 표현식([Jayway JsonPath](https://github.com/json-path/JsonPath) 필요)이나 [XPath](https://www.w3.org/TR/xpath-31/) 표현식([XmlBeam](https://xmlbeam.org/) 필요)으로 바인딩할 수 있다.
+스프링 데이터 프로젝션([Projections 섹션](../r2dbcrepositories#1426-projections)에서 설명)을 사용하면, 다음 예제처럼 요청 페이로드를 [JSONPath](https://goessner.net/articles/JsonPath/) 표현식([Jayway JsonPath](https://github.com/json-path/JsonPath) 필요)이나 [XPath](https://www.w3.org/TR/xpath-31/) 표현식([XmlBeam](https://xmlbeam.org/) 필요)으로 바인딩할 수 있다.
 
 **Example 50. HTTP payload binding using JSONPath or XPath expressions**
 
@@ -1262,7 +1263,7 @@ public interface UserPayload {
 
 이 타입은 스프링 MVC 핸들러 메소드 인자로 사용하거나, `RestTemplate` 메소드에서 `ParameterizedTypeReference`와 함께 사용할 수 있다. 이 메소드 선언대로면 도큐먼트 전체에서 `firstname`을 찾는다. XML은 `lastname`을 문서 최상위 레벨에서 조회한다. JSON도 최상위에서 `lastname`을 먼저 찾아보지만, 못 찾으면 하위 도큐먼트 `user`가 감싸고 있는 `lastname`을 찾는다. 이렇게하면 클라이언트가 노출된 메소드를 호출하지 않아도 (일반적인 클래스 기반 페이로드 바인딩의 단점) 쉽게 도큐먼트 구조 변경에 대응할 수 있다.
 
-[Projections](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#projections)에서도 설명하지만, 중첩 프로젝션(Nested projection)도 지원한다. 메소드가 인터페이스 타입 대신 중첩 타입을 반환하면, Jackson `ObjectMapper`로 최종 값을 매핑한다.
+[Projections](../r2dbcrepositories#1426-projections)에서도 설명하지만, 중첩 프로젝션(Nested projection)도 지원한다. 메소드가 인터페이스 타입 대신 중첩 타입을 반환하면, Jackson `ObjectMapper`로 최종 값을 매핑한다.
 
 스프링 MVC에선 클래스패스에 필수 의존성이 있다면 `@EnableSpringDataWebSupport`를 활성화하는 즉시 자동으로 필요한 컨버터들을 등록해 준다. `RestTemplate`과 함께 사용하려면 직접 `ProjectingJackson2HttpMessageConverter`(JSON)나 `XmlBeamHttpMessageConverter`를 등록해라.
 

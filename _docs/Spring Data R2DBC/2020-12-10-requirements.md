@@ -5,7 +5,7 @@ order: 6
 permalink: /Spring%20Data%20R2DBC/requirements/
 description: 스프링 데이터 R2DBC에 필요한 환경
 image: ./../../images/spring/logo.png
-lastmod: 2020-12-10T12:00:00+09:00
+lastmod: 2020-12-19T23:00:00+09:00
 comments: true
 originalRefName: 스프링 데이터 R2DBC
 originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#requirements

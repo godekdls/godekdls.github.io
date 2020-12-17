@@ -44,11 +44,11 @@ originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/ind
 
 뛰어난 [자바와의 상호 운용성](https://kotlinlang.org/docs/reference/java-interop.html)과 [코틀린 익스텐션](https://kotlinlang.org/docs/reference/extensions.html)덕분에, 리액터 코틀린 API는 전형적인 자바 API를 그대로 사용하면서도 리액터 아티팩트에서만 가능한 몇 가지 코틀린 전용 API를 추가로 활용할 수 있다.
 
-> 코틀린 익스텐션을 사용하려면 임포트시켜야 한다는 점을 명심해라. 예를 들어 코틀린 익스텐션 `throwable.toFlux`는 `import reactor.kotlin.core.publisher.toFlux`를 임포트해야 사용할 수 있다. 물론 대부분은 스태틱 임포트처럼 IDE에서 자동으로 임포트를 제안해 줄 것이다.
+> 코틀린 익스텐션을 사용하려면 임포트시켜야 한다는 점을 명심해라. 예를 들어 코틀린 익스텐션 `throwable.toFlux`는 `import reactor.kotlin.core.publisher.toFlux`를 임포트해야 사용할 수 있다. 물론 대부분은 스태틱 임포트처럼 IDE에서 자동으로 임포트를 제안해 줄 거다.
 
 예를 들어 [Kotlin reified type parameters](https://kotlinlang.org/docs/reference/inline-functions.html#reified-type-parameters)로 JVM [generics type erasure](https://docs.oracle.com/javase/tutorial/java/generics/erasure.html)를 해결할 수 있으며, 리액터는 이 기능을 활용할 수 있도록 몇 가지 확장 기능을 제공한다.
 
-아래 테이블은 자바로 리액터를 사용할 때와, 코틀린 확장 버전으로 리액터를 사용할 때를 비교하고 있다:
+아래 테이블은 자바로 리액터를 사용할 때와, 코틀린 익스텐션으로 리액터를 사용할 때를 비교하고 있다:
 
 | **Java**                                     | **Kotlin with extensions**                          |
 | -------------------------------------------- | --------------------------------------------------- |
@@ -71,7 +71,7 @@ originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/ind
 
 다음 옵션과 함께 컴파일러 플래그에 `-Xjsr305`를 사용하면 JSR 305를 체크할 수 있다: `-Xjsr305={strict|warn|ignore}`.
 
-코틀린 1.1.50+ 버전에선 기본 동작이 `-Xjsr305=warn`과 동일하다. 리액터 API 전체의 null-safety를 고려하면  `strict`를 사용해야 하지만, 마이너 릴리즈에서도 리액터 API의 nullability 체크가 더 추가될 수 있기 때문에 아직 실험 단계다.
+코틀린 1.1.50+ 버전에선 기본 동작이 `-Xjsr305=warn`과 동일하다. 리액터 API 전체의 null-safety를 고려하려면  `strict`를 사용해야 하지만, 마이너 릴리즈에서도 리액터 API의 nullability 체크가 더 추가될 수 있기 때문에 아직 실험 단계다.
 
 > 제네릭 타입 인자, 가변 인자, 배열 요소는 아직 Nullability를 지원하지 않지만, 곧 있을 배포에서 지원할 예정이다. 최신 정보는 [여기 논의](https://github.com/Kotlin/KEEP/issues/79)를 참고하라.
 
