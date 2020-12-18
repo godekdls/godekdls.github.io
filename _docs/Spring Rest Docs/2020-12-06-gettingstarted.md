@@ -3,9 +3,9 @@ title: Getting started
 category: Spring REST Docs
 order: 3
 permalink: /Spring%20REST%20Docs/gettingstarted/
-description: 스프링 REST Doc 시작하기 한글 번역
+description: 스프링 REST Docs 시작하기 한글 번역
 image: ./../../images/springrestdocs/logo.png
-lastmod: 2020-12-06T12:00:00+09:00
+lastmod: 2020-12-19T00:00:00+09:00
 comments: true
 originalRefName: 스프링 REST Docs
 originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/#getting-started
@@ -28,7 +28,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ---
 
-이번 섹션에서는 스프링 REST Doc을 시작하는 방법을 설명한다.
+이번 섹션에서는 스프링 Rest Docs를 시작하는 방법을 설명한다.
 
 ---
 
@@ -48,27 +48,27 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 | Sample                                                       | Build system | Description                                                  |
 | :----------------------------------------------------------- | :----------- | :----------------------------------------------------------- |
-| [WebTestClient](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/web-test-client) | Gradle       | 스프링 웹플럭스의 WebTestClient로 스프링 REST Doc을 활용하는 방법을 설명한다. |
+| [WebTestClient](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/web-test-client) | Gradle       | 스프링 웹플럭스의 WebTestClient로 스프링 Rest Docs를 활용하는 방법을 설명한다. |
 
 *Table 3. REST Assured*
 
 | Sample                                                       | Build system | Description                                                  |
 | :----------------------------------------------------------- | :----------- | :----------------------------------------------------------- |
-| [REST Assured](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-assured) | Gradle       | [REST Assured](http://rest-assured.io/)로 스프링 REST Doc을 활용하는 방법을 설명한다. |
+| [REST Assured](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-assured) | Gradle       | [REST Assured](http://rest-assured.io/)로 스프링 Rest Docs를 활용하는 방법을 설명한다. |
 
 *Table 4. Advanced*
 
 | Sample                                                       | Build system | Description                                                  |
 | :----------------------------------------------------------- | :----------- | :----------------------------------------------------------- |
-| [Slate](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-slate) | Gradle       | Markdown과 [Slate](https://github.com/tripit/slate)로 스프링 REST Doc을 활용하는 방법을 설명한다.. |
-| [TestNG](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/testng) | Gradle       | [TestNG](http://testng.org/)로 스프링 REST Doc을 활용하는 방법을 설명한다. |
-| [JUnit 5](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/junit5) | Gradle       | [JUnit 5](https://junit.org/junit5/)로 스프링 REST Doc을 활용하는 방법을 설명한다. |
+| [Slate](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-slate) | Gradle       | Markdown과 [Slate](https://github.com/tripit/slate)로 스프링 Rest Docs를 활용하는 방법을 설명한다.. |
+| [TestNG](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/testng) | Gradle       | [TestNG](http://testng.org/)로 스프링 Rest Docs를 활용하는 방법을 설명한다. |
+| [JUnit 5](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/junit5) | Gradle       | [JUnit 5](https://junit.org/junit5/)로 스프링 Rest Docs를 활용하는 방법을 설명한다. |
 
 ---
 
 ## 2.2. Requirements
 
-스프링 REST Doc은 최소한 다음과 같은 환경이 필요하다:
+스프링 Rest Docs는 최소한 다음과 같은 환경이 필요하다:
 
 - 자바 8
 - 스프링 프레임워크 5 (5.0.2 이상)
@@ -77,7 +77,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ## 2.3. Build configuration
 
-스프링 REST Doc을 사용하려면 가장 먼저 프로젝트 빌드 환경을 설정해야 한다. [Spring HATEOAS](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas)와 [Spring Data REST](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-data-rest) 샘플에는 각각 `build.gradle`과  `pom.xml` 파일이 있으니 함께 참고해라. 주요 설정 항목은 아래에서 설명한다:
+스프링 Rest Docs를 사용하려면 가장 먼저 프로젝트 빌드 환경을 설정해야 한다. [Spring HATEOAS](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas)와 [Spring Data REST](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-data-rest) 샘플에는 각각 `build.gradle`과  `pom.xml` 파일이 있으니 함께 참고해라. 주요 설정 항목은 아래에서 설명한다:
 
 <div class="switch-language-wrapper maven gradle">
 <span class="switch-language maven">maven</span>
@@ -230,11 +230,11 @@ bootJar {
 
 ## 2.4. Generating Documentation Snippets
 
-스프링 REST Doc은 스프링 MVC의 [테스트 프레임워크](https://docs.spring.io/spring-framework/docs/5.0.x/spring-framework-reference/testing.html#spring-mvc-test-framework)나 스프링 웹플럭스의 [`WebTestClient`](https://docs.spring.io/spring-framework/docs/5.0.x/spring-framework-reference/testing.html#webtestclient), [REST Assured](http://rest-assured.io/)를 사용해서, 문서화한 서비스로 요청을 보낸다. 그러고 나서 이 요청과 응답 결과로 문서 스니펫을 만든다.
+스프링 Rest Docs는 스프링 MVC의 [테스트 프레임워크](https://docs.spring.io/spring-framework/docs/5.0.x/spring-framework-reference/testing.html#spring-mvc-test-framework)나 스프링 웹플럭스의 [`WebTestClient`](https://docs.spring.io/spring-framework/docs/5.0.x/spring-framework-reference/testing.html#webtestclient), [REST Assured](http://rest-assured.io/)를 사용해서, 문서화한 서비스로 요청을 보낸다. 그러고 나서 이 요청과 응답 결과로 문서 스니펫을 만든다.
 
 ### 2.4.1 Setting up Your Tests
 
-정확한 테스트 설정 방법은 사용하는 테스트 프레임워크에 따라 다르다. 스프링 REST Doc은 일차적으로 JUnit 4와 Junit 5를 지원한다. TestNG같은 다른 프레임워크도 약간의 설정만 있으면 사용할 수 있다.
+정확한 테스트 설정 방법은 사용하는 테스트 프레임워크에 따라 다르다. 스프링 Rest Docs는 일차적으로 JUnit 4와 Junit 5를 지원한다. TestNG같은 다른 프레임워크도 약간의 설정만 있으면 사용할 수 있다.
 
 #### Setting up Your JUnit 4 Tests
 
@@ -529,7 +529,7 @@ RestAssured.given(this.spec) // (1)
 - `<output-directory>/index/request-body.adoc`
 - `<output-directory>/index/response-body.adoc`
 
-이 스니펫이나 스프링 REST Doc이 생성하는 다른 스니펫을 자세히 알고 싶다면 [API 문서화하기](../documentingyourapi)를 참고해라.
+이 스니펫이나 스프링 REST Docs가 생성하는 다른 스니펫을 자세히 알고 싶다면 [API 문서화하기](../documentingyourapi)를 참고해라.
 
 ---
 

@@ -3,9 +3,9 @@ title: Customizing requests and responses
 category: Spring REST Docs
 order: 5
 permalink: /Spring%20REST%20Docs/customizingrequestsandresponses/
-description: 스프링 REST Doc으로 요청과 응답 커스텀하기 한글 번역
+description: 스프링 REST Docs로 요청과 응답 커스텀하기 한글 번역
 image: ./../../images/springrestdocs/logo.png
-lastmod: 2020-12-07T21:00:00+09:00
+lastmod: 2020-12-19T00:00:00+09:00
 comments: true
 originalRefName: 스프링 REST Docs
 originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/#customizing-requests-and-responses
@@ -25,7 +25,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ---
 
-전송한 요청이나 받은 응답과는 완벽하게 일치하지 않는 문서를 작성하고 싶을 수도 있다. 스프링 REST Doc은 문서 작성 전에 요청과 응답을 수정할 수 있는 여러 가지 전처리기를 제공한다.
+전송한 요청이나 받은 응답과는 완벽하게 일치하지 않는 문서를 작성하고 싶을 수도 있다. 스프링 Rest Docs는 문서 작성 전에 요청과 응답을 수정할 수 있는 여러 가지 전처리기를 제공한다.
 
 전처리는 `OperationRequestPreprocessor` 또는 `OperationResponsePreprocessor`와 함께 `document`를 호출해 설정한다. `Preprocessors`에 있는 스태틱 메소드 `preprocessRequest`, `preprocessResponse`로 인스턴스를 가져올 수 있다. 다음은 그 방법을 보여준다:
 

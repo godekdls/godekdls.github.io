@@ -3,9 +3,9 @@ title: Working with Asciidoctor
 category: Spring REST Docs
 order: 7
 permalink: /Spring%20REST%20Docs/workingwithaciidoctor/
-description: 스프링 REST Doc에서 Asciidoctor 다루기 한글 번역
+description: 스프링 Rest Docs에서 Asciidoctor 다루기 한글 번역
 image: ./../../images/springrestdocs/logo.png
-lastmod: 2020-12-08T12:00:00+09:00
+lastmod: 2020-12-19T00:00:00+09:00
 comments: true
 originalRefName: 스프링 REST Docs
 originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/#working-with-asciidoctor
@@ -26,7 +26,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ---
 
-이번 섹션에선 스프링 REST Doc과 관련해서 필요한 Asciidoctor를 다루는 방법을 설명한다.
+이번 섹션에선 스프링 REST Docs와 관련해서 필요한 Asciidoctor를 다루는 방법을 설명한다.
 
 > Asciidoc은 문서 포맷이다. Asciidoctor는 Asciidoc 파일로(`.adoc`으로 끝나는) 컨텐츠를(보통 HTML) 만드는 툴이다.
 

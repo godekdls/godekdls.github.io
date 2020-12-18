@@ -3,10 +3,10 @@ title: Documenting your API
 category: Spring REST Docs
 order: 4
 permalink: /Spring%20REST%20Docs/documentingyourapi/
-description: 스프링 REST Doc으로 API 문서화하기 한글 번역
+description: 스프링 REST Docs로 API 문서화하기 한글 번역
 priority: 0.8
 image: ./../../images/springrestdocs/logo.png
-lastmod: 2020-12-07T21:00:00+09:00
+lastmod: 2020-12-19T00:00:00+09:00
 comments: true
 originalRefName: 스프링 REST Docs
 originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/#documenting-your-api
@@ -46,13 +46,13 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
   
 ---
 
-이번 섹션에서는 스프링 REST Doc으로 API를 문서화하는 방법에 대해 더 자세히 설명한다.
+이번 섹션에서는 스프링 REST Docs로 API를 문서화하는 방법에 대해 더 자세히 설명한다.
 
 ---
 
 ## 3.1. Hypermedia
 
-스프링 REST Doc을 사용하면 [하이퍼미디어 기반](https://en.wikipedia.org/wiki/HATEOAS) API에서의 링크도 문서화할 수 있다. 다음 예제는 그 방법을 보여준다:
+스프링 Rest Docs를 사용하면 [하이퍼미디어 기반](https://en.wikipedia.org/wiki/HATEOAS) API에서의 링크도 문서화할 수 있다. 다음 예제는 그 방법을 보여준다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -111,7 +111,7 @@ RestAssured.given(this.spec)
 
 ### 3.1.1. Hypermedia Link Formats
 
-스프링 REST Doc은 기본적으로 두 가지 형태의 링크를 처리한다:
+스프링 Rest Docs는 기본적으로 두 가지 형태의 링크를 처리한다:
 
 - Atom: `links`라는 배열에 링크가 있다고 가정한다. 응답 컨텐츠 타입이 `application/json`과 호환되면 디폴트로 이 방식을 사용한다.
 - HAL: `_links`라는 맵에 링크가 있다고 가정한다. 응답 컨텐츠 타입이 `application/hal+json`과 호환되면 디폴트로 이 방식을 사용한다.
@@ -162,7 +162,7 @@ public static LinksSnippet links(LinkDescriptor... descriptors) {
 
 [앞서 설명한](#31-hypermedia) 하이퍼미디어 전용 기능 외에도, 일반적인 요청/응답 페이로드 문서도 작성할 수 있다.
 
-기본적으로 스프링 REST Doc은 요청과 응답 바디를 위한 스니펫을 자동으로 만들어준다. 각 스니펫 이름은 `request-body.adoc`과 `response-body.adoc`이다.
+기본적으로 스프링 Rest Docs는 요청과 응답 바디를 위한 스니펫을 자동으로 만들어준다. 각 스니펫 이름은 `request-body.adoc`과 `response-body.adoc`이다.
 
 ### 3.2.1. Request and Response Fields
 
@@ -262,7 +262,7 @@ RestAssured.given(this.spec).accept("application/json")
 
 모든 필드를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 필드를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 메소드 `relaxedRequestFields`, `relaxedResponseFields`를 사용해라. 페이로드 일부만 중요한 특정 시나리오를 문서화하기 유용하다.
 
-> 스프링 REST Doc은 디폴트로 문서화하는 페이로드가 JSON이라고 가정한다. XML 페이로드를 문서화하려면 반드시 요청이나 응답 컨텐츠 타입이 `application/xml`과 호환돼야 한다.
+> 스프링 Rest Docs는 디폴트로 문서화하는 페이로드가 JSON이라고 가정한다. XML 페이로드를 문서화하려면 반드시 요청이나 응답 컨텐츠 타입이 `application/xml`과 호환돼야 한다.
 
 #### Fields in JSON Payloads
 
@@ -338,7 +338,7 @@ JSON 필드 패스는 점 표기법(dot notation)이나 괄호 표기법(bracket
 
 ##### JSON Field Types
 
-필드를 문서화할 때 스프링 REST Doc은 페이로드를 확인해서 필드 타입을 결정한다. 세 가지 필드 타입을 지원한다:
+필드를 문서화할 때 스프링 Rest Docs는 페이로드를 확인해서 필드 타입을 결정한다. 세 가지 필드 타입을 지원한다:
 
 | Type      | Description                                                  |
 | :-------- | :----------------------------------------------------------- |
@@ -499,7 +499,7 @@ RestAssured.given(this.spec).accept("application/json")
 
 ### 3.2.2. Documenting a Subsection of a Request or Response Payload
 
-페이로드가 크거나 구조가 복잡하다면 페이로드를 섹션별로 문서화하는 것도 좋다. REST Doc을 사용하면 페이로드의 하위 섹션을 추출해서 따로 문서화할 수 있다.
+페이로드가 크거나 구조가 복잡하다면 페이로드를 섹션별로 문서화하는 것도 좋다. Rest Docs를 사용하면 페이로드의 하위 섹션을 추출해서 따로 문서화할 수 있다.
 
 #### Documenting a Subsection of a Request or Response Body
 
@@ -1104,7 +1104,7 @@ RestAssured.given(this.spec)
 
 ## 3.9. Documenting Constraints
 
-스프링 REST Doc은 여러 가지 클래스로 제약 조건 문서화를 돕는다. 클래스 제약 조건 설명은 `ConstraintDescriptions` 인스턴스로 접근할 수 있다. 다음은 그 방법을 보여준다:
+스프링 Rest Docs는 여러 가지 클래스로 제약 조건 문서화를 돕는다. 클래스 제약 조건 설명은 `ConstraintDescriptions` 인스턴스로 접근할 수 있다. 다음은 그 방법을 보여준다:
 
 ```java
 public void example() {
@@ -1258,11 +1258,11 @@ public void setUp() {
 
 ## 3.12. Customizing the Output
 
-이번 섹션에선 스프링 REST Doc 결과물을 커스텀하는 방법을 설명한다.
+이번 섹션에선 스프링 REST Docs 결과물을 커스텀하는 방법을 설명한다.
 
 ### 3.12.1. Customizing the Generated Snippets
 
-스프링 REST Doc은 [Mustache](https://mustache.github.io/) 템플릿으로 스니펫을 만든다. 스프링 REST Doc은 생성하는 모든 스니펫마다 [디폴트 템플릿](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/spring-restdocs-core/src/main/resources/org/springframework/restdocs/templates)을 제공한다. 스니펫 내용을 커스텀하려면 자체 템플릿을 제공하면 된다.
+스프링 Rest Docs는 [Mustache](https://mustache.github.io/) 템플릿으로 스니펫을 만든다. 스프링 Rest Docs는 생성하는 모든 스니펫마다 [디폴트 템플릿](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/spring-restdocs-core/src/main/resources/org/springframework/restdocs/templates)을 제공한다. 스니펫 내용을 커스텀하려면 자체 템플릿을 제공하면 된다.
 
 템플릿은 `org.springframework.restdocs.templates` 하위 패키지 클래스패스에서 로드한다. 하위 패키지명은 사용 중인 템플릿 포맷의 ID로 결정한다. 디폴트 템플릿 포맷 Asciidoctor는 ID가 `asciidoctor`이므로, `org.springframework.restdocs.templates.asciidoctor`에서 스니펫을 로드한다. 각 템플릿 이름은 생성할 스니펫 이름에서 따온다. 예를 들어 `curl-request.adoc` 스니펫 템플릿을 재정의하려면, `src/test/resources/org/springframework/restdocs/templates/asciidoctor` 아래 `curl-request.snippet`이란 템플릿을 생성해라.
 

@@ -5,7 +5,7 @@ order: 2
 permalink: /Reactor%20Netty/aboutthedocument/
 description: 리액터 네티 문서 소개 한글 번역
 image: ./../../images/reactornetty/logo.png
-lastmod: 2020-12-04T12:00:00+09:00
+lastmod: 2020-12-19T00:00:00+09:00
 comments: true
 originalRefName: 프로젝트 리액터 네티
 originalRefLink: https://projectreactor.io/docs/netty/1.0.1/reference/index.html#about-doc

@@ -3,9 +3,9 @@ title: Configuration
 category: Spring REST Docs
 order: 6
 permalink: /Spring%20REST%20Docs/configuration/
-description: 스프링 REST Doc 설정하기 한글 번역
+description: 스프링 REST Docs 설정하기 한글 번역
 image: ./../../images/springrestdocs/logo.png
-lastmod: 2020-12-07T21:00:00+09:00
+lastmod: 2020-12-19T00:00:00+09:00
 comments: true
 originalRefName: 스프링 REST Docs
 originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/#configuration
@@ -25,7 +25,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ---
 
-이번 섹션은 스프링 REST Doc을 설정하는 방법을 다룬다.
+이번 섹션은 스프링 Rest Docs를 설정하는 방법을 다룬다.
 
 ---
 
@@ -35,7 +35,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 
 ### 5.1.1. MockMvc URI Customization
 
-MockMvc를 사용하면 스프링 REST Doc은 다음 디폴트 설정으로 URI를 작성한다:
+MockMvc를 사용하면 스프링 Rest Docs는 다음 디폴트 설정으로 URI를 작성한다:
 
 | Setting | Default     |
 | :------ | :---------- |
@@ -64,7 +64,7 @@ REST Assured는 실제 HTTP 요청을 통해 서비스를 테스트한다. 따�
 
 ### 5.1.3. WebTestClient URI Customization
 
-WebTestClient를 사용하면 스프링 REST Doc은 `http://localhost:8080`을 기본 베이스 URI로 작성한다. URI 베이스는 [`WebTestClient.Builder`에 있는 `baseUrl(String)` 메소드](https://docs.spring.io/spring-framework/docs/5.0.x/javadoc-api/org/springframework/test/web/reactive/server/WebTestClient.Builder.html#baseUrl-java.lang.String-)로 커스텀할 수 있다. 방법은 다음 예제를 참고해라:
+WebTestClient를 사용하면 스프링 Rest Docs는 `http://localhost:8080`을 기본 베이스 URI로 작성한다. URI 베이스는 [`WebTestClient.Builder`에 있는 `baseUrl(String)` 메소드](https://docs.spring.io/spring-framework/docs/5.0.x/javadoc-api/org/springframework/test/web/reactive/server/WebTestClient.Builder.html#baseUrl-java.lang.String-)로 커스텀할 수 있다. 방법은 다음 예제를 참고해라:
 
 ```java
 @Before
@@ -110,7 +110,7 @@ this.spec = new RequestSpecBuilder()
 		.build();
 ```
 
-> 스프링 REST Doc은 `Content-Type` 헤더에 유효한 `charset`이 지정돼 있다면, 이 `charset`을 사용해 응답 컨텐츠를 `String`으로 변환한다. 지정된 `charset`이 없으면 JVM의 디폴트 `charset`을 사용한다. JVM의 디폴트 `charset`은 시스템 프로퍼티 `file.encoding`으로 설정할 수 있다.
+> 스프링 Rest Docs는 `Content-Type` 헤더에 유효한 `charset`이 지정돼 있다면, 이 `charset`을 사용해 응답 컨텐츠를 `String`으로 변환한다. 지정된 `charset`이 없으면 JVM의 디폴트 `charset`을 사용한다. JVM의 디폴트 `charset`은 시스템 프로퍼티 `file.encoding`으로 설정할 수 있다.
 
 ---
 
@@ -158,7 +158,7 @@ this.spec = new RequestSpecBuilder()
 - `request-body`
 - `response-body`
 
-이 디폴트 스니펫 설정은 `RestDocumentationConfigurer` API로 REST Doc을 세팅할 때 바꿀 수 있다. 다음 예제는 디폴트로 `curl-request` 스니펫만 만들도록 설정하고 있다:
+이 디폴트 스니펫 설정은 `RestDocumentationConfigurer` API로 Rest Docs를 세팅할 때 바꿀 수 있다. 다음 예제는 디폴트로 `curl-request` 스니펫만 만들도록 설정하고 있다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
@@ -192,7 +192,7 @@ this.spec = new RequestSpecBuilder()
 
 ## 5.5. Default Operation Preprocessors
 
-디폴트 요청/응답 전처리기도 `RestDocumentationConfigurer` API로 REST Doc을 세팅할 때 설정할 수 있다. 다음 예제는 모든 요청에서 `Foo` 헤더를 제거하고 모든 응답을 보기 좋게 출력(pretty print)하고 있다:
+디폴트 요청/응답 전처리기도 `RestDocumentationConfigurer` API로 Rest Docs를 세팅할 때 설정할 수 있다. 다음 예제는 모든 요청에서 `Foo` 헤더를 제거하고 모든 응답을 보기 좋게 출력(pretty print)하고 있다:
 
 <div class="switch-language-wrapper mockmvc webtestclient restassured">
 <span class="switch-language mockmvc">MockMvc</span>
