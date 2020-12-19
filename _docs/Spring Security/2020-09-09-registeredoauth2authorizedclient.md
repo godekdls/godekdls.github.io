@@ -3,7 +3,7 @@ title: "@RegisteredOAuth2AuthorizedClient"
 category: Spring Security
 order: 29
 permalink: /Spring%20Security/@registeredoauth2authorizedclient/
-description: 스프링 시큐리티에서 @RegisteredOAuth2AuthorizedClient 애노테이션으로 OAuth2AuthorizedClient, 액세스 토큰을 리졸브하는 방법을 설명합니다. 공식 문서에 있는 "@RegisteredOAuth2AuthorizedClient" 챕터를 한글로 번역한 문서입니다.
+description: 스프링 시큐리티에서 @RegisteredOAuth2AuthorizedClient 어노테이션으로 OAuth2AuthorizedClient, 액세스 토큰을 리졸브하는 방법을 설명합니다. 공식 문서에 있는 "@RegisteredOAuth2AuthorizedClient" 챕터를 한글로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

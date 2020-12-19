@@ -105,7 +105,7 @@ originalRefLink: https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spri
 논블로킹 웹 스택이 필요했기 때문이다. 이전에도 서블릿 3.1은 논블로킹 I/O를 위한 API를 제공했다. 하지만 서블릿으로 논블로킹을 구현하려면 다른 동기 처리나(`Filter`, `Servlet`) 블로킹 방식(`getParameter`, `getPart`)을 쓰는
 API를 사용하기 어렵다. 이런 점 때문에 어떤 논블로킹과도 잘 동작하는 새 공통 API를 만들게 됐다. 이미 비동기 논블로킹 환경에서 자리를 잡은 서버(e.g. Netty) 때문에라도 새 API가 필요했다.
 
-또 다른 이유는 함수형 프로그래밍이다. 자바 5의 애노테이션 등장으로 선택의 폭이 넓어진 것처럼(애노테이션을 선언한 REST 컨트롤러나 유닛 테스트 등), 자바 8에서 추가된 람다 표현식덕분에 자바에서도 함수형 API를 작성할 수 있게 됐다. 이 기능은 논블로킹 어플리케이션을 만들 때도 요긴하게 쓰이며, 이제는 continuation-style API(`CompletableFuture`와 [ReactiveX](http://reactivex.io/)로 대중화된)로 비동기 로직을 선언적으로 작성할 수 있다. 프로그래밍 모델 관점에서 보면, 웹플럭스에서 애노테이션을 선언한 컨트롤러와 더불어 함수형 웹 엔드포인트를 사용할 수 있는 건 자바 8 덕분이다.
+또 다른 이유는 함수형 프로그래밍이다. 자바 5의 어노테이션 등장으로 선택의 폭이 넓어진 것처럼(어노테이션을 선언한 REST 컨트롤러나 유닛 테스트 등), 자바 8에서 추가된 람다 표현식덕분에 자바에서도 함수형 API를 작성할 수 있게 됐다. 이 기능은 논블로킹 어플리케이션을 만들 때도 요긴하게 쓰이며, 이제는 continuation-style API(`CompletableFuture`와 [ReactiveX](http://reactivex.io/)로 대중화된)로 비동기 로직을 선언적으로 작성할 수 있다. 프로그래밍 모델 관점에서 보면, 웹플럭스에서 어노테이션을 선언한 컨트롤러와 더불어 함수형 웹 엔드포인트를 사용할 수 있는 건 자바 8 덕분이다.
 
 ### 1.1.1. Define “Reactive”
 
@@ -115,7 +115,7 @@ API를 사용하기 어렵다. 이런 점 때문에 어떤 논블로킹과도 �
 
 스프링은 "리액티브"와 관련한 중요한 메커니즘이 하나 더 있는데, 논블로킹 back pressure다. 동기식 명령형(imperative) 코드에서 블로킹 호출은 호출자를 강제로 기다리게 하는 일종의 back pressure다. 논블로킹 코드에선, 프로듀셔 속도가 컨슈머 속도를 압도하지 않도록 이벤트 속도를 제어한다.
 
-리액티브 스트림은 back pressure를 통한 비동기 컴포넌트간의 상호작용을 정의한 [간단한 스펙](https://github.com/reactive-streams/reactive-streams-jvm/blob/master/README.md#specification)이다(자바 9에서도 채택했다). 
+리액티브 스트림은 back pressure를 통한 비동기 컴포넌트 간의 상호작용을 정의한 [간단한 스펙](https://github.com/reactive-streams/reactive-streams-jvm/blob/master/README.md#specification)이다(자바 9에서도 채택했다). 
 예를 들어 데이터 레포지토리([Publisher](https://www.reactive-streams.org/reactive-streams-1.0.1-javadoc/org/reactivestreams/Publisher.html) 역할)가 데이터를 만들고, HTTP 서버([Subscriber](https://www.reactive-streams.org/reactive-streams-1.0.1-javadoc/org/reactivestreams/Subscriber.html) 역할)로 이 데이터로 요청을 처리할 수 있다. 리액티브 스트림을 쓰는 주목적은 subscriber가 publisher의 데이터 생산 속도를 제어하는 것이다.
 
 > **자주 묻는 질문: publisher 속도를 늦출 수 없으면 어떻게 할까?**
@@ -132,8 +132,8 @@ API를 사용하기 어렵다. 이런 점 때문에 어떤 논블로킹과도 �
 스프링 웹플럭스가 선택한 리액티브 라이브러리다. 리액터는 [`Mono`](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html)와 [`Flux`](https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Flux.html) API 타입을 제공한다.
 ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.html)에 정리된 풍부한 연산자를 사용해 데이터 시퀀스를 0~1개는 `Mono`, 0~N개는 `Flux`로 표현할 수 있다. 리액터는 리액티브 스트림 라이브러리이기 때문에 모든 연산자는 논블로킹 back pressure를 지원한다. 리액터는 특히 서버 사이드 자바에 초점을 두고 스프링과 긴밀히 협력해서 개발됐다.
 
-웹플럭스는 리액터를 핵심 라이브러리로 사용하지만, 다른 리액티브 라이브러리를 써도 리액티브 스트림으로 상호작용 할 수 있다.
-웹플럭스 API의 일반적인 룰은, 순수한 `Publisher`를 입력으로 받아 내부적으로 리액터 타입으로 맞추고, 이걸 사용해서 `Flux`나 `Mono`를 반환한다. 따라서 어떤 `Publisher`든 입력으로 전달하고 연산할 수 있지만, 다른 리액티브 라이브러리를 사용하려면 출력 형식을 맞춰줘야 한다. 웹플럭스는 가능만 하다면 (e.g. 애노테이션을 선언한 컨트롤러) 투명한 방식으로 RxJava나 다른 리액티브 라이브러리에 맞게 바꿔준다. 자세한 내용은 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
+웹플럭스는 리액터를 핵심 라이브러리로 사용하지만, 다른 리액티브 라이브러리를 써도 리액티브 스트림으로 상호작용할 수 있다.
+웹플럭스 API의 일반적인 룰은, 순수한 `Publisher`를 입력으로 받아 내부적으로 리액터 타입으로 맞추고, 이걸 사용해서 `Flux`나 `Mono`를 반환한다. 따라서 어떤 `Publisher`든 입력으로 전달하고 연산할 수 있지만, 다른 리액티브 라이브러리를 사용하려면 출력 형식을 맞춰줘야 한다. 웹플럭스는 가능만 하다면 (e.g. 어노테이션을 선언한 컨트롤러) 투명한 방식으로 RxJava나 다른 리액티브 라이브러리에 맞게 바꿔준다. 자세한 내용은 [Reactive Libraries](https://godekdls.github.io/Reactive%20Spring/reactivelibraries/)를 참고하라.
 
 > 리액티브 API와는 별개로 웹플럭스는 코틀린의 [코루틴](https://docs.spring.io/spring/docs/current/spring-framework-reference/languages.html#coroutines) API와도 사용할 수 있는데, 이를 사용하면 좀 더 명령적(imperative)인 프로그래밍이 가능하다. 뒤에 나오는 코틀린 코드 샘플은 코루틴 API를 사용할 것이다.
 
@@ -145,9 +145,9 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 스프링 웹플럭스는 두 가지 프로그래밍 모델을 지원한다:
 
 - [Annotated Controllers](#14-annotated-controllers):
-스프링 MVC와 동일하며 `spring-web` 모듈에 있는 같은 애노테이션을 사용한다. 스프링 MVC와 웹플럭스 컨트롤러 모두 리액티브(Reactor, RxJava) 리턴 타입을 지원하기 때문에 이 둘을 구분하기 어렵다. 한 가지 눈에 띄는 차이는 웹플럭스에선 `@RequestBody`로 리액티브 인자를 받을 수 있다는 것이다.
+스프링 MVC와 동일하며 `spring-web` 모듈에 있는 같은 어노테이션을 사용한다. 스프링 MVC와 웹플럭스 컨트롤러 모두 리액티브(Reactor, RxJava) 리턴 타입을 지원하기 때문에 이 둘을 구분하기 어렵다. 한 가지 눈에 띄는 차이는 웹플럭스에선 `@RequestBody`로 리액티브 인자를 받을 수 있다는 것이다.
 - [Functional Endpoints](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#15-functional-endpoints):
-경량화된 람다 기반 함수형 프로그래밍 모델. 요청을 라우팅해주는 조그만한 라이브러리나 유틸리티 모음이라고 생각하면 된다. annotated controller와 다른 점은 애노테이션으로 의도를 선언해서 콜백 받기보단 요청을 어플리케이션이 처음부터 끝까지 다 제어한다는 것이다.
+경량화된 람다 기반 함수형 프로그래밍 모델. 요청을 라우팅해주는 조그만한 라이브러리나 유틸리티 모음이라고 생각하면 된다. annotated controller와 다른 점은 어노테이션으로 의도를 선언해서 콜백 받기보단 요청을 어플리케이션이 처음부터 끝까지 다 제어한다는 것이다.
 
 ### 1.1.4. Applicability
 
@@ -160,9 +160,9 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 먼저 다음 제안을 고려해 보라:
 
 - 이미 잘 동작하고 있는 스프링 MVC 어플리케이션이 있다면, 굳이 바꿀 필요 없다. 명령적(Imperative) 프로그래밍은 작성하기도, 이해하기도, 디버깅하기도 가장 쉽다. 지금까지 대부분이 블로킹 방식을 사용했기 때문에, 사용할 수 있는 라이브러리가 가장 풍부하다.
-- 이미 논블로킹 웹 스택을 알아보고 있다면, 스프링 웹플럭스는 다른 웹 스택과 같은 실행 환경을 제공하면서도, 다양한 서버(Netty, Tomcat, Jetty, Undertow, 서블릿 3.1+ 컨테이너)와 여러 리액티브 라이브러리(리액터, JxJava 등)를 지원하며, 두 가지 프로그래밍 모델(애노테이션을 선언한 컨트롤러와 함수형 웹 엔드포인트)을 사용할 수 있다.
+- 이미 논블로킹 웹 스택을 알아보고 있다면, 스프링 웹플럭스는 다른 웹 스택과 같은 실행 환경을 제공하면서도, 다양한 서버(Netty, Tomcat, Jetty, Undertow, 서블릿 3.1+ 컨테이너)와 여러 리액티브 라이브러리(리액터, JxJava 등)를 지원하며, 두 가지 프로그래밍 모델(어노테이션을 선언한 컨트롤러와 함수형 웹 엔드포인트)을 사용할 수 있다.
 - 자바 8 람다나 코틀린으로 개발할 수 있는 경량의 함수형 웹 프레임워크를 찾고 있다면, 스프링 웹플럭스의 함수형 웹 엔드포인트를 사용하면 된다. 로직을 투명하게 제어할 수 있기 때문에 요구사항이 덜 복잡한 소규모 어플리케이션이나 마이크로서비스에서도 좋은 선택이 될 것이다.
-- 마이크로 아키텍처에선 스프링 MVC로 만든 어플리케이션과, 스프링 웹플럭스 컨트롤러나 함수형 엔트포인트를 사용한 어플리케이션을 조합할 수 있다. 두 프레임워크 모두 애노테이션 기반 프로그래밍 모델을 지원하기 때문에 새로 학습할 필요 없이 각자에 맞는 툴을 선택할 수 있다.
+- 마이크로 아키텍처에선 스프링 MVC로 만든 어플리케이션과, 스프링 웹플럭스 컨트롤러나 함수형 엔트포인트를 사용한 어플리케이션을 조합할 수 있다. 두 프레임워크 모두 어노테이션 기반 프로그래밍 모델을 지원하기 때문에 새로 학습할 필요 없이 각자에 맞는 툴을 선택할 수 있다.
 - 간단하게는 어플리케이션 의존성(dependency)을 확인해봐도 좋다. 블로킹 방식의 영속성 API(JPA, JDBC)나 네트워크 API를 사용하고 있다면 스프링 MVC가 최소한 아키텍처를 통일할 수 있으므로 가장 좋은 선택이다. 리액터나 RxJava로도 각 쓰레드에서 블로킹 API를 호출할 수 있지만, 이렇게 하면 논블로킹 웹 스택을 거의 활용하기 어렵다.
 - 스프링 MVC 어플리케이션에서 외부 서비스를 호출한다면 한번 리액티브 `WebClient`를 사용해봐라. 스프링 MVC 컨트롤러 메소드에서도 리액티브 타입(Reactor, RxJava나 [그 외](https://godekdls.github.io/Reactive%20Spring/reactivelibraries))을 반환할 수 있다. 서비스 호출에 지연이 있거나 여러 서비스가 엮여 있는 API라면 효과가 더 좋을 것이다. 물론 다른 리액티브 컴포넌트도 스프링 MVC 컨트롤러에서 호출할 수 있다.
 - 팀 규모가 크다면 논블로킹, 함수형, 선언적 프로그래밍은 러닝커브가 높다는 점도 고려해야 한다. 한 번에 전환하지 않고 리액티브 `WebClient`부터 적용해보는 것도 좋은 방법이다. 작은 것부터 시작해서 변화가 있는지 확인해 봐라. 굳이 전환할 필요가 없는 경우도 많을 것이다. 어떤 변화를 확인해야 할지 감이 오지 않는다면, 논블로킹 I/O 동작 방식과 효과를 학습하는 것부터 시작해라(예를 들어 싱글 쓰레드 기반 Node.js의 동시 처리).
@@ -224,7 +224,7 @@ ReactiveX [vocabulary of operators](http://reactivex.io/documentation/operators.
 
 - 서버 쪽 요청은 저수준과 고수준으로 나눠서 처리한다.  
   + [HttpHandler](#121-httphandler): 논블로킹 I/O와 리액티브 스트림 back pressure로 HTTP 요청을 처리한다. 리액터 Netty, Undertow, 톰캣, Jetty, 서블릿 3.1+ 컨테이너 어댑터와 함께 사용한다.
-  + [`WebHandler` API](#122-webhandler-api): 약간 더 고수준으로, 애노테이션을 선언한 컨트롤러나 함수형 엔드포인트같이 구체적인 프로그래밍 모델로 작성하는 범용 웹 API다.
+  + [`WebHandler` API](#122-webhandler-api): 약간 더 고수준으로, 어노테이션을 선언한 컨트롤러나 함수형 엔드포인트같이 구체적인 프로그래밍 모델로 작성하는 범용 웹 API다.
 - 클라이언트 사이드에서는 기본적으로 `ClientHttpConnector`가 논블로킹 I/O와 리액티브 스트림 back pressure로 HTTP 요청을 처리한다. [Reactor Netty](https://github.com/reactor/reactor-netty), 리액티브 [Jetty HttpClient](https://github.com/jetty-project/jetty-reactive-httpclient) 어댑터와 함께 사용하며, 어플리케이션에서 사용하는 고수준 [WebClient](https://godekdls.github.io/Reactive%20Spring/webclient/)는 이를 기반으로 동작한다. 
 - 클라이언트와 서버 사이드 모두, [코덱](#125-codecs)으로 HTTP 요청과 응답 컨텐츠를 직렬화/역직렬화힌다.
 
@@ -511,7 +511,7 @@ forwarded 헤더는 보안에 신경 써야 할 요소가 있는데,
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#filters-cors)
 
-CORS는 컨트롤러에 애노테이션을 선언하는 것만으로 잘 동작한다.
+CORS는 컨트롤러에 어노테이션을 선언하는 것만으로 잘 동작한다.
 하지만 Spring Security와 함께 사용한다면,
 내장 `CorsFilter`를 사용해서 Spring Security의 필터 체인보다
 먼저 처리되도록 해야 한다.
@@ -876,8 +876,8 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 
 |Bean type|Explanation|
 |:-----------------:	|:-------------:	|
-|`HandlerMapping`|요청을 핸들러에 매핑한다. 매핑 기준은 `HandlerMapping` 구현체마다 다르다 (애노테이션을 선언한 컨트롤러, URL 패턴 매칭 등).<br><br>주로 쓰는 구현체는 `@RequestMapping`을 선언한 메소드를 찾는 `RequestMappingHandlerMapping`, 함수형 엔드포인트를 라우팅하는 `RouterFunctionMapping`, URI path 패턴으로 `WebHandler`를 찾는 `SimpleUrlHandlerMapping` 등이 있다.|
-|`HandlerAdapter`|`HandlerAdapter`가 핸들러를 실행하는 방법을 알고 있기 때문에, `DispatcherHandler`는 어떤 핸들러든지 받아 처리할 수 있다. 예를 들어 애노테이션을 선언한 컨트롤러를 실행하려면 리졸버가 필요한데, `HandlerAdapter`를 사용하면 `DispatcherHandler`는 이런 디테일을 몰라도 된다.|
+|`HandlerMapping`|요청을 핸들러에 매핑한다. 매핑 기준은 `HandlerMapping` 구현체마다 다르다 (어노테이션을 선언한 컨트롤러, URL 패턴 매칭 등).<br><br>주로 쓰는 구현체는 `@RequestMapping`을 선언한 메소드를 찾는 `RequestMappingHandlerMapping`, 함수형 엔드포인트를 라우팅하는 `RouterFunctionMapping`, URI path 패턴으로 `WebHandler`를 찾는 `SimpleUrlHandlerMapping` 등이 있다.|
+|`HandlerAdapter`|`HandlerAdapter`가 핸들러를 실행하는 방법을 알고 있기 때문에, `DispatcherHandler`는 어떤 핸들러든지 받아 처리할 수 있다. 예를 들어 어노테이션을 선언한 컨트롤러를 실행하려면 리졸버가 필요한데, `HandlerAdapter`를 사용하면 `DispatcherHandler`는 이런 디테일을 몰라도 된다.|
 |`HandlerResultHandler`|핸들러가 건네 준 결과를 처리하고 응답을 종료한다. [Result Handling](#134-result-handling)를 참고하라.|
 
 ### 1.3.2. WebFlux Config
@@ -973,7 +973,7 @@ IDE 자동 완성으로 옵션을 확인해봐라.
 - `Model`, `Map`: model에 추가로 넣을 model attributes
 - 그 외: 그 외 다른 리턴 값은([BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)가
 true를 리턴하는 값은 예외) model에 추가할 model attribute로 간주한다.
-`@ModelAttribute` 애노테이션이 없으면
+`@ModelAttribute` 어노테이션이 없으면
 [conventions](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/core/Conventions.html)와
 클래스명으로 attribute name을 결정한다.
 
@@ -1027,7 +1027,7 @@ JSON, XML같은 미디어 타입을 만드는 `HttpMessageWriterView`를 지원�
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-controller)
 
-스프링 웹플럭스는 애노테이션 기반 프로그래밍 모델을 지원하기 때문에,
+스프링 웹플럭스는 어노테이션 기반 프로그래밍 모델을 지원하기 때문에,
 `@Controller`, `@RestController` 컴포넌트로
 요청을 매핑하고, 입력을 받고, exception을 처리할 수 있다.
 컨트롤러는 메소드를 여러 가지로 활용할 수 있어서
@@ -1067,9 +1067,9 @@ class HelloController {
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-controller)
 
 컨트롤러는 표준 스프링 빈으로 정의한다.
-`@Controller` 애노테이션을 달면 스프링이 클래스패스
+`@Controller` 어노테이션을 달면 스프링이 클래스패스
 내 다른 `@Component` 클래스처럼 자동으로 스캔하고 빈으로 등록한다.
-이 애노테이션을 선언하면 그 클래스가 web 컴포넌트라는 뜻이기도 하다.
+이 어노테이션을 선언하면 그 클래스가 web 컴포넌트라는 뜻이기도 하다.
 
 `@Controller` 빈을 자동으로 등록하려면
 다음 예제처럼 컴포넌트 스캔을 위한 설정이 필요하다:
@@ -1108,11 +1108,11 @@ class WebConfig {
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping)
 
 컨트롤러 메소드에 요청을 매핑할 때는 `@RequestMapping`을 사용한다.
-이 애노테이션에 있는 attribute로
+이 어노테이션에 있는 attribute로
 URL, HTTP 메소드, 요청 파라미터, 헤더, 미디어 타입을 매칭할 수 있다.
 메소드에 선언하거나, 모든 메소드에서 공유하고 싶을 땐 클래스 레벨에 선언한다.
 
-HTTP 메소드를 바로 지정할 수 있는 애노테이션도 있다:
+HTTP 메소드를 바로 지정할 수 있는 어노테이션도 있다:
 
 - `@GetMapping`
 - `@PostMapping`
@@ -1120,13 +1120,13 @@ HTTP 메소드를 바로 지정할 수 있는 애노테이션도 있다:
 - `@DeleteMapping`
 - `@PatchMapping`
 
-위 애노테이션은,
+위 어노테이션은,
 컨트롤러 메소드는 거의 대부분이 HTTP 메소드 하나만 담당하기 때문에
-지원하는 일종의 [커스텀 애노테이션](#custom-annotations)이다.
-하지만 위 애노테이션을 선언하더라도,
+지원하는 일종의 [커스텀 어노테이션](#custom-annotations)이다.
+하지만 위 어노테이션을 선언하더라도,
 다른 매핑 조건을 공통으로 사용하려면 클래스 레벨에 `@RequestMapping`을 선언해야 한다.
 
-다음 예제도 클래스와 메소드에 모두 매핑 애노테이션을 선언했다:
+다음 예제도 클래스와 메소드에 모두 매핑 어노테이션을 선언했다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -1452,7 +1452,7 @@ URL 패턴이 매칭되는 모든 `@RequestMapping` 메소드를 찾아,
 HTTP 메소드를 선언하지 않은 `@RequestMapping`이 있다면
 `Allow` 헤더는 `GET,HEAD,POST,PUT,PATCH,DELETE,OPTIONS`로 설정한다.
 컨트롤러 메소드는 항상 지원하는 HTTP 메소드를 선언하는 게 좋다
-(예를 들어 HTTP 메소드별 애노테이션 `@GetMapping`, `@PostMapping` 등등).
+(예를 들어 HTTP 메소드별 어노테이션 `@GetMapping`, `@PostMapping` 등등).
 
 `@RequestMapping`에 직접 HTTP HEAD나 OPTIONS 메소드를 지정할 순 있지만,
 특별한 이유가 없다면 명시하지 않아도 된다.
@@ -1463,15 +1463,15 @@ HTTP 메소드를 선언하지 않은 `@RequestMapping`이 있다면
 
 스프링 웹플럭스에선 [composed annotation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-meta-annotations)으로
 요청을 매핑할 수 있다.
-이 애노테이션은 자체에 `@RequestMapping`이 선언돼 있고,
+이 어노테이션은 자체에 `@RequestMapping`이 선언돼 있고,
 `@RequestMapping` attibute 일부를(혹은 전체를) 다시 지정할 수 있다.
 
 `@GetMapping`, `@PostMapping`, `@PutMapping`, `@DeleteMapping`, 
 `@PatchMapping`이 그 예시이다.
 `@RequestMapping`은 HTTP 메소드를 지정하지 않으면 모든 메소드와 매칭되는데,
 컨트롤러 메소드는 웬만하면 HTTP 메소드를 하나만 지정해서 써야 한다.
-그렇기 때문에 이 애노테이션을 따로 지원한다.
-예제가 필요하다면, 애노테이션이 어떻게 선언되어 있는지 확인해 봐라.
+그렇기 때문에 이 어노테이션을 따로 지원한다.
+예제가 필요하다면, 어노테이션이 어떻게 선언되어 있는지 확인해 봐라.
 
 커스텀 attribute로 직접 매핑 로직을 구현할 수도 있다.
 그러려면 `RequestMappingHandlerMapping`을 상속해서,
@@ -1550,7 +1550,7 @@ class MyConfig {
 이런 타입은 Description 컬럼에 명시해 뒀다.
 블로킹이 없는 인자는 리액티브 타입을 사용하지 않는다.
 
-일부 애노테이션은(e.g. `@RequestParam`, `@RequestHeader` 등) `required` attribute로
+일부 어노테이션은(e.g. `@RequestParam`, `@RequestHeader` 등) `required` attribute로
 필수 여부를 지정할 수 있으며,
 JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 효과는 `required=false`와 동일하다.
@@ -1566,7 +1566,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`java.util.TimeZone` + `java.time.ZoneId`|요청에 사용된 타임존. `LocaleContextResolver`가 결정한다.|
 |`@PathVariable`|URI 템플릿 변수에 접근하는 용도. [URI Patterns](#uri-patterns) 참고.|
 |`@MatrixVariable`|URI path segment를 name/value 쌍으로 접근하는 용도. [Matrix Variables](#matrix-variables) 참고.|
-|`@RequestParam`|서블릿 request 파라미터에 접근할 수 있다. 파라미터 값은 메소드에 선언한 인자 타입으로 변환된다. [`@RequestParam`](#requestparam) 참고.<br><br>`@RequestParam`은 생략해도 된다. — 예를 들어 애노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다. 테이블 마지막에 나오는 “Any other argument” 참고.|
+|`@RequestParam`|서블릿 request 파라미터에 접근할 수 있다. 파라미터 값은 메소드에 선언한 인자 타입으로 변환된다. [`@RequestParam`](#requestparam) 참고.<br><br>`@RequestParam`은 생략해도 된다. — 예를 들어 어노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다. 테이블 마지막에 나오는 “Any other argument” 참고.|
 |`@RequestHeader`|요청 헤더에 접근하는 용도. 헤더 값은 메소드에 선언한 인자 타입으로 변환된다. [@RequestHeader](#requestheader) 참고.|
 |`@CookieValue`|쿠키에 접근하는 용도. 쿠키 값은 메소드에 선언한 인자 타입으로 변환된다. [@CookieValue](#cookievalue) 참고.|
 |`@RequestBody`|HTTP request body에 접근하는 용도. `HttpMessageReader`가 body를 메소드에 선언한 인자 타입으로 변환한다. 리액티브 타입을 지원한다. [@RequestBody](#requestbody) 참고.|
@@ -1575,7 +1575,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`java.util.Map`, `org.springframework.ui.Model`, `org.springframework.ui.ModelMap`|HTML 컨트롤러가 템플릿으로 뷰를 렌더링할 때 사용하는 모델에 접근할 수 있다.|
 |`@ModelAttribute`|model에 있는 attribute에 접근할 수 있다(attribute가 없다면 model 초기화만 한다). 이때 데이터를 바인딩하면서 유효성도 함께 검사한다. [`@ModelAttribute`](#modelattribute), [Model](#144-model), [DataBinder](#145-databinder) 참고.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other argument”를 참고하라.|
 |`Errors`, `BindingResult`|커맨드 객체를 메소드 인자에 바인딩할 땐 유효성을 검증할 수 있는데(e.g. `@ModelAttribute`), 이때 발생한 에러에 접근하는 용도로 사용한다. `Errors`, `BindingResult` 인자는 유효성을 검증하는 인자 바로 뒤에 사용해야 한다.|
-|`SessionStatus` + 클래스 레벨 `@SessionAttributes`|`@SessionAttributes` 애노테이션을 클래스에 선언하면 세션에 attribute를 저장하는데, `SessionStatus`를 인자로 받아 session 처리가 완료됐다고 알려주면 session attribute를 지운다. 자세한 내용은 [`@SessionAttributes`](#sessionattribute) 참고.|
+|`SessionStatus` + 클래스 레벨 `@SessionAttributes`|`@SessionAttributes` 어노테이션을 클래스에 선언하면 세션에 attribute를 저장하는데, `SessionStatus`를 인자로 받아 session 처리가 완료됐다고 알려주면 session attribute를 지운다. 자세한 내용은 [`@SessionAttributes`](#sessionattribute) 참고.|
 |`UriComponentsBuilder`|요청 호스트, 포트, 스킴, path로 URL을 만들 수 있다. [URI Links](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#161-uricomponents) 참고.|
 |`@SessionAttribute`|session attribute에 접근하는 용도. 클래스 레벨에 `@SessionAttributes`를 선언하면 세션에 model attribute를 저장하지만, 메소드 인자에 `@SessionAttribute`를 선언하면 session attribute에 접근할 수 있다. 자세한 내용은 [`@SessionAttribute`](#sessionattribute) 참고.|
 |`@RequestAttribute`|request attribute에 접근하는 용도. 자세한 내용은 [`@RequestAttribute`](#requestattribute) 참고.|
@@ -1599,7 +1599,7 @@ JDK 1.8의 `java.util.Optional`을 사용해도 된다.
 |`java.util.Map`, `org.springframework.ui.Model`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.
 |`@ModelAttribute`|모델에 attribute를 추가할 수 있다. view name은 요청 path로 결정한다.<br><br>`@ModelAttribute`는 생략해도 된다. 이 테이블 마지막에 나오는 “Any other return value”를 참고하라.|
 |`Rendering`|model과 view를 만드는 API.|
-|`void`|void 메소드는 비동기 값(`Mono<Void>`)이나 null을 리턴한 경우도 포함이다. 이때는 `ServerHttpResponse`, `ServerWebExchange` 인자가 있거나, `@ResponseStatus` 애노테이션을 선언했다면 요청을 완료한 것으로 간주한다. ETag나 `lastModified` 헤더로 클라이언트 캐시가 최신이라고 판단했을 때도 동일하다. 자세한 내용은 [Controllers](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1102-controllers)를 참조하라.<br><br>그 외엔 REST 컨트롤러에선 "response body가 없음"을 의미하고, HTML 컨트롤러에선 디폴트 view name을 선택한다.|
+|`void`|void 메소드는 비동기 값(`Mono<Void>`)이나 null을 리턴한 경우도 포함이다. 이때는 `ServerHttpResponse`, `ServerWebExchange` 인자가 있거나, `@ResponseStatus` 어노테이션을 선언했다면 요청을 완료한 것으로 간주한다. ETag나 `lastModified` 헤더로 클라이언트 캐시가 최신이라고 판단했을 때도 동일하다. 자세한 내용은 [Controllers](https://godekdls.github.io//Reactive%20Spring/springwebflux2/#1102-controllers)를 참조하라.<br><br>그 외엔 REST 컨트롤러에선 "response body가 없음"을 의미하고, HTML 컨트롤러에선 디폴트 view name을 선택한다.|
 |`Flux<ServerSentEvent>`, `Observable<ServerSentEvent>`, or other reactive type|서버 전송 이벤트(SSE)를 발생시킨다. 데이터만 전송하면 된다면 `ServerSentEvent` 래퍼는 생략해도 된다(단, 헤더에 `text/event-stream`을 사용하거나, `produces` attribute로 매핑해야 한다).|
 |Any other return value|`String`은 view name으로 사용하고, `void`면 디폴트 view name을 사용한다. 그 외에는 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-) 결과가 false면 모델 attribute로 사용하고, true면 리졸브하지 못한다.|
 
@@ -1764,8 +1764,8 @@ fun findPet(
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestparam)
 
-`@RequestParam` 애노테이션은 쿼리 파라미터를 컨트롤러 메소드 인자로 바인딩한다.
-다음은 이 애노테이션을 사용하는 예제다:
+`@RequestParam` 어노테이션은 쿼리 파라미터를 컨트롤러 메소드 인자로 바인딩한다.
+다음은 이 어노테이션을 사용하는 예제다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -1829,7 +1829,7 @@ class EditPetForm {
 `@RequestParam`을 선언하면 map에 모든 쿼리 파라미터를 추가한다.
 
 `@RequestParam`은 생략해도 된다. 
-예를 들어 애노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다.
+예를 들어 어노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다.
 적당한 리졸버가 없고
 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)
 결과가 true면 `@RequestParam`을 선언한 것과 동일하게 처리한다.
@@ -1838,7 +1838,7 @@ class EditPetForm {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestheader)
 
-`@RequestHeader` 애노테이션은 요청 헤더를 컨트롤러 메소드 인자로 바인딩한다.
+`@RequestHeader` 어노테이션은 요청 헤더를 컨트롤러 메소드 인자로 바인딩한다.
 
 다음은 요청 헤더 예시다:
 
@@ -1894,7 +1894,7 @@ fun handle(
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-cookievalue)
 
-`@CookieValue` 애노테이션은 HTTP 쿠키를 컨트롤러 메소드 인자로 바인딩한다.
+`@CookieValue` 어노테이션은 HTTP 쿠키를 컨트롤러 메소드 인자로 바인딩한다.
 
 다음은 쿠키 예시다:
 
@@ -1931,7 +1931,7 @@ fun handle(@CookieValue("JSESSIONID") cookie: String) { // (1)
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-method-args)
 
-메소드 인자에 `@ModelAttribute` 애노테이션을 사용하면
+메소드 인자에 `@ModelAttribute` 어노테이션을 사용하면
 model attribute에 접근할 수 있으며, attribute가 없더라도 model을 생성해 준다.
 쿼리 파라미터나 form 데이터 필드명이 객체 필드명과 일치한다면
 model attribute에 추가된다.
@@ -2005,11 +2005,11 @@ fun processSubmit(@ModelAttribute("pet") pet: Pet, result: BindingResult): Strin
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `BindingResult`를 추가한다.</small>
 
-`javax.validation.Valid`나 스프링의 `@Validated` 애노테이션을
+`javax.validation.Valid`나 스프링의 `@Validated` 어노테이션을
 선언하면, 데이터를 바인딩한 후 자동으로 유효성을 검증한다
 ([Bean Validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation-beanvalidation),
 [Spring validation](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#validation) 참고).
-다음 예제는 `@Valid` 애노테이션을 사용한다:
+다음 예제는 `@Valid` 어노테이션을 사용한다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -2071,7 +2071,7 @@ fun processSubmit(@Valid @ModelAttribute("pet") petMono: Mono<Pet>): Mono<String
 ```
 
 `@ModelAttribute`는 생략해도 된다.
-예를 들어 애노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다.
+예를 들어 어노테이션을 생략하고, 파라미터 대신 attribute를 매핑할 수도 있다.
 적당한 리졸버가 없고 [BeanUtils#isSimpleProperty](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/beans/BeanUtils.html#isSimpleProperty-java.lang.Class-)
 결과가 false면 `@ModelAttribute`를 선언한 것과 동일하게 처리한다.
 
@@ -2081,7 +2081,7 @@ fun processSubmit(@Valid @ModelAttribute("pet") petMono: Mono<Pet>): Mono<String
 
 `@SessionAttributes`는 model attribute를 요청이 끝나도 유지되는 
 `WebSession`에 저장한다.
-[type 레벨](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html#TYPE) 애노테이션으로,
+[type 레벨](https://docs.oracle.com/javase/8/docs/api/java/lang/annotation/ElementType.html#TYPE) 어노테이션으로,
 컨트롤러에서 사용할 session attributes를 지정할 수 있다.
 보통 세션에 넣어놓고 다음 요청에서도 이어서 접근하는
 model attributes 이름이나 타입 리스트를 명시한다.
@@ -2197,7 +2197,7 @@ session attribute를 추가하거나 제거하고 싶다면
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestattrib)
 
-`@SessionAttribute`와 유사하게 `@RequestAttribute` 애노테이션으로
+`@SessionAttribute`와 유사하게 `@RequestAttribute` 어노테이션으로
 컨트롤러에 진입하기 전에 만든(e.g. `WebFilter`)
 request attributes에 접근할 수 있다: 
 
@@ -2347,7 +2347,7 @@ fun handle(@RequestPart("meta-data") metadata: MetaData): String { // (1)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@RequestPart`로 메타 데이터를 가져온다.</small>
 
 `@RequestPart`도
-`javax.validation.Valid`나 스프링의 `@Validated` 애노테이션을 붙이면
+`javax.validation.Valid`나 스프링의 `@Validated` 어노테이션을 붙이면
 표준 빈 검증 방식으로 유효성을 확인한다.
 유효성 검증에 실패하면 `WebExchangeBindException`이 발생하고
 400(BAD_REQUEST)으로 응답한다.
@@ -2423,7 +2423,7 @@ fun handle(@RequestBody parts: Flow<Part>): String { // (1)
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestbody)
 
-`@RequestBody` 애노테이션을 붙이면 [HttpMessageReader](#125-codecs)가
+`@RequestBody` 어노테이션을 붙이면 [HttpMessageReader](#125-codecs)가
 request body를 `Object`로 역직렬화한다.
 다음은 `@RequestBody` 예제다:
 
@@ -2475,7 +2475,7 @@ fun handle(@RequestBody accounts: Flow<Account>) {
 옵션으로 바꿀 수 있다.
 
 `@RequestBody`도
-`javax.validation.Valid`나 스프링의 `@Validated` 애노테이션을 붙이면
+`javax.validation.Valid`나 스프링의 `@Validated` 어노테이션을 붙이면
 표준 빈 검증 방식으로 유효성을 확인한다.
 유효성 검증에 실패하면 `WebExchangeBindException`이 발생하고
 400(BAD_REQUEST)으로 응답한다.
@@ -2561,7 +2561,7 @@ fun handle(): Account {
 `@ResponseBody`를 클래스 레벨에 선언하면 컨트롤러 내 모든 메소드에 상속한다.
 `@RestController`를 사용해도 효과는 동일하다.
 `@RestController`는 단순히 `@Controller`, `@ResponseBody`를 가지고 있는
-메타 애노테이션이다.
+메타 어노테이션이다.
 
 `@ResponseBody`는 리액티브 타입을 지원하므로
 리액터나 RxJava 타입을 리턴하면 비동기로 응답을 만든다.
@@ -2621,7 +2621,7 @@ body를 single, multi-value 리액티브 타입으로 만들어도 된다.
 [Jackson’s Serialization Views](https://www.baeldung.com/jackson-json-view-annotation)를
 지원하기 때문에 `Object` 필드 일부만 렌더링할 수 있다.
 `@ResponseBody`나 `ResponseEntity`와 함께 사용하려면
-아래 예제처럼 Jackson의 `@JsonView` 애노테이션으로
+아래 예제처럼 Jackson의 `@JsonView` 어노테이션으로
 사용할 view 클래스를 명시하면 된다:
 
 <div class="switch-language-wrapper java kotlin">
@@ -2696,7 +2696,7 @@ class User(
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-modelattrib-methods)
 
-`@ModelAttribute` 애노테이션은 다음과 같이 사용할 수 있다:
+`@ModelAttribute` 어노테이션은 다음과 같이 사용할 수 있다:
 
 - `@RequestMapping` 메소드 [인자](#modelattribute)에 선언해서
 model을 생성, 접근하고 `WebDataBinder`로 객체에 바인딩한다.
@@ -2859,7 +2859,7 @@ fun handle(): Account {
 `@InitBinder` 메소드가 지원하는 인자는 `@ModelAttribute` (커맨드 객체)만 제외하고
 대부분 `@RequestMapping` 메소드와 동일하다.
 보통은 `WebDataBinder`를 인자로 받아 컴포넌트를 등록하고 `void`를 리턴한다.
-다음은 `@InitBinder` 애노테이션을 사용하는 예제다:
+다음은 `@InitBinder` 어노테이션을 사용하는 예제다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -2895,7 +2895,7 @@ class FormController {
     // ...
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@InitBinder` 애노테이션을 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@InitBinder` 어노테이션을 사용한다.</small>
 
 아니면 같은 방법으로
 `FormattingConversionService`에서 사용하는 
@@ -2979,7 +2979,7 @@ class SimpleController {
 모두 매칭된다.
 
 가급적이면 위 예시처럼 메소드 인자로 원하는 예외 타입을 지정하는 게 좋다.
-아니면 애노테이션에 지정해도 된다.
+아니면 어노테이션에 지정해도 된다.
 메소드 인자는 최대한 구체적으로 지정하고,
 우선순위를 정한 `@ControllerAdvice`에서
 루트 exception을 처리해라.
@@ -3018,7 +3018,7 @@ REST 서비스에선 보통 에러 정보를 response body에 담는다.
 `@ControllerAdvice`나 `@RestControllerAdvice`를 선언한
 클래스 안에 만들어야 한다.
 
-`@ControllerAdvice`는 `@Component` 애노테이션이 선언돼 있기 때문에
+`@ControllerAdvice`는 `@Component` 어노테이션이 선언돼 있기 때문에
 [컴포넌트 스캔](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#beans-java-instantiating-container-scan)으로
 스프링 빈에 등록할 수 있다.
 `@RestControllerAdvice`는 `@ControllerAdvice`와 `@ResponseBody`가
@@ -3034,7 +3034,7 @@ REST 서비스에선 보통 에러 정보를 response body에 담는다.
 `@Controller` 메소드 전에 적용한다.
 
 기본적으로 `@ControllerAdvice` 메소드는 모든 요청에 적용되지만(즉, 모든 컨트롤러에),
-다음 예제처럼 애노테이션 attribute로 컨트롤러를 지정할 수 있다:
+다음 예제처럼 어노테이션 attribute로 컨트롤러를 지정할 수 있다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>

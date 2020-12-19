@@ -1840,7 +1840,7 @@ public JdbcCursorItemReader<CustomerCredit> itemReader() {
 하이버네이트는 온라인 어플리케이션을 위해 개발됐기 때문이다.
 하지만 배치에서 사용할 수 없다는 뜻은 아니다.
 이 문제를 해결하는 가장 쉬운 방법은 표준 세션 대신 `StatelessSession`을 사용하는 것이다.
-이걸 사용하면 배치에서 문제 될 수 있는 하이버네이트의 캐싱과 엔터티 변경 체크(dirty checking)를 모두 제거해 준다.
+이걸 사용하면 배치에서 문제 될 수 있는 하이버네이트의 캐싱과 엔티티 변경 체크(dirty checking)를 모두 제거해 준다.
 상태가 없는(stateless) 세션과 일반적인 하이버네이트 세션의 차이가 궁금하다면
 하이버네이트 릴리즈 문서를 참고해라.
 `HibernateCursorItemReader`에 HQL 문을 선언하면 `SessionFactory`로 전달하고,
@@ -2045,7 +2045,7 @@ public SqlPagingQueryProviderFactoryBean queryProvider() {
 
 위의 `ItemReader`는 `CustomerCredit` 객체를 리턴하는데 
 이를 위해서는 `RowMapper`를 반드시 지정해야 한다. 
-'pageSize' 프로퍼티는 쿼리를 실행할 때마다 데이터베이스에서 읽어올 엔터티 수를 의미한다. 
+'pageSize' 프로퍼티는 쿼리를 실행할 때마다 데이터베이스에서 읽어올 엔티티 수를 의미한다. 
 
 'parameterValues' 프로퍼티를 이용하면 쿼리에서 사용할 파라미터 값을 `Map`으로 명시할 수 있다.
 `where` 절에 이름으로 접근하는 파라미터(named parameter)가 있다면
@@ -2058,9 +2058,9 @@ public SqlPagingQueryProviderFactoryBean queryProvider() {
 JPA에는 하이버네이트의 `StatelessSession` 같은 개념이 없기 때문에 
 JPA 명세에서 제공하는 다른 기능을 사용해야 한다.
 JPA는 원래 페이징을 지원하기 때문에, 배치에서 JPA를 사용할 때도 페이징이 자연스러운 선택이다.
-각 페이지를 읽고 나면 엔터티는 준영속 상태(detached)가 되고
+각 페이지를 읽고 나면 엔티티는 준영속 상태(detached)가 되고
 영속성 컨텍스트(persistence context)는 비워지므로,
-해당 페이지를 다 처리하고 나면 가비지 컬렉션이 엔터티를 수집할 수 있다.
+해당 페이지를 다 처리하고 나면 가비지 컬렉션이 엔티티를 수집할 수 있다.
 
 `JpaPagingItemReader`는 JPQL 문을 사용해서 `EntityManagerFactory`에 전달한다.
 `ItemReader`의 기본 방식대로 `read`를 호출할 때마다 아이템을 하나씩 돌려준다.
@@ -2079,10 +2079,10 @@ public JpaPagingItemReader itemReader() {
 }
 ```
 
-`CustomerCredit`에 적절한 JPA 애노테이션을 선언하거나 ORM 매핑 파일을 사용했다면
+`CustomerCredit`에 적절한 JPA 어노테이션을 선언하거나 ORM 매핑 파일을 사용했다면
 위 `ItemReader`는 위에서 설명한 `JdbcPagingItemReader`와 정확히 같은 방식으로
 `CustomerCredit` 객체를 리턴한다. 
-'pageSize' 프로퍼티는 쿼리를 실행할 때마다 데이터베이스에서 읽어올 엔터티 수를 의미한다.
+'pageSize' 프로퍼티는 쿼리를 실행할 때마다 데이터베이스에서 읽어올 엔티티 수를 의미한다.
 
 ### 6.10.3. Database ItemWriters
 
@@ -2678,7 +2678,7 @@ MongoDB에 write하는 `ItemWriter` 구현체다.
 #### `HibernateItemWriter`
 
 `HibernateItemWriter`는 하이버네이트 세션을 사용해서
-현재 하이버네이트 세션에 속하지 않은 엔터티를 저장하거나 업데이트하는 `ItemWriter`다.
+현재 하이버네이트 세션에 속하지 않은 엔티티를 저장하거나 업데이트하는 `ItemWriter`다.
 스프링 배치는 `HibernateItemWriter` 인스턴스를 생성하는
 `HibernateItemWriterBuilder`를 제공한다. 
 
@@ -2691,7 +2691,7 @@ MongoDB에 write하는 `ItemWriter` 구현체다.
 #### `JpaItemWriter`
 
 `JpaItemWriter`는 JPA `EntityManagerFactory`로 영속성 컨텍스트에 속하지 않은
-엔터티를 병합하는 `ItemWriter`다.
+엔티티를 병합하는 `ItemWriter`다.
 스프링 배치는 `JpaItemWriter` 인스턴스를 생성하는
 `JpaItemWriterBuilder`를 제공한다.
 

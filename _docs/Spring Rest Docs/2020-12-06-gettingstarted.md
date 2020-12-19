@@ -238,7 +238,7 @@ bootJar {
 
 #### Setting up Your JUnit 4 Tests
 
-JUnit 4로 문서 스니펫을 만들려면 가장 먼저 `public` `JUnitRestDocumentation` 필드에 JUnit의 `@Rule` 애노테이션을 선언해야 한다. 다음 예제를 보라:
+JUnit 4로 문서 스니펫을 만들려면 가장 먼저 `public` `JUnitRestDocumentation` 필드에 JUnit의 `@Rule` 어노테이션을 선언해야 한다. 다음 예제를 보라:
 
 ```java
 @Rule
@@ -408,7 +408,7 @@ configurer는 적절한 디폴트 설정을 사용하며, 커스텀 설정을 �
 
 JUnit을 사용하지 않더라도 설정이 크게 달라지지 않는다. 이번 섹션에서 주요 차이점을 설명한다. 여기서 설명하는 내용은 [TestNG 샘플](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/testng)에서도 확인할 수 있다.
 
-첫 번째 차이점은 `JUnitRestDocumentation` 대신 `ManualRestDocumentation`을 사용한다는 점이다. `@Rule` 애노테이션도 필요 없다. 다음은 `ManualRestDocumentation`을 사용하는 예제다:
+첫 번째 차이점은 `JUnitRestDocumentation` 대신 `ManualRestDocumentation`을 사용한다는 점이다. `@Rule` 어노테이션도 필요 없다. 다음은 `ManualRestDocumentation`을 사용하는 예제다:
 
 ```java
 private ManualRestDocumentation restDocumentation = new ManualRestDocumentation();

@@ -238,7 +238,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 ## 18.4. Method Security
 
-2.0 버전 이후 스프링 시큐리티는 서비스 레이어 메소드를 보호하기 위한 기능을 대폭 개선했다. 프레임워크의 기존 `@Secured` 애노테이션 외에 JSR-250 애노테이션도 지원한다. 3.0부터는 새로운 [표현식 기반 애노테이션](../authorization/#113-expression-based-access-control)도 사용할 수 있다. 원하는 빈을 선언한 곳을 `intercept-methods` 요소로 장식하면 단일 빈을 보호할 수도 있고, AspectJ 스타일 포인트컷으로 서비스 레이어 전체에 걸친 빈을 보호할 수도 있다.
+2.0 버전 이후 스프링 시큐리티는 서비스 레이어 메소드를 보호하기 위한 기능을 대폭 개선했다. 프레임워크의 기존 `@Secured` 어노테이션 외에 JSR-250 어노테이션도 지원한다. 3.0부터는 새로운 [표현식 기반 어노테이션](../authorization/#113-expression-based-access-control)도 사용할 수 있다. 원하는 빈을 선언한 곳을 `intercept-methods` 요소로 장식하면 단일 빈을 보호할 수도 있고, AspectJ 스타일 포인트컷으로 서비스 레이어 전체에 걸친 빈을 보호할 수도 있다.
 
 ---
 
@@ -246,7 +246,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
 이번 섹션에선 스프링 시큐리티 내 접근 제어를 위한 기본 아키텍처를 알고 있다고 가정한다. 이 섹션은 간단히 role을 기반으로 권한을 확인하는 대신 더 복잡한 로직을 커스텀할 사람들을 위한 섹션이므로, 접근 제어 아키텍처를 잘 모르면 일단은 건너 뛰고 다음에 다시 와도 좋다.
 
-네임스페이스 설정을 사용하면 `AccessDecisionManager`의 디폴트 인스턴스가 자동으로 등록되며, 이 인스턴스를 사용해서 `intercept-url`과 `protect-pointcut` 선언에 지정한 access 속성을 기반으로 (애노테이션으로 보호하는 메소드가 있다면 애노테이션도) 메소드 실행과 웹 URL 접근 권한을 결정한다.
+네임스페이스 설정을 사용하면 `AccessDecisionManager`의 디폴트 인스턴스가 자동으로 등록되며, 이 인스턴스를 사용해서 `intercept-url`과 `protect-pointcut` 선언에 지정한 access 속성을 기반으로 (어노테이션으로 보호하는 메소드가 있다면 어노테이션도) 메소드 실행과 웹 URL 접근 권한을 결정한다.
 
 디폴트 전략은 `RoleVoter`와 `AuthenticatedVoter`를 사용하는 `AffirmativeBased` `AccessDecisionManager`다. 자세한 설명은 [인가](../authorization#111-authorization-architecture) 챕터에서 찾아볼 수 있다.
 

@@ -187,7 +187,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 4.3. Gradle
 
-스프링 시큐리티도 대부분의 오픈 소스 프로젝트처럼 메이븐 아티팩트로 의존성을 배포하며, first-class 그래들을 지원한다. 이어지는 주제는 그래들로 스프링 시큐리티 의존성을 추가하는 상세 가이드다.
+스프링 시큐리티도 대부분의 오픈 소스 프로젝트처럼 메이븐 아티팩트로 의존성을 배포하기 때문에, 그래들을 최우선으로 지원한다. 이어지는 주제는 그래들로 스프링 시큐리티 의존성을 추가하는 상세 가이드다.
 
 ### 4.3.1. Spring Boot with Gradle
 

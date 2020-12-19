@@ -14,61 +14,13 @@ includeFooter: false
 >
 > 오타, 오역은 제보 부탁드립니다 godekdls@hanmail.net
 
-### About Me
 
-![profile](./images/profile.jpeg)
-
-#### Dain Lee
-
-- Software Engineer
-- Financial Platform Backend Engineer
-- 토리맘
-
-#### Contact Me
-
-- Email: godekdls@hanmail.net
-- [Linkedin](https://www.linkedin.com/in/%EB%8B%A4%EC%9D%B8-%EC%9D%B4-844604103/)
-- [Github](https://github.com/godekdls)
-- [Instagram](https://www.instagram.com/dainy_bt)
-
-### About Her
-
-![profile](./images/tory.jpeg)
-
-- 포메
-- 기고만장
-- 특기는 앉아랑 손
-
-### Archiving
-
-#### [Spring Batch](/Spring%20Batch/contents/)
-
-- 2020/05
-- 4.2.x
-- https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html
-
-#### [Spring Web on Reactive Stack](/Reactive%20Spring/contents/)
-
-- 2020/06
-- 5.2.6.RELEASE
-- https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spring-framework-reference/web-reactive.html 
-
-#### [Reactor Core](/Reactor%20Core/contents/)
-- 2020/07
-- 3.3.7.RELEASE
-- https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html
-
-#### [Spring Security](/Spring%20Security/contents/)
-- 2020/09
-- 5.3.2.RELEASE
-- https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/
-
-#### [Reactor Netty](/Reactor%20Netty/contents/)
-- 2020/12
-- 1.0.1
-- https://projectreactor.io/docs/netty/1.0.1/reference/index.html
-
-#### [Spring REST Docs](/Spring%20REST%20Docs/contents/)
-- 2020/12
-- 2.0.5.RELEASE
-- https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/
+| project | version | updated in | original ref | 
+| :------------- | :------------------| :----------------: | :----------------: |
+| [Spring Batch](/Spring%20Batch/contents/) | 4.2.x | 2020/05 | [ref](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html) |
+|[Spring Web on Reactive Stack](/Reactive%20Spring/contents/) | 5.2.6.RELEASE| 2020/06 | [ref](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spring-framework-reference/web-reactive.html) |
+|[Reactor Core](/Reactor%20Core/contents/) | 3.3.7.RELEASE| 2020/7|[ref](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html) |
+|[Spring Security](/Spring%20Security/contents/) |5.3.2.RELEASE |2020/09 | [ref](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/) |
+|[Reactor Netty](/Reactor%20Netty/contents/) |1.0.1 | 2020/12 | [ref](https://projectreactor.io/docs/netty/1.0.1/reference/index.html) |
+| [Spring REST Docs](/Spring%20REST%20Docs/contents/) | 2.0.5.RELEASE | 2020/12 | [ref](https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/) |
+| [Spring Data R2DBC](/Spring%20Data%20R2DBC/contents/) | 1.2.2 | 2020/12 | [ref](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#) |

@@ -74,7 +74,7 @@ originalRefLink: https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spri
 스프링 웹플럭스는 경량화된 함수형 프로그래밍 모델을 지원한다.
 WebFlux.fn이라고도 하는 이 모델은,
 함수로 요청을 라우팅하고 핸들링하기 때문에 불변성(Immutablility)을 보장한다.
-함수형 모델과 애노테이션 모델 중 하나를 선택하면 되는데,
+함수형 모델과 어노테이션 모델 중 하나를 선택하면 되는데,
 둘 다 [리액티브 코어](https://godekdls.github.io/Reactive%20Spring/springwebflux/#12-reactive-core)
 기반이다.
 
@@ -82,9 +82,9 @@ WebFlux.fn이라고도 하는 이 모델은,
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#webmvc-fn-overview)
 
-WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. `HandlerFunction`은 `ServerRequest`를 받아 비동기 `ServerResponse`(i.e. `Mono<ServerResponse>`)를 리턴하는 함수다. 요청, 응답 객체 모두 불변(immutable)이기 때문에 JDK 8 방식으로 HTTP 요청, 응답에 접근할 수 있다. `HandlerFunction` 역할은 애노테이션 프로그래밍 모델로 치면 `@RequestMapping` 메소드가 하던 일과 동일하다.
+WebFlux.fn에선 `HandlerFunction`이 HTTP 요청을 처리한다. `HandlerFunction`은 `ServerRequest`를 받아 비동기 `ServerResponse`(i.e. `Mono<ServerResponse>`)를 리턴하는 함수다. 요청, 응답 객체 모두 불변(immutable)이기 때문에 JDK 8 방식으로 HTTP 요청, 응답에 접근할 수 있다. `HandlerFunction` 역할은 어노테이션 프로그래밍 모델로 치면 `@RequestMapping` 메소드가 하던 일과 동일하다.
 
-요청은 `RouterFunction`이 핸들러 펑션에 라우팅한다. `RouterFunction`은 `ServerRequest`를 받아 비동기 `HandlerFunction`(i.e. `Mono<HandlerFunction>`)을 리턴하는 함수다. 매칭되는 라우터 펑션이 있으면 핸들러 펑션을 리턴하고 그 외는 비어있는 Mono를 리턴한다. `RouterFunction`이 하는 일은 `@RequestMapping` 애노테이션과 동일하지만,
+요청은 `RouterFunction`이 핸들러 펑션에 라우팅한다. `RouterFunction`은 `ServerRequest`를 받아 비동기 `HandlerFunction`(i.e. `Mono<HandlerFunction>`)을 리턴하는 함수다. 매칭되는 라우터 펑션이 있으면 핸들러 펑션을 리턴하고 그 외는 비어있는 Mono를 리턴한다. `RouterFunction`이 하는 일은 `@RequestMapping` 어노테이션과 동일하지만,
 라우터 펑션은 데이터뿐 아니라 행동까지 제공한다는 점이 다르다.
 
 라우터를 만들 때는 아래 예제처럼 `RouterFunctions.route()`가 제공하는 빌더를 사용할 수 있다:
@@ -338,7 +338,7 @@ HandlerFunction<ServerResponse> helloWorld =
 val helloWorld = HandlerFunction<ServerResponse> { ServerResponse.ok().bodyValue("Hello World") }
 ```
 
-편리한 방식이긴 하지만, 펑션을 여러 개 사용해야 한다면 인라인 람다로 만들기는 부담스럽다. 이럴 때는 핸들러 클래스로 관련 핸들러 펑션을 묶을 수 있다. 핸들러 클래스는 애노테이션 기반 어플리케이션의 `@Controller`와 비슷하다. 예를 들어 다음 클래스는 리액티브 `Person` 레포지토리와 관련된 요청을 처리한다:
+편리한 방식이긴 하지만, 펑션을 여러 개 사용해야 한다면 인라인 람다로 만들기는 부담스럽다. 이럴 때는 핸들러 클래스로 관련 핸들러 펑션을 묶을 수 있다. 핸들러 클래스는 어노테이션 기반 어플리케이션의 `@Controller`와 비슷하다. 예를 들어 다음 클래스는 리액티브 `Person` 레포지토리와 관련된 요청을 처리한다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -515,7 +515,7 @@ val route = coRouter {
 
 #### Routes
 
-라우터 펑션은 정해진 순서대로 실행한다: 첫 번째 조건과 일치하지 않으면 두 번째를 실행하는 식이다. 따라서 구체적인 조건을 앞에 선언해야 한다. 애노테이션 프로그래밍 모델에선 자동으로 가장 구체적인 컨트롤러 메소드를 실행하지만, 함수형 모델에선 그렇지 않다 점에 주의해라.
+라우터 펑션은 정해진 순서대로 실행한다: 첫 번째 조건과 일치하지 않으면 두 번째를 실행하는 식이다. 따라서 구체적인 조건을 앞에 선언해야 한다. 어노테이션 프로그래밍 모델에선 자동으로 가장 구체적인 컨트롤러 메소드를 실행하지만, 함수형 모델에선 그렇지 않다 점에 주의해라.
 
 `build()`를 호출하면 빌더에 정의한 모든 라우터 펑션을 `RouterFunction` 한 개로 합친다. 다음 방법으로도 여러 라우터 펑션을 조합할 수 있다:
 
@@ -569,7 +569,7 @@ val route = coRouter {
 
 #### Nested Routes
 
-path가 같으면 대부분 같은 조건을 사용하므로, 라우터 펑션을 그룹핑하는 경우가 많다. 앞의 예제는 라우터 펑션 세 개가 `/person`을 path 조건으로 사용했다. 애노테이션을 사용했다면 클래스 레벨에 `@RequestMapping`을 선언해 중복 코드를 줄였을 거다. WebFlux.fn에선 빌더의 `path` 메소드로 path 조건을 공유한다. 예를 들어 위 코드는 아래 예제처럼 라우트 펑션을 한번 감싸 개선할 수 있다:
+path가 같으면 대부분 같은 조건을 사용하므로, 라우터 펑션을 그룹핑하는 경우가 많다. 앞의 예제는 라우터 펑션 세 개가 `/person`을 path 조건으로 사용했다. 어노테이션을 사용했다면 클래스 레벨에 `@RequestMapping`을 선언해 중복 코드를 줄였을 거다. WebFlux.fn에선 빌더의 `path` 메소드로 path 조건을 공유한다. 예를 들어 위 코드는 아래 예제처럼 라우트 펑션을 한번 감싸 개선할 수 있다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -644,7 +644,7 @@ HTTP 서버에선 어떻게 라우터 펑션을 실행할까?
 - `HandlerFunctionAdapter`: 요청에 매핑된 `HandlerFunction`을 `DispatcherHandler`가 실행하게 도와주는 간단한 어댑터.
 - `ServerResponseResultHandler`: `ServerResponse`의 `writeTo` 메소드로 `HandlerFunction` 결과를 처리한다.
 
-위 컴포넌트가 함수형 엔드포인트를 `DispatcherHandler`의 요청 처리 패턴에 맞춰주기 때문에, 애노테이션 컨트롤러와 함께 사용할 수도 있다. 스프링 부트 웹플럭스 스타터도 이 방법으로 함수형 엔드포인트를 지원한다.
+위 컴포넌트가 함수형 엔드포인트를 `DispatcherHandler`의 요청 처리 패턴에 맞춰주기 때문에, 어노테이션 컨트롤러와 함께 사용할 수도 있다. 스프링 부트 웹플럭스 스타터도 이 방법으로 함수형 엔드포인트를 지원한다.
 
 다음은 웹플럭스 자바 설정을 사용한 예시다(실행 방법은 [DispatcherHandler](https://godekdls.github.io/Reactive%20Spring/springwebflux/#13-dispatcherhandler)를 참고하라):
 
@@ -722,7 +722,7 @@ class WebConfig : WebFluxConfigurer {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#webmvc-fn-handler-filter-function)
 
-핸들러 펑션에 필터를 적용할 땐 라우터 빌더의 `before`, `after`, `filter` 메소드를 사용한다. 이 기능을 애노테이션 모델로 구현한다면 `@ControllerAdvice`나 `ServletFilter`를 사용했을 것이다. 필터는 빌더의 모든 라우터 펑션에 적용된다. 이 말은 필터를 감싸져 있는 라우터에서 정의하면, 상위 레벨에는 적용되지 않는다는 뜻이다. 예시로 다음 코드를 보라:
+핸들러 펑션에 필터를 적용할 땐 라우터 빌더의 `before`, `after`, `filter` 메소드를 사용한다. 이 기능을 어노테이션 모델로 구현한다면 `@ControllerAdvice`나 `ServletFilter`를 사용했을 것이다. 필터는 빌더의 모든 라우터 펑션에 적용된다. 이 말은 필터를 감싸져 있는 라우터에서 정의하면, 상위 레벨에는 적용되지 않는다는 뜻이다. 예시로 다음 코드를 보라:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -1162,7 +1162,7 @@ cross-origin 요청(`Origin` 헤더와 호스트가 다른)을 허용하려면 �
 
 `HandlerMapping`마다 URL 패턴 기반 `CorsConfiguration`을 [설정](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/reactive/handler/AbstractHandlerMapping.html#setCorsConfigurations-java.util.Map-)할 수 있다. 보통은 웹플럭스 자바 설정에 글로벌 CORS 매핑을 선언해서 모든 `HandlerMapping` 구현체에 공통으로 적용한다.
 
-각 `HandlerMapping`에 있는 핸들러 레벨 CORS 설정과 글로벌 CORS 설정을 조합해서 쓸 수도 있다. 예를 들어 애노테이션을 선언한 컨트롤러는 클래스 레벨이나 메소드 레벨에 `@CrossOrigin`을 사용할 수 있다 (다른 핸들러는 `CorsConfigurationSource`를 구현할 수 있다).
+각 `HandlerMapping`에 있는 핸들러 레벨 CORS 설정과 글로벌 CORS 설정을 조합해서 쓸 수도 있다. 예를 들어 어노테이션을 선언한 컨트롤러는 클래스 레벨이나 메소드 레벨에 `@CrossOrigin`을 사용할 수 있다 (다른 핸들러는 `CorsConfigurationSource`를 구현할 수 있다).
 
 글로벌 설정과 로컬 설정은 서로 덮어쓰지 않고 합쳐진다(additive). — 예를 들어 글로벌 설정에 있는 origin과 로컬 origin을 모두 더한다. 단, `allowCredentials`, `maxAge`같이 값 하나만 사용하는 속성은 로컬 값이 글로벌 값을 덮어쓴다. 자세한 내용은 [`CorsConfiguration#combine(CorsConfiguration)`](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#combine-org.springframework.web.cors.CorsConfiguration-)을 참고하라.
 
@@ -1918,7 +1918,7 @@ fun myHandleMethod(exchange: ServerWebExchange, model: Model): String? {
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config)
 
-애노테이션을 선언한 컨트롤러나 함수형 엔드포인트로 요청을 처리하는 데 필요한 컴포넌트는 웹플럭스 설정으로 정의하고, 커스텀한다. 이 말은, 프레임워크가 사용하는 모든 빈을 이해하지 않아도 자바 설정만으로 어플리케이션을 실행할 수 있다는 뜻이다. 그래도 더 자세히 알고 싶다면, `WebFluxConfigurationSupport`를 살펴봐도 좋고, 아니면 [Special Bean Types](https://godekdls.github.io/Reactive%20Spring/springwebflux/#131-special-bean-types)에 어떤 게 있는지 확인해 봐라.
+어노테이션을 선언한 컨트롤러나 함수형 엔드포인트로 요청을 처리하는 데 필요한 컴포넌트는 웹플럭스 설정으로 정의하고, 커스텀한다. 이 말은, 프레임워크가 사용하는 모든 빈을 이해하지 않아도 자바 설정만으로 어플리케이션을 실행할 수 있다는 뜻이다. 그래도 더 자세히 알고 싶다면, `WebFluxConfigurationSupport`를 살펴봐도 좋고, 아니면 [Special Bean Types](https://godekdls.github.io/Reactive%20Spring/springwebflux/#131-special-bean-types)에 어떤 게 있는지 확인해 봐라.
 
 API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configuration Mode](#11110-advanced-configuration-mode)를 사용해서 전체 설정을 제어하면 된다.
 
@@ -1926,7 +1926,7 @@ API로 제공하지 않는 설정을 커스텀해야 한다면 [Advanced Configu
 
 [Web MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-config-enable)
 
-자바 설정에 `@EnableWebFlux` 애노테이션을 선언하면 웹플럭스 설정을 사용할 수 있다:
+자바 설정에 `@EnableWebFlux` 어노테이션을 선언하면 웹플럭스 설정을 사용할 수 있다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>

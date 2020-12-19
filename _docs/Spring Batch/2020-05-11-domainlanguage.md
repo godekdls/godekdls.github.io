@@ -60,7 +60,7 @@ Job 하나는 1~n개의 step을 가지고 있으며,
 ## 3.1. Job
 
 여기서는 배치 job과 관련된 개념을 설명한다.
-`Job`은 전체 배치 프로세스를 캡슐화한 엔터티다.
+`Job`은 전체 배치 프로세스를 캡슐화한 엔티티다.
 다른 스프링 프로젝트와 마찬가지로, `Job`은 XML 기반이나 자바 기반 설정을 둘 다 지원한다.
 이 설정은 "job 설정"이라고도 할 수 있지만, `Job`은 아래 다이어그램에서 보이듯이
 전체 계층 구조에서 가장 위에 있는 개념일 뿐이다.
@@ -318,7 +318,7 @@ executionContext.putLong(getKey(LINES_READ_COUNT), reader.getPosition());
 |1|{piece.count=40321}|
 
 위 예시에서 `Step`은 30분 동안 실행됐고, 40,321개의 'peices'(여기서는 이파일의 라인 수를 의미)를 처리했다.
-이 값은 프레임워크가 각 커밋 전 업데이트하며, `ExecutionContext` 내 엔터티에 해당하는 여러 row를 포함할 수 있다.
+이 값은 프레임워크가 각 커밋 전 업데이트하며, `ExecutionContext` 내 엔티티에 해당하는 여러 row를 포함할 수 있다.
 커밋 전에 통지 받으려면 여러 `StepListener` 구현체(또는 `ItemStream`) 중 하나가 필요한데, 자세한 내용은 이 가이드 뒷부분에 나온다.
 이전 예시와 동일하게 다음 날 `Job`을 재실행했다고 가정한다.
 재시작할 때 데이터베이스로부터 마지막 실행을 가리키는 `ExecutionContext` 값을 조회한다.
@@ -381,7 +381,7 @@ ExecutionContext ecJob = jobExecution.getExecutionContext();
 레포지토리에 넘겨 저장한다.
 
 자바 기반 설정은
-`@EnableBatchProcessing` 애노테이션만 달아주면
+`@EnableBatchProcessing` 어노테이션만 달아주면
 `JobRepository`를 자동으로 컴포넌트로 설정한다.
 
 ---

@@ -307,7 +307,7 @@ public LoggingHandler loggingHandler() {
 public interface NotificationExecutionListener extends StepExecutionListener {}
 ```
 
-> 설정에 `@IntegrationComponentScan` 애노테이션을 추가해야 한다. 
+> 설정에 `@IntegrationComponentScan` 어노테이션을 추가해야 한다. 
 
 그다음, step 레벨 리스너를 job에 등록한다.
 
@@ -541,9 +541,9 @@ public ChunkProcessorChunkHandler<Integer> chunkProcessorChunkHandler() {
 "Scalability" 섹션을 참고하라.
 
 Spring Batch Integration은 4.1 버전부터
-`@EnableBatchIntegration` 애노테이션으로
+`@EnableBatchIntegration` 어노테이션으로
 간단하게 remote chunking을 설정할 수 있다.
-이 애노테이션은 어플리케이션 컨텍스트에 주입할 수 있는 빈 두 개를 제공한다:
+이 어노테이션은 어플리케이션 컨텍스트에 주입할 수 있는 빈 두 개를 제공한다:
 
 - `RemoteChunkingManagerStepBuilderFactory`: 매니저 step을 만들 때 사용
 - `RemoteChunkingWorkerBuilder`: 리모트 워커 플로우를 만들 때 사용
@@ -775,9 +775,9 @@ public IntegrationFlow outboundJmsStaging() {
 remote partitioning job을 사용하는 좀 더 복잡한 예제는
 [여기](https://github.com/spring-projects/spring-batch/tree/master/spring-batch-samples#remote-partitioning-sample)를 참고하라.
 
-`@EnableBatchIntegration` 애노테이션으로 remote partitioning 설정을
+`@EnableBatchIntegration` 어노테이션으로 remote partitioning 설정을
 더 단순하게 만들 수 있다.
-이 애노테이션은 remote partitioning에 유용하게 쓸 수 있는 빈 두 개를 제공한다: 
+이 어노테이션은 remote partitioning에 유용하게 쓸 수 있는 빈 두 개를 제공한다: 
 
 - `RemotePartitioningManagerStepBuilderFactory`: 매니저 step을 만들 때 사용
 - `RemotePartitioningWorkerStepBuilderFactory`: 워커 step을 만들 때 사용

@@ -686,7 +686,7 @@ hello thread Thread-0
 Flux.interval(Duration.ofMillis(300), Schedulers.newSingle("test"))
 ```
 
-리액터는 리액티브 체인에서 실행 컨텍스트 (또는 `Scheduler`)를 전환할 수 있는 `publishOn`과 `subscribeOn`을 제공한다. 둘 다 `Scheduler`를 받아 실행 컨텍스트를 해당 스케줄러로 전환 할 수 있다. 단, `publishOn`은 체인 어디에 위치하느냐가 중요하지만, `subscribeOn` 위치는 중요하지 않다. 이 차이점을 이해하려면 먼저 [구독 할 때까진 아무 일도 일어나지 않는다는 것](../introductiontoreactiveprogramming#334-nothing-happens-until-you-subscribe)을 떠올릴 수 있어야 한다.
+리액터는 리액티브 체인에서 실행 컨텍스트 (또는 `Scheduler`)를 전환할 수 있는 `publishOn`과 `subscribeOn`을 제공한다. 둘 다 `Scheduler`를 받아 실행 컨텍스트를 해당 스케줄러로 전환할 수 있다. 단, `publishOn`은 체인 어디에 위치하느냐가 중요하지만, `subscribeOn` 위치는 중요하지 않다. 이 차이점을 이해하려면 먼저 [구독 할 때까진 아무 일도 일어나지 않는다는 것](../introductiontoreactiveprogramming#334-nothing-happens-until-you-subscribe)을 떠올릴 수 있어야 한다.
 
 리액터에서 연산자를 연결할 땐, 필요에 따라 `Flux`와 `Mono` 구현체를 다른 구현체로 감쌀 수도 있다. 구독하고 나면 첫 번째 생산자(publisher) 뒤로 (체인 위쪽) `Subscriber` 객체 체인이 만들어진다. 사실 이를 직접 확인하긴 어렵다. 직접 볼 수 있는 것은 바깥쪽에 있는 `Flux` (혹은 `Mono`)와 `Subscription` 정도지만, 이 중간 계층 연산자의 구독자에서 실제 작업이 일어난다.
 

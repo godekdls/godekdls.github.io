@@ -35,9 +35,9 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
     * [create-session 속성을 never로 설정했는데도 스프링 시큐리티 어딘가에서 세션을 만들고 있는 것 같아요.](#create-session-속성을-never로-설정했는데도-스프링-시큐리티-어딘가에서-세션을-만들고-있는-것-같아요)
     * [POST 요청을 보내면 403 Forbidden 응답을 받아요.](#post-요청을-보내면-403-forbidden-응답을-받아요)
     * [RequestDispatcher로 요청을 다른 URL로 포워딩하면 보안 제약 조건이 적용되지 않습니다.](#requestdispatcher로-요청을-다른-url로-포워딩하면-보안-제약-조건이-적용되지-않습니다)
-    * [어플리케이션 컨텍스트에 스프링 시큐리티 \<global-method-security\> 요소를 추가했는데, 스프링 MVC 컨트롤러 빈에 보안 애노테이션을 달아도 (스트럿츠 action 등) 효과가 없는 것 같아요.](#어플리케이션-컨텍스트에-스프링-시큐리티-global-method-security-요소를-추가했는데-스프링-mvc-컨트롤러-빈에-보안-애노테이션을-달아도-스트럿츠-action-등-효과가-없는-것-같아요)
+    * [어플리케이션 컨텍스트에 스프링 시큐리티 \<global-method-security\> 요소를 추가했는데, 스프링 MVC 컨트롤러 빈에 보안 어노테이션을 달아도 (스트럿츠 action 등) 효과가 없는 것 같아요.](#어플리케이션-컨텍스트에-스프링-시큐리티-global-method-security-요소를-추가했는데-스프링-mvc-컨트롤러-빈에-보안-어노테이션을-달아도-스트럿츠-action-등-효과가-없는-것-같아요)
     * [분명히 사용자를 인증했는데, 요청을 처리하던 중에 SecurityContextHolder에 접근하면 Authentication 객체가 null입니다.](#분명히-사용자를-인증했는데-요청을-처리하던-중에-securitycontextholder에-접근하면-authentication-객체가-null입니다)
-    * [JSP authorize 태그에 URL 속성을 사용하면 메소드 시큐리티 애노테이션을 지키지 않아요.](#jsp-authorize-태그에-url-속성을-사용하면-메소드-시큐리티-애노테이션을-지키지-않아요)
+    * [JSP authorize 태그에 URL 속성을 사용하면 메소드 시큐리티 어노테이션을 지키지 않아요.](#jsp-authorize-태그에-url-속성을-사용하면-메소드-시큐리티-어노테이션을-지키지-않아요)
   + [22.7.3. Spring Security Architecture Questions](#2273-spring-security-architecture-questions)
     * [클래스 X가 어떤 패키지에 있는지 어떻게 알 수 있나요?](#클래스-x가-어떤-패키지에-있는지-어떻게-알-수-있나요)
     * [네임스페이스 요소는 어떤 방식으로 기존 빈 설정에 매핑되나요?](#네임스페이스-요소는-어떤-방식으로-기존-빈-설정에-매핑되나요)
@@ -124,9 +124,9 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 3. 그 외 기타
    1. [POST 요청을 보내면 403 Forbidden 응답을 받아요.](#post-요청을-보내면-403-forbidden-응답을-받아요)
    2. [RequestDispatcher로 요청을 다른 URL로 포워딩하면 보안 제약 조건이 적용되지 않습니다.](#requestdispatcher로-요청을-다른-url로-포워딩하면-보안-제약-조건이-적용되지-않습니다)
-   3. [어플리케이션 컨텍스트에 스프링 시큐리티 \<global-method-security\> 요소를 추가했는데, 스프링 MVC 컨트롤러 빈에 보안 애노테이션을 달아도 (스트럿츠 action 등) 효과가 없는 것 같아요.](#어플리케이션-컨텍스트에-스프링-시큐리티-global-method-security-요소를-추가했는데-스프링-mvc-컨트롤러-빈에-보안-애노테이션을-달아도-스트럿츠-action-등-효과가-없는-것-같아요)
+   3. [어플리케이션 컨텍스트에 스프링 시큐리티 \<global-method-security\> 요소를 추가했는데, 스프링 MVC 컨트롤러 빈에 보안 어노테이션을 달아도 (스트럿츠 action 등) 효과가 없는 것 같아요.](#어플리케이션-컨텍스트에-스프링-시큐리티-global-method-security-요소를-추가했는데-스프링-mvc-컨트롤러-빈에-보안-어노테이션을-달아도-스트럿츠-action-등-효과가-없는-것-같아요)
    4. [분명히 사용자를 인증했는데, 요청을 처리하던 중에 SecurityContextHolder에 접근하면 Authentication 객체가 null입니다.](#분명히-사용자를-인증했는데-요청을-처리하던-중에-securitycontextholder에-접근하면-authentication-객체가-null입니다)
-   5. [JSP authorize 태그에 URL 속성을 사용하면 메소드 시큐리티 애노테이션을 지키지 않아요.](#jsp-authorize-태그에-url-속성을-사용하면-메소드-시큐리티-애노테이션을-지키지-않아요)
+   5. [JSP authorize 태그에 URL 속성을 사용하면 메소드 시큐리티 어노테이션을 지키지 않아요.](#jsp-authorize-태그에-url-속성을-사용하면-메소드-시큐리티-어노테이션을-지키지-않아요)
 
 #### 로그인하려고 하면 "Bad Credentials"라는 에러 메세지를 반환합니다. 뭐가 문젠가요?
 
@@ -244,7 +244,7 @@ HTTP POST 메소드에서 403 Forbidden을 반환하는데, HTTP GET은 문제 �
 
 기본적으로 forward나 include에는 필터를 적용하지 않는다. 스프링 시큐리티를 꼭 forward나 include에도 적용해야 한다면, web.xml의 \<filter-mapping\> 하위에 \<dispatcher\> 요소를 사용해서 직접 명시해야 한다.
 
-#### 어플리케이션 컨텍스트에 스프링 시큐리티 \<global-method-security\> 요소를 추가했는데, 스프링 MVC 컨트롤러 빈에 보안 애노테이션을 달아도 (스트럿츠 action 등) 효과가 없는 것 같아요.
+#### 어플리케이션 컨텍스트에 스프링 시큐리티 \<global-method-security\> 요소를 추가했는데, 스프링 MVC 컨트롤러 빈에 보안 어노테이션을 달아도 (스트럿츠 action 등) 효과가 없는 것 같아요.
 
 스프링 웹 어플리케이션에선 보통, 디스패처 서블릿에서 처리할 스프링 MVC 빈이 있는 어플리케이션 컨텍스트과, 메인 어플리케이션 컨텍스트는 분리돼 있다. 보통 `myapp-servlet.xml`같은 파일로 정의한다. 여기서 "myapp"은 `web.xml`에서 스프링 `DispatcherServlet`에 할당한 이름이다. 어플리케이션은 별도의 어플리케이션 컨텍스트가 있는 `DispatcherServlet`을 여러 개 가질 수 있다. "자식" 컨텍스트에 있는 빈은 어플리케이션의 다른 자식 컨텍스트에선 접근할 수 없다. "부모" 어플리케이션 컨텍스트는 `web.xml`에 정의한 `ContextLoaderListener`가 로드하며, 모든 자식 컨텍스트에서 접근할 수 있다. 보통 이 부모 컨텍스트에 보안 설정을 정의한다 (`<global-method-security>` 요소도 마찬가지다). 결과적으로 `DispatcherServlet` 컨텍스트에서 빈을 볼 수 없기 때문에, 웹 빈의 메소드 적용한 보안 제약 조건은 아무런 효과가 없는 것이다. `<global-method-security>` 선언을 웹 컨텍스트로 옮기거나, 보호하려는 빈을 메인 어플리케이션 컨텍스트로 이동해야 한다.
 
@@ -256,7 +256,7 @@ HTTP POST 메소드에서 403 Forbidden을 반환하는데, HTTP GET은 문제 �
 
 URL 패턴과 일치하는 `<intercept-url>` 요소에 `filters='none'` 속성을 사용하면, 해당 요청을 보안 필터 체인에서 제외하며, 이때는 `SecurityContextHolder`에 값을 채우지 않는다. 디버그 로그를 통해 요청이 필터 체인에 전달되는 지 확인해 봐라 (디버그 로그는 읽고 있는가?).
 
-#### JSP authorize 태그에 URL 속성을 사용하면 메소드 시큐리티 애노테이션을 지키지 않아요.
+#### JSP authorize 태그에 URL 속성을 사용하면 메소드 시큐리티 어노테이션을 지키지 않아요.
 
 메소드 시큐리티는 `<sec:authorize>`에 `url` 속성을 사용하면 링크를 숨기지 않는다. 헤더나 현재 사용자같은 정보를 사용해 컨트롤러가 호출할 메소드를 결정할 수도 있기 때문에, 어떤 URL이 어떤 컨트롤러 엔드포인트에 매핑되는지 쉽게 리버스 엔지니어링할 수 없기 때문이다.
 
