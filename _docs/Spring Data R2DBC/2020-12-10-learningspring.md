@@ -28,11 +28,11 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 - [IoC](https://docs.spring.io/spring/docs/5.3.2/reference/html/core.html#beans) 컨테이너
 - [타입 변환 시스템](https://docs.spring.io/spring/docs/5.3.2/reference/html/core.html#validation)
-- [expression language](https://docs.spring.io/spring/docs/5.3.2/reference/html/core.html#expressions)
+- [표현식 언어](https://docs.spring.io/spring/docs/5.3.2/reference/html/core.html#expressions)
 - [JMX 통합](https://docs.spring.io/spring/docs/5.3.2/reference/html/integration.html#jmx)
 - [DAO exception 계층구조](https://docs.spring.io/spring/docs/5.3.2/reference/html/data-access.html#dao-exceptions)
 
-스프링 API를 알아야 할 필욘 없지만, 그 뒤에 있는 개념은 알아두는 게 좋다. 최소한 제어의 역전(Inversion of Control, IOC)에 깔려 있는 발상은 이해하고 있어야 하며, 사용하려는 IoC 컨테이너에 익숙해야 한다.
+스프링 API를 알아야 할 필욘 없지만, 그 뒤에 있는 개념은 알아두는 게 좋다. 최소한 제어의 역전(IOC)에 깔려 있는 발상은 이해하고 있어야 하며, 사용하려는 IoC 컨테이너에 익숙해야 한다.
 
 스프링 컨테이너의 IoC 서비스를 실행하지 않고도 R2DBC 핵심 기능을 바로 사용할 수 있다. `JdbcTemplate`을 스프링 컨테이너의 다른 서비스없이 "독립형"으로 사용할 수 있는 것과 매우 유사하다. 레포지토리 지원 등 스프링 데이터 R2DBC의 모든 기능을 사용하려면, 일부 라이브러리는 스프링을 사용하도록 설정해야 한다.
 

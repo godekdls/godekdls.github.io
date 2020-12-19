@@ -17,7 +17,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 - 커뮤니티 포럼
 
-  [Stack Overflow](https://stackoverflow.com/questions/tagged/spring-data)에 있는 스프링 데이터 태그는 모든 스프링 데이터 (R2DBC만을 위한 건 아님) 사용자가 정보를 공유하고 서로를 돕기 위해 만든 태그다. 태그 등록은 포스팅 시에만 하면 된다.
+  [Stack Overflow](https://stackoverflow.com/questions/tagged/spring-data)에 있는 스프링 데이터 태그는 모든 스프링 데이터 (R2DBC만을 위한 건 아님) 사용자가 정보를 공유하고 서로를 도울 수 있게 만든 태그다. 태그 등록은 포스팅 시에만 하면 된다.
 
 - 전문 지원
 

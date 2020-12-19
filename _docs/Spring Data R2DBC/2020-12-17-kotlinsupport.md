@@ -66,7 +66,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 > 코틀린 익스텐션을 사용하려면 임포트시켜야 한다는 점을 명심해라. 물론 대부분은 스태틱 임포트처럼 IDE에서 자동으로 임포트를 제안해 줄 거다.
 
-예를 들어 [Kotlin reified type parameters](https://kotlinlang.org/docs/reference/inline-functions.html#reified-type-parameters)로 JVM [generics type erasure](https://docs.oracle.com/javase/tutorial/java/generics/erasure.html)를 해결할 수 있으며, 스프링 데이터는 이 기능을 활용할 수 있도록 몇 가지 확장 기능을 제공한다. 더북에 더 발전된 코틀린 API를 사용할 수 있다.
+예를 들어 [Kotlin reified type parameters](https://kotlinlang.org/docs/reference/inline-functions.html#reified-type-parameters)로 JVM [generics type erasure](https://docs.oracle.com/javase/tutorial/java/generics/erasure.html)를 해결할 수 있으며, 스프링 데이터는 이 기능을 활용할 수 있도록 몇 가지 익스텐션을 제공한다. 더북에 더 발전된 코틀린 API를 사용할 수 있다.
 
 자바에서 `SWCharacter` 객체의 리스트를 조회할 땐 보통 다음과 같은 코드를 작성한다:
 
@@ -140,7 +140,7 @@ val characters : Flux<SWCharacter> = client.select().from().fetch().all()
 - 코루틴 덕분에 [연산자를 구현하기가 쉽다](https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-core/common/src/flow/operators).
 - 익스텐션으로 `Flow`에 커스텀 연산자를 추가할 수 있다.
 - Collect 연산자는 모두 suspend 함수다.
-- [`map` 연산자](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/map.html)는 suspend 함수 파라미터를 받기 때문에 비동기 연산을 지원한다 (`flatMap`에선 불필요).
+- [`map` 연산자](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/map.html)는 suspend 함수 파라미터를 받기 때문에 비동기 연산을 지원한다 (`flatMap`은 불필요).
 
 코루틴으로 동시에 코드를 실행하는 방법 등 자세한 내용은 블로그 문서 [Going Reactive with Spring, Coroutines and Kotlin Flow](https://spring.io/blog/2019/04/12/going-reactive-with-spring-coroutines-and-kotlin-flow)를 읽어봐라.
 
@@ -159,6 +159,6 @@ interface CoroutineRepository : CoroutineCrudRepository<User, String> {
 }
 ```
 
-코루틴 레포지토리는 리액티브 레포지토리를 기반으로, 코틀린의 코루틴을 통한 논블로킹 데이터 접근 메소드를 정의한다. 코루틴 레포지토리의 메소드는 쿼리 메소드와 커스텀 구현을 둘 다 지원한다. 커스텀 구현체 메소드를 호출하면, 구현 메소드가 `Mono`나 `Mono`같은 리액티브 타입을 반환할 필요 없이 `suspend`할 수 있다면 실제 구현체 메소드로 코루틴 호출을 전파한다.
+코루틴 레포지토리는 리액티브 레포지토리를 기반으로, 코틀린의 코루틴을 통한 논블로킹 데이터 접근 메소드를 정의한다. 코루틴 레포지토리의 메소드는 쿼리 메소드와 커스텀 구현을 둘 다 지원한다. 커스텀 구현체 메소드를 호출하면, 구현 메소드가 `Mono`나 `Flux`같은 리액티브 타입을 반환할 필요 없이 `suspend`할 수 있다면 실제 구현체 메소드로 코루틴 호출을 전파한다.
 
 > 코루틴 레포지토리는 `CoroutineCrudRepository` 인터페이스를 확장해야 감지할 수 있다.
