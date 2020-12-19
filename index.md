@@ -19,7 +19,7 @@ includeFooter: false
 | :------------- | :------------------| :----------------: | :----------------: |
 | [Spring Batch](/Spring%20Batch/contents/) | 4.2.x | 2020/05 | [ref](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html) |
 |[Spring Web on Reactive Stack](/Reactive%20Spring/contents/) | 5.2.6.RELEASE| 2020/06 | [ref](https://docs.spring.io/spring-framework/docs/5.2.6.RELEASE/spring-framework-reference/web-reactive.html) |
-|[Reactor Core](/Reactor%20Core/contents/) | 3.3.7.RELEASE| 2020/7|[ref](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html) |
+|[Reactor Core](/Reactor%20Core/contents/) | 3.3.7.RELEASE| 2020/07|[ref](https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/index.html) |
 |[Spring Security](/Spring%20Security/contents/) |5.3.2.RELEASE |2020/09 | [ref](https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/reference/html5/) |
 |[Reactor Netty](/Reactor%20Netty/contents/) |1.0.1 | 2020/12 | [ref](https://projectreactor.io/docs/netty/1.0.1/reference/index.html) |
 | [Spring REST Docs](/Spring%20REST%20Docs/contents/) | 2.0.5.RELEASE | 2020/12 | [ref](https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/) |
