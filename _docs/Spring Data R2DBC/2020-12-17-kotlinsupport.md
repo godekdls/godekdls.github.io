@@ -66,7 +66,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 > 코틀린 익스텐션을 사용하려면 임포트시켜야 한다는 점을 명심해라. 물론 대부분은 스태틱 임포트처럼 IDE에서 자동으로 임포트를 제안해 줄 거다.
 
-예를 들어 [Kotlin reified type parameters](https://kotlinlang.org/docs/reference/inline-functions.html#reified-type-parameters)로 JVM [generics type erasure](https://docs.oracle.com/javase/tutorial/java/generics/erasure.html)를 해결할 수 있으며, 스프링 데이터는 이 기능을 활용할 수 있도록 몇 가지 익스텐션을 제공한다. 더북에 더 발전된 코틀린 API를 사용할 수 있다.
+예를 들어 [Kotlin reified type parameters](https://kotlinlang.org/docs/reference/inline-functions.html#reified-type-parameters)로 JVM [generics type erasure](https://docs.oracle.com/javase/tutorial/java/generics/erasure.html)를 해결할 수 있으며, 스프링 데이터는 이 기능을 활용할 수 있도록 몇 가지 익스텐션을 제공한다. 덕분에 더 발전된 코틀린 API를 사용할 수 있다.
 
 자바에서 `SWCharacter` 객체의 리스트를 조회할 땐 보통 다음과 같은 코드를 작성한다:
 

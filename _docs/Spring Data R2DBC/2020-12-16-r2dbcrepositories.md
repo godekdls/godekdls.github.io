@@ -241,7 +241,7 @@ SpEL을 사용하면 쿼리를 다각도로 확장할 수 있다. 하지만 원�
 
 **Table 3. Options for detection whether an entity is new in Spring Data R2DBC**
 
-| Id-프로퍼티 검사 (디폴트)  | 기본적으로 `save()` 메소드는 전달받은 엔티티의 식별자 프로퍼티를 검사한다. 식별자 프로퍼티가 `null`이면 새 엔티티로 가정한다. 즉, 데이터베이스에 존재하는 엔티티라고 판단한다. |
+| Id-프로퍼티 검사 (디폴트)  | 기본적으로 `save()` 메소드는 전달받은 엔티티의 식별자 프로퍼티를 검사한다. 식별자 프로퍼티가 `null`이면 새 엔티티로 가정한다. 그 외는 데이터베이스에 존재하는 엔티티라고 판단한다. |
 | `Persistable` 구현           | 엔티티가 `Persistable`을 구현했다면, 스프링 데이터 R2DBC는 엔티티의 `isNew(…)` 메소드로 판단을 위임한다. 자세한 내용은 [Javadoc](https://docs.spring.io/spring-data/data-commons/docs/current/api/index.html?org/springframework/data/domain/Persistable.html)을 확인해라. |
 |`@Version`을 사용한 낙관적 잠금 | 엔티티가 낙관적 잠금을 사용하면 (버전 프로퍼티에 `@Version` 어노테이션을 달아서), 스프링 데이터 R2DBC는 이 버전 프로퍼티가 자바의 디폴트 초기값과 같은지를 검사해서 새 엔티티인지 확인한다. 원시 타입은 `0`, 래퍼 타입은 `null`이 초기값이다. |
 | `EntityInformation` 구현     | `SimpleR2dbcRepository`가 사용하는 `EntityInformation` 인터페이스는, `R2dbcRepositoryFactory` 하위 클래스를 만들어 `getEntityInformation(…)`을 재정의하는 식으로 커스텀할 수 있다. 그러려면 커스텀 `R2dbcRepositoryFactory` 구현체를 스프링 빈으로 등록해야 한다. 이 방법이 필요한 경우는 매우 드물다. 자세한 내용은 [Javadoc](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/api/org/springframework/data/r2dbc/repository/support/R2dbcRepositoryFactory.html)을 확인해라. |
@@ -254,11 +254,11 @@ ID 컬럼에 auto-increment를 사용하는 데이터베이스에선, DB에 데�
 
 스프링 데이터 R2DBC는 엔티티가 DB엔 없는 새 엔티티이면서 식별자가 디폴트 초기값이면, DB 저장 시 식별자 컬럼에 따로 값을 추가하지 않는다. 여기서 디폴트 초기값은 원시 타입에선 `0`, `Long` 등의 숫자 래퍼 타입에선 `null`을 뜻한다.
 
-한 가지 중요한 제약 사항이 있는데, 엔티티를 저장한 후에는 더 이상 새 엔티티로 취급하지 않는다는 점이다. 새 엔티티라는 말은 엔티티의 상태를 나타내는 말이기도 하다. auto-increment 컬럼에선 스프링 데이터가 auto-increment된 컬럼 값을 ID에 세팅하기 때문에 자동적으로 새 엔티티가 아닌게 된다.
+한 가지 중요한 제약 사항이 있는데, 엔티티를 저장한 후에는 더 이상 새 엔티티로 취급하지 않는다는 점이다. 새 엔티티라는 말은 엔티티의 상태를 나타내는 말이기도 하다. auto-increment 컬럼에선 스프링 데이터가 auto-increment된 컬럼 값을 ID에 세팅하기 때문에 자동적으로 새 엔티티 상태를 벗어난다.
 
 ### 14.2.5. Optimistic Locking
 
-`@Version` 어노테이션은 R2DBC 컨텍스트에 JPA와 유사한 문법을 제공하며, 버전이 일치하는 로우(row)에만 변경사항이 반영되도록 보장해준다. 따라서 업데이트 쿼리에 버전 프로퍼티의 실제 값을 추가해서, 동시에 다른 연산에서 같은 로우(row)를 수정해도 업데이트가 적용되지 않는다. 이럴 때는 `OptimisticLockingFailureException`을 던진다. 아래 예제를 참고해라:
+`@Version` 어노테이션은 R2DBC 컨텍스트에 JPA와 유사한 문법을 제공하며, 버전이 일치하는 로우(row)에만 변경사항이 반영되도록 보장해준다. 업데이트 쿼리에 버전 프로퍼티의 실제 값을 추가하기 때문에, 같은 로우(row)를 동시에 수정해도 업데이트가 반영되지 않는다. 이럴 때는 `OptimisticLockingFailureException`을 던진다. 아래 예제를 참고해라:
 
 ```java
 @Table
@@ -290,7 +290,7 @@ template.update(other).subscribe(); // emits OptimisticLockingFailureException  
 
 ### 14.2.6. Projections
 
-스프링 데이터 쿼리 메소드는 보통 레포지토리가 관리하는 집계 루트 인스턴스 하나 또는 여러 개를 반환한다. 하지만 어떨 땐 타입의 일부 속성만 정해서 프로젝션을 만드는 게 더 적합할 때도 있다. 스프링 데이터를 사용하면 전용 리턴 타입을 모델링해서 타입 일부만 선택해서 조회할 수 있다.
+스프링 데이터 쿼리 메소드는 보통 레포지토리가 관리하는 집계 루트 인스턴스 하나 또는 여러 개를 반환한다. 하지만 어떨 땐 타입의 일부 속성만 정해서 프로젝션을 만드는 게 더 적합할 때도 있다. 스프링 데이터를 사용하면 전용 리턴 타입을 모델링해서 선택한 타입 일부만 조회할 수 있다.
 
 다음과 같은 레포지토리와 집계 루트 타입이 있다고 상상해 보자:
 
@@ -314,7 +314,7 @@ interface PersonRepository extends Repository<Person, UUID> {
 }
 ```
 
-이제 인물의 이름만 조회하고 싶다고 해보자. 스프링은 어떤 방법으로 이 문제를 해결해 줄까? 이제 이 챕터 남은 부분에선 이 질문에 대해 답할 거다.
+이번엔 인물의 이름만 조회하고 싶다고 해보자. 스프링은 어떤 방법으로 이 문제를 해결해 줄까? 이제 이 챕터 남은 부분에선 이 질문에 대해 답할 거다.
 
 #### Interface-based Projections
 
@@ -411,7 +411,7 @@ interface NamesOnly {
 }
 ```
 
-디폴트 메소드를 사용하려면, 프로젝션 인터페이스로 노출한 접근자 메소드만으로 순수하게 로직을 구현할 수 있어야 한다. 더 유연한 두 번째 옵션은 다음 예제처럼 스프링 빈으로 커스텀 로직을 구현한 다음 SpEL 표현식에서 빈을 호출하는 거다:
+디폴트 메소드를 사용하려면, 프로젝션 인터페이스로 노출한 접근자 메소드만으로 순수하게 로직을 구현할 수 있어야 한다. 더 유연한 두 번째 옵션은 다음 예제처럼 스프링 빈으로 커스텀 로직을 구현한 다음 SpEL 표현식에서 이 빈을 호출하는 거다:
 
 <span id="projections.interfaces.open.bean-reference"></span>
 
@@ -547,7 +547,7 @@ void someMethod(PersonRepository people) {
 
 DTO 프로젝션은 실제 쿼리 타입에 따라 다르게 매핑된다. 파생 쿼리는 도메인 타입에 결과를 매핑한 다음, 스프링 데이터가 도메인 타입에서 가능한 프로퍼티만 가져와 DTO 인스턴스를 만든다. 도메인 타입에 없는 프로퍼티는 DTO에 선언할 수 없다.
 
-문자열로 직접 지정한 쿼리에선 실제 쿼리, 특히 필드 프로젝션과 결과 타입 선언이 서로 비슷하기 때문에 다르게 접근한다. `@Query` 어노테이션이 달린 쿼리 메소드에 DTO 프로젝션을 사용하면, 쿼리 결과를 DTO 타입에 직접 매핑한다. 도메인 타입에는 필드를 매핑하지 않는다. DTO 타입을 직접 사용하기 때문에, 쿼리 메소드가 도메인 모델에 제약을 받지 않아 보다 동적인 프로젝션이 가능하다.
+문자열로 직접 지정한 쿼리에선 실제 쿼리, 특히 필드 프로젝션과 결과 타입 선언이 가까운 곳에 있기 때문에 다르게 접근한다. `@Query` 어노테이션이 달린 쿼리 메소드에 DTO 프로젝션을 사용하면, 쿼리 결과를 DTO 타입에 직접 매핑한다. 도메인 타입에는 필드를 매핑하지 않는다. DTO 타입을 직접 사용하기 때문에, 쿼리 메소드가 도메인 모델에 제약을 받지 않아 보다 동적인 프로젝션이 가능하다.
 
 ---
 
@@ -561,7 +561,7 @@ DTO 프로젝션은 실제 쿼리 타입에 따라 다르게 매핑된다. 파�
 
 엔티티 콜백은 전형적으로 API 타입에 따라 구분한다. 이 말은 동기 API는 동기 엔티티 콜백만, 리액티브 구현체는 리액티브 엔티티 콜백만 고려한다는 뜻이다.
 
-> 엔티티 콜백 API는 스프링 데이터 Commons 2.2에서 도입됐다. 엔티티를 수정할 때 사용을 권장하는 API다. 기존 저장소 전용 `ApplicationEvents`도 등록한 `EntityCallback` 인스턴스를 실행한 **다음에** 발행한다.
+> 엔티티 콜백 API는 스프링 데이터 Commons 2.2에서 도입됐다. 엔티티를 수정할 때 사용을 권장하는 API다. 기존 저장소 전용 `ApplicationEvents`도 등록한 `EntityCallback` 인스턴스를 실행한 **다음에** 발행된다.
 
 ### 14.3.1. Implementing Entity Callbacks
 
@@ -707,7 +707,7 @@ class UserCallbacks implements BeforeConvertCallback<User>,
 | AfterConvertCallback   | `onAfterConvert(T entity, SqlIdentifier table)`              | 도메인 객체를 로드한 다음에 실행된다. 로우(row)에서 데이터를 읽어온 후에 도메인 객체를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |
 | AuditingEntityCallback | `onBeforeConvert(T entity, SqlIdentifier table)`             | 감사 중인 엔티티를 *created* 또는 *modified*로 마킹한다.     | 100                         |
 | BeforeSaveCallback     | `onBeforeSave(T entity, OutboundRow row, SqlIdentifier table)` | 도메인 객체를 저장하기 전에 실행된다. 모든 엔티티 매핑 정보를 가지고 있는, 영속화할 타겟 `OutboundRow`를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |
-| AfterSaveCallback      | `onAfterSave(T entity, OutboundRow row, SqlIdentifier table)` | 도메인 객체를 저장하기 전에 실행된다. 모든 엔티티 매핑 정보를 가지고 있는 `OutboundRow`를 저장한 후에 반환할 도메인 객체를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |
+| AfterSaveCallback      | `onAfterSave(T entity, OutboundRow row, SqlIdentifier table)` | 도메인 객체를 저장한 후에 실행된다. 모든 엔티티 매핑 정보를 가지고 있는 `OutboundRow`를 저장한 후에 반환할 도메인 객체를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |
 
 ---
 

@@ -56,19 +56,17 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 ---
 
-스프링 데이터 레포지토리 추상화의 목표는, persistence 저장소마다 데이터 접근 레이어를 구현하는데 필요한 보일러플레이트를 확 줄이는 데에 있다.
+스프링 데이터 레포지토리의 추상화 목표는, persistence 저장소마다 데이터 접근 레이어를 구현하는데 필요한 보일러플레이트를 확 줄이는 데에 있다.
 
 > *스프링 데이터 레포지토리 문서와 각자의 스프링 데이터 모듈*
 >
-> 이 챕터에선 스프링 데이터 레포지토리의 핵심 개념과 인터페이스를 설명한다. 이 챕터에서 다루는 내용은 스프링 데이터 공통 모듈에서 가져왔다. 설정 예제와 샘플 코드는 JPA(Java Persistence API) 모듈을 활용한다. XML 네임스페이스 선언과 타입은 각자 사용하려는 모듈에 맞게 바꿔야 한다. "[[레포지토리 네임스페이스 레퍼런스\]](https://docs.spring.io/spring-data/jdbc/docs/2.1.2/reference/html/#repositories.namespace-reference)"에선 레포지토리 API를 지원하는 모든 스프링 데이터 모듈에서 사용할 수 있는 XML 설정을 다룬다. "[레포지토리 쿼리 키워드](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#repository-query-keywords)"에선 범용 레포지토리 추상화로 지원하는 쿼리 메소드 키워드를 설명한다. 원하는 모듈에 있는 기능을 자세히 알고싶다면 해당 모듈 챕터를 확인해라.
+> 이 챕터에선 스프링 데이터 레포지토리의 핵심 개념과 인터페이스를 설명한다. 이 챕터에서 다루는 내용은 스프링 데이터 공통 모듈에서 가져왔다. 설정 예제와 샘플 코드는 JPA(Java Persistence API) 모듈을 활용한다. XML 네임스페이스 선언과 타입은 각자 사용하려는 모듈에 맞게 바꿔야 한다. "[[레포지토리 네임스페이스 레퍼런스\]](https://docs.spring.io/spring-data/jdbc/docs/2.1.2/reference/html/#repositories.namespace-reference)"에선 레포지토리 API를 지원하는 모든 스프링 데이터 모듈에서 사용할 수 있는 XML 설정을 다룬다. "[레포지토리 쿼리 키워드](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#repository-query-keywords)"에선 범용 레포지토리 인터페이스가 지원하는 쿼리 메소드 키워드를 설명한다. 원하는 모듈에 있는 기능을 자세히 알고싶다면 해당 모듈 챕터를 확인해라.
 
 ---
 
 ## 11.1. Core concepts
 
-스프링 데이터 레포지토리 추상화에 있어 핵심 인터페이스는 `Repository`다. `Repository` 인터페이스는 관리할 도메인 클래스와 도메인 클래스의 ID 타입을 타입 인자로 사용한다. 일종의 마커 인터페이스로, 처리할 타입을 알아내고, 이 인터페이스를 확장한 다른 인터페이스를 발견할 수 있도록 만드는
-
- 게 주된 역할이다. [`CrudRepository`](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html) 인터페이스는 관리 중인 엔티티 클래스를 위한 정교한 CRUD 기능을 제공한다.
+스프링 데이터 레포지토리 추상화에 있어 핵심 인터페이스는 `Repository`다. `Repository` 인터페이스는 관리할 도메인 클래스와 도메인 클래스의 ID 타입을 타입 인자로 사용한다. 일종의 마커 인터페이스로, 처리할 타입을 알아내고, 이 인터페이스를 확장한 다른 인터페이스를 발견할 수 있도록 만드는 게 주된 역할이다. [`CrudRepository`](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html) 인터페이스는 관리 중인 엔티티 클래스를 위한 정교한 CRUD 기능을 제공한다.
 
 **Example 3. `CrudRepository` Interface**
 
@@ -97,9 +95,9 @@ public interface CrudRepository<T, ID> extends Repository<T, ID> {
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 전달받은 엔티티를 삭제한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 전달받은 ID에 해당하는 엔티티가 있는지 알려준다.</small>
 
-> `JpaRepository`, `MongoRepository`같이 persistence 기술에 특화된 인터페이스도 제공한다. 이런 인터페이스들은 `CrudRepository`를 상속하고 있으며,  `CrudRepository`같은 persistence 기술에 구애받지 않는 범용 인터페이스 외에도, persistence 기술에 따른 기능도 노출하고 있다.
+> `JpaRepository`, `MongoRepository`같이 persistence 기술에 특화된 인터페이스도 제공한다. 이런 인터페이스들은 `CrudRepository`를 상속하고 있으며,  `CrudRepository`같이 persistence 기술에 구애받지 않는 범용 인터페이스 외에도, persistence 기술에 따른 전용 기능도 노출하고 있다.
 
-`CrudRepository` 위에는, 간단한 페이징 처리를 위한 메소드를 추가한 [`PagingAndSortingRepository`](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/PagingAndSortingRepository.html) 인터페이스가 있다:
+`CrudRepository` 위에는, 쉽게 페이지를 처리할 수 있게 메소드를 추가한 [`PagingAndSortingRepository`](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/PagingAndSortingRepository.html) 인터페이스가 있다:
 
 **Example 4. `PagingAndSortingRepository` interface**
 
@@ -119,7 +117,7 @@ PagingAndSortingRepository<User, Long> repository = // … get access to a bean
 Page<User> users = repository.findAll(PageRequest.of(1, 20));
 ```
 
-쿼리 메소드에선 count와 delete 쿼리를 위한 파생 쿼리(query derivation)도 만들 수 있다. 다음은 count 쿼리를 파생시키는 인터페이스 정의를 보여준다:
+쿼리 메소드에선 count와 delete 쿼리를 위한 파생 쿼리(query derivation)도 만들 수 있다. 다음은 count 쿼리를 파생시키는 인터페이스 정의다:
 
 **Example 5. Derived Count Query**
 
@@ -130,7 +128,7 @@ interface UserRepository extends CrudRepository<User, Long> {
 }
 ```
 
-다음은 delete 쿼리를 파생시키는 인터페이스 정의다:
+이번엔 delete 쿼리를 파생시키는 인터페이스 정의다:
 
 **Example 6. Derived Delete Query**
 
@@ -163,7 +161,7 @@ interface UserRepository extends CrudRepository<User, Long> {
    }
    ```
 
-3. 스프링 [자바 설정](#1152-java-configuration)이나 [XML 설정](#1151-xml-configuration)으로 이 인터페이스를 위한 프록시 인스턴스를 만들도록 설정한다
+3. 이 인터페이스를 위한 프록시 인스턴스를 만들도록 스프링 [자바 설정](#1152-java-configuration)이나 [XML 설정](#1151-xml-configuration)을 작성한다.
 
    a. 자바 설정에선 아래와 유사한 클래스를 만든다:
 
@@ -227,7 +225,7 @@ interface UserRepository extends CrudRepository<User, Long> {
 
 ### 11.3.1. Fine-tuning Repository Definition
 
-보통 레포지토리 인터페이스를 만들 땐 `Repository`나 `CrudRepository`, `PagingAndSortingRepository`를 확장한다. 스프링 데이터 인터페이스를 확장하고 싶지 않다면, 레포지토리 인터페이스에 `@RepositoryDefinition` 어노테이션을 붙여도 된다. `CrudRepository`를 확장하면 엔티티를 조작할 수 있는 완전한 메소드 셋이 생긴다. 노출할 메소드를 직접 선택하려면 `CrudRepository`에서 원하는 메소드를 도메인 레포지토리로 복사해가라.
+보통 레포지토리 인터페이스를 만들 땐 `Repository`나 `CrudRepository`, `PagingAndSortingRepository`를 확장한다. 스프링 데이터 인터페이스를 확장하고 싶지 않다면, 레포지토리 인터페이스에 `@RepositoryDefinition` 어노테이션을 붙여도 된다. `CrudRepository`를 확장하면 엔티티를 조작할 수 있는 완전한 메소드 셋이 생긴다. 그보단 노출할 메소드를 직접 선택하고 싶다면 `CrudRepository`에서 원하는 메소드를 도메인 레포지토리로 복사해가라.
 
 > 이렇게 하면 기본 스프링 데이터 레포지토리 기능 위에 자체 인터페이스를 정의하게 된다.
 
@@ -273,7 +271,7 @@ interface MyBaseRepository<T, ID> extends JpaRepository<T, ID> { … }
 interface UserRepository extends MyBaseRepository<User, Long> { … }
 ```
 
-`MyRepository`와 `UserRepository`는 타입 계층구조 상 `JpaRepository`를 상속한다. 이 레포지토리는 모두 스프링 데이터 JPA 모듈에 바인딩한다.
+`MyRepository`와 `UserRepository`는 타입 계층구조 상 `JpaRepository`를 상속한다. 따라서 두 레포지토리 모두 스프링 데이터 JPA 모듈에 바인딩한다.
 
 다음은 범용 인터페이스를 사용하는 레포지토리 예시다:
 
@@ -324,9 +322,9 @@ class Person { … }
 
 이 예제의 도메인 클래스는 JPA와 스프링 데이터 MongoDB 어노테이션을 둘 다 사용하고 있다. 그리고 `JpaPersonRepository`, `MongoDBPersonRepository`라는 레포지토리를 두 개 만들었다. 하나는 JPA, 다른 하나는 MongoDB를 의도한 듯하다. 하지만 이렇게 정의하면 스프링 데이터는 레포지토리를 구분할 수 없기 때문에, 정의되지 않은 동작(undefined behavior)을 이끌게 된다.
 
-strict 레포지토리 설정에선 [레포지토리 상세 타입](#repositories.multiple-modules.types)과 [도메인 클래스 어노테이션 차이](#repositories.multiple-modules.annotations)를 이용해 특정 스프링 데이터 모듈에 사용할 레포지토리 후보를 식별한다. 도메인 타입 하나에 다른 persistence 기술 전용 어노테이션을 여러 개 선언하는 것 자체는 가능한데, 이렇게 하면 도메인 클래스를 여러 persistence 기술에서 재사용할 수 있다. 하지만 스프링 데이터는 레포지토리를 바인딩할 유일한 모듈을 결정할 수 없다.
+strict 레포지토리 설정에선 [레포지토리 상세 타입](#repositories.multiple-modules.types)과 [도메인 클래스 어노테이션](#repositories.multiple-modules.annotations)을 비교해서 스프링 데이터 모듈에 사용할 레포지토리 후보를 식별한다. 도메인 타입 하나에 다른 persistence 기술 전용 어노테이션을 여러 개 선언하는 것 자체는 가능한데, 이렇게 하면 도메인 클래스를 여러 persistence 기술에서 재사용할 수 있다. 하지만 스프링 데이터에선 레포지토리를 바인딩할 유일한 모듈을 결정할 수 없다.
 
-레포지토리를 구분할 수 있는 최후의 방법은 레포지토리 베이스 패키지 범위를 지정하는 거다. 베이스 패키지는 레포지토리 인터페이스를 스캔할 시작점을 정의하며, 적절한 패키지 안에 레포지토리 정의가 있다는 뜻이기도 하다. 기본적으로 어노테이션 기반 설정은 설정 클래스의 패키지를 사용한다. [XML 기반 설정에선 베이스 패키지](#1151-xml-configuration)는 필수 값이다.
+레포지토리를 구분할 수 있는 최후의 방법은 레포지토리의 베이스 패키지 범위를 지정하는 거다. 베이스 패키지는 레포지토리 인터페이스를 스캔할 시작점을 정의하며, 그 패키지 안에 레포지토리 정의가 있다는 뜻이기도 하다. 어노테이션 기반 설정은 기본적으로 설정 클래스의 패키지를 사용한다. [XML 기반 설정에선 베이스 패키지](#1151-xml-configuration)는 필수 값이다.
 
 다음은 어노테이션 기반 설정에서 베이스 패키지를 지정하는 예시다:
 
@@ -353,7 +351,7 @@ class Configuration { … }
 
 다음은 레포지토리 인프라가 쿼리를 리졸브할 때 사용할 수 있는 전략들이다. XML 설정을 사용하면 네임스페이스의 `query-lookup-strategy` 속성으로 전략을 설정할 수 있다. 자바 설정에선 `Enable${store}Repositories` 어노테이션의 `queryLookupStrategy` 속성을 사용한다. 일부 전략을 지원하지 않는 저장소도 있을 수 있다.
 
-- `CREATE` 전략은 쿼리 메소드 이름을 사용해 저장소에 맞는 쿼리를 만든다. 보통은 메소드명에서 잘 알려진 프리픽스 셋을 제거하고, 나머지 부분을 파싱한다. 자세한 내용은 [쿼리 생성](#1142-query-creation)에서 확인할 수 있다.
+- `CREATE` 전략은 쿼리 메소드 이름을 사용해 저장소에 맞는 쿼리를 만든다. 보통은 메소드명에서 잘 알려진 프리픽스 셋을 제거하고, 남은 부분을 파싱한다. 자세한 내용은 [쿼리 생성](#1142-query-creation)에서 확인할 수 있다.
 - `USE_DECLARED_QUERY`는 선언한 쿼리를 찾아보고, 찾지 못하면 예외를 던지는 전략이다. 쿼리는 어딘가에 어노테이션으로 정의하거나, 다른 방법으로도 선언할 수 있다. 저장소에 맞는 쿼리 선언 방법은 해당 저장소 문서를 참고해라. 부트스트랩 시점에 메소드에 적용할 쿼리 선언을 발견하지 못하면 부트스트랩은 실패한다.
 - `CREATE_IF_NOT_FOUND` (디폴트) 전략은 `CREATE`와 `USE_DECLARED_QUERY`를 혼합한 전략이다. 먼저 선언한 쿼리를 찾고, 찾지 못하면 커스텀 메소드 이름을 기반으로 쿼리를 만든다. 기본 loockup 전략이므로 별다른 설정을 만들지 않았다면 이 전략을 사용한다. 이 전략은, 메소드 이름으로 빠르게 쿼리를 정의할 수도 있고, 필요 시엔 쿼리를 선언해서 원하는대로 튜닝할 수도 있는 전략이다.
 
@@ -391,9 +389,9 @@ interface PersonRepository extends Repository<Person, Long> {
 
 실제로 메소드를 파싱한 결과는 쿼리를 사용하는 persistence 저장소에 따라 다르다. 그래도 공통 기능은 알아두면 좋다:
 
-- 표현식에선 보통 가능한 연산자를 프로퍼티와 결합해 프로퍼티를 순회한다. 프로퍼티 표현식은 `AND`와 `OR`로 결합한다. 프로퍼티 표현식에 사용할 수 있는 연산자 중에는 `Between`, `LessThan`, `GreaterThan`, `Like`도 있다. 저장소마다 지원하는 연산자가 다를 수 있으므로 적당한 레퍼런스 문서 문서를 참고해라.
+- 표현식에선 보통 가능한 연산자를 프로퍼티와 결합해서 프로퍼티를 순회한다. 프로퍼티 표현식은 `AND`와 `OR`로 결합한다. 프로퍼티 표현식에 사용할 수 있는 연산자 중에는 `Between`, `LessThan`, `GreaterThan`, `Like`도 있다. 저장소마다 지원하는 연산자가 다를 수 있으므로 적당한 레퍼런스 문서 문서를 참고해라.
 - 메소드 파서에는 각 프로퍼티별로 (예를 들어 `findByLastnameIgnoreCase(…)`), 또는 전체 프로퍼티 중 가능한 모든 프로퍼티에 (보통 `String` 인스턴스 — 예를 들어 `findByLastnameAndFirstnameAllIgnoreCase(…)`) `IgnoreCase` 플래그를 설정할 수 있다. 역시 저장소별로 다를 수 있으므로, 저장소 레퍼런스 문서를 참고해라.
-- 쿼리 메소드에 `OrderBy` 절을 추가해 프로퍼티와 정렬 방향(`Asc`, `Desc`)을 지정하면 정적 정렬을 적용할 수 있다. 동적 정렬을 위한 쿼리를 만들려면 "[특별한 파라미터 핸들링](#1144-special-parameter-handling)"을 참고해라.
+- 쿼리 메소드에 `OrderBy` 절을 추가해 프로퍼티와 정렬 방향(`Asc`, `Desc`)을 지정하면 정적 정렬을 적용할 수 있다. 동적 정렬을 위한 쿼리는 "[특별한 파라미터 핸들링](#1144-special-parameter-handling)"을 참고해라.
 
 ### 11.4.3. Property Expressions
 
@@ -417,7 +415,7 @@ List<Person> findByAddress_ZipCode(ZipCode zipCode);
 
 ### 11.4.4. Special parameter handling
 
-쿼리에 파라미터를 사용하려면 위 예제와 동일하게 메소드 파라미터를 정의해라. 그 밖에도 인식할 수 있는 특별한 타입이 있는데, `Pageable`과 `Sort`다. 이 파라미터로는 페이지를 처리하고 쿼리를 동적으로 정렬할 수 있다. 아래 예제이서 이 기능을 시연해 보겠다:
+쿼리에 파라미터를 사용하려면 위에서 본 예제처럼 메소드 파라미터를 정의하면 된다. 그 밖에도 인식할 수 있는 특별한 타입이 있는데, `Pageable`과 `Sort`다. 이 파라미터로는 페이지를 처리하고 쿼리를 동적으로 정렬할 수 있다. 아래 예제이서 이 기능을 시연해 보겠다:
 
 **Example 14. Using `Pageable`, `Slice`, and `Sort` in query methods**
 
@@ -570,7 +568,7 @@ interface ProductRepository implements Repository<Product, Long> {
 | `io.vavr.collection.Set` | `io.vavr.collection.LinkedHashSet` | `java.util.Iterable`    |
 | `io.vavr.collection.Map` | `io.vavr.collection.LinkedHashMap` | `java.util.Map`         |
 
-첫 번째 컬럼에 있는 타입(또는 하위 타입)을 쿼리 메소드 리턴 타입으로 사용할 수 있으며, 그러면 두 번째 컬럼에 있는 구현 타입을 받게된다. 구현 타입은 실제 쿼리 결과의 자바 타입(세 번째 컬럼)에 따라서 달라진다. 아니면 `Traversable`(Vavr 버전의 `Iterable`)을 선언하고, 실제 반환 값을 가지고 구현 클래스를 알아내도 된다. 즉, `java.util.List`는 Vavr `List`나 `Seq`로, `java.util.Set`은 Vavr `LinkedHashSet` `Set`이 되는 식이다.
+첫 번째 열에 있는 타입(또는 하위 타입)을 쿼리 메소드 리턴 타입으로 사용할 수 있으며, 그러면 두 번째 열에 있는 구현 타입을 받게된다. 구현 타입은 실제 쿼리 결과의 자바 타입(세 번째 열)에 따라서 달라진다. 아니면 `Traversable`(Vavr 버전의 `Iterable`)을 선언하고, 실제 반환 값을 가지고 구현 클래스를 알아내도 된다. 즉, `java.util.List`는 Vavr `List`나 `Seq`로, `java.util.Set`은 Vavr `LinkedHashSet` `Set`이 되는 식이다.
 
 ### 11.4.7. Null Handling of Repository Methods
 
@@ -1080,7 +1078,7 @@ userRepository.findAll(predicate);
 
 ### 11.8.2. Web support
 
-> 이 섹션은 스프링 데이터 Commons의 현재 버전에 있는 스프링 데이터 웹 지원 기능을 설명한다. 새로 도입한 기능으로 많은 것들이 변경됨에 따라 구버전 동작에 대한 문서는 [[web.legacy]](https://docs.spring.io/spring-data/commons/docs/2.0.6.RELEASE/reference/html/#web.legacy)에 남겨놨다.
+> 이 섹션은 스프링 데이터 Commons 현재 버전이 지원하는 스프링 데이터 웹 기능을 설명한다. 새로 도입한 기능으로 많은 것들이 변경됨에 따라 구버전 동작에 대한 문서는 [[web.legacy]](https://docs.spring.io/spring-data/commons/docs/2.0.6.RELEASE/reference/html/#web.legacy)에 남겨놨다.
 
 레포지토리 프로그래밍 모델을 지원하는 스프링 데이터 모듈들은 다양한 웹 기능을 함께 제공한다. 웹 관련 컴포넌트를 사용하려면 클래스패스에 스프링 MVC JAR가 필요하다.  [스프링 HATEOAS](https://github.com/spring-projects/spring-hateoas) 통합을 지원하는 모듈도 있다. 자바 설정을 사용할 땐, 보통 아래 예제처럼 설정 클래스에 `@EnableSpringDataWebSupport` 어노테이션을 선언해 통합 지원을 활성화한다.
 

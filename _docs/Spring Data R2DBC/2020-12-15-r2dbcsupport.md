@@ -279,7 +279,7 @@ public class ApplicationConfiguration extends AbstractR2dbcConfiguration {
 
 `R2dbcEntityTemplate`에는 객체를 저장하고 삽입할 수 있는 편리한 메소드가 몇 가지 있다. 변환 처리를 좀 더 세세하게 제어하고 싶다면 `R2dbcCustomConversions`로 스프링 컨버터를 등록해야 한다 — 예를 들어 `Converter<Person, OutboundRow>`와 `Converter<Row, Person>`.
 
-간단히는 POJO로 저장 연산을 실행할 수 있다. 이 때 테이블 이름은 클래스 이름으로 결정한다 (네임스페이스 제외). 컬렉션 이름을 지정해서 저장 연산을 호출해도 된다. 매핑 메타데이터로 객체를 저장할 컬렉션을 재정의할 수 있다.
+간단히는 POJO로 저장 연산을 실행할 수 있다. 이 때 테이블 이름은 클래스 이름으로 결정한다 (패키지명은 빼고). 컬렉션 이름을 지정해서 저장 연산을 호출해도 된다. 매핑 메타데이터로 객체를 저장할 컬렉션을 재정의할 수 있다.
 
 데이터를 삽입하거나 저장할 때 `Id` 프로퍼티를 세팅하지 않으면 데이터베이스가 이 값을 자동 생성한다고 가정한다. 따라서 자동 생성할 클래스는 `Id` 필드 타입을 `Long`이나 `Integer`로 지정해야 한다.
 
@@ -322,7 +322,7 @@ Flux<Person> people = template.select(Person.class) // (1)
     .all(); // (2)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `Person`을 `from(…)` 메소드와 함께 사용하면 매핑 메타데이터를 기반으로 `FROM` 테이블을 설정한다. 테이블 구조를 사용하는 질의 결과도 `Person` 객체로 매핑한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `all()` 메소드로 모든 로우(row)를 조회하면, 결과 제한 없이 `Flux<Person>`를 반환한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `all()` 메소드로 모든 로우(row)를 조회하면, 결과 제한 없이 `Flux<Person>`을 반환한다.</small>
 
 다음 예제는 테이블 이름과 `WHERE` 조건, `ORDER BY` 절을 지정하는 더 복잡한 쿼리를 선언하고 있다:
 
@@ -388,7 +388,7 @@ Mono<Person> insert = template.insert(Person.class) // (1)
 
 ### 13.4.5. Updating Data
 
-로우(row)를 업데이트할 땐 `update()`로 시작한다. 데이터 업데이트는 `Update` 정의 스펙(assignment)을 받아서 업데이트할, 테이블을 지정하는 것으로 시작한다. `WHERE` 절을 만드는 `Query`도 넘길 수 있다.
+로우(row)를 업데이트할 땐 `update()`로 시작한다. 데이터 업데이트는 `Update` 정의 스펙(assignment)을 받아서, 업데이트할 테이블을 지정하는 것으로 시작한다. `WHERE` 절을 만드는 `Query`도 넘길 수 있다.
 
 아래 간단한 타입으로 update 연산을 실행하는 예제를 보자:
 

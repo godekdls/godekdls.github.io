@@ -22,6 +22,6 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 여기서부터는 스프링 데이터 R2DBC가 제공하는 핵심 기능을 설명한다.
 
-“[R2DBC support](../r2dbcsupport)”는 R2DBC 모듈 기능 셋을 소개한다.
+“[R2DBC 지원](../r2dbcsupport)”에선 R2DBC 모듈의 기능 셋을 소개한다.
 
-“[R2DBC Repositories](../../r2dbcrepositories)”는 R2DBC 레포지토리 기능을 소개한다.
+“[R2DBC 레포지토리](../../r2dbcrepositories)”에선 R2DBC 레포지토리 기능을 소개한다.
