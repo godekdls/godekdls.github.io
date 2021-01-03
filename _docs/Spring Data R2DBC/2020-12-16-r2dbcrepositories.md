@@ -182,7 +182,7 @@ interface ReactivePersonRepository extends ReactiveSortingRepository<Person, Lon
 
 ### 14.2.1. Modifying Queries
 
-이전 섹션에선 엔티티나 엔티티 컬렉션에 접근하기 위한 쿼리를 선언하는 방법을 설명했다. 위 테이블에 있는 키워드를 `delete…By`나 `remove…By`와 조합하면 일치하는 로우(row)를 삭제하는 파생 쿼리를 만들 수 있다:
+이전 섹션에선 엔티티나 엔티티 컬렉션에 접근하기 위한 쿼리를 선언하는 방법을 설명했다. 위 테이블에 있는 키워드를 `delete…By`나 `remove…By`와 조합하면 일치하는 row를 삭제하는 파생 쿼리를 만들 수 있다:
 
 **Example 62. `Delete…By` Query**
 
@@ -196,8 +196,8 @@ interface ReactivePersonRepository extends ReactiveSortingRepository<Person, Str
   Mono<Boolean> deletePersonByLastname(String lastname);      // (3)
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 영향받은 로우(row) 수를 반환하는 `Mono<Integer>`를 리턴 타입으로 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 결과를 방출하지 않고 로우(row)를 삭제하는 데 성공했는지만 알려주는 `Void`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 영향받은 row 수를 반환하는 `Mono<Integer>`를 리턴 타입으로 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 결과를 방출하지 않고 row를 삭제하는 데 성공했는지만 알려주는 `Void`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 최소한 하나는 삭제했는지를 알 수 있는 `Boolean`을 사용한다.</small>
 
 커스텀 기능도 동일하게 접근해서, 다음 예제처럼 쿼리 메소드에 `@Modifying` 어노테이션을 달아 파라미터만 바인딩하면 되는 쿼리를 만들 수 있다:
@@ -211,8 +211,8 @@ Mono<Integer> setFixedFirstnameFor(String firstname, String lastname);
 수정 쿼리 결과에는 다음 타입을 사용할 수 있다:
 
 - 업데이트 카운트를 날리고 완료를 기다리는 `Void` (또는 코틀린 `Unit`).
-- 영향받은 로우(row) 카운트를 방출하는 `Integer`나 다른 숫자 타입.
-- 업데이트된 로우(row)가 있는지 여부를 방출하는 `Boolean`.
+- 영향받은 row 카운트를 방출하는 `Integer`나 다른 숫자 타입.
+- 업데이트된 row가 있는지 여부를 방출하는 `Boolean`.
 
 `@Modifying` 어노테이션은 `@Query` 어노테이션과 함께 쓸 때만 의미가 있다. 위에서 봤던 [파생 쿼리 메소드](#142-query-methods)에는 `@Modifying`을 선언할 필요 없다.
 
@@ -258,7 +258,7 @@ ID 컬럼에 auto-increment를 사용하는 데이터베이스에선, DB에 데�
 
 ### 14.2.5. Optimistic Locking
 
-`@Version` 어노테이션은 R2DBC 컨텍스트에 JPA와 유사한 문법을 제공하며, 버전이 일치하는 로우(row)에만 변경사항이 반영되도록 보장해준다. 업데이트 쿼리에 버전 프로퍼티의 실제 값을 추가하기 때문에, 같은 로우(row)를 동시에 수정해도 업데이트가 반영되지 않는다. 이럴 때는 `OptimisticLockingFailureException`을 던진다. 아래 예제를 참고해라:
+`@Version` 어노테이션은 R2DBC 컨텍스트에 JPA와 유사한 문법을 제공하며, 버전이 일치하는 row에만 변경사항이 반영되도록 보장해준다. 업데이트 쿼리에 버전 프로퍼티의 실제 값을 추가하기 때문에, 같은 row를 동시에 수정해도 업데이트가 반영되지 않는다. 이럴 때는 `OptimisticLockingFailureException`을 던진다. 아래 예제를 참고해라:
 
 ```java
 @Table
@@ -283,10 +283,10 @@ template.update(daenerys);                                                      
 
 template.update(other).subscribe(); // emits OptimisticLockingFailureException        // (4)
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 로우(row)를 처음으로 추가한다. `version`은 `0`으로 세팅된다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 방금 삽입한 로우(row)를 로드한다. 이 때도 `vesion`은 `0`이다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `version = 0`인 로우(row)를 업데이트 한다. `lastname`을 수정하고 `version`을 1로 올린다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `version = 0`인, 먼저 로드해왔던 로우(row)를 업데이트해본다. 하지만 현재 `version`은 `1`이기 때문에 `OptimisticLockingFailureException`과 함께 실패한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> row를 처음으로 추가한다. `version`은 `0`으로 세팅된다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 방금 삽입한 row를 로드한다. 이 때도 `vesion`은 `0`이다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `version = 0`인 row를 업데이트 한다. `lastname`을 수정하고 `version`을 1로 올린다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `version = 0`인, 먼저 로드해왔던 row를 업데이트해본다. 하지만 현재 `version`은 `1`이기 때문에 `OptimisticLockingFailureException`과 함께 실패한다.</small>
 
 ### 14.2.6. Projections
 
@@ -704,7 +704,7 @@ class UserCallbacks implements BeforeConvertCallback<User>,
 | Callback               | Method                                                       | Description                                                  | Order                       |
 | :--------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :-------------------------- |
 | BeforeConvertCallback  | `onBeforeConvert(T entity, SqlIdentifier table)`             | 도메인 객체가 `OutboundRow`로 변환되기 전에 실행된다.        | `Ordered.LOWEST_PRECEDENCE` |
-| AfterConvertCallback   | `onAfterConvert(T entity, SqlIdentifier table)`              | 도메인 객체를 로드한 다음에 실행된다. 로우(row)에서 데이터를 읽어온 후에 도메인 객체를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |
+| AfterConvertCallback   | `onAfterConvert(T entity, SqlIdentifier table)`              | 도메인 객체를 로드한 다음에 실행된다. row에서 데이터를 읽어온 후에 도메인 객체를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |
 | AuditingEntityCallback | `onBeforeConvert(T entity, SqlIdentifier table)`             | 감사 중인 엔티티를 *created* 또는 *modified*로 마킹한다.     | 100                         |
 | BeforeSaveCallback     | `onBeforeSave(T entity, OutboundRow row, SqlIdentifier table)` | 도메인 객체를 저장하기 전에 실행된다. 모든 엔티티 매핑 정보를 가지고 있는, 영속화할 타겟 `OutboundRow`를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |
 | AfterSaveCallback      | `onAfterSave(T entity, OutboundRow row, SqlIdentifier table)` | 도메인 객체를 저장한 후에 실행된다. 모든 엔티티 매핑 정보를 가지고 있는 `OutboundRow`를 저장한 후에 반환할 도메인 객체를 수정할 수 있다. | `Ordered.LOWEST_PRECEDENCE` |

@@ -604,7 +604,7 @@ StepVerifier.create(r)
 
 `Context`를 제대로 활용하려면, 특정 시퀀스에 연결해서 체인에 있는 모든 연산자에서 접근할 수 있어야 한다. 주의할 점은, `Context`는 리액터에서 제공하기 때문에, `Context`에 접근하는 연산자는 리액터의 네이티브 연산자만 사용해야 한다.
 
-사실 `Context`는 체인에 있는 각 `Subscriber`에 연결된다. `Subscription` 전파 매커니즘을 사용하기 때문에, 최종 `subscribe`에서부터 시작해서 체인 위로 전달되어 연산자에서도 접근할 수 있는 것이다.
+사실 `Context`는 체인에 있는 각 `Subscriber`에 연결된다. `Subscription` 전파 메커니즘을 사용하기 때문에, 최종 `subscribe`에서부터 시작해서 체인 위로 전달되어 연산자에서도 접근할 수 있는 것이다.
 
 `Context`를 전달하려면 구독 시점에 `subscriberContext` 연산자를 사용해야 한다.
 
@@ -697,7 +697,7 @@ StepVerifier.create(r)
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 여기서도 `"message"` 키 값을 쓴다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `map`은 가장 가까운 곳에서 (바로 아래) 설정한 값을 전달받는다: `"Reactor"`.</small>
 
-위 예제에선 구독할 때 `Context`에 `"World"`가 추가된다. 그다음 구독 신호가 위로 이동하면서 또 한 번 값을 쓰게 된다. 이 때 `"Reactor"`를 가지고 있는 두 번째 불변 `Context`를 생성한다. 그다음 데이터 플로우가 시작된다. `flatMap`에선 가장 가까운 `Context`, 즉 `"Reactor"`를 가지고 있는 두 번째 `Context`를 조회한다.
+위 예제에선 구독할 때 `Context`에 `"World"`가 추가된다. 그다음 구독 신호가 위로 이동하면서 또 한 번 값을 쓰게 된다. 이때 `"Reactor"`를 가지고 있는 두 번째 불변 `Context`를 생성한다. 그다음 데이터 플로우가 시작된다. `flatMap`에선 가장 가까운 `Context`, 즉 `"Reactor"`를 가지고 있는 두 번째 `Context`를 조회한다.
 
 `Context`가 데이터 신호와 함께 전파되는지 궁금할 것이다. 만약 그렇다면, 컨텍스트 값을 두 번 쓰면서 그 중간에 `flatMap`을 한 번 더 사용하면, 위에 있는 `Context` 값을 사용할 수도 있다. 하지만 아래 예제에서 보이는 것처럼, 실제로는 그렇지 않다.
 

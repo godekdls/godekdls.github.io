@@ -1342,7 +1342,7 @@ XML을 처리할 땐 레코드 라인을 토큰화하는 대신 (`FieldSet` 인�
 스프링 배치는 Object/XML Mapping (OXM)을 사용해서 각 조각을 객체로 바인딩한다.
 하지만 스프링 배치는 특정한 XML 바인딩 기술을 강요하지 않는다.
 보통은 가장 많이 쓰이는 OXM 기술을 균일하게 추상화해 놓은 
-[Spring OXM](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#oxm)에 위임한다.
+[스프링 OXM](../../Spring%20Data%20Access/marshallingxmlbyusingobjectxmlmappers)에 위임한다.
 스프링 OXM 의존성(dependency)은 선택이며 원하는 스프링 배치 인터페이스를 구현하면 된다.
 OXM이 지원하는 기술들의 관계는 아래 그림과 같다:
 

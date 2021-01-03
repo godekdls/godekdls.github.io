@@ -836,9 +836,9 @@ public Account post(Account account, double amount);
 
 첫 번째 기능에서 알 수 있듯이, 스프링 시큐리티 ACL 모듈의 핵심 기능 중 하나는 ACL을 빠르게 조회하는 것이다. 이 ACL 저장소 기능은 매우 중요한 것 중 하나인데, 모든 도메인 객체 인스턴스는 접근 제어 엔트리를 여러 개 가질 것이고, 각 ACL은 트리같은 구조로 다른 ACL들을 상속기 때문에 그렇다 (매우 흔하게 사용하는 패턴이고, 스프링 시큐리티도 기본적으로 지원한다). 스프링 시큐리티의 ACL 기능은 고성능 ACL 검색 외에도, 플러그인처럼 쉽게 사용할 수 있는 캐시, 데드락을 최소화한 데이터베이스 업데이트, ORM 프레임워크와의 독립성 (직접 JDBC를 사용한다), 적절한 캡슐화, 투명한 데이터베이스 업데이트를 함께 고려해서 설계했다.
 
-데이터베이스가 ACL 모듈 작동의 중심에 있으므로, 구현체에서 디폴트로 사용하는 네 가지 메인 테이블을 살펴보겠다. 다음은 전형적인 스프링 시큐리티 ACL에서 사용하는 테이블이며, 밑으로 갈수록 로우(row)가 많은 테이블이다:
+데이터베이스가 ACL 모듈 작동의 중심에 있으므로, 구현체에서 디폴트로 사용하는 네 가지 메인 테이블을 살펴보겠다. 다음은 전형적인 스프링 시큐리티 ACL에서 사용하는 테이블이며, 밑으로 갈수록 row가 많은 테이블이다:
 
-- ACL_SID는 시스템 내 모든 principal 또는 권한을 식별할 수 있게 해준다 ("SID"는 "security identity"를 나타낸다). 컬럼은 SID를 나타내는 텍스트인 ID와, 이 텍스트가 principal 이름인지 `GrantedAuthority`인지를 나타내는 플래그 둘 뿐이다. 따라서 각 principal 또는 `GrantedAuthority`마다 로우(row)를 한 개씩 갖는다. permission을 조회하는 용도로 사용할 땐 SID를 보통 "recipient"라고 부른다.
+- ACL_SID는 시스템 내 모든 principal 또는 권한을 식별할 수 있게 해준다 ("SID"는 "security identity"를 나타낸다). 컬럼은 SID를 나타내는 텍스트인 ID와, 이 텍스트가 principal 이름인지 `GrantedAuthority`인지를 나타내는 플래그 둘 뿐이다. 따라서 각 principal 또는 `GrantedAuthority`마다 row를 한 개씩 갖는다. permission을 조회하는 용도로 사용할 땐 SID를 보통 "recipient"라고 부른다.
 - ACL_CLASS는 시스템 내 모든 도메인 객체 클래스를 식별할 수 있게 해준다. 컬럼은 ID와 자바 클래스명 둘 뿐이다. 따라서 ACL permission을 저장할 각 클래스 당 로우를 한 개씩 갖는다.
 - ACL_OBJECT_IDENTITY는 시스템 내 각 유니크한 도메인 객체 인스턴스 정보를 저장한다. 컬럼은 ID와, ACL_CLASS 테이블에 대한 외래키, 어떤 ACL_CLASS 인스턴스 정보를 제공하는지 알 수 있는 유니크 식별자, ACL_CLASS 테이블에 대한 외래키, parent, 도메인 객체 인스턴스의 소유자를 나타내는 ACL_SID 테이블에 대한 외래키, ACL 엔트리가 다른 부모 ACL을 상속할 수 있는지를 나타내는 값이 있다. ACL permission을 저장하는 모든 도메인 객체 인스턴스마다 로우가 한 개씩 있다.
 - 마지막으로 ACL_ENTRY는 각 recipient에 할당된 각 permission을 저장한다. 컬럼은 ACL_OBJECT_IDENTITY에 대한 외래키, recipient (ie ACL_SID에 대한 외래키), 감사(auditing) 여부, 실제 permission을 허가하는지 거부하는지를 나타내는 정수 비트 마스크가 있다. 특정 도메인 객체에 permission을 받은 모든 recipient마다 로우가 한 개씩 있다.

@@ -402,7 +402,7 @@ public void setUp(RestDocumentationContextProvider restDocumentation) {
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> REST Assured에 `RestAssuredRestDocumentationConfigurer`를 `Filter`로 추가한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
 
-configurer는 적절한 디폴트 설정을 사용하며, 커스텀 설정을 위한 API도 제공한다. 자세한 설정은 [설정 섹션](http://localhost:4000/Spring REST Docs/configuration)을 참고해라.
+configurer는 적절한 디폴트 설정을 사용하며, 커스텀 설정을 위한 API도 제공한다. 자세한 설정은 [설정 섹션](../configuration)을 참고해라.
 
 #### Setting up your tests without JUnit
 

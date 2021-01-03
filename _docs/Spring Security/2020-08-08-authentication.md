@@ -821,7 +821,7 @@ create table group_members (
 
 #### Setting up a DataSource
 
-`JdbcUserDetailsManager`를 설정하려면 먼저 `DataSource`가 있어야 한다. 이 예제에서는 [디폴트 사용자 스키마](#default-schema)로 초기화하는 [임베디드 데이터소스](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/data-access.html#jdbc-embedded-database-support)를 설정한다.
+`JdbcUserDetailsManager`를 설정하려면 먼저 `DataSource`가 있어야 한다. 이 예제에서는 [디폴트 사용자 스키마](#default-schema)로 초기화하는 [임베디드 데이터소스](../../Spring%20Data%20Access/dataaccesswithjdbc#39-embedded-database-support)를 설정한다.
 
 **Example 64. Embedded Data Source**
 
@@ -2462,7 +2462,7 @@ X.509 클라이언트 인증을 설정하는 건 매우 쉽다. http 시큐리�
 - `subject-principal-regex`. 인증서 소유자(subject) 이름에서 사용자 이름을 추출할 때 사용할 정규식. 위에 있는 값이 디폴트다. 이 값은 `UserDetailsService`로 전달되며, 사용자의 권한을 로드할 때 사용한다.
 - `user-service-ref`. X.509와 함께 사용할 `UserDetailsService`의 빈 id. 어플리케이션에 해당 빈이 하나밖에 없으면 생략해도 된다.
 
-`subject-principal-regex`엔 그룹이 하나 있어야 한다. 예를 들어 디폴트 값 "CN=(.\*?),"는 common name 필드와 매칭한다. 따라서 인증서의 소유자(subject) 이름이 "CN=Jimi Hendrix, OU=…"라면, 사용자 이름은 "Jimi Hendrix"가 된다. 대소문자는 구분하지 않으므로 "emailAddress=(.\*?),"는 "EMAILADDRESS=[jimi@hendrix.org](mailto:jimi@hendrix.org),CN=…"과 매치되며 이 때 사용자 이름은 "jimi@hendrix.org"다. 클라이언트가 인증서를 제출했고 유효한 사용자 이름을 추출했으면, 시큐리티 컨텍스트 안에 `Authentication` 객체가 있을 것이다. 인증서를 제출하지 않았거나 해당하는 사용자가 없으면 시큐리티 컨텍스트는 그대로 비워 둔다. 즉, X.509 인증은 폼 기반 로그인같은 다른 인증과도 함께 사용할 수 있다.
+`subject-principal-regex`엔 그룹이 하나 있어야 한다. 예를 들어 디폴트 값 "CN=(.\*?),"는 common name 필드와 매칭한다. 따라서 인증서의 소유자(subject) 이름이 "CN=Jimi Hendrix, OU=…"라면, 사용자 이름은 "Jimi Hendrix"가 된다. 대소문자는 구분하지 않으므로 "emailAddress=(.\*?),"는 "EMAILADDRESS=[jimi@hendrix.org](mailto:jimi@hendrix.org),CN=…"과 매치되며 이때 사용자 이름은 "jimi@hendrix.org"다. 클라이언트가 인증서를 제출했고 유효한 사용자 이름을 추출했으면, 시큐리티 컨텍스트 안에 `Authentication` 객체가 있을 것이다. 인증서를 제출하지 않았거나 해당하는 사용자가 없으면 시큐리티 컨텍스트는 그대로 비워 둔다. 즉, X.509 인증은 폼 기반 로그인같은 다른 인증과도 함께 사용할 수 있다.
 
 ### 10.18.3. Setting up SSL in Tomcat
 

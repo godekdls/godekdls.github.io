@@ -7,6 +7,9 @@ baseurl:
 google_analytics_key: UA-174135640-1
 show_full_navigation: true
 
+## 카테고리 정렬을 위한 커스텀
+category-list: ['Spring Batch', 'Spring Web on Reactive Stack', 'Reactor Core', 'Spring Security', 'Reactor Netty', 'Spring REST Docs', 'Spring Data R2DBC', 'Spring Data Access']
+
 # Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
 logo: /siteicon.png
 description: 토리맘의 한글라이즈 프로젝트.

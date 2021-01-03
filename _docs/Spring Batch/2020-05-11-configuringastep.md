@@ -433,7 +433,7 @@ public Step step1() {
 ### 5.1.8. Transaction Attributes
 
 트랜잭션 속성값으로 트랜잭션 고립 수준(isolation), 전파(propagation), 타임아웃을 설정할 수 있다.
-트랜잭션 속성에 대한 자세한 설명은 [Spring core documentation](https://docs.spring.io/spring/docs/current/spring-framework-reference/data-access.html#transaction)을 참고하라.
+트랜잭션 속성에 대한 자세한 설명은 [스프링 코어 문서](../../Spring%20Data%20Access/transactionmanagement)을 참고하라.
 아래 예제에서는 고립 수준, 전파, 타임아웃을 설정한다:
 
 ```java

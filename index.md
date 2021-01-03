@@ -24,3 +24,4 @@ includeFooter: false
 |[Reactor Netty](/Reactor%20Netty/contents/) |1.0.1 | 2020/12 | [ref](https://projectreactor.io/docs/netty/1.0.1/reference/index.html) |
 | [Spring REST Docs](/Spring%20REST%20Docs/contents/) | 2.0.5.RELEASE | 2020/12 | [ref](https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/) |
 | [Spring Data R2DBC](/Spring%20Data%20R2DBC/contents/) | 1.2.2 | 2020/12 | [ref](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#) |
+| [Spring Data Access](/Spring%20Data%20Access/contents/) | 5.3.2 | 2021/01 | [ref](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/data-access.html) |
