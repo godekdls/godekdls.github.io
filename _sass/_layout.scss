@@ -13,6 +13,7 @@ body {
 
 		nav,
 		header > div.dain-custom-adfit,
+		header > div.dain-custom-adsense,
 		header > form {
 			display: block;
 		}
@@ -220,6 +221,7 @@ $nav-image: $baseurl + "/images/menu.svg";
 
 nav,
 header > div.dain-custom-adfit,
+header > div.dain-custom-adsense,
 header > form {
 	display: none;
 
