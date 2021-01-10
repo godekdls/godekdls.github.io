@@ -1378,7 +1378,7 @@ interface UserRepository extends CrudRepository<User, String>,
 
 JSON 객체를 역직렬화할 타입은 JSON 도큐먼트에 있는 `_class` 속성을 보고 결정한다. 그 다음 역직렬화한 객체를 처리할 적절한 레포지토리를 선택한다.
 
-레포지토리에 저장할 데이터를 XML로 정의하고 싶다면 `unmarshaller-populator` 요소를 사용해라. 스프링 OXM에 있는 XML 마샬러 옵션 중 하나를 사용하면 된다. 자세한 내용은 [스프링 레퍼런스 문서](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/data-access.html#oxm)를 참고해라. 다음은 JAXB로 언마샬하는 예제다:
+레포지토리에 저장할 데이터를 XML로 정의하고 싶다면 `unmarshaller-populator` 요소를 사용해라. 스프링 OXM에 있는 XML 마샬러 옵션 중 하나를 사용하면 된다. 자세한 내용은 [스프링 레퍼런스 문서](../../Spring%20Data%20Access/marshallingxmlbyusingobjectxmlmappers)를 참고해라. 다음은 JAXB로 언마샬하는 예제다:
 
 **Example 53. Declaring an unmarshalling repository populator (using JAXB)**
 

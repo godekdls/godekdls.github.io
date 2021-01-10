@@ -30,7 +30,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 - [타입 변환 시스템](https://docs.spring.io/spring/docs/5.3.2/reference/html/core.html#validation)
 - [표현식 언어](https://docs.spring.io/spring/docs/5.3.2/reference/html/core.html#expressions)
 - [JMX 통합](https://docs.spring.io/spring/docs/5.3.2/reference/html/integration.html#jmx)
-- [DAO exception 계층구조](https://docs.spring.io/spring/docs/5.3.2/reference/html/data-access.html#dao-exceptions)
+- [DAO exception 계층구조](../../Spring%20Data%20Access/daosupport#21-consistent-exception-hierarchy)
 
 스프링 API를 알아야 할 필욘 없지만, 그 뒤에 있는 개념은 알아두는 게 좋다. 최소한 제어의 역전(IOC)에 깔려 있는 발상은 이해하고 있어야 하며, 사용하려는 IoC 컨테이너에 익숙해야 한다.
 

@@ -77,11 +77,16 @@
 				<ul id="project-list" style="{% if page.category %}display: none;{% endif %}">
 					{% if page.category %}<li id="open-current-project-contents" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0; cursor: pointer">&gt;&gt; Back to contents</li>{% endif %}
 					{% assign grouped = site.docs | group_by: 'category' %}
-					{% for group in grouped %}
-						<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
-							{% assign items = group.items | sort: 'order' %}
-							<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
-						</li>
+					{% assign sorted_cats = site.category-list %}
+					{% for category in sorted_cats %}
+						{% for group in grouped %}
+							{% if group.name == category %}
+							<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
+								{% assign items = group.items | sort: 'order' %}
+								<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
+							</li>
+							{% endif %}
+						{% endfor %}
 					{% endfor %}
 				</ul>
 				<!-- 현재 프로젝트 목차 -->

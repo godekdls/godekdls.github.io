@@ -445,7 +445,7 @@ protected JobLauncher createJobLauncher() throws Exception {
 
 스케줄러가 job을 기동하면 순서대로 잘 동작한다.
 문제는 HTTP 요청으로 job을 시작할 때 생긴다.
-이 때는 요청을 비동기로 처리해서 `SimpleJobLauncher`가 요청 즉시
+이때는 요청을 비동기로 처리해서 `SimpleJobLauncher`가 요청 즉시
 caller에게 결과를 리턴해줘야 한다.
 배치 같은 긴 시간이 소요되는 작업 동안 HTTP 요청을 열린 채로 두는 것은
 좋은 방법이 아니기 때문이다. 다음은 작동 순서 예시이다:

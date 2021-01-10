@@ -1131,7 +1131,7 @@ static class UserInput {
 
 ### 3.9.1. Finding Constraints
 
-기본적으로 제약 조건은 Bean Validation `Validator`를 사용해 찾는다. 현재는 프로퍼티 제약조건만 지원한다. 커스텀 `ValidatorConstraintResolver` 인스턴스로 `ConstraintDescriptions`를 만들면 이 때 사용할 `Validator`를 커스텀할 수 있다. 제약 조건 resolution을 완전히 제어하고 싶으면 `ConstraintResolver`를 직접 구현하면 된다.
+기본적으로 제약 조건은 Bean Validation `Validator`를 사용해 찾는다. 현재는 프로퍼티 제약조건만 지원한다. 커스텀 `ValidatorConstraintResolver` 인스턴스로 `ConstraintDescriptions`를 만들면 이때 사용할 `Validator`를 커스텀할 수 있다. 제약 조건 resolution을 완전히 제어하고 싶으면 `ConstraintResolver`를 직접 구현하면 된다.
 
 ### 3.9.2. Describing Constraints
 

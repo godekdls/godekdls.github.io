@@ -40,7 +40,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 ## 9.3. What’s New in Spring Data R2DBC 1.0.0
 
 - R2DBC 0.8.0.RELEASE로 업그레이드.
-- 영향 받은 로우(row) 카운트를 컨슘하기 위한 쿼리 메소드 어노테이션 `@Modifying`.
+- 영향 받은 row 카운트를 컨슘하기 위한 쿼리 메소드 어노테이션 `@Modifying`.
 - 데이터베이스에 없는 ID를 지정해 레포지토리 `save(…)`를 호출하면 `TransientDataAccessException`으로 종료.
 - 커넥션 싱글톤으로 테스트할 수 있는 `SingleConnectionConnectionFactory` 추가.
 - `@Query`에서 [SpEL 표현식](https://docs.spring.io/spring/docs/5.3.2/reference/html/core.html#expressions) 지원.
@@ -49,7 +49,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 - `TransactionDefinition`을 통한 자동 커밋 전파/리셋과 격리 수준 제어.
 - 엔티티 레벨 컨버터 지원.
 - reified 제네릭과 [코루틴](../kotlinsupport#175-coroutines)을 위한 코틀린 익스텐션.
-- 방언(dialect)을 직접 등록할 수 있는 매커니즘 추가.
+- 방언(dialect)을 직접 등록할 수 있는 메커니즘 추가.
 - 파라미터 이름 지정 (named 파라미터) 지원.
 - `DatabaseClient`를 통한 R2DBC 첫 지원.
 - `TransactionalDatabaseClient`를 통한 트랜잭션 첫 지원.
