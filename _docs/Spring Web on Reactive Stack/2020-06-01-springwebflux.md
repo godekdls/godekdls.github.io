@@ -490,12 +490,7 @@ forwarded 헤더는 보안에 신경 써야 할 요소가 있는데,
 `ForwardedHeaderTransformer`를 `removeOnly=true`로 설정하면
 헤더 정보를 사용하지 않고 제거해 준다.
 
-> 5.1 버전부터 `ForwardedHeaderFilter`는 제거 대상에 올랐으며(deprecated),
-> `ForwardedHeaderTransformer`로 대신한다.
-> 따라서 exchange(http 요청/응답과 세션 정보 등의 컨테이너)를
-> 만들 기 전에 forwarded 헤더를 처리할 수 있다.
-> 필터로 설정하면 전체 필터 리스트에서 제외되고
-> 대신 `ForwardedHeaderTransformer`를 사용한다.
+> 5.1 버전부터 `ForwardedHeaderFilter`는 제거 대상에 올랐으며(deprecated), `ForwardedHeaderTransformer`로 대신한다. 따라서 exchange(http 요청/응답과 세션 정보 등의 컨테이너)를 만들기 전에 forwarded 헤더를 처리할 수 있다. 필터를 설정하더라도, 이 필터는 전체 필터 리스트에서 제외되며, 그대신 `ForwardedHeaderTransformer`를 사용한다.
 
 ### 1.2.3. Filters
 
