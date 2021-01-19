@@ -1322,7 +1322,7 @@ converted.subscribe(
 
 ## 4.7. Processors
 
-프로세서는 `Publisher`이면서 동시에 `Subscriber`이기도 한 특별한 Publisher다. 이 말은 `Processor`를 `subscribe`할 수 있고 (일반적으로 `Flux`를 구현하고 있다), 시퀀스에 수동으로 데이터를 주입하는 메소드를 호출하거나 종료시킬 수 있다는 뜻이다.
+프로세서는 `Publisher`이면서 동시에 `Subscriber`이기도 한 특별한 Publisher다. 이 말은 `Processor`를 `subscribe`할 수도 있고 (일반적으로 `Flux`를 구현하고 있다), 시퀀스에 수동으로 데이터를 주입하는 메소드나 시퀀스를 종료시키는 메소드를 호출할 수도 있다는 뜻이다.
 
 프로세서는 몇 가지 종류가 있어서 시맨틱스가 조금씩 다르다. 프로세서를 살펴보기에 앞서 먼저 스스로에게 다음 질문을 해 볼 필요가 있다:
 
@@ -1363,12 +1363,12 @@ sink.next(n);
 
 ### 4.7.3. Overview of Available Processors
 
-리액터 코어는 몇 가지 유형의 `Processor`를 제공한다. 모든 프로세서 시맨틱스가 동일한 것은 아니지만, 대략적으로 세 가지 카테고리로 나뉜다. 다음은 프로세서 세 종류에 대한 간략한 설명이다:
+리액터 코어가 제공하는 `Processor`는 몇 가지 유형으로 나뉜다. 모든 프로세서 시맨틱스가 동일한 것은 아니지만, 대략적으로 세 가지 카테고리로 나뉜다. 다음은 프로세서 세 종류에 대한 간략한 설명이다:
 
 - **direct** (`DirectProcessor`, `UnicastProcessor`): 이 프로세서는 직접적인 유저 액션으로만 데이터를 푸쉬할 수 있다 (`Sink` 메소드를 직접 호출).
 - **synchronous** (`EmitterProcessor`, `ReplayProcessor`): 이 프로세서는 유저 인터랙션으로도 데이터를 푸쉬할 수 있고, 업스트림 `Publisher`를 구독하고 동기로 데이터를 비움으로써(drain) 데이터를 푸쉬할 수도 있다.
 
-> 여러 스레드로 이벤트를 보내는 방법 중 하나는 `EmitterProcessor`와 `publishOn(Scheduler)`을 사용하는 것이다. 이 방법으로, `Unsafe` 연산자를 사용하고 [reactor-extra](https://github.com/reactor/reactor-addons/tree/master/reactor-extra/src/main/java/reactor/extra/processor) 3.3.0에서 제거된, 이전 `TopicProcessor`를 대신할 수도 있다.
+> 이벤트를 여러 스레드로 보내는 방법 중 하나는 `EmitterProcessor`와 `publishOn(Scheduler)`을 사용하는 것이다. 이 조합으로, [reactor-extra](https://github.com/reactor/reactor-addons/tree/master/reactor-extra/src/main/java/reactor/extra/processor) 3.3.0에서 제거된, `Unsafe` 연산자를 사용하던 이전 `TopicProcessor`를 대신할 수도 있다.
 
 #### Direct Processor
 
@@ -1376,7 +1376,7 @@ Direct `Processor`는 0개 이상의 `Subscriber`에게 신호를 보낼 수 있
 
 `Processor`가 종료되면 (일반적으로 싱크의 `error(Throwable)` 또는 `complete()` 메소드 호출로), 다른 구독자로 구독할 수는 있지만, 구독하는 즉시 종료 신호만 반복한다.
 
-####  Unicast Processor
+#### Unicast Processor
 
 Unicast `Processor`는 내부 버퍼로 backpressure를 처리할 수 있다. 대신 `Subscriber`는 최대 한 개만 가능하다.
 
@@ -1394,7 +1394,7 @@ emitter `Processor`는 여러 구독자에게 값을 보내면서 각 구독자�
 
 따라서 첫 번째로 구독하는 `Subscriber`는 최대 `bufferSize` 만큼의 요소를 전달받는다. 그러나 이후에는 다른 추가 구독자에게 더 이상 신호를 재전송하지 않는다. 이러한 구독자는 구독 이후에 프로세서가 푸쉬한 신호만 받는다. 내부 버퍼는 여전히 backpressure 목적으로 사용한다.
 
-기본적으로 모든 구독자가 취소하면 (기본적으로 모두 구독을 중단했음을 의미), 내부 버퍼를 비우고 새 구독자를 받지 않는다. `create` 스태틱 팩토리 메소드에서 `autoCancel` 파라미터로 이를 변경할 수 있다.
+기본적으로 모든 구독자가 취소하면 (기본적으로 모두 구독을 중단했음을 의미), 내부 버퍼를 비우고 새 구독자를 받지 않는다. 이 동작은 `create` 스태틱 팩토리 메소드에 `autoCancel` 파라미터를 넘겨 변경할 수 있다.
 
 #### Replay Processor
 
@@ -1403,7 +1403,7 @@ replay `Processor`는 `sink()`로 직접 생성한 데이터와 업스트림 `Pu
 여러 가지 설정으로 만들 수 있다:
 
 - 요소 한 개만 캐시한다 (`cacheLast`).
-- 히스토리 일부만 (`create(int)`) 혹은 전체를 (`create()`) 캐시한다.
+- 히스토리 일부만 캐시하거나 (`create(int)`), 전체를 (`create()`) 캐시한다.
 - 시간을 기반으로 반복되는 윈도우를 캐시한다 (`createTimeout(Duration)`).
 - 히스토리 크기와 시간 윈도우 조합으로 캐시한다 (`createSizeOrTimeout(int, Duration)`).
 
