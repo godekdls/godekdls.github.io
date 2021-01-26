@@ -394,7 +394,7 @@ public class MyFilterSecurityMetadataSource implements FilterInvocationSecurityM
 }
 ```
 
-좀더 자세한 정보는 `DefaultFilterInvocationSecurityMetadataSource` 코드를 확인해 봐라.
+좀 더 자세한 정보는 `DefaultFilterInvocationSecurityMetadataSource` 코드를 확인해 봐라.
 
 #### 인증은 LDAP으로 하고, 사용자 role은 데이터베이스에서 불러오려면 어떻게 해야 하나요?
 
