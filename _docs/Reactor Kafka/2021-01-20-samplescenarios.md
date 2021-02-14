@@ -40,7 +40,7 @@ KafkaSender.create(SenderOptions.<Integer, String>create(producerProps).maxInFli
            .doOnNext(result -> processResponse(result))                                     // (3)
            .doOnError(e -> processError(e));
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 최대 in-flight 메세지는 512로 설정한 sender를 만든다</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 동시에 전송할 수 있는 최대 메세지는 512로 설정한 sender를 만든다</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 센더 레코드 시퀀스를 전송한다</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> onNext가 트리거되면 send 결과를 처리한다</small>
 
@@ -87,7 +87,7 @@ KafkaSender.create(senderOptions)
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 카프카는 메세지를 모든 ISR(in-sync replica)에 전달한 뒤에 acks=all로 전송을 승인한다(acknowlege)</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 브로커가 일시적으로 실패했을 때를 대응하기 위해 프로듀서 재시도 횟수를 큰 수로 지정한다</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 프로듀서 버퍼가 가득차 파이프라인을 블로킹하지 않도록 최대 in-flight 수를 낮게 잡는다. 디폴트로 stopOnError는 true로 설정된다</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 프로듀서 버퍼가 가득차 파이프라인을 블로킹하지 않도록, 동시에 전송할 수 있는 최대 레코드 수를 낮게 잡는다. 디폴트로 stopOnError는 true로 설정된다</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 외부 소스에서 데이터를 받아, 적절히 변환한 뒤 카프카에 전송한다</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 전송에 실패하면 치명적인 에러로 간주하고 전체 파이프라인을 실패시킨다</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 센더 레코드에 있는 correlation 메타데이터로 소스 레코드를 커밋한다</small>

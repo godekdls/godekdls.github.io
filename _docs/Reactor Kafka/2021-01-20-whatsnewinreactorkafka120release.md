@@ -60,7 +60,7 @@ originalRefLink: https://projectreactor.io/docs/kafka/1.3.1/reference/index.html
 
 카프카로 보내는 아웃바운드 메세지는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.sender.KafkaSender</span>로 전송한다. Sender는 thread-safe하며, 여러 스레드에 공유해 처리량을 끌어올릴 수 있다. `KafkaSender`는 카프카로 메세지를 전송할 때 사용하는 `KafkaProducer` 하나와 연결된다.
 
-`KafkaSender`는 sender 설정 옵션 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.sender.SenderOptions</span> 인스턴스로 만든다. `KafkaSender`를 만든 후엔 `SenderOptions`를 수정해도 `KafkaSender`에 반영되지 않는다. 부트스트랩 카프카 브로커 리스트나 시리얼라이저같은 `SenderOptions`의 프로퍼티는 내부 `KafkaProducer`로 전달된다. 이런 프로퍼티는 `SenderOptions` 인스턴스 생성 시점에 만들어도 되고, 인스턴스 생성 후에 setter 메소드 `SenderOptions#producerProperty`를 사용해도 된다. 최대 in-flight 메세지 수같은 리액티브 `KafkaSender` 전용 설정 옵션도 `KafkaSender` 인스턴스를 만들기 전에 미리 설정할 수 있다.
+`KafkaSender`는 sender 설정 옵션 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.sender.SenderOptions</span> 인스턴스로 만든다. `KafkaSender`를 만든 후엔 `SenderOptions`를 수정해도 `KafkaSender`에 반영되지 않는다. 부트스트랩 카프카 브로커 리스트나 시리얼라이저같은 `SenderOptions`의 프로퍼티는 내부 `KafkaProducer`로 전달된다. 이런 프로퍼티는 `SenderOptions` 인스턴스 생성 시점에 만들어도 되고, 인스턴스 생성 후에 setter 메소드 `SenderOptions#producerProperty`를 사용해도 된다. 동시에 전송할 수 있는 최대 메세지 수(max in-flight)같은 리액티브 `KafkaSender` 전용 설정 옵션도 `KafkaSender` 인스턴스를 만들기 전에 미리 설정할 수 있다.
 
 `SenderOptions<K, V>`, `KafkaSender<K, V>`의 제네릭 타입은 `KafkaSender`로 발행할 프로듀서 레코드의 키, 값 타입이며, `KafkaSender`를 생성하기 전에 `SenderOptions` 인스턴스에 키, 값의 시리얼라이저를 설정해야 한다.
 
@@ -126,7 +126,7 @@ public SenderOptions<K, V> stopOnError(boolean stopOnError);
 
 `stopOnError`가 false면 각 레코드를 전송할 때마다 성공 또는 에러 응답을 반환한다. 에러 응답을 받았을 땐, 카프카가 전송에 실패한 이유를 담아 보낸 exception이 `SenderResult`에 설정되며, `SenderResult#exception()`으로 조회할 수 있다. Flux는 `outboundRecords`에 발행한 모든 레코드를 전송해보고 나서 에러로 종료된다. `outboundRecords`가 종료하지 않는 `Flux`라면 send 연산자는 사용자가 직접 SenderResult `Flux`를 취소할 때까지 계속해서 `outboundRecords` `Flux`로 발행한 레코드를 전송한다.
 
-`stopOnError`가 true면 첫 번째로 전송에 실패했을 때 응답을 반환하며, SenderResult Flux는 에러 발생 즉시 종료한다. 아웃바운드 메세지는 언제든지  여러 개가 in-flight 상태일 수 있기 때문에, 첫 번째 실패를 감지한 후에도 일부 메세지가 카프카에 전달됐을 수도 있다. in-flight 메세지 수를 제한하려면 `SenderOptions#maxInFlight()` 옵션을 설정하면 된다.
+`stopOnError`가 true면 첫 번째로 전송에 실패했을 때 응답을 반환하며, SenderResult Flux는 에러 발생 즉시 종료한다. 아웃바운드 메세지는 언제든지 여러 개가 전송 중(in-flight) 상태일 수 있기 때문에, 첫 번째 실패를 감지한 후에도 일부 메세지가 카프카에 전달됐을 수도 있다. in-flight 메세지 수를 제한하려면 `SenderOptions#maxInFlight()` 옵션을 설정하면 된다.
 
 ### 6.2.2. Send without result metadata
 
@@ -183,7 +183,7 @@ public SenderOptions<K, V> scheduler(Scheduler scheduler);
 
 ### 6.2.4. Non-blocking back-pressure
 
-in-flight 전송 수는 `maxInFlight` 옵션으로 제어할 수 있다. 응답이 펜딩되고 있다면 보낼 수 있는 요청 수는 `maxInFlight`만큼으로 제한되서, 업스트림에선 그 이상의 요청을 보낼 수 없다. 리액티브 파이프라인에서 `KafkaSender`를 사용할 땐, 이 `maxInFlight`를 `KafkaProducer`의 `buffer.memory`, `max.block.ms` 옵션과 함께 조합해서 사용할 메모리와 스레드를 제어할 수 있다. 이 옵션은 `KafkaSender`를 생성하기 전에 `SenderOptions`에 설정하면 된다. 디폴트는 256이다. 작은 메세지라면 더 높게 설정해 처리량을 늘릴 수 있다.
+동시에 전송할 수 있는 최대 레코드 수는 `maxInFlight` 옵션으로 제어할 수 있다. 응답이 펜딩되고 있다면 보낼 수 있는 요청 수는 `maxInFlight`만큼으로 제한되서, 업스트림에선 그 이상의 요청을 보낼 수 없다. 리액티브 파이프라인에서 `KafkaSender`를 사용할 땐, 이 `maxInFlight`를 `KafkaProducer`의 `buffer.memory`, `max.block.ms` 옵션과 함께 조합해서 사용할 메모리와 스레드를 제어할 수 있다. 이 옵션은 `KafkaSender`를 생성하기 전에 `SenderOptions`에 설정하면 된다. 디폴트는 256이다. 작은 메세지라면 더 높게 설정해 처리량을 늘릴 수 있다.
 
 ```java
 public SenderOptions<K, V> maxInFlight(int maxInFlight);
