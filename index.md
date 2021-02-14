@@ -25,5 +25,5 @@ includeFooter: false
 | [Spring REST Docs](/Spring%20REST%20Docs/contents/) | 2.0.5.RELEASE | 2020/12 | [ref](https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/reference/html5/) |
 | [Spring Data R2DBC](/Spring%20Data%20R2DBC/contents/) | 1.2.2 | 2020/12 | [ref](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#) |
 | [Spring Data Access](/Spring%20Data%20Access/contents/) | 5.3.2 | 2021/01 | [ref](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/data-access.html) |
-| [Reactor Kafka](/Reactor%20Kafka/contents/) | 1.3.1 | 2021/01 | [ref](https://projectreactor.io/docs/kafka/1.3.1/reference/index.html) |
-| [Apache Kafka](/Apache%20Kafka/contents/) | 2.7.X | 2021/01 | [ref](https://kafka.apache.org/27/documentation.html) |
+| [Reactor Kafka](/Reactor%20Kafka/contents/) | 1.3.1 | 2021/02 | [ref](https://projectreactor.io/docs/kafka/1.3.1/reference/index.html) |
+| [Apache Kafka](/Apache%20Kafka/contents/) | 2.7.X | 2021/02 | [ref](https://kafka.apache.org/27/documentation.html) |
