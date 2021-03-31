@@ -243,7 +243,7 @@ Vault에선 다음 예제처럼 값에 중첩키를 지정할 수 있다:
 echo -n '{"appA": {"secret": "appAsecret"}, "bar": "baz"}' | vault write secret/myapp -
 ```
 
-이 명령어는 Vault에 JSON 객체를 작성하는 명령어다. 스프링에서 이런 값에 접근할 땐 다음 예제처럼 기존과 같은 dot(`.`)을 사용하면 된다.
+이 명령어는 Vault에 JSON 객체를 작성하는 명령어다. 스프링에서 이런 값에 접근할 땐 다음 예제처럼 늘 쓰던 dot(`.`)을 사용하면 된다.
 
 ```java
 @Value("${appA.secret}")
