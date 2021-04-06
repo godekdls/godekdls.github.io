@@ -28,3 +28,4 @@ includeFooter: false
 | [Reactor Kafka](/Reactor%20Kafka/contents/) | 1.3.1 | 2021/02 | [ref](https://projectreactor.io/docs/kafka/1.3.1/reference/index.html) |
 | [Apache Kafka](/Apache%20Kafka/contents/) | 2.7.X | 2021/02 | [ref](https://kafka.apache.org/27/documentation.html) |
 | [Spring Cloud Config](/Spring%20Cloud%20Config/contents/) | 3.0.3 | 2021/03 | [ref](https://docs.spring.io/spring-cloud-config/docs/3.0.3/reference/html/) |
+| [Spring Cloud Gateway](/Spring%20Cloud%20Gateway/contents/) | 3.0.2 | 2021/04 | [ref](https://docs.spring.io/spring-cloud-gateway/docs/3.0.2/reference/html/) |
