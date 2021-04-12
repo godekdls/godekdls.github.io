@@ -363,15 +363,7 @@ public Step step1() {
 
 ### 5.1.6. Configuring Retry Logic
 
-대부분은 예외를 무시하고 넘어가거나 `Step`을 실패로 만드는 걸로 충분하지만,
-모두 그런 것은 아니다.
-파일을 읽는 동안 `FlatFileParseException`이 발생하면 항상 예외를 발생시킨다.
-여기선 `ItemReader`을 바꾸는 게 능사는 아니다.
-반면 성격이 다른 예외도 있다.
-예를 들어 `DeadlockLoserDataAccessException`은 현재 프로세스가
-다른 프로세스가 이미 락(lock)을 소유한 데이터를 수정하려 했을 때 발생하는데,
-기다렸다가 다시 시도하면 성공할 수도 있다.
-이런 경우라면 아래처럼 재시도(retry)를 설정하는 게 좋다:
+대부분은 예외를 무시하고 넘어가거나 `Step`을 실패로 만드는 걸로 충분하지만, 모두 그런 것은 아니다. 파일을 읽는 동안 `FlatFileParseException`이 발생하면 항상 예외를 발생시킨다. 여기선 `ItemReader`를 바꾸는 게 능사는 아니다. 반면 성격이 다른 예외도 있다. 예를 들어 `DeadlockLoserDataAccessException`은 현재 프로세스가 다른 프로세스가 이미 락(lock)을 소유한 데이터를 수정하려 했을 때 발생하는데, 기다렸다가 다시 시도하면 성공할 수도 있다. 이런 경우라면 아래처럼 재시도(retry)를 설정하는 게 좋다:
 
 ```java
 @Bean
@@ -387,8 +379,7 @@ public Step step1() {
 }
 ```
 
-이 `Step`은 각 item을 재시도할 수 있는 횟수와 '재시도 가능한(retryable)' exception 리스트를 정의했다.
-재시도가 어떤 방식으로 이뤄지는지는 [retry](https://godekdls.github.io/Spring%20Batch/retry/)에서 자세히 설명한다.
+이 `Step`은 각 item을 재시도할 수 있는 횟수와 '재시도 가능한(retryable)' exception 리스트를 정의했다. 재시도가 어떤 방식으로 이뤄지는지는 [retry](https://godekdls.github.io/Spring%20Batch/retry/)에서 자세히 설명한다.
 
 ### 5.1.7. Controlling Rollback
 
