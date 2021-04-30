@@ -128,6 +128,7 @@
 			<article class="content">
 				{% if page.completed == false %}{% include warning.html %}{% endif %}
 				{% if page.includeHeader == false %}{% else %}{% include header.html %}{% endif %}
+				{% if page.includeHeader == false %}{% else %}{% include notice.html %}{% endif %}
 				{% if page.includeHeader == false %}{% else %}{% include adsense.html %}{% endif %}
 				{{ content }}
 				{% if page.includeFooter == false %}{% else %}{% include footer.html %}{% endif %}
