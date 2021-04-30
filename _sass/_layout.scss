@@ -170,6 +170,15 @@ $nav-image: $baseurl + "/images/menu.svg";
 	background-color: $content-background-color;
 	color: $content-color;
 
+
+    ///// 드래그 방지 /////
+	  -ms-user-select: none;
+      -moz-user-select: -moz-none;
+      -khtml-user-select: none;
+      -webkit-user-select: none;
+      user-select: none;
+    ///// 드래그 방지 /////
+
 	h3::before {
 		content: "";
 		@extend hr;
