@@ -43,8 +43,26 @@ pre {
 		white-space: pre-wrap;
 		background: transparent;
 		border: none;
-		padding: 0
+		padding: 0;
+
+        ///// 드래그 허용 /////
+          -ms-user-select: text;
+          -moz-user-select: text;
+          -khtml-user-select: text;
+          -webkit-user-select: text;
+          user-select: text;
+        ///// 드래그 허용 /////
 	}
+}
+
+.highlighter-rouge {
+    ///// 드래그 허용 /////
+      -ms-user-select: text;
+      -moz-user-select: text;
+      -khtml-user-select: text;
+      -webkit-user-select: text;
+      user-select: text;
+    ///// 드래그 허용 /////
 }
 
 blockquote > code,
