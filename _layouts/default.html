@@ -31,7 +31,7 @@
 		{% feed_meta %}
 
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
-		<link rel="stylesheet" href="{{ site.baseurl }}/css/main.css?version=20210501">
+		<link rel="stylesheet" href="{{ site.baseurl }}/css/main.css?version=20210514">
 		<link rel="apple-touch-icon" href="{{ site.baseurl }}/apple-touch-icon.png">
 		<link rel="icon" type="image/png" href="{{ site.baseurl }}/touch-icon.png" sizes="192x192">
 		<link rel="icon" type="image/png" href="{{ site.baseurl }}/images/favicon.png">
@@ -100,7 +100,8 @@
 						<ul>
 							{% for item in items %}
 							{% if item.boundary %} <li class="nav-item" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0;"><em>{{ item.boundary }}</em></li>{% endif %}
-							<li class="nav-item {% if item.url == page.url %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></li>
+							<li class="nav-item nav-contents {% if item.url == page.url %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.url }}">{{ item.navTitle | default: item.title }}</a></li>
+							{% if item.nextNavTitle %} <li class="nav-item {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.nextNavLink }}">{{ item.nextNavTitle }}</a></li>{% endif %}
 							{% endfor %}
 						</ul>
 					</li>
@@ -157,7 +158,18 @@
 				});
 		</script>
 
-		<!-- 언어 선택 영역 커스텀 (dain) -->
+        <!-- 스크롤 커스텀 -->
+        <script>
+            document.querySelector(".scroll-to-top").addEventListener("click", function () {
+                    window.scroll({ top: 0, left: 0, behavior: 'smooth' });
+                });
+            var headerTop = document.querySelector(".nav-item .current").getBoundingClientRect().top + window.scrollY;
+            if (headerTop != null && headerTop > window.innerHeight) {
+                 document.querySelector("header").scrollTo({top:headerTop/2});
+            }
+        </script>
+
+        <!-- 언어 선택 영역 커스텀 -->
 		<script>
 			function displayElementSibling(selector, value) {
 				document.querySelectorAll(selector).forEach(function (el) {

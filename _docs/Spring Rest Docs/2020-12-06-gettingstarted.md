@@ -123,7 +123,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 </build>
 ```
 <div class="language-only-for-gradle maven gradle"></div>
-```groovy
+```gradle
 plugins { // (1)
 	id "org.asciidoctor.convert" version "1.5.9.2"
 }
@@ -209,7 +209,7 @@ asciidoctor { // (6)
 </plugin>
 ```
 <div class="language-only-for-gradle maven gradle"></div>
-```groovy
+```gradle
 bootJar {
 	dependsOn asciidoctor // (1)
 	from ("${asciidoctor.outputDir}/html5") { // (2)
@@ -307,13 +307,13 @@ public void setUp() {
 }
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `MockMvc` 인스턴스에 `MockMvcRestDocumentationConfigurer`를 설정한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `MockMvc` 인스턴스에 `MockMvcRestDocumentationConfigurer`를 설정한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
 
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `WebTestClient` 인스턴스에 `WebTestclientRestDocumentationConfigurer`를 `ExchangeFilterFunction`으로 추가한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `WebTestClient` 인스턴스에 `WebTestclientRestDocumentationConfigurer`를 `ExchangeFilterFunction`으로 추가한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
 
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> REST Assured에 `RestAssuredRestDocumentationConfigurer`를 `Filter`로 추가한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> REST Assured에 `RestAssuredRestDocumentationConfigurer`를 `Filter`로 추가한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
 
 configurer는 적절한 디폴트 설정을 사용하며, 커스텀 설정을 위한 API도 제공한다. 자세한 설정은 [설정 섹션](../configuration)을 참고해라.
 
@@ -395,12 +395,12 @@ public void setUp(RestDocumentationContextProvider restDocumentation) {
 }
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `MockMvc` 인스턴스에 `MockMvcRestDocumentationConfigurer`를 설정한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `MockMvc` 인스턴스에 `MockMvcRestDocumentationConfigurer`를 설정한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
 
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `WebTestClient` 인스턴스에 `WebTestClientRestDocumentationConfigurer`를 `ExchangeFilterFunction`으로 추가한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `WebTestClient` 인스턴스에 `WebTestClientRestDocumentationConfigurer`를 `ExchangeFilterFunction`으로 추가한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> REST Assured에 `RestAssuredRestDocumentationConfigurer`를 `Filter`로 추가한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> REST Assured에 `RestAssuredRestDocumentationConfigurer`를 `Filter`로 추가한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `documentationConfiguration()`으로 가져올 수 있다.</small>
 
 configurer는 적절한 디폴트 설정을 사용하며, 커스텀 설정을 위한 API도 제공한다. 자세한 설정은 [설정 섹션](../configuration)을 참고해라.
 
@@ -506,17 +506,17 @@ RestAssured.given(this.spec) // (1)
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 서비스의 루트(`/`)를 호출하며 `application/json` 응답이 필요하다고 알린다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 서비스가 기대한 결과를 생산했는지를 검증한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은 `RestDocumentationResultHandler`가 작성한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은 `RestDocumentationResultHandler`가 작성한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.mockmvc.MockMvcRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
 
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 서비스의 루트(`/`)를 호출하며 `application/json` 응답이 필요하다고 알린다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 서비스가 기대한 결과를 생산했는지를 검증한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은 `ExchangeResult`의 `Consumer`가 작성한다. 이 컨슈머는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은 `ExchangeResult`의 `Consumer`가 작성한다. 이 컨슈머는 <span class="custom-blockquote">org.springframework.restdocs.webtestclient.WebTestClientRestDocumentation</span>에 있는 스태틱 메소드 `document`로 가져올 수 있다.</small>
 
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@Before` 메소드로 초기화한 스펙을 적용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `application/json` 응답이 필요하다고 알린다</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은  `RestDocumentationFilter`가 작성한다. 이 클래스 인스턴스는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `document`로 가져올 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `index` 디렉토리(설정한 출력 디렉토리 아래 있는)에 스니펫을 작성해 서비스 호출을 문서화한다. 스니펫은  `RestDocumentationFilter`가 작성한다. 이 클래스 인스턴스는 <span class="custom-blockquote">org.springframework.restdocs.restassured3</span> 패키지에 있는 `RestAssuredRestDocumentation`의 스태틱 메소드 `document`로 가져올 수 있다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 서비스의 루트(`/`)를 호출한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 서비스가 기대한 결과를 생산했는지를 검증한다.</small>
 

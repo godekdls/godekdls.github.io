@@ -145,7 +145,7 @@ interface ReactivePersonRepository extends ReactiveSortingRepository<Person, Lon
   Mono<Person> findFirstByLastname(String lastname);                                // (7)
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 이 메소드는 주어진 `lastname`을 가진 모든 사람을 질의하는 쿼리를 만든다. 쿼리는 메소드 이름에서 `And`와 `Or`로 연결된 제약 조건을 파싱해서 만든다. 따라서 이 메소드 이름을 쿼리로 바꾸면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">SELECT … FROM person WHERE firstname = :firstname</span>으로 표현된다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 이 메소드는 주어진 `lastname`을 가진 모든 사람을 질의하는 쿼리를 만든다. 쿼리는 메소드 이름에서 `And`와 `Or`로 연결된 제약 조건을 파싱해서 만든다. 따라서 이 메소드 이름을 쿼리로 바꾸면 <span class="custom-blockquote">SELECT … FROM person WHERE firstname = :firstname</span>으로 표현된다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 이 메소드는 주어진 `Publisher`가 `firstname`을 방출하면, 이 `firstname`에 해당하는 모든 사람을 질의하는 쿼리를 만든다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `Pageable`로 데이터베이스에 오프셋과 정렬 파라미터를 전달한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 주어진 조건에 맞는 단일 엔티티를 찾는다. 결과가 하나가 아니면 `IncorrectResultSizeDataAccessException`으로 끝난다.</small><br>
@@ -231,7 +231,7 @@ Flux<Person> findByQueryWithExpression(String lastname);
 
 SpEL을 사용하면 쿼리를 다각도로 확장할 수 있다. 하지만 원치 않는 인자를 잔뜩 받을 수도 있다. 의도치않게 쿼리가 변경되는 걸 피하고 싶다면, 인자들을 전달하기 전에 불필요한 문자열을 제거해야 한다.
 
-표현식은 쿼리 SPI로 확장할 수 있다: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.data.spel.spi.EvaluationContextExtension</span>. 쿼리 SPI는 프로퍼티와 펑션을 제공하고, 루트 객체를 커스텀할 수 있다. 익스텐션은 쿼리를 빌드하면서 SpEL을 평가할 때 어플리케이션 컨텍스트를 통해 조회한다.
+표현식은 쿼리 SPI로 확장할 수 있다: <span class="custom-blockquote">org.springframework.data.spel.spi.EvaluationContextExtension</span>. 쿼리 SPI는 프로퍼티와 펑션을 제공하고, 루트 객체를 커스텀할 수 있다. 익스텐션은 쿼리를 빌드하면서 SpEL을 평가할 때 어플리케이션 컨텍스트를 통해 조회한다.
 
 > SpEL 표현식을 일반 파라미터와 함께 사용한다면, 네이티브 바인드 마커 대신 파라미터 이름 표기법(named parameter)을 사용해야 바인딩 순서가 꼬이지 않는다.
 

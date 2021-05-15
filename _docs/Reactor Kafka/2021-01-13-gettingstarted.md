@@ -158,7 +158,7 @@ Received message: topic-partition=demo-topic-0 offset=6 timestamp=13:33:16:717 G
 
 그래들:
 
-```groovy
+```gradle
 dependencies {
     compile "io.projectreactor.kafka:reactor-kafka:1.1.0.RELEASE"
 }

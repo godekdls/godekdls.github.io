@@ -130,7 +130,7 @@ BOM 자체는 코드명과 식별용 수식어를 사용하는 릴리즈 트레�
 
 먼저 다음과 같이 그래들 플러그인 포탈로부터 플러그인을 적용한다:
 
-```groovy
+```gradle
 plugins {
     id "io.spring.dependency-management" version "1.0.7.RELEASE" // (1)
 }
@@ -139,7 +139,7 @@ plugins {
 
 그다음 BOM을 임포트한다:
 
-```groovy
+```gradle
 dependencyManagement {
      imports {
           mavenBom "io.projectreactor:reactor-bom:Bismuth-RELEASE"
@@ -149,7 +149,7 @@ dependencyManagement {
 
 마지막으로 다음과 같이 버전은 생략하고 의존성을 추가한다:
 
-```groovy
+```gradle
 dependencies {
      implementation 'io.projectreactor:reactor-core' // (1)
 }
@@ -158,7 +158,7 @@ dependencies {
 
 그래들 5.0부터는 그래들 자체에서 BOM을 지원한다:
 
-```groovy
+```gradle
 dependencies {
      implementation platform('io.projectreactor:reactor-bom:Bismuth-RELEASE')
      implementation 'io.projectreactor:reactor-core' 

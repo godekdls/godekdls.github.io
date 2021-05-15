@@ -265,7 +265,7 @@ description으로는 정적 식별자나, 사용자가 읽을 설명, 또는 다
 
 **Example 22. reactor-tools in Gradle, amend the** `dependencies` **block**
 
-```groovy
+```gradle
 dependencies {
    compile 'io.projectreactor:reactor-tools'
 }
@@ -347,7 +347,7 @@ java -javaagent reactor-tools.jar -jar app.jar
 
 **Example 24. reactor-tools with** [ByteBuddy’s Gradle plugin](https://github.com/raphw/byte-buddy/tree/byte-buddy-1.10.9/byte-buddy-gradle-plugin)
 
-```groovy
+```gradle
 plugins {
 	id 'net.bytebuddy.byte-buddy-gradle-plugin' version '1.10.9'
 }

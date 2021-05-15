@@ -115,7 +115,7 @@ originalRefLink: https://docs.spring.io/spring-framework/docs/5.3.2/reference/ht
 
 ## 1.2. Understanding the Spring Framework Transaction Abstraction
 
-스프링 트랜잭션 추상화에선 트랜잭션 전략이라는 핵심 개념을 사용한다. 트랜잭션 전략은 `TransactionManager`, 그 중에서도 명령형 트랜잭션 관리를 위한 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.transaction.PlatformTransactionManager</span> 인터페이스와, 반응형 트랜잭션 관리를 위한 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.transaction.ReactiveTransactionManager</span> 인터페이스가 정의하고 있다. 다음은 `PlatformTransactionManager` API의 정의다:
+스프링 트랜잭션 추상화에선 트랜잭션 전략이라는 핵심 개념을 사용한다. 트랜잭션 전략은 `TransactionManager`, 그 중에서도 명령형 트랜잭션 관리를 위한 <span class="custom-blockquote">org.springframework.transaction.PlatformTransactionManager</span> 인터페이스와, 반응형 트랜잭션 관리를 위한 <span class="custom-blockquote">org.springframework.transaction.ReactiveTransactionManager</span> 인터페이스가 정의하고 있다. 다음은 `PlatformTransactionManager` API의 정의다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -153,7 +153,7 @@ interface PlatformTransactionManager : TransactionManager {
 
 `getTransaction(..)` 메소드는 `TransactionDefinition` 파라미터에 따라 `TransactionStatus` 객체를 반환한다. 반환한 `TransactionStatus`는 새 트랜잭션을 나타낼 수도 있고, 현재 호출 스택에 일치하는 트랜잭션이 있다면 기존 트랜잭션을 나타낼 수도 있다. 후자에서 알 수 있는 사실은, `TransactionStatus`는 자바 EE 트랜잭션 컨텍스트와 마찬가지로 실행 스레드와 연관돼 있다는 점이다.
 
-스프링 프레임워크 5.2부터 스프링은 리액티브 타입이나 코틀린 코루틴을 사용하는 리액티브 어플리케이션 전용 트랜잭션 관리 인터페이스도 제공한다. 다음은 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.transaction.ReactiveTransactionManager</span>에 정의돼 있는 트랜잭션 전략이다:
+스프링 프레임워크 5.2부터 스프링은 리액티브 타입이나 코틀린 코루틴을 사용하는 리액티브 어플리케이션 전용 트랜잭션 관리 인터페이스도 제공한다. 다음은 <span class="custom-blockquote">org.springframework.transaction.ReactiveTransactionManager</span>에 정의돼 있는 트랜잭션 전략이다:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -381,7 +381,7 @@ JDBC `DataSource`는 아래와 유사한 빈을 만들어 정의할 수 있다:
 
 저수준에서 동작하는 클래스에는 `DataSourceUtils`(JDBC 용), `EntityManagerFactoryUtils`(JPA 용), `SessionFactoryUtils`(하이버네이트 용) 등이 있다. 어플리케이션 코드에서 직접 네이티브 persistence API의 리소스 타입을 처리하고 싶으면, 이 클래스들을 사용해서 스프링 프레임워크가 관리하는 적절한 인스턴스를 가져오고, 트랜잭션을 동기화하고 (선택), 처리 중에 발생하는 예외는 [계층 구조](../daosupport#21-consistent-exception-hierarchy) API에 적절히 매핑하면 된다.
 
-예를 들어 JDBC에선 기존처럼 `DataSource`의 `getConnection()` 메소드를 호출하는 대신에 스프링의 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.datasource.DataSourceUtils</span> 클래스를 사용할 수 있다:
+예를 들어 JDBC에선 기존처럼 `DataSource`의 `getConnection()` 메소드를 호출하는 대신에 스프링의 <span class="custom-blockquote">org.springframework.jdbc.datasource.DataSourceUtils</span> 클래스를 사용할 수 있다:
 
 ```java
 Connection conn = DataSourceUtils.getConnection(dataSource);
@@ -985,8 +985,8 @@ fun resolvePosition() {
 | `isolation`       | No        | `DEFAULT`  | 트랜잭션 고립 수준. propagation 설정이 `REQUIRED`나 `REQUIRES_NEW`일 때만 적용 가능. |
 | `timeout`         | No        | -1         | 트랜잭션 타임아웃 (초 단위). propagation이 `REQUIRED`나 `REQUIRES_NEW`일 때만 적용 가능. |
 | `read-only`       | No        | false      | 읽기/쓰기 VS 읽기 전용 트랜잭션. `REQUIRED`나 `REQUIRES_NEW`에만 적용할 것. |
-| `rollback-for`    | No        |            | 롤백을 유발할 `Exception` 인스턴스 리스트로, 콤마로 구분한다. 예를 들어 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">com.foo.MyBusinessException,ServletException</span>. |
-| `no-rollback-for` | No        |            | 롤백을 유발하지 않을 `Exception` 인스턴스 리스트로, 콤마로 구분한다. 예를 들어 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">com.foo.MyBusinessException,ServletException</span>. |
+| `rollback-for`    | No        |            | 롤백을 유발할 `Exception` 인스턴스 리스트로, 콤마로 구분한다. 예를 들어 <span class="custom-blockquote">com.foo.MyBusinessException,ServletException</span>. |
+| `no-rollback-for` | No        |            | 롤백을 유발하지 않을 `Exception` 인스턴스 리스트로, 콤마로 구분한다. 예를 들어 <span class="custom-blockquote">com.foo.MyBusinessException,ServletException</span>. |
 
 ### 1.4.6. Using `@Transactional`
 
@@ -1159,10 +1159,10 @@ class DefaultFooService : FooService {
 
 | XML Attribute                                                | Annotation Attribute                                         | Default                                                      | Description                                                  |
 | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
-| <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">transaction-manager</span> | N/A ([javadoc](https://docs.spring.io/spring-framework/docs/5.3.2/javadoc-api/org/springframework/transaction/annotation/TransactionManagementConfigurer.html) 참고) | <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">transactionManager</span> | 사용할 트랜잭션 매니저 이름. 위 예제처럼 트랜잭션 매니저 이름이 `transactionManager`가 아닐 때만 사용하면 된다. |
-| <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">mode</span> | <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">mode</span> | <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">proxy</span> | 디폴트 모드(`proxy`)에선 스프링의 AOP 프레임워크로 어노테이션이 달린 빈에 프록시를 적용한다 (앞에서 설명했던 프록시 시맨틱스대로, 프록시를 통해 메소드를 호출할 때만 유효하다). 다른 모드(`aspectj`)에선 이 대신 스프링의 AspectJ 트랜잭션 aspect로 클래스를 위빙한다. 이때는 타겟 클래스의 바이트 코드를 수정하기 때문에 메소드를 어떻게 호출해도 트랜잭션이 적용된다. AspectJ 위빙은 클래스패스에 `spring-aspects.jar`가 있어야 하며, 로드 타임 위빙(또는 컴파일 타임 위빙)을 활성화해야 한다. (로드 타임 위빙을 설정하는 자세한 방법은 [스프링 설정](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/core.html#aop-aj-ltw-spring)을 참고해라.) |
-| <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">proxy-target-class</span> | <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">proxyTargetClass</span> | <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">false</span> | `proxy` 모드에서만 적용된다. `@Transactional` 어노테이션을 선언한 클래스에 만들 트랜잭션 프록시 타입을 제어한다. `proxy-target-class` 속성을 `true`로 설정하면 클래스 기반 프록시를 만든다. `proxy-target-class`가 `false`이거나 이 속성을 생략하면, 표준 JDK 인터페이스 기반 프록시를 만든다. (두 프록시 타입은 [프록시 메커니즘](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/core.html#aop-proxying)에서 자세히 설명한다.) |
-| <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">order</span> | <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">order</span> | <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">Ordered.<br />LOWEST_PRECEDENCE</span> | `@Transactional` 어노테이션이 있는 빈에 적용할 트랜잭션 어드바이스의 순서를 정의한다. (AOP 어드바이스 순서와 관련한 자세한 규칙은 [어드바이스 순서 정하기](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/core.html#aop-ataspectj-advice-ordering)를 참고해라.) 순서를 지정하지 않으면 AOP 하위 시스템이 어드바이스 순서를 결정한다. |
+| <span class="custom-blockquote">transaction-manager</span> | N/A ([javadoc](https://docs.spring.io/spring-framework/docs/5.3.2/javadoc-api/org/springframework/transaction/annotation/TransactionManagementConfigurer.html) 참고) | <span class="custom-blockquote">transactionManager</span> | 사용할 트랜잭션 매니저 이름. 위 예제처럼 트랜잭션 매니저 이름이 `transactionManager`가 아닐 때만 사용하면 된다. |
+| <span class="custom-blockquote">mode</span> | <span class="custom-blockquote">mode</span> | <span class="custom-blockquote">proxy</span> | 디폴트 모드(`proxy`)에선 스프링의 AOP 프레임워크로 어노테이션이 달린 빈에 프록시를 적용한다 (앞에서 설명했던 프록시 시맨틱스대로, 프록시를 통해 메소드를 호출할 때만 유효하다). 다른 모드(`aspectj`)에선 이 대신 스프링의 AspectJ 트랜잭션 aspect로 클래스를 위빙한다. 이때는 타겟 클래스의 바이트 코드를 수정하기 때문에 메소드를 어떻게 호출해도 트랜잭션이 적용된다. AspectJ 위빙은 클래스패스에 `spring-aspects.jar`가 있어야 하며, 로드 타임 위빙(또는 컴파일 타임 위빙)을 활성화해야 한다. (로드 타임 위빙을 설정하는 자세한 방법은 [스프링 설정](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/core.html#aop-aj-ltw-spring)을 참고해라.) |
+| <span class="custom-blockquote">proxy-target-class</span> | <span class="custom-blockquote">proxyTargetClass</span> | <span class="custom-blockquote">false</span> | `proxy` 모드에서만 적용된다. `@Transactional` 어노테이션을 선언한 클래스에 만들 트랜잭션 프록시 타입을 제어한다. `proxy-target-class` 속성을 `true`로 설정하면 클래스 기반 프록시를 만든다. `proxy-target-class`가 `false`이거나 이 속성을 생략하면, 표준 JDK 인터페이스 기반 프록시를 만든다. (두 프록시 타입은 [프록시 메커니즘](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/core.html#aop-proxying)에서 자세히 설명한다.) |
+| <span class="custom-blockquote">order</span> | <span class="custom-blockquote">order</span> | <span class="custom-blockquote">Ordered.<br />LOWEST_PRECEDENCE</span> | `@Transactional` 어노테이션이 있는 빈에 적용할 트랜잭션 어드바이스의 순서를 정의한다. (AOP 어드바이스 순서와 관련한 자세한 규칙은 [어드바이스 순서 정하기](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/core.html#aop-ataspectj-advice-ordering)를 참고해라.) 순서를 지정하지 않으면 AOP 하위 시스템이 어드바이스 순서를 결정한다. |
 
 > `@Transactional` 어노테이션은 디폴트로 `proxy` 모드로 처리된다. `proxy` 모드에선 메소드 호출은 프록시를 통해야만 가로 챌 수 있다. 같은 클래스 내에서 메소드를 호출하면 프록시로 요청을 가로챌 수 없다. 이런 상황에서도 요청을 가로채야 한다면 컴파일 타임 위빙이나 로드 타임 위빙과 `aspectj` 모드로 전환하는 걸 생각해봐라.
 
@@ -1603,7 +1603,7 @@ class SimpleProfiler : Ordered {
 
 ### 1.4.9. Using `@Transactional` with AspectJ
 
-AspectJ aspect를 사용하면 스프링 컨테이너 외부에서도 스프링 프레임워크의 `@Transactional`을 쓸 수 있다. 먼저, 클래스에(필요하면 클래스 메소드에) `@Transactional` 어노테이션을 선언하고, 어플리케이션을 `spring-aspects.jar` 파일에 정의된 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.transaction.aspectj.AnnotationTransactionAspect</span>에 연결(위빙)해라. aspect엔 트랜잭션 매니저도 설정해야 한다. 스프링 프레임워크의 IoC 컨테이너로 aspect에 의존성을 주입해도 된다. 트랜잭션 관리 aspect를 설정하는 가장 쉬운 방법은 [@Transactional 사용하기](#transactional-settings)에서 설명한대로 `<tx:annotation-driven/>` 요소를 사용해 `mode` 속성을 `aspectj`로 지정하는 거다. 여기서는 스프링 컨테이너 외부에서 실행할 어플리케이션에 초점을 두기 때문에 트랜잭션을 프로그래밍 방식으로 적용하는 방법을 보여주겠다.
+AspectJ aspect를 사용하면 스프링 컨테이너 외부에서도 스프링 프레임워크의 `@Transactional`을 쓸 수 있다. 먼저, 클래스에(필요하면 클래스 메소드에) `@Transactional` 어노테이션을 선언하고, 어플리케이션을 `spring-aspects.jar` 파일에 정의된 <span class="custom-blockquote">org.springframework.transaction.aspectj.AnnotationTransactionAspect</span>에 연결(위빙)해라. aspect엔 트랜잭션 매니저도 설정해야 한다. 스프링 프레임워크의 IoC 컨테이너로 aspect에 의존성을 주입해도 된다. 트랜잭션 관리 aspect를 설정하는 가장 쉬운 방법은 [@Transactional 사용하기](#transactional-settings)에서 설명한대로 `<tx:annotation-driven/>` 요소를 사용해 `mode` 속성을 `aspectj`로 지정하는 거다. 여기서는 스프링 컨테이너 외부에서 실행할 어플리케이션에 초점을 두기 때문에 트랜잭션을 프로그래밍 방식으로 적용하는 방법을 보여주겠다.
 
 > 계속 하기 전에 [`@Transactional` 사용하기](#146-using-transactional)와 [AOP](https://docs.spring.io/spring-framework/docs/5.3.2/reference/html/core.html#aop)를 모두 읽어보면 좀 더 이해하기 쉬울 거다.
 
@@ -1861,8 +1861,8 @@ class SimpleService(transactionManager: ReactiveTransactionManager) : Service {
 
 `TransactionalOperator`는 두 가지 스타일로 사용할 수 있다:
 
-- 프로젝트 리액터 타입을 사용한 연산자 스타일 (<span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">mono.as(transactionalOperator::transactional)</span>)
-- 그 외 타입에선 콜백 스타일 (<span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">transactionalOperator.execute(TransactionCallback\<T\>)</span>)
+- 프로젝트 리액터 타입을 사용한 연산자 스타일 (<span class="custom-blockquote">mono.as(transactionalOperator::transactional)</span>)
+- 그 외 타입에선 콜백 스타일 (<span class="custom-blockquote">transactionalOperator.execute(TransactionCallback\<T\>)</span>)
 
 콜백 안에서 트랜잭션을 롤백하려면, 다음과 같이 전달받은 `ReactiveTransaction` 객체에서 `setRollbackOnly()` 메소드를 호출하면 된다:
 
@@ -1942,7 +1942,7 @@ class SimpleService(transactionManager: ReactiveTransactionManager) : Service {
 
 #### Using the `PlatformTransactionManager`
 
-명령형 트랜잭션에선 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.transaction.PlatformTransactionManager</span>를 직접 사용해서 트랜잭션을 관리할 수 있다. 트랜잭션이 필요한 빈에 `PlatformTransactionManager` 구현체를 빈 참조로 전달해라. 그러면 `TransactionDefinition`과 `TransactionStatus` 객체를 사용해서 트랜잭션을 시작하고, 롤백하고, 커밋할 수 있다. 사용법은 다음 예제를 참고해라:
+명령형 트랜잭션에선 <span class="custom-blockquote">org.springframework.transaction.PlatformTransactionManager</span>를 직접 사용해서 트랜잭션을 관리할 수 있다. 트랜잭션이 필요한 빈에 `PlatformTransactionManager` 구현체를 빈 참조로 전달해라. 그러면 `TransactionDefinition`과 `TransactionStatus` 객체를 사용해서 트랜잭션을 시작하고, 롤백하고, 커밋할 수 있다. 사용법은 다음 예제를 참고해라:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -1985,7 +1985,7 @@ txManager.commit(status)
 
 #### Using the `ReactiveTransactionManager`
 
-반응형 트랜잭션에선 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.transaction.ReactiveTransactionManager</span>를 직접 사용해서 트랜잭션을 관리할 수 있다. 트랜잭션이 필요한 빈에 `ReactiveTransactionManager` 구현체를 빈 참조로 전달해라. 그러면 `TransactionDefinition`과 `ReactiveTransaction` 객체를 사용해서 트랜잭션을 시작하고, 롤백하고, 커밋할 수 있다. 사용법은 다음 예제를 참고해라:
+반응형 트랜잭션에선 <span class="custom-blockquote">org.springframework.transaction.ReactiveTransactionManager</span>를 직접 사용해서 트랜잭션을 관리할 수 있다. 트랜잭션이 필요한 빈에 `ReactiveTransactionManager` 구현체를 빈 참조로 전달해라. 그러면 `TransactionDefinition`과 `ReactiveTransaction` 객체를 사용해서 트랜잭션을 시작하고, 롤백하고, 커밋할 수 있다. 사용법은 다음 예제를 참고해라:
 
 <div class="switch-language-wrapper java kotlin">
 <span class="switch-language java">java</span>
@@ -2102,7 +2102,7 @@ WebLogic Server 9.0 이상에선 보통 표준 `JtaTransactionManager` 클래스
 
 ### 1.9.1. Using the Wrong Transaction Manager for a Specific `DataSource`
 
-선택한 트랜잭션 기술과 요구 사항에 맞는 `PlatformTransactionManager` 구현체를 사용해라. 스프링 프레임워크는 간단하고 이식 가능한 추상화를 제공할 뿐이며, 제대로 활용하는 것은 개발자 몫이다. 글로벌 트랜잭션을 사용한다면 모든 트랜잭션 연산에 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.transaction.jta.JtaTransactionManager</span> 클래스(또는 [어플리케이션 서버 전용 하위 클래스](#18-application-server-specific-integration))를 사용해야 한다. 그렇지 않으면 트랜잭션 인프라는 컨테이너 `DataSource` 인스턴스같은 리소스로 로컬 트랜잭션을 시도한다. 이런 상황에서 로컬 트랜잭션은 앞뒤가 맞지 않으며, 정상적인 어플리케이션 서버라면 이를 오류로 처리할 거다.
+선택한 트랜잭션 기술과 요구 사항에 맞는 `PlatformTransactionManager` 구현체를 사용해라. 스프링 프레임워크는 간단하고 이식 가능한 추상화를 제공할 뿐이며, 제대로 활용하는 것은 개발자 몫이다. 글로벌 트랜잭션을 사용한다면 모든 트랜잭션 연산에 <span class="custom-blockquote">org.springframework.transaction.jta.JtaTransactionManager</span> 클래스(또는 [어플리케이션 서버 전용 하위 클래스](#18-application-server-specific-integration))를 사용해야 한다. 그렇지 않으면 트랜잭션 인프라는 컨테이너 `DataSource` 인스턴스같은 리소스로 로컬 트랜잭션을 시도한다. 이런 상황에서 로컬 트랜잭션은 앞뒤가 맞지 않으며, 정상적인 어플리케이션 서버라면 이를 오류로 처리할 거다.
 
 ---
 

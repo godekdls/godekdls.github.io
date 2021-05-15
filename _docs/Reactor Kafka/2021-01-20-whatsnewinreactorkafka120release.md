@@ -47,8 +47,8 @@ originalRefLink: https://projectreactor.io/docs/kafka/1.3.1/reference/index.html
 
 이번 섹션에선 아파치 카프카를 사용해 메세지를 생산하고 컨슘하기 위한 리액티브 API를 설명한다. 리액터 카프카엔 두 가지 핵심 인터페이스가 있다:
 
-1. 카프카에 메세지를 발행하는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.sender.KafkaSender</span>
-2. 카프카의 메세지를 컨슘하는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.receiver.KafkaReceiver</span>
+1. 카프카에 메세지를 발행하는 <span class="custom-blockquote">reactor.kafka.sender.KafkaSender</span>
+2. 카프카의 메세지를 컨슘하는 <span class="custom-blockquote">reactor.kafka.receiver.KafkaReceiver</span>
 
 전체 리액터 카프카 API는 [javadocs](https://projectreactor.io/docs/kafka/1.3.1/api/index.html)에서 확인할 수 있다.
 
@@ -58,9 +58,9 @@ originalRefLink: https://projectreactor.io/docs/kafka/1.3.1/reference/index.html
 
 ## 6.2. Reactive Kafka Sender
 
-카프카로 보내는 아웃바운드 메세지는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.sender.KafkaSender</span>로 전송한다. Sender는 thread-safe하며, 여러 스레드에 공유해 처리량을 끌어올릴 수 있다. `KafkaSender`는 카프카로 메세지를 전송할 때 사용하는 `KafkaProducer` 하나와 연결된다.
+카프카로 보내는 아웃바운드 메세지는 <span class="custom-blockquote">reactor.kafka.sender.KafkaSender</span>로 전송한다. Sender는 thread-safe하며, 여러 스레드에 공유해 처리량을 끌어올릴 수 있다. `KafkaSender`는 카프카로 메세지를 전송할 때 사용하는 `KafkaProducer` 하나와 연결된다.
 
-`KafkaSender`는 sender 설정 옵션 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.sender.SenderOptions</span> 인스턴스로 만든다. `KafkaSender`를 만든 후엔 `SenderOptions`를 수정해도 `KafkaSender`에 반영되지 않는다. 부트스트랩 카프카 브로커 리스트나 시리얼라이저같은 `SenderOptions`의 프로퍼티는 내부 `KafkaProducer`로 전달된다. 이런 프로퍼티는 `SenderOptions` 인스턴스 생성 시점에 만들어도 되고, 인스턴스 생성 후에 setter 메소드 `SenderOptions#producerProperty`를 사용해도 된다. 동시에 전송할 수 있는 최대 메세지 수(max in-flight)같은 리액티브 `KafkaSender` 전용 설정 옵션도 `KafkaSender` 인스턴스를 만들기 전에 미리 설정할 수 있다.
+`KafkaSender`는 sender 설정 옵션 <span class="custom-blockquote">reactor.kafka.sender.SenderOptions</span> 인스턴스로 만든다. `KafkaSender`를 만든 후엔 `SenderOptions`를 수정해도 `KafkaSender`에 반영되지 않는다. 부트스트랩 카프카 브로커 리스트나 시리얼라이저같은 `SenderOptions`의 프로퍼티는 내부 `KafkaProducer`로 전달된다. 이런 프로퍼티는 `SenderOptions` 인스턴스 생성 시점에 만들어도 되고, 인스턴스 생성 후에 setter 메소드 `SenderOptions#producerProperty`를 사용해도 된다. 동시에 전송할 수 있는 최대 메세지 수(max in-flight)같은 리액티브 `KafkaSender` 전용 설정 옵션도 `KafkaSender` 인스턴스를 만들기 전에 미리 설정할 수 있다.
 
 `SenderOptions<K, V>`, `KafkaSender<K, V>`의 제네릭 타입은 `KafkaSender`로 발행할 프로듀서 레코드의 키, 값 타입이며, `KafkaSender`를 생성하기 전에 `SenderOptions` 인스턴스에 키, 값의 시리얼라이저를 설정해야 한다.
 
@@ -213,9 +213,9 @@ sender.doOnProducer(producer -> producer.partitionsFor(topic))
 
 ## 6.3. Reactive Kafka Receiver
 
-카프카 토픽에 저장된 메세지는 리액티브 리시버 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.receiver.KafkaReceiver</span>로 컨슘한다. 각 `KafkaReceiver` 인스턴스는 단일 `KafkaConsumer` 인스턴스와 연결된다. 내부 `KafkaConsumer`는 멀티 스레드로 동시에 접근할 수 없기 때문에 `KafkaReceiver`도 thread-safe하지 않다.
+카프카 토픽에 저장된 메세지는 리액티브 리시버 <span class="custom-blockquote">reactor.kafka.receiver.KafkaReceiver</span>로 컨슘한다. 각 `KafkaReceiver` 인스턴스는 단일 `KafkaConsumer` 인스턴스와 연결된다. 내부 `KafkaConsumer`는 멀티 스레드로 동시에 접근할 수 없기 때문에 `KafkaReceiver`도 thread-safe하지 않다.
 
-리시버는 리시버 설정 옵션 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">reactor.kafka.receiver.ReceiverOptions</span> 인스턴스로 만든다. `KafkaReceiver` 인스턴스를 만든 후엔 `ReceiverOptions`를 수정해도 `KafkaReceiver`엔 반영되지 않는다. 부트스트랩 카프카 브로커 리스트나 디시리얼라이저같은 `ReceiverOptions` 프로퍼티는 내부 `KafkaConsumer`로 전달된다. 이런 프로퍼티는 `ReceiverOptions` 인스턴스 생성 시점에 만들어도 되고, 인스턴스 생성 후에 setter 메소드 `ReceiverOptions#consumerProperty`를 사용해도 된다. 구독 토픽같은 리액티브 `KafkaReceiver`용 설정 옵션은 `KafkaReceiver` 인스턴스를 만들기 전에 추가해야 한다.
+리시버는 리시버 설정 옵션 <span class="custom-blockquote">reactor.kafka.receiver.ReceiverOptions</span> 인스턴스로 만든다. `KafkaReceiver` 인스턴스를 만든 후엔 `ReceiverOptions`를 수정해도 `KafkaReceiver`엔 반영되지 않는다. 부트스트랩 카프카 브로커 리스트나 디시리얼라이저같은 `ReceiverOptions` 프로퍼티는 내부 `KafkaConsumer`로 전달된다. 이런 프로퍼티는 `ReceiverOptions` 인스턴스 생성 시점에 만들어도 되고, 인스턴스 생성 후에 setter 메소드 `ReceiverOptions#consumerProperty`를 사용해도 된다. 구독 토픽같은 리액티브 `KafkaReceiver`용 설정 옵션은 `KafkaReceiver` 인스턴스를 만들기 전에 추가해야 한다.
 
 `ReceiverOptions<K, V>`, `KafkaReceiver<K, V>`의 제네릭 타입은 리시버로 컨슘할 컨슈머 레코드의 키, 값 타입이며, `KafkaReceiver`를 생성하기 전에 `ReceiverOptions` 인스턴스에 키, 값의 디시리얼라이저를 설정해야 한다.
 

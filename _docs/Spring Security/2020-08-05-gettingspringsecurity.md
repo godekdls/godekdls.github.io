@@ -197,7 +197,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 **Example 9. build.gradle**
 
-```groovy
+```gradle
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-security"
 }
@@ -207,7 +207,7 @@ dependencies {
 
 **Example 10. build.gradle**
 
-```groovy
+```gradle
 ext['spring-security.version']='5.3.2.RELEASE'
 ```
 
@@ -215,7 +215,7 @@ ext['spring-security.version']='5.3.2.RELEASE'
 
 **Example 11. build.gradle**
 
-```groovy
+```gradle
 ext['spring.version']='5.2.6.RELEASE'
 ```
 
@@ -227,7 +227,7 @@ ext['spring.version']='5.2.6.RELEASE'
 
 **Example 12. build.gradle**
 
-```groovy
+```gradle
 plugins {
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
 }
@@ -243,7 +243,7 @@ dependencyManagement {
 
 **Example 13. build.gradle**
 
-```groovy
+```gradle
 dependencies {
     compile "org.springframework.security:spring-security-web"
     compile "org.springframework.security:spring-security-config"
@@ -256,7 +256,7 @@ dependencies {
 
 **Example 14. build.gradle**
 
-```groovy
+```gradle
 plugins {
     id "io.spring.dependency-management" version "1.0.6.RELEASE"
 }
@@ -276,7 +276,7 @@ dependencyManagement {
 
 **Example 15. build.gradle**
 
-```groovy
+```gradle
 repositories {
     mavenCentral()
 }
@@ -286,7 +286,7 @@ repositories {
 
 **Example 16. build.gradle**
 
-```groovy
+```gradle
 repositories {
     maven { url 'https://repo.spring.io/snapshot' }
 }
@@ -296,7 +296,7 @@ repositories {
 
 **Example 17. build.gradle**
 
-```groovy
+```gradle
 repositories {
     maven { url 'https://repo.spring.io/milestone' }
 }

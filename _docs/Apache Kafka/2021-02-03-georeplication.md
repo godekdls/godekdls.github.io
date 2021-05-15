@@ -210,9 +210,9 @@ primary->secondary.enable = true
 가장 중요한 설정은 다음과 같다:
 
 - `topics`: 소스 클러스터에 있는 복제할 토픽. 토픽 리스트나 정규 표현식으로 표현한다 (디폴트: `topics = .*`).
-- `topics.exclude`: 이후 `topics` 설정에서 매칭되는 토픽을 제외한다. 토픽 리스트나 정규 표현식으로 표현한다 (디폴트: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">topics.exclude = .*[\-\.]internal, .*\.replica, __.*</span>).
+- `topics.exclude`: 이후 `topics` 설정에서 매칭되는 토픽을 제외한다. 토픽 리스트나 정규 표현식으로 표현한다 (디폴트: <span class="custom-blockquote">topics.exclude = .*[\-\.]internal, .*\.replica, __.*</span>).
 - `groups`: 소스 클러스터에 있는 복제할 컨슈머 그룹. 토픽 리스트나 정규 표현식으로 표현한다 (디폴트: `groups = .*`).
-- `groups.exclude`: 이후 `groups` 설정에서 매칭되는 컨슈머 그룹을 제외한다. 토픽 리스트나 정규 표현식으로 표현한다 (디폴트: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">groups.exclude = console-consumer-.*, connect-.*, __.*</span>)
+- `groups.exclude`: 이후 `groups` 설정에서 매칭되는 컨슈머 그룹을 제외한다. 토픽 리스트나 정규 표현식으로 표현한다 (디폴트: <span class="custom-blockquote">groups.exclude = console-consumer-.*, connect-.*, __.*</span>)
 - `{source}->{target}.enable`: `true`로 설정하면 복제 플로우를 활성화한다 (디폴트: `false`).
 
 예시:
@@ -429,7 +429,7 @@ $ ./bin/connect-mirror-maker.sh connect-mirror-maker.properties \
             --clusters us-west
 ```
 
-*컨슈머 그룹 복제를 테스트할 때 주의사항*: 커맨드라인에서 MirrorMaker 설정을 테스트할 땐 `kafka-console-consumer.sh` 툴을 사용할 수도 있는데, MirrorMaker는 기본적으로 이 툴에서 생성한 컨슈머 그룹은 복제하지 않는다. 이 컨슈머 그룹도 복제하고 싶다면 `groups.exclude` 설정을 그에 맞게 수정해라 (디폴트: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">groups.exclude = console-consumer-.*, connect-.*, __.*)</span>. 테스트를 완료 한 후에는 설정을 다시 업데이트해야 한다는 점을 잊지마라.
+*컨슈머 그룹 복제를 테스트할 때 주의사항*: 커맨드라인에서 MirrorMaker 설정을 테스트할 땐 `kafka-console-consumer.sh` 툴을 사용할 수도 있는데, MirrorMaker는 기본적으로 이 툴에서 생성한 컨슈머 그룹은 복제하지 않는다. 이 컨슈머 그룹도 복제하고 싶다면 `groups.exclude` 설정을 그에 맞게 수정해라 (디폴트: <span class="custom-blockquote">groups.exclude = console-consumer-.*, connect-.*, __.*)</span>. 테스트를 완료 한 후에는 설정을 다시 업데이트해야 한다는 점을 잊지마라.
 
 ### Stopping Geo-Replication
 
