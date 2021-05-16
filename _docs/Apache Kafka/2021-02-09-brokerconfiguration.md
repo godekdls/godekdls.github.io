@@ -47,7 +47,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#configuration
 - #### advertised.host.name
 
   DEPRECATED: [`advertised.listeners`](#advertisedlisteners)나 [`listeners`](#listeners)를 설정하지 않았을 때만 적용된다. 이 설정 대신 [`advertised.listeners`](#advertisedlisteners)를 사용해라.<br>
-  클라이언트가 사용할 수 있도록, 주키퍼에 게시할 호스트명. IaaS 환경이라면 브로커가 바인드하는 인터페이스와는 달라야 할 수도 있다. 이 값을 설정하지 않으면 [`host.name`](#hostname) 값을 사용한다. 그 외는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">java.net.InetAddress.getCanonicalHostName()</span>이 반환한 값을 사용한다.
+  클라이언트가 사용할 수 있도록, 주키퍼에 게시할 호스트명. IaaS 환경이라면 브로커가 바인드하는 인터페이스와는 달라야 할 수도 있다. 이 값을 설정하지 않으면 [`host.name`](#hostname) 값을 사용한다. 그 외는 <span class="custom-blockquote">java.net.InetAddress.getCanonicalHostName()</span>이 반환한 값을 사용한다.
 
   |         Type: | string    |
   | ------------: | --------- |

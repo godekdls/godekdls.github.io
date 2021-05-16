@@ -24,7 +24,7 @@ originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/ind
 
 이건 별도의 아티팩트이므로 명시적으로 빌드에 추가해 줘야 한다. 다음은 그래들을 사용한 예제다:
 
-```groovy
+```gradle
 dependencies {
      compile 'io.projectreactor:reactor-core'
      compile 'io.projectreactor.addons:reactor-extra' // (1)

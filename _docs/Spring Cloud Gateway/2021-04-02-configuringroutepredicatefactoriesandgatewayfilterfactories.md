@@ -3,9 +3,9 @@ title: Configuring Route Predicate Factories and Gateway Filter Factories
 category: Spring Cloud Gateway
 order: 5
 permalink: /Spring%20Cloud%20Gateway/configuring-route-predicate-factories-and-gateway-filter-factories/
-description: todo
+description: Route Predicate 팩토리와 Gateway Filter 팩토리를 설정하는 방법
 image: ./../../images/springcloud/logo.jpeg
-lastmod: 2021-04-06T22:00:00+09:00
+lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 게이트웨이
 originalRefLink: https://docs.spring.io/spring-cloud-gateway/docs/3.0.2/reference/html/#configuring-route-predicate-factories-and-gateway-filter-factories

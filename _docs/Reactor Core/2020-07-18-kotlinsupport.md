@@ -37,7 +37,7 @@ originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/ind
 >
 > 따라서 `reactor-core` 모듈에 있는 코틀린 익스텐션은 제거될 예정이다(deprecated). 새 의존성 groupId와 artifactId는 다음과 같다:
 >
-> ```groovy
+> ```gradle
 > io.projectreactor.kotlin:reactor-kotlin-extensions
 > ```
 

@@ -131,7 +131,7 @@ originalRefLink: https://projectreactor.io/docs/netty/1.0.1/reference/index.html
 
 **BOM** 컨셉은 그래들 5 버전부터 지원한다. **BOM**을 임포트하고 **리액터 네티**에 의존성을 추가하는 방법은 다음과 같다:
 
-```groovy
+```gradle
 dependencies {
     // import a BOM
     implementation platform('io.projectreactor:reactor-bom:Dysprosium-SR10') // (1)
@@ -187,7 +187,7 @@ repositories {
 
 **-SNAPSHOTs in Gradle**
 
-```groovy
+```gradle
 repositories {
   maven { url 'https://repo.spring.io/snapshot' }
   mavenCentral()

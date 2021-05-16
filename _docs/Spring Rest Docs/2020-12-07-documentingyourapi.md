@@ -85,18 +85,18 @@ RestAssured.given(this.spec)
 	.get("/").then().assertThat().statusCode(is(200));
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답에 있는 링크를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `links`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `rel`이 `alpha`인 링크가 있는지 검증한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `linkWithRel`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답에 있는 링크를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `links`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `rel`이 `alpha`인 링크가 있는지 검증한다. <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `linkWithRel`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `rel`이 `bravo`인 링크가 있는지 검증한다.</small>
 
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답에 있는 링크를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `links`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `rel`이 `alpha`인 링크가 있는지 검증한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `linkWithRel`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답에 있는 링크를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `links`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `rel`이 `alpha`인 링크가 있는지 검증한다. <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `linkWithRel`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `rel`이 `bravo`인 링크가 있는지 검증한다.</small>
 
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답에 있는 링크를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `links`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `rel`이 `alpha`인 링크가 있는지 검증한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `linkWithRel`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답에 있는 링크를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `links`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `rel`이 `alpha`인 링크가 있는지 검증한다. <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `linkWithRel`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `rel`이 `bravo`인 링크가 있는지 검증한다.</small>
 
 코드를 실행하면 `links.adoc`이란 스니펫을 만들며, 이 스니펫은 리소스 링크를 설명하는 테이블을 가지고 있다.
@@ -107,7 +107,7 @@ RestAssured.given(this.spec)
 
 링크를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
-모든 링크를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 링크를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 `relaxedLinks` 메소드를 사용해라. 일부 링크만 중요한 특정 시나리오를 문서화하기 유용하다.
+모든 링크를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 링크를 문서화할 수도 있다. 이렇게 하려면 <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 `relaxedLinks` 메소드를 사용해라. 일부 링크만 중요한 특정 시나리오를 문서화하기 유용하다.
 
 ### 3.1.1. Hypermedia Link Formats
 
@@ -141,7 +141,7 @@ Atom이나 HAL 형식 링크를 사용하는데 컨텐츠 타입이 다르다면
 		linkWithRel("alpha").description("Link to the alpha resource"),
 		linkWithRel("bravo").description("Link to the bravo resource"))))
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> HAL 형식 링크를 사용한다고 알려준다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `halLinks`를 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> HAL 형식 링크를 사용한다고 알려준다. <span class="custom-blockquote">org.springframework.restdocs.hypermedia.HypermediaDocumentation</span>에 있는 스태틱 메소드 `halLinks`를 사용한다.</small>
 
 API가 Atom도 HAL도 아닌 다른 형식으로 링크를 표현하고 있다면, `LinkExtractor` 인터페이스를 직접 구현해서 응답에서 링크를 추출하면 된다.
 
@@ -214,8 +214,8 @@ RestAssured.given(this.spec).accept("application/json")
 	.when().get("/user/5")
 	.then().assertThat().statusCode(is(200));
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답 페이로드에 있는 필드를 설명하는 스니펫을 만들도록 설정한다. 요청을 문서화할 땐 `requestFields`를 사용하면 된다. 두 스태틱 메소드는 모두 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `contact.email` 패스에 필드가 있는지 검증한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `fieldWithPath`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답 페이로드에 있는 필드를 설명하는 스니펫을 만들도록 설정한다. 요청을 문서화할 땐 `requestFields`를 사용하면 된다. 두 스태틱 메소드는 모두 <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `contact.email` 패스에 필드가 있는지 검증한다. <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `fieldWithPath`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `contact.name` 패스에 필드가 있는지 검증한다.</small>
 
 결과로 만들어지는 스니펫엔 필드를 설명하는 테이블이 추가된다. 요청 문서에서 해당 스니펫 이름은 `request-fields.adoc`, 응답은 `response-fields.adoc`이다.
@@ -254,13 +254,13 @@ RestAssured.given(this.spec).accept("application/json")
 	.when().get("/user/5")
 	.then().assertThat().statusCode(is(200));
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `contact` 패스 하위 섹션을 문서화한다. 이렇게 하면 `contact.email`과 `contact.name`도 문서화한다고 보면 된다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `subsectionWithPath`를 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `contact` 패스 하위 섹션을 문서화한다. 이렇게 하면 `contact.email`과 `contact.name`도 문서화한다고 보면 된다. <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `subsectionWithPath`를 사용한다.</small>
 
 `subsectionWithPath`는 특정 페이로드 섹션에 대한 개요를 제공하는 식으로 활용할 수 있다. 그런 다음 하위 섹션은 별도로 더 자세히 문서화해도 된다. [요청, 응답 페이로드 하위 섹션 문서 작성하기](#322-documenting-a-subsection-of-a-request-or-response-payload)를 참고해라.
 
 필드나 하위 섹션을 아예 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
-모든 필드를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 필드를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 메소드 `relaxedRequestFields`, `relaxedResponseFields`를 사용해라. 페이로드 일부만 중요한 특정 시나리오를 문서화하기 유용하다.
+모든 필드를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 필드를 문서화할 수도 있다. 이렇게 하려면 <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 메소드 `relaxedRequestFields`, `relaxedResponseFields`를 사용해라. 페이로드 일부만 중요한 특정 시나리오를 문서화하기 유용하다.
 
 > 스프링 Rest Docs는 디폴트로 문서화하는 페이로드가 JSON이라고 가정한다. XML 페이로드를 문서화하려면 반드시 요청이나 응답 컨텐츠 타입이 `application/xml`과 호환돼야 한다.
 
@@ -547,7 +547,7 @@ RestAssured.given(this.spec).accept("application/json")
 	.when().get("/locations/1")
 	.then().assertThat().statusCode(is(200));
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답 바디의 하위 섹션만 가지고 있는 스니펫을 만든다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `responseBody`와 `beneathPath`를 사용한다. 요청 바디를 위한 스니펫은 `responseBody` 대신 `requestBody`를 사용하면 된다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답 바디의 하위 섹션만 가지고 있는 스니펫을 만든다. <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `responseBody`와 `beneathPath`를 사용한다. 요청 바디를 위한 스니펫은 `responseBody` 대신 `requestBody`를 사용하면 된다.</small>
 
 결과로 만들어지는 스니펫은 다음 컨텐츠를 가지고 있다:
 
@@ -606,7 +606,7 @@ RestAssured.given(this.spec).accept("application/json")
 	.when().get("/locations/1")
 	.then().assertThat().statusCode(is(200));
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답 페이로드에서 `weather.temperature` 패스 밑에 있는 섹션 필드를 설명하는 스니펫을 만든다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `beneathPath`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 응답 페이로드에서 `weather.temperature` 패스 밑에 있는 섹션 필드를 설명하는 스니펫을 만든다. <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `beneathPath`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `high`와 `low` 필드를 문서화한다.</small>
 
 결과로 만들어지는 스니펫엔 `weather.temperature`의 `high`, `low` 필드를 설명하는 테이블이 있다. 스니펫 이름은 하위 섹션 식별자로 구분한다. 기본적으로 `beneath-${path}`를 식별자로 사용한다. 예를 들어 이전 코드는 `response-fields-beneath-weather.temperature.adoc`이란 스니펫을 만든다.
@@ -651,19 +651,19 @@ RestAssured.given(this.spec)
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 쿼리 스트링에 두 파라미터 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `page` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `page` 파라미터를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `per_page` 파라미터를 문서화한다.</small>
 
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 쿼리 스트링에 두 파라미터 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `page` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `page` 파라미터를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `per_page` 파라미터를 문서화한다.</small>
 
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `page` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParameters`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `page` 파라미터를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `per_page` 파라미터를 문서화한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 쿼리 스트링에 두 파라미터 `page`, `per_page`를 사용해서 `GET` 요청을 수행한다.</small>
 
@@ -713,7 +713,7 @@ RestAssured.given(this.spec)
 
 요청 파라미터를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
-모든 요청 파라미터를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 파라미터를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedRequestParameters` 메소드를 사용해라. 일부 요청 파라미터만 중요한 특정 시나리오를 문서화하기 유용하다.
+모든 요청 파라미터를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 파라미터를 문서화할 수도 있다. 이렇게 하려면 <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedRequestParameters` 메소드를 사용해라. 일부 요청 파라미터만 중요한 특정 시나리오를 문서화하기 유용하다.
 
 ---
 
@@ -755,19 +755,19 @@ RestAssured.given(this.spec)
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 두 패스 파라미터 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `latitude` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `latitude` 파라미터를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `longitude` 파라미터를 문서화한다.</small>
 
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 두 패스 파라미터 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `latitude` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `latitude` 파라미터를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `longitude` 파라미터를 문서화한다.</small>
 
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `latitude` 파라미터를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 패스 파라미터를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `pathParameters`를 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `latitude` 파라미터를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `parameterWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `longitude` 파라미터를 문서화한다</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 두 패스 파라미터 `latitude`, `longitude`를 사용해서 `GET` 요청을 수행한다.</small>
 
@@ -777,7 +777,7 @@ RestAssured.given(this.spec)
 
 패스 파라미터를 문서화할 땐, 요청에 있는 모든 패스 파라미터를 작성하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 패스 파라미터가 요청에 없을 땐, 해당 패스 파라미터를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
 
-모든 파라미터를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 패스 파라미터를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedPathParameters` 메소드를 사용해라. 일부 패스 파라미터만 중요한 특정 시나리오를 문서화하기 유용하다.
+모든 파라미터를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 패스 파라미터를 문서화할 수도 있다. 이렇게 하려면 <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedPathParameters` 메소드를 사용해라. 일부 패스 파라미터만 중요한 특정 시나리오를 문서화하기 유용하다.
 
 패스 파라미터를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
@@ -821,15 +821,15 @@ RestAssured.given(this.spec)
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `file`이란 이름을 가진 part 하나로 `POST` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청의 part를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParts`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `file` part를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `partWithName`을 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청의 part를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParts`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `file` part를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `partWithName`을 사용한다.</small>
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `file`이란 이름을 가진 part 하나로 `POST` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청의 part를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParts`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `file` part를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `partWithName`을 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청의 part를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParts`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `file` part를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `partWithName`을 사용한다.</small>
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청의 part를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParts`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `file` part를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `partWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청의 part를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `requestParts`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `file` part를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 스태틱 메소드 `partWithName`을 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 요청에 `file`이란 이름을 가진 part를 설정한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `/upload`로 `POST` 요청을 보낸다.</small>
 
@@ -837,7 +837,7 @@ RestAssured.given(this.spec)
 
 요청 part를 문서화할 땐, 요청에 있는 모든 part를 작성하지 않으면 테스트는 실패한다. 마찬가지로 문서화한 part가 요청에 없을 땐, 해당 part를 선택 사항으로 마킹하지 않았다면 테스트는 실패한다.
 
-모든 part를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 요청 part를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedRequestParts` 메소드를 사용해라. 일부 요청 part만 중요한 특정 시나리오를 문서화하기 유용하다.
+모든 part를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 요청 part를 문서화할 수도 있다. 이렇게 하려면 <span class="custom-blockquote">org.springframework.restdocs.request.RequestDocumentation</span>에 있는 `relaxedRequestParts` 메소드를 사용해라. 일부 요청 part만 중요한 특정 시나리오를 문서화하기 유용하다.
 
 요청 part를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
@@ -954,7 +954,7 @@ RestAssured.given(this.spec).accept("application/json")
 	.then().assertThat().statusCode(is(200));
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `metadata`라는 요청 part 페이로드에 있는 필드들을 설명하는 스니펫을 만들도록 설정한다. `PayloadDocumentation`에 있는 스태틱 메소드 `requestPartFields`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `version` 패스에 필드가 있는지 검증한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `fieldWithPath`를 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `version` 패스에 필드가 있는지 검증한다. <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 스태틱 메소드 `fieldWithPath`를 사용한다.</small>
 
 결과로 만들어지는 스니펫은 part 필드를 설명하는 테이블을 가지고 있다. 스니펫 이름은 `request-part-${part-name}-fields.adoc`이 된다. 예를 들어 `metadata`란 part를 문서화하면 `request-part-metadata-fields.adoc`이란 스니펫이 생긴다.
 
@@ -962,7 +962,7 @@ RestAssured.given(this.spec).accept("application/json")
 
 필드를 문서화하고 싶지 않다면 무시하도록 마킹해도 된다. 이렇게하면 위에서 언급한 테스트 실패를 방지하고, 만들어진 스니펫에서도 제외할 수 있다.
 
-모든 필드를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 필드를 문서화할 수도 있다. 이렇게 하려면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 `relaxedRequestPartFields` 메소드를 사용해라. 일부 part 페이로드만 중요한 특정 시나리오를 문서화하기 유용하다.
+모든 필드를 문서화하지 않아도 테스트가 실패하지 않도록 완화된 모드로 필드를 문서화할 수도 있다. 이렇게 하려면 <span class="custom-blockquote">org.springframework.restdocs.payload.PayloadDocumentation</span>에 있는 `relaxedRequestPartFields` 메소드를 사용해라. 일부 part 페이로드만 중요한 특정 시나리오를 문서화하기 유용하다.
 
 필드에 대한 설명이나 XML을 쓰는 페이로드 문서화 등에 대한 자세한 정보는 [요청과 응답 페이로드 문서 작성하기 섹션](#32-request-and-response-payloads)을 참고해라.
 
@@ -1030,18 +1030,18 @@ RestAssured.given(this.spec)
 ```
 <div class="description-for-mockmvc mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> basic 인증을 위한 `Authorization` 헤더를 사용해서 `GET` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 헤더를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `requestHeaders`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `Authorization` 헤더를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `headerWithName`을 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 응답 헤더를 설명하는 스니펫을 만든다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `responseHeaders`를 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 헤더를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `requestHeaders`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `Authorization` 헤더를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `headerWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 응답 헤더를 설명하는 스니펫을 만든다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `responseHeaders`를 사용한다.</small>
 <div class="description-for-webtestclient mockmvc webtestclient restassured"></div>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> basic 인증을 위한 `Authorization` 헤더를 사용해서 `GET` 요청을 수행한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 헤더를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `requestHeaders`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `Authorization` 헤더를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `headerWithName`을 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 응답 헤더를 설명하는 스니펫을 만든다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `responseHeaders`를 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 요청 헤더를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `requestHeaders`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `Authorization` 헤더를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `headerWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 응답 헤더를 설명하는 스니펫을 만든다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `responseHeaders`를 사용한다.</small>
 <div class="description-for-restassured mockmvc webtestclient restassured"></div>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 헤더를 설명하는 스니펫을 만들도록 설정한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `requestHeaders`를 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `Authorization` 헤더를 문서화한다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `headerWithName`을 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 응답 헤더를 설명하는 스니펫을 만든다. <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `responseHeaders`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 요청 헤더를 설명하는 스니펫을 만들도록 설정한다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `requestHeaders`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `Authorization` 헤더를 문서화한다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `headerWithName`을 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 응답 헤더를 설명하는 스니펫을 만든다. <span class="custom-blockquote">org.springframework.restdocs.headers.HeaderDocumentation</span>에 있는 스태틱 메소드 `responseHeaders`를 사용한다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 요청에 basic 인증을 위한 `Authorization` 헤더를 설정한다.</small>
 
 결과로 `request-headers.adoc`과 `response-headers.adoc` 스니펫이 만들어진다. 두 스니펫 모두 헤더를 설명하는 테이블을 가지고 있다.
@@ -1178,7 +1178,7 @@ Hibernate Validator에 있는 아래 제약 조건에 대한 기본 설명도 �
 - `SafeHtml`
 - `URL`
 
-디폴트 설명을 재정의하거나 다른 설명을 사용하고 싶다면, base name이 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.restdocs.constraints.ConstraintDescriptions</span>인 리소스 번들을 만들면 된다. [리소스 번들을 사용하는 예시](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas/src/test/resources/org/springframework/restdocs/constraints/ConstraintDescriptions.properties)는 스프링 HATEOAS 기반 샘플에서 확인할 수 있다.
+디폴트 설명을 재정의하거나 다른 설명을 사용하고 싶다면, base name이 <span class="custom-blockquote">org.springframework.restdocs.constraints.ConstraintDescriptions</span>인 리소스 번들을 만들면 된다. [리소스 번들을 사용하는 예시](https://github.com/spring-projects/spring-restdocs/tree/v2.0.5.RELEASE/samples/rest-notes-spring-hateoas/src/test/resources/org/springframework/restdocs/constraints/ConstraintDescriptions.properties)는 스프링 HATEOAS 기반 샘플에서 확인할 수 있다.
 
 리소스 번들에 있는 각 키에 `.description`을 더한 게 제약 조건의 풀 네임이다. 예를 들어 표준 `@NotNull` 제약 조건의 키는 `javax.validation.constraints.NotNull.description`이다.
 

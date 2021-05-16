@@ -1,6 +1,5 @@
 # ----
 # Site
-
 title: 토리맘의 한글라이즈 프로젝트
 url: "https://godekdls.github.io"
 baseurl:
@@ -8,7 +7,7 @@ google_analytics_key: UA-174135640-1
 show_full_navigation: true
 
 ## 카테고리 정렬을 위한 커스텀
-category-list: ['Spring Batch', 'Spring Web on Reactive Stack', 'Spring Security', 'Spring REST Docs', 'Spring Data R2DBC', 'Spring Data Access', 'Spring Cloud Config', 'Spring Cloud Gateway', 'Reactor Core', 'Reactor Netty', 'Reactor Kafka', 'Apache Kafka']
+category-list: ['Spring Batch', 'Spring Web on Reactive Stack', 'Spring Security', 'Spring REST Docs', 'Spring Data R2DBC', 'Spring Data Access', 'Spring Cloud Config', 'Spring Cloud Gateway', 'Spring Cloud Circuit Breaker', 'Resilience4j', 'Reactor Core', 'Reactor Netty', 'Reactor Kafka', 'Apache Kafka']
 
 # Values for the jekyll-seo-tag gem (https://github.com/jekyll/jekyll-seo-tag)
 logo: /siteicon.png

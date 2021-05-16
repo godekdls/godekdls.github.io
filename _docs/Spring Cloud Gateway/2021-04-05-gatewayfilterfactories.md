@@ -717,14 +717,14 @@ spring:
 
 추가하는 헤더는 다음과 같다 (기본값도 함께 표기했다):
 
-- `X-Xss-Protection:1` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(mode=block)</span>
-- `Strict-Transport-Security` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(max-age=631138519)</span>
-- `X-Frame-Options` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(DENY)</span>
-- `X-Content-Type-Options` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(nosniff)</span>
-- `Referrer-Policy` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(no-referrer)</span>
-- `Content-Security-Policy` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(default-src 'self' https:; font-src 'self' https: data:; img-src 'self' https: data:; object-src 'none'; script-src https:; style-src 'self' https: 'unsafe-inline)'</span>
-- `X-Download-Options` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(noopen)</span>
-- `X-Permitted-Cross-Domain-Policies` <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">(none)</span>
+- `X-Xss-Protection:1` <span class="custom-blockquote">(mode=block)</span>
+- `Strict-Transport-Security` <span class="custom-blockquote">(max-age=631138519)</span>
+- `X-Frame-Options` <span class="custom-blockquote">(DENY)</span>
+- `X-Content-Type-Options` <span class="custom-blockquote">(nosniff)</span>
+- `Referrer-Policy` <span class="custom-blockquote">(no-referrer)</span>
+- `Content-Security-Policy` <span class="custom-blockquote">(default-src 'self' https:; font-src 'self' https: data:; img-src 'self' https: data:; object-src 'none'; script-src https:; style-src 'self' https: 'unsafe-inline)'</span>
+- `X-Download-Options` <span class="custom-blockquote">(noopen)</span>
+- `X-Permitted-Cross-Domain-Policies` <span class="custom-blockquote">(none)</span>
 
 기본값을 변경하려면 `spring.cloud.gateway.filter.secure-headers` 네임스페이스에 적절한 프로퍼티를 설정해라. 다음과 같은 프로퍼티를 이용할 수 있다:
 

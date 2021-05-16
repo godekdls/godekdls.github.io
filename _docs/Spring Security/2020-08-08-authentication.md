@@ -1066,7 +1066,7 @@ uniqueMember: uid=admin,ou=people,dc=springframework,dc=org
 </dependency>
 ```
 <div class="language-only-for-gradle maven gradle"></div>
-```groovy
+```gradle
 depenendencies {
     runtimeOnly "com.unboundid:unboundid-ldapsdk:4.0.14"
 }
@@ -1131,7 +1131,7 @@ fun ldapContainer(): UnboundIdContainer {
 </dependency>
 ```
 <div class="language-only-for-gradle maven gradle"></div>
-```groovy
+```gradle
 depenendencies {
     runtimeOnly "org.apache.directory.server:apacheds-core:1.5.5"
     runtimeOnly "org.apache.directory.server:apacheds-server-jndi:1.5.5"
@@ -2074,7 +2074,7 @@ class="org.springframework.security.authentication.jaas.DefaultJaasAuthenticatio
 
 다음과 같은 JAAS 로그인 설정 파일 `/WEB-INF/login.conf`가 있다고 가정해보자:
 
-```groovy
+```gradle
 JAASTest {
     sample.SampleLoginModule required;
 };

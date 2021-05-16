@@ -20,7 +20,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#consumerconfigs
 
 - #### key.deserializer
 
-  <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.apache.kafka.common.serialization.Deserializer</span> 인터페이스를 구현한 키의 디시리얼라이저 클래스.
+  <span class="custom-blockquote">org.apache.kafka.common.serialization.Deserializer</span> 인터페이스를 구현한 키의 디시리얼라이저 클래스.
 
   |         Type: | class |
   | ------------: | ----- |
@@ -30,7 +30,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#consumerconfigs
 
 - #### value.deserializer
 
-  <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.apache.kafka.common.serialization.Deserializer</span> 인터페이스를 구현한 value의 디시리얼라이저 클래스.
+  <span class="custom-blockquote">org.apache.kafka.common.serialization.Deserializer</span> 인터페이스를 구현한 value의 디시리얼라이저 클래스.
 
   |         Type: | class |
   | ------------: | ----- |

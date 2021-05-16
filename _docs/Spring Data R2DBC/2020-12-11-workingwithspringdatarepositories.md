@@ -431,9 +431,9 @@ List<User> findByLastname(String lastname, Pageable pageable);
 
 > `Sort`와 `Pageable`을 처리하는 API에선 이 값을 모두 non-`null`로 간주한다. 정렬이나 페이징을 사용하지 않을 때는 `Sort.unsorted()`와 `Pageable.unpaged()`를 사용해라.
 
-첫 번째 메소드에선 쿼리 메소드에 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.data.domain.Pageable</span> 인스턴스를 넘겨 정적으로 정의한 쿼리에 동적인 페이징을 추가있다. `Page` 인터페이스는 전체 요소 갯수와 유효한 페이지 수를 담고있다. 따라서 인프라에서 카운트 쿼리를 트리거해 전체 숫자를 계산한다. 계산 비용이 부담스럽다면 (사용하는 스토어에 따라), `Page` 대신 `Slice`를 리턴해라. `Slice`로는 다음 `Slice`가 있는지만 알 수 있다. 데이터 셋이 매우 크다면 이 정보만으로도 충분할 거다.
+첫 번째 메소드에선 쿼리 메소드에 <span class="custom-blockquote">org.springframework.data.domain.Pageable</span> 인스턴스를 넘겨 정적으로 정의한 쿼리에 동적인 페이징을 추가있다. `Page` 인터페이스는 전체 요소 갯수와 유효한 페이지 수를 담고있다. 따라서 인프라에서 카운트 쿼리를 트리거해 전체 숫자를 계산한다. 계산 비용이 부담스럽다면 (사용하는 스토어에 따라), `Page` 대신 `Slice`를 리턴해라. `Slice`로는 다음 `Slice`가 있는지만 알 수 있다. 데이터 셋이 매우 크다면 이 정보만으로도 충분할 거다.
 
-`Pageable` 인스턴스는 정렬 옵션도 처리한다. 정렬만 필요하다면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.data.domain.Sort</span> 파라미터를 사용해라. 예제에서 보이듯이 `List`를 반환할 수도 있다. `List`를 리턴하면 실제 `Page` 인스턴스를 만들 때 필요한 메타데이터를 만들지 않는다 (다시 말해, 필요할지도 모르는 카운트 쿼리를 추가로 실행하지 않는다). 그보단 주어진 범위 내에 있는 엔티티들만 찾도록 쿼리를 제안하는 역할이라고 보면 된다.
+`Pageable` 인스턴스는 정렬 옵션도 처리한다. 정렬만 필요하다면 <span class="custom-blockquote">org.springframework.data.domain.Sort</span> 파라미터를 사용해라. 예제에서 보이듯이 `List`를 반환할 수도 있다. `List`를 리턴하면 실제 `Page` 인스턴스를 만들 때 필요한 메타데이터를 만들지 않는다 (다시 말해, 필요할지도 모르는 카운트 쿼리를 추가로 실행하지 않는다). 그보단 주어진 범위 내에 있는 엔티티들만 찾도록 쿼리를 제안하는 역할이라고 보면 된다.
 
 > 쿼리 자체로 온전히 가져올 수 있는 페이지가 몇 개인지 알고싶다면, 카운트 쿼리도 함께 트리거해야 한다. 기본적으로 카운트 쿼리는 실제로 트리거하는 쿼리가 파생시킨다.
 
@@ -682,9 +682,9 @@ CompletableFuture<User> findOneByFirstname(String firstname); // (2)
 @Async
 ListenableFuture<User> findOneByLastname(String lastname);    // (3)
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">java.util.concurrent.Future</span>를 리턴 타입으로 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 자바 8 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">java.util.concurrent.CompletableFuture</span>를 리턴 타입으로 사용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;"> org.springframework.util.concurrent.ListenableFuture</span>를 리턴 타입으로 사용한다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> <span class="custom-blockquote">java.util.concurrent.Future</span>를 리턴 타입으로 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 자바 8 <span class="custom-blockquote">java.util.concurrent.CompletableFuture</span>를 리턴 타입으로 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> <span class="custom-blockquote"> org.springframework.util.concurrent.ListenableFuture</span>를 리턴 타입으로 사용한다.</small>
 
 ---
 
@@ -903,7 +903,7 @@ interface PersonRepository extends CrudRepository<Person, Long>, CustomizedSave<
 <repositories base-package="com.acme.repository" repository-impl-postfix="MyPostfix" />
 ```
 
-첫 번째 설정은 커스텀 레포지토리 구현체로 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">com.acme.repository.CustomizedUserRepositoryImpl</span>이란 클래스를 찾는다. 두 번째 예시는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">com.acme.repository.CustomizedUserRepositoryMyPostfix</span>를 찾는다.
+첫 번째 설정은 커스텀 레포지토리 구현체로 <span class="custom-blockquote">com.acme.repository.CustomizedUserRepositoryImpl</span>이란 클래스를 찾는다. 두 번째 예시는 <span class="custom-blockquote">com.acme.repository.CustomizedUserRepositoryMyPostfix</span>를 찾는다.
 
 <span id="repositories.single-repository-behaviour.ambiguity"></span>
 
@@ -1167,7 +1167,7 @@ class UserController {
 
 | `page` | 조회할 페이지. 0부터 시작하며, 디폴트도 0이다.      |
 | `size` | 조회하고 싶은 페이지 크기. 디폴트는 20이다.       |
-| `sort` | 정렬할 프로퍼티들로, `property,property(,ASC|DESC)(,IgnoreCase)` 형식을 사용한다. 디폴트 정렬 방향은 오름차순이며, 대소문자를 구분한다. 프로퍼티별로 방향이나 대소문자 구분 여부를 다르게 지정하고 싶다면 `sort` 파라미터를 여러 개 사용해라.<br> — 예를 들어 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">?sort=firstname&sort=lastname,asc&sort=city,ignorecase.</span> |
+| `sort` | 정렬할 프로퍼티들로, `property,property(,ASC|DESC)(,IgnoreCase)` 형식을 사용한다. 디폴트 정렬 방향은 오름차순이며, 대소문자를 구분한다. 프로퍼티별로 방향이나 대소문자 구분 여부를 다르게 지정하고 싶다면 `sort` 파라미터를 여러 개 사용해라.<br> — 예를 들어 <span class="custom-blockquote">?sort=firstname&sort=lastname,asc&sort=city,ignorecase.</span> |
 
 이 설정을 커스텀하려면 `PageableHandlerMethodArgumentResolverCustomizer`나 `SortHandlerMethodArgumentResolverCustomizer` 인스턴스를 구현한 빈을 등록해라. `customize()` 메소드 호출을 통해 설정을 바꿀 수 있다:
 

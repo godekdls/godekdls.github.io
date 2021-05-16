@@ -263,7 +263,7 @@ public class ApplicationConfiguration extends AbstractR2dbcConfiguration {
 
 스프링 데이터 R2DBC는 `ConnectionFactory`를 검사해 데이터베이스를 알아내고, 그에 따라 적절한 데이터베이스 방언(dialect)을 선택한다. 사용하는 드라이버가 아직 스프링 데이터 R2DBC가 알지 못하는 드라이버라면 자체 [`R2dbcDialect`](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/api/api/org/springframework/data/r2dbc/dialect/R2dbcDialect.html)를 설정해야 한다.
 
-> 방언은 [`DialectResolver`](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/api/org/springframework/data/r2dbc/dialect/DialectResolver.html)가 `ConnectionFactory`를 통해 리졸브하며, 보통은 `ConnectionFactoryMetadata`를 검사한다. 자체 `R2dbcDialect`은 `META-INF/spring.factories`에 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.data.r2dbc.dialect.DialectResolver$R2dbcDialectProvider</span>를 구현한 클래스를 동록하면 스프링이 자동으로 발견할 수 있다. `DialectResolver`는 스프링의 `SpringFactoriesLoader`를 사용해서 클래스패스에 있는 dialect 프로바이더 구현체를 찾는다.
+> 방언은 [`DialectResolver`](https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/api/org/springframework/data/r2dbc/dialect/DialectResolver.html)가 `ConnectionFactory`를 통해 리졸브하며, 보통은 `ConnectionFactoryMetadata`를 검사한다. 자체 `R2dbcDialect`은 `META-INF/spring.factories`에 <span class="custom-blockquote">org.springframework.data.r2dbc.dialect.DialectResolver$R2dbcDialectProvider</span>를 구현한 클래스를 동록하면 스프링이 자동으로 발견할 수 있다. `DialectResolver`는 스프링의 `SpringFactoriesLoader`를 사용해서 클래스패스에 있는 dialect 프로바이더 구현체를 찾는다.
 
 ---
 

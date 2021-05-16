@@ -115,10 +115,10 @@ JDBC 데이터베이스에 접근할 땐 여러 가지 방법 중에서 고를 �
 
 스프링의 JDBC 추상화 프레임워크엔 네 종류의 패키지가 있다:
 
-- `core`: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.core</span> 패키지엔 `JdbcTemplate` 클래스와, 템플릿에서 사용할 여러 가지 콜백 인터페이스, 이와 관련된 다양한 클래스가 들어있다. 하위 패키지 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.core.simple</span>엔 `SimpleJdbcInsert`와 `SimpleJdbcCall` 클래스가 있다. 또 다른 하위 패키지 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.core.namedparam</span>엔 `NamedParameterJdbcTemplate` 클래스와 관련 클래스가 들어있다. [JDBC 코어 클래스로 기본 JDBC 동작과 에러 처리 제어하기](#33-using-the-jdbc-core-classes-to-control-basic-jdbc-processing-and-error-handling), [JDBC 배치 연산](#35-jdbc-batch-operations), [`SimpleJdbc` 클래스로 JDBC 연산 단순화하기](#36-simplifying-jdbc-operations-with-the-simplejdbc-classes)를 참고해라.
-- `datasource`: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.datasource</span> 패키지엔 `DataSource` 접근을 위한 유틸리티 클래스와, JDBC 코드를 수정하지 않고 그대로 Java EE 컨테이너 외부에서 테스트하고 실행할 수 있는 간단한 `DataSource` 구현체가 다양하게 준비돼 있다. 하위 패키지 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springfamework.jdbc.datasource.embedded</span> 패키지에선 HSQL, H2, Derby같은 자바 데이터베이스 엔진을 사용한 임베디드 데이터베이스 생성을 지원한다. [데이터베이스 커넥션 제어하기](#34-controlling-database-connections)와 [임베디드 데이터베이스 지원](#39-embedded-database-support)을 참고해라.
-- `object`: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.object</span> 패키지엔 RDBMS 쿼리, 업데이트, 저장 프로시저를 thread-safe하고 재사용 가능한 객체로 설계할 수 있는 클래스가 들어있다. [JDBC 연산을 자바 객체로 모델링하기](#37-modeling-jdbc-operations-as-java-objects)를 참고해라. JDO에서 본따왔지만, 이때는 쿼리가 객체를 반환하면 저절로 데이터베이스 커넥션이 닫힌다. 여기서 추상화한 JDBC 객체는 좀 더 저수준에 있는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.core</span> 패키지의 추상화에 의존한다.
-- `support`: <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.support</span> 패키지는 `SQLException` 변환 기능과 유틸리티 클래스를 몇 가지 제공한다. JDBC 처리 중에 던져진 예외는 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.dao</span> 패키지에 정의된 예외로 변환된다. 이 말은, 스프링 JDBC 추상화 레이어를 사용하는 코드는 JDBC나 RDBMS 전용 에러 처리를 구현할 필요가 없다는 뜻이다. 변환된 예외는 모두 unchecked exception이므로, 복구할 수 있는 예외만 캐치하고 나머지는 호출한 쪽으로 전파되도록 놔둘 수 있다. [`SQLExceptionTranslator` 사용하기](#333-using-sqlexceptiontranslator)를 참고해라.
+- `core`: <span class="custom-blockquote">org.springframework.jdbc.core</span> 패키지엔 `JdbcTemplate` 클래스와, 템플릿에서 사용할 여러 가지 콜백 인터페이스, 이와 관련된 다양한 클래스가 들어있다. 하위 패키지 <span class="custom-blockquote">org.springframework.jdbc.core.simple</span>엔 `SimpleJdbcInsert`와 `SimpleJdbcCall` 클래스가 있다. 또 다른 하위 패키지 <span class="custom-blockquote">org.springframework.jdbc.core.namedparam</span>엔 `NamedParameterJdbcTemplate` 클래스와 관련 클래스가 들어있다. [JDBC 코어 클래스로 기본 JDBC 동작과 에러 처리 제어하기](#33-using-the-jdbc-core-classes-to-control-basic-jdbc-processing-and-error-handling), [JDBC 배치 연산](#35-jdbc-batch-operations), [`SimpleJdbc` 클래스로 JDBC 연산 단순화하기](#36-simplifying-jdbc-operations-with-the-simplejdbc-classes)를 참고해라.
+- `datasource`: <span class="custom-blockquote">org.springframework.jdbc.datasource</span> 패키지엔 `DataSource` 접근을 위한 유틸리티 클래스와, JDBC 코드를 수정하지 않고 그대로 Java EE 컨테이너 외부에서 테스트하고 실행할 수 있는 간단한 `DataSource` 구현체가 다양하게 준비돼 있다. 하위 패키지 <span class="custom-blockquote">org.springfamework.jdbc.datasource.embedded</span> 패키지에선 HSQL, H2, Derby같은 자바 데이터베이스 엔진을 사용한 임베디드 데이터베이스 생성을 지원한다. [데이터베이스 커넥션 제어하기](#34-controlling-database-connections)와 [임베디드 데이터베이스 지원](#39-embedded-database-support)을 참고해라.
+- `object`: <span class="custom-blockquote">org.springframework.jdbc.object</span> 패키지엔 RDBMS 쿼리, 업데이트, 저장 프로시저를 thread-safe하고 재사용 가능한 객체로 설계할 수 있는 클래스가 들어있다. [JDBC 연산을 자바 객체로 모델링하기](#37-modeling-jdbc-operations-as-java-objects)를 참고해라. JDO에서 본따왔지만, 이때는 쿼리가 객체를 반환하면 저절로 데이터베이스 커넥션이 닫힌다. 여기서 추상화한 JDBC 객체는 좀 더 저수준에 있는 <span class="custom-blockquote">org.springframework.jdbc.core</span> 패키지의 추상화에 의존한다.
+- `support`: <span class="custom-blockquote">org.springframework.jdbc.support</span> 패키지는 `SQLException` 변환 기능과 유틸리티 클래스를 몇 가지 제공한다. JDBC 처리 중에 던져진 예외는 <span class="custom-blockquote">org.springframework.dao</span> 패키지에 정의된 예외로 변환된다. 이 말은, 스프링 JDBC 추상화 레이어를 사용하는 코드는 JDBC나 RDBMS 전용 에러 처리를 구현할 필요가 없다는 뜻이다. 변환된 예외는 모두 unchecked exception이므로, 복구할 수 있는 예외만 캐치하고 나머지는 호출한 쪽으로 전파되도록 놔둘 수 있다. [`SQLExceptionTranslator` 사용하기](#333-using-sqlexceptiontranslator)를 참고해라.
 
 ---
 
@@ -679,7 +679,7 @@ fun countOfActors(exampleActor: Actor): Int {
 
 ### 3.3.3. Using `SQLExceptionTranslator`
 
-`SQLExceptionTranslator`는 `SQLException`을 스프링의 자체 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.dao.DataAccessException</span>으로 변환하기 위한 인터페이스로, 데이터 접근 전략과는 무관하다. 구현체에선 범용 에러(JDBC의 SQLState 코드)나 데이터 접근 기술 전용 에러(오라클 에러 코드)를 사용해서 더 정밀한 로직을 실행할 수 있다.
+`SQLExceptionTranslator`는 `SQLException`을 스프링의 자체 <span class="custom-blockquote">org.springframework.dao.DataAccessException</span>으로 변환하기 위한 인터페이스로, 데이터 접근 전략과는 무관하다. 구현체에선 범용 에러(JDBC의 SQLState 코드)나 데이터 접근 기술 전용 에러(오라클 에러 코드)를 사용해서 더 정밀한 로직을 실행할 수 있다.
 
 `SQLErrorCodeSQLExceptionTranslator`는 디폴트로 사용하는 `SQLExceptionTranslator` 구현체다. 이 구현체는 벤더 전용 코드를 사용하며, `SQLState` 구현체보다 더 정밀하다. 자바빈 클래스 `SQLErrorCodes`를 기반으로 에러 코드를 전환한다. `SQLErrorCodes`는 (이름에서 알 수 있듯이) 팩토리 클래스 `SQLErrorCodesFactory`가 만들고 값을 채운다. 팩토리 클래스에선 설정 파일 `sql-error-codes.xml`을 참고한다. 이 파일은 벤더 업체 코드로 채워져 있으며, 에러 코드는 `DatabaseMetaData`에서 가져온 `DatabaseProductName`을 기반으로 선택한다. 따라서 실제로 사용 중인 데이터베이스의 코드를 사용하게 된다.
 
@@ -1108,7 +1108,7 @@ val dataSource = DriverManagerDataSource().apply {
 
 `DataSourceTransactionManager` 클래스는 단일 JDBC 데이터 소스를 사용하는 `PlatformTransactionManager` 구현체다. 지정한 데이터소스의 JDBC 커넥션을 현재 실행 중인 스레드로 바인딩하므로, 데이터소스 당 하나의 스레드 커넥션만 허용하는 것도 가능하다.
 
-어플리케이션 코드에선 자바 EE의 표준 `DataSource.getConnection`이 아닌 `DataSourceUtils.getConnection(DataSource)`로 JDBC 커넥션을 가져와야 한다. 이 메소드는 checked `SQLException` 대신 unchecked <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.dao</span> exception을 던진다. 모든 프레임워크 클래스(`JdbcTemplate` 등)는 암묵적으로 `DataSourceUtils.getConnection(DataSource)`로 커넥션을 조회한다. `DataSourceTransactionManager`를 사용하지 않으면 `DataSourceUtils.getConnection(DataSource)`는 기존 표준 방식대로 커넥션을 조회한다. 따라서 `DataSourceUtils`는 어떤 상황에서도 사용할 수 있다.
+어플리케이션 코드에선 자바 EE의 표준 `DataSource.getConnection`이 아닌 `DataSourceUtils.getConnection(DataSource)`로 JDBC 커넥션을 가져와야 한다. 이 메소드는 checked `SQLException` 대신 unchecked <span class="custom-blockquote">org.springframework.dao</span> exception을 던진다. 모든 프레임워크 클래스(`JdbcTemplate` 등)는 암묵적으로 `DataSourceUtils.getConnection(DataSource)`로 커넥션을 조회한다. `DataSourceTransactionManager`를 사용하지 않으면 `DataSourceUtils.getConnection(DataSource)`는 기존 표준 방식대로 커넥션을 조회한다. 따라서 `DataSourceUtils`는 어떤 상황에서도 사용할 수 있다.
 
 `DataSourceTransactionManager` 클래스는 격리 수준과, JDBC 구문 쿼리에 적용할 타임아웃 커스텀을 지원한다. 타임아웃을 커스텀하려면 `JdbcTemplate`을 사용하거나 구문을 만들 때마다 `DataSourceUtils.applyTransactionTimeout(..)`  메소드를 호출해야 한다.
 
@@ -1939,7 +1939,7 @@ class JdbcActorDao(dataSource: DataSource) : ActorDao {
 
 ## 3.7. Modeling JDBC Operations as Java Objects
 
-<span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.object</span> 패키지엔 좀 더 객체 지향적인 방식으로 데이터베이스에 접근할 수 있는 클래스가 들어있다. 예를 들어 쿼리를 실행하고 결과를 가져올 때 관계형 컬럼 데이터를 비즈니스 객체의 프로퍼티에 매핑해, 비즈니스 객체를 리스트에 담아서 가져올 수 있다. 저장 프로시저를 실행하거나 update, delete,  insert 문도 실행할 수 있다.
+<span class="custom-blockquote">org.springframework.jdbc.object</span> 패키지엔 좀 더 객체 지향적인 방식으로 데이터베이스에 접근할 수 있는 클래스가 들어있다. 예를 들어 쿼리를 실행하고 결과를 가져올 때 관계형 컬럼 데이터를 비즈니스 객체의 프로퍼티에 매핑해, 비즈니스 객체를 리스트에 담아서 가져올 수 있다. 저장 프로시저를 실행하거나 update, delete,  insert 문도 실행할 수 있다.
 
 > 아래에서 설명하는 여러 가지 RDBMS 연산 클래스([StoredProcedure](#374-using-storedprocedure) 클래스 제외)로 하는 일은 보통 `JdbcTemplate`을 직접 호출해도 가능할 거라 믿는다. DAO 메소드에서 직접 `JdbcTemplate` 메소드를 호출하는 게 (쿼리를 온전한 기능을 갖춘 클래스로 캡슐화하는 게 아니라) 더 간단할 때가 많다. 물론 RDBMS 연산 클래스 사용에 충분한 가치가 있다고 느끼면 사용해도 문제는 없다.
 
@@ -2543,11 +2543,11 @@ val l = jdbcTemplate.query("select id, a_clob, a_blob from lob_table") { rs, _ -
 
 ### 3.8.3. Passing in Lists of Values for IN Clause
 
-SQL 표준에 따르면 row를 조회하기 위한 표현식엔 변수 값의 리스트를 사용할 수 있다. 대표적인 예를 들면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">select * from T_ACTOR where id in (1, 2, 3)</span>을 들 수 있다. 하지만 JDBC 표준 prepared 구문에는 변수 리스트를 바로 사용할 수 없다. 플레이스홀더는 고정된 횟수만 선언할 수 있다. 플레이스홀더 갯수가 다른 구문을 여러 개 준비해두거나, 플레이스홀더가 몇 개 필요한지 알아낸 뒤에 SQL 문자열을 동적으로 생성해야 한다. `NamedParameterJdbcTemplate`, `JdbcTemplate`이 제공하는 named 파라미터 기능에선 후자를 사용한다. 이때는 원시 타입 객체를 `java.util.List`에 담아 전달할 수 있다. 전달한 리스트로 필요한 플레이스홀더를 추가하고, 구문 실행 중에 값을 전달한다.
+SQL 표준에 따르면 row를 조회하기 위한 표현식엔 변수 값의 리스트를 사용할 수 있다. 대표적인 예를 들면 <span class="custom-blockquote">select * from T_ACTOR where id in (1, 2, 3)</span>을 들 수 있다. 하지만 JDBC 표준 prepared 구문에는 변수 리스트를 바로 사용할 수 없다. 플레이스홀더는 고정된 횟수만 선언할 수 있다. 플레이스홀더 갯수가 다른 구문을 여러 개 준비해두거나, 플레이스홀더가 몇 개 필요한지 알아낸 뒤에 SQL 문자열을 동적으로 생성해야 한다. `NamedParameterJdbcTemplate`, `JdbcTemplate`이 제공하는 named 파라미터 기능에선 후자를 사용한다. 이때는 원시 타입 객체를 `java.util.List`에 담아 전달할 수 있다. 전달한 리스트로 필요한 플레이스홀더를 추가하고, 구문 실행 중에 값을 전달한다.
 
 > 값을 한 번에 많이 전달한다면 주의해야 한다. JDBC 표준에서 보장하는 `in` 표현식 리스트에 사용할 수 있는 값은 100개까지다. 100개보다 더 많이 지원하는 데이터베이스도 많지만, 보통은 허용치를 엄격히 제한한다. 예를 들어 오라클의 상한은 1000이다.
 
-원시 타입의 리스트 말고도 객체 배열의 `java.util.List`도 사용할 수 있다. 객체 배열을 사용하면 <span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">select * from T_ACTOR where (id, last_name) in ((1, 'Johnson'), (2, 'Harrop'))</span>과 같이 `in` 절에 표현식을 여럿 정의할 수 있다. 물론, 데이터베이스가 이 구문을 지원해야 가능하다.
+원시 타입의 리스트 말고도 객체 배열의 `java.util.List`도 사용할 수 있다. 객체 배열을 사용하면 <span class="custom-blockquote">select * from T_ACTOR where (id, last_name) in ((1, 'Johnson'), (2, 'Harrop'))</span>과 같이 `in` 절에 표현식을 여럿 정의할 수 있다. 물론, 데이터베이스가 이 구문을 지원해야 가능하다.
 
 ### 3.8.4. Handling Complex Types for Stored Procedure Calls
 
@@ -2672,7 +2672,7 @@ class TestItemStoredProcedure(dataSource: DataSource) : StoredProcedure() {
 
 ## 3.9. Embedded Database Support
 
-<span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.datasource.embedded</span> 패키지에선 임베디드 자바 데이터베이스 엔진을 지원한다. 기본적으로 [HSQL](http://www.hsqldb.org/), [H2](https://www.h2database.com/), [Derby](https://db.apache.org/derby)를 지원한다. API는 확장이 가능하기 때문에, 그외 다른 임베디드 데이터베이스 타입과 `DataSource` 구현체도 연결할 수 있다.
+<span class="custom-blockquote">org.springframework.jdbc.datasource.embedded</span> 패키지에선 임베디드 자바 데이터베이스 엔진을 지원한다. 기본적으로 [HSQL](http://www.hsqldb.org/), [H2](https://www.h2database.com/), [Derby](https://db.apache.org/derby)를 지원한다. API는 확장이 가능하기 때문에, 그외 다른 임베디드 데이터베이스 타입과 `DataSource` 구현체도 연결할 수 있다.
 
 ### 3.9.1. Why Use an Embedded Database?
 
@@ -2886,7 +2886,7 @@ class DataAccessIntegrationTestTemplate {
 
 ## 3.10. Initializing a `DataSource`
 
-<span style="background-color: #404145; color: #FAFAFA; font-size: 0.85em;">org.springframework.jdbc.datasource.init</span> 패키지로는 기존 `DataSource`의 초기화 로직을 실행할 수 있다. 임베디드 데이터베이스도 어플리케이션에서 사용할 `DataSource`를 만들고 초기화할 수 있는 한 가지 방법이다. 하지만 간혹 서버에서 실행되는 인스턴스를 어딘가에서 초기화해야 할 때도 있다.
+<span class="custom-blockquote">org.springframework.jdbc.datasource.init</span> 패키지로는 기존 `DataSource`의 초기화 로직을 실행할 수 있다. 임베디드 데이터베이스도 어플리케이션에서 사용할 `DataSource`를 만들고 초기화할 수 있는 한 가지 방법이다. 하지만 간혹 서버에서 실행되는 인스턴스를 어딘가에서 초기화해야 할 때도 있다.
 
 ### 3.10.1. Initializing a Database by Using Spring XML
 
