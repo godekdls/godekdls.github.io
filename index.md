@@ -32,4 +32,4 @@ includeFooter: false
 | [Spring Cloud Config](/Spring%20Cloud%20Config/contents/) | 3.0.3 | 2021/03 | [ref](https://docs.spring.io/spring-cloud-config/docs/3.0.3/reference/html/) |
 | [Spring Cloud Gateway](/Spring%20Cloud%20Gateway/contents/) | 3.0.2 | 2021/04 | [ref](https://docs.spring.io/spring-cloud-gateway/docs/3.0.2/reference/html/) |
 | [Spring Cloud Circuit Breaker](/Spring%20Cloud%20Circuit%20Breaker/contents/) | 2.0.1 | 2021/05 | [ref](https://docs.spring.io/spring-cloud-circuitbreaker/docs/2.0.1/reference/html/) |
-| [Resilience4j](/resilience4j/contents/) | v1.7.0 | 2021/05 | [ref](https://resilience4j.readme.io/v1.7.0/docs) |
+| [Resilience4j](/Resilience4j/contents/) | v1.7.0 | 2021/05 | [ref](https://resilience4j.readme.io/v1.7.0/docs) |
