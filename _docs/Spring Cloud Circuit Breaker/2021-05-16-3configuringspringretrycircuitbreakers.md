@@ -3,7 +3,7 @@ title: Configuring Spring Retry Circuit Breakers
 category: Spring Cloud Circuit Breaker
 order: 3
 permalink: /Spring%20Cloud%20Circuit%20Breaker/configuring-spring-retry-circuit-breakers/
-description: todo
+description: 스프링 클라우드 Retry 서킷 브레이커 의존성을 추가하고 설정하는 방법
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true

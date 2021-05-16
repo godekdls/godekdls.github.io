@@ -3,10 +3,11 @@ title: Configuring Resilience4J Circuit Breakers
 category: Spring Cloud Circuit Breaker
 order: 2
 permalink: /Spring%20Cloud%20Circuit%20Breaker/configuring-resilience4j-circuit-breakers/
-description: todo
+description: 스프링 클라우드 서킷 브레이커 의존성을 추가하고 설정하는 방법
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
+priority: 0.8
 originalRefName: 스프링 클라우드 서킷 브레이커
 originalRefLink: https://docs.spring.io/spring-cloud-circuitbreaker/docs/2.0.1/reference/html/#configuring-resilience4j-circuit-breakers
 ---
