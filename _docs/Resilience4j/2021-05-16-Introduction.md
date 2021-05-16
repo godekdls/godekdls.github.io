@@ -126,7 +126,7 @@ Resilience4는 몇 가지 코어 모듈과 애드온 모듈을 제공한다:
 
 - `resilience4j-retrofit`: Retrofit 어댑터
 - `resilience4j-feign`: Feign 어댑터
-- `resilience4j-consumer`: 원형 버버 이벤트 컨슈머
+- `resilience4j-consumer`: 원형 버퍼 이벤트 컨슈머
 - `resilience4j-kotlin`: 코틀린 코루틴 지원
 
 ### Frameworks modules
