@@ -5,7 +5,7 @@ category: Resilience4j
 order: 13
 permalink: /Resilience4j/retry-examples/
 description: Retry 사용 예시 한글 번역
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

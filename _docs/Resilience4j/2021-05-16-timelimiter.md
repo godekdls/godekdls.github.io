@@ -4,7 +4,7 @@ category: Resilience4j
 order: 14
 permalink: /Resilience4j/timelimiter/
 description: TimeLimiter 모듈 기본 소개를 한글로 번역한 문서입니다. TimeLimiter 동작 원리와 설정값을 소개합니다.
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

@@ -5,7 +5,7 @@ category: Resilience4j
 order: 24
 permalink: /Resilience4j/micronaut-getting-started/
 description: micronaut과 Resilience4j를 통합하는 방법. 설정 프로퍼티, 어노테이션 소개
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

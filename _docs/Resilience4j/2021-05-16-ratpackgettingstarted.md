@@ -5,7 +5,7 @@ category: Resilience4j
 order: 26
 permalink: /Resilience4j/ratpack-getting-started/
 description: Ratpack과 Resilience4j를 통합하는 방법. 설정 프로퍼티, 어노테이션, 엔드포인트 소개
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

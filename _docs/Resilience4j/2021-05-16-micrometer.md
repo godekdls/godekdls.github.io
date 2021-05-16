@@ -4,7 +4,7 @@ category: Resilience4j
 order: 27
 permalink: /Resilience4j/micrometer/
 description: CircuitBreaker, Retry, Bulkhead, RateLimiter, TimeLimiter를 모니터링할 수 있는 Micrometer 메트릭 소개
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

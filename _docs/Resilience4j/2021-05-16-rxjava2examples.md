@@ -5,7 +5,7 @@ category: Resilience4j
 order: 20
 permalink: /Resilience4j/rxjava2-examples/
 description: resilience4j-rxjava2 모듈 사용 예시
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

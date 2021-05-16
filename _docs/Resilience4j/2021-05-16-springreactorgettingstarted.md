@@ -5,7 +5,7 @@ category: Resilience4j
 order: 21
 permalink: /Resilience4j/spring-reactor-getting-started/
 description: 리액터 전용 연산자를 제공하는 resilience4j-reactor 모듈 소개
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

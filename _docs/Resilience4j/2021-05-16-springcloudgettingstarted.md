@@ -5,7 +5,7 @@ category: Resilience4j
 order: 25
 permalink: /Resilience4j/spring-cloud-getting-started/
 description: 스프링 클라우드 2와 Resilience4j를 통합하는 방법 소개
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j

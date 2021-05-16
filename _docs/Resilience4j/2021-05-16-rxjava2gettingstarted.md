@@ -5,7 +5,7 @@ category: Resilience4j
 order: 19
 permalink: /Resilience4j/rxjava2-getting-started/
 description: RxJava2 전용 연산자를 제공하는 resilience4j-rxjava2 모듈 소개
-image: ./../../images/resilience4j/logo.jpeg
+image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: resilience4j
