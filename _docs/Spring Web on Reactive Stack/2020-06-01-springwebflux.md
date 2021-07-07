@@ -476,7 +476,7 @@ multipart 데이터를 한 번에 파싱해야 한다.
 Forwarded `HTTP` 헤더는 프록시가 원래 요청에 대한 정보를 추가하는 헤더다.
 물론 `X-Forwarded-Host`, `X-Forwarded-Port`, `X-Forwarded-Proto`, 
 `X-Forwarded-Ssl`, `X-Forwarded-Prefix` 같은
-비표준 헤더도 있다.
+비표준 헤더도 존재한다.
 
 `ForwardedHeaderTransformer`는 forwarded 헤더를 보고
 요청의 호스트, 포트, 스킴을 바꿔준 다음, 헤더를 제거하는 컴포넌트다.
@@ -886,7 +886,7 @@ val handler = WebHttpHandlerBuilder.applicationContext(context).build()
 웹플럭스 config는 필요한 빈을 알아서 만들어주고,
 쉽게 설정을 커스텀할 수 있는 콜백 API를 제공한다.
 
-> 스프링부트를 사용해도 이 웹플러스 config로 초기화하며,
+> 스프링 부트를 사용해도 이 웹플러스 config로 초기화하며,
 > 부트가 제공하는 옵션으로 좀 더 편리하게 설정을 관리할 수 있다.
 
 ### 1.3.3. Processing

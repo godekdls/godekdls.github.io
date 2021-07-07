@@ -28,7 +28,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 스프링 데이터는 코틀린을 최우선으로 지원하고 있으므로, 개발자는 마치 스프링 데이터가 코틀린 네이티브 프레임워크인 것처럼 코틀린 어플리케이션을 작성할 수 있다.
 
-스프링 부트와 [코틀린 전용 기능](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-kotlin.html)을 활용하면 가장 쉽게 코틀린으로 스프링 어플리케이션을 빌드할 수 있다. 종합 [튜토리얼](https://spring.io/guides/tutorials/spring-boot-kotlin/)에선 [start.spring.io](https://start.spring.io/#!language=kotlin&type=gradle-project)를 활용해 코틀린으로 스프링 부트 어플리케이션을 빌드하는 방법을 안내한다.
+스프링 부트와 [코틀린 전용 기능](../../Spring%20Boot/kotlin-support/)을 활용하면 가장 쉽게 코틀린으로 스프링 어플리케이션을 빌드할 수 있다. 종합 [튜토리얼](https://spring.io/guides/tutorials/spring-boot-kotlin/)에선 [start.spring.io](https://start.spring.io/#!language=kotlin&type=gradle-project)를 활용해 코틀린으로 스프링 부트 어플리케이션을 빌드하는 방법을 안내한다.
 
 ---
 
@@ -42,7 +42,7 @@ originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/h
 
 코틀린의 핵심 기능 중 하나는 [null safety](https://kotlinlang.org/docs/reference/null-safety.html)로, 컴파일 타임에 깔끔하게 `null` 값을 핸들링할 수 있다. `Optional` 같은 래퍼를 사용하지 않고도 널이 될 수 있는지를 선언하고, 값이 있을 때와 없을 때를 구분해서 표현할 수 있어서, 어플리케이션은 더 안전해진다. (코틀린은 함수형 구조에서도 nullable 값을 허용한다. [comprehensive guide to Kotlin null safety](https://www.baeldung.com/kotlin-null-safety)를 참고하라.)
 
-자바의 타입 시스템에서는 널을 안전하게 표현할 수 있는 방법이 없지만, 스프링 데이터 API는 `org.springframework.lang` 패키지에 있는 어노테이션을 사용한다. 여기 있는 어노테이션은 [JSR-305](https://jcp.org/en/jsr/detail?id=305)를 지원하며, 사용하기도 쉽다. 코틀린에서 사용하는 자바 API 타입은 기본적으로 널 체크를 완화시키는 [플랫폼 타입](https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types)으로 인지한다. [코틀린은 JSR-305 어노테이션을 지원하며](https://github.com/Kotlin/KEEP/blob/jsr-305/proposals/jsr-305-custom-nullability-qualifiers.md), 스프링 nullability 어노테이션으로 전체 스프링 데이터 API에 대해 null-safety를 제공하고, 코틀린 개발자는 컴파일 타임에 `null` 관련 이슈를 더 잘 처리할 수 있다.
+자바의 타입 시스템에서는 null을 안전하게 표현할 수 있는 방법이 없지만, 스프링 데이터 API는 `org.springframework.lang` 패키지에 있는 어노테이션을 사용한다. 여기 있는 어노테이션은 [JSR-305](https://jcp.org/en/jsr/detail?id=305)를 지원하며, 사용하기도 쉽다. 코틀린에서 사용하는 자바 API 타입은 기본적으로 null 체크를 완화시키는 [플랫폼 타입](https://kotlinlang.org/docs/reference/java-interop.html#null-safety-and-platform-types)으로 인지한다. [코틀린은 JSR-305 어노테이션을 지원하며](https://github.com/Kotlin/KEEP/blob/jsr-305/proposals/jsr-305-custom-nullability-qualifiers.md), 스프링 nullability 어노테이션으로 전체 스프링 데이터 API에 대해 null-safety를 제공하고, 코틀린 개발자는 컴파일 타임에 `null` 관련 이슈를 더 잘 처리할 수 있다.
 
 스프링 데이터 레포지토리에 null safety를 적용하는 방법은 [레포지토리 메소드의 Null 처리](../workingwithspringdatarepositories#1147-null-handling-of-repository-methods) 섹션을 참고해라.
 

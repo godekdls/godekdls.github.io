@@ -28,7 +28,7 @@ originalRefLink: https://projectreactor.io/docs/core/3.3.7.RELEASE/reference/ind
 
 리액터 레퍼런스 가이드는 HTML 문서를 제공한다. 최신 버전은 [여기](https://projectreactor.io/docs/core/release/reference/index.html)에서 확인할 수 있다.
 
-이 문서 사본을 직접 만들어서 다른 사람에게 배포할 수 는 있지만, 문서에 대한 비용을 청구해선 안 되며, 배포 형식이 인쇄물이든 디지털 파일이던지 관계없이 저작권 표시를 포함해야 한다.
+이 문서 사본을 만들어 개인 소장하거나 다른 사람들에게 배포할 수는 있지만, 문서에 대한 비용을 청구해선 안 되며, 배포 형식이 인쇄물이든 디지털 파일이던지 관계없이 저작권 표시를 포함해야 한다.
 
 ---
 

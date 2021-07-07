@@ -1130,7 +1130,7 @@ spring:
 
 > `TokenRelayGatewayFilterFactory` 빈은 `ReactiveClientRegistrationRepository` 빈 생성을 트리거하는 적절한 `spring.security.oauth2.client.*` 프로퍼티를 설정했을 때에만 생성된다.
 
-> `TokenRelayGatewayFilterFactory`에서 사용하는 디폴트 `ReactiveOAuth2AuthorizedClientService` 구현체는 인 메모리 데이터 저장소를 사용한다. 좀더 탄탄한 솔루션이 필요하다면 자체 `ReactiveOAuth2AuthorizedClientService` 구현체를 제공해야 한다.
+> `TokenRelayGatewayFilterFactory`에서 사용하는 디폴트 `ReactiveOAuth2AuthorizedClientService` 구현체는 인 메모리 데이터 저장소를 사용한다. 좀 더 탄탄한 솔루션이 필요하다면 자체 `ReactiveOAuth2AuthorizedClientService` 구현체를 제공해야 한다.
 
 ---
 

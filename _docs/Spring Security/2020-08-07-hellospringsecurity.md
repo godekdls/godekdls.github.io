@@ -38,7 +38,7 @@ originalRefLink: https://docs.spring.io/spring-security/site/docs/5.3.2.RELEASE/
 
 ## 8.2. Starting Hello Spring Security Boot
 
-이제 메이븐 플러그인의 `run` goal로 [스프링 부트 어플리케이션을 기동](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#using-boot-running-with-the-maven-plugin)시킬 수 있다. 실행 방법은 다음을 참고하라 (실행 시 제일 앞에 출력되는 내용도 참고):
+이제 메이븐 플러그인의 `run` goal로 [스프링 부트 어플리케이션을 기동](../../Spring%20Boot/developing-with-spring-boot/#673-using-the-maven-plugin)시킬 수 있다. 실행 방법은 다음을 참고하라 (실행 시 제일 앞에 출력되는 내용도 참고):
 
 **Example 46. Running Spring Boot Application**
 

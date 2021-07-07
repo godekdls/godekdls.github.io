@@ -266,16 +266,16 @@ public class AppConfig {
 
 ## 4.3. Configuring a JobRepository
 
-`@EnableBatchProcessing`을 사용하면 `JobRepository`가 제공된다.
-이 섹션은 원하는 repository를 설정하는 방법을 설명한다.
+`@EnableBatchProcessing`을 이용하면 `JobRepository`를 바로 사용할 수 있다.
+이번 섹션에선 repository를 원하는대로 설정하는 방법을 설명한다.
 
-위에서 설명한대로, `JobRepository`는 `JobExecution`나 `StepExecution` 같은 
-스프링 배치에서 사용되는 여러 도메인 오브젝트를 CRUD할 때 필요하다.
-이는 `JobLauncher`, `Job`, `Step` 같은 주요 프레임워크 기능에서 사용된다.
+위에서 설명한대로, `JobRepository`는 영구 저장하는 `JobExecution`이나 `StepExecution` 같이 
+스프링 배치에서 사용하는 여러 도메인 객체를 CRUD할 때 필요하다.
+도메인 객체 CRUD는 `JobLauncher`, `Job`, `Step` 같은 주요 프레임워크 기능에서 필요하다.
 
-자바 기반 설정을 사용한다면 `JobRepository`를 사용하면 된다.
-`DataSource`가 제공된다면 JDBC를 기반으로 한 repository를 제공하며,
-나머지의 경우 Map을 기반으로 한 repository를 제공한다.
+자바 기반 설정을 사용한다면 `JobRepository`가 제공될 거다.
+`DataSource`를 제공했다면 JDBC 기반 repository를,
+그 외는 Map 기반 repository를 제공한다.
 물론 `BatchConfigurer` 인터페이스를 구현해서 `JobRepository` 설정을 커스터마이징할 수도 있다.
 
 ```java
@@ -297,7 +297,7 @@ protected JobRepository createJobRepository() throws Exception {
 위에 있는 옵션 중 필수값은 dataSource와 transactionManager 두 개뿐이다.
 나머지 값들은 따로 설정하지 않으면 위에 보이는 디폴트 값이 사용되는데, 위에는 참고용으로 표기해 두었다.
 max varchar length는 디폴트값이 2500인데,
-[sample schema scripts](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#metaDataSchemaOverview)에서 사용된 long VARCHAR 컬럼의 길이와 같다.
+[샘플 스키마 스크립트](https://docs.spring.io/spring-batch/docs/4.2.x/reference/html/index-single.html#metaDataSchemaOverview)에서 사용한 long VARCHAR 컬럼의 길이와 동일하다.
 
 ### 4.3.1. Transaction Configuration for the JobRepository
 
@@ -358,7 +358,7 @@ protected JobRepository createJobRepository() throws Exception {
 ```
 
 위 예제대로 설정하면 모든 쿼리는 메타 테이블에 "SYSTEM.TEST_"라는 프리픽스를 붙인다.
-BATCH_JOB_EXECUTION는 SYSTEM.TEST_JOB_EXECUTION로 바뀐다.
+BATCH_JOB_EXECUTION는 SYSTEM.TEST_JOB_EXECUTION으로 바뀐다.
 
 > 이 설정은 테이블 프리픽스만을 변경한다. 테이블 명이나 컬럼 명은 해당하지 않는다.
 

@@ -415,7 +415,7 @@ further JDBC access is allowed within this transaction.
 이런 문제는 하이버네이트가 (스프링이) 동기화할 JTA 트랜잭션 매니저를 인식하게 만들면 해결된다. 여기에는 두 가지 옵션이 있다:
 
 - 스프링 `JtaTransactionManager` 빈을 하이버네이트 설정에 전달해라. 가장 쉬운 방법은 `LocalSessionFactoryBean` 빈의 `jtaTransactionManager` 프로퍼티로 빈을 참조시키는 거다 ([하이버네이트 트랜잭션 설정](../transactionmanagement#121-hibernate-transaction-setup)) 참고). 이렇게하면 스프링이 하이버네이트에서도 해당 JTA 전략을 사용할 수 있게 만든다.
-- `LocalSessionFactoryBean`의 "hibernateProperties" 프로퍼티에 하이버네이트의 JTA 관련 프로퍼티를 명시하는 방법도 있다. 예를 들어, "hibernate.transaction.coordinator_class", "hibernate.connection.handling_mode"를, 필요하면 "hibernate.transaction.jta.platform"까지도 설정할 수 있다 (프로퍼티에 대한 자세한 설명은 하이버네이트 메뉴얼 참고).
+- `LocalSessionFactoryBean`의 "hibernateProperties" 프로퍼티에 하이버네이트의 JTA 관련 프로퍼티를 명시하는 방법도 있다. 예를 들어, "hibernate.transaction.coordinator_class", "hibernate.connection.handling_mode"를, 필요하면 "hibernate.transaction.jta.platform"까지도 설정할 수 있다 (프로퍼티에 대한 자세한 설명은 하이버네이트 매뉴얼 참고).
 
 남은 섹션에선 하이버네이트가 JTA `PlatformTransactionManager`를 인식할 때와 인식하지 못할 때 발생하는 순차적인 이벤트를 설명한다.
 

@@ -193,7 +193,7 @@ repositories {
 }
 ```
 
-마찬가지로 스냅샷도 별도의 전용 리포지토리로 제공한다:
+마찬가지로 스냅샷도 별도의 전용 레포지토리로 제공한다:
 
 **Example 3. BUILD-SNAPSHOTs in Maven**
 

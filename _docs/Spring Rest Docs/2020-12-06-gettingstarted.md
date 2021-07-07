@@ -164,7 +164,7 @@ asciidoctor { // (6)
 
 ### 2.3.1. Packaging the Documentation
 
-생성한 문서를 프로젝트 jar 파일에 함께 패키징하고 싶을 거다 — 예를 들어 스프링 부트에서 [스태틱 컨텐츠로 서빙](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#boot-features-spring-mvc-static-content)하는 식으로. 함께 패키징하려면 프로젝트의 빌드 환경을 다음과 같이 설정해라:
+생성한 문서를 프로젝트 jar 파일에 함께 패키징하고 싶을 거다 — 예를 들어 스프링 부트에서 [스태틱 컨텐츠로 서빙](../../Spring%20Boot/developing-web-applications/#static-content)하는 식으로. 함께 패키징하려면 프로젝트의 빌드 환경을 다음과 같이 설정해라:
 
 1. jar 빌드 전에 문서를 생성한다.
 2. 생성한 문서는 jar에 포함시킨다.

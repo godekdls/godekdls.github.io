@@ -67,7 +67,7 @@ public class ConfigServer {
 }
 ```
 
-모든 스프링 부트 어플리케이션이 그렇듯 기본적으로 8080 포트에서 실행되지만, 여러 가지 방법으로 좀더 통념적인 8888 포트로 전환할 수 있다. 가장 쉬운 방법은 `spring.config.name=configserver`(컨피그 서버 jar에는 `configserver.yml`이 내장돼있다)로 기동시키 거다. 이땐 기본 설정 레포지토리도 함께 설정된다. 아니면 다음 예제처럼 자체 `application.properties`를 사용할 수도 있다:
+모든 스프링 부트 어플리케이션이 그렇듯 기본적으로 8080 포트에서 실행되지만, 여러 가지 방법으로 좀 더 통념적인 8888 포트로 전환할 수 있다. 가장 쉬운 방법은 `spring.config.name=configserver`(컨피그 서버 jar에는 `configserver.yml`이 내장돼있다)로 기동시키 거다. 이땐 기본 설정 레포지토리도 함께 설정된다. 아니면 다음 예제처럼 자체 `application.properties`를 사용할 수도 있다:
 
 **application.properties**
 
@@ -188,7 +188,7 @@ spring:
 
 #### Pattern Matching and Multiple Repositories
 
-스프링 클라우드 컨피그에선 어플리케이션이나 프로파일명에 패턴을 매칭해 좀더 복잡한 요구 사항도 지원할 수 있다. 패턴 형식은 다음 예제에 보이듯, 와일드카드를 가진 (와일드카드로 시작하는 패턴은 따옴표로 묶어야 할 수도 있다는 것에 주의) `{application}/{profile}` 이름 리스트로, 콤마로 구분한다.
+스프링 클라우드 컨피그에선 어플리케이션이나 프로파일명에 패턴을 매칭해 좀 더 복잡한 요구 사항도 지원할 수 있다. 패턴 형식은 다음 예제에 보이듯, 와일드카드를 가진 (와일드카드로 시작하는 패턴은 따옴표로 묶어야 할 수도 있다는 것에 주의) `{application}/{profile}` 이름 리스트로, 콤마로 구분한다.
 
 ```yaml
 spring:
@@ -917,7 +917,7 @@ spring:
 > YAML에선 백 슬래시 자체를 이스케이프할 필요 없다. 하지만 서버의 properties 파일에 overrides를 정의할 땐 백 슬래시를 이스케이프해야 한다.
 >
 
-리모트 레포지토리에 `spring.cloud.config.overrideNone=true` 플래그(기본값은 false)를 설정하면, 클라이언트에서 모든 overrides의 우선 순위가 좀더 기본값답게 바뀐다. 이땐 어플리케이션이 자체 값을 환경 변수나 시스템 프로퍼티로 제공할 수 있다.
+리모트 레포지토리에 `spring.cloud.config.overrideNone=true` 플래그(기본값은 false)를 설정하면, 클라이언트에서 모든 overrides의 우선 순위가 좀 더 기본값답게 바뀐다. 이땐 어플리케이션이 자체 값을 환경 변수나 시스템 프로퍼티로 제공할 수 있다.
 
 ---
 

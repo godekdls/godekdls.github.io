@@ -35,7 +35,7 @@ originalRefLink: https://docs.spring.io/spring-restdocs/docs/2.0.5.RELEASE/refer
 ## 6.1. Resources
 
 - [문법 간단 설명](https://asciidoctor.org/docs/asciidoc-syntax-quick-reference)
-- [사용자 메뉴얼](https://asciidoctor.org/docs/user-manual)
+- [사용자 매뉴얼](https://asciidoctor.org/docs/user-manual)
 
 ---
 
@@ -148,4 +148,4 @@ Asciidoctor에서 테이블 셀을 구분할 땐 `|` 문자를 사용한다. 때
 
 ### 6.3.4 Further Reading
 
-좀 더 자세한 테이블 커스텀 방법은 [Asciidoctor 사용자 메뉴얼에 있는 테이블 섹션](https://asciidoctor.org/docs/user-manual/#tables)을 참고해라.
+좀 더 자세한 테이블 커스텀 방법은 [Asciidoctor 사용자 매뉴얼에 있는 테이블 섹션](https://asciidoctor.org/docs/user-manual/#tables)을 참고해라.

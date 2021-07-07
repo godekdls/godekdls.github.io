@@ -208,7 +208,7 @@ public void ldapAuthenticationIsSuccessful() throws Exception {
 
 #### 스프링 시큐리티로 인증하면 왜 세션 ID가 바뀌나요?
 
-스프링 시큐리티는 디폴트 설정에 따라 사용자를 인증하면 세션 ID를 변경한다. 서블릿 3.1이나 그 이상의 컨테이너를 사용하고 있다면 단순히 세션 ID만 변경한다. 구 버전 컨테이너에선 스프링 시큐리티는 기존 세션을 무효화하고, 새 새션을 만들어 세션 데이터를 새 세션으로 옮긴다. 이렇게 세션 식별자를 변경하면 "session-fixation" 공격을 방어할 수 있다. 자세한 내용은 웹 사이트를 검색해보거나 레퍼런스 메뉴얼을 참고해라.
+스프링 시큐리티는 디폴트 설정에 따라 사용자를 인증하면 세션 ID를 변경한다. 서블릿 3.1이나 그 이상의 컨테이너를 사용하고 있다면 단순히 세션 ID만 변경한다. 구 버전 컨테이너에선 스프링 시큐리티는 기존 세션을 무효화하고, 새 새션을 만들어 세션 데이터를 새 세션으로 옮긴다. 이렇게 세션 식별자를 변경하면 "session-fixation" 공격을 방어할 수 있다. 자세한 내용은 웹 사이트를 검색해보거나 레퍼런스 매뉴얼을 참고해라.
 
 #### 톰캣을 사용 중인데 (또는 다른 서블릿 컨테이너), 로그인 페이지엔 HTTPS를 적용했고, 이후엔 HTTP를 사용해요.
 
@@ -287,7 +287,7 @@ URL 패턴과 일치하는 `<intercept-url>` 요소에 `filters='none'` 속성�
 
 사용 중인 기능과 개발 중인 어플리케이션에 따라 다르다. 스프링 시큐리티 3.0에서는 명확하게 구분되는 기능별로 프로젝트 jar를 나눠놨기 때문에 어플리케이션 요구사항에 필요한 스프링 시큐리티 jar를 쉽게 파악할 수 있다. `spring-security-core` jar는 모든 어플리케이션에 필요하다. 웹 어플리케이션을 개발한다면 `spring-security-web` jar가 필요하다. 시큐리티 네임스페이스 설정을 사용한다면 `spring-security-config` jar가, LDAP 지원을 위해서는 `spring-security-ldap` jar가 필요한 식이다.
 
-서드 파티 jar는 매번 그렇게 깔끔하게 구분되진 않는다. 미리 빌드된 샘플 어플리케이션 중 하나에서 WEB-INF/lib 디렉토리를 복사해서 시작하는 것도 좋은 방법이다. 기본적인 어플리케이션은 튜토리얼 샘플로 시작할 수 있다. 임베디드 테스트 서버와 LDAP을 사용하려면 LDAP 샘플로 시작해봐라. 레퍼런스 메뉴얼에는 필수, 선택 여부와 함께 각 스프링 시큐리티 모듈의 일차적인 의존성을 정리한 [부록](../springsecuritydependencies#226-spring-security-dependencies)을 함께 제공한다.
+서드 파티 jar는 매번 그렇게 깔끔하게 구분되진 않는다. 미리 빌드된 샘플 어플리케이션 중 하나에서 WEB-INF/lib 디렉토리를 복사해서 시작하는 것도 좋은 방법이다. 기본적인 어플리케이션은 튜토리얼 샘플로 시작할 수 있다. 임베디드 테스트 서버와 LDAP을 사용하려면 LDAP 샘플로 시작해봐라. 레퍼런스 매뉴얼에는 필수, 선택 여부와 함께 각 스프링 시큐리티 모듈의 일차적인 의존성을 정리한 [부록](../springsecuritydependencies#226-spring-security-dependencies)을 함께 제공한다.
 
 프로젝트를 메이븐으로 빌드한다면, pom.xml에 적절한 스프링 시큐리티 모듈 의존성을 추가하면 프레임워크에 필요한 핵심 jar가 자동으로 받아진다. 스프링 시큐리티 POM 파일에서 "optional"로 표시된 모든 의존성은 필요할때 직접 pom.xml 파일에 추가해야 한다.
 
@@ -423,13 +423,13 @@ public class MyAuthoritiesPopulator implements LdapAuthoritiesPopulator {
 }
 ```
 
-그다음 이 빈을 어플리케이션 컨텍스트에 추가하고 `LdapAuthenticationProvider`에 주입해라. 이 내용은 레퍼런스 메뉴얼 LDAP 챕터에서 스프링 빈을 명시해서 LDAP을 설정하는 방법을 설명하면서 함께 다룬다. 이때는 네임스페이스로 설정할 수 없다. 관련 클래스와 인터페이스의 Javadoc도 참고해야 한다.
+그다음 이 빈을 어플리케이션 컨텍스트에 추가하고 `LdapAuthenticationProvider`에 주입해라. 이 내용은 레퍼런스 매뉴얼 LDAP 챕터에서 스프링 빈을 명시해서 LDAP을 설정하는 방법을 설명하면서 함께 다룬다. 이때는 네임스페이스로 설정할 수 없다. 관련 클래스와 인터페이스의 Javadoc도 참고해야 한다.
 
 #### 네임스페이스로 생성한 빈의 프로퍼티를 수정하고 싶은데, 지원하는 스키마가 없습니다.
 
 네임스페이스를 포기하고 싶진 않은데, 어떻게 해야 하나요?
 
-네임스페이스 기능은 의도적으로 제한했으며, 일반적인 빈으로 할 수 있는 모든 작업을 지원하진 않는다. 빈을 수정하거나 다른 의존성을 주입하는 것같은 간단한 작업은 설정에 `BeanPostProcessor`를 추가하면 된다. 자세한 정보는 [스프링 레퍼런스 메뉴얼](https://docs.spring.io/spring/docs/3.0.x/spring-framework-reference/htmlsingle/spring-framework-reference.html#beans-factory-extension-bpp)에서 확인할 수 있다. `BeanPostProcessor`를 사용하려면 어떤 빈을 생성하는지도 조금은 알고 있어야 하므로, 위에 있는 질의응답 [네임스페이스 요소는 어떤 방식으로 기존 빈 설정에 매핑되나요?](#네임스페이스-요소는-어떤-방식으로-기존-빈-설정에-매핑되나요)에 있는 블로그 문서도 읽어볼 필요가 있다.
+네임스페이스 기능은 의도적으로 제한했으며, 일반적인 빈으로 할 수 있는 모든 작업을 지원하진 않는다. 빈을 수정하거나 다른 의존성을 주입하는 것같은 간단한 작업은 설정에 `BeanPostProcessor`를 추가하면 된다. 자세한 정보는 [스프링 레퍼런스 매뉴얼](https://docs.spring.io/spring/docs/3.0.x/spring-framework-reference/htmlsingle/spring-framework-reference.html#beans-factory-extension-bpp)에서 확인할 수 있다. `BeanPostProcessor`를 사용하려면 어떤 빈을 생성하는지도 조금은 알고 있어야 하므로, 위에 있는 질의응답 [네임스페이스 요소는 어떤 방식으로 기존 빈 설정에 매핑되나요?](#네임스페이스-요소는-어떤-방식으로-기존-빈-설정에-매핑되나요)에 있는 블로그 문서도 읽어볼 필요가 있다.
 
 보통은 `BeanPostProcessor`의 `postProcessBeforeInitialization` 메소드에 필요한 기능을 추가한다. `UsernamePasswordAuthenticationFilter`(`form-login` 요소로 생성된)에서 사용하는 `AuthenticationDetailsSource`를 커스텀한다고 가정해 보자. 요청에서 추출한 `CUSTOM_HEADER` 헤더를 사용자 인증에 사용해 보겠다. 이때 processor 클래스는 다음과 같다:
 

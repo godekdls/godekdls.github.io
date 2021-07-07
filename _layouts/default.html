@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
 <html>
-	<head>
-		<!-- 스크롤 영역 커스텀 (dain) -->
-		<style>
+<head>
+    <!-- 스크롤 영역 커스텀 (dain) -->
+    <style>
 			body {
 				background-color: transparent !important;
 			}
@@ -22,132 +22,149 @@
 				height: 0;
 			}
 		</style>
-		<meta name="google-site-verification" content="g2dLRdMS1SPihdzkf0q6J8FEkrSUOygDgB4bMvtvHXI" />
-		<meta name="naver-site-verification" content="e850929c9ab3443ed8691da60f57be4d2ca369ec" />
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-site-verification" content="g2dLRdMS1SPihdzkf0q6J8FEkrSUOygDgB4bMvtvHXI" />
+    <meta name="naver-site-verification" content="e850929c9ab3443ed8691da60f57be4d2ca369ec" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-		{% seo %}
-		{% feed_meta %}
+    {% seo %}
+    {% feed_meta %}
 
-		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
-		<link rel="stylesheet" href="{{ site.baseurl }}/css/main.css?version=20210514">
-		<link rel="apple-touch-icon" href="{{ site.baseurl }}/apple-touch-icon.png">
-		<link rel="icon" type="image/png" href="{{ site.baseurl }}/touch-icon.png" sizes="192x192">
-		<link rel="icon" type="image/png" href="{{ site.baseurl }}/images/favicon.png">
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic|Open+Sans:400,400italic,600,600italic,700,700italic|Inconsolata:400,700">
+    <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css?version=20210514">
+    <link rel="apple-touch-icon" href="{{ site.baseurl }}/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="{{ site.baseurl }}/touch-icon.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="{{ site.baseurl }}/images/favicon.png">
 
-		{% if jekyll.environment == 'production' and site.google_analytics_key != '' %}
-			<script>
+    {% if jekyll.environment == 'production' and site.google_analytics_key != '' %}
+    <script>
 				window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
 				ga('create', '{{ site.google_analytics_key }}', 'auto');
 				ga('send', 'pageview');
 			</script>
-			<script async src='https://www.google-analytics.com/analytics.js'></script>
-		{% endif %}
-		<script data-ad-client="ca-pub-7249075057379696" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-	</head>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
+    {% endif %}
+    <script data-ad-client="ca-pub-7249075057379696" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
 
-	<body>
-		<header>
-			<h1>
-				<a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/images/emblem.svg" width="40" height="40" alt="{{ site.title }} logo"></a>
-				{{ site.title }}
-				<button type="button" class="open-nav" id="open-nav"></button>
-			</h1>
+<body>
+<header>
+    <h1>
+        <a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/images/emblem.svg" width="40" height="40" alt="{{ site.title }} logo"></a>
+        {{ site.title }}
+        <button type="button" class="open-nav" id="open-nav"></button>
+    </h1>
 
-			<form action="{{ site.baseurl }}/search/" method="get">
-				<input type="text" name="q" id="search-input" placeholder="Search" autofocus>
-				<input type="submit" value="Search" style="display: none;">
-			</form>
+    <form action="{{ site.baseurl }}/search/" method="get">
+        <input type="text" name="q" id="search-input" placeholder="Search" autofocus>
+        <input type="submit" value="Search" style="display: none;">
+    </form>
 
-			<nav {% if site.show_full_navigation %}class="full-navigation"{% endif %}>
-				<ul>
-					<li class="nav-item top-level {% if page.url == '/' %}current{% endif %}">
-						{% assign home = site.html_pages | where: 'url', '/' | first %}
-						<a href="{{ site.baseurl }}/">{{ home.title }}</a>
-					</li>
-					<!--- 커스텀 영역 --->
-					<li class="nav-item top-level {% if page.url == '/whoami/' %}current{% endif %}">
-						{% assign whoami = site.html_pages | where: 'url', '/whoami/' | first %}
-						<a href="{{ site.baseurl }}/whoami/">{{ whoami.title }}</a>
-					</li>
-				</ul>
+    <nav {% if site.show_full_navigation %}class="full-navigation"{% endif %}>
+        <ul>
+            <li class="nav-item top-level {% if page.url == '/' %}current{% endif %}">
+                {% assign home = site.html_pages | where: 'url', '/' | first %}
+                <a href="{{ site.baseurl }}/">{{ home.title }}</a>
+            </li>
+            <!--- 커스텀 영역 --->
+            <li class="nav-item top-level {% if page.url == '/whoami/' %}current{% endif %}">
+                {% assign whoami = site.html_pages | where: 'url', '/whoami/' | first %}
+                <a href="{{ site.baseurl }}/whoami/">{{ whoami.title }}</a>
+            </li>
+        </ul>
 
-				<!-- 프로젝트 리스트 -->
-				<ul id="project-list" style="{% if page.category %}display: none;{% endif %}">
-					{% if page.category %}<li id="open-current-project-contents" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0; cursor: pointer">&gt;&gt; Back to contents</li>{% endif %}
-					{% assign grouped = site.docs | group_by: 'category' %}
-					{% assign sorted_cats = site.category-list %}
-					{% for category in sorted_cats %}
-						{% for group in grouped %}
-							{% if group.name == category %}
-							<li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
-								{% assign items = group.items | sort: 'order' %}
-								<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
-							</li>
-							{% endif %}
-						{% endfor %}
-					{% endfor %}
-				</ul>
-				<!-- 현재 프로젝트 목차 -->
-				<ul id="current-project-contents" style="{% if page.category %}{% else %}display: none;{% endif %}">
-					<li id="close-current-project-contents" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0; cursor: pointer">&lt;&lt; Back to index</li>
-					{% assign currents = site.docs | group_by: 'category' | where_exp: "group", "group.name == page.category" %}
-					{% for group in currents %}
-					<li class="nav-item top-level current">
-						{% assign items = group.items | sort: 'order' %}
-						<a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
-						<ul>
-							{% for item in items %}
-							{% if item.boundary %} <li class="nav-item" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0;"><em>{{ item.boundary }}</em></li>{% endif %}
-							<li class="nav-item nav-contents {% if item.url == page.url %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.url }}">{{ item.navTitle | default: item.title }}</a></li>
-							{% if item.nextNavTitle %} <li class="nav-item {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.nextNavLink }}">{{ item.nextNavTitle }}</a></li>{% endif %}
-							{% endfor %}
-						</ul>
-					</li>
-					{% endfor %}
-				</ul>
+        <!-- 프로젝트 리스트 -->
+        <ul id="project-list" style="{% if page.category %}display: none;{% endif %}">
+            {% if page.category %}<li id="open-current-project-contents" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0; cursor: pointer">&gt;&gt; Back to contents</li>{% endif %}
+            {% assign grouped = site.docs | group_by: 'category' %}
+            {% assign sorted_cats = site.category-list %}
+            {% for category in sorted_cats %}
+            {% for group in grouped %}
+            {% if group.name == category %}
+            <li class="nav-item top-level {% if group.name == page.category %}current{% endif %}">
+                {% assign items = group.items | sort: 'order' %}
+                <a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </ul>
+        <!-- 현재 프로젝트 목차 -->
+        <ul id="current-project-contents" style="{% if page.category %}{% else %}display: none;{% endif %}">
+            <li id="close-current-project-contents" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0; cursor: pointer">&lt;&lt; Back to index</li>
+            {% assign currents = site.docs | group_by: 'category' | where_exp: "group", "group.name == page.category" %}
+            {% for group in currents %}
+            <li class="nav-item top-level current">
+                {% assign items = group.items | sort: 'order' %}
+                {% assign currentItem = items | where:"url", page.url | first %}
+                {% if currentItem.parent %}
+                    {% assign children = items | where: "parent",currentItem.parent | sort: 'order' %}
+                {% endif %}
+                <a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
+                <ul>
+                    {% for item in items %}
+                        {% if item.boundary %} <li class="nav-item" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0;"><em>{{ item.boundary }}</em></li>{% endif %}
+                        {% if item.parent %}
+                            {% if item.isParent %}
+                                <li class="nav-item nav-contents {% if item.parent == currentItem.parent %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.parentUrl }}">{{ item.parent }}</a></li>
+                                {% if item.parent == currentItem.parent %}
+                                    {% for child in children %}
+                                        {% if child.isParent %}
+                                        {% else %}<li class="nav-item nav-contents {% if child.url == page.url %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ child.url }}" style="margin-left: 10px;">{{ child.navTitle | default: child.title }}</a></li>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                        {% else %}
+                            <li class="nav-item nav-contents {% if item.url == page.url %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.url }}">{{ item.navTitle | default: item.title }}</a></li>
+                        {% endif %}
+                        {% if item.nextNavTitle %} <li class="nav-item {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.nextNavLink }}">{{ item.nextNavTitle }}</a></li>{% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
+        </ul>
 
-				<!-- 커스텀!! change log 노출 제거 -->
-<!--				<ul>-->
-<!--					<li class="nav-item top-level {% if page.url == '/changelog/' %}current{% endif %}">-->
-<!--						{% assign changelog = site.html_pages | where: 'url', '/changelog/' | first %}-->
-<!--						<a href="{{ site.baseurl }}/changelog/">{{ changelog.title }}</a>-->
-<!--					</li>-->
-<!--				</ul>-->
-			</nav>
-			<div class="dain-custom-adsense" align="center" style="margin-top: 30px;">
-				{% include adsense.html %}
-			</div>
-		</header>
+        <!-- 커스텀!! change log 노출 제거 -->
+        <!--				<ul>-->
+        <!--					<li class="nav-item top-level {% if page.url == '/changelog/' %}current{% endif %}">-->
+        <!--						{% assign changelog = site.html_pages | where: 'url', '/changelog/' | first %}-->
+        <!--						<a href="{{ site.baseurl }}/changelog/">{{ changelog.title }}</a>-->
+        <!--					</li>-->
+        <!--				</ul>-->
+    </nav>
+    <div class="dain-custom-adsense" align="center" style="margin-top: 30px;">
+        {% include adsense.html %}
+    </div>
+</header>
 
-		<section class="main">
-			<div class="page-header">
-				<h2>{% if page.category %}{{ page.category }}{% else %}{{ site.title }}{% endif %}</h2>
-				<h3>{{ page.title }}</h3>
-			</div>
-			<article class="content">
-				{% if page.completed == false %}{% include warning.html %}{% endif %}
-				{% if page.includeHeader == false %}{% else %}{% include header.html %}{% endif %}
-				{% if page.includeHeader == false %}{% else %}{% include notice.html %}{% endif %}
-				{% if page.includeHeader == false %}{% else %}{% include adsense.html %}{% endif %}
-				{{ content }}
-				{% if page.includeFooter == false %}{% else %}{% include footer.html %}{% endif %}
-			</article>
-		</section>
+<section class="main">
+    <div class="page-header">
+        <h2>{% if page.category %}{{ page.category }}{% else %}{{ site.title }}{% endif %}</h2>
+        <h3>{{ page.title }}</h3>
+    </div>
+    <article class="content">
+        {% if page.completed == false %}{% include warning.html %}{% endif %}
+        {% if page.includeHeader == false %}{% else %}{% include header.html %}{% endif %}
+        {% if page.includeHeader == false %}{% else %}{% include notice.html %}{% endif %}
+        {% if page.includeHeader == false %}{% else %}{% include adsense.html %}{% endif %}
+        {{ content }}
+        {% if page.includeFooter == false %}{% else %}{% include footer.html %}{% endif %}
+    </article>
+</section>
 
-		{% include pagination.html %}
-		{% include adsense.html %}
-		{% include comment.html %}
+{% include pagination.html %}
+{% include adsense.html %}
+{% include comment.html %}
 
-		<script>
+<script>
 			document.getElementById("open-nav").addEventListener("click", function () {
 				document.body.classList.toggle("nav-open");
 			});
 		</script>
 
-		<!-- 현재 프로젝트 목차 close 커스텀 -->
-		<script>
+<!-- 현재 프로젝트 목차 close 커스텀 -->
+<script>
 			document.getElementById("close-current-project-contents").addEventListener("click", function () {
 				document.getElementById("project-list").style.display = 'block'
 				document.getElementById("current-project-contents").style.display = 'none'
@@ -158,8 +175,8 @@
 				});
 		</script>
 
-        <!-- 스크롤 커스텀 -->
-        <script>
+<!-- 스크롤 커스텀 -->
+<script>
             document.querySelector(".scroll-to-top").addEventListener("click", function () {
                     window.scroll({ top: 0, left: 0, behavior: 'smooth' });
                 });
@@ -169,8 +186,8 @@
             }
         </script>
 
-        <!-- 언어 선택 영역 커스텀 -->
-		<script>
+<!-- 언어 선택 영역 커스텀 -->
+<script>
 			function displayElementSibling(selector, value) {
 				document.querySelectorAll(selector).forEach(function (el) {
 					el.nextElementSibling.style.display = value
@@ -202,7 +219,7 @@
 			if (typeof defaultLanguages != 'undefined') {
 				defaultLanguages.forEach(function (defaultLanguage) {
 					showLanguage(defaultLanguage);
-					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured'].forEach(function (language) {
+					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured', 'properties', 'yaml'].forEach(function (language) {
 						if (!defaultLanguages.includes(language)) {
 							hideLanguage(language, defaultLanguage)
 						}
@@ -212,7 +229,7 @@
 			document.querySelectorAll('.switch-language').forEach(function (el) {
 				el.addEventListener('click', function() {
 					showLanguage(el.classList[1]);
-					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured'].forEach(function (language) {
+					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured', 'properties', 'yaml'].forEach(function (language) {
 						if (el.classList[1] !== language) {
 							hideLanguage(language, el.classList[1])
 						}
@@ -220,5 +237,5 @@
 				})
 			})
 		</script>
-	</body>
+</body>
 </html>

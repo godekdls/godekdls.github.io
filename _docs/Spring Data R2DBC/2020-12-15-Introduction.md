@@ -8,6 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2020-12-19T23:00:00+09:00
 comments: true
 boundary: Reference Documentation
+priority: 0.3
 originalRefName: 스프링 데이터 R2DBC
 originalRefLink: https://docs.spring.io/spring-data/r2dbc/docs/1.2.2/reference/html/#introduction
 ---
