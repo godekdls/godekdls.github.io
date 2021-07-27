@@ -338,7 +338,7 @@ $ mvn dependency:tree
 
 ### 4.4.3. Writing the Code
 
-우리의 애플리케이션을 완성하려면 자바 파일을 하나 만들어야 한다. 기본적으로 메이븐은 `src/main/java`에 있는 소스 코드를 컴파일하므로, 이 디렉토리 구조를 만든 다음, `src/main/java/MyApplication.java`라는 파일에 추가해 다음 코드를 넣어라.
+우리의 애플리케이션을 완성하려면 자바 파일을 하나 만들어야 한다. 기본적으로 메이븐은 `src/main/java`에 있는 소스 코드를 컴파일하므로, 이 디렉토리 구조를 만든 다음, `src/main/java/MyApplication.java`라는 파일에 다음 코드를 넣어라.
 
 ```java
 @RestController
