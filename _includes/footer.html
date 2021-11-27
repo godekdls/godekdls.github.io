@@ -1,5 +1,36 @@
 <hr>
+{% assign nextIndex = currentItem.order | plus: 1 %}
+{% for item in items %}
+{% if item.order == nextIndex %}
+<!--<blockquote>-->
+<!--    <div>-->
+<!--        <span style=" font-weight: 600;">Next</span> :-->
+<!--        <span><a href="{{ site.baseurl }}{{ item.url }}">{{ item.title }}</a></span>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--        <small>{{ item.description }}</small>-->
+<!--    </div>-->
+<!--</blockquote>-->
+<blockquote>
+    <div><span style=" font-weight: 600;">Next</span> :</div>
+    <a href="{{ site.baseurl }}{{ item.url }}">
+        <div style="display: table; background-color: white; width: 100%;">
+            <div style="display: table-cell; vertical-align: middle; text-align: center; width: 30%;">
+                <img style="max-width: 158px; max-height: 158px;" src="{{ site.baseurl }}{{ item.image }}">
+            </div>
+            <div style="display: table-cell; vertical-align: middle; padding-left: 12px; height: 158px;">
+                <span style="font-weight: 600;">{{ item.title }}</span><br>
+                <span><small>{{ item.description }}</small></span>
+            </div>
+        </div>
+    </a>
+</blockquote>
+{% endif %}
+{% endfor %}
+
 {% if page.order == 1 %}
 {% else %}
-<blockquote><p>전체 목차는 <a href="../contents/">여기</a>에 있습니다.</p></blockquote>
+<blockquote>
+    <p>전체 목차는 <a href="../contents/">여기</a>에 있습니다.</p>
+</blockquote>
 {% endif %}

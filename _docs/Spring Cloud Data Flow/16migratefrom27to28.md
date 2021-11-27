@@ -1,0 +1,30 @@
+---
+title: Migrate from 2.7 to 2.8
+category: Spring Cloud Data Flow
+order: 16
+permalink: /Spring%20Cloud%20Data%20Flow/installation.migration.2-7-to-2-8/
+description: Spring Cloud Data Flow 2.7 -> 2.8 마이그레이션 가이드
+image: ./../../images/springclouddataflow/logo.png
+lastmod: 2021-07-26T18:30:00+09:00
+comments: true
+originalRefName: 스프링 클라우드 데이터 플로우
+originalRefLink: https://dataflow.spring.io/docs/installation/migration/migration-2-7-to-2-8/
+parent: Installation
+parentUrl: /Spring%20Cloud%20Data%20Flow/installation/
+subparent: Migration
+subparentUrl: /Spring%20Cloud%20Data%20Flow/installation.migration/
+---
+
+---
+
+## Composed Task Property Syntax
+
+Spring Cloud Data Flow 2.8 릴리즈에선 프로퍼티를 지정하는 구문이 더 간단해졌다. 전에는 composed task runner의 프로퍼티를 설정하는 구문은 `app.<composed task definition name>.<app label>.property`였다. 이제 `Composed Task Definition Name`을 지정할 필요가 없기때문에 composed 태스크 프로퍼티는 `app.<app label>.property` 형식으로 설정해야 된다. 이전 프로퍼티 형식도 계속 지원하지만 새 형식을 사용하는 걸 권장한다.
+
+> **참고:** composed 태스크 프로퍼티에 관한 설명은 [여기](https://dataflow.spring.io/docs/feature-guides/batch/composed-task/#setting-property-at-composed-task-launch-time)를 읽어보면 된다.
+
+---
+
+## Microsoft SQL Server
+
+2.8에선 Microsoft SQL Server 전용 Spring Cloud Data Flow 스키마가 일부 수정됐다. `TASK_SEQ` 시퀀스 테이블은 `TASK_SEQ` 시퀀스로 대체한다. 데이터베이스 인스턴스에서 처음으로 Spring Cloud Data Flow 2.8.x를 실행하는 시점에 마이그레이션될 거다.

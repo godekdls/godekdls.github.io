@@ -1,0 +1,40 @@
+---
+title: Kubernetes
+category: Spring Cloud Data Flow
+order: 10
+permalink: /Spring%20Cloud%20Data%20Flow/installation.kubernetes/
+description: 쿠버네티스 환경에 Spring Cloud Data Flow 설치하기
+image: ./../../images/springclouddataflow/logo.png
+lastmod: 2021-07-26T18:30:00+09:00
+comments: true
+originalRefName: 스프링 클라우드 데이터 플로우
+originalRefLink: https://dataflow.spring.io/docs/installation/kubernetes/
+parent: Installation
+parentUrl: /Spring%20Cloud%20Data%20Flow/installation/
+subparent: Kubernetes
+isSubparent: true
+subparentUrl: /Spring%20Cloud%20Data%20Flow/installation.kubernetes/
+priority: 0.3
+---
+
+---
+
+이번 섹션에선 헬름 차트와 `kubectl`을 이용해 **쿠버네티스**에 **Data Flow**를 설치하는 방법을 다룬다.
+
+이 가이드 문서에선 Google Kubernetes Engine에서 Spring Cloud Data Flow를 테스트할 수 있는 환경을 설정하는 방법도 함께 설명한다. 단, 프로덕션 환경을 설정할 때 활용할만한 최종 가이드는 아니다. 자신의 테스트 세팅에 맞게 설정을 조금씩 조정해도 된다. 프로덕션 환경에선 메세지 대기열 저장, 고가용성, 보안 등의 기타 관심사를 훨씬 더 많이 고려해야 한다는 점은 기억해두자. Kubernetes 클러스터를 만드는 것과 관련해서는 [클러스터 생성하기 섹션](../installation.kubernetes.creatingcluster)에 있는 몇 가지 고급 가이드를 참고하면 된다.
+
+> [Creating a Cluster](../installation.kubernetes.creatingcluster)
+>
+> 쿠버네티스 클러스터 생성하기
+
+> [Helm](../installation.kubernetes.helm)
+>
+> 헬름을 사용해 설치하기
+
+> [kubectl](../installation.kubernetes.kubectl)
+>
+> kubectl을 사용해 설치하기
+
+> [Kubernetes Compatibility](../installation.kubernetes.compatibility)
+>
+> 쿠버네티스 버전에 따른 호환성

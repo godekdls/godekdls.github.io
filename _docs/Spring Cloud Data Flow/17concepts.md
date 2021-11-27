@@ -1,0 +1,40 @@
+---
+title: Concepts
+category: Spring Cloud Data Flow
+order: 17
+permalink: /Spring%20Cloud%20Data%20Flow/concepts/
+description: Spring Cloud Data Flow의 아키텍처 소개
+image: ./../../images/springclouddataflow/logo.png
+lastmod: 2021-07-26T18:30:00+09:00
+comments: true
+originalRefName: 스프링 클라우드 데이터 플로우
+originalRefLink: https://dataflow.spring.io/docs/concepts/
+parent: Concepts
+isParent: true
+parentUrl: /Spring%20Cloud%20Data%20Flow/concepts/
+priority: 0.3
+---
+
+---
+
+이 섹션에선 Data Flow의 고수준 아키텍처와 더불어, Data Flow가 생성하고 배포하는 Stream 및 Batch 애플리케이션의 아키텍처 스타일을 소개한다.
+
+> [Architecture](../concepts.architecture)
+>
+> Data Flow의 아키텍처 소개
+
+> [Stream Processing](../concepts.stream-processing)
+>
+> 스트림 처리 프레임워크와 개념
+
+> [Batch Processing](../concepts.batch-processing)
+>
+> 배치 처리 프레임워크와 개념
+
+> [Monitoring](../concepts.monitoring)
+>
+> 서버, Stream, Task 데이터 파이프라인 런타임 모니터링
+
+> [Tooling](../concepts.tooling)
+>
+> 대시보드와 쉘q

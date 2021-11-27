@@ -1,0 +1,70 @@
+---
+title: Contents
+category: Spring Cloud Data Flow
+order: 1
+permalink: /Spring%20Cloud%20Data%20Flow/contents/
+image: ./../../images/springclouddataflow/logo.png
+lastmod: 2021-03-31T22:00:00+09:00
+comments: true
+originalRefName: 스프링 클라우드 데이터 플로우
+originalRefLink: https://dataflow.spring.io/docs/
+originalVersion: 2.9.1
+description: 스프링 클라우드 데이터 플로우 레퍼런스를 한글로 번역한 문서입니다. 버전은 2.9.1 기준입니다.
+---
+
+---
+
+
+목차:
+
+1. [Installation](../installation)
+- [Local Machine](../installation.local-machine)
+  + [Docker Compose](../installation.local-machine.docker-compose)
+  + [Docker Compose Customization](../installation.local-machine.docker-customize)
+  + [Manual](../installation.local-machine.manual)
+- [Cloud Foundry](../installation.cloudfoundry)
+  + [Cloud Foundry CLI](../installation.cloudfoundry.cli)
+  + [Running locally](../installation.cloudfoundry.local)
+- [Kubernetes](../installation.kubernetes)
+  + [Creating a Cluster](../installation.kubernetes.creatingcluster)
+  + [Helm](../installation.kubernetes.helm)
+  + [kubectl](../installation.kubernetes.kubectl)
+  + [Kubernetes Compatibility](../installation.kubernetes.compatibility)
+- [Migration](../installation.migration)
+  * [Migrate from 2.7 to 2.8](../installation.migration.2-7-to-2-8)
+2. [Concepts](../concepts)
+- [Architecture](../concepts.architecture)
+- [Stream Processing](../concepts.stream-processing/)
+- [Batch Processing](../concepts.batch-processing/)
+- [Monitoring](../concepts.monitoring/)
+- [Tooling](../concepts.tooling/)
+3. [Stream Developer guides](../stream-developer-guides)
+- [Getting Started](../stream-developer-guides.getting-started)
+  + [Stream Processing](../stream-developer-guides.getting-started.stream-processing)
+- [Stream Development](../stream-developer-guides.stream-development)
+  + [Stream Application Development](../stream-developer-guides.stream-development.stream-application-development)
+  + [Stream Application Deployment](../stream-developer-guides.stream-development.stream-application-deployment)
+  + [Stream Processing using Spring Cloud Data Flow](../stream-developer-guides.stream-development.stream-processing)
+  + [Spring Application Development on other Messaging Middleware](../stream-developer-guides.stream-development.stream-other-binders)
+- [Programming Models](../stream-developer-guides.programming-models)
+- [Continuous Delivery](../stream-developer-guides.continuous-delivery/)
+  + [Continuous Delivery of Streaming Applications](../stream-developer-guides.continuous-delivery.streaming-applications)
+- [Troubleshooting](../stream-developer-guides.troubleshooting)
+  + [Debugging Stream Applications](../stream-developer-guides.troubleshooting.debugging-stream-applications)
+  + [Debugging Stream applications deployed by Data Flow](../stream-developer-guides.troubleshooting.debugging-stream-applications-in-data-flow)
+4. [Batch Developer guides](../batch-developer-guides)
+- [Getting Started](../batch-developer-guides.getting-started)
+  + [Getting Started with Task Processing](../batch-developer-guides.getting-started.task-processing)
+- [Batch Development](../batch-developer-guides.batch-development)
+  + [Simple Task](../batch-developer-guides.batch-development.simple-task)
+  + [Spring Batch Jobs](../batch-developer-guides.batch-development.spring-batch-jobs)
+  + [Register and Launch a Spring Cloud Task application using Data Flow](../batch-developer-guides.batch-development.data-flow-simple-task)
+  + [Register and launch a Spring Batch application using Data Flow](../batch-developer-guides.batch-development.data-flow-spring-spring)
+  + [Create and launch a Composed Task using Data Flow](../batch-developer-guides.batch-development.data-flow-composed-task)
+  + [Deploying a task application on Kubernetes with Data Flow](../batch-developer-guides.batch-development.data-flow-simple-task-kubernetes)
+  + [Deploying a task application on Cloud Foundry using Spring Cloud Data Flow](../batch-developer-guides.batch-development.data-flow-simple-task-cloudfoundry)
+- [Continuous Deployment](../batch-developer-guides.continuous-deployment)
+  + [Continuous Deployment of task applications](../batch-developer-guides.continuous-deployment.task-applications)
+- [Troubleshooting](../batch-developer-guides.troubleshooting)
+  + [Debugging Batch applications](../batch-developer-guides.troubleshooting.task-apps)
+  + [Debugging Batch applications deployed by Data Flow](../batch-developer-guides.troubleshooting.scdf-tasks)
