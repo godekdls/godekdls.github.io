@@ -164,9 +164,7 @@ Data Flow 대시보드에는 다음과 같이 소스, 프로세서, 싱크 애�
 
 4. `Create Stream`을 클릭해라.
 
-   You can type the name of the stream `usage-cost-logger` when creating the stream.
-   
-   스트림을 생성할 때 스트림 이름을 `usage-cost-logger`로 입력하면 된다.
+   스트림을 생성할 땐 스트림 이름을 `usage-cost-logger`로 입력하면 된다.
 
 ---
 

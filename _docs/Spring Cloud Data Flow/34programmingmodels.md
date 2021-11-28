@@ -187,7 +187,7 @@ curl localhost:9001 -H "Content-type: text/plain" -d "test data"
 
 ## Composing Functional Beans in Processor Applications
 
-기본 제공하는 Spring Cloud Stream `Processor` 애플리케이션들에서 Functional composition은 적용할 수 **없다**. 기존 프로세서의 애플리케이션 로직 전후 중 어디에 함수를 적용해야 하는지가 모호하기 때문이다. 현재 정보만으로는 적용할 위치를 결정하기 어렵다.
+기본 제공하는 Spring Cloud Stream `Processor` 애플리케이션들에선 [Functional composition](../feature-guides.stream.function-composition)을 적용할 수 **없다**. 기존 프로세서의 애플리케이션 로직 전후 중 어디에 함수를 적용해야 하는지가 모호하기 때문이다. 현재 정보만으로는 적용할 위치를 결정하기 어렵다.
 
 하지만 다음과 같이 표준 `java.util.Function` API를 이용해 functional composition을 사용하는 자체 프로세서 애플리케이션을 만드는 건 가능하다:
 

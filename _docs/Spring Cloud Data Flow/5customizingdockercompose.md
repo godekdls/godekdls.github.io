@@ -58,7 +58,7 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-rabbitmq.yml -f .\doc
 
 ## Prometheus & Grafana
 
-[docker-compose-prometheus.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-prometheus.yml) 파일은 `docker-compose.yml`의 디폴트 설정을 확장해서 [프로메테우스와 그라파나를 통한 Steam/Task 모니터링](https://dataflow.spring.io/docs//feature-guides/streams/monitoring/#prometheus)을 활성화한다:
+[docker-compose-prometheus.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-prometheus.yml) 파일은 `docker-compose.yml`의 디폴트 설정을 확장해서 [프로메테우스와 그라파나를 통한 스트림/태스크 모니터링](../feature-guides.stream.monitoring#prometheus)을 활성화한다:
 
 <div class="switch-language-wrapper linux-osx windows">
 <span class="switch-language linux-osx">Linux / OSX</span>
@@ -75,7 +75,7 @@ curl https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1
 docker-compose -f .\docker-compose.yml -f .\docker-compose-prometheus.yml up
 ```
 
-이 확장 설정은 기본 서비스 외에 서비스 디스커버리 위한 `Prometheus`와 `Prometheus-RSocket-Proxy`를 추가하고, 미리 만들어진 Stream, Task 대시보드를 가지고 있는 `Grafana`를 추가한다.
+이 확장 설정은 기본 서비스 외에 서비스 디스커버리 위한 `Prometheus`와 `Prometheus-RSocket-Proxy`를 추가하고, 미리 만들어진 스트림, 태스크 대시보드를 가지고 있는 `Grafana`를 추가한다.
 
 `docker-compose-prometheus.yml` 설정에선 아래에 있는 컨테이너 포트를 호스트 시스템에 노출한다:
 
@@ -84,8 +84,8 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-prometheus.yml up
 | 9090       | 9090            | 프로메테우스 서버 포트. 이 포트를 통해 http://localhost:9090에 있는 프로메테우스 웹 콘솔에 접근한다. |
 | 3000       | 3000            | 그라파나 서버 포트. 이 포트를 통해 http://localhost:3000에 있는 그라파나 대시보드에 접근한다. |
 | 9096       | 9096            | 프로메테우스 RSocket 프록시 (스프링 부트) 서버 포트          |
-| 7001       | 7001            | 프로메테우스 RSocket 프록시 TCP accept 포트.  Stream, Task 애플리케이션의 메트릭을 프록시로 리포트할 땐 이 포트를 사용하도록 설정할 수 있다. |
-| 8086       | 8086            | 프로메테우스 RSocket 프록시 WebSocket 포트. Stream, Task 애플리케이션의 메트릭을 프록시로 리포트할 땐 이 포트를 사용하도록 설정할 수 있다. |
+| 7001       | 7001            | 프로메테우스 RSocket 프록시 TCP accept 포트. 스트림, 태스크 애플리케이션의 메트릭을 프록시로 리포트할 땐 이 포트를 사용하도록 설정할 수 있다. |
+| 8086       | 8086            | 프로메테우스 RSocket 프록시 WebSocket 포트. 스트림, 태스크 애플리케이션의 메트릭을 프록시로 리포트할 땐 이 포트를 사용하도록 설정할 수 있다. |
 
 > `docker-compose-prometheus.yml` 파일에선 Docker 이미지(`springcloud/spring-cloud-dataflow-prometheus-local`, `springcloud/spring-cloud-dataflow-grafana-prometheus`)에 설정한 `DATAFLOW_VERSION` 값과 일치하는 태그가 존재한다고 가정한다.
 
@@ -93,7 +93,7 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-prometheus.yml up
 
 ## InfluxDB & Grafana
 
-[docker-compose-influxdb.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-influxdb.yml) 파일은 `InfluxDB`와 `그라파나`를 통한 Steam /Task 모니터링을 활성화한다. 그라파나는 미리 만들어진 Stream, Task 대시보드를 가지고 있다:
+[docker-compose-influxdb.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-influxdb.yml) 파일은 `InfluxDB`와 `그라파나`를 통한 스트림/태스크 모니터링을 활성화한다. 그라파나는 미리 만들어진 스트림, 태스크 대시보드를 가지고 있다:
 
 <div class="switch-language-wrapper linux-osx windows">
 <span class="switch-language linux-osx">Linux / OSX</span>
@@ -123,7 +123,7 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-influxdb.yml up
 
 ## Wavefront
 
-[docker-compose-wavefront.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-wavefront.yml) 파일은 `Wavefront`를 통한 Steam/Task 모니터링을 활성화하며, Stream, Task 대시보드가 미리 만들어져 있다.
+[docker-compose-wavefront.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-wavefront.yml) 파일은 `Wavefront`를 통한 스트림/태스크 모니터링을 활성화하며, 스트림, 태스크 대시보드가 미리 만들어져 있다.
 
 [Wavefront](https://www.wavefront.com/)는 SaaS 기반 플랫폼으로, 먼저 [사용자 계정을 생성](https://www.wavefront.com/sign-up/)하고 이 계정을 사용해 밑에서 설명하는 대로 환경 변수 `WAVEFRONT_KEY`와 `WAVEFRONT_URI`를 설정해야 한다.
 
@@ -339,4 +339,4 @@ STREAM_APPS_URI=https://dataflow.spring.io/kafka-docker-latest docker-compose -f
 
 Kubernetes 환경에선 디폴트 메이븐 기반 앱 스타터를 배포할 수 없다. `STREAM_APPS_URI` 변수를 설정하면 도커 기반 앱 배포로 전환할 수 있다.
 
-`docker-compose-k8s.yml`에선 타겟 Kubernetes 환경에 `kafka-broker` 서비스가 미리 배포돼 있다고 가정한다. `kafka-broker` 서비스를 배포하려면 [메세지 브로커 선택하기](https://dataflow.spring.io/docs/installation/kubernetes/kubectl/#choose-a-message-broker) 가이드를 따라해라.
+`docker-compose-k8s.yml`에선 타겟 Kubernetes 환경에 `kafka-broker` 서비스가 미리 배포돼 있다고 가정한다. `kafka-broker` 서비스를 배포하려면 [메세지 브로커 선택하기](../installation.kubernetes.kubectl#choose-a-message-broker) 가이드를 따라해라.

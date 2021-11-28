@@ -82,14 +82,14 @@ Spring Cloud Stream을 이용해 스트림 애플리케이션을 작성했거나
 
 Spring Cloud Data Flow를 통하면 UI에서 drag-and-drop designer를 이용하거나, 친숙한 파이프와 필터 구문을 사용하는 DSL<sup>Domain Specific Language</sup>로 스트림을 정의할 수 있다. 자세한 내용은 [Tooling](../concepts.tooling) 가이드를 참고해라.
 
-이제 쿠버네티스나 클라우드 파운드리 환경에 배포할 수 있다. 배포하고 난 뒤에 개별 애플리케이션을 업데이트해야 하는 경우엔 어떨까? Spring Cloud Data Flow는 플랫폼에서 blue/green 배포를 트리거하는 간단한 업그레이드 명령어를 제공해서 업그레이드도 쉽게 진행할 수 있다. 자세한 내용은 [Continuous Delivery](https://dataflow.spring.io/docs/stream-developer-guides/continuous-delivery/) 가이드를 참고해라.
+이제 쿠버네티스나 클라우드 파운드리 환경에 배포할 수 있다. 배포하고 난 뒤에 개별 애플리케이션을 업데이트해야 하는 경우엔 어떨까? Spring Cloud Data Flow는 플랫폼에서 blue/green 배포를 트리거하는 간단한 업그레이드 명령어를 제공해서 업그레이드도 쉽게 진행할 수 있다. 자세한 내용은 [Continuous Delivery](../stream-developer-guides.continuous-delivery) 가이드를 참고해라.
 
-스트림은 흔히 사용하는 다양한 모니터링 시스템을 통해 모니터링할 수 있다. 여기서는 프로메테우스와 InfluxDB로 시연한다. 이제 스트림들은 기본으로 제공하는 그라파나 대시보드 템플릿으로 조회할 수 있다. 자세한 내용은 [모니터링](https://dataflow.spring.io/docs/feature-guides/streams/monitoring/) 섹션을 참고해라.
+스트림은 흔히 사용하는 다양한 모니터링 시스템을 통해 모니터링할 수 있다. 여기서는 프로메테우스와 InfluxDB로 시연한다. 이제 스트림들은 기본으로 제공하는 그라파나 대시보드 템플릿으로 조회할 수 있다. 자세한 내용은 [모니터링](../feature-guides.stream.monitoring) 섹션을 참고해라.
 
 ---
 
 ## Next Steps
 
-미리 빌드돼 있는 애플리케이션을 사용해 스트리밍 데이터 파이프라인을 생성하는데 관심이 있다면 [스트림 시작 가이드](https://dataflow.spring.io/docs/stream-developer-guides/getting-started/)를 읽어봐라.
+미리 빌드돼 있는 애플리케이션을 사용해 스트리밍 데이터 파이프라인을 생성하는데 관심이 있다면 [스트림 시작 가이드](../stream-developer-guides.getting-started)를 읽어봐라.
 
-Spring Cloud Stream을 사용해 커스텀 스트림 처리 애플리케이션을 작성하고 배포하고 싶다면 [스트림 개발자 가이드](https://dataflow.spring.io/docs/stream-developer-guides/streams/)를 읽어봐라.
+Spring Cloud Stream을 사용해 커스텀 스트림 처리 애플리케이션을 작성하고 배포하고 싶다면 [스트림 개발자 가이드](../stream-developer-guides.stream-development)를 읽어봐라.

@@ -272,4 +272,4 @@ kubectl logs -f http-ingest-log-v1-0-2k4r8
 
 ## Monitoring
 
-이 내용은 [스트림 모니터링](https://dataflow.spring.io/docs/feature-guides/streams/monitoring/) 가이드를 확인하면 된다.
+이 내용은 [스트림 모니터링](../feature-guides.stream.monitoring) 가이드를 확인하면 된다.

@@ -46,9 +46,9 @@ Data Flow에서는 처음 시작하는 사람들을 위해 커스텀할 수 있�
 
 모니터링 인프라를 설정하는 자세한 방법은 아래 피처 가이드를 참고해라:
 
-- [서버 모니터링 피처 가이드](https://dataflow.spring.io/docs/feature-guides/general/server-monitoring/)
-- [스트림 모니터링 피처 가이드](https://dataflow.spring.io/docs/feature-guides/streams/monitoring/)
-- [태스크 모니터링 피처 가이드](https://dataflow.spring.io/docs/feature-guides/batch/monitoring/)
+- [서버 모니터링 피처 가이드](../feature-guides.general.server-monitoring)
+- [스트림 모니터링 피처 가이드](../feature-guides.stream.monitoring)
+- [태스크 모니터링 피처 가이드](../feature-guides.batch.monitoring)
 
 다음은 Data Flow에서 모니터링과 그라파나 버튼을 활성화한 모습을 보여주는 이미지다:
 
@@ -66,4 +66,4 @@ Data Flow에서는 처음 시작하는 사람들을 위해 커스텀할 수 있�
 
 ![Wavefront Stream Application Dashboard](./../../images/springclouddataflow/SCDF-monitoring-wavefront-applications.webp)
 
-이어서 Data Flow 모니터링 인프라를 설정하는 세부 방법은 [서버 모니터링 피처 가이드](https://dataflow.spring.io/docs/feature-guides/general/server-monitoring/), [스트림 모니터링 피처 가이드](https://dataflow.spring.io/docs/feature-guides/streams/monitoring/), [태스크 모니터링 피처 가이드](https://dataflow.spring.io/docs/feature-guides/batch/monitoring/)를 읽어봐라.
+이어서 Data Flow 모니터링 인프라를 설정하는 세부 방법은 [서버 모니터링 피처 가이드](../feature-guides.general.server-monitoring), [스트림 모니터링 피처 가이드](../feature-guides.stream.monitoring), [태스크 모니터링 피처 가이드](../feature-guides.batch.monitoring)를 읽어봐라.

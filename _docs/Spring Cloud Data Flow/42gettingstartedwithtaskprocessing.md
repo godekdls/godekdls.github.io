@@ -21,7 +21,7 @@ priority: 0.7
 
 이번 가이드에선 간단한 태스크 정의를 하나 만들어 기동시켜본다.
 
-먼저 태스크 애플리케이션 셋을 제공하는 [Spring Cloud Task App Starters](https://cloud.spring.io/spring-cloud-task-app-starters/)를 사용하는 것으로 시작해보겠다. 그 중에서도, 현재 타임스탬프를 기록하는 기본적인 hello-world-style의 `timestamp` 애플리케이션을 사용한다. 이 가이드에서는 각자 `timestamp` 애플리케이션을 미리 import해서 [설치 가이드](../installation)에 설명했던 방법대로 Spring Cloud Data Flow에 등록했다고 가정한다.
+먼저 태스크 애플리케이션 셋을 제공하는 [Spring Cloud Task App Starters](https://cloud.spring.io/spring-cloud-task-app-starters/)를 사용하는 것으로 시작해보겠다. 그 중에서도, 현재 타임스탬프를 기록하는 기본적인 hello-world-style의 `timestamp` 애플리케이션을 사용한다. 이 가이드에서는 각자 [설치 가이드](../installation)에 설명했던 방법대로 `timestamp` 애플리케이션을 미리 임포트해서 Spring Cloud Data Flow에 등록했다고 가정한다.
 
 ![SCDF Task Lifecycle](./../../images/springclouddataflow/dataflow-task-lifecycle.gif)
 

@@ -1424,4 +1424,4 @@ deployer.<app>.kubernetes.createNodePort=31101
 
 ## Monitoring
 
-쿠버네티스에서 실행하는 프로메테우스를 이용한 Data Flow 모니터링 경험에 대해 자세히 알아보려면 [스트림 모니터링](https://dataflow.spring.io/docs/feature-guides/streams/monitoring/#kubernetes) 가이드나 [태스크 모니터링](https://dataflow.spring.io/docs/feature-guides/batch/monitoring/#kubernetes) 가이드를 참고해라.
+쿠버네티스에서 실행하는 프로메테우스를 이용한 Data Flow 모니터링 경험에 대해 자세히 알아보려면 [스트림 모니터링](../feature-guides.stream.monitoring#kubernetes) 가이드나 [태스크 모니터링](../feature-guides.batch.monitoring#kubernetes) 가이드를 참고해라.

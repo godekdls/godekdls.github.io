@@ -111,7 +111,7 @@ docker-compose up
 
 > Docker Compose는 기본적으로 로컬에 존재하는 이미지를 사용한다. 이미지를 최신 버전으로 받아놓으려면 `docker-compose up`을 실행하기 전에 먼저 `docker-compose pull`을 실행하면 된다.
 
-명령 프롬프트<sup>command prompt</sup>에서 로그 메세지 출력을 멈췄다면 http://localhost:9393/dashboard에서 Spring Cloud Data Flow [Dashboard](https://dataflow.spring.io/docs/concepts/tooling/#dashboard)를 열어봐라. 아니면 [뒤에서](#using-the-shell) 설명하는 대로 쉘을 사용해도 된다.
+명령 프롬프트<sup>command prompt</sup>에서 로그 메세지 출력을 멈췄다면 http://localhost:9393/dashboard에서 Spring Cloud Data Flow [Dashboard](../concepts.tooling#dashboard)를 열어봐라. 아니면 [뒤에서](#using-the-shell) 설명하는 대로 쉘을 사용해도 된다.
 
 `docker-compose.yml`을 설정할 땐 아래에 있는 환경 변수를 사용할 수 있다:
 
@@ -166,7 +166,7 @@ FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i -f
 
 ## Using the Shell
 
-쉘이 더 편하다면 Spring Cloud Data Flow 대시보드 대신 [Spring Cloud Data Flow Shell](https://dataflow.spring.io/docs/concepts/tooling/#shell)을 사용해도 된다. 이 쉘은 명령어와 애플리케이션 설정 프로퍼티에 대한 탭 자동 완성을 지원한다.
+쉘이 더 편하다면 Spring Cloud Data Flow 대시보드 대신 [Spring Cloud Data Flow Shell](../concepts.tooling#shell)을 사용해도 된다. 이 쉘은 명령어와 애플리케이션 설정 프로퍼티에 대한 탭 자동 완성을 지원한다.
 
 Spring Cloud Data Flow를 Docker Compose를 통해 시작했다면, 쉘은 `springcloud/spring-cloud-dataflow-server` 도커 이미지에도 들어 있다. 이 쉘을 사용하려면 콘솔 창을 하나 더 열고 아래 명령어를 입력해라:
 
@@ -291,19 +291,19 @@ app register --type processor --name pose-estimation --uri maven://org.springfra
 
 ## Monitoring
 
-기본 Data Flow docker-compose 설정에선 Stream과 Task 애플리케이션에 대한 모니터링 기능을 활성화하지 않는다. Spring Cloud Data Flow를 위한 모니터링을 활성화하고 설정하는 방법을 알아보려면 커스텀 가이드 [프로메테우스와 그라파나로 모니터링하기](https://dataflow.spring.io/docs/installation/local/docker-customize/#prometheus--grafana) 또는 [InfluxDB와 그라파나로 모니터링하기](https://dataflow.spring.io/docs/installation/local/docker-customize/#influxdb--grafana)를 확인해봐라.
+기본 Data Flow docker-compose 설정에선 Stream과 Task 애플리케이션에 대한 모니터링 기능을 활성화하지 않는다. Spring Cloud Data Flow를 위한 모니터링을 활성화하고 설정하는 방법을 알아보려면 커스텀 가이드 [프로메테우스와 그라파나로 모니터링하기](../installation.local-machine.docker-customize#prometheus--grafana) 또는 [InfluxDB와 그라파나로 모니터링하기](../installation.local-machine.docker-customize#influxdb--grafana)를 확인해봐라.
 
-프로메테우스와 InfluxDB를 이용한 Spring Cloud Data Flow 모니터링 경험에 대해 자세히 알아보려면 [스트림 모니터링](https://dataflow.spring.io/docs/feature-guides/streams/monitoring/#local) 기능 가이드를 참고해라.
+프로메테우스와 InfluxDB를 이용한 Spring Cloud Data Flow 모니터링 경험에 대해 자세히 알아보려면 [스트림 모니터링](../feature-guides.stream.monitoring#local) 기능 가이드를 참고해라.
 
 ---
 
 ## Debugging
 
-[스트림 애플리케이션 디버깅하기](https://dataflow.spring.io/docs/installation/local/docker-customize/#debug-stream-applications) 가이드에선 Data Flow로 배포한 스트림 애플리케이션에 대한 원격 디버깅을 활성화하는 방법을 안내한다.
+[스트림 애플리케이션 디버깅하기](../installation.local-machine.docker-customize#debug-stream-applications) 가이드에선 Data Flow로 배포한 스트림 애플리케이션에 대한 원격 디버깅을 활성화하는 방법을 안내한다.
 
-[Data Flow Server 디버깅하기](https://dataflow.spring.io/docs/installation/local/docker-customize/#debug-data-flow-server) 가이드에선 docker-compose 설정을 확장해서 IDE(IntelliJ나 Eclipse)를 통한 Data Flow Server 원격 디버깅을 활성화하는 방법을 안내한다.
+[Data Flow Server 디버깅하기](../installation.local-machine.docker-customize#debug-data-flow-server) 가이드에선 docker-compose 설정을 확장해서 IDE(IntelliJ나 Eclipse)를 통한 Data Flow Server 원격 디버깅을 활성화하는 방법을 안내한다.
 
-[Skipper Server 디버깅하기](https://dataflow.spring.io/docs/installation/local/docker-customize/#debug-skipper-server) 가이드에선 docker-compose 설정을 확장해서 IDE(IntelliJ나 Eclipse)를 통한 Skipper Server 원격 디버깅을 활성화하는 방법을 안내한다.
+[Skipper Server 디버깅하기](../installation.local-machine.docker-customize#debug-skipper-server) 가이드에선 docker-compose 설정을 확장해서 IDE(IntelliJ나 Eclipse)를 통한 Skipper Server 원격 디버깅을 활성화하는 방법을 안내한다.
 
 ---
 
@@ -333,7 +333,7 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-dood.yml up
 ```
 
 - `COMPOSE_PROJECT_NAME`은 docker-compose 프로젝트 이름을 설정한다. 이 값은 이후에 앱 컨테이너로 전달되는 네트워크 이름을 지정할 때 사용한다.
-- 도커 기반 Steam, Task 앱은 `STREAM_APPS_URI`와 `TASK_APPS_URI`를 통해 등록할 수 있다.
+- 도커 기반 스트림, 태스크 앱은 `STREAM_APPS_URI`와 `TASK_APPS_URI`를 통해 등록할 수 있다.
 
 > 데이터 파이프라인을 중단하기 전에 docker-compose가 종료되면 컨테이너를 수동으로 정리해야 한다: `docker stop $(docker ps -a -q); docker rm $(docker ps -a -q)`
 >

@@ -70,6 +70,6 @@ Spring Cloud Data Flow를 통하면 UI나 RESTful API, Spring Cloud Data Flow �
 
 ## Next Steps
 
-미리 빌드돼 있는 애플리케이션을 사용해 배치 처리 데이터 파이프라인을 생성하는데 관심이 있다면 [배치 시작 가이드](https://dataflow.spring.io/docs/batch-developer-guides/getting-started/)를 읽어봐라.
+미리 빌드돼 있는 애플리케이션을 사용해 배치 처리 데이터 파이프라인을 생성하는데 관심이 있다면 [배치 시작 가이드](../batch-developer-guides.getting-started)를 읽어봐라.
 
-첫 번째 커스텀 배치 애플리케이션을 작성하고 배포해보고 싶다면 [배치 개발자 가이드](https://dataflow.spring.io/docs/batch-developer-guides/batch/)를 읽어봐라.
+첫 번째 커스텀 배치 애플리케이션을 작성하고 배포해보고 싶다면 [배치 개발자 가이드](../batch-developer-guides.batch-development)를 읽어봐라.

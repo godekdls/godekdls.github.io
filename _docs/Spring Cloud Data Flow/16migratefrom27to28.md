@@ -21,7 +21,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/installation.migration/
 
 Spring Cloud Data Flow 2.8 릴리즈에선 프로퍼티를 지정하는 구문이 더 간단해졌다. 전에는 composed task runner의 프로퍼티를 설정하는 구문은 `app.<composed task definition name>.<app label>.property`였다. 이제 `Composed Task Definition Name`을 지정할 필요가 없기때문에 composed 태스크 프로퍼티는 `app.<app label>.property` 형식으로 설정해야 된다. 이전 프로퍼티 형식도 계속 지원하지만 새 형식을 사용하는 걸 권장한다.
 
-> **참고:** composed 태스크 프로퍼티에 관한 설명은 [여기](https://dataflow.spring.io/docs/feature-guides/batch/composed-task/#setting-property-at-composed-task-launch-time)를 읽어보면 된다.
+> **참고:** composed 태스크 프로퍼티에 관한 설명은 [여기](../feature-guides.batch.composed-task#setting-property-at-composed-task-launch-time)를 읽어보면 된다.
 
 ---
 

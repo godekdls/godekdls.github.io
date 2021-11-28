@@ -127,7 +127,7 @@ Data Flow에 애플리케이션을 등록할 땐 지정한 리소스 이름을 �
 
 ### Launching the Task
 
-다음은 태스크를 실행시킬 수 있는 Task 뷰를 보여주는 이미지다:
+다음은 태스크를 실행시킬 수 있는 Task 뷰를 띄워놓은 이미지다:
 
 ![Launch the task](./../../images/springclouddataflow/SCDF-launch-batch.webp)
 

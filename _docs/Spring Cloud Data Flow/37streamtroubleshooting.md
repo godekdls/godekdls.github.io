@@ -4,7 +4,7 @@ navTitle: Troubleshooting
 category: Spring Cloud Data Flow
 order: 37
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshooting/
-description: Spring Cloud Data Flow 트러블슈팅 가이드
+description: Spring Cloud Data Flow 스트림 애플리케이션 트러블슈팅 가이드
 image: ./../../images/springclouddataflow/logo.png
 lastmod: 2021-07-26T18:30:00+09:00
 comments: true

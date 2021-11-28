@@ -4,10 +4,10 @@ navTitle: Spring Batch Jobs
 category: Spring Cloud Data Flow
 order: 45
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-development.spring-batch-jobs/
-description: todo
+description: 스프링 배치 애플리케이션을 개발하고 수동으로 배포해보기
 image: ./../../images/springclouddataflow/spring-batch-reference-model.webp
 lastmod: 2021-07-26T18:30:00+09:00
-comments: 스프링 배치 애플리케이션을 개발하고 수동으로 배포해보기
+comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/batch/spring-batch/
 parent: Batch Developer guides

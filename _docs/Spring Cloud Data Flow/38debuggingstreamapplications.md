@@ -3,7 +3,7 @@ title: Debugging Stream Applications
 category: Spring Cloud Data Flow
 order: 38
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshooting.debugging-stream-applications/
-description: 애플리케이션이 제대로 실행되지 않을 때 트러블슈팅 팁들
+description: 스트림 애플리케이션이 제대로 실행되지 않을 때 트러블슈팅 팁들
 image: ./../../images/springclouddataflow/build-error.png
 lastmod: 2021-07-26T18:30:00+09:00
 comments: true
@@ -14,11 +14,12 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides/
 subparent: Stream Troubleshooting
 subparentNavTitle: Troubleshooting
 subparentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshooting/
+priority: 0.6
 ---
 
 ---
 
-애플리케이션은 `java -jar`로 호출할 수 있는 표준 자바 JAR로 실행할 수 있어야 한다. 모든 의존성(데이터베이스와 메세징 미들웨어 등)을 사용할 수 있어야 하며, 커넥션 이슈는 직접 테스트해야 한다. 애플리케이션 실행과 디버깅은 SCDF를 사용해 플랫폼에 배포하고 실행하는 것과는 별개다.
+애플리케이션은 표준 자바 JAR로 실행할 수 있어야 하며, `java -jar`로 호출할 수 있어야 한다. 모든 의존성(데이터베이스와 메세징 미들웨어 등)을 사용할 수 있어야 하며, 커넥션 이슈는 직접 테스트해야 한다. 애플리케이션 실행과 디버깅은 SCDF를 사용해 플랫폼에 배포하고 실행하는 것과는 별개다.
 
 ### 목차
 

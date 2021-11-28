@@ -4,7 +4,7 @@ navTitle: Debugging Stream applications deployed by Data Flow
 category: Spring Cloud Data Flow
 order: 39
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshooting.debugging-stream-applications-in-data-flow/
-description: 애플리케이션이 제대로 배포되지 않을 때 트러블슈팅 팁들
+description: 스트림 애플리케이션이 제대로 배포되지 않을 때 트러블슈팅 팁들
 image: ./../../images/springclouddataflow/local.png
 lastmod: 2021-07-26T18:30:00+09:00
 comments: true
@@ -15,6 +15,7 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides/
 subparent: Stream Troubleshooting
 subparentNavTitle: Troubleshooting
 subparentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshooting/
+priority: 0.7
 ---
 
 ---
@@ -23,7 +24,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshoot
 
 - 특정 릴리스 버전의 최신 GA를 사용하고 있는지 확인해봐라.
 - 선택한 플랫폼이 지원하는 최소 버전을 충족하는지 확인해봐라.
-- 스트림 애플리케이션을 SCDF에 배포하기 전에 애플리케이션이 독립형으로는 잘 실행되는지 확인해봐라. 계속하기 전에 먼저 [스트림 애플리케이션 디버깅](../stream-developer-guides.troubleshooting.debugging-stream-applications)을 읽어봐라.
+- 스트림 애플리케이션을 SCDF에 배포하기 전에 애플리케이션이 독립형으로는 잘 실행되는지 확인해봐라. 계속하기 전에 먼저 [스트림 애플리케이션 디버깅하기](../stream-developer-guides.troubleshooting.debugging-stream-applications)를 읽어봐라.
 
 스트림 배포는 Skipper가 담당한다. 스트림 배포 실패 메세지는 보통 Skipper 애플리케이션 로그에서 찾을 수 있다.
 
