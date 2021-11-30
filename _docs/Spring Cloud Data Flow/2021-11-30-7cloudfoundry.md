@@ -5,7 +5,7 @@ order: 7
 permalink: /Spring%20Cloud%20Data%20Flow/installation.cloudfoundry/
 description: 클라우드 파운드리 환경에 Spring Cloud Data Flow 설치하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/installation/cloudfoundry/

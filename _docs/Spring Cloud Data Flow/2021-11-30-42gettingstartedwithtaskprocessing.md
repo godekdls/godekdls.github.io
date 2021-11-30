@@ -6,7 +6,7 @@ order: 42
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.getting-started.task-processing/
 description: 기본 제공하는 애플리케이션으로 태스크 파이프라인을 생성하고 기동해보기
 image: ./../../images/springclouddataflow/dataflow-task-lifecycle.gif
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/getting-started/task/
@@ -47,7 +47,7 @@ priority: 0.7
 
    ![Timestamp Task Definition](./../../images/springclouddataflow/dataflow-task-create-timestamp-task-definition.webp)
 
-   아니면 왼편에 있는 앱 팔레트에서 Timestamp 애플리케이션을 Flo 캔버스로 드래그하고,  `START`와 `END`를 태스크 애플리케이션에 연결해도 된다.
+   아니면 왼편에 있는 앱 팔레트에서 Timestamp 애플리케이션을 캔버스로 드래그하고,  `START`와 `END`를 태스크 애플리케이션에 연결해도 된다.
 
 4. `Create Task`를 클릭한다.
 

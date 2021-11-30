@@ -6,7 +6,7 @@ order: 46
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-development.data-flow-simple-task/
 description: Data Flow를 이용해 Spring Cloud Task 애플리케이션을 등록하고 실행해보기
 image: ./../../images/springclouddataflow/SCDF-add-applications2.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/batch/data-flow-simple-task/
@@ -59,11 +59,11 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-develop
 
 ## Create Task Definition
 
-태스크 애플리케이션을 등록하고, 간단한 태스크 정의를 생성하고, Data Flow 서버를 이용해 태스크를 시작해보겠다. Data Flow 서버는 필요한 각 단계들을 수행할 수 있는 포괄적인 [API](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#api-guide)를 제공한다. Data Flow 서버에는 Data Flow 대시보드 웹 UI 클라이언트가 포함돼 있다. 별도로 다운로드할 수 있는 [Data Flow 쉘](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#shell) 커맨드라인 인터페이스(CLI)도 제공한다. CLI와 UI 모두 API 기능을 전부 사용할 수 있다. 어떤 걸 사용할지는 취향의 문제지만, UI가 꽤 잘 빠졌기 때문에 여기서는 UI를 소개한다.
+Data Flow 서버를 이용해 태스크 애플리케이션을 등록하고, 간단한 태스크 정의를 생성하고, 태스크를 시작해보겠다. Data Flow 서버는 필요한 각 단계들을 수행할 수 있는 포괄적인 [API](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#api-guide)를 제공한다. Data Flow 서버에는 Data Flow 대시보드 웹 UI 클라이언트가 포함돼 있다. 별도로 다운로드할 수 있는 [Data Flow 쉘](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#shell) 커맨드라인 인터페이스(CLI)도 제공한다. CLI와 UI 모두 API 기능을 전부 사용할 수 있다. 어떤 걸 사용할지는 취향의 문제지만, UI가 꽤 잘 빠졌기 때문에 여기서는 UI를 소개한다.
 
 ### The Data Flow Dashboard
 
-Data Flow를 [설치](../installation)했고 지원 플랫폼 중 하나에서 실행되고 있다고 가정하고, 브라우저를 열어 `<data-flow-url>/dashboard`에 접속해라. 여기서 `<data-flow-url>`은 플랫폼에 따라 다르다. 현재 플랫폼의 베이스 URL을 알고싶다면 [설치 가이드](../installation)를 참고해라. Data Flow를 로컬 머신에서 실행 중이라면 http://localhost:9393/dashboard로 이동하면 된다.
+Data Flow를 [설치](../installation)했고 지원 플랫폼 중 하나에서 실행 중이라고 가정하고, 브라우저를 열어 `<data-flow-url>/dashboard`에 접속해라. 여기서 `<data-flow-url>`은 플랫폼에 따라 다르다. 현재 플랫폼의 베이스 URL을 알고싶다면 [설치 가이드](../installation)를 참고해라. Data Flow를 로컬 머신에서 실행 중이라면 http://localhost:9393/dashboard로 이동하면 된다.
 
 ### Application Registration
 
@@ -73,7 +73,7 @@ Data Flow 대시보드에는 샘플 태스크를 등록할 수 있는 Applicatio
 
 #### Application Registration Concepts
 
-Spring Cloud Data Flow에 애플리케이션을 등록할 땐 지정한 리소스 이름을 통해 등록한다. 따라서 Data Flow DSL을 사용해 태스크를 설정하고 구성할 땐 이 리소스 이름을 참조하면 된다. 애플리케이션을 등록하면, 논리적인 애플리케이션 이름과 타입이 URI로 제공한 물리적인 리소스와 연결된다. 이 URI는 [스키마](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#spring-cloud-dataflow-register-stream-apps)를 따르고 있으며, 메이븐 아티팩트나 도커 이미지, 또는 실제 `http(s)`나 `file` URL을 나타낼 수 있다. Data Flow에선 스트리밍 컴포넌트나 태스크, 독립 실행형 애플리케이션과 같은 롤을 나타내는 몇 가지 논리적인 애플리케이션 타입을 정의하고 있다. Spring Cloud Task 애플리케이션은 항상 `task` 타입으로 등록한다.
+Spring Cloud Data Flow에 애플리케이션을 등록할 땐 리소스 이름을 하나 지정한다. 따라서 Data Flow DSL을 사용해 태스크를 설정하고 구성할 땐 이 리소스 이름을 참조하면 된다. 애플리케이션을 등록하면, 논리적인 애플리케이션 이름과 타입이 URI로 제공한 물리적인 리소스와 연결된다. 이 URI는 [스키마](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#spring-cloud-dataflow-register-stream-apps)를 따르고 있으며, 메이븐 아티팩트나 도커 이미지, 또는 실제 `http(s)`나 `file` URL을 나타낼 수 있다. Data Flow에선 스트리밍 컴포넌트나 태스크, 독립 실행형 애플리케이션과 같은 롤을 나타내는 몇 가지 논리적인 애플리케이션 타입을 정의하고 있다. Spring Cloud Task 애플리케이션은 항상 `task` 타입으로 등록한다.
 
 #### Registering an Application
 
@@ -101,13 +101,14 @@ Spring Cloud Data Flow에 애플리케이션을 등록할 땐 지정한 리소�
 </div>
 <div class="language-only-for-kubernetes local cloud-foundry kubernetes"></div>
 <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9;">
-<p>Spring Cloud Data Flow는 쿠버네티스 배포에는 도커 리소스를 지원한다. 도커 이미지의 URI는 <code class="highlighter-rouge">docker:&lt;docker-image-path&gt;/&lt;imageName&gt;:&lt;version&gt;</code>형식이며, Data Flow 태스크 플랫폼에 설정돼있는 도커 레지스트리와 이미지 pull 정책을 사용해 리졸브된다.</p>
+<p>Spring Cloud Data Flow는 쿠버네티스 배포에는 도커 리소스를 지원한다. 도커 이미지의 URI는 <code class="highlighter-rouge">docker:&lt;docker-image-path&gt;/&lt;imageName&gt;:&lt;version&gt;</code> 형식이며, Data Flow 태스크 플랫폼에 설정돼있는 도커 레지스트리와 이미지 pull 정책을 사용해 리졸브된다.</p>
 <p>샘플 앱의 도커 URI는 다음과 같다:</p>
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker:springcloudtask/billsetuptask:0.0.1-SNAPSHOT
 </code></pre></div></div>
 <p>애플리케이션을 등록하려면 <strong>ADD APPLICATION(S)</strong>를 선택해라. <strong>Add Application(s)</strong> 페이지가 나타나면 <strong>Register one or more applications</strong>를 선택해라. 다음과 같이 양식을 작성하고 <strong>IMPORT APPLICATION(S)</strong>를 클릭하면 된다:</p>
 <p><img src="./../../images/springclouddataflow/SCDF-register-task-app-docker.webp" alt="Register the billrun batch app"></p>
 </div>
+
 
 
 ### Creating the Task Definition
@@ -118,7 +119,7 @@ Spring Cloud Data Flow에 애플리케이션을 등록할 땐 지정한 리소�
 2. 이 태스크를 캔버스로 드래그해라.
 3. 태스크를 `START` 노드와 `END` 노드에 연결해서 태스크 정의를 완성해라. 여기서는 단일 태스크 애플리케이션으로 태스크 정의를 구성한다. 애플리케이션에 설정 프로퍼티를 정의했다면 여기에서 설정했을 거다. 다음은 태스크 생성 UI를 보여주는 이미지다:<br>
    ![Create the billsetup task definition](./../../images/springclouddataflow/SCDF-create-task.webp)
-4. **CREATE TASK**를 클릭한다. 태스크 정의의 이름을 지정하라는 메시지가 보일 거다. 태스크 정의 이름은 배포하려는 런타임 설정에 붙이는 논리적인 이름이다. 여기서는 태스크 애플리케이션과 동일한 이름을 사용한다.<br>
+4. **CREATE TASK**를 클릭한다. 태스크 정의의 이름을 지정하라는 메세지가 보일 거다. 태스크 정의 이름은 배포하려는 런타임 설정에 붙이는 논리적인 이름이다. 여기서는 태스크 애플리케이션과 동일한 이름을 사용한다.<br>
    ![Confirm create task](./../../images/springclouddataflow/SCDF-confirm-create-task.webp)
 5. **CREATE THE TASK**를 클릭한다. 이제 메인 **Tasks** 뷰가 나타날 거다.
 

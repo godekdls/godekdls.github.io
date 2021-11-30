@@ -6,7 +6,7 @@ order: 75
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.batch.scheduling/
 description: Spring Cloud Data Flow 대시보드를 이용해 태스크 스케줄링하기
 image: ./../../images/springclouddataflow/SCDF-scheduling-architecture.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/batch/scheduling/
@@ -33,7 +33,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.batch/
 
 ## Spring Cloud Data Flow Scheduling Overview
 
-Spring Cloud Data Flow를 사용하면 cron 표현식을 설정해서 태스크 시작을 예약할 수 있다. 스케줄은 RESTful API나 Spring Cloud Data Flow UI를 통해 생성할 수 있다. Spring Cloud Data Flow는 클라우드 플랫폼에서 사용 가능한 스케줄링 에이전트를 통해 태스크 실행을 예약한다.
+Spring Cloud Data Flow를 사용하면 cron 표현식을 설정해서 태스크 시작을 예약할 수 있다. 스케줄은 RESTful API나 Spring Cloud Data Flow UI를 통해 생성할 수 있다. Spring Cloud Data Flow는 클라우드 플랫폼에서 사용 가능한 스케줄링 에이전트를 통해서 태스크 실행을 예약한다.
 
 ![Scheduling Architecture](./../../images/springclouddataflow/SCDF-scheduling-architecture.webp)
 
@@ -86,10 +86,10 @@ Spring Cloud Data Flow는 클라우드 파운드리 플랫폼을 사용할 땐 P
 
 ## Deleting a Schedule
 
-다음 이미지와 같이 `Schedules` 탭에서 제거하려는 스케줄 옆에 있는 `drop down`버튼을 누르고 "Destroy" 옵션을 선택해라:
+다음 이미지와 같이 `Schedules` 탭에서 제거하려는 스케줄 옆에 있는 `drop down` 버튼을 누르고 "Destroy" 옵션을 선택해라:
 
 ![Delete Schedule](./../../images/springclouddataflow/SCDF-delete-schedule.webp)
 
 컨펌 대화 상자가 나타나면 **DELETE THE SCHEDULE** 버튼을 눌러라.
 
-![SCDF Confirm Schedule Delete](./../../images/springclouddataflow/SCDF-confirm-schedule-delete.webp)
+![SCDF Confirm Schedule Delete](./../../images/springclouddataflow/SCDF-confirm-schedule-delete.webp){: .center-image }

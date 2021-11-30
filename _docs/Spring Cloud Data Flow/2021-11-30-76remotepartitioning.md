@@ -5,7 +5,7 @@ order: 76
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.batch.partitioning/
 description: 파티셔닝을 통해 배치 애플리케이션을 여러 인스턴스로 동시에 실행하기
 image: ./../../images/springclouddataflow/batch-partition.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/batch/partitioning/
@@ -24,7 +24,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.batch/
 
 ![Batch Partitioning](./../../images/springclouddataflow/batch-partition.webp)
 
-왼편에 있는 Job은 일련의 Step 인스턴스들로 실행된다. 이 경우 하나의 step(`Step 1`)을 가지는데, 이 step은 파티션에 대한 `Manager`다. 이 `Manager Step`은 각 `worker`에게 작업을 할당하고 실행시키는 일을 담당한다. 이때 `worker`는 특정 프로파일을 활성화해서 시작되는 또 다른 스프링 배치 애플리케이션 인스턴스다. 이 다이어그램에 있는 worker들은 실제로 플랫폼에 배포된 스프링 배치 애플리케이션의 복사본이다. `JobRepository`에 있는 스프링 배치 메타데이터는 Job을 실행할 때마다 각 worker가 딱 한 번씩만 실행되게 해준다.
+왼편에 있는 Job은 일련의 Step 인스턴스들로 실행된다. 이 경우 하나의 step(`Step 1`)을 가지는데, 이 step은 파티션에 대한 `Manager`다. 이 `Manager Step`은 각 `worker`에게 작업을 할당하고 실행시키는 일을 담당한다. 이때 `worker`는 특정 프로파일을 활성화해서 시작되는 또 다른 스프링 배치 애플리케이션 인스턴스다. 이 다이어그램에 있는 worker들은 실제로 플랫폼에 배포된 스프링 배치 애플리케이션의 복사본이다. `JobRepository`에 있는 스프링 배치 메타데이터 덕분에, Job을 실행할 때마다 각 worker는 딱 한 번씩만 실행된다.
 
 ### 목차
 
@@ -59,12 +59,12 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.batch/
    1. MySQL을 런타임 데이터베이스로 사용한다.
 8. **Dependencies** 텍스트 박스에 `batch`를 입력해서 배치를 선택한다.
 9. **Generate Project** 버튼을 클릭한다.
-10. `partition.zip` 파일을 다운받고, 압출을 풀고, 즐겨 사용하는 IDE에서 프로젝트를 import한다.
+10. `partition.zip` 파일을 다운받고, 압출을 풀고, 즐겨 사용하는 IDE에서 프로젝트를 임포트한다.
 
 Spring Initializr 사이트는 프로젝트의 상세 설정들을 URL 파라미터로 처리하기 때문에, 다음과 같이 진행해도 된다:
 
 1. [Spring Initializr](https://start.spring.io/starter.zip?type=maven-project&language=java&bootVersion=2.5.1.RELEASE&baseDir=partition&groupId=io.spring.cloud&artifactId=partition&name=partition&description=Demo+project+for+Spring+Boot&packageName=io.spring.cloud.partition&packaging=jar&javaVersion=1.8&dependencies=cloud-task&dependencies=jdbc&dependencies=h2&dependencies=mysql&dependencies=batch) 링크를 클릭해서 미리 세팅돼 있는 partition.zip을 다운로드한다.
-2. partition.zip 파일을 다운받고, 압축을 풀고, 프로젝트를 즐겨 사용하는 IDE로 import한다.
+2. partition.zip 파일을 다운받고, 압축을 풀고, 프로젝트를 즐겨 사용하는 IDE로 임포트한다.
 
 ### Setting up MySql
 
@@ -238,7 +238,7 @@ Spring Initializr 사이트는 프로젝트의 상세 설정들을 URL 파라미
    }
    ```
    <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@EnableTask` 애노테이션은 태스크의 시작/종료 시간과 종료 코드같은 태스크 실행에 관한 정보를 저장하는 `TaskRepository`를 설정한다.</small><br>
-   <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `@EnableBatchProcessing` 애노테이션은 스프링 배치 기능들을 활성화하고, 배치 job을 세팅을 위한 기본 설정을 제공한다.</small>
+   <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `@EnableBatchProcessing` 애노테이션은 스프링 배치 기능들을 활성화하고, 배치 job 세팅을 위한 기본 설정을 제공한다.</small>
 
 ---
 

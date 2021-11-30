@@ -5,7 +5,7 @@ order: 64
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.tracing/
 description: 스트림 데이터 파이프라인을 구성하는 애플리케이션들의 트레이스 정보를 수집하고 시각화하기
 image: ./../../images/springclouddataflow/SCDF-stream-tracing-architecture.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/tracing/
@@ -32,7 +32,7 @@ Spring Cloud Sleuth는 스트리밍 파이프라인 메세지들을 추적하고
 
 > `Spring Cloud Function` `3.1.x` 이전 버전을 기반으로 만든 스트리밍 애플리케이션에선, `Spring Cloud Sleuth` 라이브러리는 [트레이싱 계측<sup>instrumentation</sup>에 스프링 인테그레이션](https://docs.spring.io/spring-cloud-sleuth/docs/current/reference/htmlsingle/#sleuth-messaging-spring-integration-integration)을 활용한다. 이땐 `Spring Cloud Sleuth`에서 스프링 인테그레이션 내부 컴포넌트들엔 불필요한 (노이즈) 트레이싱 정보를 생성할 수도 있다!
 >
-> `Spring Cloud Function 3.1+`부터는 Spring Cloud Sleuth [트레이싱 계측<sup>instrumentation</sup>](https://docs.spring.io/spring-cloud-sleuth/docs/current/reference/htmlsingle/#sleuth-messaging-spring-cloud-function-integration)에서 좀더 SCF 기반 애플리케이션에잘 맞는 맞춤 트레이싱 정보를 제공한다.
+> `Spring Cloud Function 3.1+`부터는 Spring Cloud Sleuth [트레이싱 계측<sup>instrumentation</sup>](https://docs.spring.io/spring-cloud-sleuth/docs/current/reference/htmlsingle/#sleuth-messaging-spring-cloud-function-integration)에서 좀더 SCF 기반 애플리케이션에 잘 맞는 맞춤 트레이싱 정보를 제공한다.
 
 ### 목차
 
@@ -106,7 +106,7 @@ spring.zipkin.enabled=true
 
 배포한 스트리밍 파이프라인에서 수집한 [분산 트레이싱 데이터는 Wavefront를 이용해 시각화](https://docs.wavefront.com/tracing_basics.html#visualize-distributed-tracing-data-in-wavefront)할 수 있다. Wavefront는 `applications`와 `services`에 대한 정보를 조회할 수 있는 다양한 대시보드와 브라우저를 제공하므로, 곳곳을 이동하며 더 다양한 정보들을 모을 수 있다.
 
-Wavefront는 `application`과 `service`라는 개념을 사용해서 분산 트레이스를 그룹화한다. Dataflow에선 Wavefront `application`을 스트리밍 파이프라인에 매핑하고, 이 파이프라인에 있는 애플리케이션들에는 `service`를 매핑하는 식으로 활용할 수 있다. 따라서 배포된 모든 Spring Cloud 스트림 애플리케이션 스타터들은 다음 두 가지 프로퍼티가 설정돼 있다:
+Wavefront는 `application`과 `service`라는 개념을 사용해서 분산 트레이스를 그룹화한다. Dataflow에선 Wavefront `application`을 스트리밍 파이프라인에 매핑하고, 이 파이프라인에 있는 애플리케이션들에는 `service`를 매핑하는 식으로 활용할 수 있다. 따라서 배포된 모든 Spring Cloud 스트림 애플리케이션 스타터들은 아래 두 가지 프로퍼티가 설정돼 있다:
 
 - `wavefront.application.name`: 트레이스를 전송하는 애플리케이션들을 가지고 있는 스트림의 이름
 - `wavefront.application.service`: 트레이스를 리포팅하는 애플리케이션의 이름 혹은 레이블
@@ -133,7 +133,7 @@ http://your-zipkin-hostname:9411/zipkin에서 Zipkin UI에도 붙을 수 있다.
 
 ![Stream Tracing Visualization - Zipkin Send](./../../images/springclouddataflow/SCDF-stream-tracing-zipkinserver-send.webp)
 
-Zipkin UI에선 각 애플리케이션에 요청이 얼마나 들어왔는지 추적해주는 의존성 다이어그램도 제공한다. 이 다이어그램은 에러가 발생하는 경로나 deprecated된 서비스를 호출하는지 등을 식별할 때 유용하다.
+Zipkin UI에선 각 애플리케이션에 요청이 얼마나 들어왔는지를 추적해주는 의존성 다이어그램도 제공한다. 이 다이어그램은 에러가 발생하는 경로나 deprecated된 서비스를 호출하는지 등을 식별할 때 유용하다.
 
 ![Stream Tracing Visualization - Zipkin Dependencies](./../../images/springclouddataflow/SCDF-stream-tracing-zipkinserver-dependencies.webp)
 
@@ -151,7 +151,7 @@ Zipkin UI에선 각 애플리케이션에 요청이 얼마나 들어왔는지 �
 
 Data Flow를 Wavefront 지원 기능과 함께 설치하려면 Docker Compose 가이드에 있는 [Wavefront로 모니터링하기](../installation.local-machine.docker-customize#wavefront)를 따라하면 된다. 가이드대로 따라하면 Spring Cloud Data Flow, Skipper, 아파치 카프카가 설치된다.
 
-Wavefront는 SaaS 기반 플랫폼으로, 먼저 사용자 계정을 생성해야 한다. 이 계정을 사용해 뒤에서 설명하는 대로 환경 변수 `WAVEFRONT_KEY`와 `WAVEFRONT_URI`를 설정하면 된다.
+Wavefront는 SaaS 기반 플랫폼으로, 먼저 사용자 계정을 생성해야 한다. 이 계정을 사용해서 환경 변수 `WAVEFRONT_KEY`와 `WAVEFRONT_URI`를 설정하면 된다.
 
 모든 컨테이너를 실행시켰다면, 카프카를 사용하는 간단한 스트림을 배포해봐라:
 

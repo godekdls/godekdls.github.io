@@ -5,7 +5,7 @@ order: 2
 permalink: /Spring%20Cloud%20Data%20Flow/installation/
 description: Spring Cloud Data Flow와 관련 소프트웨어 설치하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/installation/
@@ -41,7 +41,7 @@ priority: 0.3
 
 > [Running locally](../installation.cloudfoundry.local)
 >
-> 로컬에서 실행한 서버로 클라우드 파운드리에 배포하기
+> 로컬에서 실행한 서버로 클라우드 파운드리에 앱 배포하기
 
 ### Kubernetes
 

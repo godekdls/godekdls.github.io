@@ -5,7 +5,7 @@ order: 62
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.named-destinations/
 description: 스트림을 생성할 때 애플리케이션 이름 대신 목적지 이름을 지정해 바이패스하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/named-destinations/
@@ -18,7 +18,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 
 ---
 
-스트림은 소스나 싱크 애플리케이션을 참조하는 대신, 직접 목적지의 이름을 사용할 수 있다. 목적지 이름은 미들웨어 브로커(RabbitMQ, 카프카 등)에 있는 특정 목적지 이름에 해당한다. 애플리케이션들은 `|` 기호를 사용하면 Data Flow 서버에서 만든 메시징 미들웨어 목적지 이름으로 서로 연결된다. 유닉스식 표현에 따라 less-than(`<`), greater-than(`>`) 문자를 사용하면 표준 입출력을 리다이렉트할 수 있다. 목적지의 이름을 지정하려면 앞에 콜론(`:`)을 붙여라. 예를 들어 아래 스트림은 `source` 자리에 목적지 이름을 가지고 있다.
+스트림은 소스나 싱크 애플리케이션을 참조하는 대신, 직접 목적지의 이름<sup>named destination</sup>을 사용할 수 있다. 목적지 이름은 미들웨어 브로커(RabbitMQ, 카프카 등)에 있는 특정 목적지 이름에 해당한다. 애플리케이션들은 `|` 기호를 사용하면 Data Flow 서버에서 만든 메세징 미들웨어 목적지 이름으로 서로 연결된다. 유닉스식 표현에 따라 less-than(`<`), greater-than(`>`) 문자를 사용하면 표준 입출력을 리다이렉트할 수 있다. 목적지의 이름을 지정하려면 앞에 콜론(`:`)을 붙여라. 예를 들어 아래 스트림은 `source` 자리에 목적지 이름을 가지고 있다.
 
 ```sh
 stream create --definition ":myDestination > log" --name ingest_from_broker --deploy

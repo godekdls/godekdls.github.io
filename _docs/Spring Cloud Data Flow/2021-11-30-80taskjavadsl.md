@@ -6,7 +6,7 @@ order: 80
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.batch.java-dsl/
 description: 태스크를 생성하고 시작할 수 있는 자바 DSL 사용 가이드
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/batch/java-dsl/
@@ -19,7 +19,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.batch/
 
 ---
 
-태스크를 생성하고 실행할 땐 쉘을 이용하는 대신, `spring-cloud-dataflow-rest-client` 모듈이 제공하는 자바 기반 DSL을 사용해도 된다. `Task`와 `TaskSchedule`을 위한 자바 DSL은 코드를 통해 태스크를 생성하고, 실행하고, 스케줄링할 수 있는 `DataFlowTemplate` 클래스를 감싸놓은 간편한 언어다.
+태스크를 생성하고 실행할 땐 쉘을 이용하는 대신, `spring-cloud-dataflow-rest-client` 모듈이 제공하는 자바 기반 DSL을 사용해도 된다. `Task`와 `TaskSchedule`을 위한 자바 DSL은 코드를 통해 태스크를 생성하고, 실행하고, 스케줄링할 수 있는 `DataFlowTemplate` 클래스를 감싸놓은 간편한 라이브러리다.
 
 자바 DSL을 시작하려면 프로젝트에 아래 의존성을 추가해야 한다:
 
@@ -50,7 +50,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.batch/
 
 `Task`, `TaskSchedule` DSL에선 유효한 `DataFlowOperations` 인스턴스가 필요하다. Spring Cloud Data Flow는 `DataFlowOperations` 인터페이스의 구현체로 `DataFlowTemplate`을 제공한다.
 
-`DataFlowTemplate` 인스턴스를 생성하려면 Data Flow 서버의 `URI` 위치를 제공해야 한다. `DataFlowTemplate`을 위한 스프링 부트 자동 설정도 지원한다. [`DataFlowClientProperties`](https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-rest-client/src/main/java/org/springframework/cloud/dataflow/rest/client/config/DataFlowClientProperties.java)에 있는 프로퍼티를 사용해 Data Flow 서버에 대한 커넥션을 설정하면 된다. 보통은 `spring.cloud.dataflow.client.uri` 프로퍼티로 시작하는 게 좋다.
+`DataFlowTemplate` 인스턴스를 생성하려면 Data Flow 서버의 `URI`를 제공해야 한다. `DataFlowTemplate`을 위한 스프링 부트 자동 설정도 지원한다. [`DataFlowClientProperties`](https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-rest-client/src/main/java/org/springframework/cloud/dataflow/rest/client/config/DataFlowClientProperties.java)에 있는 프로퍼티를 사용해 Data Flow 서버에 대한 커넥션을 설정하면 된다. 보통은 `spring.cloud.dataflow.client.uri` 프로퍼티로 시작하는 게 좋다.
 
 ```java
 URI dataFlowUri = URI.create("http://localhost:9393");
@@ -105,9 +105,9 @@ List<Task> tasks = Task.builder(dataflowOperations).allTasks();
 long executionId = task.launch();
 ```
 
-`executionId`는 기동한 태스크에서 고유한 Task 실행 식별자다.`launch` 메소드는 launch 프로퍼티 `java.util.Map<String, String>`과 커맨드라인 인자 `java.util.List<String>`을 받는 메소드를 오버로드하고 있다.
+`executionId`는 기동한 태스크를 위한 고유 Task 실행 식별자다. `launch` 메소드는 launch 프로퍼티 `java.util.Map<String, String>`과 커맨드라인 인자 `java.util.List<String>`을 받는 메소드를 오버로드하고 있다.
 
-태스크들은 비동기적로 실행된다. 태스크 완료나 다른 태스크 상태를 기다려야 한다면, 다음과 같이 자바 concurrency 유틸리티나 `Awaitility` 라이브러리를 사용하면 된다:
+태스크들은 비동기로 실행된다. 태스크 완료나 다른 태스크 상태를 기다려야 한다면, 다음과 같이 자바 concurrency 유틸리티나 `Awaitility` 라이브러리를 사용하면 된다:
 
 ```java
 org.awaitility.Awaitility.await().until(
@@ -155,7 +155,7 @@ schedule.schedule("56 20 ? * *", Collections.emptyMap());
 schedule.unschedule();
 ```
 
-`TaskScheduleBuilder`를 이용해 기존 스케줄러에서 하나를 조회하거나 모두 가져올 수도 있다:
+`TaskScheduleBuilder`를 이용해 기존 스케줄러 중 하나를 조회하거나 모두 가져올 수도 있다:
 
 ```java
 Optional<TaskSchedule> retrievedSchedule =

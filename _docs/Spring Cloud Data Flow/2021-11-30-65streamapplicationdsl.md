@@ -3,9 +3,9 @@ title: Stream Application DSL
 category: Spring Cloud Data Flow
 order: 65
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.stream-application-dsl/
-description: Stream Pipeline DSL을 이용해 입출력을 여러 개 가지는 애플리케이션들의 스트림 생성하기
+description: Stream Pipeline DSL을 이용해 입출력을 여러 개 가지는 애플리케이션들의 스트림을 생성하기
 image: ./../../images/springclouddataflow/stream-application-dsl.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/stream-application-dsl/
@@ -78,6 +78,6 @@ app.coldDrinkDeliveryApp.spring.cloud.stream.bindings.input.destination=coldDrin
 
 ![Multiple Input/Output channels Bindings](./../../images/springclouddataflow/SCDF-application-dsl-bindings.gif)
 
-Stream Application DSL은 카프카/RabbitMQ 애플리케이션에 동기식 요청 메세지나 응답 메시지를 전송하는 HTTP 게이트웨이 애플리케이션을 배포할 때도 흔히 사용하곤 한다. 이때 HTTP 게이트웨이 애플리케이션과 카프카/RabbitMQ 애플리케이션은 모두 Spring Cloud Stream 라이브러리를 사용하지 않는 Spring Integration 애플리케이션일 수도 있다.
+Stream Application DSL은 카프카/RabbitMQ 애플리케이션에 동기식 요청 메세지나 응답 메세지를 전송하는 HTTP 게이트웨이 애플리케이션을 배포할 때도 흔히 사용하곤 한다. 이때 HTTP 게이트웨이 애플리케이션과 카프카/RabbitMQ 애플리케이션은 모두 Spring Cloud Stream 라이브러리를 사용하지 않는 Spring Integration 애플리케이션일 수도 있다.
 
 Stream application DSL을 이용해 한 가지 애플리케이션만 배포하는 것도 가능하다.

@@ -5,7 +5,7 @@ order: 48
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-development.data-flow-composed-task/
 description: Data Flow를 이용해 composed task를 등록하고 실행해보기
 image: ./../../images/springclouddataflow/SCDF-composed-task-simple.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/batch/data-flow-composed-task/
@@ -20,11 +20,11 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-develop
 앞에서는 두 가지 애플리케이션을 사용했다:
 
 - `billsetuptask`: `billsetuptask`는 `billrun` 애플리케이션을 위한 데이터베이스를 설정한다.
-- `billrun`: `billrun` 파일에서 사용 정보를 읽어 파일에 있는 각 항목마다 청구서 레코드를 생성한다.
+- `billrun`: `billrun`은 파일에서 사용 정보를 읽어 파일에 있는 각 항목마다 청구서 레코드를 생성한다.
 
-앞에서는 수동으로 `billsetuptask` 애플리케이션을 실행한 다음에 `billrun` 애플리케이션을 실행했었다. 두 가지 애플리케이션을 연달아 실행하고 첫 번째 앱은 몇 초 안에 실행이 완료되는 스몰 케이스라면 이 방법으로도 충분히 가능하다. 하지만 순서대로 실행해야 하는 애플리케이션이 5개, 10개, 20개 혹은 그 이상 있고, 다 실행되는데 몇 시간이 걸리는 애플리케이션도 포함돼 있다면 어떨까?<br>
+앞에서는 수동으로 `billsetuptask` 애플리케이션을 실행한 다음에 `billrun` 애플리케이션을 실행했었다. 두 가지 애플리케이션을 연달아 실행하고 첫 번째 앱은 몇 초 안에 실행이 완료되는 스몰 케이스라면 이 방법으로도 충분히 가능하다. 하지만 순서대로 실행해야 하는 애플리케이션이 5개, 10개, 20개 혹은 그 이상 있고, 다 실행되는데 몇 시간이 걸리는 애플리케이션도 있다면 어떨까?<br>
 게다가 이 앱들 중 하나가 0 이외의 종료 코드를 반환하면 (즉, 어떠한 에러로 끝나면) 어떻게 대응해야 할까? Spring Cloud Data Flow는 composed 태스크를 이용해 이 문제에 대한 솔루션을 제공한다.<br>
-composed 태스크는 태스크 애플리케이션이 그래프의 각 노드를 나타내는 유향<sup>directed</sup> 그래프다. 이전 예제에서 사용했던 두 애플리케이션(`billsetuptask`, `billrun`)에선 그래프를 다음과 같이 표현할 수 있다:
+composed 태스크는 태스크 애플리케이션을 그래프의 각 노드로 표현하는 유향 그래프<sup>directed graph</sup>다. 이전 예제에서 사용했던 두 애플리케이션(`billsetuptask`, `billrun`)에선 그래프를 다음과 같이 표현할 수 있다:
 
 ![Bill Run Composed Task](./../../images/springclouddataflow/SCDF-composed-task-simple.webp)
 
@@ -60,7 +60,7 @@ composed 태스크는 태스크 애플리케이션이 그래프의 각 노드를
 
 ### Registering the Billing Applications
 
-이 가이드를 따라해보려 Spring Cloud Data Flow에 미리 [billsetuptask](../batch-developer-guides.batch-development.data-flow-simple-task)와 [billrun](../batch-developer-guides.batch-development.data-flow-spring-spring) 애플리케이션을 등록해놔야 한다.
+이 가이드를 따라해보려면 Spring Cloud Data Flow에 미리 [billsetuptask](../batch-developer-guides.batch-development.data-flow-simple-task)와 [billrun](../batch-developer-guides.batch-development.data-flow-spring-spring) 애플리케이션을 등록해놔야 한다.
 
 ### Registering the Composed Task Runner
 
@@ -98,12 +98,12 @@ composed 태스크를 생성하려면:
 7. `billrun` 애플리케이션을 END 노드에 연결해 composed task 정의를 완성해라. 여기서는 두 태스크 앱(`billsetuptask`와 `billrun`)으로 composed 태스크 정의를 구성한다. 애플리케이션에 설정 프로퍼티를 정의했다면 여기에서 설정했을 거다.<br>
    ![Bill Run Composed Task](./../../images/springclouddataflow/SCDF-create-ctr-definition.webp)
 
-8. **CREATE TASK**를 클릭한다. 태스크 정의의 이름을 입력하라는 메시지가 보일 거다. 태스크 정의 이름은 배포하려는 런타임 설정에 붙이는 논리적인 이름이다. 여기서는 태스크 애플리케이션과 동일하게 `ct-statement`를 사용한다. 이제 다음과 같은 컨펌 뷰가 보일 거다:<br>
+8. **CREATE TASK**를 클릭한다. 태스크 정의의 이름을 입력하라는 메세지가 보일 거다. 태스크 정의 이름은 배포하려는 런타임 설정에 붙이는 논리적인 이름이다. 여기서는 태스크 애플리케이션과 동일하게 `ct-statement`를 사용한다. 이제 다음과 같은 컨펌 뷰가 보일 거다:<br>
    ![Confirm create task](./../../images/springclouddataflow/SCDF-composed-task-confirmation.webp)
    
 9. **Create the task**를 클릭한다. 그러면 메인 **Tasks** 뷰가 나타날 거다.
 
-> **팁:** Composed 태스크 그래프로 할 수 있는 모든 작업을 알고싶다면 레퍼런스 문서에서 Composed Task [섹션](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#_composed_tasks_dsl)을 읽어봐라.
+> **팁:** Composed 태스크 그래프로 할 수 있는 모든 작업을 알고싶다면 레퍼런스 문서에서 Composed Task [섹션](../feature-guides.batch.composed-task)을 읽어봐라.
 
 ### Launching the Task
 
@@ -111,10 +111,10 @@ composed 태스크를 생성하려면:
 
 ![View the tasks](./../../images/springclouddataflow/SCDF-composed-task-list.webp)
 
-ct-statement 태스크를 만들었을 때 아래 세 가지 태스크 정의가 만들어졌음을 알 수 있다:
+ct-statement 태스크를 만들었을 때 아래 세 가지 태스크 정의가 만들어진 것을 알 수 있다:
 
 - `ct-statement`: 이 정의는 composed 태스크 그래프 안에서 태스크들을 실행하는  composed task runner를 나타낸다.
-- `ct-statement-billsetuptask`: 이 정의는 실행될 `billsetuptask` 앱을 나타낸다.
+- `ct-statement-billsetuptask`: 이 정의는 실행되는 `billsetuptask` 앱을 나타낸다.
 - `ct-statement-billrun`: 이 정의는 실행시킬 `billrun` 앱을 나타낸다.
 
 이제  다음과 같이 `ct-statement`의 왼쪽에 있는 드롭다운을 클릭하고 **Launch** 옵션을 선택하면 `ct-statement`를 실행할 수 있다:<br>

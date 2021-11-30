@@ -6,7 +6,7 @@ order: 74
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.batch.deployment-properties/
 description: Spring Cloud Data Flow에서 태스크를 실행할 때 프로퍼티를 정의하는 방법
 image: ./../../images/springclouddataflow/SCDF-set-task-properties.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/batch/deployment-properties/

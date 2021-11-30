@@ -5,7 +5,7 @@ order: 33
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.stream-development.stream-other-binders/
 description: 다른 메세징 미들웨어를 이용해 스트림 처리하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/streams/stream-other-binders/

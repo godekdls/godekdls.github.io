@@ -5,7 +5,7 @@ order: 34
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.programming-models/
 description: 스트리밍 애플리케이션을 만들 수 있는 Spring Cloud Stream의 프로그래밍 모델들
 image: ./../../images/springclouddataflow/SCDF-stream-programming-models.gif
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/programming-models/
@@ -16,13 +16,13 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides/
 
 ---
 
-Spring Cloud Stream에선 다양한 프로그래밍 모델을 이용해 스트리밍 애플리케이션을 유연하게 구축할 수 있다:
+Spring Cloud Stream에선 다양한 프로그래밍 모델을 이용해 유연하게 스트리밍 애플리케이션을 개발할 수 있다:
 
 - Imperative
 - Functional
 - Kafka Streams
 
-이어지는 섹션에선 한 가지 비즈니스 로직 예시를 다양한 프로그래밍 모델을 사용해 구축하는 방법을 리뷰한다.
+이어지는 섹션에선 한 가지 비즈니스 로직을 예로 들어, 다양한 프로그래밍 모델을 사용해서 만드는 방법을 리뷰한다.
 
 프로그래밍 모델을 알아보기 위해, 구체적인 예로 HTTP 엔드포인트에서 데이터를 받는 시나리오를 생각해보자. 데이터를 사용할 수 있게 되면 prefix와 suffix를 추가하는 식으로 페이로드를 변환하려고 한다. 최종적으로는 변환된 데이터를 검증해볼 거다.
 
@@ -102,11 +102,11 @@ public class KafkaStreamsSampleProcessor {
 
 > 이 프로세서의 비즈니스 로직은 수신한 페이로드 앞 뒤에 "Hello:"와 "!"를 붙여 변환하는 일이다.
 >
-> 다른 프로그래밍 모델을 사용해서 동일한 "비즈니스 로직"을 구현할 수 있으며, 각각은 독립적으로 테스트하고 발전시킬 수 있는 간단한 `messenger` 함수를 구현하고 있다.
+> 동일한 "비즈니스 로직"을 다른 프로그래밍 모델을 이용해 구현할 수 있다. 각각은 간단한 `messenger` 함수를 구현하고 있으며, 모두 독립적으로 테스트하고 수정해나갈 수 있다.
 >
 > **요점**: 지원하는 프로그래밍 모델 스타일 중에서 개발자가 원하는 것을 직접 고를 수 있다.
 
-**Configuration: \*(application.properties)\***
+**Configuration: *(application.properties)***
 
 <div class="switch-language-wrapper imperative functional kafka-streams">
 <span class="switch-language imperative">Imperative</span>
@@ -140,7 +140,7 @@ spring.cloud.stream.kafka.streams.binder.applicationId=kstreams-sample
 ## Testing
 
 1. `localhost`에서 카프카를 시작해라.
-2. [여기](https://github.com/sabbyanandan/stream-programming-models)에서 프로세서 샘플을 clone받아 빌드해라.
+2. [여기](https://github.com/sabbyanandan/stream-programming-models)에서 프로세서 샘플을 클론받아 빌드해라.
 3. 아래 애플리케이션들을 기동해라.
 
 **Source:**

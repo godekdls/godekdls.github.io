@@ -6,7 +6,7 @@ order: 63
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.monitoring/
 description: 스트림 데이터 파이프라인을 구성하는 애플리케이션들의 메트릭을 수집하고 모니터링하기
 image: ./../../images/springclouddataflow/SCDF-stream-metrics-architecture2.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/monitoring/
@@ -115,7 +115,7 @@ dataflow:>stream create stream2 --definition "time --fixed-delay=10 --time-unit=
 
 Data Flow를 Wavefront 지원 기능과 함께 설치하려면 Docker Compose 가이드에 있는 [Wavefront로 모니터링하기](../installation.local-machine.docker-customize#wavefront)를 따라하면 된다. 가이드대로 따라하면 Spring Cloud Data Flow, Skipper, 아파치 카프카가 설치된다. 또한 자동으로 Wavefront Data Flow 통합 타일<sup>Tile</sup>을 가리키고 있을 거다.
 
-Wavefront는 SaaS 기반 플랫폼으로, 먼저 사용자 계정을 생성해야 한다. 이 계정을 사용해 뒤에서 설명하는 대로 환경 변수 `WAVEFRONT_KEY`와 `WAVEFRONT_URI`를 설정하면 된다.
+Wavefront는 SaaS 기반 플랫폼으로, 먼저 사용자 계정을 생성해야 한다. 이 계정을 사용해서 환경 변수 `WAVEFRONT_KEY`와 `WAVEFRONT_URI`를 설정하면 된다.
 
 아래 이미지와 유사한 대시보드를 볼 수 있을 거다:
 
@@ -195,7 +195,7 @@ http://192.168.99.100:31595
 
 메트릭은 애플리케이션별이나 스트림별로도 수집할 수 있고, 배포된 모든 애플리케이션에 글로벌로 메트릭 수집을 적용할 수도 있다.
 
-메트릭을 활성화한 단일 스트림을 배포하려면 Spring Cloud Data Flow 쉘에 다음과 같이 입력해라:
+메트릭을 활성화한 스트림을 하나 배포하려면 Spring Cloud Data Flow 쉘에 다음과 같이 입력해라:
 
 ```sh
 dataflow:>stream create metricstest --definition "time --fixed-delay=10 --time-unit=MILLISECONDS | filter --expression=payload.contains('3') | log" --deploy
@@ -252,7 +252,7 @@ management:
 
 이제 메트릭을 애플리케이션별이나 스트림별로도 수집할 수 있고, 배포된 모든 애플리케이션에 글로벌로 메트릭 수집을 적용할 수도 있다.
 
-메트릭을 활성화한 단일 스트림을 배포하려면 Spring Cloud Data Flow 쉘에 다음과 같이 입력해라:
+메트릭을 활성화한 스트림을 하나 배포하려면 Spring Cloud Data Flow 쉘에 다음과 같이 입력해라:
 
 ```sh
 dataflow:>stream create metricstest --definition "time --fixed-delay=10 --time-unit=MILLISECONDS | filter --expression=payload.contains('3') | log" --deploy

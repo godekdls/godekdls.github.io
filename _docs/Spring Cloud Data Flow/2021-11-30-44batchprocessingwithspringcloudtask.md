@@ -6,7 +6,7 @@ order: 44
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-development.simple-task/
 description: Spring Cloud Task를 이용해 태스크 애플리케이션을 개발하고 수동으로 배포해보기
 image: ./../../images/springclouddataflow/CF-task-standalone-initial-push-result.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/batch/spring-task/
@@ -22,7 +22,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-develop
 
 <span id="batch_processing_with_spring_cloud_task"></span>이어지는 섹션에선 이 애플리케이션을 빌드하는 방법을 처음부터 설명한다. 원한다면 이 애플리케이션(`billsetup`) 소스 코드가 담겨있는 zip 파일을 다운받아, 압축을 풀고 [배포](#deployment) 섹션으로 이동해도 좋다.
 
-이 프로젝트는 [브라우저에서 다운](https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/batch-developer-guides/batch/batchsamples/dist/batchsamples.zip?raw=true)받거나, 커맨드라인에서 아래 명령어를 실행해서 받으면 된다:
+이 프로젝트는 [브라우저에서 다운](https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/batch-developer-guides/batch/batchsamples/dist/batchsamples.zip?raw=true)받거나, 커맨드라인에서 아래 명령어를 실행해 받으면 된다:
 
 ```bash
 wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/batch-developer-guides/batch/batchsamples/dist/batchsamples.zip?raw=true -O batchsamples.zip
@@ -81,7 +81,7 @@ wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/d
 7. **Dependencies** 텍스트 박스에 `mysql`을 입력해서 MySQL 의존성을 선택한다 (다른 데이터베이스도 괜찮다). MySQL을 런타임 데이터베이스로 사용한다.
 8. **Generate Project** 버튼을 클릭한다.
 
-이제 `billsetuptask.zip` 파일을 `unzip`하고 즐겨 사용하는 IDE에서 프로젝트를 import하면 된다.
+이제 `billsetuptask.zip` 파일을 `unzip`하고 즐겨 사용하는 IDE에서 프로젝트를 임포트하면 된다.
 
 ### Setting up MySql
 
@@ -128,7 +128,7 @@ public class TaskConfiguration {
 }
 ```
 
-`@EnableTask` 어노테이션은 태스크 실행에 관한 정보(태스크 시작 및 종료 시간과 종료 코드같은)를 저장하는 `TaskRepository`를 설정한다.
+`@EnableTask` 어노테이션은 태스크 실행에 관한 정보(태스크 시작/종료 시간과 종료 코드같은)를 저장하는 `TaskRepository`를 설정한다.
 
 ### Testing
 
@@ -205,10 +205,10 @@ Spring Cloud Task는 모든 태스크 실행 내역을 `TASK_EXECUTION`이란 �
 - `TASK_NAME`: 태스크 실행과 관련한 이름
 - `EXIT_CODE`: 태스크를 실행하고 반환한 종료 코드
 - `EXIT_MESSAGE`: 실행 후 반환한 종료 메세지
-- `ERROR_MESSAGE`: 실행 후 반환한 에러 메세지 (있다면()
+- `ERROR_MESSAGE`: 실행 후 반환한 에러 메세지 (있다면)
 - `EXTERNAL_EXECUTION_ID`: 태스크 실행과 관련한 ID
 
-기본적으로 `TASK_NAME`은 `application`이다.
+`TASK_NAME`의 디폴트 값은 `application`이다.
 
 다음 명령어를 통해 `TASK_EXECUTION` 테이블에 질의할 수 있다:
 
@@ -228,7 +228,7 @@ mysql> select * from task.TASK_EXECUTION;
 
 #### Setting the Application Name for Task Execution
 
-위 테이블에서 `TASK_NAME` 컬럼은 기본값은 `application`을 가지고 있다. Spring Cloud Task에선 `spring.cloud.task.name`을 사용해 이 설정을 변경할 수 있다. 다음번에 실행할 땐 아래 예시처럼 이 프로퍼티를 추가해주면 된다:
+위 테이블에서 `TASK_NAME` 컬럼은 기본값 `application`을 가지고 있다. Spring Cloud Task에선 `spring.cloud.task.name`을 사용해 이 설정을 변경할 수 있다. 다음번에 실행할 땐 아래 예시처럼 이 프로퍼티를 추가해주면 된다:
 
 ```bash
 java -jar target/billsetuptask-0.0.1-SNAPSHOT.jar \
@@ -265,7 +265,7 @@ docker rm mysql
 
 #### Building the Application
 
-이제 프로젝트를 빌드할 수 있다. 커맨드라엔에서 디렉토리를 프로젝트 위치로 변경한 다음 메이븐 명령어 `./mvnw clean package`를 실행해 프로젝트를 빌드해라.
+이제 프로젝트를 빌드할 수 있다. 커맨드라인에서 디렉토리를 프로젝트 위치로 변경한 다음 메이븐 명령어 `./mvnw clean package`를 실행해 프로젝트를 빌드해라.
 
 #### Setting up Cloud Foundry
 
@@ -310,7 +310,7 @@ instances: 0
 
 핵심은 `instances` 프로퍼티를 `0`으로 설정하는 거다. 이렇게 하면 애플리케이션을 실제로 실행하지는 않고 준비<sup>stage</sup>시킨다. 또한 라우트를 생성할 필요가 없으므로 `no-route`를 `true`로 설정하면 된다.
 
-> 앱을 준비<sup>staged</sup>시키고 실행은 하지 않으면 좋은 점이 또 있다. 이렇게 준비한<sup>staged</sup> 애플리케이션은 이후 태스크를 실행하기 위해서도 필요하지만, 데이터베이스 서비스가 internal이라면 (클라우드 파운드리 인스턴스에 속해있다면), 이 애플리케이션을 사용해 관련 MySQL 데이터베이스 서비스에 대한 SSH 터널을 구축해 저장된 데이터를 조회할 수 있다. 자세한 내용은 뒤에서 살펴보겠다.
+> 앱을 준비<sup>staged</sup>시키고 실행은 하지 않으면 좋은 점이 또 있다. 이렇게 준비한<sup>staged</sup> 애플리케이션은 이후 태스크를 실행하기 위해서도 필요하지만, 데이터베이스 서비스가 내부에 있다면 (클라우드 파운드리 인스턴스에 속해있다면), 이 애플리케이션을 사용해 관련 MySQL 데이터베이스 서비스에 대한 SSH 터널을 구축해 저장된 데이터를 조회할 수 있다. 자세한 내용은 뒤에서 살펴보겠다.
 
 #### Running `billsetuptask` on Cloud Foundry
 

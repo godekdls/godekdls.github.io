@@ -5,7 +5,7 @@ order: 11
 permalink: /Spring%20Cloud%20Data%20Flow/installation.kubernetes.creatingcluster/
 description: 쿠버네티스 클러스터 생성하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/installation/kubernetes/creating-a-cluster/

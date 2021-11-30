@@ -5,7 +5,7 @@ order: 31
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.stream-development.stream-application-deployment.cloud-foundry/
 description: 샘플 스트림 애플리케이션을 클라우드 파운드리 환경에 수동으로 배포하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/streams/deployment/cloudfoundry/

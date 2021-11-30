@@ -5,7 +5,7 @@ order: 30
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.stream-development.stream-application-deployment.kubernetes/
 description: 샘플 스트림 애플리케이션을 쿠버네티스 환경에 수동으로 배포하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/streams/deployment/kubernetes/
@@ -179,7 +179,7 @@ pod/usage-cost-logger created
 
 위 YAML은 소스, 프로세서, 싱크 애플리케이션을 위한 3개의 포드 리소스를 명시하고 있다. 각 포드는 해당 도커 이미지를 참조하는 단일 컨테이너를 가지고 있다.
 
-카프카 바인딩 파라미터는 환경 변수로 설정한다. 스트림을 연결하려면 입출력 목적지이 이름이 정확해야 한다. 특히, 소스의 출력은 프로세서의 입력과 같아야 하고, 프로세서의 출력은 싱크의 입력과 같아야 한다. 또한 각 애플리케이션이 연결할 수 있게 카프카 브로커에 논리적인 호스트명을 설정했다. 여기서는 카프카 서비스 이름 `kafka-broker`를 사용한다. 이 앱들을 논리적으로 그룹핑할 수 있도록 `app: user-cost-stream` 레이블을 설정했다.
+카프카 바인딩 파라미터는 환경 변수로 설정한다. 스트림을 연결하려면 입출력 목적지이 이름이 정확해야 한다. 특히, 소스의 출력은 프로세서의 입력과 같아야 하고, 프로세서의 출력은 싱크의 입력과 같아야 한다. 또한 각 애플리케이션이 연결할 수 있게 카프카 브로커에 논리적인 호스트명을 설정했다. 여기서는 카프카 서비스 이름 `kafka`를 사용한다. 이 앱들을 논리적으로 그룹핑할 수 있도록 `app: usage-cost-stream` 레이블을 설정했다.
 
 Spring Cloud Stream 바인딩 파라미터도 환경 변수로 설정한다. 스트림을 연결하려면 입출력 목적지 이름이 정확해야 한다. 특히, 소스의 출력은 프로세서의 입력과 같아야 하고, 프로세서의 출력은 싱크의 입력과 같아야 한다. 입력과 출력은 다음과 같이 설정한다:
 
@@ -236,7 +236,7 @@ spec:
           value: rabbitmq
 ```
 
-그런 다음과 같이 이 앱들을 배포해야 한다:
+그런 다음엔 이 앱들을 배포해야 한다:
 
 ```bash
 kubectl apply -f usage-cost-stream.yaml
@@ -252,12 +252,12 @@ pod/usage-cost-logger created
 
 위 YAML은 소스, 프로세서, 싱크 애플리케이션을 위한 3개의 포드 리소스를 명시하고 있다. 각 포드는 각자의 도커 이미지를 참조하는 단일 컨테이너를 가지고 있다.
 
-RabbitMQ 브로커는 앱들이 연결할 수 있도록 논리적인 호스트명을 설정한다. 여기서는 RabbitMQ 서비스 이름(`rabbitmq`)을 사용한다. 또한 앱을 논리적으로 그룹핑할 수 있도록 `app: user-cost-stream` 레이블을 설정했다.
+RabbitMQ 브로커는 앱들이 연결할 수 있도록 논리적인 호스트명을 설정한다. 여기서는 RabbitMQ 서비스 이름(`rabbitmq`)을 사용한다. 또한 앱을 논리적으로 그룹핑할 수 있도록 `app: usage-cost-stream` 레이블을 설정했다.
 
 
 ### Verifying the Deployment
 
-배포가 잘 되었는지 보려면 아래 명령어를 사용해 `usage-cost-logger` 싱크 로그를 추적해라.
+배포가 잘 되었는지 보려면 아래 명령어로 `usage-cost-logger` 싱크 로그를 추적해보면 된다.
 
 ```bash
 kubectl logs -f usage-cost-logger

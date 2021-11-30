@@ -6,7 +6,7 @@ order: 50
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-development.data-flow-simple-task-cloudfoundry/
 description: 클라우드 파운드리에 Spring Cloud Data Flow와 Skipper 서비스 인스턴스 세팅하기
 image: ./../../images/springclouddataflow/scdf-cf-dashboard-cf.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/batch/data-flow-simple-task-cloudfoundry/

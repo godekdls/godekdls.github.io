@@ -6,7 +6,7 @@ order: 8
 permalink: /Spring%20Cloud%20Data%20Flow/installation.cloudfoundry.cli/
 description: CLI를 이용해 클라우드 파운드리 환경에 Spring Cloud Data Flow 설치하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/installation/cloudfoundry/cf-cli/
@@ -71,7 +71,7 @@ cf create-service elephantsql panda my_postgres
 
 > **Database Connection Limits**
 >
-> SCDF에서 배치 job들을 만들어 태스크 파이프라인으로 실행하고자 한다면, 내부에서 사용하는 데이터베이스 인스턴스가 충분한 커넥션 캐파를 가지고 있어야만 배치 job과 태스크, SCDF가 커넥션 제한에 걸리지 않고 같은 데이터베이스 인스턴스에 동시에 연결할 수 있다. 일반적으론 무료 플랜을 사용할 수 없다는 걸 뜻한다.
+> SCDF에서 배치 job들을 만들어 태스크 파이프라인으로 실행하고자 한다면, 내부에서 사용하는 데이터베이스 인스턴스가 충분한 커넥션 캐파를 가지고 있어야만 배치 job과 태스크, SCDF가 커넥션 제한에 걸리지 않고 같은 데이터베이스 인스턴스에 동시에 연결할 수 있다. 일반적으론 무료 플랜은 사용할 수 없다는 걸 뜻한다.
 
 ---
 
@@ -86,7 +86,7 @@ cf create-service elephantsql panda my_postgres
    wget https://repo.spring.io/release/org/springframework/cloud/spring-cloud-dataflow-shell/2.9.1/spring-cloud-dataflow-shell-2.9.1.jar
    ```
 
-2. Data Flow가 배포, 업그레이드, 롤백과 같은 스트림 라이프사이클 주기 작업을 위임하는 [Skipper](https://cloud.spring.io/spring-cloud-skipper/)를 다운받아라:
+2. Data Flow가 배포, 업그레이드, 롤백과 같은 스트림 라이프사이클 작업을 위임하는 [Skipper](https://cloud.spring.io/spring-cloud-skipper/)를 다운받아라:
 
    ```bash
    wget https://repo.spring.io/release/org/springframework/cloud/spring-cloud-skipper-server/2.8.1/spring-cloud-skipper-server-2.8.1.jar
@@ -147,8 +147,9 @@ cf create-service elephantsql panda my_postgres
 
    <blockquote style="background-color: #fbebf3; border-color: #d63583;">
     <p>SSL Validation</p>
-    <p>클라우드 파운드리 인스턴스에서 자체 서명된<sup>self-signed</sup> 인증서를 사용해서 (아직 개발 중일 때 등) 실행시킬 때에만 <em>Skip SSL Validation</em>을 <code class="highlighter-rouge">true</code>로 설정해라. 프로덕션에선 자체 서명된 인증서를 사용하면 안 된다.</p>
+    <p>클라우드 파운드리 인스턴스에서 자체 서명<sup>self-signed</sup> 인증서를 사용해서 (아직 개발 중일 때 등) 실행시킬 때에만 <em>Skip SSL Validation</em>을 <code class="highlighter-rouge">true</code>로 설정해라. 프로덕션에선 자체 서명 인증서를 사용하면 안 된다.</p>
    </blockquote>
+
 
    > Buildpacks
    >
@@ -156,7 +157,7 @@ cf create-service elephantsql panda my_postgres
 
 4. Data Flow 서버를 설정하고 실행해라.
 
-세부 설정 정보 중 가장 중요한 것 중 하나는 서버가 애플리케이션을 생성할 수 있도록 클라우드 파운드리 인스턴스에 credential을 제공하는 거다. 이땐 스프링 부트 호환 설정 메커니즘이라면 모두 사용할 수 있지만 (프로그램 인자 전달, 애플리케이션 빌드 전 설정 파일 편집, [Spring Cloud Config](https://github.com/spring-cloud/spring-cloud-config) 사용, 환경 변수 활용 등), 클라우드 파운드리에 애플리케이션을 배포할 때 자주 쓰는 방법에 따라 그중에서도 좀더 실용적인 방법이 있기도 하다.
+세부 설정 정보 중 가장 중요한 것 중 하나는 서버가 애플리케이션을 생성할 수 있도록 클라우드 파운드리 인스턴스에 credential을 제공하는 거다. 이땐 스프링 부트 호환 설정 메커니즘이라면 모두 사용할 수 있지만 (프로그램 인자 전달, 애플리케이션 빌드 전 설정 파일 편집, [Spring Cloud Config](https://github.com/spring-cloud/spring-cloud-config) 활용, 환경 변수 설정 등), 클라우드 파운드리에 애플리케이션을 배포할 때 자주 쓰는 방법에 따라 그중에서도 좀더 실용적인 방법이 있기도 하다.
 
 설치하기 전에 앞서 필요에 따라 매니페스트 파일을 업데이트할 수 있으려면 전반적인 세부 설정 정보는 어느정도 알고 있어야 한다.
 
@@ -237,7 +238,7 @@ services:
 
 #### Configuration for Prometheus
 
-프로메테우스와 그라파나를 클라우드 파운드리나 다른 클러스터에 별도로 설치했다면, Data Flow 서버의 매니페스트 파일에 있는 환경 변수 `SPRING_APPLICATION_JSON`에 프로메테우스 RSocket 게이트웨이에 메트릭 데이터를 전송할 모든 서버와 스트림/태스크 애플리케이션을 구성하는 섹션을 추가해라. 다음은 이 설정과 관련된 YAML 스니펫 예시다:
+프로메테우스와 그라파나를 클라우드 파운드리나 다른 클러스터에 별도로 설치했다면, Data Flow 서버의 매니페스트 파일에 있는 환경 변수 `SPRING_APPLICATION_JSON`에, 프로메테우스 RSocket 게이트웨이에 메트릭 데이터를 전송할 모든 서버와 스트림/태스크 애플리케이션을 구성하는 섹션을 추가해라. 다음은 이 설정과 관련된 YAML 스니펫 예시다:
 
 ```yml
 ---
@@ -276,7 +277,7 @@ Wavefront SaaS 계정이 있다면 태스크/스트림 메트릭을 활성화할
         }
 ```
 
-`management.metrics.export.wavefront.XXX` 프로퍼티를 통해 지원하는 Wavefront 관련 옵션에 관한 자세한 내용은 [Wavefront Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html#production-ready-metrics-export-wavefront) 엔드포인트를 확인해봐라.
+`management.metrics.export.wavefront.XXX` 프로퍼티를 통해 지원하는 Wavefront 관련 옵션에 관한 자세한 내용은 [Wavefront 액추에이터](../../Spring%20Boot/metrics#wavefront) 엔드포인트를 확인해봐라.
 
 매니페스트 파일에서 사용할 관련 프로퍼티가 준비되면 이 파일이 저장된 디렉토리에서 `cf push` 명령어를 실행하면 된다.
 
@@ -310,7 +311,7 @@ InfluxDB와 그라파나를 클라우드 파운드리나 다른 클러스터에 
 java -jar spring-cloud-dataflow-shell-{scdf-core-version}.jar
 ```
 
-Data Flow 서버와 쉘이 동일한 호스트에서 실행되지 않으므로, 쉘에서 `dataflow config server` 명령어를 사용하면 쉘이 Data Flow 서버 URL을 가리키도록 만들 수 있다:
+Data Flow 서버와 쉘이 동일한 호스트에서 실행되지 않으므로, 쉘에서 `dataflow config server` 명령어를 사용해서 쉘이 Data Flow 서버 URL을 가리키도록 만들어주면 된다:
 
 ```bash
 server-unknown:>dataflow config server https://<data-flow-server-route-in-cf>
@@ -319,10 +320,10 @@ Successfully targeted https://<data-flow-server-route-in-cf>
 
 ### Register prebuilt applications
 
-사전에 빌드된 스트리밍 애플리케이션들은 모두:
+미리 빌드해서 제공하는 스트리밍 애플리케이션들은 모두:
 
 - 아파치 메이븐 아티팩트 또는 도커 이미지로 사용할 수 있다.
-- RabbitMQ나 Apache Kafka를 사용한다.
+- RabbitMQ나 아파치 카프카를 사용한다.
 - 프로메테우스와 InfluxDB를 이용한 모니터링을 지원한다.
 - UI와 쉘의 코드 자동 완성에 사용되는 애플리케이션 프로퍼티 메타데이터를 가지고 있다.
 

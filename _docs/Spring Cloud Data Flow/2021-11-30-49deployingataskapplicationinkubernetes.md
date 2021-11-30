@@ -5,7 +5,7 @@ order: 49
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-development.data-flow-simple-task-kubernetes/
 description: 쿠버네티스 환경에서 Data Flow를 이용해 Spring Cloud Task 애플리케이션을 배포하고 실행해보기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/batch/data-flow-simple-task-kubernetes/
@@ -70,7 +70,7 @@ replicaset.apps/scdf-server-65789665d   1         1         1       5m39s
 
    이 명령어들은 `minikube` 도커 레지스트리에 이미지를 추가한다.
 
-3. 이미지가 잘 추가되었는지 검증하려면, 다음 명령어를 실행해서 보여지는 이미지 목록에서 `springcloudtask/billsetuptask`가 있는지 보면 된다.
+3. 이미지가 잘 추가되었는지 검증하려면, 다음 명령어를 실행해서 보여지는 이미지 목록에서 `springcloudtask/billsetuptask`가 있는지 확인하면 된다.
 
    ```bash
    $ docker images

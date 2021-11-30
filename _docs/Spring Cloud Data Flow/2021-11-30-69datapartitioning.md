@@ -5,7 +5,7 @@ order: 69
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.partitioning/
 description: 데이터 파티셔닝을 통해 원하는 다운스트림 인스턴스로 데이터 전송하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/partitioning/
@@ -20,7 +20,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 
 관련 있는 데이터를 모두 함께 처리할 수 있으려면, 성능이나 일관성 면에서 파티셔닝이 stateful 처리의 핵심이다. 예를 들어 time-window로 평균을 계산한다면, 주어진 센서로 측정된 모든 데이터를 동일한 애플리케이션 인스턴스에서 처리하는 것이 중요하다. 또는 수신 이벤트와 관련된 일부 데이터를 보강하기 위해 원격 프로시저를 호출해 조회하는 대신, 관련 데이터에 캐시를 두고 싶을 수도 있다.
 
-파티셔닝 기능을 활용하면, 스트리밍 데이터 파이프라인에 있는 다운스트림 애플리케이션 인스턴스에 전송할 페이로드를 컨텐츠 기반으로 라우팅할 수 있다. 업스트림 애플리케이션의 특정한 파티션 데이터를 다운스트림 애플리케이션 인스턴스로 처리하고 싶을 때 특히 유용하다. 예를 들어 데이터 파이프라인의 프로세서 애플리케이션이 페이로드의 고유 식별자(`'customerId`같은)를 기반으로 연산을 수행한다면, 이 고유 식별자를 기반으로 스트림을 파티셔닝할 수 있다.
+파티셔닝 기능을 활용하면, 스트리밍 데이터 파이프라인에 있는 다운스트림 애플리케이션 인스턴스에 전송할 페이로드를 컨텐츠 기반으로 라우팅할 수 있다. 업스트림 애플리케이션의 특정한 파티션 데이터를 다운스트림 애플리케이션 인스턴스로 처리하고 싶을 때 특히 유용하다. 예를 들어 데이터 파이프라인의 프로세서 애플리케이션이 페이로드의 고유 식별자(`customerId`같은)를 기반으로 연산을 수행한다면, 이 고유 식별자를 기반으로 스트림을 파티셔닝할 수 있다.
 
 ### 목차
 
@@ -74,11 +74,11 @@ Spring Cloud Data Flow와 Spring Cloud Skipper 서버는 [설치 가이드](../i
 
    ![Create partitioned stream definition](./../../images/springclouddataflow/SCDF-create-partitioned-stream-definition.webp)
 
-   이 `Source`, `Processor`, `Sink` 애플리케이션은 (미리 등록되어 있다) 왼쪽 패널에서 확인할 수 있다.
+   이 `Source`, `Processor`, `Sink` 애플리케이션은 (앞에서 등록했었다) 왼쪽 패널에서 확인할 수 있다.
 
 3. 각 애플리케이션을 캔버스로 끌어와라.
 
-4. 핸들을 사용해 애플리케이션들을 연결해라.
+4. 아이콘을 이어서 애플리케이션들을 연결해라.
 
    캔버스 상태에 따라 바뀌는 상단 텍스트 패널의 Data Flow DSL 정의에 주목해라. 다음과 같은 Stream DSL 텍스트를 입력해도 된다.
 

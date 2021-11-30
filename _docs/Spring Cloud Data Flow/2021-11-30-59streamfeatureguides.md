@@ -6,7 +6,7 @@ order: 59
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 description: Spring Cloud Data Flow가 제공하는 스트림을 위한 피쳐 가이드
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/

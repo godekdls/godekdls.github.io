@@ -6,7 +6,7 @@ order: 5
 permalink: /Spring%20Cloud%20Data%20Flow/installation.local-machine.docker-customize/
 description: docker compose 익스텐션 파일을 이용해 스프링 클라우드 데이터 플로우를 커스텀해서 설치하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/installation/local/docker-customize/
@@ -87,7 +87,7 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-prometheus.yml up
 | 7001       | 7001            | 프로메테우스 RSocket 프록시 TCP accept 포트. 스트림, 태스크 애플리케이션의 메트릭을 프록시로 리포트할 땐 이 포트를 사용하도록 설정할 수 있다. |
 | 8086       | 8086            | 프로메테우스 RSocket 프록시 WebSocket 포트. 스트림, 태스크 애플리케이션의 메트릭을 프록시로 리포트할 땐 이 포트를 사용하도록 설정할 수 있다. |
 
-> `docker-compose-prometheus.yml` 파일에선 Docker 이미지(`springcloud/spring-cloud-dataflow-prometheus-local`, `springcloud/spring-cloud-dataflow-grafana-prometheus`)에 설정한 `DATAFLOW_VERSION` 값과 일치하는 태그가 존재한다고 가정한다.
+> `docker-compose-prometheus.yml` 파일에선 도커 이미지(`springcloud/spring-cloud-dataflow-prometheus-local`, `springcloud/spring-cloud-dataflow-grafana-prometheus`)에 설정한 `DATAFLOW_VERSION` 값과 일치하는 태그가 존재한다고 가정한다.
 
 ---
 
@@ -114,10 +114,10 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-influxdb.yml up
 
 | Host ports | Container ports | Description                                                  |
 | ---------- | --------------- | ------------------------------------------------------------ |
-| 8086       | 8086            | Influx DB 서버 포트. Influx DB에 연결할 땐 http://localhost:8086을 사용해라. |
+| 8086       | 8086            | Influx DB 서버 포트. InfluxDB에 연결할 땐 http://localhost:8086을 사용해라. |
 | 3000       | 3000            | 그라파나 서버 포트. 그라파나 대시보드 http://localhost:3000에 접근할 땐 이 포트를 사용해라. |
 
-> `docker-compose-influxdb.yml` 파일에선 Docker 이미지(`springcloud/spring-cloud-dataflow-grafana-influxdb`)에 설정한 `DATAFLOW_VERSION` 값과 일치하는 태그가 존재한다고 가정한다.
+> `docker-compose-influxdb.yml` 파일에선 도커 이미지(`springcloud/spring-cloud-dataflow-grafana-influxdb`)에 설정한 `DATAFLOW_VERSION` 값과 일치하는 태그가 존재한다고 가정한다.
 
 ---
 
@@ -150,13 +150,13 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-wavefront.yml up
 | `WAVEFRONT_URI`    | https://vmware.wavefront.com | Wavefront 엔트리 포인트 URI                                  |
 | `WAVEFRONT_SOURCE` | scdf-docker-compose          | Data Flow 설치로 들어오는 메트릭을 식별하기 위한 Wavefront의 고유 식별자. |
 
-> Wavefront의 Browse/Source메뉴를 통해 `WAVEFRONT_SOURCE` 소스로부터 들어오는 메트릭을 찾을 수 있다.
+> Wavefront의 Browse/Source 메뉴를 통해 `WAVEFRONT_SOURCE` 소스로부터 들어오는 메트릭을 찾을 수 있다.
 
 ---
 
 ## Zipkin Server
 
-[docker-compose-zipkin.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-zipkin.yml)을 사용하면 `Zipkin Server`로 분산된 스트림 trace를 수집하고 시각화할 수 있다. 배포된 스트리밍 애플리케이션에서 수집된 분산 trace를 확인하려면 http://localhost:9411/zipkin에 있는 Zipkin의 UI를 열면 된다.
+[docker-compose-zipkin.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-zipkin.yml)을 사용하면 `Zipkin Server`로 분산 스트림 트레이스를 수집하고 시각화할 수 있다. 배포된 스트리밍 애플리케이션에서 수집한 분산 트레이스를 확인하려면 http://localhost:9411/zipkin에 있는 Zipkin의 UI를 열면 된다.
 
 모든 Spring Cloud [Stream 애플리케이션들](https://github.com/spring-cloud/stream-applications)은 `Spring Cloud Sleuth`로 미리 설정돼 있어 메세지 분산 트레이싱을 지원한다. 추적한 정보는 외부 시스템으로 전송되서 latency를 시각화한다. Spring Cloud Sleuth는 [Zipkin Server](https://github.com/openzipkin/zipkin/tree/master/zipkin-server)나 [Wavefront Distributed Tracing](https://docs.wavefront.com/tracing_basics.html)과 같은 OpenZipkin 호환 시스템을 지원한다.
 
@@ -216,7 +216,7 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-postgres.yml up
 
 ## RabbitMQ Instead of Kafka
 
-[docker-compose-rabbitmq.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-rabbitmq.yml)은 (Kafka 대신) RabbitMQ를 메세지 브로커로 설정한다. 기본 `kafka`, `zookeeper` 서비스를 비활성화하며, 새로운 `rabbitmq` 서비스를 추가하고, `dataflow-server`의 서비스 바인더 설정을 RabbitMQ로 재정의한다 (ex. `spring.cloud.dataflow.applicationProperties.stream.spring.rabbitmq.host=rabbitmq`). 마지막으로, `app-import` 서비스를 재정의해 RabbitMQ 앱을 등록한다:
+[docker-compose-rabbitmq.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-rabbitmq.yml)은 (카프카 대신) RabbitMQ를 메세지 브로커로 설정한다. 기본 `kafka`, `zookeeper` 서비스를 비활성화하며, 새로운 `rabbitmq` 서비스를 추가하고, `dataflow-server`의 서비스 바인더 설정을 RabbitMQ로 재정의한다 (ex. `spring.cloud.dataflow.applicationProperties.stream.spring.rabbitmq.host=rabbitmq`). 마지막으로, `app-import` 서비스를 재정의해 RabbitMQ 앱을 등록한다:
 
 
 
@@ -316,7 +316,7 @@ docker-compose -f .\docker-compose.yml -f .\docker-compose-debug-skipper.yml up
 
 ## Multi-platform Support
 
-이 설정은 로컬 `Skipper` 서버를 원격 플랫폼(`쿠버네티스`, `클라우드 파운드리`같은)에 연결해서 이런 플랫폼들에 스트리밍 데이터 파이프라인을 배포할 수 있도록 해준다. 단, 여기서는 원격 플랫폼에 `Apache Kafka`(또는 `RabbitMQ`) 바인더가 미리 준비돼있다는 전제 조건이 있다.
+이 설정은 로컬 `Skipper` 서버를 원격 플랫폼(`쿠버네티스`, `클라우드 파운드리`같은)에 연결해서 이런 플랫폼들에 스트리밍 데이터 파이프라인을 배포할 수 있도록 해준다. 단, 여기서는 원격 플랫폼에 `아파치 카프카`(또는 `RabbitMQ`) 바인더가 미리 준비돼있다는 전제 조건이 있다.
 
 > 태스크와 배치 애플리케이션은 직접 데이터베이스에 접근해야 한다. 하지만 `Data Flow` 서버와 `Database`는 로컬에서 실행되기 때문에 로컬 플랫폼에서만 태스크 애플리케이션을 시작할 수 있다. 또한 Local Deployer는 `Scheduler` 서비스를 지원하지 않기 때문에 docker-compose 설정에서도 지원하지 않는다.
 
@@ -328,15 +328,15 @@ wget -O docker-compose-cf.yml https://raw.githubusercontent.com/spring-cloud/spr
 docker-compose -f ./docker-compose.yml -f ./docker-compose-rabbitmq.yml -f ./docker-compose-cf.yml up
 ```
 
-CF에선 `Kafka`를 지원하지 않으므로 `docker-compose-rabbitmq.yml` 파일을 사용해 `Rabbit`으로 전환도 해야 한다. `docker-compose-cf.yml` 파일에선 타겟 CF 환경에 `rabbit` 서비스가 설정돼 있다고 가정한다.
+CF에선 `카프카`를 지원하지 않으므로 `docker-compose-rabbitmq.yml` 파일을 사용해 `Rabbit`으로 전환도 해야 한다. `docker-compose-cf.yml` 파일에선 타겟 CF 환경에 `rabbit` 서비스가 설정돼 있다고 가정한다.
 
-[docker-compose-k8s.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-k8s.yml) 파일은 Data Flow 런타임 플랫폼으로 원격 `Kubernetes` 계정을 `k8s`라는 이름으로 추가한다. Kubernetes 마스터 URL과 액세스 credential을 추가하려면 `docker-compose-k8s.yml`을 수정해야 한다.
+[docker-compose-k8s.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-k8s.yml) 파일은 Data Flow 런타임 플랫폼으로 원격 `Kubernetes` 계정을 `k8s`라는 이름으로 추가한다. 쿠버네티스 마스터 URL과 액세스 credential을 추가하려면 `docker-compose-k8s.yml`을 수정해야 한다.
 
 ```bash
 wget -O docker-compose-k8s.yml https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-k8s.yml
 STREAM_APPS_URI=https://dataflow.spring.io/kafka-docker-latest docker-compose -f ./docker-compose.yml -f ./docker-compose-k8s.yml up
 ```
 
-Kubernetes 환경에선 디폴트 메이븐 기반 앱 스타터를 배포할 수 없다. `STREAM_APPS_URI` 변수를 설정하면 도커 기반 앱 배포로 전환할 수 있다.
+쿠버네티스 환경에선 디폴트 메이븐 기반 앱 스타터를 배포할 수 없다. `STREAM_APPS_URI` 변수를 설정하면 도커 기반 앱 배포로 전환할 수 있다.
 
-`docker-compose-k8s.yml`에선 타겟 Kubernetes 환경에 `kafka-broker` 서비스가 미리 배포돼 있다고 가정한다. `kafka-broker` 서비스를 배포하려면 [메세지 브로커 선택하기](../installation.kubernetes.kubectl#choose-a-message-broker) 가이드를 따라해라.
+`docker-compose-k8s.yml`에선 타겟 쿠버네티스 환경에 `kafka-broker` 서비스가 미리 배포돼 있다고 가정한다. `kafka-broker` 서비스를 배포하려면 [메세지 브로커 선택하기](../installation.kubernetes.kubectl#choose-a-message-broker) 가이드를 따라해라.

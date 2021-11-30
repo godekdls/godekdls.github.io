@@ -6,7 +6,7 @@ order: 4
 permalink: /Spring%20Cloud%20Data%20Flow/installation.local-machine.docker-compose/
 description: docker compose를 통해 로컬 머신에 스프링 클라우드 데이터 플로우 설치하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/installation/local/docker/
@@ -21,11 +21,11 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/installation.local-machine/
 
 Spring Cloud Data Flow에선 Spring Cloud Data Flow, Skipper, MySQL, Apache Kafka를 빠르게 불러올 수 있는 Docker Compose 파일을 제공한다. 기본 설정은 확장할 수 있으며, 별도 [커스텀](../installation.local-machine.docker-customize) 가이드에서 바인더를 RabbitMQ로 전환하는 방법이나, 다른 데이터베이스를 이용하는 방법, 모니터링을 활성화시키는 방법 등을 보여준다.
 
-뿐만 아니라 커스텀 애플리케이션을 개발할 때는, Data Flow와 Skipper 서버를 실행하는 Docker 컨테이너가 로컬의 파일 시스템을 바라보도록 해줘야 한다. 그 방법은 [호스트 파일 시스템에 접근하기](#accessing-the-host-file-system) 챕터에서 알 수 있다.
+뿐만 아니라 커스텀 애플리케이션을 개발 중일 때는, Data Flow와 Skipper 서버를 실행하는 Docker 컨테이너가 로컬의 파일 시스템을 바라보도록 해줘야 한다. 그 방법은 [호스트 파일 시스템에 접근하기](#accessing-the-host-file-system) 챕터에서 알 수 있다.
 
 > `docker`와 `docker-compose`는 [최신](https://docs.docker.com/compose/install/) 버전으로 업그레이드하는 게 좋다. 이 가이드에서 설명하는 내용은 도커 엔진: `19.03.5`와, docker-compose: `1.25.2`로 테스트한 내용이다.
 
-> 도커 데몬의 메모리는 최소한 `8 GB`로 설정해라. Windows나 Mac에서는 Docker Desktop의 `Preferences/Resource/Advanced` 메뉴를 통해 메모리를 설정할 수 있다.
+> 도커 데몬의 메모리는 최소 `8GB`로 설정해라. Windows나 Mac에서는 Docker Desktop의 `Preferences/Resource/Advanced` 메뉴를 통해 메모리를 설정할 수 있다.
 
 지금 당장 시작해보고 싶다면, 한 줄 짜리 명령어는 다음과 같다:
 
@@ -118,9 +118,9 @@ docker-compose up
 | Variable name       | Default value                                                | Description                                                  |
 | ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `DATAFLOW_VERSION`  | `2.9.1`                                                      | 설치할 Data Flow Server 버전. ex: `2.4.0.RELEASE` 또는 최신 버전의 경우 `2.9.1`. |
-| `SKIPPER_VERSION`   | `2.8.1`                                                      | 설치할 Skipper Server 버전. ex: `2.3.0.RELEASE` 또는 최신 버Skipper 버전의 경우 `2.8.1`. |
-| `STREAM_APPS_URI`   | https://dataflow.spring.io/kafka-maven-latest (또는 DooD의 경우 https://dataflow.spring.io/kafka-docker-latest) | 사전에 등록된 Stream 애플리케이션들. 사용 가능한 Stream Application Starters 링크는 [여기](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#_spring_cloud_stream_app_starters)에서 확인할 수 있다. |
-| `TASK_APPS_URI`     | https://dataflow.spring.io/task-maven-latest (또는 DooD의 경우 https://dataflow.spring.io/task-docker-latest) | 사전에 등록된 Task 애플리케이션들. Task Application Starters 링크는 [여기](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#_spring_cloud_task_app_starters)에서 확인할 수 있다. |
+| `SKIPPER_VERSION`   | `2.8.1`                                                      | 설치할 Skipper Server 버전. ex: `2.3.0.RELEASE` 또는 최신 Skipper 버전의 경우 `2.8.1`. |
+| `STREAM_APPS_URI`   | https://dataflow.spring.io/kafka-maven-latest (또는 DooD의 경우 https://dataflow.spring.io/kafka-docker-latest) | 미리 등록해둘 스트림 애플리케이션들. 사용 가능한 Stream Application Starters 링크는 [여기](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#_spring_cloud_stream_app_starters)에서 확인할 수 있다. |
+| `TASK_APPS_URI`     | https://dataflow.spring.io/task-maven-latest (또는 DooD의 경우 https://dataflow.spring.io/task-docker-latest) | 미리 등록해둘 태스크 애플리케이션들. Task Application Starters 링크는 [여기](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#_spring_cloud_task_app_starters)에서 확인할 수 있다. |
 | `HOST_MOUNT_PATH`   | .                                                            | 마운트 시 사용할 호스트 시스템 폴더 경로를 정의한다. 좀더 자세한 내용은 [호스트 파일 시스템에 접근하기](#accessing-the-host-file-system)를 참고해라. |
 | `DOCKER_MOUNT_PATH` | `/home/cnb/scdf`                                             | 호스트 폴더를 마운트할 타겟 (컨테이너 내) 경로를 정의한다. 좀더 자세한 내용은 [호스트 파일 시스템에 접근하기](#accessing-the-host-file-system)를 참고해라. |
 
@@ -130,22 +130,22 @@ docker-compose up
 | ----------- | --------------- | ------------------------------------------------------------ |
 | 9393        | 9393            | Data Flow 서버가 수신<sup>listen</sup>하는 포트. 이 포트를 통해 http://localhost:9393/dashboard에 있는 대시보드나, REST API http://localhost:9393에 접근할 수 있다. |
 | 7577        | 7577            | Skipper 서버가 수신<sup>listen</sup>하는 포트. 이 포트를 통해 Skipper REST API http://localhost:7577/api에 접근할 수 있다. |
-| 20000-20105 | 20000-20105     | Skipper와 Local Deployer는 배포된 모든 스트림 애플리케이션에서 이 포트 범위를 사용하도록 설정돼 있다. 덕분에 호스트 시스템에서 애플리케이션의 액추에이터 엔드포인트에 접근할 수 있다. 이 포트들은 배포 설정 `server.port`를 통해 재정의할 수 있다. |
+| 20000-20105 | 20000-20105     | Skipper와 로컬 Deployer는 배포하는 모든 스트림 애플리케이션에 이 포트 범위를 사용하도록 설정돼 있다. 덕분에 호스트 시스템에서 애플리케이션의 액추에이터 엔드포인트에 접근할 수 있다. 이 포트들은 배포 설정 `server.port`를 통해 재정의할 수 있다. |
 
-> 스트림 애플리케이션에서 노출하고 있는 애플리케이션 포트(`20000-20105`)를 사용하면 호스트 시스템에 특정 포트를 노출할 수 있다. 예를 들어 `http --server.port=20015 | log`와 같이 스트림을 정의하면, 호스트 시스템에서  `20015` 포트를 통해 직접 `http` 소스로 `curl`을 사용하거나 HTTP 메시지를 POST할 수 있다.
+> 스트림 애플리케이션에서 노출하고 있는 애플리케이션 포트(`20000-20105`)를 사용하면 호스트 시스템에 원하는 포트를 노출할 수 있다. 예를 들어 `http --server.port=20015 | log`와 같이 스트림을 정의하면, 호스트 시스템에서  `20015` 포트를 통해 직접 `http` 소스로 `curl`을 실행하거나 HTTP 메세지를 POST할 수 있다.
 
 ---
 
 ## Stopping Spring Cloud Data Flow
 
 1. docker-compose 프로세스를 중단하려면 `Ctrl+C`를 눌러라.
-2. 아래 명렁어를 실행해 사용한 Docker 컨테이너를 정리해라.
+2. 아래 명렁어를 실행해 사용한 도커 컨테이너를 정리해라.
 
 ```bash
 docker-compose down
 ```
 
-너무 오래된 컨테이너가 있거나 컨테이너가 응답이 없는 채로<sup>hang</sup> 오류가 발생한다면 모든 컨테이너를 정리해라:
+너무 오래된 컨테이너가 있거나 컨테이너가 응답이 없는 채로<sup>hang</sup> 오류가 발생한다면 모든 컨테이너를 정리해줘라:
 
 
 <div class="switch-language-wrapper linux-osx-windows-powershell windows-cmd">
@@ -166,9 +166,9 @@ FOR /f "tokens=*" %i IN ('docker ps -aq') DO docker rm %i -f
 
 ## Using the Shell
 
-쉘이 더 편하다면 Spring Cloud Data Flow 대시보드 대신 [Spring Cloud Data Flow Shell](../concepts.tooling#shell)을 사용해도 된다. 이 쉘은 명령어와 애플리케이션 설정 프로퍼티에 대한 탭 자동 완성을 지원한다.
+쉘이 더 편하다면 Spring Cloud Data Flow 대시보드 대신 [Spring Cloud Data Flow Shell](../concepts.tooling#shell)을 사용해도 된다. 이 쉘은 명령어와 애플리케이션 설정 프로퍼티에 탭 자동 완성을 지원한다.
 
-Spring Cloud Data Flow를 Docker Compose를 통해 시작했다면, 쉘은 `springcloud/spring-cloud-dataflow-server` 도커 이미지에도 들어 있다. 이 쉘을 사용하려면 콘솔 창을 하나 더 열고 아래 명령어를 입력해라:
+Spring Cloud Data Flow를 Docker Compose를 통해 시작했다면, 쉘은 `springcloud/spring-cloud-dataflow-server` 도커 이미지에 이미 포함돼 있다. 이 쉘을 사용하려면 콘솔 창을 하나 더 열고 아래 명령어를 입력해라:
 
 ```bash
 docker exec -it dataflow-server java -jar shell.jar
@@ -201,7 +201,7 @@ curl https://repo.spring.io/release/org/springframework/cloud/spring-cloud-dataf
 
 환경 변수 `HOST_MOUNT_PATH`와 `DOCKER_MOUNT_PATH`([설정 테이블](#starting-docker-compose) 참조)를 사용하면 호스트와 컨테이너의 디폴트 경로를 커스텀할 수 있다.
 
-예를 들어 `my-app-1.0.0.RELEASE.jar` 파일이 호스트의 `/tmp/myapps/` 폴더에 저장돼 있다면 (Windows의 경우 `C:\Users\User\MyApps`), `HOST_MOUNT_PATH`를 설정해 `dataflow-server`와 `skipper` 컨테이너에 접근하게 만들 수 있다:
+예를 들어 `my-app-1.0.0.RELEASE.jar` 파일이 호스트의 `/tmp/myapps/` 폴더에 저장돼 있다면 (Windows의 경우 `C:\Users\User\MyApps`), `HOST_MOUNT_PATH`를 설정해 `dataflow-server`와 `skipper` 컨테이너서에 이 폴더에 접근할 수 있게 만들 수 있다:
 
 <div class="switch-language-wrapper linux-osx windows-cmd windows-powershell">
 <span class="switch-language linux-osx">Linux / OSX</span>
@@ -233,7 +233,7 @@ app register --type source --name my-app --uri file://home/cnb/scdf/my-app-1.0.0
 
 >  `/home/cnb/scdf` 폴더에 같은 애플리케이션의 metadata jar가 있다면 선택적으로 `--metadata-uri` 파라미터를 사용할 수 있다.
 
-`docker-compose.yml` 파일에서 `app-import-stream`과 `app-import-task` 설정을 수정하면 직접 앱을 사전에 등록할 수도 있다. 사전에 등록하는 모든 앱 스타터에는 아래 예시처럼 `app-import-stream` 블록 설정에 별도 `wget` 구문을 추가해라:
+`docker-compose.yml` 파일에서 `app-import-stream`과 `app-import-task` 설정을 수정하면 앱들을 직접 미리 등록해둘 수도 있다. 사전에 등록하는 모든 앱 스타터에는 아래 예시처럼 `app-import-stream` 블록 설정에 별도 `wget` 구문을 추가해라:
 
 ```yml
 app-import-stream:
@@ -291,7 +291,7 @@ app register --type processor --name pose-estimation --uri maven://org.springfra
 
 ## Monitoring
 
-기본 Data Flow docker-compose 설정에선 Stream과 Task 애플리케이션에 대한 모니터링 기능을 활성화하지 않는다. Spring Cloud Data Flow를 위한 모니터링을 활성화하고 설정하는 방법을 알아보려면 커스텀 가이드 [프로메테우스와 그라파나로 모니터링하기](../installation.local-machine.docker-customize#prometheus--grafana) 또는 [InfluxDB와 그라파나로 모니터링하기](../installation.local-machine.docker-customize#influxdb--grafana)를 확인해봐라.
+기본 Data Flow docker-compose 설정에선 스트림과 태스크 애플리케이션에 대한 모니터링 기능을 활성화하지 않는다. Spring Cloud Data Flow를 위한 모니터링을 활성화하고 설정하는 방법을 알아보려면 커스텀 가이드 [프로메테우스와 그라파나로 모니터링하기](../installation.local-machine.docker-customize#prometheus--grafana) 또는 [InfluxDB와 그라파나로 모니터링하기](../installation.local-machine.docker-customize#influxdb--grafana)를 확인해봐라.
 
 프로메테우스와 InfluxDB를 이용한 Spring Cloud Data Flow 모니터링 경험에 대해 자세히 알아보려면 [스트림 모니터링](../feature-guides.stream.monitoring#local) 기능 가이드를 참고해라.
 
@@ -299,7 +299,7 @@ app register --type processor --name pose-estimation --uri maven://org.springfra
 
 ## Debugging
 
-[스트림 애플리케이션 디버깅하기](../installation.local-machine.docker-customize#debug-stream-applications) 가이드에선 Data Flow로 배포한 스트림 애플리케이션에 대한 원격 디버깅을 활성화하는 방법을 안내한다.
+[스트림 애플리케이션 디버깅하기](../installation.local-machine.docker-customize#debug-stream-applications) 가이드에선 Data Flow로 배포한 스트림 애플리케이션에 원격 디버깅을 활성화하는 방법을 안내한다.
 
 [Data Flow Server 디버깅하기](../installation.local-machine.docker-customize#debug-data-flow-server) 가이드에선 docker-compose 설정을 확장해서 IDE(IntelliJ나 Eclipse)를 통한 Data Flow Server 원격 디버깅을 활성화하는 방법을 안내한다.
 
@@ -309,9 +309,9 @@ app register --type processor --name pose-estimation --uri maven://org.springfra
 
 ## Docker Stream & Task applications
 
-기본 docker-compose 설치는 uber-jar Stream, Task 애플리케이션만 지원한다. Docker는 컨테이너 중첩을 지원하지 않기 때문에 Data Flow와 Skipper 서버의 자체 도커 컨테이너 내에서는 도커 애플리케이션을 실행할 수 없다.
+기본 docker-compose로 설치했을 땐 uber-jar 스트림, 태스크 애플리케이션만 지원한다. 도커는 컨테이너 중첩을 지원하지 않기 때문에 Data Flow와 Skipper 서버의 자체 도커 컨테이너 내에서는 도커 애플리케이션을 실행할 수 없다.
 
-[docker-compose-dood.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-dood.yml) 익스텐션은 `Docker-out-of-Docker (DooD)` 방식을 사용하기 때문에 Skipper와 Data Flow로 Stream, Task 도커 앱을 배포할 수 있다.
+[docker-compose-dood.yml](https://raw.githubusercontent.com/spring-cloud/spring-cloud-dataflow/v2.9.1/src/docker-compose/docker-compose-dood.yml) 익스텐션은 `Docker-out-of-Docker (DooD)` 방식을 사용하기 때문에 Skipper와 Data Flow로 스트림, 태스크 도커 앱을 배포할 수 있다.
 
 이때 Data Flow와 Skipper 컨테이너에서 생성된 컨테이너들은 형제<sup>sibling</sup> 컨테이너다 (호스트의 도커 데몬이 낳은 컨테이너라고 할 수 있다). 서버의 컨테이너 내부에는 도커 데몬이 없기 때문에 여기선 컨테이너 중첩은 일어나지 않는다.
 

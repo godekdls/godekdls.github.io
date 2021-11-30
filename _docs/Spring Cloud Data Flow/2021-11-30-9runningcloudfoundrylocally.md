@@ -4,9 +4,9 @@ navTitle: Running locally
 category: Spring Cloud Data Flow
 order: 9
 permalink: /Spring%20Cloud%20Data%20Flow/installation.cloudfoundry.local/
-description: 로컬에서 실행한 Data Flow, Skipper 서버로 클라우드 파운드리 환경에 배포하기
+description: 로컬에서 실행한 Data Flow, Skipper 서버로 클라우드 파운드리 환경에 앱 배포하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/installation/cloudfoundry/cf-local/
@@ -47,12 +47,13 @@ spring.cloud.dataflow.task.platform.cloudfoundry.accounts[default].deployment.se
 skipper.client.serverUri=https://<skipper-host-name>/api
 ```
 
-이 파일을 사용하려면 먼저 `\{org}`, `\{space}`, `\{email}`, `\{password}`를 채워 넣어야 한다.
+이 파일을 사용하려면 먼저 `{org}`, `{space}`, `{email}`, `{password}`를 채워 넣어야 한다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
  <p><strong>SSL Validation</strong></p>
- <p>클라우드 파운드리 인스턴스에서 자체 서명된<sup>self-signed</sup> 인증서를 사용해서 (아직 개발 중일 때 등) 실행시킬 때에만 <em>Skip SSL Validation</em>을 <code class="highlighter-rouge">true</code>로 설정해라. 프로덕션에선 자체 서명된 인증서를 사용하면 안 된다.</p>
+ <p>클라우드 파운드리 인스턴스에서 자체 서명<sup>self-signed</sup> 인증서를 사용해서 (아직 개발 중일 때 등) 실행시킬 때에만 <em>Skip SSL Validation</em>을 <code class="highlighter-rouge">true</code>로 설정해라. 프로덕션에선 자체 서명 인증서를 사용하면 안 된다.</p>
 </blockquote>
+
 
 > Skipper 서버가 실행되는 URI 위치를 설정하려면 먼저 Skipper를 배포해야 한다.
 
@@ -80,9 +81,9 @@ spring.cloud.skipper.server.platform.cloudfoundry.accounts[default].connection.p
 spring.cloud.skipper.server.platform.cloudfoundry.accounts[default].connection.skipSslValidation=false
 ```
 
-이 파일을 사용하려면 먼저 `\{org}`, `\{space}`, `\{email}`, `\{password}`를 채워 넣어야 한다.
+이 파일을 사용하려면 먼저 `{org}`, `{space}`, `{email}`, `{password}`를 채워 넣어야 한다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
  <p><strong>SSL Validation</strong></p>
- <p>클라우드 파운드리 인스턴스에서 자체 서명된<sup>self-signed</sup> 인증서를 사용해서 (아직 개발 중일 때 등) 실행시킬 때에만 <em>Skip SSL Validation</em>을 <code class="highlighter-rouge">true</code>로 설정해라. 프로덕션에선 자체 서명된 인증서를 사용하면 안 된다.</p>
+ <p>클라우드 파운드리 인스턴스에서 자체 서명<sup>self-signed</sup> 인증서를 사용해서 (아직 개발 중일 때 등) 실행시킬 때에만 <em>Skip SSL Validation</em>을 <code class="highlighter-rouge">true</code>로 설정해라. 프로덕션에선 자체 서명 인증서를 사용하면 안 된다.</p>
 </blockquote>

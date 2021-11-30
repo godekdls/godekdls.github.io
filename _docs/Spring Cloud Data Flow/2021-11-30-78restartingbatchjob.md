@@ -5,8 +5,8 @@ category: Spring Cloud Data Flow
 order: 78
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.batch.restarting/
 description: Spring Cloud Data Flow 대시보드에서 스프링 배치 job 재시작하기
-image: ./../../images/springclouddataflow/SCDF-job-restart-verify.webp
-lastmod: 2021-07-26T18:30:00+09:00
+image: ./../../images/springclouddataflow/SCDF-job-restart.webp
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/batch/restarting/
@@ -19,7 +19,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.batch/
 
 ---
 
-Spring Cloud Data Flow를 사용하면 스프링 배치 Job을 재시작할 수 있다. 예를 들어 스프링 배치 Job이 실행에 실패하면 SCDF 대시보드에서 재작해서 중단됬던 곳부터 Batch-job을 재개할 수 있다. 이 섹션에선 배치 job을 재시작하는 방법을 보여준다.
+Spring Cloud Data Flow를 사용하면 스프링 배치 Job을 재시작할 수 있다. 예를 들어 스프링 배치 Job이 실행에 실패하면 SCDF 대시보드에서 재시작해서 중단됐던 곳부터 Batch-job을 재개할 수 있다. 이 섹션에선 배치 job을 재시작하는 방법을 보여준다.
 
 ### 목차
 
@@ -41,6 +41,6 @@ Spring Cloud Data Flow를 사용하면 스프링 배치 Job을 재시작할 수 
 
 ![Create Schedule](./../../images/springclouddataflow/SCDF-job-restart-verify.webp)
 
-이 시점에 Spring Cloud Data Flow는 이 스프링 배치 Job에 대한 태스크를 다시 기동시킨다. Job이 에러 없이 작동을 마치고 나면 `job1`이 정상적으로 완료되었다는 것을 확인 수 있다.
+이 시점에 Spring Cloud Data Flow는 이 스프링 배치 Job을 위한 태스크를 다시 기동시킨다. Job이 에러 없이 작동을 마치고 나면 `job1`이 정상적으로 완료되었다는 것을 확인 수 있다.
 
 ![Create Schedule](./../../images/springclouddataflow/SCDF-job-page-after-restart.webp)

@@ -6,7 +6,7 @@ order: 77
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.batch.monitoring/
 description: 태스크 정의를 구성하는 애플리케이션들의 메트릭을 수집하고 모니터링하기
 image: ./../../images/springclouddataflow/SCDF-task-metrics-architecture.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/batch/monitoring/
@@ -30,7 +30,7 @@ Data Flow 메트릭 아키텍처는 벤더에 중립적인 애플리케이션 �
 
 [프로메테우스](https://prometheus.io/)는 타겟 애플리케이션에 미리 설정해둔 엔드포인트에서 메트릭을 가져오고, 실시간으로 시계열 데이터를 선택하고 집계할 수 있는 쿼리 언어를 제공하는 인기 있는 pull 기반 시계열 데이터베이스다.
 
-[InfluxDB](https://www.influxdata.com/)는 인기 있는 오픈 소스 push 기반 시계열 데이터베이스다. 다운샘플링, 원치 않는 데이터 자동 만료/삭제, 백업/복원을 지원한다. 데이터 분석은 SQL과 유사한 쿼리 언어를 통해 수행한다.
+[InfluxDB](https://www.influxdata.com/)는 인기 오픈 소스 중 하나로, push 기반 시계열 데이터베이스다. 다운샘플링, 원치 않는 데이터 자동 만료/삭제, 백업/복원을 지원한다. 데이터 분석은 SQL과 유사한 쿼리 언어를 통해 수행한다.
 
 > 태스크 메트릭과 Data Flow를 통합하려면 반드시 필요한 Micrometer 태스크 통합 핵심 로직은 Spring Cloud Task의 2.2.0 릴리즈 라인에서 추가됐다. Spring Cloud Task 2.2+ 버전으로 빌드한 태스크 애플리케이션을 설정해주면, 태스크와 배치 메트릭을 미리 세팅해둔 Micrometer 지원 모니터링 시스템으로 전송할 수 있다.
 
@@ -124,7 +124,7 @@ Data Flow는 태스크 모니터링을 쉽게 시작할 수 있도록, 필요에
 - `task.name`: 메트릭을 전송하는 애플리케이션들을 가지고 있는 태스크의 이름
 - `task.execution.id`: [태스크의 인스턴스 ID](https://docs.spring.io/spring-cloud-task/docs/2.3.3/reference/html/#features-generated_task_id).
 - `task.external.execution.id`: 타겟 플랫폼(클라우드 파운드리나 쿠버네티스같은)에 존재하는 [외부 태스크 ID](https://docs.spring.io/spring-cloud-task/docs/2.3.3/reference/html/#features-external_task_id).
-- `task.parent.execution.id`: 다른 태스크나 태스크들을 실행하는 태스크를 식별할 때 사용하는 [부모 태스크 ID](https://docs.spring.io/spring-cloud-task/docs/2.3.3/reference/html/#features-parent_task_id).
+- `task.parent.execution.id`: 다른 태스크들을 실행하는 태스크를 식별할 때 사용하는 [부모 태스크 ID](https://docs.spring.io/spring-cloud-task/docs/2.3.3/reference/html/#features-parent_task_id).
 
 그라파나 URL을 가리키는 `spring.cloud.dataflow.metrics.dashboard.url` 프로퍼티를 사용해 Data Flow 서버를 시작하면 그라파나 기능이 활성화되며, Data Flow UI에선 그라파나 버튼을 제공한다. 이 버튼을 클릭하면 주어진 태스크에 대한 대시보드가 열린다.
 
@@ -193,7 +193,7 @@ dataflow:>task launch --name task2
 
 Data Flow를 Wavefront 지원 기능과 함께 설치하려면 Docker Compose 가이드에 있는 [Wavefront로 모니터링하기](../installation.local-machine.docker-customize#wavefront)를 따라하면 된다. 가이드대로 따라하면 Spring Cloud Data Flow, Skipper, 아파치 카프카가 설치된다. 또한 자동으로 Wavefront Data Flow 통합 타일<sup>Tile</sup>을 가리키고 있을 거다.
 
-Wavefront는 SaaS 기반 플랫폼이다. 먼저 사용자 계정을 생성하고, 이 계정을 사용해 뒤에서 설명하는 대로 환경 변수 `WAVEFRONT_KEY`와 `WAVEFRONT_URI`를 설정해야 한다.
+Wavefront는 SaaS 기반 플랫폼이다. 먼저 사용자 계정을 생성하고, 이 계정을 사용해서 환경 변수 `WAVEFRONT_KEY`와 `WAVEFRONT_URI`를 설정해야 한다.
 
 아래 이미지와 유사한 대시보드를 볼 수 있을 거다:
 

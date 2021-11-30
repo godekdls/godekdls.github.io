@@ -5,7 +5,7 @@ order: 29
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.stream-development.stream-application-deployment.local/
 description: 샘플 스트림 애플리케이션을 로컬 환경에 수동으로 배포하기
 image: ./../../images/springclouddataflow/standalone-kafka-confluent-usage-detail-topic.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/streams/deployment/local/
@@ -78,13 +78,13 @@ docker-compose up -d
 java -jar target/usage-detail-sender-kafka-0.0.1-SNAPSHOT.jar &
 ```
 
-카프가 바이너리를 설치했다면 다음과 같이 카프카 콘솔 컨슈머를 이용해 카프카 토픽 `usage-detail`로 전송되는 메시지를 확인할 수 있다:
+카프카 바이너리를 설치했다면 다음과 같이 카프카 콘솔 컨슈머를 이용해 카프카 토픽 `usage-detail`로 전송되는 메세지를 확인할 수 있다:
 
 ```bash
 ./bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic usage-detail
 ```
 
-Confluent platform을 설치했다면 위에서 설명한 대로 Control Center에 접근해라. `usage-detail` 토픽과 `Messages` 탭을 선택하면 다음과 같은 내용을 확인할 수 있을 거다:
+Confluent platform을 설치했다면 위에서 설명한 대로 Control Center에 접속해라. `usage-detail` 토픽과 `Messages` 탭을 선택하면 다음과 같은 내용을 확인할 수 있을 거다:
 
 ![Standalone Usage Detail Sender Kafka](./../../images/springclouddataflow/standalone-kafka-confluent-usage-detail-topic.webp)
 
@@ -147,7 +147,7 @@ docker-compose stop
 
 ### Install and Run RabbitMQ
 
-`RabbitMQ` 도커 이미지를 설치하고 실행하려면 아래 명령어를 실행해라:command:
+`RabbitMQ` 도커 이미지를 설치하고 실행하려면 아래 명령어를 실행해라:
 
 ```bash
 docker run -d --hostname rabbitmq --name rabbitmq -p 15672:15672 -p 5672:5672 rabbitmq:3.7.14-management
@@ -187,7 +187,7 @@ RabbitMQ 콘솔에선 다음을 확인할 수 있다:
 
 - `UsageCostProcessor` 애플리케이션은 `spring.cloud.stream.bindings.input.group=usage-cost-consumer` 프로퍼티에 따라 `usage-detail.usage-cost-consumer` durable 큐를 컨슘한다.
 - `UsageCostProcessor` 애플리케이션은 `UsageCostDetail`을 생성하고, `spring.cloud.stream.bindings.output.destination=usage-cost` 프로퍼티에 따라 `usage-cost` exchange로 전송한다.
-- `usage-cost.logger` durable 큐가 생성된다. `spring.cloud.stream.bindings.output.producer.requiredGroups=logger` 프로퍼티에 따라 `usage-cost` exchange에서 메시지를 컨슘한다.
+- `usage-cost.logger` durable 큐가 생성된다. `spring.cloud.stream.bindings.output.producer.requiredGroups=logger` 프로퍼티에 따라 `usage-cost` exchange에서 메세지를 컨슘한다.
 
 애플리케이션을 실행하면 다음과 같이 RabbitMQ exchange `usage-cost`가 생성되고, 이 exchange에 `usage-detail.usage-cost-consumer`란 durable 큐가 바인딩된 것을 확인할 수 있다:
 

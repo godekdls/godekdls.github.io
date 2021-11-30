@@ -6,7 +6,7 @@ order: 32
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.stream-development.stream-processing/
 description: Stream DSL을 이용해 Spring Data Flow로 스트리밍 애플리케이션 배포하기
 image: ./../../images/springclouddataflow/SCDF-register-apps.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/streams/data-flow-stream/
@@ -18,7 +18,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.stream-devel
 
 ---
 
-이 섹션에선 스트림 애플리케이션을 Data Flow에 등록하고, Stream DSL을 생성해서 클라우드 파운드리, 쿠버네티스, 로컬 머신에 이 스트림을 배포하는 방법을 보여준다.
+이 섹션에선 스트림 애플리케이션을 Data Flow에 등록하고, Stream DSL을 생성해서 클라우드 파운드리, 쿠버네티스, 로컬 머신에 스트림을 배포하는 방법을 보여준다.
 
 앞에서는 `Source`, `Processor`, `Sink` 스트리밍 애플리케이션을 만들고 여러 가지 플랫폼에 독립형 애플리케이션으로 배포해봤다. 이번 가이드에선 이 애플리케이션들을 Data Flow에 등록하고, Stream DSL을 생성해서 클라우드 파운드리, 쿠버네티스, 로컬 머신에  스트림을 배포해본다.
 
@@ -79,9 +79,9 @@ docker://springcloudstream/usage-cost-logger-rabbit:0.0.1-SNAPSHOT
 
 ### Application Registration
 
-Spring Cloud Data Flow에 애플리케이션을 등록할 땐 지정한 리소스 이름을 통해 등록한다. 따라서 Data Flow DSL을 사용해 스트리밍 파이프라인을 설정하고 구성할 땐 이 리소스 이름을 참조하면 된다. 애플리케이션을 등록하면, 논리적인 애플리케이션 이름과 타입이 URI로 제공한 물리적인 리소스와 연결된다.
+Spring Cloud Data Flow에 애플리케이션을 등록할 땐 리소스 이름을 하나 지정한다. 따라서 Data Flow DSL을 사용해 스트리밍 파이프라인을 설정하고 구성할 땐 이 리소스 이름을 참조하면 된다. 애플리케이션을 등록하면, 논리적인 애플리케이션 이름과 타입이 URI로 제공한 물리적인 리소스와 연결된다.
 
-이 URI는 [스키마](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#spring-cloud-dataflow-register-stream-apps)를 따르고 있으며, 메이븐 아티팩트나 도커 이미지, 또는 실제 `http(s)`나 `file` URL을 나타낼 수 있다. Data Flow에선 스트리밍 컴포넌트나 태스크, 독립 실행형 애플리케이션과 같은 롤을 나타내는 몇 가지 논리적인 애플리케이션 타입을 정의하고 있다. 스트리밍 애플리케이션에선, 예상하고 있겠지만, `Source`, `Processor`, `Sink` 타입을 사용한다.
+이때 URI는 [스키마](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#spring-cloud-dataflow-register-stream-apps)를 따르고 있으며, 메이븐 아티팩트나 도커 이미지, 또는 실제 `http(s)`나 `file` URL을 나타낼 수 있다. Data Flow에선 스트리밍 컴포넌트나 태스크, 독립 실행형 애플리케이션과 같은 롤을 나타내는 몇 가지 논리적인 애플리케이션 타입을 정의하고 있다. 스트리밍 애플리케이션에선, 예상하고 있겠지만, `Source`, `Processor`, `Sink` 타입을 사용한다.
 
 Data Flow 대시보드에는 다음과 같이 소스, 프로세서, 싱크 애플리케이션을 등록할 수 있는 Application Registration 뷰가 포함돼 있다.
 
@@ -160,7 +160,7 @@ Data Flow 대시보드에는 다음과 같이 소스, 프로세서, 싱크 애�
 
    위에서 등록한 `Source`, `Processor`, `Sink` 애플리케이션들은 왼쪽 패널에서 확인할 수 있다.
 
-3. 각 애플리케이션을 캔버스로 끌어다 놓은 다음 핸들을 이용해 애플리케이션들을 연결해라. 캔버스 상태에 따라 바뀌는 상단 텍스트 패널의 Data Flow DSL 정의에 주목해라.
+3. 각 애플리케이션을 캔버스로 끌어다 놓은 다음 아이콘을 이어서 연결해라. 캔버스 상태에 따라 바뀌는 상단 텍스트 패널의 Data Flow DSL 정의에 주목해라.
 
 4. `Create Stream`을 클릭해라.
 
@@ -178,8 +178,6 @@ Data Flow 대시보드에는 다음과 같이 소스, 프로세서, 싱크 애�
 
    ![Stream created](./../../images/springclouddataflow/SCDF-stream-created.webp)
 
-3. When deploying the stream, choose the target platform accounts from local, Kubernetes, or Cloud Foundry. This is based on the Spring Cloud Skipper server deployer platform account setup.
-
 3. 스트림을 배포할 때는 로컬, 쿠버네티스, 클라운드 파운드리 중에 원하는 타겟 플랫폼 계정을 선택한다. Spring Cloud Skipper 서버 deployer 플랫폼 계정 설정을 기반으로 선택할 수 있다.
 
    ![Deploy stream](./../../images/springclouddataflow/SCDF-deploy-stream.webp)
@@ -187,6 +185,7 @@ Data Flow 대시보드에는 다음과 같이 소스, 프로세서, 싱크 애�
    모든 애플리케이션이 실행되고 나면 스트림 배포가 완료된다.
 
    ![Stream deployed](./../../images/springclouddataflow/SCDF-stream-deployed.webp)
+
 
 위 프로세스는 기본적으로 모든 플랫폼에서 동일하다. 이어지는 섹션에선 로컬, 클라우드 파운드리, 쿠버네티스 환경에 Data Flow를 설치했을 때 플랫폼별로 확인할 수 있는 배포 세부 정보를 설명한다.
 
@@ -224,7 +223,7 @@ Data Flow 대시보드에는 다음과 같이 소스, 프로세서, 싱크 애�
 
 Spring Cloud Data Flow 대시보드에서도 스트림 애플리케이션의 런타임 정보를 조회할 수 있다.
 
-스트림의 런타임 상태 외에도, `usage-cost-logger` 싱크에서 만드는 로그가 잘 출력되는지도 확인해 봐야 한다. Cloud Foundry Apps Manager에서 `usage-cost-logger` 싱크 애플리케이션의 **Logs** 탭을 클릭해라. 다음과 같은 로그 구문이 보일 거다:
+스트림의 런타임 상태 외에도, `usage-cost-logger` 싱크에서 만드는 로그가 잘 출력되는지도 확인해 봐야 한다. Cloud Foundry Apps Manager에서 `usage-cost-logger` 싱크 애플리케이션의 **Logs** 탭을 클릭해라. 다음과 같은 로그 내역이 보일 거다:
 
 ![Data Flow Runtime Information](./../../images/springclouddataflow/SCDF-CF-dashboard-logging.webp)
 
@@ -232,7 +231,7 @@ Spring Cloud Data Flow 대시보드에서도 스트림 애플리케이션의 런
 
 쿠버네티스 환경에 Spring Cloud Data Flow 서버를 띄워놨다면 ([설치 가이드](../installation.kubernetes)를 따라서), 다음과 같은 일들을 진행할 수 있다:
 
-- 스트림 애플리케이션들 등록
+- 스트림 애플리케이션을 등록
 - 스트림을 생성, 배포, 관리
 
 #### Registering Applications with Spring Cloud Data Flow server
@@ -257,7 +256,7 @@ docker://springcloudstream/usage-cost-processor-rabbit:0.0.1-SNAPSHOT
 docker://springcloudstream/usage-cost-logger-rabbit:0.0.1-SNAPSHOT
 ```
 
-이 애플리케이션들은 [앞서 설명한](#application-registration) 등록 스텝에 따라 등록해주면 된다.
+[앞서 설명한](#application-registration) 등록 절차에 따라 이 애플리케이션들을 등록해주면 된다.
 
 #### Stream Deployment
 

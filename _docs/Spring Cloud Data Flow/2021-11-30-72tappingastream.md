@@ -5,7 +5,7 @@ order: 72
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.taps/
 description: 기존 스트림 데이터를 활용해 병렬 스트리밍 데이터 파이프라인 구축하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/taps/
@@ -28,7 +28,7 @@ HTTP 웹 엔드포인트에서 사용자 클릭 이벤트를 수집해 `user-cli
 http > :user-click-events
 ```
 
-이제 `user-click-events` 카프카 토픽을 HTTP 웹 엔드포인트에서 사용자 클릭 이벤트를 컨슘하도록 설정했음으로, `sink` 역할을 담당한다.
+이제 `user-click-events` 카프카 토픽을 HTTP 웹 엔드포인트에서 사용자 클릭 이벤트를 컨슘하도록 설정했음으로, 이 토픽은 `sink` 역할을 담당한다.
 
 이 사용자 클릭 이벤트를 컨슘하고 RDBMS에 저장하는 다른 이벤트 스트리밍 파이프라인을 생성하고 싶다고 해보자. 이 경우엔 스트림 DSL은 다음과 같을 거다:
 
@@ -50,7 +50,7 @@ mainstream=http | filter --expression='payload.userId != null' | transform --exp
 - `mainstream.filter`: filter 프로세서의 출력을 transform 프로세서의 입력으로 연결하는 카프카 토픽
 - `mainstream.transform`: transform 프로세서의 출력을 log 싱크의 입력에 연결하는 카프카 토픽
 
-primary 스트림에서 복사본을 수신하는 병렬 스트림 파이프라인을 생성하려면, 이 카프카 토픽명을 사용해 이벤트 스트리밍 파이프라인을 구성해야 한다. 예를 들어 `http` 애플리케이션의 출력을 활용<sup>tap</sup>해, 필터링되지 않은 데이터를 수신하는 이벤트 스트리밍 파이프라인을 새로 구성하고 싶을 수 있다. 스트림 DSL은 다음과 같을 거다:
+primary 스트림에서 같은 복사본을 수신하는 병렬 스트림 파이프라인을 생성하려면, 이 카프카 토픽명을 사용해 이벤트 스트리밍 파이프라인을 구성해야 한다. 예를 들어 `http` 애플리케이션의 출력을 활용<sup>tap</sup>해, 필터링되지 않은 데이터를 수신하는 이벤트 스트리밍 파이프라인을 새로 구성하고 싶을 수 있다. 스트림 DSL은 다음과 같을 거다:
 
 ```sh
 unfiltered-http-events=:mainstream.http > jdbc
@@ -62,4 +62,4 @@ unfiltered-http-events=:mainstream.http > jdbc
 filtered-http-events=:mainstream.filter > mongodb
 ```
 
-Spring Cloud Data Flow에서 스트림의 이름은 고유하다. 따라서 스트림 이름을 지정한 카프카 토픽을 컨슘하는 애플리케이션의 컨슈머 그룹 이름으로 사용한다. 덕분에 여러 이벤트 스트리밍 파이프라인이 메세지를 놓고 경쟁하는 대신, 동일한 데이터의 복사본을 얻어갈 수 있다.
+Spring Cloud Data Flow에서 스트림의 이름은 고유하다. 따라서 스트림 이름을 지정한 카프카 토픽을 컨슘하는 애플리케이션의 컨슈머 그룹 이름으로 사용한다. 덕분에 여러 이벤트 스트리밍 파이프라인이 메세지를 놓고 경쟁하는 일 없이 동일한 데이터의 복사본을 가져갈 수 있다.

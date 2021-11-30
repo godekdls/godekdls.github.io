@@ -5,7 +5,7 @@ order: 79
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.batch.composed-task/
 description: Composed 태스크를 이용해 다양한 플로우를 생성하고 관리하기
 image: ./../../images/springclouddataflow/SCDF-composed-task-101.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/batch/composed-task/
@@ -19,7 +19,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.batch/
 
 ---
 
-composed 태스크는 태스크 애플리케이션이 그래프의 각 노드를 나타내는 유향<sup>directed</sup> 그래프다. Spring Cloud Data Flow에선 composed 태스크를 브라우저 기반 UI, 쉘, RESTful API를 통해 생성할 수 있다. 이 섹션에선 composed 태스크를 만들고 관리하는 방법을 보여준다.
+composed 태스크는 태스크 애플리케이션을 그래프의 각 노드로 표현하는 유향 그래프<sup>directed graph</sup>다. Spring Cloud Data Flow에선 composed 태스크를 브라우저 기반 UI, 쉘, RESTful API를 통해 생성할 수 있다. 이 섹션에선 composed 태스크를 만들고 관리하는 방법을 보여준다.
 
 ### 목차
 
@@ -62,7 +62,7 @@ composed 태스크는 태스크 애플리케이션이 그래프의 각 노드를
 
 ## Composed Task 101
 
-composed 태스크를 만들고 관리하는 방법을 알아보기 전에 먼저, 일련의 태스크 정의들을 시작하려는 시나리오를 생각해볼 필요가 있다.<br>
+composed 태스크를 만들고 관리하는 방법을 알아보기 전에 먼저, 일련의 태스크 정의들을 시작하는 시나리오를 생각해볼 필요가 있다.<br>
 이 시나리오에선 `task-a`, `task-b`, `task-c`로 식별하는 태스크 정의들을 시작하려 한다고 가정해보자. 예를 들어서 `task-a`를 실행하고, `task-a`가 정상적으로 완료되면 `task-b`를 실행하려고 한다. `task-b`가 정상적으로 완료되면 `task-c`를 시작할 거다. 현재 상황을 그래프로 나타내면 다음과 같다:
 
 ![Composed Task Graph](./../../images/springclouddataflow/SCDF-composed-task-101.webp){: .center-image }
@@ -87,17 +87,17 @@ task-a && task-b && task-c
 
 ## Configuring Data Flow to Launch the Composed Task Runner
 
-Spring Cloud Data Flow는 composed 태스크를 시작할 땐 `Composed-Task-Runner`가 유향<sup>directed</sup> 그래프를 적절히 실행할 수 있도록 프로퍼티를 전달한다. 그러려면 `Composed Task Runner`가 정확한 SCDF 서버에 RESTful API를 호출할 수 있도록 Spring Cloud Data Flow의 `dataflow.server.uri` 프로퍼티를 설정해줘야 한다:
+Spring Cloud Data Flow는 composed 태스크를 시작할 땐 `Composed-Task-Runner`가 유향 그래프<sup>directed graph</sup>를 적절히 실행할 수 있도록 프로퍼티를 전달해준다. 그러려면 `Composed Task Runner`가 정확한 SCDF 서버에 RESTful API를 호출할 수 있도록 Spring Cloud Data Flow의 `dataflow.server.uri` 프로퍼티를 설정해줘야 한다:
 
 - `dataflow.server.uri`: `Composed Task Runner`가 RESTful API를 호출할 때 사용하는 Spring Cloud Data Flow 서버의 URI. 기본값은 https://localhost:9393이다.
 
-- `spring.cloud.dataflow.task.composedtaskrunner.uri`: Spring Cloud Data Flow가 `Composed Task Runner` 아티팩트를 가져올 위치를 세팅한다. Spring Cloud Data Flow는 `local`과 `Cloud Foundry` 플랫폼에선 기본적으로 Maven Central에서 아티팩트를 조회한다. `Kubernetes`에선 아티팩트를 DockerHub에서 가져온다.
+- `spring.cloud.dataflow.task.composedtaskrunner.uri`: Spring Cloud Data Flow가 `Composed Task Runner` 아티팩트를 가져올 위치를 세팅한다. Spring Cloud Data Flow는 `local`과 `Cloud Foundry` 플랫폼에선 기본적으로 Maven Central에서 아티팩트를 조회한다. `Kubernetes`에선 아티팩트를 도커허브에서 가져온다.
 
   > `spring.cloud.dataflow.task.composed.task.runner.uri`는 Spring Cloud Data Flow 2.7.0에서 deprecated되었으며, 대신 `spring.cloud.dataflow.task.composedtaskrunner.uri`를 사용한다.
 
 - `spring.cloud.dataflow.task.composedtaskrunner.imagePullSecret`: 쿠버네티스 환경에서 실행 중일 때 Composed Task Runner 이미지가 인증을 요구하는 레포지토리에 있다면, 시크릿에 이미지를 가져올 때 사용할 credential을 설정할 수 있다. 먼저 시크릿을 생성한 뒤, 프로퍼티 값에는 이 시크릿의 이름을 넣으면 된다. [프라이빗 레지스트리에서 이미지 가져오기](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/) 가이드에 따라 시크릿을 생성해라.
 
-- `maximumConcurrentTasks` - Spring Cloud Data Flow에선 사용자가 직접 각 설정 플랫폼마다 동시에 실행될 수 있는 최대 태스크 수를 제한해서 IaaS/하드웨어 리소스의 포화를 방지할 수 있다. 디폴트 제한치는 지원 플랫폼 모두 `20`으로 설정된다. 플랫폼 인스턴스에서 동시에 실행 중인 태스크 수가 제한치보다 크거나 같으면, 다음 태스크 실행 요청은 실패하며, RESTful API, 쉘, UI를 통해 에러 메시지를 반환한다. 플랫폼 인스턴스에 이 제한치를 설정할 땐, 해당 플랫폼의 deployer 프로퍼티를 최대 동시 태스크 수로 설정해주면 된다:
+- `maximumConcurrentTasks` - Spring Cloud Data Flow에선 사용자가 직접 각 설정 플랫폼마다 동시에 실행할 수 있는 최대 태스크 수를 제한해서 IaaS/하드웨어 리소스의 포화를 방지할 수 있다. 디폴트 제한치는 지원 플랫폼 모두 `20`으로 설정된다. 플랫폼 인스턴스에서 동시에 실행 중인 태스크 수가 제한치보다 크거나 같으면, 다음 태스크 실행 요청은 실패하며, RESTful API, 쉘, UI를 통해 에러 메세지를 반환한다. 플랫폼 인스턴스에 이 제한치를 설정할 땐, 해당 플랫폼의 deployer 프로퍼티를 최대 동시 태스크 수로 설정해주면 된다:
 
   ```properties
   spring.cloud.dataflow.task.platform.<platform-type>.accounts[<account-name>].deployment.maximumConcurrentTasks
@@ -141,7 +141,7 @@ Spring Cloud Data Flow는 composed 태스크를 시작할 땐 `Composed-Task-Run
 </div>
 <div class="language-only-for-kubernetes local cloud-foundry kubernetes"></div>
 <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9;">
-<p>Spring Cloud Data Flow는 쿠버네티스 배포에는 도커 리소스를 지원한다. 도커 이미지의 URI는 <code class="highlighter-rouge">docker:&lt;docker-image-path&gt;/&lt;imageName&gt;:&lt;version&gt;</code>형식이며, Data Flow 태스크 플랫폼에 설정돼있는 도커 레지스트리와 이미지 pull 정책을 사용해 리졸브된다.</p>
+<p>Spring Cloud Data Flow는 쿠버네티스 배포에는 도커 리소스를 지원한다. 도커 이미지의 URI는 <code class="highlighter-rouge">docker:&lt;docker-image-path&gt;/&lt;imageName&gt;:&lt;version&gt;</code> 형식이며, Data Flow 태스크 플랫폼에 설정돼있는 도커 레지스트리와 이미지 pull 정책을 사용해 리졸브된다.</p>
 <p>샘플 앱의 도커 URI는 다음과 같다:</p>
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker:springcloudtask/timestamp-task:2.1.0.RELEASE
 </code></pre></div></div>
@@ -167,7 +167,7 @@ composed 태스크 다이어그램을 통해 가능한 몇 가지 플로우들�
 
 2. 프로젝트를 클론하고 싶은 작업 디렉토리를 선택해라.
 
-3. 이 작업 디렉토리에서 아래 깃 명령어를 실행해라:
+3. 작업 디렉토리에서 아래 깃 명령어를 실행해라:
 
    ```sh
    git clone https://github.com/spring-cloud/spring-cloud-dataflow-samples.git
@@ -219,7 +219,7 @@ composed 태스크 다이어그램을 통해 가능한 몇 가지 플로우들�
 </div>
 <div class="language-only-for-kubernetes local cloud-foundry kubernetes"></div>
 <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 20px; background-color: #f9f9f9;">
-<p>Spring Cloud Data Flow는 쿠버네티스 배포에는 도커 리소스를 지원한다. 도커 이미지의 URI는 <code class="highlighter-rouge">docker:&lt;docker-image-path&gt;/&lt;imageName&gt;:&lt;version&gt;</code>형식이며, Data Flow 태스크 플랫폼에 설정돼있는 도커 레지스트리와 이미지 pull 정책을 사용해 리졸브된다.</p>
+<p>Spring Cloud Data Flow는 쿠버네티스 배포에는 도커 리소스를 지원한다. 도커 이미지의 URI는 <code class="highlighter-rouge">docker:&lt;docker-image-path&gt;/&lt;imageName&gt;:&lt;version&gt;</code> 형식이며, Data Flow 태스크 플랫폼에 설정돼있는 도커 레지스트리와 이미지 pull 정책을 사용해 리졸브된다.</p>
 <p>샘플 앱의 도커 URI는 다음과 같다:</p>
 <div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker:springcloud/transition-sample:latest
 </code></pre></div></div>
@@ -256,7 +256,7 @@ task-a && task-b
 
 ![Conditional Execution Flow](./../../images/springclouddataflow/SCDF-composed-task-conditional-execution.webp)
 
-> 이 예제에선 `task-a`, `task-b` 레이블을 사용했다. 레이블이 필요한 이유는 하나의 그래프에서 두 개의 timestamp 애플리케이션을 사용하기 때문이다.
+> 이 예제에선 `task-a`, `task-b` 레이블을 사용했다. 레이블이 필요한 이유는 하나의 그래프에 timestamp 애플리케이션이 두 개 있기 때문이다.
 
 이제 페이지 하단에 있는 `Create Task` 버튼을 눌러보자. **Confirm Task Creation**을 요구하는 대화 상자가 나타날 거다. 이제 다음 이미지와 같이 `Name` 필드에 composed 태스크 이름으로 `conditional-execution`을 입력하고 **Create the task** 버튼을 클릭한다:
 
@@ -280,7 +280,7 @@ composed 태스크를 시작하려면, 다음 이미지와 같이 `conditional-e
 
 ![Conditional Execution Task Definition Launch](./../../images/springclouddataflow/SCDF-composed-task-conditional-execution-launch-verify.webp)
 
-`conditional-execution`이라는 composed 태스크를 시작하면, `conditional-execution-task-a`라는 태스크가 시작되고, 성공적으로 완료되면 `conditional-execution-task-b`라는 태스크가 시작된다. `conditional-execution-task-a`가 실패했을 때는 `conditional-execution-task-b`가 실행되지 않는다.
+`conditional-execution`이라는 composed 태스크를 시작하면, `conditional-execution-task-a` 태스크가 시작되고, 성공적으로 완료되면 `conditional-execution-task-b` 태스크가 시작된다. `conditional-execution-task-a`가 실패했을 때는 `conditional-execution-task-b`는 실행되지 않는다.
 
 ### Check the Status of the Conditional Execution Composed Task Definition
 
@@ -292,7 +292,7 @@ composed 태스크를 시작하려면, 다음 이미지와 같이 `conditional-e
 
 ## Transitional Execution
 
-Transition을 사용하면 플로우에서 따라갈 트리의 분기할 수 있다. 태스크 transition은 `->` 기호로 표현한다. 시연을 위해 기본적인 transition 그래프를 만들어보자.
+Transition을 사용하면 플로우에서 따라갈 트리를 분기할 수 있다. 태스크 transition은 `->` 기호로 표현한다. 시연을 위해 기본적인 transition 그래프를 만들어보자.
 
 ### Create Basic Transition Task Definition
 
@@ -327,7 +327,7 @@ composed task runner는 `transition-sample` 애플리케이션의 실행이 완�
 
 이제 composed 태스크를 두 번 실행해보면 이 트리를 구성하는 각 경로들을 실습해볼 수 있다.
 
-먼저 종료 메시지를 `FAILED`로 설정하면 어떻게 되는지부터 알아보자. 다음 이미지와 같이 실행할 `basictransition` `Composed Task Runner`를 선택해라:
+먼저 종료 메세지를 `FAILED`로 설정하면 어떻게 되는지부터 알아보자. 다음 이미지와 같이 실행할 `basictransition` `Composed Task Runner`를 선택해라:
 
 ![Transition Execution Flow Launch](./../../images/springclouddataflow/SCDF-composed-task-transition-launch.webp)
 
@@ -538,7 +538,7 @@ composed 태스크를 기동하면, Composed Task Runner라는 애플리케이�
 
 ### Example
 
-이번에는 아래에 있는 간단한 conditional execution composed 태스크를 예시로 다뤄보자:
+이번에는 conditional execution을 이용한 간단한 composed 태스크를 예시로 다뤄보자:
 
 ```sh
 task-a && task-b && task-c
@@ -601,15 +601,15 @@ task-a --myproperty=value1 --anotherproperty=value2 && task-b --mybproperty=valu
 
 앞 섹션에서 보여줬듯이, 배포 프로퍼티와 애플리케이션 프로퍼티는 task launch 페이지에 있는 `builder` 탭을 이용해 설정할 수 있다. 하지만 프로퍼티를 직접 텍스트로 입력하고 싶다면 `Freetext` 탭을 클릭하면 된다.
 
-세 가지 구성 요소로 프로퍼티를 구성한다:
+프로퍼티는 세 가지 요소로 구성한다:
 
-- Property Type: Spring Cloud Data Flow에 이 프로퍼티가 `deployment` 타입인지, `app` 타입인지를 알려준다.
+- 프로퍼티 타입: Spring Cloud Data Flow에 이 프로퍼티가 `deployment` 타입인지, `app` 타입인지를 알려준다.
   - Deployment properties: 태스크 앱 배포를 담당하는 deployer에게 전달할 지시들.
   - App properties: 태스크에 앱에 직접 전달할 프로퍼티들.
-- Task App Name: 프로퍼티를 적용해야 하는 애플리케이션의 레이블 또는 이름.
-- Property Key: 설정할 프로퍼티의 키.
+- 태스크 앱 이름: 프로퍼티를 적용해야 하는 애플리케이션의 레이블 또는 이름.
+- 프로퍼티 키: 설정할 프로퍼티의 키.
 
-다음 dsl로 만든 `my-composed-task`라는 composed 태스크에서, `task-a`라는 태스크 앱에 `myproperty` 프로퍼티를 설정해보자:
+다음 dsl로 만든 `my-composed-task` composed 태스크에서, `task-a` 태스크 앱에 `myproperty` 프로퍼티를 설정해보자:
 
 ```sh
 task-a && task-b
@@ -625,7 +625,7 @@ deployer 프로퍼티를 전달할 때도 마찬가지로, 프로퍼티 타입�
 deployer.task-a.kubernetes.limits.cpu=1000m
 ```
 
-다음과 같이 UI에서 `Freetext` 탭을 사용하면, composed 태스크를 시작하면서 `app`, `deployer` 프로퍼티를 모두 설정할 수 있다:
+composed 태스크를 시작하면서 `app`, `deployer` 프로퍼티를 설정하는 일은 모두, 다음과 같이 UI의 `Freetext` 탭을 사용해도 가능하다:
 
 1. 아래 이미지에서처럼, 실행해야 하는 composed 태스크 정의 옆에 있는 `Launch` 항목을 눌러 composed 태스크를 시작한다:
    
@@ -645,13 +645,13 @@ deployer.task-a.kubernetes.limits.cpu=1000m
 
 앞 섹션에서 보여줬듯이, 인자는 task launch 페이지에 있는 `builder` 탭을 이용해 설정할 수 있다. 하지만 인자를 직접 텍스트로 입력하고 싶다면 `Freetext` 탭을 클릭하면 된다.
 
-세 가지 구성 요소로 프로퍼티를 구성한다:
+세 가지 요소로 프로퍼티를 구성한다:
 
-- Argument Type: 항상 `app` 타입이다.
-- Task App Name: 프로퍼티를 적용해야 하는 애플리케이션의 레이블 또는 이름.
-- Index: 인자를 추가할 위치 (zero base).
+- 인자 타입: 항상 `app` 타입이다.
+- 태스크 앱 이름: 프로퍼티를 적용해야 하는 애플리케이션의 레이블 또는 이름.
+- 인덱스: 인자를 추가할 위치 (zero base).
 
-다음 dsl로 만든 `my-composed-task`라는 composed 태스크에서, `task-a`라는 태스크 앱에 `myargumentA`, `myargumentB` 인자를 설정해보자:
+다음 dsl로 만든 `my-composed-task` composed 태스크에서, `task-a` 태스크 앱에 `myargumentA`, `myargumentB` 인자를 설정해보자:
 
 ```sh
 task-a && task-b
@@ -677,13 +677,13 @@ task-a && task-b
 
 ## Passing Properties to Composed Task Runner
 
-세 가지 구성 요소로 프로퍼티를 구성한다:
+세 가지 요소로 프로퍼티를 구성한다:
 
-- Property Type: Spring Cloud Data Flow에 이 프로퍼티가 `deployment` 타입인지, `app` 타입인지를 알려준다.
+- 프로퍼티 타입: Spring Cloud Data Flow에 이 프로퍼티가 `deployment` 타입인지, `app` 타입인지를 알려준다.
   - Deployment properties: 태스크 앱 배포를 담당하는 deployer에게 전달할 지시들.
   - App properties: 태스크에 앱에 직접 전달할 프로퍼티들.
-- Composed Task Application Name: composed task runner 앱의 이름.
-- Property Key: 설정할 프로퍼티의 키.
+- Composed 태스크 애플리케이션 이름: composed task runner 앱의 이름.
+- 프로퍼티 키: 설정할 프로퍼티의 키.
 
 다음 프로퍼티들을 `Composed Task Runner`에 전달하는 composed 태스크를 시작해보자:
 

@@ -3,9 +3,9 @@ title: Continuous Delivery of Streaming Applications
 category: Spring Cloud Data Flow
 order: 36
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.continuous-delivery.streaming-applications/
-description: 스트림 애플리케이션을 배포하고, 업데이트하고, 롤백하기
+description: 파이프라인 중단 없이 스트림 애플리케이션을 배포하고, 업데이트하고, 롤백하기
 image: ./../../images/springclouddataflow/scdf-stream-upgrade-rollback.gif
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/continuous-delivery/cd-basics/
@@ -17,7 +17,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.continuous-d
 
 ---
 
-한 번씩 스트리밍 데이터 파이프라인을 구성하고 있는 애플리케이션들을 변경해야 할 때가 있다. 버그를 수정하거나 애플리케이션 프로퍼티 설정 값을 바꾼 새 버전으로 올릴 때가 그렇다. 중간에 스트림 처리가 중단되지 않도록, 스트림에서 변경된 애플리케이션들만 롤링 업그레이드를 수행하고자 한다. 더불어 업그레이드가 원하는대로 진행되지 않았다면, 이전 버전 애플리케이션으로 빠르게 롤백할 수 있어야 한다.
+한 번씩 스트리밍 데이터 파이프라인을 구성하고 있는 애플리케이션들을 변경해야 할 때가 있다. 버그를 수정해서 새 버전을 올리거나, 애플리케이션 프로퍼티 설정 값을 바꿀 때가 그렇다. 중간에 스트림 처리가 중단되지 않도록, 스트림에서 변경된 애플리케이션들만 롤링 업그레이드를 수행하고자 한다. 더불어 업그레이드가 원하는대로 진행되지 않았다면, 이전 버전 애플리케이션으로 빠르게 롤백할 수 있어야 한다.
 
 Spring Cloud Data Flow는 Skipper 서버를 통해 이벤트 스트리밍 애플리케이션의 continuous delivery를 지원한다.
 
@@ -36,7 +36,7 @@ continuous delivery를 시연해보기 위해 Data Flow를 설치하면 미리 �
 
 ## Local
 
-이 섹션에선 로컬 환경에서 continuous delivery를 사용하는 방법을 설명한다.
+이 섹션에선 로컬 환경에서 continuous delivery를 활용하는 방법을 설명한다.
 
 ### Stream Creation and Deployment
 
@@ -190,7 +190,7 @@ stream history --name http-ingest
 
 ### Stream Update
 
-기존에 배포한 스트림에서 `log` 애플리케이션을 다른 버전으로 사용하도록 업데이트하고 싶다면, 스트림 `update` 작업을 수행하면 된다.
+기존에 배포한 스트림에서 `log` 애플리케이션을 다른 버전으로 업데이트하고 싶다면, 스트림 `update` 작업을 수행하면 된다.
 
 먼저 필요한 `log` 애플리케이션의 버전을 등록하면 된다:
 
@@ -284,7 +284,7 @@ http post --target "http://localhost:9000" --data "spring"
 log-sink                                 : SPRING!!!
 ```
 
-`stream history http-ingest` 명령어 실행 결과에선 스트림 히스토리에 새 이벤트가 추가돼 있을 거다.
+`stream history http-ingest` 실행 결과엔 스트림 히스토리에 새 이벤트가 추가돼 있을 거다.
 
 ### Stream Rollback
 

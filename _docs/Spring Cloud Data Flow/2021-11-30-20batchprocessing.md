@@ -5,7 +5,7 @@ order: 20
 permalink: /Spring%20Cloud%20Data%20Flow/concepts.batch-processing/
 description: 배치 처리를 위한 프레임워크 Spring Cloud Task 소개
 image: ./../../images/springclouddataflow/SCDF-task-orchestration.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/concepts/batch-jobs/
@@ -34,13 +34,13 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/concepts/
 
 ## Spring Batch
 
-앞에서는 배치 청구 애플리케이션에 필요한 최소한의 요구 사항만 언급했다. 하지만 재시작 기능이나 reader/writers 코딩을 시작하기 전에 먼저 스프링 배치를 살펴보는 게 좋다. 스프링 배치는 로깅, 트레이싱, 트랜잭션 관리, job 처리 통계, job 재시작, 스킵, 리소스 관리를 포함하는 대용량 레코드 처리에 필수적인 기능들을 재사용할 수 있는 형태로 제공한다. 스프링 배치에선 `Batch Job` 재시작 로직을 처리해주고, `FlatFileItemReader`와 `JdbcBatchItemWriter`를 제공하기 때문에 이런 보일러플레이트 코드를 직접 작성할 필요가 없다. 덕분에 사용 데이터로 가격을 책정한다는 비즈니스 로직에 집중할 수 있다.
+앞에서는 배치 청구 애플리케이션에 필요한 최소한의 요구 사항만 언급했다. 하지만 재시작 기능이나 reader와 writer를 만들기 전에 먼저 스프링 배치를 살펴보는 게 좋다. 스프링 배치는 로깅, 트레이싱, 트랜잭션 관리, job 처리 통계, job 재시작, 스킵, 리소스 관리를 포함하는 대용량 레코드 처리에 필수적인 기능들을 재사용할 수 있는 형태로 제공한다. 스프링 배치에선 `Batch Job` 재시작 로직을 처리해주고, `FlatFileItemReader`와 `JdbcBatchItemWriter`를 제공하기 때문에 이런 보일러플레이트 코드를 직접 작성할 필요가 없다. 덕분에 사용 데이터로 가격을 책정한다는 비즈니스 로직에 집중할 수 있다.
 
 ---
 
 ## Running Batch Apps in the Cloud
 
-이제 스프링 배치를 이용하면 배치 애플리케이션을 매우 간단하게 작성할 수 있다는 건 알게 됐는데, 배치 애플리케이션을 클라우드 환경에서 실행할 땐 또 어떨까? 클라우드 파운드리와 쿠버네티스에는 애플리케이션을 ephemeral(short-lived) 형식으로 실행한다는 개념이 있다. 클라우드 파운드리에선 이런 ephemeral 앱을 태스크로, 쿠버네티스는 job으로 표현한다. 하지만 클라우드 환경에서 ephemeral 앱을 실행하려면 필요한 몇 가지 기본 기능이 있다:
+이제 스프링 배치를 이용하면 배치 애플리케이션을 매우 간단하게 작성할 수 있다는 건 알게 됐는데, 배치 애플리케이션을 클라우드 환경에서 실행할 땐 또 어떨까? 클라우드 파운드리와 쿠버네티스에는 애플리케이션을 ephemeral(short-lived) 형식으로 실행한다는 개념이 있다. 클라우드 파운드리에선 이런 ephemeral 앱을 태스크로, 쿠버네티스는 job으로 표현한다. 하지만 클라우드 환경에서 ephemeral 앱을 실행하려면 몇 가지 기본 기능들이 필요하다:
 
 - 애플리케이션이 시작한 시각과 중지된 시각을 기록한다.
 - 애플리케이션의 종료 코드를 기록한다.
@@ -48,7 +48,7 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/concepts/
 - 이미 실행 중인 애플리케이션은 실행을 방지할 수 있다.
 - 애플리케이션이 특정한 처리 단계에 들어갔음을 다른 앱들에 통지할 수 있다.
 
-꽤 일이 많은 것처럼 들리겠지만, Spring Cloud Task는 여기 있는 것들을 전부 다 해준다. Spring Cloud Task는 short-lived 마이크로서비스들을 로컬이나 클라우드 환경에서 개발하고 실행할 수 있게 해준다. 개발자는 `@EnableTask` 애노테이션을 추가하는 게 전부다.
+꽤 일이 많은 것처럼 들리겠지만, Spring Cloud Task는 여기 있는 것들을 전부 다 해준다. Spring Cloud Task를 사용하면 short-lived 마이크로서비스들을 개발하고 로컬이나 클라우드 환경에서 실행할 수 있다. 개발자는 `@EnableTask` 애노테이션을 추가하는 게 전부다.
 
 ---
 
@@ -58,7 +58,7 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/concepts/
 
 ![Data Flow Task Orchestration](./../../images/springclouddataflow/SCDF-task-orchestration.webp)
 
-Spring Batch나 Spring Cloud Task로 배치 애플리케이션을 작성했다면, 이제 애플리케이션 실행은 어떻게 오케스트레이션할 수 있을까? Spring Cloud Data Flow가 도움을 줄 수 있는 지점이 바로 여기다. Spring Cloud Data Flow를 사용하면 애드혹 요청이나 배치 job 스케줄러를 통해 배치 애플리케이션을 시작할 수 있다. 또한 배치 애플리케이션은 아래와 같은 플랫폼에서 시작할 수 있다:
+스프링 배치나 Spring Cloud Task로 배치 애플리케이션을 작성했다면, 이제 애플리케이션 실행은 어떻게 오케스트레이션할 수 있을까? Spring Cloud Data Flow가 도움을 줄 수 있는 지점이 바로 여기다. Spring Cloud Data Flow를 사용하면 애드혹 요청이나 배치 job 스케줄러를 통해 배치 애플리케이션을 시작할 수 있다. 또한 배치 애플리케이션은 아래와 같은 플랫폼에서 시작할 수 있다:
 
 - 클라우드 파운드리
 - 쿠버네티스

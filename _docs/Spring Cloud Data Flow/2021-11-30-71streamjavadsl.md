@@ -5,7 +5,7 @@ order: 71
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.java-dsl/
 description: 스트림을 생성하고 배포할 수 있는 자바 DSL 사용 가이드
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/java-dsl/
@@ -18,7 +18,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 
 ---
 
-스트림을 생성하고 배포할 땐 쉘을 이용하는 대신, `spring-cloud-dataflow-rest-client` 모듈이 제공하는 자바 기반 DSL을 사용해도 된다. 자바 DSL은 코드를 통해 스트림을 생성하고 배포할 수 있는 `DataFlowTemplate` 클래스를 감싸놓은 간편한 언어다.
+스트림을 생성하고 배포할 땐 쉘을 이용하는 대신, `spring-cloud-dataflow-rest-client` 모듈이 제공하는 자바 기반 DSL을 사용해도 된다. 자바 DSL은 코드를 통해 스트림을 생성하고 배포할 수 있는 `DataFlowTemplate` 클래스를 감싸놓은 간편한 라이브러리다.
 
 자바 DSL을 시작하려면 프로젝트에 아래 의존성을 추가해야 한다:
 
@@ -43,7 +43,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 
 ## Usage
 
-자바 DSL에서 핵심 클래스는 `StreamBuilder`, `StreamDefinition`, `Stream`, `StreamApplication`, `DataFlowTemplate`이다. 엔트리 포인트는 `DataFlowTemplate` 인스턴스를 받는 `Stream`의 `builder` 메소드다. `DataFlowTemplate` 인스턴스를 생성하려면 Data Flow 서버의 `URI` 위치를 제공해야 한다.
+자바 DSL에서 핵심 클래스는 `StreamBuilder`, `StreamDefinition`, `Stream`, `StreamApplication`, `DataFlowTemplate`이다. 엔트리 포인트는 `DataFlowTemplate` 인스턴스를 받는 `Stream`의 `builder` 메소드다. `DataFlowTemplate` 인스턴스를 생성하려면 Data Flow 서버의 `URI`를 제공해야 한다.
 
 `StreamBuilder`와 `DataFlowTemplate`을 위한 스프링 부트 자동 설정도 지원한다. [`DataFlowClientProperties`](https://github.com/spring-cloud/spring-cloud-dataflow/blob/master/spring-cloud-dataflow-rest-client/src/main/java/org/springframework/cloud/dataflow/rest/client/config/DataFlowClientProperties.java)에 있는 프로퍼티를 사용해 Data Flow 서버에 대한 커넥션을 설정하면 된다. 보통은 `spring.cloud.dataflow.client.uri` 프로퍼티로 시작하는 게 좋다.
 
@@ -78,7 +78,7 @@ Stream stream = Stream.builder(dataFlowOperations)
 
 `deploy` 메소드는 배포 프로퍼티 `java.util.Map`을 받는 메소드를 오버로드하고 있다.
 
-"fluent" Java DSL 스타일에선 `StreamApplication` 클래스를 사용하는데, 다음 섹션에서 설명할 거다. `StreamBuilder` 클래스는 `Stream.builder(dataFlowOperations)` 메소드가 반환한다. 더 복잡한 애플리케이션에선 보통 `StreamBuilder` 인스턴스 하나를 스프링 `@Bean`으로 생성하고 애플리케이션 전체에 공유하는 게 일반적이다.
+"fluent" 자바 DSL 스타일에선 `StreamApplication` 클래스를 사용하는데, 다음 섹션에서 설명할 거다. `StreamBuilder` 클래스는 `Stream.builder(dataFlowOperations)` 메소드가 반환한다. 더 복잡한 애플리케이션에선 보통 `StreamBuilder` 인스턴스 하나를 스프링 `@Bean`으로 생성하고 애플리케이션 전체에 공유하는 게 일반적이다.
 
 ---
 
@@ -100,7 +100,7 @@ Stream stream = Stream.builder(dataFlowOperations)
       .source(/* 스트림 애플리케이션 인스턴스 자리 */)
   ```
 
-두 가지 스타일을 모두 보여주기 위해, 두 방식을 사용하는 간단한 스트림을 만들어보겠다. 전체 샘플은 [Spring Cloud Data Flow 샘플 레포지토리](https://github.com/spring-cloud/spring-cloud-dataflow-samples/tree/master/javadsl)에서 찾을 수 있으므로, 처음 시작할 때 활용해도 좋다.
+두 가지 스타일을 모두 보여주기 위해, 두 방식을 사용해서 간단한 스트림을 만들어보겠다. 전체 샘플은 [Spring Cloud Data Flow 샘플 레포지토리](https://github.com/spring-cloud/spring-cloud-dataflow-samples/tree/master/javadsl)에서 찾을 수 있으므로, 처음 시작할 때 활용해도 좋다.
 
 다음은 definition 방식을 시연하는 예시다:
 

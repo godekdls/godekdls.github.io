@@ -5,7 +5,7 @@ order: 51
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.continuous-deployment/
 description: 태스크 애플리케이션으로 continuous deployment 달성하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/continuous-deployment/

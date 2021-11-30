@@ -5,7 +5,7 @@ order: 38
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshooting.debugging-stream-applications/
 description: 스트림 애플리케이션이 제대로 실행되지 않을 때 트러블슈팅 팁들
 image: ./../../images/springclouddataflow/build-error.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/troubleshooting/debugging-stream-apps/
@@ -103,7 +103,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지 중
 
 ## Processors - Input
 
-다음은 프로세스에 입력을 전달하는 데 문제가 발생했을 시 필요한 전형적인 디버깅 프로세스를 나타낸 다이어그램이다:
+다음은 프로세서에 입력을 전달하는 데 문제가 발생했을 시 필요한 전형적인 디버깅 프로세스를 나타낸 다이어그램이다:
 
 ![processors-input](./../../images/springclouddataflow/processors-input.png)
 
@@ -113,7 +113,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지 중
 
 ## Processors - Output
 
-다음은 프로세스의 출력에 문제가 발생했을 때 필요한 전형적인 디버깅 프로세스를 나타낸 다이어그램이다:
+다음은 프로세서의 출력에 문제가 발생했을 때 필요한 전형적인 디버깅 프로세스를 나타낸 다이어그램이다:
 
 ![processors-output](./../../images/springclouddataflow/processors-output.png)
 
@@ -162,7 +162,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지 중
 > ```yaml
 >management.metrics.tags.application: ${spring.cloud.dataflow.stream.name:unknown}-${spring.cloud.dataflow.stream.app.label:unknown}-${spring.cloud.dataflow.stream.app.type:unknown}
 > ```
-> 이미지 컨테이너에 따라 이 설정을 제대로 파싱하지 못할 수 있으며, 임베디드 프로퍼티를 빈 문자열로 잘못 치환해서 스트림 앱이 실패할 수 있다. 메트릭을 사용하지 않는다면 `spring.cloud.dataflow.applicationProperties.streamResource`를 다음과 같이 존재하지 않는 파일로 설정해서 이런 필드들을 비활성화할 수 있다:
+> 이미지 컨테이너에 따라 이 설정을 제대로 파싱하지 못할 수 있으며, 임베딩된 프로퍼티를 빈 문자열로 잘못 치환해서 스트림 앱이 실패할 수 있다. 메트릭을 사용하지 않는다면 `spring.cloud.dataflow.applicationProperties.streamResource`를 다음과 같이 존재하지 않는 파일로 설정해서 이런 필드들을 비활성화할 수 있다:
 > 
 > ```properties
 >spring.cloud.dataflow.applicationProperties.streamResource=classpath:fake.yml

@@ -5,7 +5,7 @@ order: 68
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.fanin-fanout/
 description: fan-in, fan-out 기능을 이용해 여러 목적지에 데이터를 게시하고 구독하기
 image: ./../../images/springclouddataflow/fan-in-fan-out.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/fanin-fanout/
@@ -18,7 +18,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 
 ---
 
-fan-in과 fan-out 유스 케이스는 [목적지 이름](../feature-guides.stream.named-destinations)을 지정해서 구현할 수 있다. Fan-in 유스 케이스는 아래 예시와 같이 여러 소스가 모두 같은 목적지<sup>named destination</sup>로 데이터를 전송하는 경우다:
+fan-in과 fan-out 유스 케이스는 [목적지 이름<sup>named destination</sup>](../feature-guides.stream.named-destinations)을 지정해서 구현할 수 있다. Fan-in 유스 케이스는 아래 예시와 같이 여러 소스가 모두 같은 목적지로 데이터를 전송하는 경우다:
 
 ```
 s3 > :data
@@ -32,7 +32,7 @@ http > :data
 :data > file
 ```
 
-fan-in을 그래픽으로 표현한 표현하면 다음과 같다:
+fan-in을 그래픽으로 표현하면 다음과 같다:
 
 ![Fan-in](./../../images/springclouddataflow/fan-in-fan-out.webp)
 

@@ -6,7 +6,7 @@ order: 60
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.deployment-properties/
 description: Spring Cloud Data Flow에서 스트림을 배포할 때 프로퍼티를 정의하는 방법
 image: ./../../images/springclouddataflow/deployment-properties-1.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/deployment-properties/
@@ -22,9 +22,9 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 스트림을 배포할 때 사용하는 프로퍼티는 두 가지로 나뉜다:
 
 - Deployer Properties: 이 프로퍼티들은 앱을 타겟 플랫폼에 배포하는 방식을 제어하며, `deployer` 프리픽스를 사용한다.
-- Application Properties: 이 프로퍼티들은 스트림을 생성할 때 애플리케이션의 동작 방식과 설정 방식을 제어하거나 재정의한다.
+- Application Properties: 이 프로퍼티들은 스트림 생성 시 애플리케이션의 동작 방식과 설정 방식을 제어, 재정의한다.
 
-각 플랫폼 타입(`local`, `cloudfoundry`, `kubernetes`)마다 가능한 배포 프로퍼티 셋이 다르기 때문에, 플랫폼에 정의돼 있는 설정을 골라야 한다. `memory`, `cpu`, `disk` 예약, `count`(해당 플랫폼에서 생성해야 하는 인스턴스 수)를 위한 일반 프로퍼티 셋은 모든 플랫폼에 정의돼 있다.
+각 플랫폼 타입(`local`, `cloudfoundry`, `kubernetes`)마다 가능한 배포 프로퍼티 셋이 다르기 때문에, 플랫폼에 정의돼 있는 설정을 골라야 한다. `memory`, `cpu`, `disk` 예약, `count`(해당 플랫폼에서 생성해야 하는 인스턴스 수)같은 일반 프로퍼티 셋은 모든 플랫폼에 정의돼 있다.
 
 > 각 플랫폼을 위한 전용 배포 프로퍼티는 아래 링크에서 확인할 수 있다:
 >

@@ -5,7 +5,7 @@ order: 55
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.troubleshooting.scdf-tasks/
 description: Spring Cloud Data Flow에서 태스크 애플리케이션이 제대로 실행되지 않을 때 트러블슈팅 팁들
 image: ./../../images/springclouddataflow/launch-errors.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/troubleshooting/debugging-scdf-tasks/
@@ -38,7 +38,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.troubleshooti
 
 ## Did the Task Launch?
 
-태스크 제대로 실행됐는지 확인하려면 UI에서는 Task Execution 페이지로 들어가고, 쉘에서는 `task execution list`를 입력하면 된다. 원하는 태스크의 실행 내역을 찾으면 된다.
+태스크가 제대로 실행됐는지 확인하려면 UI에서는 Task Execution 페이지로 들어가고, 쉘에서는 `task execution list`를 입력하면 된다. 확인하고 싶은 태스크의 실행 내역을 찾으면 된다.
 
 다음은 태스크 실행 에러를 해결하는 방법을 보여주는 다이어그램이다:
 
@@ -68,7 +68,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.troubleshooti
 
 ### Local
 
-이 섹션에선 로컬 환경에서 애플리케이션을 실행할 때 발생할 수 있는 문제를 디버깅하는 방법을 설명한다.
+이 섹션에선 로컬 환경에서 애플리케이션을 실행할 때 발생하는 문제를 디버깅하는 방법을 설명한다.
 
 다음은 로컬 태스크 실행 에러를 해결하는 방법을 보여주는 다이어그램이다:
 
@@ -108,7 +108,7 @@ SCDF를 통해 태스크를 실행하면, 해당 태스크 정의에 속해있�
 
 #### Application Failures
 
-다음은 클라우드 파운드리에서 애플리케이션이 실패할 해결 방법을 보여주는 다이어그램이다:
+다음은 클라우드 파운드리에서 애플리케이션이 실패할 때 해결 방법을 보여주는 다이어그램이다:
 
 ![cloud-foundry-application](./../../images/springclouddataflow/cloud-foundry-application2.png)
 

@@ -6,7 +6,7 @@ order: 61
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.function-composition/
 description: 자바/코틀린 함수로 싱크, 프로세서, 소스를 정의하기하고 결합하기
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/function-composition/
@@ -37,7 +37,7 @@ http | transformer --expression=(\"Hello \"+payload.toString().toUpperCase()) | 
 
 게다가 기존 소스나 싱크에는 한 가지 함수만 구성할 수 있는 게 아니라, 여러 가지 함수도 선언적으로 구성할 수 있다.
 
-이 가이드에선 앞에서 정의했던 스트림을 생성한 다음 원래의 transformer expression을 `java.util.Function` 인스턴스 두 개로 캡슐화하는 새로운 `http-transformer` 소스 애플리케이션을 만들어본다. 같은 처리를 위해 스트림을 새로 배포하지만, 이번엔 애플리케이션을 3개가 아닌 2개만 사용한다.
+이 가이드에선 위 정의에 있는 스트림을 생성한 다음 원래의 transformer expression을 `java.util.Function` 인스턴스 두 개로 캡슐화하는 새로운 `http-transformer` 소스 애플리케이션을 만들어본다. 같은 처리를 위해 스트림을 새로 배포하지만, 이번엔 애플리케이션을 3개가 아닌 2개만 사용한다.
 
 이 가이드에서는 각자 [설치 가이드](../installation)에 설명했던 방법대로 `http`, `transformer`, `log` 애플리케이션을 미리 임포트해서 Spring Cloud Data Flow에 등록했다고 가정한다.
 
@@ -52,14 +52,14 @@ http | transformer --expression=(\"Hello \"+payload.toString().toUpperCase()) | 
   + [Kotlin Support](#kotlin-support)
     * [Building](#building-1)
     * [Registering the Locally Built Application](#registering-the-locally-built-application-1)
-    * [Registering the Readily Available Application](#registering-the-locally-built-application-1)
+    * [Registering the Readily Available Application](#registering-the-readily-available-application-1)
     * [Deploying the Stream](#deploying-the-stream-1)
 
 ---
 
 ## Using Three Applications
 
-첫 번째 스트림에선 사전에 빌드돼 있는 `http`, `transform`, `log` 애플리케이션을 사용한다.
+첫 번째 스트림에선 미리 빌드해서 제공하는 `http`, `transform`, `log` 애플리케이션을 사용한다.
 
 먼저 아래 스트림을 생성한다:
 
@@ -136,7 +136,7 @@ spring.cloud.stream.function.definition=upper|concat
 
 ### Building
 
-`http-transformer`를 메이븐 레포지토리와 Dockerhub에서 사용할 수 있게 만들어둔 `maven`, `docker` 리소스 URI로 등록하고 싶다면 이 섹션은 건너뛰어도 좋다.
+`http-transformer`를 메이븐 레포지토리와 도커허브에서 사용할 수 있게 만들어둔 `maven`, `docker` 리소스 URI로 등록하고 싶다면 이 섹션은 건너뛰어도 좋다.
 
 이 애플리케이션의 소스 코드는 깃허브에서 다운받을 수 있다.
 
@@ -166,7 +166,7 @@ app register --name http-transformer --type source --uri file:///<YOUR-SOURCE-CO
 
 ### Registering the Readily Available Application
 
-`Kafka`, `RabbitMQ` 바인더 모두 `http-transformer` 애플리케이션의 메이븐 아티팩트와 도커 아티팩트를 바로 사용할 수 있게 준비돼 있다.
+`http-transformer` 애플리케이션의 메이븐, 도커 아티팩트는 `Kafka`, `RabbitMQ` 바인더 버전이 두 가지 다 준비돼 있다.
 
 카프카 바인더를 사용하는 메이븐 아티팩트:
 
@@ -279,7 +279,7 @@ app register --name http-transformer-kotlin --type source --uri file:///>YOUR-SO
 
 #### Registering the Readily Available Application
 
-`Kafka`, `RabbitMQ` 바인더 모두 `http-transformer` 애플리케이션의 메이븐 아티팩트와 도커 아티팩트를 바로 사용할 수 있게 준비돼 있다.
+`http-transformer` 애플리케이션의 메이븐, 도커 아티팩트는 `Kafka`, `RabbitMQ` 바인더 버전이 두 가지 다 준비돼 있다.
 
 카프카 바인더를 사용하는 메이븐 아티팩트:
 
@@ -313,7 +313,7 @@ app register --name http-transformer-kotlin --type source --uri docker://springc
 stream create helloComposedKotlin --definition "http-transformer-kotlin --server.port=9002 | log"
 ```
 
-`http-transformer` 예제에서 했던 것처럼, `spring.cloud.stream.function.definition` 프로퍼티를 사용해 원하는 composed 함수 DSL을 정확히 지정하면 functional composition을 구성할 수 있다. 이번에는 아래 예제처럼 자바 설정에서 등록한 함수 빈과 코틀린 프로세서 설정에 있는 함수 빈을 함께 결합할 수 있다:
+`http-transformer` 예제에서 했던 것처럼, `spring.cloud.stream.function.definition` 프로퍼티를 사용해 원하는 composed 함수 DSL을 정확히 지정하면 functional composition을 구성할 수 있다. 이번에는 아래 예제처럼 자바 설정에서 등록한 함수 빈과 코틀린 프로세서 설정에 있는 함수 빈을 함께 결합해보자:
 
 ```sh
 stream deploy helloComposedKotlin --properties "app.http-transformer-kotlin.spring.cloud.stream.function.definition=upper|transform|concat"

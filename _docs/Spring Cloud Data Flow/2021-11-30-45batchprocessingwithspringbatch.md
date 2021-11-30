@@ -6,7 +6,7 @@ order: 45
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-development.spring-batch-jobs/
 description: 스프링 배치 애플리케이션을 개발하고 수동으로 배포해보기
 image: ./../../images/springclouddataflow/spring-batch-reference-model.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/batch/spring-batch/
@@ -22,7 +22,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.batch-develop
 
 <span id="batch_processing_with_spring_batch"></span>여기서는 이 애플리케이션을 빌드하는 방법을 처음부터 설명한다. 원한다면 `billrun` 애플리케이션 소스 코드가 담겨있는 zip 파일을 다운받아, 압축을 풀고 [배포](#deployment) 섹션으로 이동해도 좋다.
 
-이 프로젝트는 [브라우저에서 다운](https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/batch-developer-guides/batch/batchsamples/dist/batchsamples.zip?raw=true)받거나, 커맨드라인에서 아래 명령어를 실행해서 받으면 된다:
+이 프로젝트는 [브라우저에서 다운](https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/batch-developer-guides/batch/batchsamples/dist/batchsamples.zip?raw=true)받거나, 커맨드라인에서 아래 명령어를 실행해 받으면 된다:
 
 ```bash
 wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/batch-developer-guides/batch/batchsamples/dist/batchsamples.zip?raw=true -O batchsamples.zip
@@ -94,7 +94,7 @@ wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/d
 
 - `Job`: `Job`은 전체 배치 프로세스를 캡슐화한 엔티티다. 하나의 job은 한 개 이상의 `step`으로 구성된다.
 - `Step`: `Step`은 배치 job의 독립적이고 순차적인 단계를 캡슐화한 도메인 객체다. 각 `step`은 `ItemReader`, `ItemProcessor`, `ItemWriter`로 구성된다.
-- `ItemReader`: `ItemReader`는 `Step`에서 한 번에 아이템을 하나씩 읽어오는 작업을 추상화한 개념이다.
+- `ItemReader`: `ItemReader`는 `Step`에서 아이템을 한 번에 하나씩 읽어오는 작업을 추상화한 개념이다.
 - `ItemProcessor`: `ItemProcessor`는 아이템을 처리하는 비지니스 로직을 추상화한다.
 - `ItemWriter`는 `Step`의 출력을 추상화한다.
 
@@ -123,12 +123,12 @@ wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/d
 7. **Dependencies** 텍스트 박스에 `mysql`을 입력해서 MySQL 의존성을 선택한다 (다른 데이터베이스도 괜찮다). MySQL을 런타임 데이터베이스로 사용한다.
 8. **Dependencies** 텍스트 박스에 `batch`를 입력해서 배치를 선택해라.
 9. **Generate Project** 버튼을 클릭한다.
-10. `billrun.zip` 파일의 압축을 풀고 즐겨 사용하는 IDE에서 프로젝트를 import해라.
+10. `billrun.zip` 파일의 압축을 풀고 즐겨 사용하는 IDE에서 프로젝트를 임포트해라.
 
 아니면 미리 빌드되어 있는 파일을 다운받아 프로젝트를 초기화해도 된다. 그러려면:
 
 1. [이 Spring Initializr 링크](https://start.spring.io/starter.zip?type=maven-project&language=java&baseDir=billrun&groupId=io.spring&artifactId=billrun&name=Bill+Run&description=Bill+Run+Sample+App&packageName=io.spring.billrun&packaging=jar&dependencies=batch&dependencies=cloud-task&dependencies=jdbc&dependencies=h2&dependencies=mysql)를 클릭해 미리 설정해둔 `billrun.zip` 파일을 다운받아라.
-2.  billrun.zip 파일의 압축을 풀어 즐겨 사용하는 IDE에서 프로젝트를 import해라.
+2.  billrun.zip 파일의 압축을 풀어 즐겨 사용하는 IDE에서 프로젝트를 임포트해라.
 
 ### Setting up MySQL
 
@@ -175,9 +175,9 @@ wget https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/d
    }
    ```
 
-   `process` 메소드를 가진 `ItemProcessor` 인터페이스를 구현하고 재정의한 것에 주목해라. 우리가 사용할 파라미터는 `Usage` 객체이며, 반환 값은 `Bill` 타입이다.
+   `process` 메소드를 가지고 있는 `ItemProcessor` 인터페이스를 구현하고 재정의한 것에 주목해라. 우리가 사용할 파라미터는 `Usage` 객체이며, 반환 값은 `Bill` 타입이다.
 
-8. 이제 자바 설정을 만들어 `BillRun` `Job`에 필요한 빈을 지정할 수 있다. `io.spring.billrun.configuration` 패키지에 다음과 유사한 [`BillingConfiguration`](https://github.com/spring-cloud/spring-cloud-dataflow-samples/tree/master/dataflow-website/batch-developer-guides/batch/batchsamples/billrun/src/main/java/io/spring/billrun/configuration/BillingConfiguration.java) 클래스를 생성해야 한다:
+8. 이제 자바 설정을 만들어 `BillRun` `Job`에 필요한 빈을 지정해주면 된다. `io.spring.billrun.configuration` 패키지에 다음과 유사한 [`BillingConfiguration`](https://github.com/spring-cloud/spring-cloud-dataflow-samples/tree/master/dataflow-website/batch-developer-guides/batch/batchsamples/billrun/src/main/java/io/spring/billrun/configuration/BillingConfiguration.java) 클래스를 생성해야 한다:
 
    ```java
    @Configuration
@@ -377,7 +377,7 @@ docker rm mysql
 
 #### Building the Application
 
-이제 프로젝트를 빌드할 수 있다. 커맨드라엔에서 디렉토리를 프로젝트 위치로 변경한 다음 메이븐 명령어 `./mvnw clean package`를 실행해 프로젝트를 빌드해라.
+이제 프로젝트를 빌드할 수 있다. 커맨드라인에서 디렉토리를 프로젝트 위치로 변경한 다음 메이븐 명령어 `./mvnw clean package`를 실행해 프로젝트를 빌드해라.
 
 #### Setting up Cloud Foundry
 
@@ -420,7 +420,7 @@ instances: 0
 
 핵심은 `instances` 프로퍼티를 `0`으로 설정하는 거다. 이렇게 하면 앱을 실행하지는 않고 준비<sup>stage</sup>시킨다. 또한 라우트를 생성할 필요가 없으므로 `no-route`를 `true`로 설정하면 된다.
 
-> 앱을 준비<sup>staged</sup>시키고 실행은 하지 않으면 좋은 점이 또 있다. 이렇게 준비한<sup>staged</sup> 애플리케이션은 이후 태스크를 실행하기 위해서도 필요하지만, 데이터베이스 서비스가 internal이라면 (클라우드 파운드리 인스턴스에 속해있다면), 이 애플리케이션을 사용해 관련 MySQL 데이터베이스 서비스에 대한 SSH 터널을 구축해 저장된 데이터를 조회할 수 있다. 자세한 내용은 잠시 뒤 살펴보겠다.
+> 앱을 준비<sup>staged</sup>시키고 실행은 하지 않으면 좋은 점이 또 있다. 이렇게 준비한<sup>staged</sup> 애플리케이션은 이후 태스크를 실행하기 위해서도 필요하지만, 데이터베이스 서비스가 내부에 있다면 (클라우드 파운드리 인스턴스에 속해있다면), 이 애플리케이션을 사용해 관련 MySQL 데이터베이스 서비스에 대한 SSH 터널을 구축해 저장된 데이터를 조회할 수 있다. 자세한 내용은 잠시 뒤 살펴보겠다.
 
 #### Running `billrun` on Cloud Foundry
 
@@ -456,7 +456,7 @@ task name:   billrun-task
 task id:     1
 ```
 
-클라우드 파운드리 대시보드에서 이 태스크를 조회해보면 태스크가 문제없이 실행되었음을 알 수 있다. 하지만 이 태스크 애플리케이션이 데이터베이스 테이블에도 정상적으로 데이터를 채웠는지는 어떻게 검증할까? 바로 다음에 해볼 일이 바로 이 일이다.
+클라우드 파운드리 대시보드에서 이 태스크를 조회해보면 태스크가 문제없이 실행되었음을 알 수 있다. 하지만 이 태스크 애플리케이션이 데이터베이스 테이블에도 정상적으로 데이터를 채웠는지는 어떻게 검증할까? 바로 다음에 해볼 일이 바로 그 일이다.
 
 #### Validating the Database Results
 
@@ -474,7 +474,7 @@ cf create-service-key task-example-mysql EXTERNAL-ACCESS-KEY
 cf service-key task-example-mysql EXTERNAL-ACCESS-KEY
 ```
 
-키를 생성하고 나면 데이터베이스에 접근할 때 필요한 credential은 아래 예시처럼 다시 얻어올 수 있다:
+키를 생성하고 나면 데이터베이스에 접근할 때 필요한 credential은 아래 예시처럼 다시 가져올 수 있다:
 
 ```json
 Getting key EXTERNAL-ACCESS-KEY for service instance task-example-mysql as ghillert@gopivotal.com...
@@ -504,7 +504,7 @@ cf ssh -L 3306:<host_name>:<port> task-example-mysql
 
 ##### Using a Database GUI Deployed to Cloud Foundry
 
-MySQL 인스턴스를 계속해서 관찰할 수 있는 재미있는 방법이 하나 더 있는데, [PivotalMySQLWeb](https://github.com/pivotal-cf/PivotalMySQLWeb)을 사용하는 거다. 간단히 설명하면 PivotalMySQLWeb을 클라우드 파운드리 공간에 푸시하고 이를 MySQL 인스턴스에 바인딩해서, 로컬 툴 없이도 MySQL 서비스를 관찰할 수 있다.
+MySQL 인스턴스를 계속해서 관찰할 수 있는 재미있는 방법이 하나 더 있는데, [PivotalMySQLWeb](https://github.com/pivotal-cf/PivotalMySQLWeb)을 사용하는 거다. 간단히 설명하면 PivotalMySQLWeb을 클라우드 파운드리 공간에 푸시하고 MySQL 인스턴스에 바인딩해서, 로컬 툴 없이도 MySQL 서비스를 관찰할 수 있다.
 
 아래 프로젝트를 체크아웃 받아라:
 
@@ -550,7 +550,7 @@ cf push
 
 #### Tearing down All Task Applications and Services
 
-이 예제를 다 따라해봤다면 클라우드 파운드리에 있는 모든 인스턴스를 제거하고 싶을 수도 있다. 이럴땐 다음 명령어를 실행하면 된다:
+이 예제를 다 따라해봤다면 클라우드 파운드리에 있는 모든 인스턴스를 제거하고 싶을 수도 있다. 그럴땐 다음 명령어를 실행하면 된다:
 
 ```bash
 cf delete billsetuptask -f
@@ -563,7 +563,7 @@ cf delete-service task-example-mysql -f
 중요한 건 `task-example-mysql` 서비스 자체를 삭제하기 전에 `EXTERNAL-ACCESS-KEY` 서비스 키를 먼저 삭제해야 한다는 거다. 추가로, 여기서 사용한 명령 플래그들은 다음과 같다:
 
 - `-f` 확인 없이 강제로 삭제한다
-- `-r` 매핑된 라우트들오 함게 삭제한다
+- `-r` 매핑된 라우트들도 함께 삭제한다
 
 ### Kubernetes
 

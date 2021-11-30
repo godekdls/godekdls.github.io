@@ -5,7 +5,7 @@ order: 54
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides.troubleshooting.task-apps/
 description: 태스크 애플리케이션이 제대로 실행되지 않을 때 트러블슈팅 팁들
 image: ./../../images/springclouddataflow/build-error2.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/troubleshooting/debugging-task-apps/
@@ -102,7 +102,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지는 
 
 스프링 배치 애플리케이션은 데이터베이스에 접근할 수 있어야 하며, `@EnableBatchProcessing`이 필요하다.
 
-이미 실행을 완료한 적 있는 배치 앱을 실행했을 때 `Job`이 재실행되지 않는 이슈를 흔히 겪곤 한다. 이런 이슈가 발생하는 이유는 배치 앱 자체는 기본적으로 재시작할 수 있기 때문이다. 즉, 배치 `Job`이 실행 중에 실패하면, 다음번 실행에는 실패한 step 지점부터 재개하는 식으로 재시작할 수 있다. 각 배치 `Job` 인스턴스는 고유하다. 따라서 또 다른 `Job` 인스턴스를 시작하고 싶다면, `Job` 파라미터 중 하나(커맨드라인 인자 중 하나)를 업데이트해야 한다. 아니면 `Job`을 빌드하는 코드에서 `Job` [incrementer](https://docs.spring.io/spring-batch/trunk/reference/html/configureJob.html#JobParametersIncrementer)를 설정해도 된다.
+이미 실행을 완료한 적 있는 배치 앱을 실행했을 때 `Job`이 재실행되지 않는 이슈를 흔히 겪곤 한다. 이런 이슈가 발생하는 이유는 배치 앱 자체는 기본적으로 재시작할 수 있기 때문이다. 즉, 배치 `Job`이 실행 중에 실패하면, 다음번 실행에는 실패한 step 지점부터 재개하는 식으로 재시작할 수 있다. 각 배치 `Job` 인스턴스는 고유하다. 따라서 또 다른 `Job` 인스턴스를 시작하고 싶다면, `Job` 파라미터 중 하나(커맨드라인 인자 중 하나)를 업데이트해야 한다. 아니면 `Job`을 빌드하는 코드에서 `Job` [incrementer](../../Spring%20Batch/configuringandrunningajob#464-jobparametersincrementer)를 설정해도 된다.
 
 ---
 
@@ -143,7 +143,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지는 
 > management.metrics.tags.application=${task.name:unknown}-${task.execution.id:unknown}
 > ```
 > 
-> 이미지 컨테이너에 따라 이 설정을 제대로 파싱하지 못할 수 있으며, 임베디드 프로퍼티를 빈 문자열로 잘못 치환해서 태스크 앱이 실패할 수 있다. 메트릭을 사용하지 않는다면 `spring.cloud.dataflow.applicationProperties.taskResource`를 존재하지 않는 파일로 설정해서 이런 필드들을 비활성화할 수 있다. 예를 들어:
+> 이미지 컨테이너에 따라 이 설정을 제대로 파싱하지 못할 수 있으며, 임베딩된 프로퍼티를 빈 문자열로 잘못 치환해서 태스크 앱이 실패할 수 있다. 메트릭을 사용하지 않는다면 `spring.cloud.dataflow.applicationProperties.taskResource`를 존재하지 않는 파일로 설정해서 이런 필드들을 비활성화할 수 있다. 예를 들어:
 >
 > ```properties
 > spring.cloud.dataflow.applicationProperties.taskResource=classpath:fake.yml

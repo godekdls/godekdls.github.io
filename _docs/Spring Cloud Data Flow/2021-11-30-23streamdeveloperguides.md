@@ -3,9 +3,9 @@ title: Stream Developer guides
 category: Spring Cloud Data Flow
 order: 23
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides/
-description: 스트림 개발자 가이드 개요
+description: 스트림 개발자 가이드
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/
@@ -19,9 +19,9 @@ priority: 0.3
 
 이번 섹션에는 여러 가지 가이드가 있지만, 일반적으론 다음과 같이 시작하면 된다:
 
-1. **미리 빌드된 애플리케이션들**을 이용해 Data Flow를 사용하는 스트림을 만들고 배포하는 법을 안내하는 Getting Started 가이드를 읽어봐라. 이 가이드를 따라해보고 나면 대시보드를 통해 스트림을 생성하고, 배포하고, 로그를 살펴보는 법을 빠르게 파악할 수 있다.
-2. Spring Cloud Stream으로 자체 소스, 프로세서, 싱크 애플리케이션을 개발하고, 플랫폼에 수동으로 배포해본 뒤, 메세지 브로커(RabbitMQ와 Apache Kafka)에서 무슨 일이 일어나고 있는지 자세히 파고들어봐라.
-3. 개발한 소스, 프로세서, 싱크 애플리케이션을 가져와서 Data Flow를 사용해 스트림을 생성하고 플랫폼에 배포해봐라. 이렇게 시도해보면 Data Flow가 처리해주는 전체적인 개발/배포 워크플로를 완전히 수동으로 개발/배포하는 방식과 비교할 수 있어 더 명확하게 파악된다.
+1. **미리 빌드해서 제공하는 애플리케이션들**을 이용해 Data Flow를 사용하는 스트림을 만들고 배포하는 법을 안내하는 Getting Started 가이드를 읽어봐라. 이 가이드를 따라해보고 나면 대시보드를 통해 스트림을 생성하고, 배포하고, 로그를 살펴보는 법을 빠르게 파악할 수 있다.
+2. Spring Cloud Stream으로 자체 소스, 프로세서, 싱크 애플리케이션을 개발하고, 플랫폼에 수동으로 배포해본 뒤, 메세지 브로커(RabbitMQ와 아파치 카프카)에서 무슨 일이 일어나고 있는지 자세히 파고들어봐라.
+3. 개발한 소스, 프로세서, 싱크 애플리케이션을 가져와서 Data Flow를 사용해 스트림을 생성하고 플랫폼에 배포해봐라. 이렇게 해보면 Data Flow가 처리해주는 전체적인 개발/배포 워크플로를 완전히 수동으로 개발/배포하는 방식과 비교할 수 있어 더 명확하게 파악할 수 있다.
 
 ### [Getting Started](../stream-developer-guides.getting-started)
 

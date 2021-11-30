@@ -5,7 +5,7 @@ order: 66
 permalink: /Spring%20Cloud%20Data%20Flow/feature-guides.stream.labels/
 description: 이름이 같은 애플리케이션을 구분하기 위한 레이블 활용법
 image: ./../../images/springclouddataflow/stream-labels.webp
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/feature-guides/streams/labels/
@@ -30,4 +30,4 @@ stream create --definition "http | firstLabel: transform --expression=payload.to
 
 ![Stream Labels](./../../images/springclouddataflow/stream-labels.webp)
 
-아니면 레이블을 이용해서 스트림과 배치 job을 좀더 알기 쉽게 시각화할 수도 있다. 샘플 [파이썬 애플리케이션](https://dataflow.spring.io/docs/recipes/polyglot/app/)에 있는 예시를 보면 어떤 스타일로 사용하는 건지 알 수 있을 거다.
+아니면 레이블을 이용해서 스트림과 배치 job을 좀더 알기 쉽게 시각화할 수도 있다. 샘플 [파이썬 애플리케이션](https://dataflow.spring.io/docs/recipes/polyglot/app/)에 있는 예시를 보면 어떤 스타일로 사용하는 건지 감이 올 거다.

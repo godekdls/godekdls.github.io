@@ -6,7 +6,7 @@ order: 39
 permalink: /Spring%20Cloud%20Data%20Flow/stream-developer-guides.troubleshooting.debugging-stream-applications-in-data-flow/
 description: 스트림 애플리케이션이 제대로 배포되지 않을 때 트러블슈팅 팁들
 image: ./../../images/springclouddataflow/local.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/stream-developer-guides/troubleshooting/debugging-scdf-streams/

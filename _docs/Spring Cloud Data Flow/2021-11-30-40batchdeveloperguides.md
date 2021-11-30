@@ -3,9 +3,9 @@ title: Batch Developer guides
 category: Spring Cloud Data Flow
 order: 40
 permalink: /Spring%20Cloud%20Data%20Flow/batch-developer-guides/
-description: 배치 개발자 가이드 개요
+description: 배치 개발자 가이드
 image: ./../../images/springclouddataflow/logo.png
-lastmod: 2021-07-26T18:30:00+09:00
+lastmod: 2021-12-02T00:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/batch-developer-guides/
@@ -19,7 +19,7 @@ priority: 0.3
 
 이번 섹션에는 여러 가지 가이드가 있지만, 일반적으론 다음과 같이 시작하면 된다:
 
-1. Spring Cloud Data Flow를 이용해 **미리 빌드된 애플리케이션**들로 태스크를 만들고 배포하는 법을 안내하는 Getting Started 가이드를 읽어봐라. 이 가이드를 따라해보고 나면 대시보드를 통해 태스크를 생성하고, 실행하고, 로그를 살펴보는 법을 빠르게 파악할 수 있다.
+1. Spring Cloud Data Flow를 이용해 **미리 빌드해서 제공하는 애플리케이션들**로 태스크를 만들고 배포하는 법을 안내하는 Getting Started 가이드를 읽어봐라. 이 가이드를 따라해보고 나면 대시보드를 통해 태스크를 생성하고, 실행하고, 로그를 살펴보는 법을 빠르게 파악할 수 있다.
 2. Spring Cloud Task로 자체 태스크를 개발하고, 플랫폼에 수동으로 배포해본 뒤, 그 플랫폼에서 무슨 일이 일어나고 있는지 자세히 파고들어봐라.
 4. 개발한 태스크 애플리케이션을 가져와 Spring Cloud Data Flow에 등록하고 플랫폼에 배포해봐라.
 
