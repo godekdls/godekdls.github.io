@@ -169,7 +169,7 @@ postprocessor는 자동으로 exception translator(`PersistenceExceptionTranslat
 
 > 스프링은 `LocalSessionFactoryBuilder`도 제공하는데, 이 빌더는 `@Bean` 설정 스타일이나 프로그래밍 방식 설정과 매끄럽게 통합된다 (`FactoryBean`은 관여하지 않음).
 >
-> `LocalSessionFactoryBean`과 `LocalSessionFactoryBuilder` 모두 백그라운드 부트스트랩을 지원한다. 부트스트랩 executor(`SimpleAsyncTaskExecutor` 등)를 받아 어플리케이션 부트스트랩 스레드와 동시에 하이버네이트 초기화를 진행한다. `LocalSessionFactoryBean`에선 `bootstrapExecutor` 프로퍼티로 executor를 지정할 수 있다. 프로그래밍 방식을 사용하는 `LocalSessionFactoryBuilder`는 부트스트랩 executor 인자를 받는 ``buildSessionFactory`` 메소드를 오버로드하고 있다.
+> `LocalSessionFactoryBean`과 `LocalSessionFactoryBuilder` 모두 백그라운드 부트스트랩을 지원한다. 부트스트랩 executor(`SimpleAsyncTaskExecutor` 등)를 받아 어플리케이션 부트스트랩 스레드와 동시에 하이버네이트 초기화를 진행한다. `LocalSessionFactoryBean`에선 `bootstrapExecutor` 프로퍼티로 executor를 지정할 수 있다. 프로그래밍 방식을 사용하는 `LocalSessionFactoryBuilder`는 부트스트랩 executor 인자를 받는 `buildSessionFactory` 메소드를 오버로드하고 있다.
 >
 > 스프링 프레임워크 5.1기준으로, 이런 네이티브 하이버네이트 설정을 사용하면 네이티브 하이버네이트 방식 외 표준 JPA 방식으로도 상호작용하기 위해 JPA `EntityManagerFactory`를 노출할 수도 있다. 자세한 내용은 [JPA를 위한 네이티브 하이버네이트 설정](#646-native-hibernate-setup-and-native-hibernate-transactions-for-jpa-interaction)을 참고해라.
 

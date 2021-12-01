@@ -100,17 +100,62 @@
                 {% if currentItem.parent %}
                     {% assign children = items | where: "parent",currentItem.parent | sort: 'order' %}
                 {% endif %}
+                {% if currentItem.subparent %}
+                    {% assign subchildren = items | where: "subparent",currentItem.subparent | sort: 'order' %}
+                {% endif %}
                 <a href="{{ site.baseurl }}{{ items.first.url }}">{{ group.name }}</a>
                 <ul>
                     {% for item in items %}
                         {% if item.boundary %} <li class="nav-item" style="font-size: 1.4rem; padding: 15px 0 7px 25px; line-height: 0;"><em>{{ item.boundary }}</em></li>{% endif %}
                         {% if item.parent %}
                             {% if item.isParent %}
-                                <li class="nav-item nav-contents {% if item.parent == currentItem.parent %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ item.parentUrl }}">{{ item.parent }}</a></li>
+<!--                                 parent nav start-->
+                                <li class="nav-item nav-contents
+                                    {% if item.parent == currentItem.parent %}current{% endif %}
+                                    {% if group.name != page.category %}dain-custom-hide{% endif %}">
+                                    <a href="{{ site.baseurl }}{{ item.parentUrl }}">{{ item.parent }}</a>
+                                </li>
                                 {% if item.parent == currentItem.parent %}
+<!--                                     children nav start-->
                                     {% for child in children %}
                                         {% if child.isParent %}
-                                        {% else %}<li class="nav-item nav-contents {% if child.url == page.url %}current{% endif %} {% if group.name != page.category %}dain-custom-hide{% endif %}"><a href="{{ site.baseurl }}{{ child.url }}" style="margin-left: 10px;">{{ child.navTitle | default: child.title }}</a></li>
+                                        {% else %}
+<!--                                         child nav start-->
+                                            {% if child.subparent %}
+                                                {% if child.isSubparent %}
+<!--                                                     sub parent nav start-->
+                                                    <li class="nav-item nav-contents
+                                                                    {% if child.subparent == currentItem.subparent %}current{% endif %}
+                                                                    {% if group.name != page.category %}dain-custom-hide{% endif %}">
+                                                        <a href="{{ site.baseurl }}{{ child.subparentUrl }}"
+                                                            style="margin-left: 10px;">{{ child.subparentNavTitle | default: child.subparent }}</a>
+                                                    </li>
+                                                    {% if child.subparent == currentItem.subparent %}
+<!--                                                         sub children nav start-->
+                                                        {% for subchild in subchildren %}
+                                                            {% if subchild.isSubparent %}
+                                                            {% elsif subchild.navDisplay == false %}
+                                                            {% else %}
+<!--                                                                 sub child nav start-->
+                                                                <li class="nav-item nav-contents
+                                                                                            {% if subchild.url == page.url %}current{% endif %}
+                                                                                            {% if group.name != page.category %}dain-custom-hide{% endif %}">
+                                                                    <a href="{{ site.baseurl }}{{ subchild.url }}" style="margin-left: 20px;">{{ subchild.navTitle | default: subchild.title }}</a>
+                                                                </li>
+<!--                                                                sub child nav end-->
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    {% else %}
+                                                    {% endif %}
+                                                {% else %}
+                                                {% endif %}
+                                            {% else %}
+                                                <li class="nav-item nav-contents
+                                                    {% if child.url == page.url %}current{% endif %}
+                                                    {% if group.name != page.category %}dain-custom-hide{% endif %}">
+                                                    <a href="{{ site.baseurl }}{{ child.url }}" style="margin-left: 10px;">{{ child.navTitle | default: child.title }}</a>
+                                                </li>
+                                            {% endif %}
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}
@@ -188,6 +233,7 @@
 
 <!-- 언어 선택 영역 커스텀 -->
 <script>
+            var languages = ['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured', 'properties', 'yaml', 'linux-osx', 'windows', 'windows-cmd', 'windows-powershell', 'linux-osx-windows-powershell', 'wget', 'curl', 'streams', 'tasks', 'kafka', 'rabbitmq', 'imperative', 'functional', 'kafka-streams', 'local', 'cloud-foundry', 'kubernetes', 'prometheus', 'wavefront', 'influxdb']
 			function displayElementSibling(selector, value) {
 				document.querySelectorAll(selector).forEach(function (el) {
 					el.nextElementSibling.style.display = value
@@ -219,7 +265,7 @@
 			if (typeof defaultLanguages != 'undefined') {
 				defaultLanguages.forEach(function (defaultLanguage) {
 					showLanguage(defaultLanguage);
-					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured', 'properties', 'yaml'].forEach(function (language) {
+					languages.forEach(function (language) {
 						if (!defaultLanguages.includes(language)) {
 							hideLanguage(language, defaultLanguage)
 						}
@@ -229,7 +275,7 @@
 			document.querySelectorAll('.switch-language').forEach(function (el) {
 				el.addEventListener('click', function() {
 					showLanguage(el.classList[1]);
-					['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured', 'properties', 'yaml'].forEach(function (language) {
+					languages.forEach(function (language) {
 						if (el.classList[1] !== language) {
 							hideLanguage(language, el.classList[1])
 						}

@@ -406,7 +406,7 @@ public JobExecution run(Job job, JobParameters jobParameters)
 
 ## 3.6. Item Reader
 
-`ItemReader`는 `Step`에서 한 번에 아이템을 하나씩 읽어오는 작업을 추상화한 개념이다.
+`ItemReader`는 `Step`에서 아이템을 한 번에 하나씩 읽어오는 작업을 추상화한 개념이다.
 더 이상 읽을 아이템이 없으면 `ItemReader`는 null을 리턴한다.
 `ItemReader`에 대한 자세한 설명과 구현체는 [Readers And Writers](https://godekdls.github.io/Spring%20Batch/itemreadersanditemwriters/)를 참조하라.
 
