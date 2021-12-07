@@ -113,7 +113,7 @@
                                 <li class="nav-item nav-contents
                                     {% if item.parent == currentItem.parent %}current{% endif %}
                                     {% if group.name != page.category %}dain-custom-hide{% endif %}">
-                                    <a href="{{ site.baseurl }}{{ item.parentUrl }}">{{ item.parent }}</a>
+                                    <a href="{{ site.baseurl }}{{ item.parentUrl }}">{{ item.parentNavTitle | default: item.parent }}</a>
                                 </li>
                                 {% if item.parent == currentItem.parent %}
 <!--                                     children nav start-->
@@ -233,7 +233,7 @@
 
 <!-- 언어 선택 영역 커스텀 -->
 <script>
-            var languages = ['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured', 'properties', 'yaml', 'linux-osx', 'windows', 'windows-cmd', 'windows-powershell', 'linux-osx-windows-powershell', 'wget', 'curl', 'streams', 'tasks', 'kafka', 'rabbitmq', 'imperative', 'functional', 'kafka-streams', 'local', 'cloud-foundry', 'kubernetes', 'prometheus', 'wavefront', 'influxdb']
+            var languages = ['java', 'xml', 'kotlin', 'maven', 'gradle', 'mockmvc', 'webtestclient', 'restassured', 'properties', 'yaml', 'linux-osx', 'windows', 'windows-cmd', 'windows-powershell', 'linux-osx-windows-powershell', 'wget', 'curl', 'streams', 'tasks', 'kafka', 'rabbitmq', 'imperative', 'functional', 'kafka-streams', 'local', 'cloud-foundry', 'kubernetes', 'prometheus', 'wavefront', 'influxdb', 'consumer', 'producer', 'kubectl', 'helm', 'jib', 'fabric8']
 			function displayElementSibling(selector, value) {
 				document.querySelectorAll(selector).forEach(function (el) {
 					el.nextElementSibling.style.display = value

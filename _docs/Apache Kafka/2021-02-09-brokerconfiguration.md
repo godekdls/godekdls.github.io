@@ -473,7 +473,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#configuration
 
 - #### num.replica.alter.log.dirs.threads
 
-  디스크 I/O를 포함할 수도 있는, 로그 디렉터리 간에 레플리카를 이동시킬 수 있는 스레드 수
+  디스크 I/O를 포함할 수도 있는, 로그 디렉토리 간에 레플리카를 이동시킬 수 있는 스레드 수
 
   |         Type: | int       |
   | ------------: | --------- |

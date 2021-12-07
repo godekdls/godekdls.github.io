@@ -46,7 +46,7 @@ continuous delivery를 시연해보기 위해 Data Flow를 설치하면 미리 �
 - 변환 로직을 실행하는 `transform` 프로세서
 - 변환된 이벤트 결과를 보여주는 `log` 싱크
 
-아래 스트림 정의를 사용하면 각 애프리케이션을 `local`에 배포하면서 고유한 서버 포트를 제공할 수 있다:
+아래 스트림 정의를 사용하면 각 애플리케이션을 `local`에 배포하면서 고유한 서버 포트를 제공할 수 있다:
 
 ```sh
 stream create http-ingest --definition "http --server.port=9000 | transform --expression=payload.toUpperCase() --server.port=9001 | log --server.port=9002" --deploy

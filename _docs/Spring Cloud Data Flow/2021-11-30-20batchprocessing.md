@@ -58,7 +58,7 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/concepts/
 
 ![Data Flow Task Orchestration](./../../images/springclouddataflow/SCDF-task-orchestration.webp)
 
-스프링 배치나 Spring Cloud Task로 배치 애플리케이션을 작성했다면, 이제 애플리케이션 실행은 어떻게 오케스트레이션할 수 있을까? Spring Cloud Data Flow가 도움을 줄 수 있는 지점이 바로 여기다. Spring Cloud Data Flow를 사용하면 애드혹 요청이나 배치 job 스케줄러를 통해 배치 애플리케이션을 시작할 수 있다. 또한 배치 애플리케이션은 아래와 같은 플랫폼에서 시작할 수 있다:
+스프링 배치나 Spring Cloud Task로 배치 애플리케이션을 작성했다면, 이제 애플리케이션 실행은 어떻게 조율<sup>orchestration</sup>할 수 있을까? Spring Cloud Data Flow가 도움을 줄 수 있는 지점이 바로 여기다. Spring Cloud Data Flow를 사용하면 애드혹 요청이나 배치 job 스케줄러를 통해 배치 애플리케이션을 시작할 수 있다. 또한 배치 애플리케이션은 아래와 같은 플랫폼에서 시작할 수 있다:
 
 - 클라우드 파운드리
 - 쿠버네티스

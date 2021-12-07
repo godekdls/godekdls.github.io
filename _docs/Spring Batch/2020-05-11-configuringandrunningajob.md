@@ -844,8 +844,8 @@ public interface JobParametersIncrementer {
 
 `JobParametersIncrementer`는 가지고 있는 `JobParameters`에서 필요한 값을 증가시켜 다음에 사용될 `JobParameters` 오브젝트를 리턴한다.
 프레임워크에서는 `JobParameters`의 어떤 값을 바꿔야 '다음' 인스턴스라고 할 수 있는지 알 수 없기 때문에 꽤 유용하다.
-예를 들어 `JobParameters`에 날짜 값만 있고, 다음 인스턴스를 생성해야 한다면 날짜는 하루를 증가시켜야 할까? 아니면 한 주(weekly 잡이라면)?
-아래 보이는 데로 작업을 식별하는 데 사용되는 어떤 숫자든 원하는대로 처리할 수 있다.
+예를 들어 `JobParameters`에 날짜 값만 있고, 다음 인스턴스를 생성해야 한다면 날짜는 하루를 증가시켜야 할까? 아니면 한 주(위클리 job이라면)?
+아래 보이는 것처럼 Job을 식별하는 데 사용할 수 있는 어떤 숫자든지 마찬가지다:
 
 ```java
 public class SampleIncrementer implements JobParametersIncrementer {
@@ -860,9 +860,7 @@ public class SampleIncrementer implements JobParametersIncrementer {
 }
 ```
 
-이 예제에서는 'run.id'라는 키를 가진 값으로 `JobInstances`를 구분한다.
-넘겨받은 `JobParameters`가 null이라면 이전에 해당 `Job`을 실행한 적이 없다는 뜻이므로 초깃값을 리턴하면 된다.
-반대의 경우에는 이전에 사용된 값을 넘겨받아 바로 다음에 사용할 값을 리턴한다.
+이 예제에서는 'run.id'라는 키를 가진 값으로 `JobInstances`를 구분한다. 넘겨받은 `JobParameters`가 null이라면 전엔 이 `Job`을 실행한 적이 없다는 뜻이므로 초기 상태를 리턴하면 된다. 반대로 null이 아니라면, 이전에 사용했던 값을 가져와서 1을 더해 반환한다.
 
 incrementer는 빌더에서 제공하는 `incrementer` 메소드로 설정한다.
 
