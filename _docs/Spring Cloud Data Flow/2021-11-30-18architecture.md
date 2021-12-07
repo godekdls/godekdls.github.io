@@ -18,7 +18,7 @@ priority: 0.8
 
 이 문서에선 Data Flow 아키텍처의 핵심 개념들을 설명한다:
 
-- Data Flow의 서버 컴포넌트들.
+- Data Flow를 구성하는 서버들.
 - 이 서버들로 스트림과 배치 job에 배포할 수 있는 애플리케이션 타입들.
 - 배포된 애플리케이션들의 마이크로서비스 아키텍처와 DSL을 통해 이를 정의하는 방법.
 - 애플리케이션을 배포할 수 있는 플랫폼들.
@@ -55,7 +55,7 @@ priority: 0.8
 
 ## Server Components
 
-Data Flow엔 두 가지 핵심 컴포넌트가 존재한다:
+Data Flow는 두 가지 핵심 서버로 구성된다:
 
 - Data Flow 서버
 - Skipper 서버
