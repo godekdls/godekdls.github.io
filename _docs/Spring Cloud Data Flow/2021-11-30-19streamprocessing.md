@@ -20,7 +20,7 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/concepts/
 - 실시간 신용카드 사기 탐지 또는 예측 분석
 - 가치 창출을 위한 준 실시간 비즈니스 데이터 처리 및 분석
 
-Spring Cloud Data Flow에서 스트림 처리는 구조적으로 보면 선택한 메세징 미들웨어(ex. RabbitMQ, 아파치 카프카)를 통해 연결되는 독립적인 이벤트 기반 스트리밍 애플리케이션 컬렉션으로 구현된다. 독립적인 애플리케이션들은 런타임에 모여 스트리밍 데이터 파이프라인을 구성한다. 이때 파이프라인은 애플리케이션 간에 데이터가 어떻게 흐르냐에 따라 선형일 수도, 비선형일 수도 있다.
+Spring Cloud Data Flow에서 스트림 처리는 구조적으로 보면 선택한 메세징 미들웨어(ex. RabbitMQ, 아파치 카프카)를 통해 연결되는 독립적인 이벤트 기반 스트리밍 애플리케이션 모음으로 구현된다. 독립적인 애플리케이션들은 런타임에 모여 스트리밍 데이터 파이프라인을 구성한다. 이때 파이프라인은 애플리케이션 간에 데이터가 어떻게 흐르냐에 따라 선형일 수도, 비선형일 수도 있다.
 
 ### 목차
 
@@ -78,7 +78,7 @@ Spring Cloud Data Flow에서 스트리밍 애플리케이션들을 모아 하나
 
 ![Data Flow Stream Orchestration](./../../images/springclouddataflow/SCDF-stream-orchestration.webp)
 
-Spring Cloud Stream을 이용해 스트림 애플리케이션을 작성했거나 미리 빌드돼 있는 여러 가지 Spring Cloud Stream 애플리케이션 중 하나를 사용했다면, 이제 스트리밍 데이터 파이프라인을 구성하는 애플리케이션은 어떻게 정의하고 모든 애플리케이션들의 시작은 어떻게 오케스트레이션할 수 있을까? Spring Cloud Data Flow가 도움을 줄 수 있는 지점이 바로 여기다.
+Spring Cloud Stream을 이용해 스트림 애플리케이션을 작성했거나 미리 빌드돼 있는 여러 가지 Spring Cloud Stream 애플리케이션 중 하나를 사용했다면, 이제 스트리밍 데이터 파이프라인을 구성하는 애플리케이션은 어떻게 정의하고 모든 애플리케이션들의 시작은 어떻게 조율<sup>orchestration</sup>할 수 있을까? Spring Cloud Data Flow가 도움을 줄 수 있는 지점이 바로 여기다.
 
 Spring Cloud Data Flow를 통하면 UI에서 드래그 앤 드랍을 이용하거나, 친숙한 파이프와 필터 구문을 사용하는 DSL<sup>Domain Specific Language</sup>로 스트림을 정의할 수 있다. 자세한 내용은 [Tooling](../concepts.tooling) 가이드를 참고해라.
 

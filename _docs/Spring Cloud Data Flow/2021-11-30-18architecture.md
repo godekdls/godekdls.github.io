@@ -227,7 +227,7 @@ dataflow:> task create simpleComposedTask --definition "task1 && task2"
 
 ### Application Metadata
 
-Long-lived 애플리케이션과 short-lived 애플리케이션은 지원하는 설정 프로퍼티에 대한 메타데이터를 제공할 수 있다. 이 메타데이터는 쉘과 UI 툴에서 데이터 파이프라인을 구축할 때 상황에 맞는 도움말과 코드 자동 완성을 제공하는데 활용된다. 애플리케이션 메타데이터를 생성하고 사용하는 방법은 이 [상세 가이드](https://dataflow.spring.io/docs/applications/application-metadata/)에서 자세히 알아볼 수 있다.
+Long-lived 애플리케이션과 short-lived 애플리케이션은 지원하는 설정 프로퍼티에 대한 메타데이터를 제공할 수 있다. 이 메타데이터는 쉘과 UI 툴에서 데이터 파이프라인을 구축할 때 상황에 맞는 도움말과 코드 자동 완성을 제공하는데 활용된다. 애플리케이션 메타데이터를 생성하고 사용하는 방법은 이 [상세 가이드](../applications.metadata)에서 자세히 알아볼 수 있다.
 
 ---
 
@@ -237,7 +237,7 @@ Long-lived 애플리케이션과 short-lived 애플리케이션은 지원하는 
 
 이런 애플리케이션들을 Spring Cloud Data Flow에 등록하는 방법은 설치 가이드에서 설명하고 있다.
 
-미리 빌드된 애플리케이션들에 관한 자세한 정보는 [Applications](https://dataflow.spring.io/docs/applications/pre-packaged/) 가이드에서 확인할 수 있다.
+미리 빌드된 애플리케이션들에 관한 자세한 정보는 [Applications](../applications.pre-packaged) 가이드에서 확인할 수 있다.
 
 ---
 

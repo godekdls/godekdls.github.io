@@ -30,4 +30,4 @@ stream create --definition "http | firstLabel: transform --expression=payload.to
 
 ![Stream Labels](./../../images/springclouddataflow/stream-labels.webp)
 
-아니면 레이블을 이용해서 스트림과 배치 job을 좀더 알기 쉽게 시각화할 수도 있다. 샘플 [파이썬 애플리케이션](https://dataflow.spring.io/docs/recipes/polyglot/app/)에 있는 예시를 보면 어떤 스타일로 사용하는 건지 감이 올 거다.
+아니면 레이블을 이용해서 스트림과 배치 job을 좀더 알기 쉽게 시각화할 수도 있다. 샘플 [파이썬 애플리케이션](../recipes.polyglot.app)에 있는 예시를 보면 어떤 스타일로 사용하는 건지 감이 올 거다.

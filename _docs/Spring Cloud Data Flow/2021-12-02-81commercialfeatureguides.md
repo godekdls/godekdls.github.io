@@ -9,7 +9,6 @@ lastmod: 2021-12-02T19:33:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 데이터 플로우
 originalRefLink: https://dataflow.spring.io/docs/commercial-feature-guides/
-priority: 0.3
 ---
 
 ---
