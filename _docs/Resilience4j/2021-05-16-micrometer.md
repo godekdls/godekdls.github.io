@@ -178,7 +178,7 @@ dependencies {
 
 CircuitBreaker마다 다음과 같은 메트릭을 내보낸다:
 
-```text
+```prometheus
 # HELP resilience4j_circuitbreaker_buffered_calls The number of buffered failed calls stored in the ring buffer
 # TYPE resilience4j_circuitbreaker_buffered_calls gauge
 resilience4j_circuitbreaker_buffered_calls{kind="failed",name="backendA",} 0.0
@@ -226,7 +226,7 @@ resilience4j_circuitbreaker_calls_seconds_sum{kind="failed",name="backendA",} 0.
 
 Bulkhead마다 다음과 같은 메트릭을 내보낸다:
 
-```text
+```prometheus
 # HELP resilience4j_bulkhead_available_concurrent_calls The number of available permissions
 # TYPE resilience4j_bulkhead_available_concurrent_calls gauge
 resilience4j_bulkhead_available_concurrent_calls{name="backendA",} 10.0
@@ -238,7 +238,7 @@ resilience4j_bulkhead_max_allowed_concurrent_calls{name="backendA",} 10.0
 
 Retry마다 다음과 같은 메트릭을 내보낸다:
 
-```text
+```prometheus
 # HELP resilience4j_retry_calls The number of successful calls without a retry attempt
 # TYPE resilience4j_retry_calls gauge
 resilience4j_retry_calls{kind="failed_with_retry",name="backendA",} 0.0
@@ -249,7 +249,7 @@ resilience4j_retry_calls{kind="successful_with_retry",name="backendA",} 0.0
 
 RateLimiter마다 다음과 같은 메트릭을 내보낸다:
 
-```text
+```prometheus
 # HELP resilience4j_ratelimiter_waiting_threads The number of waiting threads
 # TYPE resilience4j_ratelimiter_waiting_threads gauge
 resilience4j_ratelimiter_waiting_threads{name="backendA",} 0.0
