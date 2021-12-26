@@ -1,0 +1,88 @@
+---
+title: Overview
+category: Prometheus
+order: 3
+permalink: /Prometheus/overview/
+description: 프로메테우스가 제공하는 기능들과 아키텍처 소개
+image: ./../../images/prometheus/architecture.png
+lastmod: 2021-05-16T17:00:00+09:00
+comments: true
+originalRefName: 프로메테우스
+originalRefLink: https://prometheus.io/docs/introduction/overview/
+parent: INTRODUCTION
+parentUrl: /Prometheus/introduction/
+priority: 0.7
+---
+
+### 목차
+
+- [What is Prometheus?](#what-is-prometheus)
+  + [Features](#features)
+  + [What are metrics ?](#what-are-metrics-)
+  + [Components](#components)
+  + [Architecture](#architecture)
+- [When does it fit?](#when-does-it-fit)
+- [When does it not fit?](#when-does-it-not-fit)
+
+---
+
+## What is Prometheus?
+
+[프로메테우스](https://github.com/prometheus)는 원래는 [SoundCloud](https://soundcloud.com/)에서 개발했던 오픈 소스 모니터링 시스템이자 알림 툴킷이다. 2012년을 시작으로 많은 기업, 그리고 조직에서 프로메테우스를 채택했으며, 개발자, 사용자 [커뮤니티](https://prometheus.io/community) 또한 매우 활발한 편이다. 이제는 독립형 오픈 소스 프로젝트이며, 어떤 회사의 통제도 받지 않고 독립적으로 관리되고 있다. 오픈 소스라는 사실을 알리고 프로젝트의 거버넌스 구조를 확립하기 위한 일환으로 프로메테우스는 2016년에 [쿠버네티스](https://kubernetes.com)를 잇는 두 번째 호스팅 프로젝트로 [Cloud Native Computing Foundation](https://cncf.io/)에 합류했다.
+
+프로메테우스는 메트릭을 시계열 데이터로 수집해 저장한다. 즉 메트릭 정보는, 정보를 수집한 타임스탬프와 함께 저장하며, 키-값 쌍으로 구성된 레이블도 함께 저장할 수 있다.
+
+프로메테우스를 개략적으로 소개하는 링크들은 [media](../media) 섹션에 첨부해뒀다.
+
+### Features
+
+프로메테우스의 주요 기능들:
+
+- 메트릭 이름과 키/값 쌍으로 식별하는 다차원 [데이터 모델](../data-model)을 시계열로 저장
+- 다차원 모델을 다각도로 활용할 수 있는 [유연한 쿼리 언어](../querying.basics) PromQL
+- 분산 스토리지에 의존하지 않고 모든 서버 노드가 자율적으로 동작
+- HTTP를 통한 pull 모델로 시계열 수집
+- 중간 게이트웨이를 통한 [시계열 push](https://prometheus.io/docs/instrumenting/pushing/) 지원
+- 서비스 디스커버리나 스태틱 설정을 통한 모니터링 대상 타겟팅
+- 다양한 그래프, 대시 보드 모드 지원
+
+### What are metrics ?
+
+일반인 관점에서 바라보면 메트릭은 숫자로 측정한 값을 의미하며, 시계열이란 말은 시간이 흐르면서 변경 사항을 기록한다는 것을 뜻한다. 측정하고 싶은 값은 애플리케이션마다 다를 거다. 예를 들어 웹 서버에선 요청 시간이, 데이터베이스에선 활성 커넥션 수나 활성 쿼리 수 등이 알고 싶을 거다.
+
+메트릭 알면 애플리케이션이 그렇게 동작하고 있는 이유를 파악할 수 있다. 실행 중인 웹 애플리케이션의 동작이 느려진 걸 발견했다고 생각해 보자. 애플리케이션에서 지금 어떤 일이 일어나고 있는지 알아내려면 몇 가지 정보가 있어야 한다. 예를 들어 요청 수가 과도하게 많아도 애플리케이션이 느려질 수 있다. 요청 수를 메트릭으로 수집하고 있다면, 원인을 알아내고 부하를 처리할 서버 수를 늘려줄 수 있다.
+
+### Components
+
+프로메테우스 에코 시스템은 다양한 컴포넌트로 이루어져 있으며, 컴포넌트 대부분은 옵션이다:
+
+- 시계열 데이터를 스크랩하고 저장하는 메인 [프로메테우스 서버](https://github.com/prometheus/prometheus)
+- 어플리케이션 코드 계측<sup>instrument</sup> 용 [클라이언트 라이브러리](https://prometheus.io/docs/instrumenting/clientlibs/)
+- short-lived job을 지원하는 [푸시 게이트웨이](https://github.com/prometheus/pushgateway)
+- HAProxy, StatsD, Graphite 등의 서비스를 위한 특수 [익스포터들](https://prometheus.io/docs/instrumenting/exporters/)
+- alert를 처리해주는 [alertmanager](https://github.com/prometheus/alertmanager)
+- 다양한 지원 도구들
+
+프로메테우스 컴포넌트는 대부분 [Go](https://golang.org/)로 작성돼있기 때문에 정적 바이너리로 쉽게 빌드하고 배포할 수 있다.
+
+### Architecture
+
+다음은 프로메테우스와 몇 가지 에코시스템 컴포넌트들의 아키텍처를 나타낸 다이어그램이다:
+
+![architecture](../../images/prometheus/architecture.png)
+
+프로메테우스는 설정한 job으로부터 직접 메트릭을 스크랩하며, short-lived job에선 중간 푸시 게이트웨이를 거치기도 한다. 스크랩한 샘플을 모두 로컬에 저장하며, 설정한 rule들을 실행해 기존 데이터를 집계하고 새 시계열을 기록하거나 alert를 생성한다. [그라파나](https://grafana.com/)나 기타 API 컨슈머를 사용하면 수집한 데이터를 시각화할 수 있다.
+
+---
+
+## When does it fit?
+
+프로메테우는 시계열로 수집할 수 있는 순수한 숫자 데이터를 기록하는 일에 적합하다. 장비 관련 지표를 모니터링하기 좋으며, 매우 동적인 서비스 지향 아키텍처 모니터링에도 적합하다. 마이크로서비스 세계에서 다차원 데이터 수집과 질의를 지원한다는 점에서 특별하다.
+
+프로메테우스는 가동 중단 시 문제를 신속하게 진단할 수 있는 시스템이 될 수 있도록, 신뢰도를 중심으로 설계됐다. 프로메테우스 서버는 각각 네트워크 스토리지나 다른 원격 서비스에 의존하지 않는 독립형 서버다. 인프라에 있는 다른 서버에 문제가 있을 땐 프로메테우스 서버를 신뢰하고 활용할 수 있으며, 프로메테우스를 위해 대규모 인프라를 세팅하지 않아도 된다.
+
+---
+
+## When does it not fit?
+
+프로메테우스는 신뢰도를 중요한 가치로 여긴다. 시스템에 오류가 있더라도 가능한 통계들은 항상 조회할 수 있다. 하지만 프로메테우스로 수집하는 데이터에 상세 정보를 모두 담기는 힘들고, 완전하지 않을 수 있기 때문에, 요청 당 거래액같이 100% 정확해야 하는 데이터엔 프로메테우스를 이용하기 어렵다. 이런 상황에선 거래 데이터는 다른 시스템으로 수집, 분석하고, 그 외 다른 모니터링에 프로메테우스를 활용하는 게 좋다.

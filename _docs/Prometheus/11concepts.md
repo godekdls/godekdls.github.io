@@ -1,0 +1,30 @@
+---
+title: CONCEPTS
+category: Prometheus
+order: 11
+permalink: /Prometheus/concepts/
+description: 프로메테우스 개념 소개
+image: ./../../images/prometheus/logo.png
+lastmod: 2021-05-16T17:00:00+09:00
+comments: true
+originalRefName: 프로메테우스
+originalRefLink: https://prometheus.io/docs/concepts/data_model/
+parent: CONCEPTS
+isParent: true
+parentUrl: /Prometheus/concepts/
+priority: 0.3
+---
+
+---
+
+> [Data model](../data-model)
+>
+> 프로메테우스의 데이터 모델 (시계열, 메트릭명, 레이블)
+
+> [Metric types](../metric-types)
+> 
+> 프로메테우스의 메트릭 타입 (Counter, Gauge, Histogram, Summary)
+
+> [Jobs and instances](../jobs-instances)
+> 
+> job, instance 용어 설명

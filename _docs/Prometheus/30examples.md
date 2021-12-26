@@ -1,0 +1,131 @@
+---
+title: Query Examples
+navTitle: Examples
+category: Prometheus
+order: 30
+permalink: /Prometheus/querying.examples/
+description: PromQL 예제
+image: ./../../images/prometheus/logo.png
+lastmod: 2021-05-16T17:00:00+09:00
+comments: true
+originalRefName: 프로메테우스
+originalRefLink: https://prometheus.io/docs/prometheus/2.32/querying/examples/
+parent: PROMETHEUS
+parentUrl: /Prometheus/prometheus/
+subparent: Querying
+subparentUrl: /Prometheus/querying/
+---
+
+### 목차
+
+- [Simple time series selection](#simple-time-series-selection)
+- [Subquery](#subquery)
+- [Using functions, operators, etc.](#using-functions-operators-etc)
+
+---
+
+## Simple time series selection
+
+`http_requests_total` 메트릭을 가지고 있는 모든 시계열을 반환한다:
+
+```prometheus
+http_requests_total
+```
+
+`http_requests_total` 메트릭과 지정한 `job`, `handler` 레이블을 가지고 있는 모든 시계열을 반환한다:
+
+```prometheus
+http_requests_total{job="apiserver", handler="/api/comments"}
+```
+
+같은 벡터에서 시간 범위(이 경우 5분)에 있는 모든 시계열을 반환해 range 벡터로 만든다:
+
+```prometheus
+http_requests_total{job="apiserver", handler="/api/comments"}[5m]
+```
+
+range 벡터를 생성하는 표현식은 직접 그래프로 그릴 순 없지만, expression 브라우저의 테이블 형식("Console") 뷰에서 조회해볼 수 있다.
+
+정규 표현식을 사용하면 job 이름이 특정 패턴과 매칭되는 시계열만 선택할 수 있다 (이 경우 `server`로 끝나는 모든 job):
+
+```prometheus
+http_requests_total{job=~".*server"}
+```
+
+프로메테우스에선 모든 정규 표현식에 [RE2 구문](https://github.com/google/re2/wiki/Syntax)을 사용한다.
+
+4xx를 제외한 모든 HTTP 상태 코드를 선택하려면 다음과 같이 실행하면 된다:
+
+```prometheus
+http_requests_total{status!~"4.."}
+```
+
+---
+
+## Subquery
+
+`http_requests_total` 메트릭이 지난 30분 동안에 가지고 있었던 데이터로 5분 간 요청량을 1분 단위로 반환한다.
+
+```go
+rate(http_requests_total[5m])[30m:1m]
+```
+
+다음은 서브 쿼리를 중첩한 예시다. `deriv` 함수를 사용하는 서브 쿼리는 디폴트 해상도<sup>resolution</sup>를 사용한다. 서브 쿼리를 불필요하게 중첩시키는 건 현명하지 못하다는 것에 유의하자.
+
+```go
+max_over_time(deriv(rate(distance_covered_total[5s])[30s:5s])[10m:])
+```
+
+---
+
+## Using functions, operators, etc.
+
+지난 5분 동안 `http_requests_total` 메트릭으로 측정한 모든 시계열의 초당 비율을 반환한다:
+
+```go
+rate(http_requests_total[5m])
+```
+
+`http_requests_total` 시계열은 모두 `job`(job의 이름을 저장)과 `instance`(job의 인스턴스를 저장) 레이블이 있다고 가정해보자. 모든 인스턴스의 비율을 합산해서 출력하는 시계열은 줄이되, `job` 차원은 그대로 보존하고 싶을 수도 있다:
+
+```prometheus
+sum by (job) (
+  rate(http_requests_total[5m])
+)
+```
+
+레이블 차원이 동일한 두 개의 메트릭이 있다면 이진 연산자를 적용할 수 있으며, 양쪽에서 같은 레이블 셋을 가지고 있는 요소들이 매칭되서 출력으로 전파된다. 예를 들어, 아래 표현식은 인스턴스마다 사용하지 않는 메모리를 MiB 단위로 반환한다 (가상의 클러스터 스케줄러가 실행하는 인스턴스마다 아래와 같은 메트릭을 노출한다고 생각해보자):
+
+```go
+(instance_memory_limit_bytes - instance_memory_usage_bytes) / 1024 / 1024
+```
+
+동일한 표현식을 애플리케이션 단위로 집계하려면 다음과 같이 작성하면 된다:
+
+```prometheus
+sum by (app, proc) (
+  instance_memory_limit_bytes - instance_memory_usage_bytes
+) / 1024 / 1024
+```
+
+동일한 가상 클러스터 스케줄러가 인스턴스마다 다음과 같은 CPU 사용량 메트릭을 노출한다면:
+
+```prometheus
+instance_cpu_time_ns{app="lion", proc="web", rev="34d0f99", env="prod", job="cluster-manager"}
+instance_cpu_time_ns{app="elephant", proc="worker", rev="34d0f99", env="prod", job="cluster-manager"}
+instance_cpu_time_ns{app="turtle", proc="api", rev="4d3a513", env="prod", job="cluster-manager"}
+instance_cpu_time_ns{app="fox", proc="widget", rev="4d3a513", env="prod", job="cluster-manager"}
+...
+```
+
+...애플리케이션(`app`)과 프로세스 타입(`proc`) 단위로 묶은 top 3 CPU 사용자는 다음과 같이 조회할 수 있다:
+
+```prometheus
+topk(3, sum by (app, proc) (rate(instance_cpu_time_ns[5m])))
+```
+
+실행 중인 인스턴스마다 이 메트릭에 시계열이 하나씩 들어있다고 가정하면, 애플리케이션당 실행 중인 인스턴스 수는 다음과 같이 계산할 수 있다:
+
+```prometheus
+count by (app) (instance_cpu_time_ns)
+```

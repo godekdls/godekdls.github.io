@@ -1,0 +1,40 @@
+---
+title: Querying
+category: Prometheus
+order: 26
+permalink: /Prometheus/querying/
+description: 프로메테우스 쿼리 가이드
+image: ./../../images/prometheus/logo.png
+lastmod: 2021-05-16T17:00:00+09:00
+comments: true
+originalRefName: 프로메테우스
+originalRefLink: https://prometheus.io/docs/prometheus/2.32/querying/basics/
+parent: PROMETHEUS
+parentUrl: /Prometheus/prometheus/
+subparent: Querying
+isSubparent: true
+subparentUrl: /Prometheus/querying/
+priority: 0.3
+---
+
+---
+
+> [Basics](../querying.basics)
+> 
+> PromQL 가이드
+
+> [Operators](../querying.operators)
+> 
+> 연산자 가이드
+
+> [Functions](../querying.functions)
+> 
+> 함수 가이드
+
+> [Examples](../querying.examples)
+> 
+> PromQL 예제
+
+> [HTTP API](../querying.api)
+> 
+> HTTP API 가이드
