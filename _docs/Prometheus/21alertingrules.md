@@ -102,4 +102,4 @@ groups:
 
 ## Sending alert notifications
 
-프로메테우스의 alerting rule은 *지금 당장* 무엇이 고장났는지 파악하기는 좋지만, 완전한 통보<sup>notification</sup> 솔루션이라곤 할 수 없다. 간단한 alert 정의 위에 요약, 통보<sup>notification</sup> 속도 제한, silencing, alert 의존성을 추가하려면 다른 계층이 하나 더 필요하다. 프로메테우스 생태계에서는 [Alertmanager](https://prometheus.io/docs/alerting/alertmanager/)가 이 역할을 담당한다. 따라서 프로메테우스는 alert 상태에 대한 정보를 주기적으로 Alertmanager 인스턴스로 보내도록 구성할 수 있으며, 그러면 Alertmanager 인스턴스가 이어서 제대로 된 통지<sup>notification</sup>를 발송한다.<br>프로메테우스는 서비스 디스커버리 통합 기능을 이용해 가능한 Alertmanager 인스턴스를 자동으로 발견하도록 [설정](../configuration)할 수 있다.
+프로메테우스의 alerting rule은 *지금 당장* 무엇이 고장났는지 파악하기는 좋지만, 완전한 통보<sup>notification</sup> 솔루션이라곤 할 수 없다. 간단한 alert 정의 위에 요약, 통보<sup>notification</sup> 속도 제한, silencing, alert 의존성을 추가하려면 다른 계층이 하나 더 필요하다. 프로메테우스 생태계에서는 [Alertmanager](../alertmanager)가 이 역할을 담당한다. 따라서 프로메테우스는 alert 상태에 대한 정보를 주기적으로 Alertmanager 인스턴스로 보내도록 구성할 수 있으며, 그러면 Alertmanager 인스턴스가 이어서 제대로 된 통지<sup>notification</sup>를 발송한다.<br>프로메테우스는 서비스 디스커버리 통합 기능을 이용해 가능한 Alertmanager 인스턴스를 자동으로 발견하도록 [설정](../configuration)할 수 있다.

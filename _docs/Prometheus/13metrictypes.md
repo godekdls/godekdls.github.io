@@ -66,7 +66,7 @@ parentUrl: /Prometheus/concepts/
 - `<basename>_sum`으로 노출하는, 모든 관측 값들의 **총합**
 - `<basename>_count`로 노출하는, 관찰한 이벤트들의 **갯수** (위에 있는 `<basename>_bucket{le="+Inf"}`와 동일)
 
-[`histogram_quantile()` 함수](../querying.functions#histogram_quantile)를 사용하면 히스토그램이나 히스토그램 집계에서도 분위수<sup>quantile</sup>를 계산할 수 있다. 히스토그램은 [Apdex 점수](https://en.wikipedia.org/wiki/Apdex)를 계산할 때도 적합하다. 버킷을 통해 작업한다면 히스토그램은 [누적](https://en.wikipedia.org/wiki/Histogram#Cumulative_histogram)된다는 것을 기억해둬라. 상세 히스토그램 사용법과 [summary](#summary)와의 차이점은 [히스토그램과 summary](https://prometheus.io/docs/practices/histograms)를 참고해라.
+[`histogram_quantile()` 함수](../querying.functions#histogram_quantile)를 사용하면 히스토그램이나 히스토그램 집계에서도 분위수<sup>quantile</sup>를 계산할 수 있다. 히스토그램은 [Apdex 점수](https://en.wikipedia.org/wiki/Apdex)를 계산할 때도 적합하다. 버킷을 통해 작업한다면 히스토그램은 [누적](https://en.wikipedia.org/wiki/Histogram#Cumulative_histogram)된다는 것을 기억해둬라. 상세 히스토그램 사용법과 [summary](#summary)와의 차이점은 [히스토그램과 summary](../practices.histograms)를 참고해라.
 
 히스토그램 관련 클라이언트 라이브러리 사용 가이드:
 
@@ -83,12 +83,11 @@ parentUrl: /Prometheus/concepts/
 
 summary를 스크랩하면 여러 가지 시계열을 노출한다. `<basename>`을 메트릭 이름으로 가진 summary는 다음과 같은 데이터를 노출한다:
 
-- streaming **φ-quantiles** (0 ≤ φ ≤ 1) of observed events, exposed as `<basename>{quantile="<φ>"}`
 - `<basename>{quantile="<φ>"}`로 노출하는, 관찰한 이벤트들의 스트리밍 **φ-quantiles** (0 ≤ φ ≤ 1)
 - `<basename>_sum`으로 노출하는, 모든 관측 값들의 **총합**
 - `<basename>_count`로 노출하는, 관찰한 이벤트의 **갯수**
 
-φ-quantiles, summary 사용법, [히스토그램](#histogram)과의 차이점은 [히스토그램과 summary](https://prometheus.io/docs/practices/histograms/)에서 자세히 다루고 있다.
+φ-quantiles, summary 사용법, [히스토그램](#histogram)과의 차이점은 [히스토그램과 summary](../practices.histograms)에서 자세히 다루고 있다.
 
 summary 관련 클라이언트 라이브러리 사용 가이드:
 

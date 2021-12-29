@@ -147,7 +147,7 @@ rate(promhttp_metric_handler_requests_total{code="200"}[1m])
 
 ## Monitoring other targets
 
-프로메테우스로 메트릭을 수집해보는 것만으로는 프로메테우스가 가진 모든 기능을 다 알아봤다고 할 수 없다. 프로메테우스로 할 수 있는 일을 더 알아보려면 다른 익스포터 관련 문서를 살펴보는 게 좋다. 처음이라면 [노드 익스포터를 이용해 Linux/macOS 호스트 메트릭 모니터링하기](https://prometheus.io/docs/guides/node-exporter) 가이드로 시작해보는 것도 좋다.
+프로메테우스로 메트릭을 수집해보는 것만으로는 프로메테우스가 가진 모든 기능을 다 알아봤다고 할 수 없다. 프로메테우스로 할 수 있는 일을 더 알아보려면 다른 익스포터 관련 문서를 살펴보는 게 좋다. 처음이라면 [노드 익스포터를 이용해 Linux/macOS 호스트 메트릭 모니터링하기](../guides.node-exporter) 가이드로 시작해보는 것도 좋다.
 
 ---
 

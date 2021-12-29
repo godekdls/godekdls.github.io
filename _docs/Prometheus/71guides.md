@@ -1,0 +1,54 @@
+---
+title: GUIDES
+category: Prometheus
+order: 71
+permalink: /Prometheus/guides/
+description: todo
+image: ./../../images/prometheus/logo.png
+lastmod: 2021-05-16T17:00:00+09:00
+comments: true
+originalRefName: 프로메테우스
+originalRefLink: https://prometheus.io/docs/guides/node-exporter/
+parent: GUIDES
+isParent: true
+parentUrl: /Prometheus/guides/
+priority: 0.3
+---
+
+---
+
+> [Basic auth](../guides.basic-auth)
+>
+>프로메테우스 인스턴스에 기본 인증 적용하기
+
+> [Understanding and using the multi-target exporter pattern](../guides.multi-target-exporter)
+>
+>익스포터로 여러 가지 타겟을 스크랩하는 방법
+
+> [Use file-based service discovery to discover scrape targets](../guides.file-sd)
+>
+>파일 기반 서비스 디스커비리 사용 가이드
+
+> [Monitoring Docker container metrics using cAdvisor](../guides.cadvisor)
+>
+>cAdvisor를 이용해 도커 컨테이너 메트릭 수집하기
+
+> [Instrumenting a Go application](../guides.go-application)
+>
+>Go 클라이언트 라이브러리 가이드
+
+> [Monitoring Linux host metrics with the Node Exporter](../guides.node-exporter)
+> 
+> 노드 익스포터 연동 가이드
+
+> [TLS encryption](../guides.tls-encryption)
+> 
+> 프로메테우스 인스턴스에 TLS 암호화 적용하기
+
+> [Query Log](../guides.query-log)
+> 
+> 프로메테우스 쿼리 로그 가이드
+
+> [Docker Swarm](../guides.dockerswarm)
+> 
+> 도커 스웜 서비스 디스커버리 가이드

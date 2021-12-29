@@ -135,7 +135,7 @@ plugins {
     id "io.spring.dependency-management" version "1.0.7.RELEASE" // (1)
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 이 문서를 작성하는 시점에는 1.0.7.RELEASE가 플러그인의 최신 버전이다. 업데이트를 확인해 보라.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 이 문서를 작성하는 시점에는 1.0.7.RELEASE가 플러그인의 최신 버전이다. 업데이트를 확인해 봐라.</small>
 
 그다음 BOM을 임포트한다:
 

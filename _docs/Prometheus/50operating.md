@@ -1,0 +1,26 @@
+---
+title: OPERATING
+category: Prometheus
+order: 50
+permalink: /Prometheus/operating/
+description: 프로메테우스 운영 가이드
+image: ./../../images/prometheus/logo.png
+lastmod: 2021-05-16T17:00:00+09:00
+comments: true
+originalRefName: 프로메테우스
+originalRefLink: https://prometheus.io/docs/operating/security/
+parent: OPERATING
+isParent: true
+parentUrl: /Prometheus/operating/
+priority: 0.3
+---
+
+---
+
+> [Security](../security)
+> 
+> 프로메테우스 보안 가이드
+
+> [Integrations](../integrations)
+> 
+> 프로메테우스 통합 포인트 정리

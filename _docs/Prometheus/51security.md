@@ -1,0 +1,179 @@
+---
+title: Security Model
+navTitle: Security
+category: Prometheus
+order: 51
+permalink: /Prometheus/security/
+description: 프로메테우스 보안 가이드
+image: ./../../images/prometheus/logo.png
+lastmod: 2021-05-16T17:00:00+09:00
+comments: true
+originalRefName: 프로메테우스
+originalRefLink: https://prometheus.io/docs/operating/security/
+parent: OPERATING
+parentUrl: /Prometheus/operating/
+---
+
+---
+
+프로메테우스는 다양한 컴포넌트를 가지며, 다른 많은 시스템과 통합할 수 있는 정교한 시스템이다. 프로메테우스는 신뢰할 수 있는 환경과 신뢰할 수 없는 환경을 모두 포함해서, 다양한 환경에 배포할 수 있다.
+
+이 페이지에선 프로메테우스가 보안과 관련해서 전반적으로 어떤 것들을 가정하고 있는지와, 일부 설정에서 활성화될 수 있는 공격 벡터들에 대해 설명한다.
+
+다른 복잡한 시스템과 마찬가지로 버그는 언제든지 발견될 수 있으며, 그 중 일부는 보안과 관련된 문제일 거다. *보안과 관련한 버그*를 발견했다면, 관련 레포지토리의 MAINTAINERS에 나열돼있는 관리자들에게 [prometheus-team@googlegroups.com](mailto:prometheus-team@googlegroups.com)를 CC로 넣어 따로 보고해주면 좋겠다. 이슈는 최대한 빨리 해결하고 릴리즈 날짜를 함께 조정해보겠다. 대중들에게 당신의 노고를 알리고 이름을 언급하길 바라는지는 직접 선택할 수 있다.
+
+프로메테우스는 특정 기업이 아닌 자원자들이 관리하고 있다. 따라서 보안 이슈는 정말 최선을 다해 수정한다. 프로메테우스, Alertmanager, 노드 익스포터, Blackbox 익스포터, Pushgateway에선 보안 이슈를 7일 이내로 픽스해서 릴리즈하려고 다분히 애쓰고 있다.
+
+### 목차
+
+- [Prometheus](#prometheus)
+- [Alertmanager](#alertmanager)
+- [Pushgateway](#pushgateway)
+- [Exporters](#exporters)
+- [Client Libraries](#client-libraries)
+- [Authentication, Authorization, and Encryption](#authentication-authorization-and-encryption)
+- [API Security](#api-security)
+- [Secrets](#secrets)
+- [Denial of Service](#denial-of-service)
+- [Libraries](#libraries)
+- [Build Process](#build-process)
+- [Prometheus-Community](#prometheus-community)
+- [External audits](#external-audits)
+
+---
+
+## Prometheus
+
+프로메테우스 HTTP 엔드포인트와 로그에는 신뢰할 수 없는 사용자도 접근할 수 있다고 간주한다. 이런 사람들은 데이터베이스에 들어있는 모든 시계열 정보와 다양한 운영/디버깅 정보에 액세스할 수 있다.
+
+또한 프로메테우스와 다른 컴포넌트의 런타임 환경에 있는 커맨드라인, 설정 파일, rule 파일과 기타 다른 측면은 신뢰할 수 있는 사용자만이 변경할 수 있다고 가정한다.
+
+프로메테우스가 스크랩하는 타겟, 주기, 기타 다른 설정들은 전적으로 설정 파일을 통해 결정된다. 관리자가 원한다면 서비스 디스커버리 시스템의 정보를 relabelling과 결합해서 이용할 수 있으며, 이때는 해당 서비스 디스커버리 시스템에 있는 데이터를 수정할 수 있는 모든 사람들에게 일부 제어권을 부여하게 될 수도 있다.
+
+스크랩하는 타겟은 신뢰할 수 없는 사용자가 실행할 수도 있는데, 기본적으로 타겟에선 다른 타겟을 가장하는 데이터를 노출할 수 없을 거다. `honor_labels` 옵션을 설정하거나 relabelling을 특정한 방식으로 세팅하게 되면 이 보호 기능이 사라진다.
+
+프로메테우스 2.0부터 `--web.enable-admin-api` 플래그로 시계열 삭제 등의 기능을 포함하는 관리자용 HTTP API 사용 여부를 결정할 수 있다. 이 플래그는 기본적으론 비활성화돼 있다. 활성화하면 `/api/*/admin/` 경로 밑에서 관리 기능과 변경 기능에 액세스할 수 있다. `--web.enable-lifecycle` 플래그로는 HTTP 리로드와 프로메테우스의 종료를 제어할 수 있다. 이 플래그 역시 기본적으론 비활성화돼 있다. 활성화하면 `/-/reload`, `/-/quit` 경로에서 액세스할 수 있다.
+
+프로메테우스 1.x에선 HTTP API에 액세스할 수 있는 모든 사용자가 `/-/reload`와 `/api/v1/series`(`DELETE`)를 사용할 수 있다. `/-/quit` 엔드포인트는 기본적으로 비활성화돼 있지만 `-web.enable-remote-shutdown` 플래그로 활성화할 수 있다.
+
+remote read 기능을 사용하면 HTTP 액세스 권한을 가진 모든 사용자가 remote read 엔드포인트에 쿼리를 전송할 수 있다. 예를 들어서 PromQL 쿼리가 결국엔 관계형 데이터베이스에서 직접 실행되는 쿼리라면, 프로메테우스에 쿼리를 전송할 수 있는 사람은 (그라파나 등을 통해서) 해당 데이터베이스에서 임의의 SQL을 실행할 수 있다.
+
+---
+
+## Alertmanager
+
+Alertmanager HTTP 엔드포인트에 접근 권한이 있는 모든 사용자는 관련 데이터에 액세스할 수 있다. 이런 사람들은 alert를 생성하고 해소<sup>resolve</sup>할 수 있다. silence를 생성, 수정, 삭제할 수도 있다.
+
+어디로 통보<sup>notification</sup>를 보낼지는 설정 파일로 결정된다. 템플릿 설정을 어떻게 사용하느냐에 따라 alert가 정의하는 목적지에 통보를 보낼 수도 있다. 예를 들어서 notification에서 이메일 주소를 alert 레이블로 이용하는 경우엔, Alertmanager에 alert를 보낼 수 있는 모든 사람이 임의의 이메일 주소로 통보를 보낼 수 있다. alert가 정의하는 목적지가 템플릿으로 구성할 수 있는 스크릿 필드였다면, 프로메테우스나 Alertmanager에 액세스할 수 있는 모든 사람이 시크릿을 조회할 수 있다.
+
+위에서 설명한 스크릿 필드의 템플릿화는 전부 통보<sup>notification</sup>를 라우팅하기 위한 것이다. 템플릿 파일 기능을 이용해 설정 파일에서 시크릿을 분리하는 용도가 아니다. 템플릿 파일에 저장돼있는 모든 시크릿은 Alertmanager 설정 파일에서 receiver를 수정할 수 있는 사람이라면 누구든지 유출할 수 있다. 예를 들어 규모가 큰 곳에서는, 각 팀마다 alertmanager 설정 파일의 일부만 나눠서 관리하고, 이후 나눠서 설정한 파일 조각들을 모아 하나로 결합해서 쓸 수도 있다.
+
+---
+
+## Pushgateway
+
+Pushgateway HTTP 엔드포인트에 접근 권한이 있는 모든 사용자는 그 안에 포함돼있는 메트릭을 생성, 수정, 삭제할 수 있다. Pushgateway는 보통 `honor_labels`를 활성화해둔 채 스크랩하기 때문에, Pushgateway에 접근 수 있는 사람은 누구나 프로메테우스에서 원하는 시계열을 생성할 수 있다.
+
+`--web.enable-admin-api` 플래그는 관리자용 HTTP API를 사용할 수 있게 해주며, 여기에는 기존에 있는 메트릭 그룹들을 모두 삭제하는 기능도 들어있다. 이 API는 기본적으로 비활성화돼 있다. 활성화하면 `/api/*/admin/` 경로 밑에서 관리 기능에 액세스할 수 있다.
+
+---
+
+## Exporters
+
+익스포터는 보통 설정해둔 하나의 인스턴스와만 통신하며, 미리 설정돼 있는 명령어/요청 셋은 HTTP 엔드포인트를 통해 확장할 수 없다.
+
+하지만 익스포터 중에는 URL 파라미터에서 타겟을 가져오는 SNMP, Blackbox같은 익스포터도 있다. 따라서 이런 류의 익스포터에 HTTP 접근 권한이 있는 사람은 누구나 임의의 엔드포인트로 요청을 보내도록 만들 수 있다. 클라이언트 사이드 인증도 지원하고 있기 때문에, HTTP 기본 인증 암호나 SNMP 커뮤니티 문자열같은 시크릿이 유출될 수도 있다. TLS같은 [Challenge-response 인증](https://en.wikipedia.org/wiki/Challenge%E2%80%93response_authentication) 메커니즘을 사용한다면 영향받지 않는다.
+
+---
+
+## Client Libraries
+
+클라이언트 라이브러리는 사용자의 애플리케이션에 포함시키도록 만들어졌다.
+
+클라이언트 라이브러리에서 제공하는 HTTP 핸들러를 사용하는 경우, 해당 핸들러에 악의적인 요청이 도달하더라도 부하가 좀 더 늘어나거나 스크랩이 실패하는 것을 넘어서는 다른 이슈는 일어나지 않을 거다.
+
+---
+
+## Authentication, Authorization, and Encryption
+
+앞으로는 다양한 프로메테우스 프로젝트에서 서버 사이드 TLS를 지원할 예정이다. 관련 프로젝트 중에는 프로메테우스, Alertmanager, Pushgateway, 공식 익스포터도 포함돼 있다.
+
+TLS 클라이언트 인증서를 이용한 클라이언트 인증도 지원할 예정이다.
+
+Go 프로젝트들에선 Go의 순수<sup>vanilla</sup> [crypto/tls](https://golang.org/pkg/crypto/tls) 라이브러리를 기반으로 만든 TLS 라이브러리를 같이 쓰고 있다. 디폴트로는 TLS 1.2를 최소 버전으로 사용한다. TLS와 관련해서는 [Qualys SSL Labs](https://www.ssllabs.com/) 권장 사항에 따라 만든 정책을 사용하고 있다. 이 정책에선 업스트림 Go 디폴트값을 최대한 유지하면서, 디폴트 설정에서 인증서만 잘 제공해주면 'A' 등급을 달성할 수 있도록 애쓰고 있다. 이 등급을 달성한다면 보안은 완벽하게 지원하면서도 사용성은 헤치지 않는 선에서 균형을 이룰 수 있다.
+
+향후에는 자바 익스포터들에도 TLS를 추가할 생각이다.
+
+다른 암호화 스위트<sup>cipher suite</sup>나 전버전 TLS가 필요하다면, 암호화 스위트가 [crypto/tls](https://golang.org/pkg/crypto/tls) 라이브러리에서 [안전하지 않은 것으로 마킹](https://golang.org/pkg/crypto/tls/#InsecureCipherSuites)하는 것만 아니라면, 직접 설정에서 최소 TLS 버전과 암호화 스위트를 조정해주면 된다. 그래도 부족하다면, 현재 TLS 세팅을 이용해서 서버와 리버스 프록시 사이에 보안 터널을 구축할 수 있다.
+
+HTTP 기본 인증도 함께 지원할 예정이다. 기본 인증은 TLS 없이도 사용할 수 있지만, 이렇게 되면 네트워크를 통해 username과 password를 일반 텍스트로 노출하게 된다.
+
+서버 사이드에선 기본 인증 password를 [bcrypt](https://en.wikipedia.org/wiki/Bcrypt) 알고리즘으로 만든 해시값으로 저장한다. 주어진 환경에서 보안 기준에 맞는 round 값을 선택하는 것은 사용자의 몫이다. round가 클수록 요청을 인증하는데 CPU 전력이 더 많이 들어가고 시간도 더 걸리기 때문에 무차별 대입<sup>brute-force</sup> 공격이 훨씬 더 어려워진다.
+
+클라이언트 사이드 인증과 암호화는 다양한 프로메테우스 컴포넌트들이 지원하고 있다. TLS 클라이언트를 지원할 때는 보통 SSL 검증을 건너뛰는 `insecure_skip_verify`란 옵션도 함께 제공한다.
+
+---
+
+## API Security
+
+관리자용 엔드포인트나 데이터를 변경할 수 있는 엔드포인트들은 cURL과 같이 간단한 툴을 통해 액세스하는 용도이기 때문에, 이런 곳에서도 사용할 수 있도록 [CSRF](https://en.wikipedia.org/wiki/Cross-site_request_forgery) 보호 기능을 내장하고 있지 않다. 따라서 리버스 프록시를 사용할 때는 관련 경로를 차단해서 CSRF를 방지해야 할 수도 있다.
+
+데이터를 변경하지 않는 엔드포인트에선, 리버스 프록시 단에서 `Access-Control-Allow-Origin`같은 [CORS 헤더들](https://fetch.spec.whatwg.org/#http-cors-protocol)을 설정하면 [XSS](https://en.wikipedia.org/wiki/Cross-site_scripting) 공격을 방어할 수 있다.
+
+PromQL 쿼리를 임의로 실행해선 안 되는 신뢰할 수 없는 사용자가 입력한 값으로 PromQL 쿼리를 구성한다면 (ex. 콘솔 템플릿에서 URL 파라미터를 사용하는 등), 신뢰할 수 없는 입력은 인젝션 공격에 사용될 수 없게 적절히 이스케이프해줘야 한다. 예를 들어 `<user_input>`을 `"} or some_metric{zzz="`로 입력하면, `up{job="<user_input>"}` 쿼리는 `up{job=""} or some_metric{zzz=""}`로 바뀌게 된다.
+
+그라파나를 사용하고 있다면, [대시보드 퍼미션은 데이터 소스 퍼미션이 아니라는 점](https://grafana.com/docs/grafana/latest/permissions/#data-source-permissions)을 알아두자. 따라서 프록시 모드에서 임의의 쿼리를 실행하는 것까지 제한할 필요는 없다.
+
+---
+
+## Secrets
+
+시크릿으로 다루지 않는 정보나 필드들은 HTTP API나 로그를 통해 접근할 수 있다.
+
+프로메테우스에선, 서비스 디스커버리에서 조회하는 메타데이터는 시크릿으로 취급하지 않는다. 메트릭은 프로메테우스 시스템 전체에서 시크릿으로 간주하지 않는다.
+
+설정 파일에서 시크릿을 가지고 있는 필드들은 (문서에도 시크릿으로 표기돼있다) 로그나 HTTP API를 통해 노출되지 않는다. HTTP 엔드포인트를 통해 설정을 노출하는 컴포넌트가 많기 때문에, 시크릿을 다른 설정 필드에 둬서는 안 된다. 디스크에 저장된 파일을 원치 않는 곳에서 읽거나 쓰지 못하도록 보호하는 일은 사용자의 몫이다.
+
+의존성에서 사용하는 용도로 시크릿을 다른 소스에 저장할 때는 (ex. EC2 서비스 디스커버리에서 사용하는 환경 변수 `AWS_SECRET_KEY`), 프로메테우스에선 제어할 수 없는 코드로 인해 노출될 수도 있고, 저장을 어디에 했던간에 결국 노출해버리는 기능이 있을 수도 있다.
+
+---
+
+## Denial of Service
+
+부하나 쿼리 비용이 지나칠 때를 대비해주는 몇 가지 완화 장치가 있긴하다. 하지만 프로메테우스 컴포넌트들은 쿼리나 메트릭이 과도하게 많거나 비용이 너무 커지면 결국에는 중단될 수도 있다. 보통은 악의적인 공격보단 신뢰할 수 있는 사용자가 뜻하지 않게 컴포넌트를 중단시키는 일이 더 많다.
+
+CPU, RAM, 디스크 공간, IOPS, 파일 디스크립터, 대역폭을 포함해서 컴포넌트들에 충분한 리소스를 제공하는 일은 사용자가 감당할 일이다.
+
+모든 컴포넌트들을 모니터링하고, 정상적으로 동작하지 않는다면 자동으로 재시작하기를 권장한다.
+
+---
+
+## Libraries
+
+이 문서는 소스 코드 자체로 빌드한 순수<sup>vanilla</sup> 바이너리를 기준으로 설명한다. 프로메테우스 소스 코드를 직접 수정하거나 자체 코드에서 프로메테우스 내부 정보(공식 클라이언트 라이브러리 API에서 제공하는 것 이상으로)를 사용하는 경우엔 여기에서 설명하는 것들이 적용되지 않는다.
+
+---
+
+## Build Process
+
+프로메테우스의 빌드 파이프라인은 써드 파티 provider에서 실행하며, 여기에는 많은 프로메테우스 개발 팀 구성원들과 해당 provider의 직원들이 액세스할 수 있다. 바이너리의 정확한 출처가 염려된다면, 프로젝트에서 미리 빌드해서 제공하는 바이너리를 사용하는 대신에 직접 빌드하는 것도 괜찮다.
+
+---
+
+## Prometheus-Community
+
+[Prometheus-Community](https://github.com/prometheus-community) 조직에 속해있는 레포지토리들은 써드 파티 관리자들이 지원한다.
+
+[Prometheus-Community](https://github.com/prometheus-community) 조직에서 *보안과 관련한 버그*를 발견했다면, 관련 레포지토리의 MAINTAINERS에 나열돼있는 관리자들에게 [prometheus-team@googlegroups.com](mailto:prometheus-team@googlegroups.com)를 CC로 넣어 따로 보고해주면 좋겠다.
+
+이 조직에 있는 일부 레포지토리에선 이 문서에 나와있는 것과는 다른 보안 모델을 사용하고 있을 수도 있다. 이런 케이스에선 해당 레포지토리의 문서를 참고하면 된다.
+
+---
+
+## External audits
+
+2018년 4월부터 2018년 6월까지 [cure53](https://cure53.de/)의 외부 보안 감사는 [CNCF](https://cncf.io/)에서 후원했었다.
+
+자세한 내용은 [최종 감사 보고서](https://prometheus.io/assets/downloads/2018-06-11--cure53_security_audit.pdf)를 참고하길 바란다.
+
+2020년에는 노드 익스포터와 관련해서 [cure53의 2차 감사](https://prometheus.io/assets/downloads/2020-07-21--cure53_security_audit_node_exporter.pdf)가 있었다.

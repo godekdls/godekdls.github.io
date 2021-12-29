@@ -42,7 +42,7 @@ priority: 0.7
 - 다차원 모델을 다각도로 활용할 수 있는 [유연한 쿼리 언어](../querying.basics) PromQL
 - 분산 스토리지에 의존하지 않고 모든 서버 노드가 자율적으로 동작
 - HTTP를 통한 pull 모델로 시계열 수집
-- 중간 게이트웨이를 통한 [시계열 push](https://prometheus.io/docs/instrumenting/pushing/) 지원
+- 중간 게이트웨이를 통한 [시계열 push](../pushing) 지원
 - 서비스 디스커버리나 스태틱 설정을 통한 모니터링 대상 타겟팅
 - 다양한 그래프, 대시 보드 모드 지원
 
@@ -57,9 +57,9 @@ priority: 0.7
 프로메테우스 에코 시스템은 다양한 컴포넌트로 이루어져 있으며, 컴포넌트 대부분은 옵션이다:
 
 - 시계열 데이터를 스크랩하고 저장하는 메인 [프로메테우스 서버](https://github.com/prometheus/prometheus)
-- 어플리케이션 코드 계측<sup>instrument</sup> 용 [클라이언트 라이브러리](https://prometheus.io/docs/instrumenting/clientlibs/)
+- 어플리케이션 코드 계측<sup>instrument</sup> 용 [클라이언트 라이브러리](../clientlibs)
 - short-lived job을 지원하는 [푸시 게이트웨이](https://github.com/prometheus/pushgateway)
-- HAProxy, StatsD, Graphite 등의 서비스를 위한 특수 [익스포터들](https://prometheus.io/docs/instrumenting/exporters/)
+- HAProxy, StatsD, Graphite 등의 서비스를 위한 특수 [익스포터들](../exporters)
 - alert를 처리해주는 [alertmanager](https://github.com/prometheus/alertmanager)
 - 다양한 지원 도구들
 

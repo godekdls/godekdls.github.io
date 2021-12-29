@@ -89,7 +89,7 @@ priority: 0.7
 
 공통으로 사용하는 플레이스홀더는 다음과 같다:
 
-- `<boolean>`: `true`, `false`를 사용할 수 있는 boolean
+- `<boolean>`: `true`, `false`를 사용하는 boolean
 - `<duration>`: 정규 표현식 `((([0-9]+)y)?(([0-9]+)w)?(([0-9]+)d)?(([0-9]+)h)?(([0-9]+)m)?(([0-9]+)s)?(([0-9]+)ms)?|0)`에 매칭되는 기간. ex) `1d`, `1h30m`, `5m`, `10s`
 - `<filename>`: 현재 작업 디렉토리 안에 있는 유효한 경로
 - `<host>`: 호스트명이나 IP로 구성된 유효한 문자열 (뒤에 포트 번호가 있을 수도 있음)
@@ -865,7 +865,7 @@ host: <string>
 tls_config:
   [ <tls_config> ]
 
-# 조회할 타겟의 role. `services`, `tasks`, `nodes` 중 하여야 한다.
+# 조회할 타겟의 role. `services`, `tasks`, `nodes` 중 하나여야 한다.
 role: <string>
 
 # 메트릭을 스크랩할 포트.
@@ -1209,7 +1209,7 @@ PuppetDB를 위한 구체적인 프로메테우스 설정 예시는 [이 프로�
 
 [relabeling](#relabel_config) 동안에는 잠시 타겟마다 `__meta_filepath`란 메타 레이블이 추가된다. 레이블 값에는 타겟을 추출한 파일 경로를 저장한다.
 
-이 서비스 메커니즘에서 지원하는 [통합](https://prometheus.io/docs/operating/integrations/#file-service-discovery) 목록을 참고해라.
+이 서비스 메커니즘에서 지원하는 [통합](../integrations#file-service-discovery) 목록을 참고해라.
 
 ```yaml
 # 타겟 그룹들을 추출할 파일 패턴.
@@ -2148,7 +2148,7 @@ access_key: <string>
 # 타겟들의 프로젝트 ID.
 project_id: <string>
 
-# 타겟을 조회할 role. `instance`, `baremetal` 중 하여야 한다.
+# 타겟을 조회할 role. `instance`, `baremetal` 중 하나여야 한다.
 role: <string>
 
 # 메트릭을 스크랩할 포트.
@@ -2269,7 +2269,7 @@ labels:
 
 Relabeling은 타겟을 스크랩하기 전에 동적으로 레이블 셋을 재작성할 수 있는 아주 유용한 기능이다. relabeling은 각 스크랩 설정마다 여러 단계로 등록할 수 있다. 타겟마다 설정 파일에 명시한 순서대로 레이블 셋에 반영된다.
 
-타겟별로 설정한 레이블을 반영하기 전엔 가장 먼저, 스크랩 설정마다 가지고 있는 `job_name`의 값을 타겟의 `job` 레이블로 세팅한다. 타겟의 `<host>:<port>` 주소는 `__address__` 레이블에 저장한다. relabeling 동안에 `instance` 레이블이 설정되지 않았다면,  relabeling을 마친 후에 디폴트로 `__address__`에 있는 값을 설정한다. `__scheme__`, `__metrics_path__` 레이블은 각각 타겟의 스킴과 메트릭 경로로 설정된다. `__param_<name>` 레이블에는 `<name>`이라는 이름으로 전달한 URL 파라미터 중 첫 번째 값을 설정한다.
+타겟별로 설정한 레이블을 반영하기 전엔 가장 먼저, 스크랩 설정마다 가지고 있는 `job_name`의 값을 타겟의 `job` 레이블로 세팅한다. 타겟의 `<host>:<port>` 주소는 `__address__` 레이블에 저장한다. relabeling 동안에 `instance` 레이블이 설정되지 않았다면,  relabeling을 마친 후에 디폴트로 `__address__`에 있는 값을 설정한다. `__scheme__`, `__metrics_path__` 레이블은 각각 타겟의 스킴과 메트릭 경로로 설정된다. `__param_<name>` 레이블에는 `<name>`이라는 이름으로 전달하는 첫번째 URL 파라미터 값을 설정한다.
 
 `__scrape_interval__`과 `__scrape_timeout__`에는 타겟의 인터벌과 타임아웃을 설정한다. 이 레이블은 **실험 단계**에 있으며, 향후 변경될 수 있다.
 
@@ -2605,7 +2605,7 @@ metadata_config:
   [ max_samples_per_send: <int> | default = 500]
 ```
 
-이 기능을 지원하는 [통합](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage) 목록을 참고해라.
+이 기능을 지원하는 [통합](../integrations#remote-endpoints-and-storage) 목록을 참고해라.
 
 ### `<remote_read>`
 
@@ -2669,7 +2669,7 @@ tls_config:
 [ follow_redirects: <bool> | default = true ]
 ```
 
-이 기능을 지원하는 [통합](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage) 목록을 참고해라.
+이 기능을 지원하는 [통합](../integrations#remote-endpoints-and-storage) 목록을 참고해라.
 
 ### `<exemplars>`
 

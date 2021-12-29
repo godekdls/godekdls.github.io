@@ -18,7 +18,7 @@ parentUrl: /Prometheus/prometheus/
 
 프로메테우스는 HTTP 엔드포인트를 통해 타겟을 검색할 수 있는 범용적인 [HTTP 서비스 디스커버리](../configuration#http_sd_config)를 제공한다.
 
-HTTP 서비스 디스커버리는 지원하는 다른 서비스 디스커버리 메커니즘을 보완할 수 있는, [파일 기반 서비스 디스커버리](https://prometheus.io/docs/guides/file-sd/#use-file-based-service-discovery-to-discover-scrape-targets)와는 또 다른 범용 디스커버리 메커니즘이다.
+HTTP 서비스 디스커버리는 지원하는 다른 서비스 디스커버리 메커니즘을 보완할 수 있는, [파일 기반 서비스 디스커버리](../guides.file-sd)와는 또 다른 범용 디스커버리 메커니즘이다.
 
 ### 목차
 

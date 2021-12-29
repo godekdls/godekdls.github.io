@@ -50,7 +50,7 @@ Alert는 프로메테우스에서 활발하게 시행<sup>fire</sup>하는 alert
 
 ## Alertmanager
 
-[Alertmanager](https://prometheus.io/docs/alerting/overview/)는 alert를 받아 그룹으로 집계하고, 중복을 제거하고, silence와 throttle을 적용한 다음, 이메일이나 Pagerduty, Slack 등에 통보<sup>notification</sup>를 보낸다.
+[Alertmanager](../alerting.overview)는 alert를 받아 그룹으로 집계하고, 중복을 제거하고, silence와 throttle을 적용한 다음, 이메일이나 Pagerduty, Slack 등에 통보<sup>notification</sup>를 보낸다.
 
 ---
 
@@ -128,7 +128,7 @@ Promdash는 과거 프로메테우스의 네이티브 대시보드 빌더였다.
 
 ## Pushgateway
 
-[Pushgateway](https://prometheus.io/docs/instrumenting/pushing/)는 배치 job에서 가장 최근에 push한 메트릭을 저장한다. 덕분에 프로메테우스는 배치 job이 종료된 후에도 관련 메트릭을 스크랩할 수 있다.
+[Pushgateway](../pushing)는 배치 job에서 가장 최근에 push한 메트릭을 저장한다. 덕분에 프로메테우스는 배치 job이 종료된 후에도 관련 메트릭을 스크랩할 수 있다.
 
 ---
 

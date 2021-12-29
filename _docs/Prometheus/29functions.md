@@ -172,7 +172,7 @@ delta(cpu_temp_celsius{host="zeus"}[2h])
 
 ### `histogram_quantile()`
 
-`histogram_quantile(φ scalar, b instant-vector)`는 [히스토그램](../metric-types#histogram)의 버킷 `b`에서 φ-quantile (0 ≤ φ ≤ 1)을 계산한다. (φ-quantile과 히스토그램 메트릭 타입 사용법에 대한 전반적인 내용은 [histograms and summaries](https://prometheus.io/docs/practices/histograms)을 참고해라.) `b`에 들어있는 샘플들은 각 버킷의 관찰 횟수를 나타낸다. 각 샘플은 반드시 버킷의 상한(inclusive)을 가지고 있는 레이블 `le`가 첨부돼있어야 한다. (이 레이블이 없는 샘플은 별다른 오류 없이 그냥 무시한다.) [히스토그램 메트릭 타입](../metric-types#histogram)을 사용하면 `_bucket` suffix를 가진 시계열을 적절한 레이블과 함께 자동으로 생성할 수 있다.
+`histogram_quantile(φ scalar, b instant-vector)`는 [히스토그램](../metric-types#histogram)의 버킷 `b`에서 φ-quantile (0 ≤ φ ≤ 1)을 계산한다. (φ-quantile과 히스토그램 메트릭 타입 사용법에 대한 전반적인 내용은 [histograms and summaries](../practices.histograms)를 참고해라.) `b`에 들어있는 샘플들은 각 버킷의 관찰 횟수를 나타낸다. 각 샘플은 반드시 버킷의 상한(inclusive)을 가지고 있는 레이블 `le`가 첨부돼있어야 한다. (이 레이블이 없는 샘플은 별다른 오류 없이 그냥 무시한다.) [히스토그램 메트릭 타입](../metric-types#histogram)을 사용하면 `_bucket` suffix를 가진 시계열을 적절한 레이블과 함께 자동으로 생성할 수 있다.
 
 분위수<sup>quantile</sup>를 계산할 때 사용할 time 윈도우는 `rate()` 함수로 지정한다.
 

@@ -536,7 +536,7 @@ boolean booleanValue = fs.readBoolean(2);
 `LineMapper` 인터페이스는 다음 섹션에서 더 다룰 것이다.
 resource 프로퍼티는 스프링 코어의 `Resource`를 나타낸다.
 이 유형의 빈을 만드는 법이 궁금하다면 
-[Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources)를 보라.
+[Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources)를 확인해봐라.
 따라서 이번 가이드에서는 `Resource` 객체를 만드는 방법은 아래 간단한 예제를 끝으로 더 자세히 다루지 않는다.
 
 ```java

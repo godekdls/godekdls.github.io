@@ -41,7 +41,7 @@ parentUrl: /Prometheus/concepts/
 
 레이블 값이 비어 있으면 존재하지 않는 레이블과 동일한 것으로 간주한다.
 
-[메트릭과 레이블 네이밍을 위한 베스트 프랙티스](https://prometheus.io/docs/practices/naming/)도 함께 참고해라.
+[메트릭과 레이블 네이밍을 위한 베스트 프랙티스](../practices.naming)도 함께 참고해라.
 
 ---
 

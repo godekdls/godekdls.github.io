@@ -195,23 +195,23 @@ Histogram `_count`/`_sum`과 버킷들은 반드시 0에서 시작해야 한다<
 
 ### Labels
 
-레이블은 프로메테우스가 가진 [가장 강력한 측면](https://prometheus.io/docs/practices/instrumentation/#use-labels) 중 하나지만 [남용하기도 굉장히 쉽다](https://prometheus.io/docs/practices/instrumentation/#do-not-overuse-labels). 그렇기 때문에 클라이언트 라이브러리를 만들 땐 사용자에게 레이블을 어떻게 제공하고 있는지에 대해 심의를 기울여야 한다.
+레이블은 프로메테우스가 가진 [가장 강력한 기능](../practices.instrumentation#use-labels) 중 하나지만 [남용하기도 굉장히 쉽다](../practices.instrumentation#do-not-overuse-labels). 그렇기 때문에 클라이언트 라이브러리를 만들 땐 사용자에게 레이블을 어떻게 제공하고 있는지에 대해 심의를 기울여야 한다.
 
 클라이언트 라이브러리는 같은 메트릭을 나타내는 Gauge/Counter/Summary/Histogram에 다른 레이블 이름들을 설정하도록 허용해서는 안 된다<sup>[[2]MUST NOT](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 라이브러리에서 제공하는 기타 다른 `Collector`에서도 마찬가지다.
 
 커스텀 컬렉터의 메트릭은 변함없는 레이블 이름들을 가져야 하는게 거의 대부분이다. 그렇지 않은 경우도 드물지만 존재하기 때문에 클라이언트 라이브러리에서 이를 검증해선 안 된다.
 
-레이블은 매우 강력한 기능이지만, 레이블이 없는 메트릭이 대다수다. 따라서 API는 레이블을 허용하되, 강재해서는 안 된다.
+레이블은 매우 강력한 기능이지만, 레이블이 없는 메트릭이 대다수다. 따라서 API는 레이블을 허용하되, 강제해서는 안 된다.
 
 클라이언트 라이브러리에선 반드시 Gauge/Counter/Summary/Histogram을 생성하는 시점에 옵션으로 레이블 이름 목록을 지정할 수 있어야 한다<sup>[[1]MUST](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 레이블 이름은 원하는 만큼 지정할 수 있는 게 좋다<sup>[[3]SHOULD](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 클라이언트 라이브러리에선 레이블 이름들이 [문서화해둔 요구 사항](../data-model/#metric-names-and-labels)을 충족하는지도 반드시 검증해야 한다<sup>[[1]MUST](https://www.ietf.org/rfc/rfc2119.txt)</sup>.
 
 레이블로 나눈 메트릭의 차원<sup>dimension</sup>에 접근할 수 있게 해줄 때는 일반적으로, 레이블 값들의 리스트나 레이블 이름으로 레이블 값을 매핑한 맵을 받아 "Child"를 반환하는 `labels()` 메소드를 이용한다. 그러면 Child에선 평소 사용하는 `.inc()`/`.dec()`/`.observe()` 등의 메소드를 호출할 수 있다.
 
-`labels()`로 반환한 Child는 다시 검색할 필요 없이 캐시에 저장할 수 있어야 한다<sup>[[3]SHOULD](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 지연 시간에 영향을 제일 많이 받는 코드라면 특히 더 중요하다.
+`labels()`로 반환하는 Child는 다시 검색할 필요 없이 캐시에서 가져와야 한다<sup>[[3]SHOULD](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 지연 시간에 영향을 제일 많이 받는 코드라면 특히 더 중요하다.
 
 레이블을 가지고 있는 메트릭은 더 이상 익스포트하지 않을 Child를 제거할 수 있는 `remove()` 메소드와( `labels()`와 동일한 시그니처로), 메트릭에서 모든 Children을 제거하는 `clear()` 메소드를 지원해야 한다<sup>[[3]SHOULD](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 이 메소드들은 Children의 캐시를 무효화한다.
 
-지정한 Child를 기본 값으로 초기화할 수 있는 방법도 존재해야 한다<sup>[[3]SHOULD](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 보통은 `labels()`를 호출하기만 하면 된다. 레이블이 없는 메트릭은 [메트릭이 누락되는 문제](https://prometheus.io/docs/practices/instrumentation/#avoid-missing-metrics)를 피할 수 있도록 항상 초기화돼있어야 한다<sup>[[1]MUST](https://www.ietf.org/rfc/rfc2119.txt)</sup>.
+지정한 Child를 기본 값으로 초기화할 수 있는 방법도 존재해야 한다<sup>[[3]SHOULD](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 보통은 `labels()`를 호출하기만 하면 된다. 레이블이 없는 메트릭은 [메트릭이 누락되는 문제](../practices.instrumentation#avoid-missing-metrics)를 피할 수 있도록 항상 초기화돼있어야 한다<sup>[[1]MUST](https://www.ietf.org/rfc/rfc2119.txt)</sup>.
 
 ### Metric names
 
@@ -235,9 +235,7 @@ description/help 문자열은 필수 인자로 만드는 것을 권장하만, �
 
 클라이언트는 반드시 [exposition 포맷](../exposition-formats) 문서에서 설명하는 텍스트 기반 exposition 형식을 구현해야 한다<sup>[[1]MUST](https://www.ietf.org/rfc/rfc2119.txt)</sup>.
 
-Reproducible order of the exposed metrics is ENCOURAGED (especially for human readable formats) if it can be implemented without a significant resource cost.
-
-리소스를 크게 들이지 않고 구현할 수 있다면 (특히 사람이 읽을 수 있는 형식이라면) 노출하는 메트릭들의 순서를 계속해서 유지해도 좋다<sup>[[6]ENCOURAGED](#ENCOURAGED)</sup>.
+리소스를 크게 들이지 않고 구현할 수 있다면 노출하는 메트릭들의 순서를 계속해서 유지해도 좋다<sup>[[6]ENCOURAGED](#ENCOURAGED)</sup> (특히 사람이 읽기 편하게).
 
 ---
 
@@ -297,7 +295,7 @@ Reproducible order of the exposed metrics is ENCOURAGED (especially for human re
 
 자바의 simpleclient에 있는 `DoubleAdder`같이, 동일한 RAM 비트를 다른 CPU가 변경하지 못하도록 막는 방식이 가장 잘 먹힌다. 그럼에도 메모리 비용은 있다.
 
-위에서도 언급했듯이 `labels()`의 결과는 캐시에 저장할 수 있어야 한다. 흔히 레이블을 사용하는 메트릭을 저장할 때 쓰는 concurrent map은 상대적으로 느린 편이다. 레이블이 없는 특수한 메트릭을 따로 저장하면 `labels()`와 같은 검색을 피할 수 있어 도움이 많이 된다.
+위에서도 언급했듯이 `labels()`의 결과는 캐시에서 가져올 수 있어야 한다. 흔히 레이블을 사용하는 메트릭을 저장할 때 쓰는 concurrent map은 상대적으로 느린 편이다. 레이블이 없는 특수한 메트릭을 따로 저장하면 `labels()`와 같은 검색을 피할 수 있어 도움이 많이 된다.
 
 메트릭을 증가/감소/설정할 때 블로킹은 피하는 게 좋다<sup>[[3]SHOULD](https://www.ietf.org/rfc/rfc2119.txt)</sup>. 스크랩을 진행하는 동안 전체 애플리케이션이 지연되는 것은 바람직하지 않다.
 

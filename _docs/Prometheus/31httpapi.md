@@ -1122,7 +1122,7 @@ PUT /api/v1/admin/tsdb/delete_series
 
 URL 파라미터:
 
-- `match[]=<series_selector>`: 삭제할 시계열을 선택하는 레이블 매처 (여러 개 지정할 수 있다). `match[]` 인자는 최소한 하나는 제공해야 한다.
+- `match[]=<series_selector>`: 삭제할 시계열을 선택하는 레이블 matcher (여러 개 지정할 수 있다). `match[]` 인자는 최소한 하나는 제공해야 한다.
 - `start=<rfc3339 | unix_timestamp>`: 시작 타임스탬프. 생략할 수 있으며, 기본값은 가능한 최소 시간이다.
 - `end=<rfc3339 | unix_timestamp>`: 종료 타임스탬프. 생략할 수 있으며, 기본값은 가능한 최대 시간이다.
 

@@ -26,7 +26,7 @@ parentUrl: /Prometheus/prometheus/
 
 ---
 
-### Health check
+## Health check
 
 ```
 GET /-/healthy
@@ -36,7 +36,7 @@ GET /-/healthy
 
 ---
 
-### Readiness check
+## Readiness check
 
 ```
 GET /-/ready
@@ -46,7 +46,7 @@ GET /-/ready
 
 ---
 
-### Reload
+## Reload
 
 ```
 PUT  /-/reload
@@ -59,7 +59,7 @@ POST /-/reload
 
 ---
 
-### Quit
+## Quit
 
 ```
 PUT  /-/quit

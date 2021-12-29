@@ -1,23 +1,25 @@
 ---
-title: HTTPS and authentication
+title: Alertmanager HTTPS and authentication
+navTitle: HTTPS and authentication
 category: Prometheus
-order: 25
-permalink: /Prometheus/https/
-description: 프로메테우스 서버 기본 인증, TLS 세팅 가이드
+order: 61
+permalink: /Prometheus/alerting.https/
+description: Alertmanager 기본 인증, TLS 세팅 가이드
 image: ./../../images/prometheus/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
 originalRefName: 프로메테우스
-originalRefLink: https://prometheus.io/docs/prometheus/2.32/configuration/https/
-parent: PROMETHEUS
-parentUrl: /Prometheus/prometheus/
-subparent: Configuration
-subparentUrl: /Prometheus/config/
+originalRefLink: https://prometheus.io/docs/alerting/0.23/https/
+parent: ALERTING
+parentUrl: /Prometheus/alerting/
+priority: 0.3
 ---
 
 ---
 
-프로메테우스는 기본 인증과 TLS를 지원한다. 이 설정은 **실험적인** 기능으로, 향후 변경될 수도 있다.
+Alertmanager는 기본 인증과 TLS를 지원한다. 이 설정은 **실험적인** 기능으로, 향후 변경될 수도 있다.
+
+현재 TLS는 HTTP 트래픽에 대해서만 지원한다. Gossip 트래픽은 아직 암호화를 지원하지 않는다.
 
 로드할 웹 설정 파일을 지정할 땐 `--web.config.file` 플래그를 사용한다.
 
@@ -31,8 +33,6 @@ subparentUrl: /Prometheus/config/
 - `<filename>`: 현재 작업 디렉토리 안에 있는 유효한 경로
 - `<secret>`: 비밀번호 같이 평소 시크릿에 사용하는 문자열
 - `<string>`: 평범한 문자열
-
-유효한 예제 파일은 [여기](https://github.com/prometheus/prometheus/blob/release-2.32/documentation/examples/web-config.yml)에서 찾을 수 있다.
 
 ```yaml
 tls_server_config:
@@ -79,29 +79,6 @@ http_server_config:
   # HTTP/2 지원을 활성화한다. 참고로 HTTP/2는 TLS를 함께 사용할 때만 지원한다.
   # 이 설정은 실행 중일 때 즉석으로 변경할 수 없다.
   [ http2: <boolean> | default = true ]
-  # HTTP 응답에 추가할 수 있는 헤더 목록.
-  [ headers:
-    # HTTP 응답에 Content-Security-Policy 헤더를 설정한다.
-    # 비어있으면 설정하지 않는다.
-    [ Content-Security-Policy: <string> ]
-    # HTTP 응답에 X-Frame-Options 헤더를 설정한다.
-    # 비어있으면 설정하지 않는다. deny와 sameorigin을 사용할 수 있다.
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
-    [ X-Frame-Options: <string> ]
-    # HTTP 응답에 X-Content-Type-Options 헤더를 설정한다.
-    # 비어있으면 설정하지 않는다. nosniff를 사용할 수 있다.
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Content-Type-Options
-    [ X-Content-Type-Options: <string> ]
-    # HTTP 응답에 X-XSS-Protection 헤더를 설정한다.
-    # 비어있으면 설정하지 않는다. nosniff를 사용할 수 있다.
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
-    [ X-XSS-Protection: <string> ]
-    # HTTP 응답에 Strict-Transport-Security 헤더를 설정한다.
-    # 비어있으면 설정하지 않는다.
-    # 이 헤더를 사용하면 브라우저에서 동일한 도메인과 서브 도메인에서 호스팅하는
-    # 프로메테우스와 다른 애플리케이션들을 강제로 HTTPS로 로드할 수 있으므로 주의해서 사용해야 한다.
-    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security
-    [ Strict-Transport-Security: <string> ] ]
 
 # 기본 인증을 통해 웹 서버에 대한 모든 액세스 권한을 부여하는 username과 해싱한 password 목록.
 # 비어 있으면 기본 인증이 요구하지 않는다. password는 bcrypt로 해싱한다.

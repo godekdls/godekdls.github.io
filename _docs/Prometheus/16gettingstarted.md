@@ -138,7 +138,7 @@ rate(prometheus_tsdb_head_chunks_created_total[1m])
 
 이번에는 프로메테우스가 스크랩할 타겟을 더 추가해보자.
 
-타겟 예시로 노드 익스포터를 사용할 건데, 자세한 사용법은 [이 가이드를 참고해라](https://prometheus.io/docs/guides/node-exporter/).
+타겟 예시로 노드 익스포터를 사용할 건데, 자세한 사용법은 [이 가이드를 참고해라](../guides.node-exporter).
 
 ```sh
 tar -xzvf node_exporter-*.*.tar.gz

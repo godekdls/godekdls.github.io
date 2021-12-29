@@ -35,4 +35,4 @@ includeFooter: false
 | [Resilience4j](/Resilience4j/contents/) | v1.7.0 | 2021/05 | [ref](https://resilience4j.readme.io/v1.7.0/docs) |
 | [Spring Boot](/Spring%20Boot/contents/) | 2.5.2 | 2021/07 | [ref](https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/) |
 | [Spring Cloud Data Flow](/Spring%20Cloud%20Data%20Flow/contents/) | 2.9.1 | 2021/12 | [ref](https://dataflow.spring.io/docs/) |
-| [Prometheus](/Prometheus/contents/) | 2.32(Prometheus)<br>0.23(Alerting) | 2021/12 | [ref](https://prometheus.io/docs/introduction/overview/) |
+| [Prometheus](/Prometheus/contents/) | 2.32(Prometheus)<br>0.23(Alerting) | 2022/01 | [ref](https://prometheus.io/docs/introduction/overview/) |

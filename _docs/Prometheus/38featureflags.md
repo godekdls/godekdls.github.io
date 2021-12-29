@@ -83,7 +83,7 @@ remote write receiver를 사용하면 프로메테우스로 다른 프로메테�
 --enable-feature=exemplar-storage
 ```
 
-[OpenMetrics](https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md#exemplars)에선 스크랩 타겟이 특정 메트릭에 exemplar를 추가할 수 있는 기능을 소개하고 있다. exemplar는 MetricSet 외부에 있는 데이터에 대한 참조다. 흔하게는 프로그램 트래이스 ID에 사용한다.
+[OpenMetrics](https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md#exemplars)에선 스크랩 타겟이 특정 메트릭에 exemplar를 추가할 수 있는 기능을 소개하고 있다. exemplar는 MetricSet 외부에 있는 데이터에 대한 참조다. 흔하게는 프로그램 트레이스 ID에 사용한다.
 
 Exemplar 스토리지는 사이즈를 고정해둔 원형 버퍼로 구현하며, 모든 시계열의 exemplar를 메모리에 저장한다. 이 기능을 활성화하면 프로메테우스가 스크랩한 exemplar의 스토리지도 활성화한다. exemplar 갯수에 따라 원형 버퍼의 사이즈를 조절하고 싶을 때는 설정 파일 블록 [storage](../configuration/#configuration-file)/[exemplars](../configuration/#exemplars)를 사용하면 된다. `traceID=<jaeger-trace-id>`만 있는 exemplar는 인메모리 exemplar 스토리지를 통해 메모리를 대략 100바이트 정도 사용한다. exemplar 스토리지가 활성화되면 로컬의 지속성<sup>persistence</sup>을 위해 WAL에도 exemplar를 추가한다 (WAL 기간 동안).
 
@@ -135,4 +135,4 @@ Exemplar 스토리지는 사이즈를 고정해둔 원형 버퍼로 구현하며
 
 활성화하면 프로메테우스는 에이전트 모드로 실행된다. 에이전트 모드에선 디스커버리, 스크랩, remote write로만 제한된다.
 
-에이전트 모드는 프로메테우스 데이터를 로컬에서 질의할 필요 없이, 중앙에 있는 [remote 엔드포인트](https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage)에서만 질의하면 될 때 활용할 수 있다.
+에이전트 모드는 프로메테우스 데이터를 로컬에서 질의할 필요 없이, 중앙에 있는 [remote 엔드포인트](../integrations#remote-endpoints-and-storage)에서만 질의하면 될 때 활용할 수 있다.

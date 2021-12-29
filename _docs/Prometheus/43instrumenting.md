@@ -3,7 +3,7 @@ title: INSTRUMENTING
 category: Prometheus
 order: 43
 permalink: /Prometheus/instrumenting/
-description: todo
+description: 프로메테우스 지표 측정 가이드
 image: ./../../images/prometheus/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true
@@ -13,6 +13,8 @@ parent: INSTRUMENTING
 isParent: true
 parentUrl: /Prometheus/instrumenting/
 priority: 0.3
+---
+
 ---
 
 > [Client libraries](../clientlibs)
@@ -33,10 +35,8 @@ priority: 0.3
 
 > [Writing exporters](../writing-exporters)
 > 
-> 
+> 익스포터, 커스텀 컬렉터 작성 가이드
 
 > [Exposition formats](../exposition-formats)
 > 
-> 
-
-TODO
+> 프로메테우스에 메트릭을 노출할 때 사용하는 exposition 포맷
