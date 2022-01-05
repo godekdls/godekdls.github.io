@@ -219,7 +219,7 @@ public class CompositeItemWriter<T> implements ItemWriter<T> {
 앞의 클래스는 다른 `ItemWriter` 하나를 포함하고 있는데,
 비지니스 로직을 수행하고 나서 write 처리를 위임한다.
 이 패턴을 `ItemReader`에도 사용할 수 있는데, 이 경우는
-메인 `ItemReader`에서 읽은 데이터에 추가로 다른 참조 데이터를 읽어드릴 수 있다.
+메인 `ItemReader`에서 읽은 데이터에 추가로 다른 참조 데이터를 읽어들일 수 있다.
 `write` 메소드 호출을 직접 제어하고 싶을 때도 유용할 것이다.
 그렇지만 write 시에 넘겨받은 데이터를 실제로 쓰기 전에 '변환'만 하면 된다면,
 굳이 `write`를 직접 제어할 필요 없다.
@@ -536,7 +536,7 @@ boolean booleanValue = fs.readBoolean(2);
 `LineMapper` 인터페이스는 다음 섹션에서 더 다룰 것이다.
 resource 프로퍼티는 스프링 코어의 `Resource`를 나타낸다.
 이 유형의 빈을 만드는 법이 궁금하다면 
-[Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources)를 보라.
+[Spring Framework, Chapter 5. Resources](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#resources)를 확인해봐라.
 따라서 이번 가이드에서는 `Resource` 객체를 만드는 방법은 아래 간단한 예제를 끝으로 더 자세히 다루지 않는다.
 
 ```java
@@ -956,7 +956,7 @@ tokenizers.put("*", defaultLineTokenizer());
 이런 경우 파싱 예외를 처리할 수 있도록 스프링 배치는 exception 계층을 제공한다:
 `FlatFileParseException`과 `FlatFileFormatException`. 
 `FlatFileParseException`는 `FlatFileItemReader`가 
-파일을 읽어드리는 동안 에러가 발생했을 때 던져진다.
+파일을 읽어들이는 동안 에러가 발생했을 때 던져진다.
 `FlatFileFormatException`은 `LineTokenizer` 인터페이스 구현부에서
 던져지는데, 토큰화 중 좀 더 구체적인 에러가 발생한 케이스다. 
 
