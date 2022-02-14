@@ -3,7 +3,7 @@ title: Introduction
 category: Spring REST Docs
 order: 2
 permalink: /Spring%20REST%20Docs/introduction/
-description: 스프링 REST Docs 소개 한글 번역
+description: 스프링 REST Docs 소개 한국어 번역
 priority: 0.7
 image: ./../../images/springrestdocs/logo.png
 lastmod: 2020-12-19T00:00:00+09:00

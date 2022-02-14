@@ -3,7 +3,7 @@ title: Quick Start
 category: Spring Cloud Config
 order: 2
 permalink: /Spring%20Cloud%20Config/quick-start/
-description: 스프링 클라우드 컨피그 퀵스타트 가이드를 한글로 번역한 문서입니다.
+description: 스프링 클라우드 컨피그 퀵스타트 가이드를 한국어로 번역한 문서입니다.
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-03-31T22:00:00+09:00
 comments: true

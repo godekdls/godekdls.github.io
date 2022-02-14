@@ -3,7 +3,7 @@ title: Servlet Security, The Big Picture
 category: Spring Security
 order: 10
 permalink: /Spring%20Security/servletsecuritythebigpicture/
-description: 스프링 시큐리티에서 사용하는 서블릿 필터를 설명합니다. 공식 문서에 있는 "servlet security, the big picture" 챕터를 한글로 번역한 문서입니다.
+description: 스프링 시큐리티에서 사용하는 서블릿 필터를 설명합니다. 공식 문서에 있는 "servlet security, the big picture" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/filterchain.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

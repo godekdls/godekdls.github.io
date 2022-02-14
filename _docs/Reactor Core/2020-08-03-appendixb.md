@@ -3,7 +3,7 @@ title: Appendix B FAQ, Best Practices, and How do I
 category: Reactor Core
 order: 12
 permalink: /Reactor%20Core/appendixbfaqbestpracticesandhowdoi/
-description: 리액터 FAQ, best practice 가이드를 한글로 번역했습니다.
+description: 리액터 FAQ, best practice 가이드를 한국어로 번역했습니다.
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-04T00:47:00+09:00
 comments: true

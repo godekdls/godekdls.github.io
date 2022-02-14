@@ -3,7 +3,7 @@ title: Transaction Management
 category: Spring Data Access
 order: 2
 permalink: /Spring%20Data%20Access/transactionmanagement/
-description: 스프링 트랜잭션 관리 공식 문서를 한글로 번역한 문서입니다. 스프링의 트랜잭션 모델과 기술을 소개하고, 선언적인 방법과 프로그래밍 방식으로 트랜잭션을 관리하는 방법 설명합니다.
+description: 스프링 트랜잭션 관리 공식 문서를 한국어로 번역한 문서입니다. 스프링의 트랜잭션 모델과 기술을 소개하고, 선언적인 방법과 프로그래밍 방식으로 트랜잭션을 관리하는 방법 설명합니다.
 image: ./../../images/springdataaccess/tx.png
 lastmod: 2021-01-10T23:00:00+09:00
 comments: true

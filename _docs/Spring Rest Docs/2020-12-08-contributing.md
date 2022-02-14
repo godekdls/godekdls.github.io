@@ -3,7 +3,7 @@ title: Contributing
 category: Spring REST Docs
 order: 9
 permalink: /Spring%20REST%20Docs/contributing/
-description: 스프링 Rest Docs에 컨트리뷰트하기 한글 번역
+description: 스프링 Rest Docs에 컨트리뷰트하기 한국어 번역
 image: ./../../images/springrestdocs/logo.png
 lastmod: 2020-12-19T00:00:00+09:00
 comments: true

@@ -3,7 +3,7 @@ title: UDP Server
 category: Reactor Netty
 order: 8
 permalink: /Reactor%20Netty/udpserver/
-description: 리액터 네티로 UDP 서버 설정하기 한글 번역
+description: 리액터 네티로 UDP 서버 설정하기 한국어 번역
 image: ./../../images/reactornetty/logo.png
 lastmod: 2020-12-19T00:00:00+09:00
 comments: true

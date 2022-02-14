@@ -3,7 +3,7 @@ title: Security Namespace Configuration
 category: Spring Security
 order: 19
 permalink: /Spring%20Security/securitynamespaceconfiguration/
-description: 스프링 시큐리티의 XML 네임스페이스를 소개합니다. 공식 문서에 있는 "Security Namespace Configuration" 챕터를 한글로 번역한 문서입니다.
+description: 스프링 시큐리티의 XML 네임스페이스를 소개합니다. 공식 문서에 있는 "Security Namespace Configuration" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

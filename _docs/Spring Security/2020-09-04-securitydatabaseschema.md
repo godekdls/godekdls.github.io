@@ -3,7 +3,7 @@ title: Security Database Schema
 category: Spring Security
 order: 22
 permalink: /Spring%20Security/securitydatabaseschema/
-description: 스프링 시큐리티에서 사용하는 데이터 베이스 스키마를 설명합니다. 공식 문서에 있는 "Security Database Schema" 챕터를 한글로 번역한 문서입니다.
+description: 스프링 시큐리티에서 사용하는 데이터 베이스 스키마를 설명합니다. 공식 문서에 있는 "Security Database Schema" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

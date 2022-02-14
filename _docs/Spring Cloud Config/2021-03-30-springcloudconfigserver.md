@@ -3,7 +3,7 @@ title: Spring Cloud Config Server
 category: Spring Cloud Config
 order: 3
 permalink: /Spring%20Cloud%20Config/spring-cloud-config-server/
-description: 스프링 클라우드 컨피그 서버를 한글로 번역한 문서입니다. 컨피그 서버 설정 방법, environment repository(git, vault 등), 암호화 등을 설명합니다.
+description: 스프링 클라우드 컨피그 서버를 한국어로 번역한 문서입니다. 컨피그 서버 설정 방법, environment repository(git, vault 등), 암호화 등을 설명합니다.
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-03-31T22:00:00+09:00
 comments: true

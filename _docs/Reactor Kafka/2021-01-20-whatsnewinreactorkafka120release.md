@@ -3,7 +3,7 @@ title: Reactive Kafka Sender & Kafka Receiver
 category: Reactor Kafka
 order: 7
 permalink: /Reactor%20Kafka/whatsnewinreactorkafka120release/
-description: KafkaSender, KafkaReceiver API 사용법 한글 번역
+description: KafkaSender, KafkaReceiver API 사용법 한국어 번역
 image: ./../../images/reactor/logo.png
 lastmod: 2021-01-11T15:00:00+09:00
 comments: true

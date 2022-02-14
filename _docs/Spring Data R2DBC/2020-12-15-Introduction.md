@@ -3,7 +3,7 @@ title: Introduction
 category: Spring Data R2DBC
 order: 13
 permalink: /Spring%20Data%20R2DBC/introduction/
-description: 스프링 R2DBC 문서 구조 소개 한글 번역
+description: 스프링 R2DBC 문서 구조 소개 한국어 번역
 image: ./../../images/spring/logo.png
 lastmod: 2020-12-19T23:00:00+09:00
 comments: true

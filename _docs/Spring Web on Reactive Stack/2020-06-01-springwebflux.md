@@ -3,7 +3,7 @@ title: Spring WebFlux (1)
 category: Spring Web on Reactive Stack
 order: 2
 permalink: /Reactive%20Spring/springwebflux/
-description: 스프링5 웹 리액티브 스택 웹플럭스 한글 번역 1편 (리액티브, 웹플럭스 소개, DispatcherHandler, 컨트롤러)
+description: 스프링5 웹 리액티브 스택 웹플럭스 한국어 번역 1편 (리액티브, 웹플럭스 소개, DispatcherHandler, 컨트롤러)
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 priority: 0.8

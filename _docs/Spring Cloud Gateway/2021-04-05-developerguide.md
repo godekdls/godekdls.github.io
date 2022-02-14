@@ -3,7 +3,7 @@ title: Developer Guide
 category: Spring Cloud Gateway
 order: 18
 permalink: /Spring%20Cloud%20Gateway/developer-guide/
-description: 커스텀 RoutePredicateFactory/GatewayFilter 팩토리, GlobalFilter 정의하기 한글 번역
+description: 커스텀 RoutePredicateFactory/GatewayFilter 팩토리, GlobalFilter 정의하기 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

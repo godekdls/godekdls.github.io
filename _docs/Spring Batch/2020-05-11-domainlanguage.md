@@ -3,7 +3,7 @@ title: The Domain Language of Batch
 category: Spring Batch
 order: 4
 permalink: /Spring%20Batch/domainlanguage/
-description: 스프링 배치 도메인 언어 개념 정리 한글 번역
+description: 스프링 배치 도메인 언어 개념 정리 한국어 번역
 image: ./../../images/springbatch/batch-stereotypes.png
 lastmod: 2020-06-08T19:00:00+09:00
 priority: 0.8

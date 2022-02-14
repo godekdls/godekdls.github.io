@@ -3,7 +3,7 @@ title: Reactive Test Support
 category: Spring Security
 order: 33
 permalink: /Spring%20Security/reactivetestsupport/
-description: 리액티브 환경에서 지원하는 스프링 시큐리티 테스트 기능을 설명합니다. 공식 문서에 있는 "Reactive Test Support" 챕터를 한글로 번역한 문서입니다.
+description: 리액티브 환경에서 지원하는 스프링 시큐리티 테스트 기능을 설명합니다. 공식 문서에 있는 "Reactive Test Support" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

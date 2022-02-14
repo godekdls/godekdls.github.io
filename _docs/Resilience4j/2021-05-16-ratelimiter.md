@@ -3,7 +3,7 @@ title: RateLimiter
 category: Resilience4j
 order: 10
 permalink: /Resilience4j/latelimiter/
-description: RateLimiter 기본 소개를 한글로 번역한 문서입니다. RateLimiter 동작 원리와 설정값을 소개합니다.
+description: RateLimiter 기본 소개를 한국어로 번역한 문서입니다. RateLimiter 동작 원리와 설정값을 소개합니다.
 image: ./../../images/resilience4j/44ca055-rate_limiter.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true

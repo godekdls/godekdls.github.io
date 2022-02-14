@@ -3,7 +3,7 @@ title: Introduction
 category: Resilience4j
 order: 2
 permalink: /Resilience4j/introduction/
-description: resilience4j의 기본적인 개념과 예제, 모듈 소개 한글 번역
+description: resilience4j의 기본적인 개념과 예제, 모듈 소개 한국어 번역
 image: ./../../images/resilience4j/logo.png
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true

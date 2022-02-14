@@ -3,7 +3,7 @@ title: Troubleshooting
 category: Spring Cloud Gateway
 order: 17
 permalink: /Spring%20Cloud%20Gateway/troubleshooting/
-description: 스프링 클라우드 게이트웨이를 사용하다 트러블슈팅이 필요한 경우 도움이 될 만한 정보들 한글 번역
+description: 스프링 클라우드 게이트웨이를 사용하다 트러블슈팅이 필요한 경우 도움이 될 만한 정보들 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

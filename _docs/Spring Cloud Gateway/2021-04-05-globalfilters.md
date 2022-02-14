@@ -3,7 +3,7 @@ title: Global Filters
 category: Spring Cloud Gateway
 order: 8
 permalink: /Spring%20Cloud%20Gateway/globalfilters/
-description: 스프링 클라우드 게이트웨이가 제공하는 여러 가지 글로벌 필터 소개 한글 번역
+description: 스프링 클라우드 게이트웨이가 제공하는 여러 가지 글로벌 필터 소개 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

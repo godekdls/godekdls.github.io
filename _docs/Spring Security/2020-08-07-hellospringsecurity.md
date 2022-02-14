@@ -3,7 +3,7 @@ title: Hello Spring Security
 category: Spring Security
 order: 9
 permalink: /Spring%20Security/hellospringsecurity/
-description: 서블릿 어플리케이션에서 스프링 시큐리티를 시작하는 방법과 스프링 부트 자동 설정을 설명합니다. 공식 문서에 있는 "hello spring security in servlet application" 챕터를 한글로 번역한 문서입니다.
+description: 서블릿 어플리케이션에서 스프링 시큐리티를 시작하는 방법과 스프링 부트 자동 설정을 설명합니다. 공식 문서에 있는 "hello spring security in servlet application" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

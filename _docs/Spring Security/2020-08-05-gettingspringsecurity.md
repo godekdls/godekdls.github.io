@@ -3,7 +3,7 @@ title: Getting Spring Security
 category: Spring Security
 order: 5
 permalink: /Spring%20Security/gettingspringsecurity/
-description: 공식 문서에 있는 "스프링 시큐리티 시작하기" 챕터를 한글로 번역한 문서입니다.
+description: 공식 문서에 있는 "스프링 시큐리티 시작하기" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

@@ -3,7 +3,7 @@ title: What’s New in Spring Security 5.3
 category: Spring Security
 order: 4
 permalink: /Spring%20Security/whatsnewinspringsecurity53/
-description: 스프링 시큐리티 5.3에서 추가된 내용을 설명합니다. 공식 문서에 있는 "what's new" 챕터를 한글로 번역한 문서입니다.
+description: 스프링 시큐리티 5.3에서 추가된 내용을 설명합니다. 공식 문서에 있는 "what's new" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

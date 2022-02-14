@@ -3,7 +3,7 @@ title: Kafka Streams
 category: Apache Kafka
 order: 17
 permalink: /Apache%20Kafka/kafka-streams/
-description: 카프카 스트림즈 소개 한글 번역
+description: 카프카 스트림즈 소개 한국어 번역
 image: ./../../images/kafka/logo.png
 lastmod: 2021-02-14T22:25:00+09:00
 comments: true

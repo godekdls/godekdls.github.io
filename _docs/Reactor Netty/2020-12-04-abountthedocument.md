@@ -3,7 +3,7 @@ title: About the Document
 category: Reactor Netty
 order: 2
 permalink: /Reactor%20Netty/aboutthedocument/
-description: 리액터 네티 문서 소개 한글 번역
+description: 리액터 네티 문서 소개 한국어 번역
 image: ./../../images/reactornetty/logo.png
 lastmod: 2020-12-19T00:00:00+09:00
 comments: true

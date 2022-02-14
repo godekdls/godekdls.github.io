@@ -3,7 +3,7 @@ title: Unit Testing
 category: Spring Batch
 order: 11
 permalink: /Spring%20Batch/unittesting/
-description: 스프링 배치 유닛 테스트 한글 번역
+description: 스프링 배치 유닛 테스트 한국어 번역
 image: ./../../images/springbatch/batch-stereotypes.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true

@@ -3,7 +3,7 @@ title: TLS and SSL
 category: Spring Cloud Gateway
 order: 10
 permalink: /Spring%20Cloud%20Gateway/tls-and-ssl/
-description: 게이트웨이를 HTTPS로 listen하는 방법, TLS 관련 클라이언트 타임아웃 설정 한글 번역
+description: 게이트웨이를 HTTPS로 listen하는 방법, TLS 관련 클라이언트 타임아웃 설정 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true
