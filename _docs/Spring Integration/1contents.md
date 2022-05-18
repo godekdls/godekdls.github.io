@@ -1,0 +1,158 @@
+---
+title: Contents
+category: Spring Integration
+order: 1
+permalink: /Spring%20Integration/contents/
+image: ./../../images/springintegration/logo.png
+lastmod: 2022-01-05T21:30:00+09:00
+comments: true
+originalRefName: 스프링 인티그레이션
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html
+originalVersion: 5.5.12
+description: 스프링 인티그레이션 공식 레퍼런스를 한글로 번역한 문서입니다. 버전은 5.5.12 기준입니다.
+---
+
+---
+
+Mark Fisher, Marius Bogoevici, Iwein Fuld, Jonas Partner, Oleg Zhurakousky, Gary Russell, Dave Syer, Josh Long, David Turanski, Gunnar Hillert, Artem Bilan, Amol Nayak, Jay Bryant
+
+---
+
+> [챕터별로 페이지를 나눠놓은 문서(로딩이 더 빠르다)](https://docs.spring.io/spring-integration/docs/current/reference/html/index.html)도 제공하고 있으며, [PDF](https://docs.spring.io/spring-integration/docs/current/reference/pdf/spring-integration-reference.pdf)로도 조회할 수 있다.
+
+© 2009 - 2021 VMware, Inc. All rights reserved.
+
+이 문서 사본을 만들어 개인 소장하거나 다른 사람들에게 배포할 수는 있지만, 문서에 대한 비용을 청구해선 안 되며, 배포 형식이 인쇄물이든 디지털 파일이던지 관계없이 저작권 표시를 포함해야 한다.
+
+---
+
+목차:
+
+1. [Requirements](../requirements)
+- [1.1. Compatible Java Versions](../requirements#11-compatible-java-versions)
+- [1.2. Compatible Versions of the Spring Framework](../requirements#12-compatible-versions-of-the-spring-framework)
+2. [Code Conventions](../code-conventions)
+3. [Conventions in This Guide](../guide-conventions)
+4. [What’s New in Spring Integration 5.5?](../whats-new-55)
+- [4.1. New Components](../whats-new-55#41-new-components)
+  + [4.1.1. File Aggregator](../whats-new-55#411-file-aggregator)
+  + [4.1.2. MQTT v5 Support](../whats-new-55#412-mqtt-v5-support)
+- [4.2. General Changes](../whats-new-55#42-general-changes)
+  + [4.2.1. Integration Flows Composition](../whats-new-55#421-integration-flows-composition)
+  + [4.2.2. AMQP Changes](../whats-new-55#422-amqp-changes)
+  + [4.2.3. Redis Changes](../whats-new-55#423-redis-changes)
+  + [4.2.4. HTTP Changes](../whats-new-55#424-http-changes)
+  + [4.2.5. File/FTP/SFTP Changes](../whats-new-55#425-fileftpsftp-changes)
+  + [4.2.6. MongoDb Changes](../whats-new-55#426-mongodb-changes)
+  + [4.2.7. WebSockets Changes](../whats-new-55#427-websockets-changes)
+  + [4.2.8. JPA Changes](../whats-new-55#428-jpa-changes)
+  + [4.2.9. Gateway Changes](../whats-new-55#429-gateway-changes)
+5. [Spring Integration Overview](../overview)
+- [5.1. Background](../overview#51-background)
+- [5.2. Goals and Principles](../overview#52-goals-and-principles)
+- [5.3. Main Components](../overview#53-main-components)
+  + [5.3.1. Message](../overview#531-message)
+  + [5.3.2. Message Channel](../overview#532-message-channel)
+  + [5.3.3. Message Endpoint](../overview#533-message-endpoint)
+- [5.4. Message Endpoints](../overview#54-message-endpoints)
+  + [5.4.1. Message Transformer](../overview#541-message-transformer)
+  + [5.4.2. Message Filter](../overview#542-message-filter)
+  + [5.4.3. Message Router](../overview#543-message-router)
+  + [5.4.4. Splitter](../overview#544-splitter)
+  + [5.4.5. Aggregator](../overview#545-aggregator)
+  + [5.4.6. Service Activator](../overview#546-service-activator)
+  + [5.4.7. Channel Adapter](../overview#547-channel-adapter)
+  + [5.4.8. Endpoint Bean Names](../overview#548-endpoint-bean-names)
+- [5.5. Configuration and @EnableIntegration](../overview#55-configuration-and-enableintegration)
+- [5.6. Programming Considerations](../overview#56-programming-considerations)
+  + [5.6.1. Considerations When Using Packaged (for example, Shaded) Jars](../overview#561-considerations-when-using-packaged-for-example-shaded-jars)
+- [5.7. Programming Tips and Tricks](../overview#57-programming-tips-and-tricks)
+  + [5.7.1. XML Schemas](../overview#571-xml-schemas)
+  + [5.7.2. Finding Class Names for Java and DSL Configuration](../overview#572-finding-class-names-for-java-and-dsl-configuration)
+- [5.8. POJO Method invocation](../overview#58-pojo-method-invocation)
+6. [Messaging Channels](../messaging-channels)
+- [6.1. Message Channels](../messaging-channels#61-message-channels)
+  + [6.1.1. The MessageChannel Interface](../messaging-channels#611-the-messagechannel-interface)
+  + [6.1.2. Message Channel Implementations](../messaging-channels#612-message-channel-implementations)
+  + [6.1.3. Channel Interceptors](../messaging-channels#613-channel-interceptors)
+  + [6.1.4. MessagingTemplate](../messaging-channels#614-messagingtemplate)
+  + [6.1.5. Configuring Message Channels](../messaging-channels#615-configuring-message-channels)
+  + [6.1.6. Special Channels](../messaging-channels#616-special-channels)
+- [6.2. Poller](../messaging-channels#62-poller)
+  + [6.2.1. Polling Consumer](../messaging-channels#621-polling-consumer)
+  + [6.2.2. Pollable Message Source](../messaging-channels#622-pollable-message-source)
+  + [6.2.3. Deferred Acknowledgment Pollable Message Source](../messaging-channels#623-deferred-acknowledgment-pollable-message-source)
+  + [6.2.4. Conditional Pollers for Message Sources](../messaging-channels#624-conditional-pollers-for-message-sources)
+- [6.3. Channel Adapter](../messaging-channels#63-channel-adapter)
+  + [6.3.1. Configuring An Inbound Channel Adapter](../messaging-channels#631-configuring-an-inbound-channel-adapter)
+  + [6.3.2. Configuring An Outbound Channel Adapter](../messaging-channels#632-configuring-an-outbound-channel-adapter)
+  + [6.3.3. Channel Adapter Expressions and Scripts](../messaging-channels#633-channel-adapter-expressions-and-scripts)
+- [6.4. Messaging Bridge](../messaging-channels#64-messaging-bridge)
+  + [6.4.1. Configuring a Bridge with XML](../messaging-channels#641-configuring-a-bridge-with-xml)
+  + [6.4.2. Configuring a Bridge with Java Configuration](../messaging-channels#642-configuring-a-bridge-with-java-configuration)
+  + [6.4.3. Configuring a Bridge with the Java DSL](../messaging-channels#643-configuring-a-bridge-with-the-java-dsl)
+7. [Message](../message)
+- [7.1. The Message Interface](../message#71-the-message-interface)
+- [7.2. Message Headers](../message#72-message-headers)
+  + [7.2.1. MessageHeaderAccessor API](../message#721-messageheaderaccessor-api)
+  + [7.2.2. Message ID Generation](../message#722-message-id-generation)
+  + [7.2.3. Read-only Headers](../message#723-read-only-headers)
+  + [7.2.4. Header Propagation](../message#724-header-propagation)
+- [7.3. Message Implementations](../message#73-message-implementations)
+- [7.4. The MessageBuilder Helper Class](../message#74-the-messagebuilder-helper-class)
+8. [Message Routing](../messaging-routing)
+- [8.1. Routers](../messaging-routing#81-routers)
+  + [8.1.1. Overview](../messaging-routing#811-overview)
+  + [8.1.2. Common Router Parameters](../messaging-routing#812-common-router-parameters)
+  + [8.1.3. Router Implementations](../messaging-routing#813-router-implementations)
+  + [8.1.4. Configuring a Generic Router](../messaging-routing#814-configuring-a-generic-router)
+  + [8.1.5. Routers and the Spring Expression Language (SpEL)](../messaging-routing#815-routers-and-the-spring-expression-language-spel)
+  + [8.1.6. Dynamic Routers](../messaging-routing#816-dynamic-routers)
+  + [8.1.7. Process Manager Enterprise Integration Pattern](../messaging-routing#817-process-manager-enterprise-integration-pattern)
+- [8.2. Filter](../messaging-routing#82-filter)
+  + [8.2.1. Configuring a Filter with XML](../messaging-routing#821-configuring-a-filter-with-xml)
+  + [8.2.2. Configuring a Filter with Annotations](../messaging-routing#822-configuring-a-filter-with-annotations)
+- [8.3. Splitter](../messaging-routing#83-splitter)
+  + [8.3.1. Programming Model](../messaging-routing#831-programming-model)
+  + [8.3.2. Configuring a Splitter with XML](../messaging-routing#832-configuring-a-splitter-with-xml)
+  + [8.3.3. Configuring a Splitter with Annotations](../messaging-routing#833-configuring-a-splitter-with-annotations)
+- [8.4. Aggregator](../messaging-routing#84-aggregator)
+  + [8.4.1. Functionality](../messaging-routing#841-functionality)
+  + [8.4.2. Programming Model](../messaging-routing#842-programming-model)
+  + [8.4.3. Configuring an Aggregator in Java DSL](../messaging-routing#843-configuring-an-aggregator-in-java-dsl)
+  + [8.4.4. Managing State in an Aggregator: MessageGroupStore](../messaging-routing#844-managing-state-in-an-aggregator-messagegroupstore)
+  + [8.4.5. Flux Aggregator](../messaging-routing#845-flux-aggregator)
+  + [8.4.6. Condition on the Message Group](../messaging-routing#846-condition-on-the-message-group)
+- [8.5. Resequencer](../messaging-routing#85-resequencer)
+  + [8.5.1. Functionality](../messaging-routing#851-functionality)
+  + [8.5.2. Configuring a Resequencer](../messaging-routing#852-configuring-a-resequencer)
+- [8.6. Message Handler Chain](../messaging-routing#86-message-handler-chain)
+  + [8.6.1. Configuring a Chain](../messaging-routing#861-configuring-a-chain)
+  + [8.6.2. Using the 'id' Attribute](../messaging-routing#862-using-the-id-attribute)
+  + [8.6.3. Calling a Chain from within a Chain](../messaging-routing#863-calling-a-chain-from-within-a-chain)
+- [8.7. Scatter-Gather](../messaging-routing#87-scatter-gather)
+  + [8.7.1. Functionality](../messaging-routing#871-functionality)
+  + [8.7.2. Configuring a Scatter-Gather Endpoint](../messaging-routing#872-configuring-a-scatter-gather-endpoint)
+  + [8.7.3. Error Handling](../messaging-routing#873-error-handling)
+- [8.8. Thread Barrier](../messaging-routing#88-thread-barrier)
+9. [Message Transformation](../messaging-transformation)
+- [9.1. Transformer](../messaging-transformation#91-transformer)
+  + [9.1.1. Configuring a Transformer with XML](../messaging-transformation#911-configuring-a-transformer-with-xml)
+  + [9.1.2. Transformers and Spring Expression Language (SpEL)](../messaging-transformation#912-transformers-and-spring-expression-language-spel)
+  + [9.1.3. Common Transformers](../messaging-transformation#913-common-transformers)
+  + [9.1.4. Configuring a Transformer with Annotations](../messaging-transformation#914-configuring-a-transformer-with-annotations)
+  + [9.1.5. Header Filter](../messaging-transformation#915-header-filter)
+  + [9.1.6. Codec-Based Transformers](../messaging-transformation#916-codec-based-transformers)
+- [9.2. Content Enricher](../messaging-transformation#92-content-enricher)
+  + [9.2.1. Header Enricher](../messaging-transformation#921-header-enricher)
+  + [9.2.2. Payload Enricher](../messaging-transformation#922-payload-enricher)
+- [9.3. Claim Check](../messaging-transformation#93-claim-check)
+  + [9.3.1. Incoming Claim Check Transformer](../messaging-transformation#931-incoming-claim-check-transformer)
+  + [9.3.2. Outgoing Claim Check Transformer](../messaging-transformation#932-outgoing-claim-check-transformer)
+  + [9.3.3. Claim Once](../messaging-transformation#933-claim-once)
+  + [9.3.4. A Word on Message Store](../messaging-transformation#934-a-word-on-message-store)
+- [9.4. Codec](../messaging-transformation#94-codec)
+  + [9.4.1. EncodingPayloadTransformer](../messaging-transformation#941-encodingpayloadtransformer)
+  + [9.4.2. DecodingTransformer](../messaging-transformation#942-decodingtransformer)
+  + [9.4.3. CodecMessageConverter](../messaging-transformation#943-codecmessageconverter)
+  + [9.4.4. Kryo](../messaging-transformation#944-kryo)
