@@ -452,7 +452,7 @@ public interface KeyResolver {
 
 기본적으로는 `KeyResolver`에서 키를 찾지 못하면 요청을 거부한다. 이 동작은 `spring.cloud.gateway.filter.request-rate-limiter.deny-empty-key`(`true`/`false`)와 `spring.cloud.gateway.filter.request-rate-limiter.empty-key-status-code` 프로퍼티를 설정해서 조절할 수 있다.
 
-> `RequestRateLimiter`는 "shorcut" 표기법으로는 설정할 수 없다. 아래는 *유효하지 않은* 예시다:
+> `RequestRateLimiter`는 "shortcut" 표기법으로는 설정할 수 없다. 아래는 *유효하지 않은* 예시다:
 >
 > **Example 31. application.properties**
 >

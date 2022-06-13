@@ -67,7 +67,7 @@ public class ConfigServer {
 }
 ```
 
-모든 스프링 부트 어플리케이션이 그렇듯 기본적으로 8080 포트에서 실행되지만, 여러 가지 방법으로 좀 더 통념적인 8888 포트로 전환할 수 있다. 가장 쉬운 방법은 `spring.config.name=configserver`(컨피그 서버 jar에는 `configserver.yml`이 내장돼있다)로 기동시키 거다. 이땐 기본 설정 레포지토리도 함께 설정된다. 아니면 다음 예제처럼 자체 `application.properties`를 사용할 수도 있다:
+모든 스프링 부트 어플리케이션이 그렇듯 기본적으로 8080 포트에서 실행되지만, 여러 가지 방법으로 좀 더 통념적인 8888 포트로 전환할 수 있다. 가장 쉬운 방법은 `spring.config.name=configserver`(컨피그 서버 jar에는 `configserver.yml`이 내장돼있다)로 기동시키는 거다. 이땐 기본 설정 레포지토리도 함께 설정된다. 아니면 다음 예제처럼 자체 `application.properties`를 사용할 수도 있다:
 
 **application.properties**
 
