@@ -404,7 +404,7 @@ public class MyAccountService implements AccountService {
 
 - `@EnableAutoConfiguration`: [스프링 부트의 자동 설정 메커니즘](#64-auto-configuration)을 활성화한다
 - `@ComponentScan`: 애플리케이션이 위치한 패키지에 `@Component` 스캔을 활성화한다 ([베스트 프랙티스](#62-structuring-your-code) 참고)
-- `@SpringBootConfiguration`: 컨텍스트에 별도 빈 등록이나 추가 설정 클래스 임포트를 활성화한다. 스프링의 표준 `@Configuration`을 대체하는 애노테이션으로, 인테그레이션 테스트에서 [설정을 감지](../testing/#detecting-test-configuration)할 수 있게 도와준다.
+- `@SpringBootConfiguration`: 컨텍스트에 별도 빈 등록이나 추가 설정 클래스 임포트를 활성화한다. 스프링의 표준 `@Configuration`을 대체하는 어노테이션으로, 인테그레이션 테스트에서 [설정을 감지](../testing/#detecting-test-configuration)할 수 있게 도와준다.
 
 ```java
 @SpringBootApplication // same as @SpringBootConfiguration @EnableAutoConfiguration

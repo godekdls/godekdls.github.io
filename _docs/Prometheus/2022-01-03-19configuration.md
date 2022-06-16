@@ -1445,8 +1445,8 @@ tls_config:
 - `__meta_kubernetes_node_name`: 노트 오브젝트 이름.
 - `__meta_kubernetes_node_label_<labelname>`: 노드 오브젝트의 각 레이블.
 - `__meta_kubernetes_node_labelpresent_<labelname>`: 노드오브젝트의 각 레이블마다 `true`.
-- `__meta_kubernetes_node_annotation_<annotationname>`: 노드 오브젝트의 각 애노테이션.
-- `__meta_kubernetes_node_annotationpresent_<annotationname>`: 노드 오브젝트의 각 애노테이션마다 `true`.
+- `__meta_kubernetes_node_annotation_<annotationname>`: 노드 오브젝트의 각 어노테이션.
+- `__meta_kubernetes_node_annotationpresent_<annotationname>`: 노드 오브젝트의 각 어노테이션마다 `true`.
 - `__meta_kubernetes_node_address_<address_type>`: 각 노드 주소 타입의 첫 번째 주소 (존재하면).
 
 그 외에도 API 서버에서 가져온 노드 이름을 노드의 `instance` 레이블에 저장한다.
@@ -1458,8 +1458,8 @@ tls_config:
 사용하는 메타 레이블들:
 
 - `__meta_kubernetes_namespace`: 서비스 오브젝트의 네임스페이스.
-- `__meta_kubernetes_service_annotation_<annotationname>`: 서비스 오브젝트의 각 애노테이션.
-- `__meta_kubernetes_service_annotationpresent_<annotationname>`: 서비스 오브젝트의 각 애노테이션마다 "true".
+- `__meta_kubernetes_service_annotation_<annotationname>`: 서비스 오브젝트의 각 어노테이션.
+- `__meta_kubernetes_service_annotationpresent_<annotationname>`: 서비스 오브젝트의 각 어노테이션마다 "true".
 - `__meta_kubernetes_service_cluster_ip`: 서비스의 클러스터 IP 주소. (ExternalName 타입 서비스엔 적용되지 않는다)
 - `__meta_kubernetes_service_external_name`: 서비스의 DNS 이름. (ExternalName 타입 서비스에 적용된다)
 - `__meta_kubernetes_service_label_<labelname>`: 서비스 오브젝트의 각 레이블.
@@ -1480,8 +1480,8 @@ tls_config:
 - `__meta_kubernetes_pod_ip`: 포드 오브젝트의 포드 IP.
 - `__meta_kubernetes_pod_label_<labelname>`: 포드 오브젝트의 각 레이블.
 - `__meta_kubernetes_pod_labelpresent_<labelname>`: 포드 오브젝트의 각 레이블마다 `true`.
-- `__meta_kubernetes_pod_annotation_<annotationname>`: 포드 오브젝트의 각 애노테이션.
-- `__meta_kubernetes_pod_annotationpresent_<annotationname>`: 포드 오브젝트의 각 애노테이션마다 `true`.
+- `__meta_kubernetes_pod_annotation_<annotationname>`: 포드 오브젝트의 각 어노테이션.
+- `__meta_kubernetes_pod_annotationpresent_<annotationname>`: 포드 오브젝트의 각 어노테이션마다 `true`.
 - `__meta_kubernetes_pod_container_init`: 컨테이너가 [InitContainer](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/)일 때 `true`
 - `__meta_kubernetes_pod_container_name`: 타겟 주소가 가리키는 컨테이너 이름.
 - `__meta_kubernetes_pod_container_port_name`: 컨테이너 포트 이름.
@@ -1534,7 +1534,7 @@ tls_config:
 - `__meta_kubernetes_endpointslice_address_type`: 주소 타겟의 ip 프로토콜 체계<sup>protocol family</sup>.
 - `__meta_kubernetes_endpointslice_endpoint_conditions_ready`: 엔드포인트가 준비됐는지에 따라 `true`나 `false`로 설정.
 - `__meta_kubernetes_endpointslice_endpoint_topology_kubernetes_io_hostname`: 참조하는 엔드포인트를 호스팅하는 노드의 이름.
-- `__meta_kubernetes_endpointslice_endpoint_topology_present_kubernetes_io_hostname`: 참조한 오브젝트에 kubernetes.io/hostname 애노테이션이 있는지를 나타내는 플래그. 
+- `__meta_kubernetes_endpointslice_endpoint_topology_present_kubernetes_io_hostname`: 참조한 오브젝트에 kubernetes.io/hostname 어노테이션이 있는지를 나타내는 플래그. 
 - `__meta_kubernetes_endpointslice_port`: 참조하는 엔드포인트의 포트.
 - `__meta_kubernetes_endpointslice_port_name`: 참조하는 엔드포인트의 포트 이름.
 - `__meta_kubernetes_endpointslice_port_protocol`: 참조하는 엔드포인트의 프로토콜. 
@@ -1553,8 +1553,8 @@ tls_config:
 - `__meta_kubernetes_ingress_name`: 인그레스 오브젝트 이름.
 - `__meta_kubernetes_ingress_label_<labelname>`: 인그레스 오브젝트의 각 레이블.
 - `__meta_kubernetes_ingress_labelpresent_<labelname>`: 인그레스 오브젝트의 각 레이블마다 `true`.
-- `__meta_kubernetes_ingress_annotation_<annotationname>`: 인그레스 오브젝트의 각 애노테이션.
-- `__meta_kubernetes_ingress_annotationpresent_<annotationname>`: 인그레스 오브젝트의 각 애노테이션마다 `true`.
+- `__meta_kubernetes_ingress_annotation_<annotationname>`: 인그레스 오브젝트의 각 어노테이션.
+- `__meta_kubernetes_ingress_annotationpresent_<annotationname>`: 인그레스 오브젝트의 각 어노테이션마다 `true`.
 - `__meta_kubernetes_ingress_class_name`: 인그레스 스펙에 있는 클래스명 (있다면).
 - `__meta_kubernetes_ingress_scheme`: 인그레스의 프로토콜 스킴. TLS 설정을 구성했다면 `https`. 디폴트는 `http`다.
 - `__meta_kubernetes_ingress_path`: 인그레스 스펙에 있는 경로. 디폴트는 `/`다.

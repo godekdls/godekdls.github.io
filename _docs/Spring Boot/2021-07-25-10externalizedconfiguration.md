@@ -52,7 +52,7 @@ parentUrl: /Spring%20Boot/spring-boot-features/
 
 스프링 부트에선 설정을 외부로 뺄 수 있어서, 같은 애플리케이션을 서로 다른 환경으로 작업할 수 있다. 외부 설정은 자바 Properties 파일, YAML 파일, 환경 변수, 커맨드라인 인자 등 다양한 소스를 활용할 수 있다.
 
-프로퍼티 값은 `@Value` 애노테이션을 통해 빈에 직접 주입하거나, 스프링의 `Environment` 인터페이스로 접근해도 되고, `@ConfigurationProperties`를 통해 [객체 구조에 바인딩](#728-type-safe-configuration-properties)할 수도 있다.
+프로퍼티 값은 `@Value` 어노테이션을 통해 빈에 직접 주입하거나, 스프링의 `Environment` 인터페이스로 접근해도 되고, `@ConfigurationProperties`를 통해 [객체 구조에 바인딩](#728-type-safe-configuration-properties)할 수도 있다.
 
 스프링 부트는 `PropertySource`를 적용하는 순서를 정확하게 설계해놨기 때문에, 사리에 맞게 값을 재정의할 수 있다. 프로퍼티를 적용하는 순서는 다음과 같다 (밑에 있는 값이 위에 있는 값을 재정의한다):
 
@@ -67,7 +67,7 @@ parentUrl: /Spring%20Boot/spring-boot-features/
 9. `ServletConfig` init 파라미터.
 10. `SPRING_APPLICATION_JSON`에 있는 프로퍼티 (환경 변수나 시스템 프로퍼티에 내장된 인라인 JSON).
 11. 커맨드라인 인자.
-12. 테스트에 있는 `properties` 속성. [`@SpringBootTest`](https://docs.spring.io/spring-boot/docs/2.5.2/api/org/springframework/boot/test/context/SpringBootTest.html)와 [애플리케이션 일부를 테스트하기 위한 test 애노테이션](../testing/#auto-configured-tests)에서 사용할 수 있다.
+12. 테스트에 있는 `properties` 속성. [`@SpringBootTest`](https://docs.spring.io/spring-boot/docs/2.5.2/api/org/springframework/boot/test/context/SpringBootTest.html)와 [애플리케이션 일부를 테스트하기 위한 test 어노테이션](../testing/#auto-configured-tests)에서 사용할 수 있다.
 13. 테스트에 있는 [`@TestPropertySource`](https://docs.spring.io/spring-framework/docs/5.3.8/javadoc-api/org/springframework/test/context/TestPropertySource.html) 어노테이션.
 14. devtools를 활성화한 경우 `$HOME/.config/spring-boot` 디렉토리에 있는 [Devtools 글로벌 설정 프로퍼티](../developing-with-spring-boot#684-global-settings).
 

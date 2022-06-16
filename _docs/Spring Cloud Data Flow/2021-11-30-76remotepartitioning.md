@@ -224,7 +224,7 @@ Spring Initializr 사이트는 프로젝트의 상세 설정들을 URL 파라미
    <small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 파티셔닝된 작업 셋으로 비즈니스 로직(이 예시에선 파티션 번호를 출력하는 일)을 실행하는 [`Tasklet`](../../Spring%20Batch/configuringastep#52-taskletstep).</small>
 
 
-4. 이제 다음과 같이 `PartitionApplication` 클래스에  `@EnableTask`와 `@EnableBatchProcessing` 애노테이션을 추가해주면 된다:
+4. 이제 다음과 같이 `PartitionApplication` 클래스에  `@EnableTask`와 `@EnableBatchProcessing` 어노테이션을 추가해주면 된다:
 
    ```java
    @SpringBootApplication
@@ -237,8 +237,8 @@ Spring Initializr 사이트는 프로젝트의 상세 설정들을 URL 파라미
        }
    }
    ```
-   <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@EnableTask` 애노테이션은 태스크의 시작/종료 시간과 종료 코드같은 태스크 실행에 관한 정보를 저장하는 `TaskRepository`를 설정한다.</small><br>
-   <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `@EnableBatchProcessing` 애노테이션은 스프링 배치 기능들을 활성화하고, 배치 job 세팅을 위한 기본 설정을 제공한다.</small>
+   <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `@EnableTask` 어노테이션은 태스크의 시작/종료 시간과 종료 코드같은 태스크 실행에 관한 정보를 저장하는 `TaskRepository`를 설정한다.</small><br>
+   <small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> `@EnableBatchProcessing` 어노테이션은 스프링 배치 기능들을 활성화하고, 배치 job 세팅을 위한 기본 설정을 제공한다.</small>
 
 ---
 

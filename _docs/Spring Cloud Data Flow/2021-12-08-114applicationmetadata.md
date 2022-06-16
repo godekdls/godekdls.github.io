@@ -19,7 +19,7 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/applications/
 
 스프링 부트를 사용하면 툴이나 문서를 만들때 이용하는 애플리케이션의 설정 프로퍼티에 관한 메타데이터를 executable jar 안에 번들링할 수 있다. 이 섹션에선 애플리케이션 설정 메타데이터를 컨테이너 이미지의 레이블로 제공하는 방법을 포함해서, Data Flow와 함께 사용할 애플리케이션을 구성하고 빌드하는 방법에 대해 설명한다.
 
-자체 애플리케이션을 만들 때는, `spring-boot-configuration-processor` 라이브러리를 사용하면 `@ConfigurationProperties` 어노테이션을 선언한 클래스로 애플리케이션 [설정 메타데이터](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html#configuration-metadata)를 쉽게 [생성](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html#configuration-metadata-annotation-processor)할 수 있다. 이 라이브러리에는 자바 애노테이션 프로세서가 들어있다. 프로젝트를 컴파일하면 이 프로세서를 호출해서 설정 메타데이터 파일을 생성하며, 이 파일은 uber-jar 안에 `META-INF/spring-configuration-metadata.json`으로 저장된다.
+자체 애플리케이션을 만들 때는, `spring-boot-configuration-processor` 라이브러리를 사용하면 `@ConfigurationProperties` 어노테이션을 선언한 클래스로 애플리케이션 [설정 메타데이터](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html#configuration-metadata)를 쉽게 [생성](https://docs.spring.io/spring-boot/docs/current/reference/html/appendix-configuration-metadata.html#configuration-metadata-annotation-processor)할 수 있다. 이 라이브러리에는 자바 어노테이션 프로세서가 들어있다. 프로젝트를 컴파일하면 이 프로세서를 호출해서 설정 메타데이터 파일을 생성하며, 이 파일은 uber-jar 안에 `META-INF/spring-configuration-metadata.json`으로 저장된다.
 
 <span id="application-metadata"></span>설정 프로세서를 사용하려면 애플리케이션의 `pom.xml`에 아래 의존성을 추가해라:
 

@@ -136,7 +136,7 @@ exp_alerts:
 ### `<alert>`
 
 ```yaml
-# 예상 alert에 첨부되는 레이블과 애노테이션들.
+# 예상 alert에 첨부되는 레이블과 어노테이션들.
 # 참고: 레이블은 alert를 활성화한 샘플의 레이블도 포함이다 (`/alerts` 페이지에서 볼 수 있는 레이블과 동일하며, 시계열 `__name__`과 `alertname` 레이블은 제외다).
 exp_labels:
   [ <labelname>: <string> ]

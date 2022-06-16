@@ -48,7 +48,7 @@ parentUrl: /Spring%20Cloud%20Data%20Flow/concepts/
 - 이미 실행 중인 애플리케이션은 실행을 방지할 수 있다.
 - 애플리케이션이 특정한 처리 단계에 들어갔음을 다른 앱들에 통지할 수 있다.
 
-꽤 일이 많은 것처럼 들리겠지만, Spring Cloud Task는 여기 있는 것들을 전부 다 해준다. Spring Cloud Task를 사용하면 short-lived 마이크로서비스들을 개발하고 로컬이나 클라우드 환경에서 실행할 수 있다. 개발자는 `@EnableTask` 애노테이션을 추가하는 게 전부다.
+꽤 일이 많은 것처럼 들리겠지만, Spring Cloud Task는 여기 있는 것들을 전부 다 해준다. Spring Cloud Task를 사용하면 short-lived 마이크로서비스들을 개발하고 로컬이나 클라우드 환경에서 실행할 수 있다. 개발자는 `@EnableTask` 어노테이션을 추가하는 게 전부다.
 
 ---
 
