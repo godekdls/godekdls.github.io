@@ -8,7 +8,7 @@ image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/index-single.html#messaging-channels-section
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#messaging-channels-section
 parent: Core Messaging
 parentUrl: /Spring%20Integration/core-messaging/
 ---
@@ -146,7 +146,7 @@ public QueueChannel(int capacity)
 
 `RendezvousChannel`은 다른 곳에서 이 채널의 `receive()` 메소드를 호출할 때까지 sender를 블로킹하는 "direct-handoff" 시나리오를 구현하고 있다. 상대방은 sender가 메시지를 보낼 때까지 블로킹된다. 내부적으로 이 구현체는 `SynchronousQueue`(용량이 없는 `BlockingQueue`의 구현체)를 사용한다는 점만 빼면 `QueueChannel`과 매우 유사하다. 이 클래스는 sender와 receiver가 각자 다른 스레드에서 동작하지만 큐에서 비동기로 메세지를 삭제하는 게 적합하지 않은 상황에 활용할 수 있다. 즉, `QueueChannel`을 사용하면 메시지가 내부 큐에 저장돼서 어디에서도 수신하지 않을 가능성이 있지만, `RendezvousChannel`에선 어떠한 receiver가 메시지를 수락했다는 것을 sender가 바로 알 수 있다.
 
-> 이렇게 큐를 기반으로 동작하는 모든 채널들은 메세지를 기본적으로 메모리에만 저장한다는 점을 명심하자. 지속성<sup>persistence</sup>이 요구된다면 'queue' 요소에 'message-store' 속성을 넣어 persistent `MessageStore` 구현체를 참조시키거나, 로컬 채널을 JMS를 이용하는 채널이나 채널 어댑터같이 persistent 브로커를 사용하는 채널로 교체해주면 된다. 후자를 선택하면 [JMS 지원](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/jms.html#jms)에서 설명하는 메시지 영구 보관<sup>persistence</sup>을 위한 모든 JMS provider의 구현체를 활용할 수 있다. 하지만 큐 안에서 메세지를 버퍼링할 필요가 없다면, 다음 섹션에서 설명하는 `DirectChannel`을 사용하는 게 가장 간단할 거다.
+> 이렇게 큐를 기반으로 동작하는 모든 채널들은 메세지를 기본적으로 메모리에만 저장한다는 점을 명심하자. 지속성<sup>persistence</sup>이 요구된다면 'queue' 요소에 'message-store' 속성을 넣어 persistent `MessageStore` 구현체를 참조시키거나, 로컬 채널을 JMS를 이용하는 채널이나 채널 어댑터같이 persistent 브로커를 사용하는 채널로 교체해주면 된다. 후자를 선택하면 [JMS 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jms.html#jms)에서 설명하는 메시지 영구 보관<sup>persistence</sup>을 위한 모든 JMS provider의 구현체를 활용할 수 있다. 하지만 큐 안에서 메세지를 버퍼링할 필요가 없다면, 다음 섹션에서 설명하는 `DirectChannel`을 사용하는 게 가장 간단할 거다.
 
 `RendezvousChannel`은 request-reply 작업을 구현할 때도 유용하게 활용할 수 있다. sender에서 임시로 `RendezvousChannel`의 익명 인스턴스를 생성하고, `Message`를 빌드할 때 'replyChannel' 헤더에 이 인스턴스를 설정할 수 있다. sender는 이 `Message`를 보낸 후 즉시 `receive`를 호출해서 (원한다면 타임아웃 값도 제공해서) 응답 `Message`를 기다리는 동안 블로킹할 수 있다. 이 패턴은 Spring Integration의 많은 request-reply 구성 요소들이 내부적으로 사용하는 구현 로직과 매우 유사하다.
 
@@ -195,7 +195,7 @@ public QueueChannel(int capacity)
 
 `FluxMessageChannel`은 다운스트림에 있는 리액티브 구독자가 온디맨드로 컨슘해갈 수 있도록 전달받은 메세지를 내부 `reactor.core.publisher.Flux`로 `"sink"`하는 `org.reactivestreams.Publisher`의 구현체다. 이 채널 구현체는 `SubscribableChannel`이나 `PollableChannel`이 아니기 때문에, `org.reactivestreams.Subscriber` 인스턴스만이 이 채널에서 리액티브 스트림의 back-pressure를 지키며 메세지를 컨슘해갈 수 있다. 한편으로는 `FluxMessageChannel`은 `ReactiveStreamsSubscribableChannel` 인터페이스의 `subscribeTo(Publisher<Message<?>>)` 메소드를 구현해 리액티브 소스 publisher로부터 이벤트를 받아 리액티브 스트림을 통합 플로우로 연결해준다. 전체 통합 플로우에서 완전하게 리액티브로 동작하려면 플로우에 있는 모든 엔드포인트 사이사이에 반드시 이런 채널을 배치해야 한다.
 
-리액티브 스트림즈와의 상호 작용에 대한 자세한 내용은 [리액티브 스트림즈 지원](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/reactive-streams.html#reactive-streams)을 참고해라.
+리액티브 스트림즈와의 상호 작용에 대한 자세한 내용은 [리액티브 스트림즈 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/reactive-streams.html#reactive-streams)을 참고해라.
 
 #### Scoped Channel
 
@@ -287,7 +287,7 @@ public Message<?> receive(final PollableChannel<?> channel) { ...
 }
 ```
 
-> [Enter the `GatewayProxyFactoryBean`](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/gateway.html#gateway-proxy)에서는 `Message` 인스턴스 대신 페이로드나 헤더 값들을 사용해 단순한 인터페이스를 호출할 수 있는 덜 침투적인<sup>invasive</sup> 방법을 소개하고 있다.
+> [Enter the `GatewayProxyFactoryBean`](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/gateway.html#gateway-proxy)에서는 `Message` 인스턴스 대신 페이로드나 헤더 값들을 사용해 단순한 인터페이스를 호출할 수 있는 덜 침투적인<sup>invasive</sup> 방법을 소개하고 있다.
 
 ### 6.1.5. Configuring Message Channels
 
@@ -480,7 +480,7 @@ public StringToIntegerConverter strToInt {
 
 이 'converter' 요소를 파싱할 땐 `integrationConversionService` 빈이 아직 정의되지 않은 경우 `integrationConversionService` 빈을 생성한다. 이 컨버터를 등록해주면 datatype 채널에서 컨버터를 사용해 `String` 페이로드를 `Integer`로 변환하기 때문에 `send` 작업에 성공할 거다.
 
-페이로드 타입 변환과 관련해서 자세한 내용은 [Payload Type Conversion](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/endpoint.html#payload-type-conversion)을 참고해라.
+페이로드 타입 변환과 관련해서 자세한 내용은 [Payload Type Conversion](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/endpoint.html#payload-type-conversion)을 참고해라.
 
 4.0 버전부터 `integrationConversionService`는 애플리케이션 컨텍스트 내에서 conversion service를 가져오는 `DefaultDatatypeChannelMessageConverter`가 실행한다. 사용하고 싶은 다른 변환 기술이 있다면 채널에 `message-converter` 속성을 명시하면 된다. 이 속성은 반드시 `MessageConverter` 구현체를 참조해야 한다. 컨버터 메소드 중에는 `fromMessage`만 사용한다. 컨버터는 이 메소드를 통해 메시지 헤더에 접근할 수 있다 (변환에 `content-type`같은 헤더의 정보가 필요한 상황도 있을 수 있다). 이 메소드는 변환을 마친 페이로드나 전체 `Message` 객체만 반환할 수 있다. 후자의 경우 컨버터에서 인바운드 메시지에 있는 모든 헤더를 복사했는지 주의해야 한다.
 
@@ -512,7 +512,7 @@ public PollableChannel queueChannel() {
 
 ##### Persistent `QueueChannel` Configuration
 
-`QueueChannel`은 메시지를 버퍼링하는 기능을 제공하지만 기본적으론 인 메모리에서만 동작하기 때문에, 시스템 오류가 발생하면 메시지가 손실될 가능성도 있다. `QueueChannel`을 전략 인터페이스 `MessageGroupStore`의 persistent 구현체와 함께 사용하면 이런 위험을 줄일 수 있다. `MessageGroupStore`와 `MessageStore`에 대한 자세한 내용은 [메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/message-store.html#message-store)를 참고해라.
+`QueueChannel`은 메시지를 버퍼링하는 기능을 제공하지만 기본적으론 인 메모리에서만 동작하기 때문에, 시스템 오류가 발생하면 메시지가 손실될 가능성도 있다. `QueueChannel`을 전략 인터페이스 `MessageGroupStore`의 persistent 구현체와 함께 사용하면 이런 위험을 줄일 수 있다. `MessageGroupStore`와 `MessageStore`에 대한 자세한 내용은 [메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store)를 참고해라.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
   <p><code class="highlighter-rouge">message-store</code> 속성을 사용할 때는 <code class="highlighter-rouge">capacity</code> 속성을 사용할 수 없다.</p>
@@ -546,7 +546,7 @@ Spring Integration JDBC 모듈은 많이 사용하는 데이터베이스를 위�
 
 "NoSQL" 데이터 스토어와 관련된 스프링 프로젝트가 점점 늘어나면서, 다양한 메시지 스토어 구현체들을 사용할 수 있게 됐다. 가지고 있는 요구 사항에 맞는 인터페이스를 찾을 수 없다면 자체 `MessageGroupStore` 인터페이스 구현체를 제공하는 것도 가능하다.
 
-4.0 버전부터는 가능하면 `QueueChannel` 인스턴스는 `ChannelMessageStore`를 사용하도록 설정하는 것을 권장한다. `ChannelMessageStore` 류는 보통 일반적인 메시지 스토어에 비해 이 용도에 맞게 최적화돼 있다. `ChannelMessageStore`가 `ChannelPriorityMessageStore`라면 우선순위 내에서 FIFO로 메시지를 수신한다. 우선 순위 개념은 메시지 저장소 구현체에 의해 결정된다. 예를 들어 아래 코드는 [MongoDB 채널 메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/mongodb.html#mongodb-priority-channel-message-store)를 위한 자바 설정 코드다:
+4.0 버전부터는 가능하면 `QueueChannel` 인스턴스는 `ChannelMessageStore`를 사용하도록 설정하는 것을 권장한다. `ChannelMessageStore` 류는 보통 일반적인 메시지 스토어에 비해 이 용도에 맞게 최적화돼 있다. `ChannelMessageStore`가 `ChannelPriorityMessageStore`라면 우선순위 내에서 FIFO로 메시지를 수신한다. 우선 순위 개념은 메시지 저장소 구현체에 의해 결정된다. 예를 들어 아래 코드는 [MongoDB 채널 메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/mongodb.html#mongodb-priority-channel-message-store)를 위한 자바 설정 코드다:
 
 <div class="switch-language-wrapper java java-dsl kotlin-dsl">
 <span class="switch-language java">Java</span>
@@ -727,7 +727,7 @@ public PollableChannel priorityChannel() {
 </int:channel>
 ```
 
-4.0 버전부터 자식 요소 `priority-channel`은 `message-store` 옵션을 지원한다 (이런 경우엔 `comparator`와 `capacity`는 사용할 수 없다). 이때 메시지 스토어는 `PriorityCapableChannelMessageStore`여야 한다. 현재는 `Redis`, `JDBC`, `MongoDB`를 위한 `PriorityCapableChannelMessageStore` 구현체를 제공하고 있다. 자세한 내용은 [`QueueChannel` 설정](#queuechannel-configuration)과 [메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/message-store.html#message-store)를 참고해라. 설정 샘플은 [Backing Message Channels](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/jdbc.html#jdbc-message-store-channels)를 확인해보면 된다.
+4.0 버전부터 자식 요소 `priority-channel`은 `message-store` 옵션을 지원한다 (이런 경우엔 `comparator`와 `capacity`는 사용할 수 없다). 이때 메시지 스토어는 `PriorityCapableChannelMessageStore`여야 한다. 현재는 `Redis`, `JDBC`, `MongoDB`를 위한 `PriorityCapableChannelMessageStore` 구현체를 제공하고 있다. 자세한 내용은 [`QueueChannel` 설정](#queuechannel-configuration)과 [메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store)를 참고해라. 설정 샘플은 [Backing Message Channels](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jdbc.html#jdbc-message-store-channels)를 확인해보면 된다.
 
 #### `RendezvousChannel` Configuration
 
@@ -826,7 +826,7 @@ public PollableChannel rendezvousChannel() {
 
 > 'logging-channel-adapter'는 SpEL 표현식으로 'payload'와 'headers' 변수를 나타낼 수 있는 'expression' 속성도 받을 수 있다. 아니면 전체 메시지의 `toString()` 값을 기록하고 싶다면 'log-full-message' 속성을 `true`를 지정하면 된다. 이 속성은 기본적으로 `false`이기 때문에 페이로드만 기록한다. `true`로 설정하면 페이로드 외에도 전체 헤더를 로깅할 수 있다. 그래도 가장 유연하게 활용할 수 있는 건 'expression' 옵션이긴 하다 (ex. `expression="payload.user.name"`).
 
-wire tap이나 다른 비슷한 컴포넌트들([Message Publishing Configuration](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/message-publishing.html#message-publishing-config))에 대해 흔히 하는 오해 중 하나는 이런 컴포넌트들은 저절로 알아서 완전한 비동기로 동작할 거란 생각이다. 컴포넌트로서 wire tap은 기본적으로 비동기로 실행되지 않는다. Spring Integration은 그보단 비동기 설정을 메시지 채널이라는 하나의 수단으로 모아 통합하는 것에 집중한다. 메시지 플로우에서 어떤 부분을 동기 혹은 비동기로 만들어주는 건 그 플로우 안에 설정된 메시지 채널의 타입이다. 메시지 채널로 추상화했을 때 누릴 수 있는 혜택 중 하나이기도 하다. 스프링은 프레임워크를 시작할 때부터 항상 일급 객체<sup>first-class citizen</sup>로서 메시지 채널의 필요성과 가치를 강조해 왔다. 메시지 채널은 EIP 패턴을 내부적, 암묵적으로 실현하는 것만이 전부가 아니다. 메세지 채널은 엔드 유저에게 설정 가능한 컴포넌트로 완전히 노출된다. 따라서 wire tap 컴포넌트에서는 아래 있는 작업들만 수행해야 한다:
+wire tap이나 다른 비슷한 컴포넌트들([Message Publishing Configuration](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-publishing.html#message-publishing-config))에 대해 흔히 하는 오해 중 하나는 이런 컴포넌트들은 저절로 알아서 완전한 비동기로 동작할 거란 생각이다. 컴포넌트로서 wire tap은 기본적으로 비동기로 실행되지 않는다. Spring Integration은 그보단 비동기 설정을 메시지 채널이라는 하나의 수단으로 모아 통합하는 것에 집중한다. 메시지 플로우에서 어떤 부분을 동기 혹은 비동기로 만들어주는 건 그 플로우 안에 설정된 메시지 채널의 타입이다. 메시지 채널로 추상화했을 때 누릴 수 있는 혜택 중 하나이기도 하다. 스프링은 프레임워크를 시작할 때부터 항상 일급 객체<sup>first-class citizen</sup>로서 메시지 채널의 필요성과 가치를 강조해 왔다. 메시지 채널은 EIP 패턴을 내부적, 암묵적으로 실현하는 것만이 전부가 아니다. 메세지 채널은 엔드 유저에게 설정 가능한 컴포넌트로 완전히 노출된다. 따라서 wire tap 컴포넌트에서는 아래 있는 작업들만 수행해야 한다:
 
 - 채널을 이용해<sup>tap</sup> (ex. `channelA`) 메시지 플로우 가로채기
 - 각 메시지를 잡아내기
@@ -892,11 +892,11 @@ public WireTap wireTap(MessageChannel wiretapChannel) {
 
 ### 6.1.6. Special Channels
 
-`errorChannel`과 `nullChannel`이라는 두 특별한 채널은 애플리케이션 컨텍스트 안에 디폴트로 정의된다. 'nullChannel'(`NullChannel`의 인스턴스)은 마치 `/dev/null`처럼 동작하며, 전달받은 모든 메시지를 `DEBUG` 레벨로 기록한 뒤 곧바로 반환한다. 페이로드가 `org.reactivestreams.Publisher`인 메세지를 받으면 특별한 처리를 하나 진행한다. 데이터는 버리더라도 리액티브 스트림 처리를 시작할 수 있도록 이 채널 안에서 `Publisher`를 즉시 구독한다. 리액티브 스트림 처리 중에 던져진 에러는 (`Subscriber.onError(Throwable)` 참고) 이후 살펴볼 수 있도록 warn 레벨로 기록한다. 이런 에러가 발생했을 때 어떠한 조치를 취해야 하는 경우엔 이 `nullChannel`에 대한 `Mono` 응답을 생성하는 메시지 핸들러에 [`ReactiveRequestHandlerAdvice`](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/handler-advice.html#reactive-advice)를 적용해 `Mono.doOnError()`를 커스텀하면 된다. 크게 상관 없는 응답에서 채널 resolution 에러가 발생한다면, 관련 구성 요소의 `output-channel` 속성을 'nullChannel'로 설정하면 된다 ('nullChannel'이란 이름은 애플리케이션 컨텍스트 내에서 예약돼있다).
+`errorChannel`과 `nullChannel`이라는 두 특별한 채널은 애플리케이션 컨텍스트 안에 디폴트로 정의된다. 'nullChannel'(`NullChannel`의 인스턴스)은 마치 `/dev/null`처럼 동작하며, 전달받은 모든 메시지를 `DEBUG` 레벨로 기록한 뒤 곧바로 반환한다. 페이로드가 `org.reactivestreams.Publisher`인 메세지를 받으면 특별한 처리를 하나 진행한다. 데이터는 버리더라도 리액티브 스트림 처리를 시작할 수 있도록 이 채널 안에서 `Publisher`를 즉시 구독한다. 리액티브 스트림 처리 중에 던져진 에러는 (`Subscriber.onError(Throwable)` 참고) 이후 살펴볼 수 있도록 warn 레벨로 기록한다. 이런 에러가 발생했을 때 어떠한 조치를 취해야 하는 경우엔 이 `nullChannel`에 대한 `Mono` 응답을 생성하는 메시지 핸들러에 [`ReactiveRequestHandlerAdvice`](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/handler-advice.html#reactive-advice)를 적용해 `Mono.doOnError()`를 커스텀하면 된다. 크게 상관 없는 응답에서 채널 resolution 에러가 발생한다면, 관련 구성 요소의 `output-channel` 속성을 'nullChannel'로 설정하면 된다 ('nullChannel'이란 이름은 애플리케이션 컨텍스트 내에서 예약돼있다).
 
-'errorChannel'은 내부적으로 에러 메시지를 전송하는 데 사용되며, 커스텀 설정을 통해 재정의할 수도 있다. 이 채널은 [에러 핸들링](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/error-handling.html#error-handling)에서 자세히 논한다.
+'errorChannel'은 내부적으로 에러 메시지를 전송하는 데 사용되며, 커스텀 설정을 통해 재정의할 수도 있다. 이 채널은 [에러 핸들링](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/error-handling.html#error-handling)에서 자세히 논한다.
 
-메시지 채널 및 인터셉터에 대한 자세한 내용은 자바 DSL 챕터에 있는 [메시지 채널](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/dsl.html#java-dsl-channels)을 함께 참고해라.
+메시지 채널 및 인터셉터에 대한 자세한 내용은 자바 DSL 챕터에 있는 [메시지 채널](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-channels)을 함께 참고해라.
 
 ---
 
@@ -919,7 +919,7 @@ public WireTap wireTap(MessageChannel wiretapChannel) {
 
 ### 6.2.2. Pollable Message Source
 
-Spring Integration은 또 다른 폴링 컨슈머 패턴을 하나 더 제공한다. 인바운드 채널 어댑터를 사용할 때 이런 어댑터들은 `SourcePollingChannelAdapter`로 감싸는 경우가 많다. 예를 들어, 원격 FTP 서버에서 메시지를 조회할 땐 [FTP 인바운드 채널 어댑터](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/ftp.html#ftp-inbound)에서 설명하는 어댑터는 주기적으로 메시지를 조회할 수 있도록 poller를 함께 설정한다. 이렇게 구성 요소에 poller를 함께 설정하게 되면 만들어지는 인스턴스들은 아래 타입 중 하나다:
+Spring Integration은 또 다른 폴링 컨슈머 패턴을 하나 더 제공한다. 인바운드 채널 어댑터를 사용할 때 이런 어댑터들은 `SourcePollingChannelAdapter`로 감싸는 경우가 많다. 예를 들어, 원격 FTP 서버에서 메시지를 조회할 땐 [FTP 인바운드 채널 어댑터](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/ftp.html#ftp-inbound)에서 설명하는 어댑터는 주기적으로 메시지를 조회할 수 있도록 poller를 함께 설정한다. 이렇게 구성 요소에 poller를 함께 설정하게 되면 만들어지는 인스턴스들은 아래 타입 중 하나다:
 
 - [`PollingConsumer`](https://docs.spring.io/spring-integration/api/org/springframework/integration/endpoint/PollingConsumer.html)
 - [`SourcePollingChannelAdapter`](https://docs.spring.io/spring-integration/api/org/springframework/integration/endpoint/SourcePollingChannelAdapter.html)
@@ -932,7 +932,7 @@ Spring Integration은 또 다른 폴링 컨슈머 패턴을 하나 더 제공한
 
 > 트랜잭션을 시작하기 위한 트랜잭션 어드바이스같이, `advice-chain` 안에 있는 AOP 어드바이스 클래스들은 poller에도 적용할 수 있다. 4.1 버전부터는 `PollSkipAdvice`라는 것을 제공한다. poller는 트리거를 사용해 다음 폴링 시간을 결정하는데, `PollSkipAdvice`는 이 폴링을 억제(skip)하는 데 활용할 수 있다. 보통은 다운스트림에서 메시지를 처리하기 어려운 상황에서 사용한다. 이 어드바이스를 사용하려면 `PollSkipStrategy` 구현체를 하나 제공해야 한다. 4.2.5 버전부터는 `SimplePollSkipStrategy`라는 구현체를 제공한다. 이 구현체를 사용하려면 해당 인스턴스를 애플리케이션 컨텍스트에 빈으로 추가하고, `PollSkipAdvice`에 주입한 뒤, 이 어드바이스를 poller의 어드바이스 체인에 추가해주면 된다. 폴링을 건너뛰려면 `skipPolls()`를 호출하고, 폴링을 재개할 땐 `reset()`을 호출해라. 4.2 버전에선 관련 기능이 훨씬 더 유연해졌다. [메시지 소스를 위한 조건부 poller](#624-conditional-pollers-for-message-sources)를 참고해라.
 
-이번 챕터의 목적은 폴링 컨슈머를 개괄적으로 알아보고, 이 폴링 컨슈머가 어떻게 [메시지 채널](#61-message-channels)과 [채널 어댑터](#63-channel-adapter)라는 개념과 어우러지는지를 설명하는 것이었다. 폴링 컨슈머와 함께 메시징 엔드포인트에 대한 전반적인 내용을 알아보고 싶다면 [메시지 엔드포인트](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/endpoint.html#endpoint)를 읽어봐라.
+이번 챕터의 목적은 폴링 컨슈머를 개괄적으로 알아보고, 이 폴링 컨슈머가 어떻게 [메시지 채널](#61-message-channels)과 [채널 어댑터](#63-channel-adapter)라는 개념과 어우러지는지를 설명하는 것이었다. 폴링 컨슈머와 함께 메시징 엔드포인트에 대한 전반적인 내용을 알아보고 싶다면 [메시지 엔드포인트](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/endpoint.html#endpoint)를 읽어봐라.
 
 ### 6.2.3. Deferred Acknowledgment Pollable Message Source
 
@@ -1079,7 +1079,7 @@ poller에서도 반드시 같은 `CompoundTrigger`를 참조해야 한다.
 
 #### MessageSource-only Advices
 
-어드바이스 중엔 `MessageSource.receive()`에만 적용되는 어드바이스가 있는데, 이런 어드바이스는 `PollableChannel`에선 의미가 없다. 이럴 때 사용할 수 있는 `MessageSourceMutator` 인터페이스가 여전히 남아있다 (`ReceiveMessageAdvice`를 상속한 인터페이스). 여기 있는 `default` 메소드들을 사용하면 이미 deprecated된 `AbstractMessageSourceAdvice`를 완전히 대체할 수 있으며, `MessageSource`에만 프록시 처리를 적용하는 곳에서 사용해야 한다. 자세한 내용은 [인바운드 채널 어댑터: 멀티 서버 및 멀티 디렉토리 폴링하기](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/ftp.html#ftp-rotating-server-advice)를 참고해라.
+어드바이스 중엔 `MessageSource.receive()`에만 적용되는 어드바이스가 있는데, 이런 어드바이스는 `PollableChannel`에선 의미가 없다. 이럴 때 사용할 수 있는 `MessageSourceMutator` 인터페이스가 여전히 남아있다 (`ReceiveMessageAdvice`를 상속한 인터페이스). 여기 있는 `default` 메소드들을 사용하면 이미 deprecated된 `AbstractMessageSourceAdvice`를 완전히 대체할 수 있으며, `MessageSource`에만 프록시 처리를 적용하는 곳에서 사용해야 한다. 자세한 내용은 [인바운드 채널 어댑터: 멀티 서버 및 멀티 디렉토리 폴링하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/ftp.html#ftp-rotating-server-advice)를 참고해라.
 
 ---
 
@@ -1152,7 +1152,7 @@ fun messageSourceFlow() =
 
 [채널 어댑터 표현식과 스크립트](#633-channel-adapter-expressions-and-scripts)도 함께 읽어봐라.
 
-> poller를 지정하지 않았다면, 컨텍스트에 반드시 디폴트 poller가 딱 하나 등록돼 있어야 한다. 자세한 내용은 [엔드포인트 네임스페이스 지원](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/endpoint.html#endpoint-namespace)을 참고해라.
+> poller를 지정하지 않았다면, 컨텍스트에 반드시 디폴트 poller가 딱 하나 등록돼 있어야 한다. 자세한 내용은 [엔드포인트 네임스페이스 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/endpoint.html#endpoint-namespace)을 참고해라.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
   <p><strong>Important: Poller Configuration</strong></p>
@@ -1271,7 +1271,7 @@ Spring Integration 3.0부터 `<int:inbound-channel-adapter/>`는 하위 요소 S
 </int:inbound-channel-adapter>
 ```
 
-하위 요소 `<expression/>`을 사용할 땐 `ReloadableResourceBundleExpressionSource`에 있는 프로퍼티 `cacheSeconds`도 함께 참고해라. 표현식에 대한 자세한 내용은 [SpEL<sup>Spring Expression Language</sup>](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/spel.html#spel)을 참고해라. 스크립트에 관해서는 [Groovy 지원](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/groovy.html#groovy)과 [스크립팅 지원](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/scripting.html#scripting)을 확인해봐라.
+하위 요소 `<expression/>`을 사용할 땐 `ReloadableResourceBundleExpressionSource`에 있는 프로퍼티 `cacheSeconds`도 함께 참고해라. 표현식에 대한 자세한 내용은 [SpEL<sup>Spring Expression Language</sup>](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel)을 참고해라. 스크립트에 관해서는 [Groovy 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/groovy.html#groovy)과 [스크립팅 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/scripting.html#scripting)을 확인해봐라.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
   <p><code class="highlighter-rouge">&lt;int:inbound-channel-adapter/&gt;</code>(<code class="highlighter-rouge">SourcePollingChannelAdapter</code>)는 어떠한 내부 <code class="highlighter-rouge">MessageSource</code> 폴링을 주기적으로 트리거해서 메시지 플로우를 시작하는 엔드포인트다. 폴링 시점에는 메시지 객체가 없기 때문에 표현식과 스크립트에선 루트 <code class="highlighter-rouge">Message</code>에 액세스할 수 없다. 따라서 다른 메시징 SpEL 표현식에선 대부분 사용할 수 있는 페이로드나 헤더 프로퍼티가 없다. 스크립트에선 헤더와 페이로드를 가지고 있는 완전한 <code class="highlighter-rouge">Message</code> 객체를 생성해 반환하거나, 페이로드만을 반환할 수 있다. 페이로드만 반환했을 땐 프레임워크가 기본적인 헤더들을 가지고 있는 메시지로 감싸준다.</p>

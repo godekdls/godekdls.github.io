@@ -3,7 +3,7 @@ title: Message Routing
 category: Spring Integration
 order: 13
 permalink: /Spring%20Integration/messaging-routing/
-description: todo
+description: 메시지 라우터 인터페이스와 구현체들
 image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
@@ -945,7 +945,7 @@ selector 혹은 적당한 POJO 메소드에서 `false`를 반환해 거절한 �
 > 동일한 `<filter>` 설정에서 `ref` 속성과 내부 핸들러 정의를 둘 다 사용하는 것은 허용하지 않는다. 둘 다 사용하면 모호한 조건이 만들어져 예외가 발생한다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p><code class="highlighter-rouge">ref</code> 속성으로 <code class="highlighter-rouge">MessageFilter</code>를 상속한 빈을 참조하는 경우 (프레임워크에서 자체적으로 제공하는 필터들처럼), 출력 채널을 필터 빈에 직접 주입하는 식으로 최적화된다. 이때는 각 <code class="highlighter-rouge">ref</code> 속성마다 별도 빈 인스턴스(또는 <code class="highlighter-rouge">prototype</code> 스코프 빈)을 참조하거나, 내부 <code class="highlighter-rouge">&lt;bean/&gt;</code> 설정을 이용해야 한다. 단, 여기서 말하는 최적화는 필터 XML 정의에 특정 필터 전용 속성을 제공하지 않았을 때에만 적용된다. 무심코 여러 빈에서 동일한 메시지 핸들러를 참조하면 설정 예외를 만나게될 거다.</p>
+  <p><code class="highlighter-rouge">ref</code> 속성으로 <code class="highlighter-rouge">MessageFilter</code>를 상속한 빈을 참조하는 경우 (프레임워크에서 자체적으로 제공하는 필터들처럼), 출력 채널을 필터 빈에 직접 주입하는 식으로 최적화된다. 이때는 각 <code class="highlighter-rouge">ref</code> 속성마다 별도 빈 인스턴스(또는 <code class="highlighter-rouge">prototype</code> 스코프 빈)를 참조하거나, 내부 <code class="highlighter-rouge">&lt;bean/&gt;</code> 설정을 이용해야 한다. 단, 여기서 말하는 최적화는 필터 XML 정의에 특정 필터 전용 속성을 제공하지 않았을 때에만 적용된다. 무심코 여러 빈에서 동일한 메시지 핸들러를 참조하면 설정 예외를 만나게될 거다.</p>
 </blockquote>
 SpEL 지원이 도입돼면서 Spring Integration은 필터 요소에 `expression` 속성을 추가했다. 이제 다음 예제와 같이 간단한 필터라면 자바 코드는 전혀 없어도 된다:
 
@@ -1402,34 +1402,34 @@ Spring Integration에서 XML로 aggregator를 설정하려면 `<aggregator/>` �
 <bean id="correlationStrategyBean" class="sample.PojoCorrelationStrategy"/>
 ```
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> aggregator의 id는 선택사항이다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 애플리케이션 컨텍스트를 기동하면서 aggregator를 시작해야 하는지 여부를 나타내는 라이프사이클 관련 속성이다. 생략할 수 있다 (디폴트는 'true').</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> aggregator가 메시지를 받아올 채널. 필수 값이다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> aggregator가 집계 결과를 전송할 채널. 생략할 수 있다 (수신한 메시지 자체의 헤더 'replyChannel'에 응답 채널이 지정돼 있을 수도 있기 때문).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> aggregator가 타임아웃된 메시지들을 전송할 채널 (`send-partial-result-on-expiry`가 `false`인 경우에). 생략할 수 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 메시지 그룹이 완성될 때까지 correlation 키 아래 메시지들을 저장하는 `MessageGroupStore`에 대한 참조. 생략할 수 있다. 기본적으로 휘발성의 인메모리 저장소를 사용한다. 자세한 내용은 [메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store)를 참고해라.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 둘 이상의 핸들러가 동일한 `DirectChannel`을 구독하는 경우 참고하는 이 aggregator의 순서 (로드 밸런싱 목적으로 사용). 생략할 수 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> 메시지들을 담고있는 `MessageGroup`이 만료되면 해당 메시지들을 집계해 'output-channel'이나 'replyChannel'로 보내야 하는지를 나타낸다 ([`MessageGroupStore.expireMessageGroups(long)`](https://docs.spring.io/spring-integration/api/org/springframework/integration/store/MessageGroupStore.html#expireMessageGroups-long) 참고). `MessageGroup`을 만료시키는 방법으로는 `MessageGroupStoreReaper`를 설정하는 방법이 있다. 하지만 이 방법 대신 `MessageGroupStore.expireMessageGroups(timeout)`를 호출해도 `MessageGroup`을 만료시킬 수 있다. Control Bus를 통해도 되고, `MessageGroupStore` 인스턴스에 대한 참조를 가지고 있다면 `expireMessageGroups(timeout)`를 호출하면 된다. `MessageGroup`이 만료되지 않는다면 이 속성만으로는 아무런 일도 일어나지 않는다. 곧 만료되는 `MessageGroup`에 아직 남아 있는 메시지들을 전부 버릴지 출력 또는 응답 채널로 보낼지를 나타내는 단순한 지표라고 볼 수 있다. 이 속성은 생략할 수 있다 (디폴트는 `false`). 참고로, `expire-groups-upon-timeout`을 `false`로 설정한 경우 그룹이 실제로 만료되지 않을 수 있으므로 `send-partial-result-on-timeout`이라고 부르는 게 더 적합하다고 볼 수도 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> 응답 `Message`를 `output-channel` 또는 `discard-channel`로 전송할 때 대기하는 타임아웃 간격. 기본값은 `-1`로 무한으로 블로킹된다. 고정 'capacity'를 사용하는 `QueueChannel`같이, '전송'에 제한이 있는 출력 채널을 사용할 때만 적용된다. 타임아웃이 발생하면 `MessageDeliveryException`을 던진다. `AbstractSubscribableChannel`의 구현체들은 `send-timeout`을 무시한다. `group-timeout(-expression)`의 경우 예약된 expire 태스크에서 `MessageDeliveryException`이 발생하면 해당 태스크를 다시 스케줄링한다. 생략할 수 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> 메시지 correlation (grouping) 알고리즘을 구현한 빈에 대한 참조. 이 빈은 `CorrelationStrategy` 인터페이스의 구현체일 수도, POJO일 수도 있다. 후자라면 `correlation-strategy-method` 속성도 반드시 함께 정의해야 한다. 생략할 수 있다 (aggregator는 기본적으로 `IntegrationMessageHeaderAccessor.CORRELATION_ID` 헤더를 사용한다).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> `correlation-strategy`가 참조하는 빈에 정의돼있는 메소드. 이 메소드에서 correlation 결정 알고리즘을 구현한다. 생략할 수 있으며, 제약이 존재한다 (`correlation-strategy`를 반드시 정의해야 한다).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> correlation 전략을 나타내는 SpEL 표현식 (ex. `"headers['something']"`). `correlation-strategy`나 `correlation-strategy-expression` 둘 중 하나만 사용할 수 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> 애플리케이션 컨텍스트에 정의돼있는 빈에 대한 참조. 이 빈은 앞에서 설명했듯이 반드시 집계 로직을 구현해야 한다. 생략할 수 있다 (기본적으론 집계한 메시지들의 리스트를 출력 메시지의 페이로드로 활용한다).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(14)</span> `ref` 속성으로 참조하는 빈에 정의돼있는 메소드. 이 메소드에서 메시지 집계 알고리즘을 구현한다. 생략할 수 있다 (`ref` 속성을 정의했는지에 따라 다르다).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(15)</span> release 전략을 구현한 빈에 대한 참조. 이 빈은 `ReleaseStrategy` 인터페이스의 구현체일 수도, POJO일 수도 있다. 후자라면 `release-strategy-method` 속성도 반드시 함께 정의해야 한다. 생략할 수 있다 (aggregator는 기본적으로 `IntegrationMessageHeaderAccessor.SEQUENCE_SIZE` 헤더를 사용한다).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(16)</span> `release-strategy` 속성이 참조하는 빈에 정의돼있는 메소드. 이 메소드에서 completion 결정 알고리즘을 구현한다. 생략할 수 있으며, 제약이 존재한다 (`release-strategy`를 반드시 정의해야 한다).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(17)</span> release 전략을 나타내는 SpEL 표현식 (ex. `"size() == 5"`). 표현식의 루트 객체는 `MessageGroup`이다. `release-strategy`나 `release-strategy-expression` 둘 중 하나만 사용할 수 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(18)</span> `true`로 설정하면 (디폴트는 `false`다) 완료된 그룹은 메시지 스토어에서 제거되며, 이후 correlation이 같은 메시지가 도착하면 새 그룹을 만들게된다. 기본 동작에선 완료된 그룹과 동일한 correlation을 가진 메시지들은 `discard-channel`로 전송된다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(19)</span> `<aggregator>`의 `MessageStore`에 `MessageGroupStoreReaper`를 설정했을 때만 적용된다. `MessageGroupStoreReaper`가 그룹을 부분적으로 만료하도록 설정돼있다면 기본적으로 비어있는 그룹 역시 제거한다. 빈 그룹은 그룹이 정상적으로 release된 후에 존재하는데, 덕분에 늦게 도착하는 메시지들을 감지하고 폐기할 수 있다. 그룹을 부분적으로 만료시키는 것보다 더 긴 주기로 빈 그룹을 만료시키고 싶다면 이 속성을 설정해라. 비어있는 그룹들은 최소한 이 밀리세컨드 동안 수정되지 않는다면 `MessageStore`에서 제거되지 않을 거다. 빈 그룹이 실제로 만료되는 시간은 reaper의 `timeout` 속성에도 영향을 받으며, 이 값에 타임아웃을 더한 시간만큼 걸릴 수도 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(20)</span> `org.springframework.integration.util.LockRegistry` 빈에 대한 참조. `groupId`를 기반으로 `Lock`을 획득하는데 사용한다. 덕분에 같은 `MessageGroup`에 동시에 접근하는 상황을 대응할 수 있다. 기본적으론 내부 `DefaultLockRegistry`를 사용한다. `ZookeeperLockRegistry`같은 분산 `LockRegistry`를 사용하면 특정 그룹에선 동시에 하나의 aggregator 인스턴스만이 작업할 수 있다. 자세한 내용은 [Redis Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/redis.html#redis-lock-registry), [Gemfire Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/gemfire.html#gemfire-lock-registry), [Zookeeper Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/zookeeper.html#zk-lock-registry)를 참고해라.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(21)</span> 현재 메시지가 도착했을 때 `ReleaseStrategy`가 그룹을 release하지 않으면 `MessageGroup`을 강제로 완료 상태로 만드는 타임아웃 (밀리세컨드 단위). 이 속성 덕분에 aggregator에 시간 기반 릴리즈 전략이 하나 내장된다고 볼 수 있다. `MessageGroup`에 마지막으로 메시지가 도착한 이후 타임아웃 기간 동안 새 메시지가 도착하지 않는 경우, 부분적인 결과를 내보내야 할 때 (혹은 그룹을 폐기해야 할 때) 활용할 수 있다. `MessageGroup`이 생성된 시점부터 타임아웃을 계산하고 싶다면 `group-timeout-expression` 속성을 검토해봐라. aggregator에 메시지가 새로 도착하면 해당 `MessageGroup`에 예약돼있는 기존 `ScheduledFuture<?>`는 모두 취소된다. `ReleaseStrategy`가 `false`를 반환하고 (release하지 않음을 의미) `groupTimeout > 0`이라면, 그룹을 만료시키는 태스크를 새로 예약한다. 이 속성을 0이나 음수 값으로 설정하는 것은 권하지 않는다. 이렇게 되면 모든 메시지 그룹이 즉시 완료되기 때문에 사실상 aggregator를 비활성화하는 거나 마찬가지다. 하지만 표현식을 사용하면 조건부로 0이나 음수로 설정할 수 있다. 자세한 내용은 `group-timeout-expression`을 참고해라. 그룹을 완료 상태로 만들면서 하는 일들은 `ReleaseStrategy`와 `send-partial-group-on-expiry` 속성에 따라 달라진다. 자세한 내용은 [Aggregator와 그룹 타임아웃](#aggregator-and-group-timeout)을 참고해라. 이 속성은 `group-timeout-expression`과 함께 사용할 수 없다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(22)</span> `groupTimeout`으로 평가되는 SpEL 표현식. `#root` 평가 컨텍스트 객체로 `MessageGroup`을 사용한다. 이 속성을 이용하면 `MessageGroup`을 강제로 완료 상태로 만드는 태스크를 예약할 수 있다. 표현식이 `null`로 평가되면 태스크를 예약하지 않는다. 0으로 평가되면 해당 그룹은 현재 스레드에서 즉시 완료된다. 사실상 이 속성은 `group-timeout`을 동적으로 만들어준다고 볼 수 있다. 예를 들어 그룹이 만들어지고 나서 10초가 지나면 `MessageGroup`을 강제로 완료시키고 싶다면, 이 SpEL 표현식을 검토해볼 수 있다: `timestamp + 10000 - T(System).currentTimeMillis()`. `MessageGroup`이 `#root` 평가 컨텍스트 객체이므로, 여기서 `timestamp`는 `MessageGroup.getTimestamp()`로 제공된다. 하지만 그룹의 생성 시각은 다른 그룹 만료 속성들을 어떻게 설정했는지에 따라, 메시지가 처음 도착한 시간과는 다를 수 있다는 사실을 명심해라. 자세한 내용은 `group-timeout`를 참고해라. `group-timeout` 속성과는 함께 사용할 수 없다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(23)</span> 타임아웃으로 인해 (또는 `MessageGroupStoreReaper`로 인해) 그룹이 완료되면 기본적으로 해당 그룹은 만료된다 (완전히 제거된다). 이후 도착하는 메시지들은 새 그룹을 만들게 된다. 이 속성을 `false`로 설정하면 그룹을 완료하되 메타데이터는 남겨둘 수 있어 늦게 도착한 메시지들을 폐기할 수 있다. 빈 그룹은 `empty-group-min-timeout` 속성과 `MessageGroupStoreReaper`를 함께 사용하면 이후 만료시킬 수 있다. 기본값은 `true`다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(24)</span> `TaskScheduler` 빈에 참조. `MessageGroup`에 `groupTimeout` 내에 새 메시지가 도착하지 않으면 `MessageGroup`을 강제로 완료시키는 태스크를 예약할 때 사용한다. 따로 지정하지 않으면 `ApplicationContext`에 등록돼있는 기본 스케줄러 `taskScheduler`(`ThreadPoolTaskScheduler`)를 사용한다. 이 속성은 `group-timeout`이나 `group-timeout-expression`을 지정하지 않았다면 적용되지 않는다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(25)</span> 4.1 버전부터 지원. `forceComplete` 작업을 위해 트랜잭션을 시작할 수 있다. `forceComplete` 작업은  `group-timeout(-expression)`이나 `MessageGroupStoreReaper`에 의해 시작되며, 일반적인 `add`, `release`, `discard` 작업에는 적용되지 않는다. 하위 요소는 이 요소와 `<expire-advice-chain/>`만 허용한다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(26)</span> *4.1 버전*부터 지원. `forceComplete` 작업에 원하는 `Advice`를 설정할 수 있다. `forceComplete` 작업은 `group-timeout(-expression)`이나 `MessageGroupStoreReaper`에 의해 시작되며, 일반적인 `add`, `release`, `discard` 작업에는 적용되지 않는다. 하위 요소는 이 요소나 `<expire-transactional/>`만 허용한다. Spring `tx` 네임스페이스를 사용하면 이곳에 트랜잭션 `Advice`를 구성할 수도 있다.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 애플리케이션 컨텍스트를 기동하면서 aggregator를 시작해야 하는지 여부를 나타내는 라이프사이클 관련 속성이다.<br>생략할 수 있다 (디폴트는 'true').</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> aggregator가 메시지를 받아올 채널.<br>필수 값이다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> aggregator가 집계 결과를 전송할 채널.<br>생략할 수 있다 (수신한 메시지 자체의 헤더 'replyChannel'에 응답 채널이 지정돼 있을 수도 있기 때문).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> aggregator가 타임아웃된 메시지들을 전송할 채널 (`send-partial-result-on-expiry`가 `false`인 경우에).<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 메시지 그룹이 완성될 때까지 correlation 키 아래 메시지들을 저장하는 `MessageGroupStore`에 대한 참조.<br>생략할 수 있다.<br>기본적으로 휘발성의 인메모리 저장소를 사용한다.<br>자세한 내용은 [메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store)를 참고해라.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 둘 이상의 핸들러가 동일한 `DirectChannel`을 구독하는 경우 참고하는 이 aggregator의 순서 (로드 밸런싱 목적으로 사용).<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> 메시지들을 담고있는 `MessageGroup`이 만료되면 해당 메시지들을 집계해 'output-channel'이나 'replyChannel'로 보내야 하는지를 나타낸다 ([`MessageGroupStore.expireMessageGroups(long)`](https://docs.spring.io/spring-integration/api/org/springframework/integration/store/MessageGroupStore.html#expireMessageGroups-long) 참고).<br>`MessageGroup`을 만료시키는 방법으로는 `MessageGroupStoreReaper`를 설정하는 방법이 있다.<br>하지만 이 방법 대신 `MessageGroupStore.expireMessageGroups(timeout)`를 호출해도 `MessageGroup`을 만료시킬 수 있다.<br>Control Bus를 통해도 되고, `MessageGroupStore` 인스턴스에 대한 참조를 가지고 있다면 `expireMessageGroups(timeout)`를 호출하면 된다.<br>`MessageGroup`이 만료되지 않는다면 이 속성만으로는 아무런 일도 일어나지 않는다.<br>곧 만료되는 `MessageGroup`에 아직 남아 있는 메시지들을 전부 버릴지 출력 또는 응답 채널로 보낼지를 나타내는 단순한 지표라고 볼 수 있다.<br>이 속성은 생략할 수 있다 (디폴트는 `false`).<br>참고로, `expire-groups-upon-timeout`을 `false`로 설정한 경우 그룹이 실제로 만료되지 않을 수 있으므로 `send-partial-result-on-timeout`이라고 부르는 게 더 적합하다고 볼 수도 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> 응답 `Message`를 `output-channel` 또는 `discard-channel`로 전송할 때 대기하는 타임아웃 간격.<br>기본값은 `-1`로 무한으로 블로킹된다.<br>고정 'capacity'를 사용하는 `QueueChannel`같이, '전송'에 제한이 있는 출력 채널을 사용할 때만 적용된다.<br>타임아웃이 발생하면 `MessageDeliveryException`을 던진다.<br>`AbstractSubscribableChannel`의 구현체들은 `send-timeout`을 무시한다.<br>`group-timeout(-expression)`의 경우 예약된 expire 태스크에서 `MessageDeliveryException`이 발생하면 해당 태스크를 다시 스케줄링한다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> 메시지 correlation (grouping) 알고리즘을 구현한 빈에 대한 참조.<br>이 빈은 `CorrelationStrategy` 인터페이스의 구현체일 수도, POJO일 수도 있다.<br>후자라면 `correlation-strategy-method` 속성도 반드시 함께 정의해야 한다.<br>생략할 수 있다 (aggregator는 기본적으로 `IntegrationMessageHeaderAccessor.CORRELATION_ID` 헤더를 사용한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> `correlation-strategy`가 참조하는 빈에 정의돼있는 메소드.<br>이 메소드에서 correlation 결정 알고리즘을 구현한다.<br>생략할 수 있으며, 제약이 존재한다 (`correlation-strategy`를 반드시 정의해야 한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> correlation 전략을 나타내는 SpEL 표현식.<br>ex: `"headers['something']"`.<br>`correlation-strategy`나 `correlation-strategy-expression`은 둘 중 하나만 사용할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> 애플리케이션 컨텍스트에 정의돼있는 빈에 대한 참조.<br>이 빈은 앞에서 설명했듯이 반드시 집계 로직을 구현해야 한다.<br>생략할 수 있다 (기본적으론 집계한 메시지들의 리스트를 출력 메시지의 페이로드로 활용한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(14)</span> `ref` 속성으로 참조하는 빈에 정의돼있는 메소드.<br>이 메소드에서 메시지 집계 알고리즘을 구현한다.<br>생략할 수 있다 (`ref` 속성을 정의했는지에 따라 다르다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(15)</span> release 전략을 구현한 빈에 대한 참조.<br>이 빈은 `ReleaseStrategy` 인터페이스의 구현체일 수도, POJO일 수도 있다.<br>후자라면 `release-strategy-method` 속성도 반드시 함께 정의해야 한다.<br>생략할 수 있다 (aggregator는 기본적으로 `IntegrationMessageHeaderAccessor.SEQUENCE_SIZE` 헤더를 사용한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(16)</span> `release-strategy` 속성이 참조하는 빈에 정의돼있는 메소드.<br>이 메소드에서 completion 결정 알고리즘을 구현한다.<br>생략할 수 있으며, 제약이 존재한다 (`release-strategy`를 반드시 정의해야 한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(17)</span> release 전략을 나타내는 SpEL 표현식.<br>표현식의 루트 객체는 `MessageGroup`이다.<br>ex: `"size() == 5"`.<br>`release-strategy`나 `release-strategy-expression`은 둘 중 하나만 사용할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(18)</span> `true`로 설정하면 (디폴트는 `false`다) 완료된 그룹은 메시지 스토어에서 제거되며, 이후 correlation이 같은 메시지가 도착하면 새 그룹을 만들게된다.<br>기본 동작에선 완료된 그룹과 동일한 correlation을 가진 메시지들은 `discard-channel`로 전송된다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(19)</span> `<aggregator>`의 `MessageStore`에 `MessageGroupStoreReaper`를 설정했을 때만 적용된다.<br>`MessageGroupStoreReaper`가 그룹을 부분적으로 만료하도록 설정돼있다면 기본적으로 비어있는 그룹 역시 제거한다.<br>빈 그룹은 그룹이 정상적으로 release된 후에 존재하는데, 덕분에 늦게 도착하는 메시지들을 감지하고 폐기할 수 있다.<br>그룹을 부분적으로 만료시키는 것보다 더 긴 주기로 빈 그룹을 만료시키고 싶다면 이 속성을 설정해라.<br>비어있는 그룹들은 최소한 이 밀리세컨드 동안 수정되지 않는다면 `MessageStore`에서 제거되지 않을 거다.<br>빈 그룹이 실제로 만료되는 시간은 reaper의 `timeout` 속성에도 영향을 받으며, 이 값에 타임아웃을 더한 시간만큼 걸릴 수도 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(20)</span> `org.springframework.integration.util.LockRegistry` 빈에 대한 참조.<br>`groupId`를 기반으로 `Lock`을 획득하는데 사용한다. 덕분에 같은 `MessageGroup`에 동시에 접근하는 상황을 대응할 수 있다.<br>기본적으론 내부 `DefaultLockRegistry`를 사용한다.<br>`ZookeeperLockRegistry`같은 분산 `LockRegistry`를 사용하면 특정 그룹에선 동시에 하나의 aggregator 인스턴스만이 작업할 수 있다.<br>자세한 내용은 [Redis Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/redis.html#redis-lock-registry), [Gemfire Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/gemfire.html#gemfire-lock-registry), [Zookeeper Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/zookeeper.html#zk-lock-registry)를 참고해라.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(21)</span> 현재 메시지가 도착했을 때 `ReleaseStrategy`가 그룹을 release하지 않으면 `MessageGroup`을 강제로 완료 상태로 만드는 타임아웃 (밀리세컨드 단위).<br>이 속성 덕분에 aggregator에 시간 기반 릴리즈 전략이 하나 내장된다고 볼 수 있다. `MessageGroup`에 마지막으로 메시지가 도착한 이후 타임아웃 기간 동안 새 메시지가 도착하지 않는 경우, 부분적인 결과를 내보내야 할 때 (혹은 그룹을 폐기해야 할 때) 활용할 수 있다.<br>`MessageGroup`이 생성된 시점부터 타임아웃을 계산하고 싶다면 `group-timeout-expression` 속성을 검토해봐라.<br>aggregator에 메시지가 새로 도착하면 해당 `MessageGroup`에 예약돼있는 기존 `ScheduledFuture<?>`는 모두 취소된다. `ReleaseStrategy`가 `false`를 반환하고 (release하지 않음을 의미) `groupTimeout > 0`이라면, 그룹을 만료시키는 태스크를 새로 예약한다.<br>이 속성을 0이나 음수 값으로 설정하는 것은 권하지 않는다.<br>이렇게 되면 모든 메시지 그룹이 즉시 완료되기 때문에 사실상 aggregator를 비활성화하는 거나 마찬가지다.<br>하지만 표현식을 사용하면 조건부로 0이나 음수로 설정할 수 있다.<br>자세한 내용은 `group-timeout-expression`을 참고해라.<br>그룹을 완료 상태로 만들면서 하는 일들은 `ReleaseStrategy`와 `send-partial-group-on-expiry` 속성에 따라 달라진다.<br>자세한 내용은 [Aggregator와 그룹 타임아웃](#aggregator-and-group-timeout)을 참고해라.<br>이 속성은 `group-timeout-expression`과 함께 사용할 수 없다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(22)</span> `groupTimeout`으로 평가되는 SpEL 표현식. `#root` 평가 컨텍스트 객체로 `MessageGroup`을 사용한다.<br>이 속성을 이용하면 `MessageGroup`을 강제로 완료 상태로 만드는 태스크를 예약할 수 있다.<br>표현식이 `null`로 평가되면 태스크를 예약하지 않는다.<br>0으로 평가되면 해당 그룹은 현재 스레드에서 즉시 완료된다.<br>사실상 이 속성은 `group-timeout`을 동적으로 만들어준다고 볼 수 있다.<br>예를 들어 그룹이 만들어지고 나서 10초가 지나면 `MessageGroup`을 강제로 완료시키고 싶다면, 이 SpEL 표현식을 검토해볼 수 있다: `timestamp + 10000 - T(System).currentTimeMillis()`. `MessageGroup`이 `#root` 평가 컨텍스트 객체이므로, 여기서 `timestamp`는 `MessageGroup.getTimestamp()`로 제공된다.<br>하지만 그룹의 생성 시각은 다른 그룹 만료 속성들을 어떻게 설정했는지에 따라, 메시지가 처음 도착한 시간과는 다를 수 있다는 사실을 명심해라.<br>자세한 내용은 `group-timeout`를 참고해라.<br>`group-timeout` 속성과는 함께 사용할 수 없다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(23)</span> 타임아웃으로 인해 (또는 `MessageGroupStoreReaper`로 인해) 그룹이 완료되면 기본적으로 해당 그룹은 만료된다 (완전히 제거된다).<br>이후 도착하는 메시지들은 새 그룹을 만들게 된다.<br>이 속성을 `false`로 설정하면 그룹을 완료하되 메타데이터는 남겨둘 수 있어 늦게 도착한 메시지들을 폐기할 수 있다.<br>빈 그룹은 `empty-group-min-timeout` 속성과 `MessageGroupStoreReaper`를 함께 사용하면 이후 만료시킬 수 있다.<br>기본값은 `true`다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(24)</span> `TaskScheduler` 빈에 참조. `MessageGroup`에 `groupTimeout` 내에 새 메시지가 도착하지 않으면 `MessageGroup`을 강제로 완료시키는 태스크를 예약할 때 사용한다.<br>따로 지정하지 않으면 `ApplicationContext`에 등록돼있는 기본 스케줄러 `taskScheduler`(`ThreadPoolTaskScheduler`)를 사용한다.<br>이 속성은 `group-timeout`이나 `group-timeout-expression`을 지정하지 않았다면 적용되지 않는다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(25)</span> 4.1 버전부터 지원.<br>`forceComplete` 작업을 위해 트랜잭션을 시작할 수 있다.<br>`forceComplete` 작업은  `group-timeout(-expression)`이나 `MessageGroupStoreReaper`에 의해 시작되며, 일반적인 `add`, `release`, `discard` 작업에는 적용되지 않는다.<br>하위 요소는 이 요소와 `<expire-advice-chain/>`만 허용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(26)</span> *4.1 버전*부터 지원.<br>`forceComplete` 작업에 원하는 `Advice`를 설정할 수 있다.<br>`forceComplete` 작업은 `group-timeout(-expression)`이나 `MessageGroupStoreReaper`에 의해 시작되며, 일반적인 `add`, `release`, `discard` 작업에는 적용되지 않는다.<br>하위 요소는 이 요소나 `<expire-transactional/>`만 허용한다.<br>Spring `tx` 네임스페이스를 사용하면 이곳에 트랜잭션 `Advice`를 구성할 수도 있다.</small>
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p><strong>Expiring Groups</strong></p>
+  <p id="aggregator-expiring-groups"><strong>Expiring Groups</strong></p>
   <p>그룹 만료(완전히 제거)와 관련해서는 두 가지 속성이 있다. 그룹이 만료되고 나면 관련 기록이 사라지며, 같은 correlation을 가진 메시지가 새로 도착하면 새로운 그룹을 시작한다. 그룹이 완료되면 (만료되지 않고) 빈 그룹이 남아 있게되며, 늦게 도착한 메시지들은 버려진다. 이 비어있는 그룹은 <code class="highlighter-rouge">empty-group-min-timeout</code> 속성과 <code class="highlighter-rouge">MessageGroupStoreReaper</code>를 조합해서 사용하면 이후에 제거할 수 있다.</p>
   <p><code class="highlighter-rouge">expire-groups-upon-completion</code>은 <code class="highlighter-rouge">ReleaseStrategy</code>가 그룹을 release하는 "정상적인" 완료와 관련된 속성이다. 기본값은 <code class="highlighter-rouge">false</code>다.</p>
   <p>그룹이 정상적으로 완료되진 않았지만 타임아웃으로 인해 release됐거나 폐기되었다면 해당 그룹은 통상적으로 만료된다. 이 동작은 4.1 버전부터 <code class="highlighter-rouge">expire-groups-upon-timeout</code>을 이용해 제어할 수 있다. 이전 버전과의 호환성을 위해 <code class="highlighter-rouge">true</code>가 디폴트다.</p>
@@ -1439,6 +1439,7 @@ Spring Integration에서 XML로 aggregator를 설정하려면 `<aggregator/>` �
   <p>5.0 버전부터는 <code class="highlighter-rouge">empty-group-min-timeout</code> 만큼 시간이 경과해도 빈 그룹을 제거하는 태스크가 예약된다. 일반적인 release나 부분적인 시퀀스 release가 발생했을 때 <code class="highlighter-rouge">expireGroupsUponCompletion == false</code>이면서 <code class="highlighter-rouge">minimumTimeoutForEmptyGroups &gt; 0</code>이라면 그룹을 삭제하는 태스크가 예약된다.</p>
   <p>5.4 버전부터 aggregator(및 resequencer)는 설정을 통해 버려진<sup>orphaned</sup> 그룹을 만료시키도록 만들어줄 수 있다 (영구<sup>persistent</sup> 메시지 스토어에 있으며, 이 설정이 없으면 release되지 않을 수도 있는 그룹들을 뜻한다). <code class="highlighter-rouge">expireTimeout</code>(<code class="highlighter-rouge">0</code>보다 클 때)은 스토어에서 이 값보다 오래된 그룹은 제거<sup>purge</sup>해야 한다는 걸 나타낸다. <code class="highlighter-rouge">purgeOrphanedGroups()</code> 메소드는 기동 시에 한번 호출하며, 지정한 <code class="highlighter-rouge">expireDuration</code> 간격으로 스케줄링되는 태스크 내에서 주기적으로 호출한다. 이 메소드는 또한 언제든지 외부에서도 호출할 수 있다. 만료 로직은 위에서 언급한 만료 옵션들에 따라 <code class="highlighter-rouge">forceComplete(MessageGroup)</code>에 완전히 위임한다. 이런 주기적인 퍼지<sup>purge</sup> 기능은 일반적인 메시지 도착 로직으로는 더 이상 release되지 않는 오래된 그룹에서 메시지 스토어를 정리해줘야 할 때 유용하다. 이런 케이스는 대부분 영구<sup>persistent</sup> 메시지 그룹 스토어를 사용 중일 때 애플리케이션이 재시작되고나서 발생한다. 이 기능은 예약된 태스크에서 <code class="highlighter-rouge">MessageGroupStoreReaper</code>를 사용하는 것과 유사하지만, reaper 대신 그룹 타임아웃을 사용할 때 특정 컴포넌트 내에서 오래된 그룹들을 쉽게 처리할 수 있게 해준다. <code class="highlighter-rouge">MessageGroupStore</code>는 현재 correlation 엔드포인트에 대해서만 배타적으로 제공돼야 한다. 그렇지 않으면 특정 aggregator에서 다른 aggregator의 그룹을 제거해버릴 수도 있다. 이렇게 aggregator를 사용하면, 이 테크닉으로 만료된 그룹은 <code class="highlighter-rouge">expireGroupsUponCompletion</code> 속성에 따라 버려지거나 부분적으로 release된다.</p>
 </blockquote>
+
 
 커스텀 aggregator 핸들러 구현체를 다른 `<aggregator>` 정의에서도 참조할 수 있다면 보통 `ref` 속성 사용을 권장한다. 하지만 커스텀 aggregator 구현체를 하나의 `<aggregator>` 정의에서만 사용한다면, 다음과 같이 내부 빈 정의를 사용해 (1.0.3 버전부터) `<aggregator>` 요소 내에 POJO를 설정해도 된다:
 
@@ -1552,21 +1553,21 @@ release-strategy-expression="!messages.?[payload==5].empty"
         release-strategy-expression="messages[0].headers.sequenceNumber == messages[0].headers.sequenceSize"/>
 ```
 
-이 예제에선 `release-strategy-expression`에 정의된 대로, aggregator가 시퀀스 내 마지막 메시지를 수신하면 정상적인 release가 가능하다. release를 유발해줄 메시지가 도착하지 않을 때는, 그룹에 메시지가 최소 두 개 들어있기만 한다면 `groupTimeout`이 10초 뒤 그룹을 강제로 완료 상태로 바꾼다.
+이 예제에선 `release-strategy-expression`에 정의된 대로, aggregator가 시퀀스 내 마지막 메시지를 수신하면 정상적인 release가 가능하다. release를 유발해줄 메시지가 도착하지 않을 때는, 그룹에 메시지가 최소 두 개 들어있기만 한다면 `groupTimeout`이 10초 뒤 그룹을 강제로 완료 상태로 바꿔준다.
 
-그룹을 강제로 완료한 뒤의 결과는 `ReleaseStrategy`와 `send-partial-result-on-expiry`에 따라 달라진다. 먼저 release 전략을 다시 호출해 정상적인 release가 가능한지를 확인해본다. 그룹이 변경되진 않았더라도, `ReleaseStrategy`로 이번엔 그룹을 release할지를 결정할 수 있다. release 전략에서 이번에도 그룹을 release하지 않는다면 해당 그룹은 만료된다. 이때 `send-partial-result-on-expiry`가 `true`이면 (부분적인) `MessageGroup`에 있는 기존 메시지들은 `output-channel`로 보내는 일반적인 aggregator 응답 메시지로 release되며, `true`가 아닐 땐 폐기된다.
+그룹을 강제로 완료한 뒤의 결과는 `ReleaseStrategy`와 `send-partial-result-on-expiry`에 따라 달라진다. 먼저 release 전략을 다시 호출해 정상적인 release가 가능한지를 확인해본다. 그룹이 변경되진 않았더라도, `ReleaseStrategy`로 이번엔 그룹을 release할지를 결정할 수 있다. release 전략에서 이번에도 그룹을 release하지 않는다면 해당 그룹은 만료된다. 이때 `send-partial-result-on-expiry`가 `true`이면 (일부만 담겨있는) `MessageGroup`에 있는 기존 메시지들은 `output-channel`로 보내는 일반적인 aggregator 응답 메시지로 release되며, `true`가 아닐 땐 폐기된다.
 
-There is a difference between `groupTimeout` behavior and `MessageGroupStoreReaper` (see [Configuring an Aggregator with XML](#configuring-an-aggregator-with-xml)). The reaper initiates forced completion for all `MessageGroup` s in the `MessageGroupStore` periodically. The `groupTimeout` does it for each `MessageGroup` individually if a new message does not arrive during the `groupTimeout`. Also, the reaper can be used to remove empty groups (empty groups are retained in order to discard late messages if `expire-groups-upon-completion` is false).
+`groupTimeout` 관련 동작과 `MessageGroupStoreReaper`에는 한 가지 차이점이 있다 ([XML로 Aggregator 설정하기](#configuring-an-aggregator-with-xml) 참고). Reaper는 주기적으로 `MessageGroupStore`의 모든 `MessageGroup`에 대한 강제 완료 처리를 시작한다. `groupTimeout`은 `groupTimeout`이 지나도 새 메시지가 도착하지 않으면 각 `MessageGroup`에 대해 같은 처리를 개별적으로 수행한다. 또한 reaper는 빈 그룹을 제거할 때에도 사용할 수 있다 (빈 그룹들을 유지하는 이유는 `expire-groups-upon-completion`이 false일 때 뒤늦게 도착하는 메시지들을 폐기하기 위함이다).
 
-Starting with version 5.5, the `groupTimeoutExpression` can be evaluated to a `java.util.Date` instance. This can be useful in cases like determining a scheduled task moment based on the group creation time (`MessageGroup.getTimestamp()`) instead of a current message arrival as it is calculated when `groupTimeoutExpression` is evaluated to `long`:
+5.5 버전부터 `groupTimeoutExpression`은 `java.util.Date` 인스턴스로 평가될 수 있다. `groupTimeoutExpression`을 `long`으로 평가해서 메시지가 도착한 시간을 기반으로 타임아웃을 계산하는 대신, 그룹 생성 시간(`MessageGroup.getTimestamp()`)을 기반으로 태스크를 예약할 수 있어 유용하다:
 
-```xml
+```java
 group-timeout-expression="size() ge 2 ? new java.util.Date(timestamp + 200) : null"
 ```
 
 #### Configuring an Aggregator with Annotations
 
-The following example shows an aggregator configured with annotations:
+다음은 어노테이션을 이용해 aggregator를 설정하는 예시다:
 
 ```java
 public class Waiter {
@@ -1588,15 +1589,15 @@ public class Waiter {
   }
 }
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> An annotation indicating that this method should be used as an aggregator. It must be specified if this class is used as an aggregator.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> An annotation indicating that this method is used as the release strategy of an aggregator. If not present on any method, the aggregator uses the `SimpleSequenceSizeReleaseStrategy`.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> An annotation indicating that this method should be used as the correlation strategy of an aggregator. If no correlation strategy is indicated, the aggregator uses the `HeaderAttributeCorrelationStrategy` based on `CORRELATION_ID`.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 이 어노테이션은 이 메소드를 aggregator로 사용해야 한다는 걸 나타낸다. 이 클래스를 aggregator로 사용한다면 반드시 명시해야 한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 이 어노테이션은 이 메소드를 aggregator의 release 전략으로 사용해야 한다는 걸 나타낸다. 어떤 메소드에도 선언하지 않으면 aggregator는 `SimpleSequenceSizeReleaseStrategy`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 이 어노테이션은 이 메소드를 aggregator의 correlation 전략으로 사용해야 한다는 걸 나타낸다. correlation 전략을 지정하지 않으면 aggregator는 `CORRELATION_ID` 기반 `HeaderAttributeCorrelationStrategy`를 사용한다.</small>
 
-All the configuration options provided by the XML element are also available for the `@Aggregator` annotation.
+`@Aggregator` 어노테이션을 이용할 때도 XML 요소에서 제공하는 모든 설정 옵션을 사용할 수 있다.
 
-The aggregator can be either referenced explicitly from XML or, if the `@MessageEndpoint` is defined on the class, detected automatically through classpath scanning.
+aggregator는 XML에 명시적되어있다면 XML에서 참조할 수도 있고, 클래스에 `@MessageEndpoint`를 정의했다면 클래스패스 스캔을 통해 자동으로 감지할 수도 있다.
 
-Annotation configuration (`@Aggregator` and others) for the Aggregator component covers only simple use cases, where most default options are sufficient. If you need more control over those options when using annotation configuration, consider using a `@Bean` definition for the `AggregatingMessageHandler` and mark its `@Bean` method with `@ServiceActivator`, as the following example shows:
+Aggregator 컴포넌트를 어노테이션으로 설정한다면 (`@Aggregator` 등), 대부분 디폴트 옵션들만으로 충분한 간단한 유스 케이스만 구성할 수 있다. 어노테이션 설정을 사용하는데 관련 옵션들을 좀더 커스텀해야 한다면, 다음과 같이 `AggregatingMessageHandler`를 `@Bean`으로 정의하고 해당 `@Bean` 메소드를 `@ServiceActivator`로 마킹하는 것을 검토해봐라:
 
 ```java
 @ServiceActivator(inputChannel = "aggregatorChannel")
@@ -1612,13 +1613,13 @@ public MessageHandler aggregator(MessageGroupStore jdbcMessageGroupStore) {
 }
 ```
 
-See [Programming Model](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#aggregator-api) and [Annotations on `@Bean` Methods](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations_on_beans) for more information.
+자세한 정보는 [프로그래밍 모델](#842-programming-model)과 [`@Bean` 메소드 위에 선언할 수 있는 어노테이션들](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations_on_beans)을 읽어봐라.
 
-> Starting with version 4.2, the `AggregatorFactoryBean` is available to simplify Java configuration for the `AggregatingMessageHandler`.
+> 4.2 버전부터는 `AggregatorFactoryBean`을 이용해 좀더 간단한 자바 설정으로 `AggregatingMessageHandler`를 구성할 수 있다.
 
 ### 8.4.4. Managing State in an Aggregator: `MessageGroupStore`
 
-Aggregator (and some other patterns in Spring Integration) is a stateful pattern that requires decisions to be made based on a group of messages that have arrived over a period of time, all with the same correlation key. The design of the interfaces in the stateful patterns (such as `ReleaseStrategy`) is driven by the principle that the components (whether defined by the framework or by a user) should be able to remain stateless. All state is carried by the `MessageGroup` and its management is delegated to the `MessageGroupStore`. The `MessageGroupStore` interface is defined as follows:
+Aggregator는 일정 기간 동안 같은 correlation 키로 도착한 메시지들을 기반으로 메시지 그룹을 결정해야 하는 stateful 패턴이다 (Spring Integration에는 aggregator 말고도 stateful에 해당하는 몇 가지 다른 패턴들도 있다). Stateful 패턴에 쓰이는 인터페이스들은 (`ReleaseStrategy` 등) 해당 컴포넌트가 (정의한 주체가 프레임워크이든 사용자든) stateless 상태를 유지할 수 있어야 한다는 원칙 하에 설계한다. 모든 상태 정보는 `MessageGroup`에 담겨있으며, 상태 관리는 `MessageGroupStore`에 위임한다. `MessageGroupStore` 인터페이스는 다음과 같이 정의돼있다:
 
 ```java
 public interface MessageGroupStore {
@@ -1647,9 +1648,9 @@ public interface MessageGroupStore {
 }
 ```
 
-For more information, see the [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/store/MessageGroupStore.html).
+자세한 정보는 [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/store/MessageGroupStore.html)을 참고해라.
 
-The `MessageGroupStore` accumulates state information in `MessageGroups` while waiting for a release strategy to be triggered, and that event might not ever happen. So, to prevent stale messages from lingering, and for volatile stores to provide a hook for cleaning up when the application shuts down, the `MessageGroupStore` lets you register callbacks to apply to its `MessageGroups` when they expire. The interface is very straightforward, as the following listing shows:
+`MessageGroupStore`는 release 전략이 트리거되기를 기다리면서 `MessageGroups`에 상태 정보를 누적하는데, release 전략은 끝내 트리거되지 않을 수도 있다. 따라서 `MessageGroupStore`를 사용할 땐 `MessageGroup`이 만료될 때 적용할 콜백을 등록할 수 있다. 콜백을 활용하면 오래된<sup>stale </sup> 메시지를 정리해줄 수 있으며, 휘발성<sup>volatile</sup> 저장소를 이용할 땐 애플리케이션이 종료될 때 리소스 정리를 위한 훅을 등록할 수 있다. 콜백 인터페이스는 아래 보이는 것처럼 매우 직관적이다:
 
 ```java
 public interface MessageGroupCallback {
@@ -1659,17 +1660,17 @@ public interface MessageGroupCallback {
 }
 ```
 
-The callback has direct access to the store and the message group so that it can manage the persistent state (for example, by entirely removing the group from the store).
+콜백에선 메시지 스토어와 메시지 그룹에 직접 접근할 수 있으므로, 보관 중인<sup>persistent</sup> 상태를 관리할 수 있다 (예를 들어 메시지 스토어에서 그룹을 통째로 제거할 수 있다).
 
-The `MessageGroupStore` maintains a list of these callbacks, which it applies, on demand, to all messages whose timestamps are earlier than a time supplied as a parameter (see the `registerMessageGroupExpiryCallback(..)` and `expireMessageGroups(..)` methods, described earlier).
+`MessageGroupStore`는 이 콜백 목록을 가지고 있으며, 타임스탬프가 파라미터로 전달보다 시간보다 앞선 모든 메시지를 대상으로 콜백을 실행한다 (앞에서 설명한 `registerMessageGroupExpiryCallback(..)`, `expireMessageGroups(..)` 메소드 참고).
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>It is important not to use the same <code class="highlighter-rouge">MessageGroupStore</code> instance in different aggregator components, when you intend to rely on the <code class="highlighter-rouge">expireMessageGroups</code> functionality. Every <code class="highlighter-rouge">AbstractCorrelatingMessageHandler</code> registers its own <code class="highlighter-rouge">MessageGroupCallback</code> based on the <code class="highlighter-rouge">forceComplete()</code> callback. This way each group for expiration may be completed or discarded by the wrong aggregator. Starting with version 5.0.10, a <code class="highlighter-rouge">UniqueExpiryCallback</code> is used from the <code class="highlighter-rouge">AbstractCorrelatingMessageHandler</code> for the registration callback in the <code class="highlighter-rouge">MessageGroupStore</code>. The <code class="highlighter-rouge">MessageGroupStore</code>, in turn, checks for presence an instance of this class and logs an error with an appropriate message if one is already present in the callbacks set. This way the Framework disallows usage of the <code class="highlighter-rouge">MessageGroupStore</code> instance in different aggregators/resequencers to avoid the mentioned side effect of expiration the groups not created by the particular correlation handler.</p>
+  <p><code class="highlighter-rouge">expireMessageGroups</code> 기능을 이용한다면, 다른 aggregator 컴포넌트에서 같은 <code class="highlighter-rouge">MessageGroupStore</code> 인스턴스를 사용하지 않도록 주의해야 한다. <code class="highlighter-rouge">AbstractCorrelatingMessageHandler</code>는 전부 <code class="highlighter-rouge">forceComplete()</code> 콜백을 기반으로 자체 <code class="highlighter-rouge">MessageGroupCallback</code>을 등록한다. 이렇게 하면 만료되는 그룹들이 엉뚱한 aggregator에 의해 완료되거나 폐기될 수 있다. 5.0.10 버전부터 <code class="highlighter-rouge">AbstractCorrelatingMessageHandler</code>에서 <code class="highlighter-rouge">MessageGroupStore</code>에 콜백을 등록할 땐 <code class="highlighter-rouge">UniqueExpiryCallback</code>을 사용한다. <code class="highlighter-rouge">MessageGroupStore</code>에선 해당 클래스의 인스턴스가 이미 있는지를 확인하고, 콜백 셋에 같은 인스턴스가 존재하는 경우 적당한 에러 그를 남긴다. 프레임워크는 이와 같이 다른 aggregator/resequencer에서 <code class="highlighter-rouge">MessageGroupStore</code> 인스턴스를 사용하지 못하도록 해서, 앞서 언급한 특정 correlation 핸들러가 직접 만들지 않는 그룹을 만료시키는 부작용을 방지해준다.</p>
 </blockquote>
 
-You can call the `expireMessageGroups` method with a timeout value. Any message older than the current time minus this value is expired and has the callbacks applied. Thus, it is the user of the store that defines what is meant by message group “expiry”.
+`expireMessageGroups` 메소드를 호출할 땐 타임아웃 값을 넘길 수 있다. 현재 시간에서 이 값을 뺀 시간보다 오래된 메시지들은 전부 만료되고 콜백을 실행한다. 따라서 메시지 그룹의 "만료"가 의미하는 바는 메시지 스토어의 사용자가 결정할 수 있다.
 
-As a convenience for users, Spring Integration provides a wrapper for the message expiry in the form of a `MessageGroupStoreReaper`, as the following example shows:
+Spring Integration은 편의를 위해 메시지 만료를 위한 래퍼 `MessageGroupStoreReaper`를 제공한다:
 
 ```xml
 <bean id="reaper" class="org...MessageGroupStoreReaper">
@@ -1682,29 +1683,29 @@ As a convenience for users, Spring Integration provides a wrapper for the messag
 </task:scheduled-tasks>
 ```
 
-The reaper is a `Runnable`. In the preceding example, the message group store’s expire method is called every ten seconds. The timeout itself is 30 seconds.
+이 reaper는 `Runnable`이다. 위 예제에선 메시지 그룹 스토어의 expire 메소드를 10초마다 호출한다. 자체 타임아웃은 30초다.
 
-> It is important to understand that the 'timeout' property of `MessageGroupStoreReaper` is an approximate value and is impacted by the rate of the task scheduler, since this property is only checked on the next scheduled execution of the `MessageGroupStoreReaper` task. For example, if the timeout is set for ten minutes but the `MessageGroupStoreReaper` task is scheduled to run every hour and the last execution of the `MessageGroupStoreReaper` task happened one minute before the timeout, the `MessageGroup` does not expire for the next 59 minutes. Consequently, we recommend setting the rate to be at least equal to the value of the timeout or shorter.
+> `MessageGroupStoreReaper`의 'timeout' 프로퍼티는 대략적인 근사치라는 걸 이해해야 한다. 이 프로퍼티는 다음에 예약된 `MessageGroupStoreReaper` 태스크를 실행할 때에만 확인하기 때문에, 실제 타임아웃은 태스크 스케줄러의 속도에 따라 달라질 수 있다. 예를 들어 타임아웃은 10분으로 설정돼 있지만, `MessageGroupStoreReaper` 태스크가 매시간 실행되도록 예약돼 있고 `MessageGroupStoreReaper` 태스크를 마지막으로 실행한 게 타임아웃 1분 전이라면, 앞으로 59분 동안은 `MessageGroup`이 만료되지 않는다. 따라서 태스크 실행 간격은 최소한 타임아웃과 같거나 더 짧은 간격으로 설정하는 것이 좋다.
 
-In addition to the reaper, the expiry callbacks are invoked when the application shuts down through a lifecycle callback in the `AbstractCorrelatingMessageHandler`.
+만료 콜백은 리퍼 외에도 `AbstractCorrelatingMessageHandler`의 라이프사이클 콜백을 통해 애플리케이션이 종료될 때도 실행된다.
 
-The `AbstractCorrelatingMessageHandler` registers its own expiry callback, and this is the link with the boolean flag `send-partial-result-on-expiry` in the XML configuration of the aggregator. If the flag is set to `true`, then, when the expiry callback is invoked, any unmarked messages in groups that are not yet released can be sent on to the output channel.
+`AbstractCorrelatingMessageHandler`는 자체 만료 콜백을 등록하며, 콜백은 aggregator의 XML 설정에 있는 boolean 플래그 `send-partial-result-on-expiry`와 연결된다. 이 플래그를 `true`로 설정하면 만료 콜백이 실행될 때 아직 release 전인 그룹에 있는, 마킹되지 않는 메시지들을 출력 채널로 전송할 수 있다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>Since the <code class="highlighter-rouge">MessageGroupStoreReaper</code> is called from a scheduled task, and may result in the production of a message (depending on the <code class="highlighter-rouge">sendPartialResultOnExpiry</code> option) to a downstream integration flow, it is recommended to supply a custom <code class="highlighter-rouge">TaskScheduler</code> with a <code class="highlighter-rouge">MessagePublishingErrorHandler</code> to handler exceptions via an <code class="highlighter-rouge">errorChannel</code>, as it might be expected by the regular aggregator release functionality. The same logic applies for group timeout functionality which also relies on a <code class="highlighter-rouge">TaskScheduler</code>. See <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/error-handling.html#error-handling">Error Handling</a> for more information.</p>
+  <p><code class="highlighter-rouge">MessageGroupStoreReaper</code>는 예약된 태스크에서 호출하고 다운스트림 플로우로 메시지를 보낼 수도 있기때문에 (<code class="highlighter-rouge">sendPartialResultOnExpiry</code> 옵션에 따라 다르다), <code class="highlighter-rouge">MessagePublishingErrorHandler</code>와 커스텀 <code class="highlighter-rouge">TaskScheduler</code>를 제공해서 <code class="highlighter-rouge">errorChannel</code>을 통해 예외를 처리하는 것을 권장한다. 일반적인 aggregator release 기능에서도 기대하는 방식이기도 하다. 마찬가지로 <code class="highlighter-rouge">TaskScheduler</code>에 의존하는 그룹 타임아웃에서도 동일하다. 자세한 내용은 <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/error-handling.html#error-handling">에러 핸들링</a>을 참고해라.</p>
 </blockquote>
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>When a shared <code class="highlighter-rouge">MessageStore</code> is used for different correlation endpoints, you must configure a proper <code class="highlighter-rouge">CorrelationStrategy</code> to ensure uniqueness for group IDs. Otherwise, unexpected behavior may happen when one correlation endpoint releases or expire messages from others. Messages with the same correlation key are stored in the same message group.</p>
-  <p>Some <code class="highlighter-rouge">MessageStore</code> implementations allow using the same physical resources, by partitioning the data. For example, the <code class="highlighter-rouge">JdbcMessageStore</code> has a <code class="highlighter-rouge">region</code> property, and the <code class="highlighter-rouge">MongoDbMessageStore</code> has a <code class="highlighter-rouge">collectionName</code> property.</p>
-  <p>For more information about the <code class="highlighter-rouge">MessageStore</code> interface and its implementations, see <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store">Message Store</a>.</p>
+  <p>서로 다른 correlation 엔드포인트에서 하나의 <code class="highlighter-rouge">MessageStore</code>를 공유하고 있다면 반드시 적합한 <code class="highlighter-rouge">CorrelationStrategy</code>를 설정해서  그룹 ID의 고유성을 보장해줘야 한다. 그렇지 않으면 특정 correlation 엔드포인트가 다른 엔드포인트의 메시지를 release하거나 만료해서 의도와는 다르게 동작할 수도 있다. correlation 키가 동일한 메시지는 동일한 메시지 그룹에 저장된다.</p>
+  <p><code class="highlighter-rouge">MessageStore</code> 구현체에 따라서는 데이터를 분할해 물리적으로 동일한 리소스를 사용할 수 있는 구현체도 있다. 예를 들어 <code class="highlighter-rouge">JdbcMessageStore</code>에는 <code class="highlighter-rouge">region</code>이란 속성이 있으며, <code class="highlighter-rouge">MongoDbMessageStore</code>에는 <code class="highlighter-rouge">collectionName</code>이란 속성이 있다.</p>
+  <p><code class="highlighter-rouge">MessageStore</code> 인터페이스와 구현체에 대한 좀더 자세한 내용은 <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store">메시지 스토어</a>를 읽봐라.</p>
 </blockquote>
 
 ### 8.4.5. Flux Aggregator
 
-In version 5.2, the `FluxAggregatorMessageHandler` component has been introduced. It is based on the Project Reactor `Flux.groupBy()` and `Flux.window()` operators. The incoming messages are emitted into the `FluxSink` initiated by the `Flux.create()` in the constructor of this component. If the `outputChannel` is not provided or it is not an instance of `ReactiveStreamsSubscribableChannel`, the subscription to the main `Flux` is done from the `Lifecycle.start()` implementation. Otherwise it is postponed to the subscription done by the `ReactiveStreamsSubscribableChannel` implementation. The messages are grouped by the `Flux.groupBy()` using a `CorrelationStrategy` for the group key. By default, the `IntegrationMessageHeaderAccessor.CORRELATION_ID` header of the message is consulted.
+5.2 버전에선 `FluxAggregatorMessageHandler` 컴포넌트를 도입했다. 이 핸들러는 프로젝트 리액터의 `Flux.groupBy()`, `Flux.window()` 연산자를 사용한다. 들어오는 메시지들은 생성자 안에서 `Flux.create()`로 시작했던 `FluxSink`로 방출한다. `outputChannel`을 제공하지 않거나 `ReactiveStreamsSubscribableChannel`의 인스턴스가 아닌 경우, 메인 `Flux`에 대한 구독은 `Lifecycle.start()` 구현부에서 수행한다. 그 외는 `ReactiveStreamsSubscribableChannel` 구현체에서 구독을 수행하는 것으로 연기한다. 메시지들은 `Flux.groupBy()`를 통해 묶이며, 그룹 키엔 `CorrelationStrategy`를 사용한다. 기본적으론 메시지의 `IntegrationMessageHeaderAccessor.CORRELATION_ID` 헤더를 참조한다.
 
-By default every closed window is released as a `Flux` in payload of a message to produce. This message contains all the headers from the first message in the window. This `Flux` in the output message payload must be subscribed and processed downstream. Such a logic can be customized (or superseded) by the `setCombineFunction(Function<Flux<Message<?>>, Mono<Message<?>>>)` configuration option of the `FluxAggregatorMessageHandler`. For example, if we would like to have a `List` of payloads in the final message, we can configure a `Flux.collectList()` like this:
+기본적으로 윈도우가 닫히면 페이로드에 `Flux`를 담은 메시지를 만들어 윈도우를 release한다. 이 메시지는 윈도우의 첫 번째 메시지에 있는 모든 헤더를 가지고 있다. 출력 메시지 페이로드 안에 담겨있는 이 `Flux`는 다운스트림에서 반드시 구독하고 처리해야 한다. 관련 로직은 `FluxAggregatorMessageHandler`의 설정 옵션 `setCombineFunction(Function<Flux<Message<?>>, Mono<Message<?>>>)`로 커스텀(또는 대체)할 수 있다. 예를 들어, 최종적으로 만드는 메시지에 페이로드의 `List`를 담고싶다면 다음과 같이 `Flux.collectList()`를 설정해주면 된다:
 
 ```java
 fluxAggregatorMessageHandler.setCombineFunction(
@@ -1715,14 +1716,14 @@ fluxAggregatorMessageHandler.setCombineFunction(
                                 .map(GenericMessage::new));
 ```
 
-There are several options in the `FluxAggregatorMessageHandler` to select an appropriate window strategy:
+`FluxAggregatorMessageHandler`에는 여러 가지 옵션이 있어 적절한 윈도우 전략을 선택할 수 있다:
 
-- `setBoundaryTrigger(Predicate<Message<?>>)` - is propagated to the `Flux.windowUntil()` operator. See its JavaDocs for more information. Has a precedence over all other window options.
-- `setWindowSize(int)` and `setWindowSizeFunction(Function<Message<?>, Integer>)` - is propagated to the `Flux.window(int)` or `windowTimeout(int, Duration)`. By default a window size is calculated from the first message in group and its `IntegrationMessageHeaderAccessor.SEQUENCE_SIZE` header.
-- `setWindowTimespan(Duration)` - is propagated to the `Flux.window(Duration)` or `windowTimeout(int, Duration)` depending on the window size configuration.
-- `setWindowConfigurer(Function<Flux<Message<?>>, Flux<Flux<Message<?>>>>)` - a function to apply a transformation into the grouped fluxes for any custom window operation not covered by the exposed options.
+- `setBoundaryTrigger(Predicate<Message<?>>)` - `Flux.windowUntil()` 연산자로 전파된다. 자세한 내용은 해당 JavaDocs를 참고해라. 전체 윈도우 옵션 중에서 우선순위가 가장 높다.
+- `setWindowSize(int)`, `setWindowSizeFunction(Function<Message<?>, Integer>)` - `Flux.window(int)` 혹은 `windowTimeout(int, Duration)`으로 전파된다. 기본적으로 윈도우 사이즈는 그룹의 첫 번째 메시지와 거기있는 `IntegrationMessageHeaderAccessor.SEQUENCE_SIZE` 헤더로 계산한다.
+- `setWindowTimespan(Duration)` - 윈도우 사이즈 설정에 따라 `Flux.window(Duration)`이나 `windowTimeout(int, Duration)`으로 전파된다.
+- `setWindowConfigurer(Function<Flux<Message<?>>, Flux<Flux<Message<?>>>>)` - 기존 옵션으론 해결할 수 없는 커스텀 윈도우 연산을 위한, 그룹으로 묶인 플럭스들을 변환하는 함수.
 
-Since this component is a `MessageHandler` implementation it can simply be used as a `@Bean` definition together with a `@ServiceActivator` messaging annotation. With Java DSL it can be used from the `.handle()` EIP-method. The sample below demonstrates how we can register an `IntegrationFlow` at runtime and how a `FluxAggregatorMessageHandler` can be correlated with a splitter upstream:
+이 컴포넌트는 `MessageHandler` 구현체이므로 간단히 메시징 어노테이션 `@ServiceActivator`와 `@Bean` 정의로 사용할 수 있다. Java DSL에선 EIP 메소드 `.handle()`에서 사용하면 된다. 아래 보이는 샘플은 런타임에 `IntegrationFlow`를 등록하고, `FluxAggregatorMessageHandler`를 업스트림 splitter와 연계하는 방법을 보여준다:
 
 ```java
 IntegrationFlow fluxFlow =
@@ -1743,33 +1744,33 @@ Flux<Message<?>> window =
 
 ### 8.4.6. Condition on the Message Group
 
-Starting with version 5.5, an `AbstractCorrelatingMessageHandler` (including its Java & XML DSLs) exposes a `groupConditionSupplier` option of the `BiFunction<Message<?>, String, String>` implementation. This function is used on each message added to the group and a result condition sentence is stored into the group for future consideration. The `ReleaseStrategy` may consult this condition instead of iterating over all the messages in the group. See `GroupConditionProvider` JavaDocs and [Message Group Condition](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-group-condition) for more information.
+5.5 버전부터 `AbstractCorrelatingMessageHandler`(자바 & XML DSL 포함)는 `BiFunction<Message<?>, String, String>` 타입 옵션 `groupConditionSupplier`를 제공한다. 이 함수는 그룹에 메시지가 추가될 때마다 호출하며, 리턴한 condition 문자열은 그룹에 저장돼 이후에 참작할 수 있다. `ReleaseStrategy`에선 그룹에 있는 모든 메시지를 순회하는 대신에 이 condition을 참조할 수 있다. 자세한 내용은 `GroupConditionProvider` JavaDocs와 [메시지 그룹 Condition](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-group-condition)을 참고해라.
 
-See also [File Aggregator](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/file.html#file-aggregator).
+[File Aggregator](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/file.html#file-aggregator)도 함께 읽어보면 좋다.
 
 ---
 
 ## 8.5. Resequencer
 
-The resequencer is related to the aggregator but serves a different purpose. While the aggregator combines messages, the resequencer passes messages through without changing them.
+resequencer는 aggregator와 관련이 있지만 사용하는 목적은 다르다. Aggregator는 메시지들을 결합해주는 반면, resequencer를 거치더라도 메시지는 변경되지 않는다.
 
 ### 8.5.1. Functionality
 
-The resequencer works in a similar way to the aggregator, in the sense that it uses the `CORRELATION_ID` to store messages in groups. The difference is that the Resequencer does not process the messages in any way. Instead, it releases them in the order of their `SEQUENCE_NUMBER` header values.
+resequencer는 `CORRELATION_ID`를 사용해 메시지들을 그룹에 저장한다는 점에선 aggregator와 유사하게 동작한다. 차이점은 Resequencer는 어떤 방식으로든 메시지를 가공하지 않는다는 것이다. 대신 `SEQUENCE_NUMBER` 헤더 값을 기준으로 메시지들을 정렬해서 release한다.
 
-With respect to that, you can opt to release all messages at once (after the whole sequence, according to the `SEQUENCE_SIZE`, and other possibilities) or as soon as a valid sequence is available. (We cover what we mean by "a valid sequence" later in this chapter.)
+이와 관련해서는, 모든 메시지를 한 번에 release할 수도 있고 (`SEQUENCE_SIZE` 등에 따라 전체 시퀀스가 모이고 나면), 유효한 시퀀스가 하나라도 있으면 즉시 release할 수 있다. (이 챕뒤 에서 "유효한 시퀀스"가 의미하는 바를 설명한다.)
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>The resequencer is intended to resequence relatively short sequences of messages with small gaps. If you have a large number of disjoint sequences with many gaps, you may experience performance issues.</p>
+  <p>resequencer는 짧은 간격으로 들어오는, 상대적으로 짧은 메시지 시퀀스를 재배열하는 용도다. 긴 시간 동안 따로 따로 들어오는 시퀀스가 많다면 성능 문제를 겪을 수도 있다.</p>
 </blockquote>
 
 ### 8.5.2. Configuring a Resequencer
 
-See [Aggregators and Resequencers](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-aggregators) for configuring a resequencer in Java DSL.
+Java DSL을 이용해 resequencer를 설정한다면 [Aggregator와 Resequencer](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-aggregators)를 참고해라.
 
-Configuring a resequencer requires only including the appropriate element in XML.
+resequencer를 설정할 땐 XML에 적당한 요소만 추가해주면 된다.
 
-The following example shows a resequencer configuration:
+다음은 resequencer 설정 예시다:
 
 ```xml
 <int:channel id="inputChannel"/>
@@ -1799,52 +1800,52 @@ The following example shows a resequencer configuration:
   scheduler="taskScheduler" />  <!-- (19) -->
   expire-group-upon-timeout="false" />  <!-- (20) -->
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> The id of the resequencer is optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> The input channel of the resequencer. Required.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> The channel to which the resequencer sends the reordered messages. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> The channel to which the resequencer sends the messages that timed out (if `send-partial-result-on-timeout` is set to `false`). Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> Whether to send out ordered sequences as soon as they are available or only after the whole message group arrives. Optional. (The default is `false`.)</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> A reference to a `MessageGroupStore` that can be used to store groups of messages under their correlation key until they are complete. Optional. (The default is a volatile in-memory store.)</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> Whether, upon the expiration of the group, the ordered group should be sent out (even if some of the messages are missing). Optional. (The default is false.) See [Managing State in an Aggregator: `MessageGroupStore`](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/aggregator.html#reaper).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> The timeout interval to wait when sending a reply `Message` to the `output-channel` or `discard-channel`. Defaults to `-1`, which blocks indefinitely. It is applied only if the output channel has some 'sending' limitations, such as a `QueueChannel` with a fixed 'capacity'. In this case, a `MessageDeliveryException` is thrown. The `send-timeout` is ignored for `AbstractSubscribableChannel` implementations. For `group-timeout(-expression)`, the `MessageDeliveryException` from the scheduled expiring task leads this task to be rescheduled. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> A reference to a bean that implements the message correlation (grouping) algorithm. The bean can be an implementation of the `CorrelationStrategy` interface or a POJO. In the latter case, the `correlation-strategy-method` attribute must also be defined. Optional. (By default, the aggregator uses the `IntegrationMessageHeaderAccessor.CORRELATION_ID` header.)</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> A method that is defined on the bean referenced by `correlation-strategy` and that implements the correlation decision algorithm. Optional, with restrictions (requires `correlation-strategy` to be present).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> A SpEL expression representing the correlation strategy. Example: `"headers['something']"`. Only one of `correlation-strategy` or `correlation-strategy-expression` is allowed.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> A reference to a bean that implements the release strategy. The bean can be an implementation of the `ReleaseStrategy` interface or a POJO. In the latter case, the `release-strategy-method` attribute must also be defined. Optional (by default, the aggregator will use the `IntegrationMessageHeaderAccessor.SEQUENCE_SIZE` header attribute).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> A method that is defined on the bean referenced by `release-strategy` and that implements the completion decision algorithm. Optional, with restrictions (requires `release-strategy` to be present).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(14)</span> A SpEL expression representing the release strategy. The root object for the expression is a `MessageGroup`. Example: `"size() == 5"`. Only one of `release-strategy` or `release-strategy-expression` is allowed.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(15)</span> Only applies if a `MessageGroupStoreReaper` is configured for the `<resequencer>` `MessageStore`. By default, when a `MessageGroupStoreReaper` is configured to expire partial groups, empty groups are also removed. Empty groups exist after a group is released normally. This is to enable the detection and discarding of late-arriving messages. If you wish to expire empty groups on a longer schedule than expiring partial groups, set this property. Empty groups are then not removed from the `MessageStore` until they have not been modified for at least this number of milliseconds. Note that the actual time to expire an empty group is also affected by the reaper’s timeout property, and it could be as much as this value plus the timeout.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(16)</span> See [Configuring an Aggregator with XML](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/aggregator.html#aggregator-xml).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(17)</span> See [Configuring an Aggregator with XML](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/aggregator.html#aggregator-xml).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(18)</span> See [Configuring an Aggregator with XML](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/aggregator.html#aggregator-xml).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(19)</span> See [Configuring an Aggregator with XML](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/aggregator.html#aggregator-xml).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(20)</span> By default, when a group is completed due to a timeout (or by a `MessageGroupStoreReaper`), the empty group’s metadata is retained. Late arriving messages are immediately discarded. Set this to `true` to remove the group completely. Then, late arriving messages start a new group and are not be discarded until the group again times out. The new group is never released normally because of the “hole” in the sequence range that caused the timeout. Empty groups can be expired (completely removed) later by using a `MessageGroupStoreReaper` together with the `empty-group-min-timeout` attribute. Starting with version 5.0, empty groups are also scheduled for removal after the `empty-group-min-timeout` elapses. The default is 'false'.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span>  resequencer의 id는 생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span>  resequencer의 입력 채널.<br>생략할 수 없다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> resequencer가 재정렬한 메시지들을 전송할 채널.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> resequencer가 타임아웃된 메시지들을 전송할 채널 (`send-partial-result-on-timeout`을 `false`로 설정한 경우).<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 정렬한 시퀀스들을 가능할 때 바로 전송할지 아니면 전체 메시지 그룹이 모이고 나면 보낼지 여부.<br>생략할 수 있다.<br>(기본값은 `false`다.)</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 메시지 그룹이 완성될 때까지 correlation 키 아래 메시지 그룹을 저장하는 데 사용하는 `MessageGroupStore`에 대한 참조.<br>생략할 수 있다.<br>(기본적으로 휘발성의 인메모리 저장소를 사용한다.)</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 그룹이 만료되면 정렬한 그룹을 전송해야 하는지 여부 (일부 메시지가 누락됐더라도).<br>생략할 수 있다.<br>(디폴트는 false다.)<br>[Aggregator에서 상태 관리하기: `MessageGroupStore`](#844-managing-state-in-an-aggregator-messagegroupstore)를 참고해라.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> 응답 `Message`를 `output-channel` 또는 `discard-channel`에 전송할 때 대기하는 타임아웃 간격. 기본값은 `-1`로 무한으로 블로킹된다.<br>고정 'capacity'를 사용하는 `QueueChannel`같이, '전송'에 제한이 있는 출력 채널을 사용할 때만 적용된다. 타임아웃이 발생하면 `MessageDeliveryException`을 던진다.<br>`AbstractSubscribableChannel`의 구현체들은 `send-timeout`을 무시한다.<br>`group-timeout(-expression)`의 경우 예약된 expire 태스크에서 `MessageDeliveryException`이 발생하면 해당 태스크를 다시 스케줄링한다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> 메시지 correlation (grouping) 알고리즘을 구현한 빈에 대한 참조.<br>이 빈은 `CorrelationStrategy` 인터페이스의 구현체일 수도, POJO일 수도 있다.<br>후자라면 `correlation-strategy-method` 속성도 반드시 함께 정의해야 한다.<br>생략할 수 있다 (aggregator는 기본적으로 `IntegrationMessageHeaderAccessor.CORRELATION_ID` 헤더를 사용한다.)</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> `correlation-strategy`가 참조하는 빈에 정의돼있는 메소드. 이 메소드에서 correlation 결정 알고리즘을 구현한다.<br>생략할 수 있으며, 제약이 존재한다 (`correlation-strategy`를 반드시 정의해야 한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> correlation 전략을 나타내는 SpEL 표현식.<br>ex: `"headers['something']"`).<br>`correlation-strategy`나 `correlation-strategy-expression`은 둘 중 하나만 사용할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> release 전략을 구현한 빈에 대한 참조.<br>이 빈은 `ReleaseStrategy` 인터페이스의 구현체일 수도, POJO일 수도 있다.<br>후자라면 `release-strategy-method` 속성도 반드시 함께 정의해야 한다.<br>생략할 수 있다 (aggregator는 기본적으로 `IntegrationMessageHeaderAccessor.SEQUENCE_SIZE` 헤더를 사용한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> `release-strategy`가 참조하는 빈에 정의돼있는 메소드. 이 메소드에서 completion 결정 알고리즘을 구현한다.<br>생략할 수 있으며, 제약이 존재한다 (`release-strategy`를 반드시 정의해야 한다).</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(14)</span> release 전략을 나타내는 SpEL 표현식.<br>표현식의 루트 객체는 `MessageGroup`이다.<br>ex: `"size() == 5"`.<br>`release-strategy`나 `release-strategy-expression`은 둘 중 하나만 사용할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(15)</span> `<resequencer>` 의`MessageStore`에 `MessageGroupStoreReaper`를 설정했을 때만 적용된다.<br>`MessageGroupStoreReaper`가 그룹을 부분적으로 만료하도록 설정돼있다면 기본적으로 비어있는 그룹 역시 제거한다.<br>빈 그룹은 그룹이 정상적으로 release된 후에 존재하는데, 덕분에 늦게 도착하는 메시지들을 감지하고 폐기할 수 있다.<br>그룹을 부분적으로 만료시키는 것보다 더 긴 주기로 빈 그룹을 만료시키고 싶다면 이 속성을 설정해라.<br>비어있는 그룹들은 최소한 이 밀리세컨드 동안 수정되지 않는다면 `MessageStore`에서 제거되지 않을 거다.<br>빈 그룹이 실제로 만료되는 시간은 reaper의 타임아웃 속성에도 영향을 받으며, 이 값에 타임아웃을 더한 시간만큼 걸릴 수도 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(16)</span> [XML로 Aggregator 설정하기](#configuring-an-aggregator-with-xml) 참고.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(17)</span> [XML로 Aggregator 설정하기](#configuring-an-aggregator-with-xml) 참고.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(18)</span> [XML로 Aggregator 설정하기](#configuring-an-aggregator-with-xml) 참고.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(19)</span> [XML로 Aggregator 설정하기](#configuring-an-aggregator-with-xml) 참고.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(20)</span> 타임아웃으로 인해 (또는 `MessageGroupStoreReaper`로 인해) 그룹이 완료되면 기본적으로 빈 그룹의 메타데이터를 보관한다.<br>따라서 늦게 도착하는 메시지들은 즉시 폐기된다.<br>그룹을 완전히 제거하려면 이 속성을 `true`로 설정해라.<br>그러면 늦게 도착한 메시지들은 새 그룹을 시작하고 그룹이 다시 타임아웃되기 전까진 폐기하지 않는다.<br>새로 만들어진 그룹은 타임아웃를 유발한 시퀀스 범위 내의 "구멍" 때문에 절대 정상적으로 release되지 않는다.<br>빈 그룹들은 `empty-group-min-timeout` 속성과 `MessageGroupStoreReaper`를 함께 사용하면 이후 만료시킬 수 있다 (완전히 제거된다).<br>5.0 버전부터 `empty-group-min-timeout`이 경과하면 빈 그룹도 함께 제거하도록 스케줄링된다.<br>기본값은 'false'다.</small>
 
-Also see [Aggregator Expiring Groups](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/aggregator.html#aggregator-expiring-groups) for more information.
+자세한 내용은 [Aggregator 그룹 만료시키기](#aggregator-expiring-groups)를 함께 참고해라.
 
-> Since there is no custom behavior to be implemented in Java classes for resequencers, there is no annotation support for it.
+> resequencer와 관련해서는, 자바 클래스에서 구현할만한 커스텀 동작이 없기 때문에 따로 지원하는 어노테이션은 없다.
 
 ---
 
 ## 8.6. Message Handler Chain
 
-The `MessageHandlerChain` is an implementation of `MessageHandler` that can be configured as a single message endpoint while actually delegating to a chain of other handlers, such as filters, transformers, splitters, and so on. When several handlers need to be connected in a fixed, linear progression, this can lead to a much simpler configuration. For example, it is fairly common to provide a transformer before other components. Similarly, when you provide a filter before some other component in a chain, you essentially create a [selective consumer](https://www.enterpriseintegrationpatterns.com/MessageSelector.html). In either case, the chain requires only a single `input-channel` and a single `output-channel`, eliminating the need to define channels for each individual component.
+`MessageHandlerChain`은 실제 동작은 필터, transformer, splitter 등과 같은 다른 핸들러들로 구성된 체인에 위임하면서, 단일 메시지 엔드포인트로 설정할 수 있는 `MessageHandler`의 구현체다. 여러 가지 핸들러를 고정된 순서로 연결해서 선형으로 실행해야 한다면 `MessageHandlerChain`을 이용하는 게 훨씬 더 간단하다. 예를 들면 다른 구성 요소 앞에 transformer를 두는 경우가 꽤 많다. 비슷하게 체인 앞부분에 필터를 두면 본질적으로 [선택적인<sup>selective</sup> 컨슈머](https://www.enterpriseintegrationpatterns.com/MessageSelector.html)를 만들게 된다. 두 체인 모두 하나의 `input-channel`과 하나의 `output-channel`만 있으면 되기 때문에, 구성 요소마다 개별적으로 채널을 정의해주지 않아도 된다.
 
-> The `MessageHandlerChain` is mostly designed for an XML configuration. For Java DSL, an `IntegrationFlow` definition can be treated as a chain component, but it has nothing to do with concepts and principles described in this chapter below. See [Java DSL](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/dsl.html#java-dsl) for more information.
+> `MessageHandlerChain`은 대부분 XML 설정 위주로 설계됐다. Java DSL의 `IntegrationFlow` 정의는 하나의 체인 컴포넌트로 취급할 순 있지만, 아래에서 설명하는 개념과 원칙들과는 관련이 없다. 자세한 내용은 [Java DSL](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl)을 참고해라.
 
-> Spring Integration’s `Filter` provides a boolean property: `throwExceptionOnRejection`. When you provide multiple selective consumers on the same point-to-point channel with different acceptance criteria, you should set this value 'true' (the default is `false`) so that the dispatcher knows that the message was rejected and, as a result, tries to pass the message on to other subscribers. If the exception were not thrown, it would appear to the dispatcher that the message had been passed on successfully even though the filter had dropped the message to prevent further processing. If you do indeed want to “drop” the messages, the filter’s 'discard-channel' might be useful, since it does give you a chance to perform some operation with the dropped message (such as sending it to a JMS queue or writing it to a log).
+> Spring Integration의 `Filter`는 `throwExceptionOnRejection`이라는 boolean 프로퍼티를 제공한다. 하나의 point-to-point 채널에서 메시지를 수락하는 기준이 다른 여러 가지 선택적<sup>selective</sup> 컨슈머가 있다면, 이 값을 'true'로 설정해주는 것이 좋다 (기본값은 `false`다). 그러면 dispatcher에서 메시지가 거부되었음을 알 수 있으며, 결과적으로 메시지를 다른 구독자에게 전달해볼 수 있다. 예외를 던지지 않으면, 필터에서 메시지를 버려 추가적인 처리가 일어나지 않는 경우에도 dispatcher는 메시지 전달에 성공한 것으로 밖에 알 수가 없다. 정말로 메시지를 "삭제<sup>drop</sup>"하고 싶을 때는 필터의 'discard-channel'도 유용할 수 있다. 'discard-channel'을 이용하면 삭제된 메시지로 원하는 작업을 수행할 수 있다 (JMS 큐에 메시지를 전송하거나 로그로 남기는 등).
 
-The handler chain simplifies configuration while internally maintaining the same degree of loose coupling between components, and it is trivial to modify the configuration if at some point a non-linear arrangement is required.
+핸들러 체인 설정은 매우 단순한데, 내부 구성 요소 간의 결합도는 똑같이 느슨하게 유지해준다. 어느 시점엔 비선형적인 조합이 필요해지더라도, 쉽게 설정을 변경할 수 있다.
 
-Internally, the chain is expanded into a linear setup of the listed endpoints, separated by anonymous channels. The reply channel header is not taken into account within the chain. Only after the last handler is invoked is the resulting message forwarded to the reply channel or the chain’s output channel. Because of this setup, all handlers except the last must implement the `MessageProducer` interface (which provides a 'setOutputChannel()' method). If the `outputChannel` on the `MessageHandlerChain` is set, the last handler needs only an output channel.
+체인의 내부에선 가지고 있는 엔드포인트들을 선형적으로 확장한다. 이 엔드포인트들은 익명 채널로 구분된다. 체인 내에선 reply 채널 헤더를 고려하지 않는다. 마지막 핸들러를 호출했을 때만 결과 메시지를 reply 채널이나 체인의 출력 채널로 전달한다. 이와 같은 구조로 인해 마지막 핸들러를 제외한 모든 핸들러는 `MessageProducer` 인터페이스를 구현해야 한다 ('setOutputChannel()' 메소드). `MessageHandlerChain`에 `outputChannel`이 설정돼 있으면 마지막 핸들러는 출력 채널 하나만 있으면 된다.
 
-> As with other endpoints, the `output-channel` is optional. If there is a reply message at the end of the chain, the output-channel takes precedence. However, if it is not available, the chain handler checks for a reply channel header on the inbound message as a fallback.
+> 다른 엔드포인트와 마찬가지로 `output-channel`은 선택 사항이다. 체인이 끝날 때 응답 메시지가 있는 경우 output-channel을 우선시한다. 하지만 응답 메시지가 없다면 체인 핸들러는 폴백으로 인바운드 메시지에서 reply 채널 헤더를 확인해본다.
 
-In most cases, you need not implement `MessageHandler` yourself. The next section focuses on namespace support for the chain element. Most Spring Integration endpoints, such as service activators and transformers, are suitable for use within a `MessageHandlerChain`.
+대부분의 경우 `MessageHandler`를 직접 구현할 필요가 없다. 다음 섹션에선 네임스페이스 지원을 이용해 체인 요소를 설정하는 방법에 집중한다. 서비스 activator와 transformer같은 대부분의 Spring Integration 엔드포인트들은 `MessageHandlerChain` 내에서 사용하기 알맞게 설계돼있다.
 
 ### 8.6.1. Configuring a Chain
 
-The `<chain>` element provides an `input-channel` attribute. If the last element in the chain is capable of producing reply messages (optional), it also supports an `output-channel` attribute. The sub-elements are then filters, transformers, splitters, and service-activators. The last element may also be a router or an outbound channel adapter. The following example shows a chain definition:
+`<chain>` 요소는 `input-channel` 속성을 제공한다. 체인의 마지막 요소가 응답 메시지를 생성하는 경우를 위해 (선택 사항이다), `output-channel` 속성도 지원한다. 하위 요소로는 filter, transformer, splitter, service-activator가 있다. 마지막 요소는 라우터나 아웃바운드 채널 어댑터일 수도 있다. 다음은 체인을 정의하는 예시다:
 
 ```xml
 <int:chain input-channel="input" output-channel="output">
@@ -1856,9 +1857,9 @@ The `<chain>` element provides an `input-channel` attribute. If the last element
 </int:chain>
 ```
 
-The `<header-enricher>` element used in the preceding example sets a message header named `thing1` with a value of `thing2` on the message. A header enricher is a specialization of `Transformer` that touches only header values. You could obtain the same result by implementing a `MessageHandler` that did the header modifications and wiring that as a bean, but the header-enricher is a simpler option.
+위 예제에서 사용한 `<header-enricher>` 요소는 메시지에 `thing1`이라는 헤더를 `thing2`라는 값으로 설정해준다. 헤더 enricher는 헤더 값에만 손을 대는 특화된 `Transformer`다. 헤더를 수정하는 `MessageHandler`를 구현하고 빈으로 연결해줘도 같은 결과를 얻을 수 있지만, header-enricher가 훨씬 더 간단하다.
 
-The `<chain>` can be configured as the last “closed-box” consumer of the message flow. For this solution, you can to put it at the end of the <chain> some <outbound-channel-adapter>, as the following example shows:
+`<chain>`은 메시지 플로우를 "마감하는<sup>closed-box</sup>" 마지막 컨슈머로 설정해도 된다. 이럴 땐 아래 예제와 같이 \<chain\>의 끝에 원하는 \<outbound-channel-adapter\>를 넣어주면 된다:
 
 ```xml
 <int:chain input-channel="input">
@@ -1873,14 +1874,14 @@ The `<chain>` can be configured as the last “closed-box” consumer of the mes
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
   <p><strong>Disallowed Attributes and Elements</strong></p>
-  <p>Certain attributes, such as <code class="highlighter-rouge">order</code> and <code class="highlighter-rouge">input-channel</code> are not allowed to be specified on components used within a chain. The same is true for the poller sub-element.</p>
-  <p>For the Spring Integration core components, the XML schema itself enforces some of these constraints. However, for non-core components or your own custom components, these constraints are enforced by the XML namespace parser, not by the XML schema.</p>
-  <p>These XML namespace parser constraints were added with Spring Integration 2.2. If you try to use disallowed attributes and elements, the XML namespace parser throws a <code class="highlighter-rouge">BeanDefinitionParsingException</code>.</p>
+  <p>체인 내에 있는 구성 요소에선 <code class="highlighter-rouge">order</code>와 <code class="highlighter-rouge">input-channel</code>같은 몇 가지 속성들을 지정할 수 없다. 하위요소 poller에서도 마찬가지다.</p>
+  <p>Spring Integration 핵심 컴포넌트들은 XML 스키마 자체가 일부 제약 조건을 시행한다. 하지만 비핵심 컴포넌트들이나 사용자의 커스텀 컴포넌트의 경우, 이런 제약들은 XML 스키마가 아닌 XML 네임스페이스 파서가 적용한다.</p>
+  <p>XML 네임스페이스 파서의 제약 조건은 Spring Integration 2.2에서 추가됐다. 허용하지 않는 속성이나 요소를 사용하려고 하면 XML 네임스페이스 파서에서 <code class="highlighter-rouge">BeanDefinitionParsingException</code>을 던진다.</p>
 </blockquote>
 
 ### 8.6.2. Using the 'id' Attribute
 
-Beginning with Spring Integration 3.0, if a chain element is given an `id` attribute, the bean name for the element is a combination of the chain’s `id` and the `id` of the element itself. Elements without `id` attributes are not registered as beans, but each one is given a `componentName` that includes the chain `id`. Consider the following example:
+Spring Integration 3.0부터 체인 요소에 `id` 속성이 주어지면, 체인의 `id`와 요소 자체의 `id`를 조합한 값을 요소의 빈 이름으로 사용한다. `id` 속성이 없는 요소는 빈으로 등록되진 않지만, 각각은 체인 `id`를 포함하는 `componentName`이 부여된다. 아래 예시를 살펴보자:
 
 ```xml
 <int:chain id="somethingChain" input-channel="input">
@@ -1889,21 +1890,21 @@ Beginning with Spring Integration 3.0, if a chain element is given an `id` attri
 </int:chain>
 ```
 
-In the preceding example:
+위 예제에선:
 
-- The `<chain>` root element has an `id` of 'somethingChain'. Consequently, the `AbstractEndpoint` implementation (`PollingConsumer` or `EventDrivenConsumer`, depending on the `input-channel` type) bean takes this value as its bean name.
-- The `MessageHandlerChain` bean acquires a bean alias ('somethingChain.handler'), which allows direct access to this bean from the `BeanFactory`.
-- The `<service-activator>` is not a fully fledged messaging endpoint (it is not a `PollingConsumer` or `EventDrivenConsumer`). It is a `MessageHandler` within the `<chain>`. In this case, the bean name registered with the `BeanFactory` is 'somethingChain$child.somethingService.handler'.
-- The `componentName` of this `ServiceActivatingHandler` takes the same value but without the '.handler' suffix. It becomes 'somethingChain$child.somethingService'.
-- The last `<chain>` sub-component, `<object-to-json-transformer>`, does not have an `id` attribute. Its `componentName` is based on its position in the `<chain>`. In this case, it is 'somethingChain$child#1'. (The final element of the name is the order within the chain, beginning with '#0'). Note, this transformer is not registered as a bean within the application context, so it does not get a `beanName`. However its `componentName` has a value that is useful for logging and other purposes.
+- 루트 요소 `<chain>`에는 'somethingChain'이란 `id`가 있다. 따라서 `AbstractEndpoint`를 구현한 (`Input-channel`의 유형에 따라 `PollingConsumer`나 `EventDrivenConsumer`) 빈은 이 값을 빈 이름으로 사용한다.
+- `MessageHandlerChain` 빈은 빈 alias가 생기며 ('somethingChain.handler'), 덕분에 `BeanFactory`에서 이 빈에 직접 액세스할 수 있다.
+- `<service-activator>`는 모든 것을 다 갖춘 메시징 엔드포인트라고 할 수 없다 (`PollingConsumer`나 `EventDrivenConsumer`가 아니다). `<chain>` 내에 존재하는 `MessageHandler`다. 이 경우 `BeanFactory`엔 `somethingChain$child.somethingService.handler`라는 이름의 빈으로 등록된다.
+- 이 `ServiceActivatingHandler`의 `componentName`은 동일한 값을 사용하지만 '.handler' suffix는 없다. 즉, 'somethingChain$child.somethingService'가 된다.
+- `<chain>`의 마지막 하위 구성 요소 `<object-to-json-transformer>`는 `id` 속성을 가지고 있지 않다. 이 요소의 `componentName`은 `<chain>`에서의 위치를 기반으로 만들어진다. 이 예시에선 'somethingChain$child#1'이다. (이름의 마지막 부분이 체인 내의 순서를 나타내며, '#0'으로 시작한다). 참고로 이 transformer는 애플리케이션 컨텍스트 내 빈으로 등록되지 않으므로, `beanName`은 주어지지 않는다. 하지만 `componentName`에 로깅 등에 유용한 값이 담겨 있다.
 
-The `id` attribute for `<chain>` elements lets them be eligible for [JMX export](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/jmx.html#jmx-mbean-exporter), and they are trackable in the [message history](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/message-history.html#message-history). You can access them from the `BeanFactory` by using the appropriate bean name, as discussed earlier.
+`<chain>` 요소들에 `id` 속성을 사용하면 [JMX 익스포터](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jmx.html#jmx-mbean-exporter)에도 적합하며, [메시지 히스토리](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-history.html#message-history)에서 추적할 수 있다. 앞에서 언급한 것처럼 적당한 빈 이름을 사용하면 `BeanFactory`로 액세스할 수도 있다.
 
-> It is useful to provide an explicit `id` attribute on `<chain>` elements to simplify the identification of sub-components in logs and to provide access to them from the `BeanFactory` etc.
+> `<chain>` 요소에 `id` 속성을 명시하면, 로그에서 하위 구성 요소를 간단하게 식별하고, `BeanFactory`에서 액세스할 수 있어 유용하다.
 
 ### 8.6.3. Calling a Chain from within a Chain
 
-Sometimes, you need to make a nested call to another chain from within a chain and then come back and continue execution within the original chain. To accomplish this, you can use a messaging gateway by including a <gateway> element, as the following example shows:
+간혹 체인 내에서 다른 체인을 중첩해서 호출한 뒤, 다시 돌아와 원래의 체인을 계속해서 실행해야 할 때가 있다. 이럴 땐 다음 예제와 같이 \<gateway\> 요소를 추가해서 메시징 게이트웨이를 사용하면 된다:
 
 ```xml
 <int:chain id="main-chain" input-channel="in" output-channel="out">
@@ -1936,37 +1937,37 @@ Sometimes, you need to make a nested call to another chain from within a chain a
 </int:chain>
 ```
 
-In the preceding example, `nested-chain-a` is called at the end of `main-chain` processing by the 'gateway' element configured there. While in `nested-chain-a`, a call to a `nested-chain-b` is made after header enrichment. Then the flow comes back to finish execution in `nested-chain-b`. Finally, the flow returns to `main-chain`. When the nested version of a `<gateway>` element is defined in the chain, it does not require the `service-interface` attribute. Instead, it takes the message in its current state and places it on the channel defined in the `request-channel` attribute. When the downstream flow initiated by that gateway completes, a `Message` is returned to the gateway and continues its journey within the current chain.
+위 예제에선 `main-chain` 처리가 끝나갈 때 체인 끝에 설정돼있는 'gateway' 요소가 `nested-chain-a`를 호출한다. `nested-chain-a`를 처리하는 동안은 헤더를 추가<sup>enrichment</sup>한 후에 `nested-chain-b`를 호출한다. 이후 원래 흐름으로 돌아와 `nested-chain-b`에서의 실행을 완료한다. 마지막엔 `main-chain`으로 돌아간다. 체인 안에 `<gateway>` 요소를 중첩해서 정의할 땐 `service-interface` 속성이 필요하지 않다. 대신 메시지를 현재 상태로 가져와 `request-channel` 속성에 정의돼있는 채널에 배치한다. 이 게이트웨이가 시작한 다운스트림 플로우가 완료되면 게이트웨이로 `Message`가 반환되고 현재 체인에서 여정을 이어간다.
 
 ---
 
 ## 8.7. Scatter-Gather
 
-Starting with version 4.1, Spring Integration provides an implementation of the [scatter-gather](https://www.enterpriseintegrationpatterns.com/BroadcastAggregate.html) enterprise integration pattern. It is a compound endpoint for which the goal is to send a message to the recipients and aggregate the results. As noted in [*Enterprise Integration Patterns*](https://www.enterpriseintegrationpatterns.com/), it is a component for scenarios such as “best quote”, where we need to request information from several suppliers and decide which one provides us with the best term for the requested item.
+4.1 버전부터 Spring Integration은 엔터프라이즈 통합 패턴 [scatter-gather](https://www.enterpriseintegrationpatterns.com/BroadcastAggregate.html)의 구현체를 제공한다. 이 구현체는 복합 엔드포인트로, 여러 수신자<sup>recipient</sup>에게 메시지를 보내고 그 결과를 집계하는 것이 목적이다. [*Enterprise Integration Patterns*](https://www.enterpriseintegrationpatterns.com/)에서 언급하는 것 처럼, 이 컴포넌트는 "최상의 견적<sup>best quote</sup>"을 찾는 시나리오에 적용할 수 있다. 여기서 말하는 최상의 견적이란, 여러 공급 업체<sup>supplier</sup>에 정보를 요청하고 요청 항목에 가장 적합한 조건을 제공할 수 있는 업체를 결정하는 것을 말한다.
 
-Previously, the pattern could be configured by using discrete components. This enhancement brings more convenient configuration.
+예전엔 이 패턴을 구성할 땐 컴포넌트들을 개별적으로 사용했었다. 이제는 전보다 간편하게 설정할 수 있다.
 
-The `ScatterGatherHandler` is a request-reply endpoint that combines a `PublishSubscribeChannel` (or a `RecipientListRouter`) and an `AggregatingMessageHandler`. The request message is sent to the `scatter` channel, and the `ScatterGatherHandler` waits for the reply that the aggregator sends to the `outputChannel`.
+`ScatterGatherHandler`는 `PublishSubscribeChannel`(또는 `RecipientListRouter`)과 `AggregatingMessageHandler`를 결합한 request-reply 엔드포인트다. 요청 메시지는 `scatter` 채널로 전송되며, `ScatterGatherHandler`는 응답을 기다렸다가 aggregator를 이용해 응답을 `outputChannel`로 전송한다.
 
 ### 8.7.1. Functionality
 
-The `Scatter-Gather` pattern suggests two scenarios: “auction” and “distribution”. In both cases, the `aggregation` function is the same and provides all the options available for the `AggregatingMessageHandler`. (Actually, the `ScatterGatherHandler` requires only an `AggregatingMessageHandler` as a constructor argument.) See [Aggregator](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/aggregator.html#aggregator) for more information.
+`Scatter-Gather` 패턴에는 "경매<sup>auction</sup>" 방식과 "배급<sup>distribution</sup>" 방식이 있다. 두 시나리오 모두 `aggregation` 기능은 동일하며, `AggregatingMessageHandler`에서 사용할 수 있는 모든 옵션을 제공한다. (사실 `ScatterGatherHandler`의 생성자 인자로는 `AggregatingMessageHandler`만 넘겨주면 된다.) 자세한 내용은 [Aggregator](#84-aggregator)를 참고해라.
 
 #### Auction
 
-The auction `Scatter-Gather` variant uses “publish-subscribe” logic for the request message, where the “scatter” channel is a `PublishSubscribeChannel` with `apply-sequence="true"`. However, this channel can be any `MessageChannel` implementation (as is the case with the `request-channel` in the `ContentEnricher` — see [Content Enricher](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/content-enrichment.html#content-enricher)). However, in this case, you should create your own custom `correlationStrategy` for the `aggregation` function.
+`Scatter-Gather`의 auction 버전은 요청 메시지에 “publish-subscribe” 로직을 적용한다. 이때 “scatter” 채널은 `apply-sequence="true"`인 `PublishSubscribeChannel`이다. 물론 이 채널엔 어떤 `MessageChannel` 구현체라도 사용할 수 있다 (`ContentEnricher`의 `request-channel`에서처럼 — [Content Enricher](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/content-enrichment.html#content-enricher) 참고). 하지만 그러려면 `aggregation`에 사용할 자체 커스텀 `correlationStrategy`를 만들어야 한다.
 
 #### Distribution
 
-The distribution `Scatter-Gather` variant is based on the `RecipientListRouter` (see [`RecipientListRouter`](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/router.html#router-implementations-recipientlistrouter)) with all available options for the `RecipientListRouter`. This is the second `ScatterGatherHandler` constructor argument. If you want to rely on only the default `correlationStrategy` for the `recipient-list-router` and the `aggregator`, you should specify `apply-sequence="true"`. Otherwise, you should supply a custom `correlationStrategy` for the `aggregator`. Unlike the `PublishSubscribeChannel` variant (the auction variant), having a `recipient-list-router` `selector` option lets filter target suppliers based on the message. With `apply-sequence="true"`, the default `sequenceSize` is supplied, and the `aggregator` can release the group correctly. The distribution option is mutually exclusive with the auction option.
+`Scatter-Gather`의 distribution 버전은 `RecipientListRouter` 기반이어서, `RecipientListRouter`에서 제공하는 모든 옵션을 사용할 수 있다 ([`RecipientListRouter`](#recipientlistrouter) 참고). `recipient-list-router`와 `aggregator`에서 디폴트 `correlationStrategy`만 사용하고 싶다면 `apply-sequence="true"`를 지정해야 한다. 그렇지 않으면 `aggregator`에서 사용할 커스텀 `correlationStrategy`를 제공해줘야 한다. `PublishSubscribeChannel` 방식(auction 버전)과는 달리, `recipient-list-router` `selector` 옵션을 사용하면 메시지를 기반으로 타겟 supplier를 필터링할 수 있다. `apply-sequence="true"`를 사용하면 디폴트 `sequenceSize`가 제공되서 `aggregator`에서 그룹을 적당히 release할 수 있다. distribution 옵션과 auction 옵션을 함께 사용할 순 없다.
 
-For both the auction and the distribution variants, the request (scatter) message is enriched with the `gatherResultChannel` header to wait for a reply message from the `aggregator`.
+auction과 distribution 방식 모두, `aggregator`의 응답 메시지를 기다릴 수 있도록 요청 (scatter) 메시지에 `gatherResultChannel` 헤더를 추가한다.
 
-By default, all suppliers should send their result to the `replyChannel` header (usually by omitting the `output-channel` from the ultimate endpoint). However, the `gatherChannel` option is also provided, letting suppliers send their reply to that channel for the aggregation.
+기본적으로 모든 supplier는 `replyChannel` 헤더로 결과를 전송해야 한다 (보통은 최종 엔드포인트에서 `output-channel`을 생략하는 식으로). 하지만 `gatherChannel` 옵션도 제공하므로, supplier는 이 채널에 응답을 보내 집계할 수도 있다.
 
 ### 8.7.2. Configuring a Scatter-Gather Endpoint
 
-The following example shows Java configuration for the bean definition for `Scatter-Gather`:
+다음은 `Scatter-Gather` 빈을 정의하는 자바 설정 예시다:
 
 ```java
 @Bean
@@ -1997,9 +1998,9 @@ public MessageHandler scatterGatherDistribution() {
 }
 ```
 
-In the preceding example, we configure the `RecipientListRouter` `distributor` bean with `applySequence="true"` and the list of recipient channels. The next bean is for an `AggregatingMessageHandler`. Finally, we inject both those beans into the `ScatterGatherHandler` bean definition and mark it as a `@ServiceActivator` to wire the scatter-gather component into the integration flow.
+위 예시에선 `applySequence="true"`와 recipient 채널 리스트를 사용해 `RecipientListRouter` `distributor` 빈을 설정하고 있다. 다음 보이는 빈은 `AggregatingMessageHandler`다. 마지막으로 이 두 가지 빈을 `ScatterGatherHandler` 빈 정의에 주입하고 `@ServiceActivator`로 마킹해서, 이 scatter-gather 컴포넌트를 인티그레이션 플로우에 연결한다.
 
-The following example shows how to configure the `<scatter-gather>` endpoint by using the XML namespace:
+다음은 XML 네임스페이스를 이용해 `<scatter-gather>` 엔드포인트를 설정하는 예시다:
 
 ```xml
 <scatter-gather
@@ -2018,31 +2019,31 @@ The following example shows how to configure the `<scatter-gather>` endpoint by 
 			<gatherer/>  <!-- (13) -->
 </scatter-gather>
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> The id of the endpoint. The `ScatterGatherHandler` bean is registered with an alias of `id + '.handler'`. The `RecipientListRouter` bean is registered with an alias of `id + '.scatterer'`. The `AggregatingMessageHandler`bean is registered with an alias of `id + '.gatherer'`. Optional. (The `BeanFactory` generates a default `id` value.)</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> Lifecycle attribute signaling whether the endpoint should be started during application context initialization. In addition, the `ScatterGatherHandler` also implements `Lifecycle` and starts and stops `gatherEndpoint`, which is created internally if a `gather-channel` is provided. Optional. (The default is `true`.)</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> The channel on which to receive request messages to handle them in the `ScatterGatherHandler`. Required.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> The channel to which the `ScatterGatherHandler` sends the aggregation results. Optional. (Incoming messages can specify a reply channel themselves in the `replyChannel` message header).</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> The channel to which to send the scatter message for the auction scenario. Optional. Mutually exclusive with the `<scatterer>` sub-element.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> The channel on which to receive replies from each supplier for the aggregation. It is used as the `replyChannel` header in the scatter message. Optional. By default, the `FixedSubscriberChannel` is created.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> The order of this component when more than one handler is subscribed to the same `DirectChannel` (use for load balancing purposes). Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> Specifies the phase in which the endpoint should be started and stopped. The startup order proceeds from lowest to highest, and the shutdown order is from highest to lowest. By default, this value is `Integer.MAX_VALUE`, meaning that this container starts as late as possible and stops as soon as possible. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> The timeout interval to wait when sending a reply `Message` to the `output-channel`. By default, the send blocks for one second. It applies only if the output channel has some 'sending' limitations — for example, a `QueueChannel` with a fixed 'capacity' that is full. In this case, a `MessageDeliveryException` is thrown. The `send-timeout` is ignored for `AbstractSubscribableChannel` implementations. For `group-timeout(-expression)`, the `MessageDeliveryException` from the scheduled expire task leads this task to be rescheduled. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> Lets you specify how long the scatter-gather waits for the reply message before returning. By default, it waits indefinitely. 'null' is returned if the reply times out. Optional. It defaults to `-1`, meaning to wait indefinitely.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> Specifies whether the scatter-gather must return a non-null value. This value is `true` by default. Consequently, a `ReplyRequiredException` is thrown when the underlying aggregator returns a null value after `gather-timeout`. Note, if `null` is a possibility, the `gather-timeout` should be specified to avoid an indefinite wait.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> The `<recipient-list-router>` options. Optional. Mutually exclusive with `scatter-channel` attribute.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> The `<aggregator>` options. Required.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 이 엔드포인트의 ID.<br>`ScatterGatherHandler` 빈은 `id + '.handler'`라는 alias와 함께 등록된다.<br>`RecipientListRouter` 빈은 `id + '.scatterer'`라는 alias로 등록된다.<br>`AggregatingMessageHandler` 빈은 `id + '.gatherer'`라는 alias로 등록된다.<br>생략할 수 있다.<br>(`BeanFactory`가 디폴트 `id` 값을 생성해준다.)</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 애플리케이션 컨텍스트를 초기화할 때 이 엔드포인트를 시작해야 하는지를 나타내는 라이프사이클 속성.<br>참고로, `ScatterGatherHandler`는 `Lifecycle`도 구현하고 있으며, `gather-channel`을 제공하면 내부적으로 생성하는 `gatherEndpoint`를 시작하고 중지한다.<br>생략할 수 있다.<br>(디폴트는 `true`다.)</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `ScatterGatherHandler`로 처리할 요청 메시지를 수신하는 채널.<br>필수 값이다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `ScatterGatherHandler`가 집계 결과를 전송할 채널.<br>생략할 수 있다.<br>(전달받는 메시지 자체에서 `replyChannel` 헤더를 이용해 응답 채널을 지정할 수 있다.)</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> auction 시나리오에서 scatter 메시지를 전송할 채널.<br>생략할 수 있다.<br>하위 요소 `<scatterer>`와 함께 사용할 수 없다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 집계를 위해 각 supplier로부터 응답을 수신할 채널.<br>scatter 메시지의 `replyChannel` 헤더로 사용한다.<br>생략할 수 있다.<br>기본적으로 `FixedSubscriberChannel`이 만들어진다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 둘 이상의 핸들러가 같은 `DirectChannel`을 구독하는 경우를 위한 이 컴포넌트의 순서 (로드 밸런싱 용도).<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> 이 엔드포인트를 시작하고 중지해야 하는 phase를 지정한다.<br>시작은 제일 낮은 값에서부터 제일 높은 값 순서로 진행하며, 종료는 높은 값에서 낮은 값 순이다.<br>기본적으로 이 값은 `Integer.MAX_VALUE`로, 이 컨테이너는 가능한 한 늦게 시작하며, 중지는 가능한 한 빨리 진행한다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> 응답 `Message`를 `output-channel`로 전송할 때 대기하는 타임아웃 간격.<br>기본적으론 전송하는 1초 동안 블로킹한다.<br>고정 'capacity'를 사용하는 `QueueChannel`같이, '전송'에 제한이 있는 출력 채널을 사용할 때만 적용된다.<br>타이아웃이 발생하면 `MessageDeliveryException`을 던진다.<br>`AbstractSubscribableChannel`의 구현체들은 `send-timeout`을 무시한다.<br>`group-timeout(-expression)`의 경우 예약된 expire 태스크에서 `MessageDeliveryException`이 발생하면 해당 태스크를 다시 스케줄링한다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> scatter-gather가 응답 메시지를 반환하기 전 대기할 시간을 지정할 수 있다.<br>기본적으로 무한정 대기한다.<br>응답 시간을 초과하면 'null'을 반환한다.<br>생략할 수 있다.<br>기본값은 무기한 대기를 뜻하는 `-1`이다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> scatter-gather가 반드시 null이 아닌 값을 반환해야 하는지 여부를 지정한다.<br>기본값은 `true`다.<br>따라서 내부 aggregator가 `gather-timeout`이 지나고 나서 null 값을 반환하면 `ReplyRequiredException`이 발생한다.<br>`null`을 반환할 수 있다면, `gather-timeout`을 지정해야 무한정 대기하지 않는다는 점에 주의하자.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> `<recipient-list-router>` 옵션들.<br>생략할 수 있다.<br>`scatter-channel` 속성과는 함께 사용할 수 없다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> `<aggregator>` 옵션들.<br>필수 값이다.</small>
 
 ### 8.7.3. Error Handling
 
-Since Scatter-Gather is a multi request-reply component, error handling has some extra complexity. In some cases, it is better to just catch and ignore downstream exceptions if the `ReleaseStrategy` allows the process to finish with fewer replies than requests. In other cases something like a “compensation message” should be considered for returning from sub-flow, when an error happens.
+Scatter-Gather는 여러 개의 request와 reply를 다루는 컴포넌트기 때문에 에러를 핸들링하기가 조금 더 복잡한 편이다. `ReleaseStrategy`에서 요청보다 응답이 적어도 처리를 종료하도록 만든다면, 경우에 따라서는 다운스트림에서 발생한 예외를 잡아 단순히 무시하는 게 더 좋을 수도 있다. 그렇지 않을 땐 에러가 발생하면 하위 플로우에서 "보상 메시지<sup>compensation message</sup>"같은 걸 반환하는 것을 고려해봐야 한다.
 
-Every async sub-flow should be configured with a `errorChannel` header for the proper error message sending from the `MessagePublishingErrorHandler`. Otherwise, an error will be sent to the global `errorChannel` with the common error handling logic. See [Error Handling](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/error-handling.html#error-handling) for more information about async error processing.
+하위 플로우 중 비동기<sup>async</sup> 플로우가 있다면 전부 `errorChannel` 헤더를 설정해야 `MessagePublishingErrorHandler`가 적절한 에러 메시지를 전송할 수 있다. 그렇지 않으면 공통 에러 핸들링 로직을 통해 글로벌 `errorChannel`로 에러를 전송한다. 비동기 에러 처리에 대한 자세한 내용은 [에러 핸들링](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/error-handling.html#error-handling)을 참고해라.
 
-Synchronous flows may use an `ExpressionEvaluatingRequestHandlerAdvice` for ignoring the exception or returning a compensation message. When an exception is thrown from one of the sub-flows to the `ScatterGatherHandler`, it is just re-thrown to upstream. This way all other sub-flows will work for nothing and their replies are going to be ignored in the `ScatterGatherHandler`. This might be an expected behavior sometimes, but in most cases it would be better to handle the error in the particular sub-flow without impacting all others and the expectations in the gatherer.
+동기<sup>Synchronous</sup> 플로우는 `ExpressionEvaluatingRequestHandlerAdvice`를 사용해 예외를 무시하거나 보상 메시지를 반환할 수 있다. 하위 플로우 중 하나가 `ScatterGatherHandler`로 예외를 던지면 업스트림으로 다시 던진다. 이처럼 다른 하위 플로우가 응답을 하더라도 `ScatterGatherHandler`에선 그 응답을 무시하게 된다. 원하는 동작일 수도 있지만, 대부분의 경우 다른 플로우와 gatherer 동작에 영향을 주지 않도록 하위 플로우에서 발생한 에러를 처리해주는 것이 좋다.
 
-Starting with version 5.1.3, the `ScatterGatherHandler` is supplied with the `errorChannelName` option. It is populated to the `errorChannel` header of the scatter message and is used in the when async error happens or can be used in the regular synchronous sub-flow for directly sending an error message.
+5.1.3 버전부터 `ScatterGatherHandler`는 `errorChannelName` 옵션과 함께 제공된다. 이 값은 scatter 메시지의 `errorChannel` 헤더에 채워지며, 비동기 에러가 발생할 때 사용하거나, 일반적인 동기식 하위 플로우에서 에러 메시지를 직접 전송할 때 사용할 수 있다.
 
-The sample configuration below demonstrates async error handling by returning a compensation message:
+다음은 보상 메시지를 반환해 에러를 비동기로 처리하는 예시다:
 
 ```java
 @Bean
@@ -2069,35 +2070,36 @@ public Message<?> processAsyncScatterError(MessagingException payload) {
 }
 ```
 
-To produce a proper reply, we have to copy headers (including `replyChannel` and `errorChannel`) from the `failedMessage` of the `MessagingException` that has been sent to the `scatterGatherErrorChannel` by the `MessagePublishingErrorHandler`. This way the target exception is returned to the gatherer of the `ScatterGatherHandler` for reply messages group completion. Such an exception `payload` can be filtered out in the `MessageGroupProcessor` of the gatherer or processed other way downstream, after the scatter-gather endpoint.
+적절한 응답을 생성하려면, `MessagePublishingErrorHandler`가 `scatterGatherErrorChannel`로 전송한 `MessagingException`에서 `failedMessage`의 헤더를 복사해야 한다 (`replyChannel`, `errorChannel` 포함). 이렇게 하면 응답 메시지 그룹을 완료할 수 있도록 `ScatterGatherHandler` gatherer로 타겟 exception이 반환된다. 이런 exception `payload`는 gatherer의 `MessageGroupProcessor`에서 필터링하거나, scatter-gather 엔드포인트 이후 다운스트림에서 다른 식으로 처리할 수 있다.
 
-> Before sending scattering results to the gatherer, `ScatterGatherHandler` reinstates the request message headers, including reply and error channels if any. This way errors from the `AggregatingMessageHandler` are going to be propagated to the caller, even if an async hand off is applied in scatter recipient subflows. For successful operation, a `gatherResultChannel`, `originalReplyChannel` and `originalErrorChannel` headers must be transferred back to replies from scatter recipient subflows. In this case a reasonable, finite `gatherTimeout` must be configured for the `ScatterGatherHandler`. Otherwise it is going to be blocked waiting for a reply from the gatherer forever, by default.
+> `ScatterGatherHandler`는 scatter 결과를 gatherer에게 보내기 전에 reply, error 채널을 포함한 (있다면) 요청 메시지 헤더를 복원한다. 이렇게 하면 하위 플로우(scatter 수신자<sup>recipient</sup>)와 비동기로 메시지를 주고 받더라도 호출자에게 `AggregatingMessageHandler`에서 발생한 에러가 전파된다. 제대로 동작하려면 반드시 하위 플로우(scatter 수신자<sup>recipient</sup>)가 보내는 응답으로 `gatherResultChannel`, `originalReplyChannel`, `originalErrorChannel` 헤더가 전달돼야 한다. 이땐 반드시 `ScatterGatherHandler`에 적당한 `gatherTimeout`을 설정해줘야 한다 (유한한 값으로). 그렇지 않으면 디폴트 동작에 따라 gatherer의 응답을 한없이 기다리며 블로킹된다.
 
 ---
 
 ## 8.8. Thread Barrier
 
-Sometimes, we need to suspend a message flow thread until some other asynchronous event occurs. For example, consider an HTTP request that publishes a message to RabbitMQ. We might wish to not reply to the user until the RabbitMQ broker has issued an acknowledgment that the message was received.
+간혹 다른 비동기 이벤트가 발생할 때까지 메시지 플로우 스레드를 잠시 중단해야 할 때가 있다. 예를 들어서 HTTP 요청을 통해 RabbitMQ에 메시지를 발행한다고 생각해보자. RabbitMQ 브로커가 메시지를 수신했다고 승인<sup>acknowledgment</sup>하기 전까진 사용자에게 응답을 전송하지 않길 바랄 수 있다.
 
-In version 4.2, Spring Integration introduced the `<barrier/>` component for this purpose. The underlying `MessageHandler` is the `BarrierMessageHandler`. This class also implements `MessageTriggerAction`, in which a message passed to the `trigger()` method releases a corresponding thread in the `handleRequestMessage()` method (if present).
+Spring Integration은 4.2 버전에서 이런 용도로 사용할 수 있는 `<barrier/>` 컴포넌트를 도입했다. 내부에서 사용하는 `MessageHandler`는 `BarrierMessageHandler`다. 이 클래스는 `MessageTriggerAction`도 구현하고 있는데, 여기 있는 `trigger()` 메소드에 메시지가 전달되면 `handleRequestMessage()` 메소드에서 그에 맞는 스레드를 (있으면) 놓아준다<sup>release</sup>.
 
-The suspended thread and trigger thread are correlated by invoking a `CorrelationStrategy` on the messages. When a message is sent to the `input-channel`, the thread is suspended for up to `requestTimeout` milliseconds, waiting for a corresponding trigger message. The default correlation strategy uses the `IntegrationMessageHeaderAccessor.CORRELATION_ID` header. When a trigger message arrives with the same correlation, the thread is released. The message sent to the `output-channel` after release is constructed by using a `MessageGroupProcessor`. By default, the message is a `Collection<?>` of the two payloads, and the headers are merged by using a `DefaultAggregatingMessageGroupProcessor`.
-
-<blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>If the <code class="highlighter-rouge">trigger()</code> method is invoked first (or after the main thread times out), it is suspended for up to <code class="highlighter-rouge">triggerTimeout</code> waiting for the suspending message to arrive. If you do not want to suspend the trigger thread, consider handing off to a <code class="highlighter-rouge">TaskExecutor</code> instead so that its thread is suspended instead.</p>
-</blockquote>
-
-> Prior version 5.4, there was only one `timeout` option for both request and trigger messages, but in some use-case it is better to have different timeouts for those actions. Therefore `requestTimeout` and `triggerTimeout` options have been introduced.
-
-The `requires-reply` property determines the action to take if the suspended thread times out before the trigger message arrives. By default, it is `false`, which means the endpoint returns `null`, the flow ends, and the thread returns to the caller. When `true`, a `ReplyRequiredException` is thrown.
-
-You can call the `trigger()` method programmatically (obtain the bean reference by using the name, `barrier.handler` — where `barrier` is the bean name of the barrier endpoint). Alternatively, you can configure an `<outbound-channel-adapter/>` to trigger the release.
+일시 중단 중인 스레드<sup>suspended thread</sup>와 트리거 스레드<sup>trigger thread</sup>는 메시지로 `CorrelationStrategy`를 호출해서 연계한다. `input-channel`로 메시지가 전달되면 이 스레드는 그에 상응하는 트리거 메시지를 기다리며 최대 `requestTimeout` 밀리세컨드 동안 일시 중단된다. 디폴트 correlation 전략은 `IntegrationMessageHeaderAccessor.CORRELATION_ID` 헤더를 사용한다. 동일한 correlation을 가진 트리거 메시지가 도착하면 이 스레드를 놓아준다<sup>release</sup>. 스레드를 해제하고 나서 `output-channel`로 전송하는 메시지는 `MessageGroupProcessor`를 사용해 구성한다. 이 메시지는 기본적으로 두 개의 페이로드를 가진 `Collection<?>`이며, 헤더는 `DefaultAggregatingMessageGroupProcessor`를 사용해 병합한다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>Only one thread can be suspended with the same correlation. The same correlation can be used multiple times but only once concurrently. An exception is thrown if a second thread arrives with the same correlation.</p>
+  <p>스레드를 일시 중단하기도 전에 <code class="highlighter-rouge">trigger()</code> 메소드가 먼저 호출되면 (또는 메인 스레드에서 타임아웃 발생 이후 호출되면), 최대 <code class="highlighter-rouge">triggerTimeout</code> 동안 일시 중단을 유발했어야할 메시지가 도착하기를 기다린다. 트리거 스레드를 일시 중단하고 싶지 않다면, 대신 <code class="highlighter-rouge">TaskExecutor</code>에 전달해서 여기 있는 스레드가 일시 중단되도록 하는 것도 괜찮다.</p>
 </blockquote>
 
-The following example shows how to use a custom header for correlation:
+
+> 5.4 버전 이전에는 요청 메시지와 트리거 메시지에 타임아웃을 지정할 땐 `timeout` 옵션 하나를 공유했었지만, 사용하기에 따라 각각에 타임아웃 값을 다르게 설정하는 게 더 좋은 경우가 있었다. 따라서 `requestTimeout`과 `triggerTimeout` 옵션을 새로 도입했다.
+
+`requires-reply` 프로퍼티는 일시 중단 중인 스레드가 트리거 메시지 도착 전에 타임아웃된 경우 수행할 일을 결정한다. 기본값은 `false`로, 엔드포인트는 `null`을 리턴해 플로우를 종료하고, 스레드는 호출자로 반환된다. `true`일 땐 `ReplyRequiredException`이 발생한다.
+
+`trigger()` 메소드는 코드에서 직접 호출할 수 있다 (`barrier.handler`라는 이름으로 빈 참조를 얻어서 — 이때 `barrier`는 barrier 엔드포인트의 빈 이름이다). 또는 `<outbound-channel-adapter/>`를 설정해서 release를 트리거해도 된다.
+
+<blockquote style="background-color: #fbebf3; border-color: #d63583;">
+  <p>하나의 correlation은 하나의 스레드만 중단할 수 있다. 같은 correlation을 여러 번 사용할 수는 있지만 동시에 사용하는 것은 안 된다. 같은 correlation으로 스레드가 두 번 도착하면 예외가 발생한다.</p>
+</blockquote>
+
+다음은 correlation에 커스텀 헤더를 사용하는 예시다:
 
 <div class="switch-language-wrapper java xml">
 <span class="switch-language java">Java</span>
@@ -2132,6 +2134,6 @@ public MessageHandler releaser(MessageTriggerAction barrier) {
 <int:outbound-channel-adapter channel="release" ref="barrier1.handler" method="trigger" />
 ```
 
-Depending on which one has a message arrive first, either the thread sending a message to `in` or the thread sending a message to `release` waits for up to ten seconds until the other message arrives. When the message is released, the `out` channel is sent a message that combines the result of invoking the custom `MessageGroupProcessor` bean, named `myOutputProcessor`. If the main thread times out and a trigger arrives later, you can configure a discard channel to which the late trigger is sent.
+어느 쪽에 먼저 메시지가 도착했는지에 따라 `in`에 메시지를 전송하는 스레드 혹은 `release`에 메시지를 전송하는 스레드가 상대 메시지가 도착할 때까지 최대 10초 동안 대기하게 된다. 메시지가 release되면 `myOutputProcessor`라는 커스텀 `MessageGroupProcessor` 빈을 실행해 합친 메시지를 `out` 채널로 전송한다. 메인 스레드가 타임아웃되고 나서 트리거가 도착하면, 뒤늦게 도착한 트리거를 전송할 discard 채널을 설정할 수 있다.
 
-For an example of this component, see the [barrier sample application](https://github.com/spring-projects/spring-integration-samples/tree/main/basic/barrier).
+이 컴포넌트를 사용하는 예제가 궁금하다면, [barrier 샘플 애플리케이션](https://github.com/spring-projects/spring-integration-samples/tree/main/basic/barrier)을 확인해봐라.

@@ -8,7 +8,7 @@ image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/index-single.html#whats-new-part
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#whats-new-part
 parent: What’s New?
 isParent: true
 parentUrl: /Spring%20Integration/whats-new/
@@ -19,5 +19,5 @@ priority: 0.3
 
 Spring Integration에 이미 익숙한 사람들도 있기 때문에, 이 챕터에선 5.5 버전에서 추가된 새 기능들만 따로 간단하게 요약해본다.
 
-이전 버전에서 도입됐던 변경 사항이나 기능들을 알고 싶다면 [변경 히스토리](https://docs.spring.io/spring-integration/docs/5.5.8/reference/html/history.html#history)를 확인해봐라.
+이전 버전에서 도입됐던 변경 사항이나 기능들을 알고 싶다면 [변경 히스토리](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/history.html#history)를 확인해봐라.
 

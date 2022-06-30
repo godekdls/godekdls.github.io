@@ -55,15 +55,15 @@ parentUrl: /Spring%20Integration/core-messaging/
 
 ## 9.1. Transformer
 
-Message transformers play a very important role in enabling the loose-coupling of message producers and message consumers. Rather than requiring every message-producing component to know what type is expected by the next consumer, you can add transformers between those components. Generic transformers, such as one that converts a `String` to an XML Document, are also highly reusable.
+메시지 트랜스포머는 메시지 프로듀서와 메시지 컨슈머가 느슨한 결합을 유지하는 데 매우 중요한 역할을 한다. 메시지를 생산하는 구성 요소들이 전부 다음 컨슈머가 기대하는 타입을 알아야 하기보단, 중간에 트랜스포머를 추가해주면 된다. `String`을 XML 문서로 변환하는 트랜스포머 등, 범용 트랜스포머도 쉽게 재사용할 수 있다.
 
-For some systems, it may be best to provide a [canonical data model](https://www.enterpriseintegrationpatterns.com/CanonicalDataModel.html), but Spring Integration’s general philosophy is not to require any particular format. Rather, for maximum flexibility, Spring Integration aims to provide the simplest possible model for extension. As with the other endpoint types, the use of declarative configuration in XML or Java annotations enables simple POJOs to be adapted for the role of message transformers. The rest of this chapter describes these configuration options.
+시스템에 따라 [표준<sup>canonical</sup> 데이터 모델](https://www.enterpriseintegrationpatterns.com/CanonicalDataModel.html)을 제공하는 게 가장 좋을 수도 있지만, Spring Integration의 전반적인 철학은 특정한 형식을 요구하지 않는 것이다. Spring Integration은 그보단 확장해서 쓸 수 있도록 최대한 간단한 모델을 제공해서 유연성을 극대화하는 것을 목표로 삼는다. 다른 엔드포인트 유형과 마찬가지로 XML이나 Java 어노테이션 설정을 선언해주면 단순한 POJO를 메시지 트랜스포머의 역할에 맞게 조정할 수 있다. 이 챕터에선 관련 설정 옵션들에 대해 설명한다.
 
-> For the sake of maximizing flexibility, Spring does not require XML-based message payloads. Nevertheless, the framework does provide some convenient transformers for dealing with XML-based payloads if that is indeed the right choice for your application. For more information on those transformers, see [XML Support - Dealing with XML Payloads](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml).
+> 스프링은 XML 기반 메시지 페이로드를 요구하지 않는다. 유연성을 끌어올리려는 목적이지만, 그럼에도 불구하고 스프링 프레임워크는 XML 기반 페이로드를 처리할 수 있는 간편한 트랜스포머를 몇 개 제공한다. 따라서 애플리케이션에 필요하다고 판단되면 직접 선택할 수 있다. 관련 트랜스포머 대한 정보는 [XML 지원 - XML 페이로드 처리하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml)를 참고해라.
 
 ### 9.1.1. Configuring a Transformer with XML
 
-The `<transformer>` element is used to create a message-transforming endpoint. In addition to `input-channel` and `output-channel` attributes, it requires a `ref` attribute. The `ref` may either point to an object that contains the `@Transformer` annotation on a single method (see [Configuring a Transformer with Annotations](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#transformer-annotation)), or it may be combined with an explicit method name value provided in the `method` attribute.
+메시지를 변환하는 엔드포인트를 생성할 때는 `<transformer>` 요소를 사용한다. 이 요소에선 `input-channel`과 `output-channel` 속성 외에도 `ref` 속성이 필요하다. `ref`는 하나의 메소드에 `@Transformer` 어노테이션을 선언하고 있는 객체를 가리키거나 ([어노테이션을 사용해 트랜스포머 설정하기](#914-configuring-a-transformer-with-annotations) 참고), `method` 속성에 메소드명을 함께 명시할 수도 있다.
 
 ```xml
 <int:transformer id="testTransformer" ref="testTransformerBean" input-channel="inChannel"
@@ -71,7 +71,7 @@ The `<transformer>` element is used to create a message-transforming endpoint. I
 <beans:bean id="testTransformerBean" class="org.foo.TestTransformer" />
 ```
 
-Using a `ref` attribute is generally recommended if the custom transformer handler implementation can be reused in other `<transformer>` definitions. However, if the custom transformer handler implementation should be scoped to a single definition of the `<transformer>`, you can define an inner bean definition, as the following example shows:
+커스텀 트랜스포머 핸들러 구현체를 다른 `<transformer>` 정의에서 재사용할 수 있다면 일반적으로 `ref` 속성을 사용하는 것이 좋다. 하지만 커스텀 트랜스포머 핸들러 구현체의 스코프를 단일 `<transformer>` 단일 정의 내로 한정하고 싶다면, 다음 예제와 같이 내부 빈 정의를 제공해도 된다:
 
 ```xml
 <int:transformer id="testTransformer" input-channel="inChannel" method="transform"
@@ -80,19 +80,18 @@ Using a `ref` attribute is generally recommended if the custom transformer handl
 </transformer>
 ```
 
-> Using both the `ref` attribute and an inner handler definition in the same `<transformer>` configuration is not allowed, as it creates an ambiguous condition and results in an exception being thrown.
+> 동일한 `<transformer>` 설정에서 `ref` 속성과 내부 핸들러 정의를 둘 다 사용하는 것은 허용하지 않는다. 둘 다 사용하면 모호한 조건이 만들어져 예외가 발생한다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>If the <code class="highlighter-rouge">ref</code> attribute references a bean that extends <code class="highlighter-rouge">AbstractMessageProducingHandler</code> (such as transformers provided by the framework itself), the configuration is optimized by injecting the output channel into the handler directly. In this case, each <code class="highlighter-rouge">ref</code> must be to a separate bean instance (or a <code class="highlighter-rouge">prototype</code>-scoped bean) or use the inner <code class="highlighter-rouge">&lt;bean/&gt;</code> configuration type. If you inadvertently reference the same message handler from multiple beans, you get a configuration exception.</p>
+  <p><code class="highlighter-rouge">ref</code> 속성으로 <code class="highlighter-rouge">AbstractMessageProducingHandler</code>를 상속한 빈을 참조하는 경우 (프레임워크에서 자체적으로 제공하는 트랜스포머들), 출력 채널을 핸들러에 직접 주입하는 식으로 최적화된다. 이때는 각 <code class="highlighter-rouge">ref</code> 속성마다 별도 빈 인스턴스(또는 <code class="highlighter-rouge">prototype</code> 스코프 빈)를 참조하거나, 내부 <code class="highlighter-rouge">&lt;bean/&gt;</code> 설정을 이용해야 한다. 무심코 여러 빈에서 동일한 메시지 핸들러를 참조하면 설정 예외를 만나게될 거다.</p>
 </blockquote>
+POJO를 사용할 때는, 변환에 사용할 메소드는 인바운드 메시지의 `Message` 타입을 받을 수도 있고, 페이로드 타입을 받을 수도 있다. 또한 파라미터 어노테이션 `@Header`를 사용하면 메시지 헤더들을 개별적으로 받을 수 있고, `@Headers`를 이용하면 전체 헤더가 들어있는 맵을 받을 수 있다. 메소드의 반환 값은 어떤 타입이어도 상관 없다. `Message` 자체를 반환하면 트랜스포머의 출력 채널로 그대로 전달된다.
 
-When using a POJO, the method that is used for transformation may expect either the `Message` type or the payload type of inbound messages. It may also accept message header values either individually or as a full map by using the `@Header` and `@Headers` parameter annotations, respectively. The return value of the method can be any type. If the return value is itself a `Message`, that is passed along to the transformer’s output channel.
-
-As of Spring Integration 2.0, a message transformer’s transformation method can no longer return `null`. Returning `null` results in an exception, because a message transformer should always be expected to transform each source message into a valid target message. In other words, a message transformer should not be used as a message filter, because there is a dedicated `<filter>` option for that. However, if you do need this type of behavior (where a component might return `null` and that should not be considered an error), you could use a service activator. Its `requires-reply` value is `false` by default, but that can be set to `true` in order to have exceptions thrown for `null` return values, as with the transformer.
+메시지 트랜스포머의 변환 메소드는 Spring Integration 2.0부터 더 이상 `null`을 반환할 수 없다. 메시지 트랜스포머는 항상 각 소스 메시지를 유효한 타겟 메시지로 변환해야 하기 때문에, `null`을 반환하면 예외가 발생한다. 다른 말로 하면 메시지 트랜스포머를 메시지 필터로 사용해선 안 된다는 뜻이다. 전용 `<filter>` 옵션이 따로 있기도 하다. 하지만 이런 식의 동작이 필요하다면 (구성 요소가 `null`을 반환할 수 있고, 에러로 간주해서는 안 된다면), 서비스 activator를 활용하면 된다. 서비스 activator의 `requires-reply` 값은 기본적으로 `false`이지만, `true`로 설정하면 트랜스포머에서처럼 `null` 반환 시 예외를 발생시킬 수 있다.
 
 ### 9.1.2. Transformers and Spring Expression Language (SpEL)
 
-Like routers, aggregators, and other components, as of Spring Integration 2.0, transformers can also benefit from [SpEL support](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions) whenever transformation logic is relatively simple. The following example shows how to use a SpEL expression:
+라우터, 애그리게이터나 다른 구성 요소들과 마찬가지로 Spring Integration 2.0에선 트랜스포머의 변환 로직이 비교적 단순하다면 언제든지 [SpEL 기능](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions)을 활용할 수 있다. 다음은 SpEL 표현식을 사용하는 방법을 보여주는 예시다:
 
 ```xml
 <int:transformer input-channel="inChannel"
@@ -100,37 +99,37 @@ Like routers, aggregators, and other components, as of Spring Integration 2.0, t
 	expression="payload.toUpperCase() + '- [' + T(System).currentTimeMillis() + ']'"/>
 ```
 
-The preceding example transforms the payload without writing a custom transformer. Our payload (assumed to be a `String`) is upper-cased, concatenated with the current timestamp, and has some formatting applied.
+위 예시에선 커스텀 트랜스포머를 작성하지 않고도 페이로드를 변환한다. 여기서 페이로드(`String`으로 가정한다)는 대문자로 변환되고, 포맷에 맞게 현재 타임스탬프와 연결한다.
 
 ### 9.1.3. Common Transformers
 
-Spring Integration provides a few transformer implementations.
+Spring Integration은 몇 가지 트랜스포머 구현체를 제공한다.
 
 #### Object-to-String Transformer
 
-Because it is fairly common to use the `toString()` representation of an `Object`, Spring Integration provides an `ObjectToStringTransformer` whose output is a `Message` with a String `payload`. That `String` is the result of invoking the `toString()` operation on the inbound Message’s payload. The following example shows how to declare an instance of the object-to-string transformer:
+`Object`를 `toString()`으로 변환하는 일은 꽤 흔하기 때문에 Spring Integration은 String `payload`를 가진 `Message`를 출력하는 `ObjectToStringTransformer`를 제공한다. 이때 `String`은 인바운드 메시지의 페이로드에서 `toString()` 연산을 호출한 결과다. 다음은 object-to-string 트랜스포머 인스턴스를 선언하는 방법을 보여주는 예시다:
 
 ```xml
 <int:object-to-string-transformer input-channel="in" output-channel="out"/>
 ```
 
-A potential use for this transformer would be sending some arbitrary object to the 'outbound-channel-adapter' in the `file` namespace. Whereas that channel adapter only supports `String`, byte-array, or `java.io.File` payloads by default, adding this transformer immediately before the adapter handles the necessary conversion. That works fine as long as the result of the `toString()` call is what you want to be written to the file. Otherwise, you can provide a custom POJO-based transformer by using the generic 'transformer' element shown previously.
+이 트랜스포머는 `file` 네임스페이스의 'outbound-channel-adapter'에 임의의 객체를 전송할 때도 활용할 수 있다. 이 채널 어댑터는 기본적으로 `String`, 바이트 배열, `java.io.File` 페이로드만 지원하지만, 어댑터가 데이터를 변환하기 직전에 이 트랜스포머를 추가한다. `toString()`을 호출한 결과가 파일에 쓰고자한 것과 같다면 문제 없이 잘 동작한다. 그렇지 않다면 앞에서 설명한 범용 'transformer' 요소를 사용해 커스텀 POJO 기반 트랜스포머를 제공하면 된다.
 
-> When debugging, this transformer is not typically necessary, since the `logging-channel-adapter` is capable of logging the message payload. See [Wire Tap](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/channel.html#channel-wiretap) for more detail.
+> 디버깅을 진행할 때라면 `logging-channel-adapter`가 메시지 페이로드를 기록할 수 있기 때문에 일반적으로 이 트랜스포머는 필요하지 않다. 자세한 내용은 [Wire Tap](../messaging-channels/#wire-tap)을 참고해라.
 
-> The object-to-string transformer is very simple. It invokes `toString()` on the inbound payload. Since Spring Integration 3.0, there are two exceptions to this rule:
-> 
-> - If the payload is a `char[]`, it invokes `new String(payload)`.
-> - If the payload is a `byte[]`, it invokes `new String(payload, charset)`, where `charset` is UTF-8 by default. The `charset` can be modified by supplying the charset attribute on the transformer.
+> object-to-string 트랜스포머는 매우 간단하다. 단순히 인바운드 페이로드에서 `toString()`을 호출한다. Spring Integration 3.0부터는 이 규칙에 두 가지 예외가 따른다:
 >
-> For more sophistication (such as selection of the charset dynamically, at runtime), you can use a SpEL expression-based transformer instead, as the following example shows:
-> 
+> - 페이로드가 `char[]`라면 `new String(payload)`을 실행한다.
+> - 페이로드가 `byte[]`라면, `new String(payload, charset)`을 실행하며, 여기서 `charset`은 기본적으로 UTF-8이다. `charset`은 트랜스포머에 charset 속성을 제공하면 수정할 수 있다.
+>
+> 좀더 정교한 동작이 필요하다면 (런타임에 charset을 동적으로 선택하는 등) object-to-string 트랜스포머 대신, 다음 예제와 같이 SpEL 표현식 기반 트랜스포머를 사용하면 된다:
+>
 > ```xml
 > <int:transformer input-channel="in" output-channel="out"
-       expression="new java.lang.String(payload, headers['myCharset']" />
+>      expression="new java.lang.String(payload, headers['myCharset']" />
 > ```
 
-If you need to serialize an `Object` to a byte array or deserialize a byte array back into an `Object`, Spring Integration provides symmetrical serialization transformers. These use standard Java serialization by default, but you can provide an implementation of Spring `Serializer` or `Deserializer` strategies by using the `serializer` and `deserializer` attributes, respectively. The following example shows to use Spring’s serializer and deserializer:
+`Object`를 바이트 배열로 직렬화하거나, 바이트 배열을 다시 `Object`로 역직렬화해야 하는 경우, Spring Integration은 직렬화 트랜스포머를 각각 제공하며, 이 둘은 서로 대칭적으로 동작한다. 이 구현체들은 기본적으로 표준 자바 직렬화를 사용하지만, `serializer`와 `deserializer` 속성을 사용해 스프링 `Serializer`와 `Deserializer` 전략 구현체를 제공할 수 있다. 다음은 스프링의 serializer와 deserializer를 사용하는 예시다:
 
 ```xml
 <int:payload-serializing-transformer input-channel="objectsIn" output-channel="bytesOut"/>
@@ -140,14 +139,14 @@ If you need to serialize an `Object` to a byte array or deserialize a byte array
 ```
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>When deserializing data from untrusted sources, you should consider adding a <code class="highlighter-rouge">allow-list</code> of package and class patterns. By default, all classes are deserialized.</p>
+  <p>신뢰할 수 없는 소스에서 받은 데이터를 역직렬화한다면, 패키지와 클래스 패턴으로 <code class="highlighter-rouge">allow-list</code>를 추가하는 것을 고려해봐야 한다. 기본적으로는 모든 클래스로 역직렬화할 수 있다.</p>
 </blockquote>
 
 #### `Object`-to-`Map` and `Map`-to-`Object` Transformers
 
-Spring Integration also provides `Object`-to-`Map` and `Map`-to-`Object` transformers, which use the JSON to serialize and de-serialize the object graphs. The object hierarchy is introspected to the most primitive types (`String`, `int`, and so on). The path to this type is described with SpEL, which becomes the `key` in the transformed `Map`. The primitive type becomes the value.
+Spring Integration은 JSON을 사용해 객체 그래프를 직렬화, 역직렬화하는 `Object`-to-`Map` / `Map`-to-`Object` 트랜스포머도 제공한다. 객체 계층 구조는 가장 원시적인<sup>primitive</sup> 타입(`String`, `int` 등)으로 분석된다. 이 타입까지의 경로는 SpEL로 묘사하며, 이 경로가 바로 변환을 마친 `Map`의 `key`가 된다. primitive 타입은 값이 된다.
 
-Consider the following example:
+아래 예시를 생각해보자:
 
 ```java
 public class Parent{
@@ -163,15 +162,15 @@ public class Child{
 }
 ```
 
-The two classes in the preceding example are transformed to the following `Map`:
+위 예시에 있는 두 클래스는 아래와 같은 `Map`으로 변환된다:
 
 ```none
 {person.name=George, person.child.name=Jenna, person.child.nickNames[0]=Jen ...}
 ```
 
-The JSON-based `Map` lets you describe the object structure without sharing the actual types, which lets you restore and rebuild the object graph into a differently typed object graph, as long as you maintain the structure.
+JSON 기반의 `Map`을 사용하면 실제 타입을 공유하지 않아도 객체 구조를 설명할 수 있기 때문에, 구조만 유지해준다면 객체 그래프를 복원하고 또 다른 유형의 객체 그래프로 재구성할 수 있다.
 
-For example, the preceding structure could be restored back to the following object graph by using the `Map`-to-`Object` transformer:
+예를 들면, 위 구조는 `Map`-to-`Object` 트랜스포머를 사용해 다음과 같은 객체 그래프로 재복원할 수 있다:
 
 ```java
 public class Father {
@@ -187,9 +186,9 @@ public class Kid {
 }
 ```
 
-If you need to create a “structured” map, you can provide the `flatten` attribute. The default is 'true'. If you set it to 'false', the structure is a `Map` of `Map` objects.
+"구조화된<sup>structured</sup>" 맵을 생성해야 한다면 `flatten` 속성을 지정해주면 된다. 기본값은 'true'다. 'false'로 변경하면 `Map` 객체들을 가지고 있는 `Map`을 구성한다.
 
-Consider the following example:
+아래 예시를 생각해보자:
 
 ```java
 public class Parent {
@@ -205,25 +204,25 @@ public class Child {
 }
 ```
 
-The two classes in the preceding example are transformed to the following `Map`:
+위 예시에 있는 두 클래스는 아래와 같은 `Map`으로 변환된다:
 
 ```none
 {name=George, child={name=Jenna, nickNames=[Bimbo, ...]}}
 ```
 
-To configure these transformers, Spring Integration provides namespace support for Object-to-Map, as the following example shows:
+이 트랜스포머를 설정하려면 다음과 같이 Spring Integration이 제공하는 Object-to-Map 전용 네임스페이스를 사용하면 된다:
 
 ```xml
 <int:object-to-map-transformer input-channel="directInput" output-channel="output"/>
 ```
 
-You can also set the `flatten` attribute to false, as follows:
+`flatten` 속성을 설정할 땐 다음과 같이 해주면 된다:
 
 ```xml
 <int:object-to-map-transformer input-channel="directInput" output-channel="output" flatten="false"/>
 ```
 
-Spring Integration provides namespace support for Map-to-Object, as the following example shows:
+Spring Integration은 다음과 같은 Map-to-Object 전용 네임스페이스도 지원한다:
 
 ```xml
 <int:map-to-object-transformer input-channel="input"
@@ -231,7 +230,7 @@ Spring Integration provides namespace support for Map-to-Object, as the followin
                          type="org.something.Person"/>
 ```
 
-Alterately, you could use a `ref` attribute and a prototype-scoped bean, as the following example shows:
+아니면 다음 예제같이 `ref` 속성과 프로토타입 스코프 빈을 사용하는 방법도 있다:
 
 ```xml
 <int:map-to-object-transformer input-channel="inputA"
@@ -240,15 +239,15 @@ Alterately, you could use a `ref` attribute and a prototype-scoped bean, as the 
 <bean id="person" class="org.something.Person" scope="prototype"/>
 ```
 
-> The 'ref' and 'type' attributes are mutually exclusive. Also, if you use the 'ref' attribute, you must point to a 'prototype' scoped bean. Otherwise, a `BeanCreationException` is thrown.
+> 'ref' 속성과 'type' 속성은 함께 사용할 수 없다. 또한 'ref' 속성을 사용하는 경우, 반드시 'prototype' 스코프에 있는 빈을 가리켜야 한다. 그렇지 않으면 `BeanCreationException`이 발생한다.
 
-Starting with version 5.0, you can supply the `ObjectToMapTransformer` with a customized `JsonObjectMapper` — for when you need special formats for dates or nulls for empty collections (and other uses). See [JSON Transformers](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#json-transformers) for more information about `JsonObjectMapper` implementations.
+5.0 버전부터 `ObjectToMapTransformer`는 커스텀 `JsonObjectMapper`를 지정할 수 있다. 날짜에 특별한 포맷이 필요하거나, 빈 컬렉션에 null이 필요한 경우 등에 활용할 수 있다 (다른 용도로도 활용 가능). `JsonObjectMapper` 구현체에 대한 자세한 내용은 [JSON 트랜스포머](#json-transformers)를 참고해라.
 
 #### Stream Transformer
 
-The `StreamTransformer` transforms `InputStream` payloads to a `byte[]`( or a `String` if a `charset` is provided).
+`StreamTransformer`는 `InputStream` 페이로드를 `byte[]`로 변환해준다 (`charset`을 제공한 경우는 `String`으로).
 
-The following example shows how to use the `stream-transformer` element in XML:
+다음은  XML에서 `stream-transformer` 요소를 사용하는 방법을 보여주는 예시다:
 
 ```xml
 <int:stream-transformer input-channel="directInput" output-channel="output"/> <!-- byte[] -->
@@ -257,7 +256,7 @@ The following example shows how to use the `stream-transformer` element in XML:
     input-channel="charsetChannel" output-channel="output"/> <!-- String -->
 ```
 
-The following example shows how to use the `StreamTransformer` class and the `@Transformer` annotation to configure a stream transformer in Java:
+다음은 `StreamTransformer` 클래스와 `@Transformer` 어노테이션을 이용해 자바 코드로 스트림 트랜스포머를 설정하는 예시다:
 
 ```java
 @Bean
@@ -275,24 +274,27 @@ public StreamTransformer streamToString() {
 
 #### JSON Transformers
 
-Spring Integration provides Object-to-JSON and JSON-to-Object transformers. The following pair of examples show how to declare them in XML:
+Spring Integration은 Object-to-JSON / JSON-to-Object 트랜스포머를 제공한다. 아래 두 예시에선 XML로 이 트랜스포머를 선언하고 있다:
 
 ```xml
 <int:object-to-json-transformer input-channel="objectMapperInput"/>
+```
+
+```xml
 <int:json-to-object-transformer input-channel="objectMapperInput"
     type="foo.MyDomainObject"/>
 ```
 
-By default, the transformers in the preceding listing use a vanilla `JsonObjectMapper`. It is based on an implementation from the classpath. You can provide your own custom `JsonObjectMapper` implementation with appropriate options or based on a required library (such as GSON), as the following example shows:
+기본적으로 위에 있는 트랜스포머들은 순수<sup>vanilla</sup> `JsonObjectMapper`를 사용한다. 이땐 클래스패스에 있는 구현체를 기반으로 동작한다. 다음과 같이 적절한 옵션을 사용하거나 필요한 라이브러리(ex. GSON)를 추가해 커스텀 `JsonObjectMapper` 구현체를 제공할 수도 있다:
 
 ```xml
 <int:json-to-object-transformer input-channel="objectMapperInput"
     type="something.MyDomainObject" object-mapper="customObjectMapper"/>
 ```
 
-> Beginning with version 3.0, the `object-mapper` attribute references an instance of a new strategy interface: `JsonObjectMapper`. This abstraction lets multiple implementations of JSON mappers be used. Implementation that wraps [Jackson 2](https://github.com/FasterXML) is provided, with the version being detected on the classpath. The class is `Jackson2JsonObjectMapper`, respectively.
+> 3.0 버전부터 `object-mapper` 속성은 새로운 전략 인터페이스 `JsonObjectMapper`의 인스턴스를 참조한다. 이렇게 추상화한 덕분에 여러 가지 JSON 매퍼 구현체를 사용할 수 있다. [Jackson 2](https://github.com/FasterXML)를 감싸고 있는 구현체를 제공하며, 버전은 클래스패스에서 감지한다. 구현 클래스의 이름은 `Jackson2JsonObjectMapper`다.
 
-You may wish to consider using a `FactoryBean` or a factory method to create the `JsonObjectMapper` with the required characteristics. The following example shows how to use such a factory:
+`JsonObjectMapper`를 필요한 특성에 맞게 생성하기 위해 `FactoryBean`이나 팩토리 메소드를 사용하는 것을 검토하고 있을 수도 있다. 다음은 이러한 팩토리를 사용하는 예시다:
 
 ```java
 public class ObjectMapperFactory {
@@ -305,7 +307,7 @@ public class ObjectMapperFactory {
 }
 ```
 
-The following example shows how to do the same thing in XML
+다음은 XML을 이용한 동일한 설정이다:
 
 ```xml
 <bean id="customObjectMapper" class="something.ObjectMapperFactory"
@@ -313,37 +315,26 @@ The following example shows how to do the same thing in XML
 ```
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>Beginning with version 2.2, the <code class="highlighter-rouge">object-to-json-transformer</code> sets the <code class="highlighter-rouge">content-type</code> header to <code class="highlighter-rouge">application/json</code>, by default, if the input message does not already have that header.</p>
-  <p>It you wish to set the <code class="highlighter-rouge">content-type</code> header to some other value or explicitly overwrite any existing header with some value (including <code class="highlighter-rouge">application/json</code>), use the <code class="highlighter-rouge">content-type</code> attribute. If you wish to suppress the setting of the header, set the <code class="highlighter-rouge">content-type</code> attribute to an empty string (<code class="highlighter-rouge">""</code>). Doing so results in a message with no <code class="highlighter-rouge">content-type</code> header, unless such a header was present on the input message.</p>
+  <p>2.2 버전부터 <code class="highlighter-rouge">object-to-json-transformer</code>는 입력 메시지에 <code class="highlighter-rouge">content-type</code> 헤더가 없으면 기본적으로 <code class="highlighter-rouge">application/json</code>으로 설정한다.</p>
+  <p><code class="highlighter-rouge">content-type</code> 헤더를 다른 값으로 설정하거나 기존 헤더를 원하는 값(<code class="highlighter-rouge">application/json</code>도 포함해서)으로 명시적으로 재정의하고 싶다면 <code class="highlighter-rouge">content-type</code> 속성을 사용해라. 헤더 설정을 못하게 막고 싶다면 <code class="highlighter-rouge">content-type</code> 속성을 빈 문자열(<code class="highlighter-rouge">""</code>)로 설정해라. 이렇게 하면 입력 메시지에 이미 <code class="highlighter-rouge">content-type</code> 헤더가 있던게 아니라면 메시지에 이 헤더가 생기지 않는다.</p>
 </blockquote>
 
-Beginning with version 3.0, the `ObjectToJsonTransformer` adds headers, reflecting the source type, to the message. Similarly, the `JsonToObjectTransformer` can use those type headers when converting the JSON to an object. These headers are mapped in the AMQP adapters so that they are entirely compatible with the Spring-AMQP [`JsonMessageConverter`](https://docs.spring.io/spring-amqp/api/).
+3.0 버전부터 `ObjectToJsonTransformer`는 메시지에 소스 타입을 반영한 헤더를 추가한다. 마찬가지로 `JsonToObjectTransformer`는 JSON을 객체로 변환할 때 이 타입 헤더들을 활용할 수 있다. 이 헤더들은 AMQP 어댑터에 매핑되므로 Spring-AMQP [`JsonMessageConverter`](https://docs.spring.io/spring-amqp/api/)와 완전하게 호환된다.
 
-This enables the following flows to work without any special configuration:
+덕분에 특별한 설정 없이도 다음과 같은 플로우를 동작시킬 수 있다:
 
 - `…→amqp-outbound-adapter---→`
-
-- `---→amqp-inbound-adapter→json-to-object-transformer→…`
-
-  Where the outbound adapter is configured with a `JsonMessageConverter` and the inbound adapter uses the default `SimpleMessageConverter`.
-
+- `---→amqp-inbound-adapter→json-to-object-transformer→…`<br>아웃바운드 어댑터가 `JsonMessageConverter`로 설정돼있고, 인바운드 어댑터는 디폴트 `SimpleMessageConverter`를 사용하는 경우.
 - `…→object-to-json-transformer→amqp-outbound-adapter---→`
-
-- `---→amqp-inbound-adapter→…`
-
-  Where the outbound adapter is configured with a `SimpleMessageConverter` and the inbound adapter uses the default `JsonMessageConverter`.
-
+- `---→amqp-inbound-adapter→…`<br>아웃바운드 어댑터가 `SimpleMessageConverter`로 설정돼있고, 인바운드 어댑터는 디폴트 `JsonMessageConverter`를 사용하는 경우.
 - `…→object-to-json-transformer→amqp-outbound-adapter---→`
+- `---→amqp-inbound-adapter→json-to-object-transformer→`<br>두 어댑터 모두 `SimpleMessageConverter`로 설정돼있는 경우.
 
-- `---→amqp-inbound-adapter→json-to-object-transformer→`
+> 헤더를 사용해 타입을 결정할 때는 `class` 속성을 제공해선 안 된다. 이 속성을 헤더보다 우선시하기 때문이다.
 
-  Where both adapters are configured with a `SimpleMessageConverter`.
+JSON 트랜스포머 외에도 Spring Integration은 표현식에서 사용할 수 있는 내장 `#jsonPath` SpEL 함수를 제공한다. 자세한 내용은 [스프링 표현식 언어(SpEL<sup>Spring Expression Language</sup>)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel)를 참고해라.
 
-> When using the headers to determine the type, you should not provide a `class` attribute, because it takes precedence over the headers.
-
-In addition to JSON Transformers, Spring Integration provides a built-in `#jsonPath` SpEL function for use in expressions. For more information see [Spring Expression Language (SpEL)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel).
-
-Since version 3.0, Spring Integration also provides a built-in `#xpath` SpEL function for use in expressions. For more information see [#xpath SpEL Function](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xpath-spel-function).
+3.0 버전부터는 표현식에서 사용할 수 있는 `#xpath` SpEL 함수도 제공한다. 자세한 내용은 [#xpath SpEL 함수](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xpath-spel-function)를 참고해라.
 
 Beginning with version 4.0, the `ObjectToJsonTransformer` supports the `resultType` property, to specify the node JSON representation. The result node tree representation depends on the implementation of the provided `JsonObjectMapper`. By default, the `ObjectToJsonTransformer` uses a `Jackson2JsonObjectMapper` and delegates the conversion of the object to the node tree to the `ObjectMapper#valueToTree` method. The node JSON representation provides efficiency for using the `JsonPropertyAccessor` when the downstream message flow uses SpEL expressions with access to the properties of the JSON data. See [Property Accessors](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel-property-accessors) for more information.
 
@@ -399,6 +390,8 @@ As you can see, configuration of a header filter is quite simple. It is a typica
 ### 9.1.6. Codec-Based Transformers
 
 See [Codec](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/codec.html#codec).
+
+---
 
 ## 9.2. Content Enricher
 
@@ -704,6 +697,8 @@ The following example does not use a request channel at all but solely enriches 
 
 Note that the word, 'static', is used loosely here. You can still use SpEL expressions for setting those values.
 
+---
+
 ## 9.3. Claim Check
 
 In earlier sections, we covered several content enricher components that can help you deal with situations where a message is missing a piece of data. We also discussed content filtering, which lets you remove data items from a message. However, there are times when we want to hide data temporarily. For example, in a distributed system, we may receive a message with a very large payload. Some intermittent message processing steps may not need access to this payload and some may only need to access certain headers, so carrying the large message payload through each processing step may cause performance degradation, may produce a security risk, and may make debugging more difficult.
@@ -813,6 +808,8 @@ Although we rarely care about the details of the claim checks (as long as they w
 
 - `SimpleMessageStore`: An in-memory, `Map`-based implementation (the default, good for testing)
 - `JdbcMessageStore`: An implementation that uses a relational database over JDBC
+
+---
 
 ## 9.4. Codec
 
