@@ -3,7 +3,7 @@ title: Message Transformation
 category: Spring Integration
 order: 14
 permalink: /Spring%20Integration/messaging-transformation/
-description: todo
+description: 트랜스포머 인터페이스와 구현체들
 image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
@@ -38,6 +38,7 @@ parentUrl: /Spring%20Integration/core-messaging/
     * [Configuration](#configuration)
     * [Examples](#examples)
     * [How Do I Pass Only a Subset of Data to the Request Channel?](#how-do-i-pass-only-a-subset-of-data-to-the-request-channel)
+    * [How Can I Enrich Payloads that Consist of Collection Data?](#how-can-i-enrich-payloads-that-consist-of-collection-data)
     * [How Can I Enrich Payloads with Static Information without Using a Request Channel?](#how-can-i-enrich-payloads-with-static-information-without-using-a-request-channel)
 - [9.3. Claim Check](#93-claim-check)
   + [9.3.1. Incoming Claim Check Transformer](#931-incoming-claim-check-transformer)
@@ -80,7 +81,7 @@ parentUrl: /Spring%20Integration/core-messaging/
 </transformer>
 ```
 
-> 동일한 `<transformer>` 설정에서 `ref` 속성과 내부 핸들러 정의를 둘 다 사용하는 것은 허용하지 않는다. 둘 다 사용하면 모호한 조건이 만들어져 예외가 발생한다.
+> 동일한 `<transformer>` 설정에서 `ref` 속성과 내부 핸들러 정의를 둘 다 사용하는 것은 허용하지 않는다. 둘 다 사용하면 조건이 모호해져 예외가 발생한다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
   <p><code class="highlighter-rouge">ref</code> 속성으로 <code class="highlighter-rouge">AbstractMessageProducingHandler</code>를 상속한 빈을 참조하는 경우 (프레임워크에서 자체적으로 제공하는 트랜스포머들), 출력 채널을 핸들러에 직접 주입하는 식으로 최적화된다. 이때는 각 <code class="highlighter-rouge">ref</code> 속성마다 별도 빈 인스턴스(또는 <code class="highlighter-rouge">prototype</code> 스코프 빈)를 참조하거나, 내부 <code class="highlighter-rouge">&lt;bean/&gt;</code> 설정을 이용해야 한다. 무심코 여러 빈에서 동일한 메시지 핸들러를 참조하면 설정 예외를 만나게될 거다.</p>
@@ -336,27 +337,27 @@ JSON 트랜스포머 외에도 Spring Integration은 표현식에서 사용할 �
 
 3.0 버전부터는 표현식에서 사용할 수 있는 `#xpath` SpEL 함수도 제공한다. 자세한 내용은 [#xpath SpEL 함수](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xpath-spel-function)를 참고해라.
 
-Beginning with version 4.0, the `ObjectToJsonTransformer` supports the `resultType` property, to specify the node JSON representation. The result node tree representation depends on the implementation of the provided `JsonObjectMapper`. By default, the `ObjectToJsonTransformer` uses a `Jackson2JsonObjectMapper` and delegates the conversion of the object to the node tree to the `ObjectMapper#valueToTree` method. The node JSON representation provides efficiency for using the `JsonPropertyAccessor` when the downstream message flow uses SpEL expressions with access to the properties of the JSON data. See [Property Accessors](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel-property-accessors) for more information.
+4.0 버전 부터 `ObjectToJsonTransformer`는 노드 JSON을 표현하는 방법을 지정할 수 있도록 `resultType` 프로퍼티를 지원한다. 만들어지는 노드 트리는 사용하는 `JsonObjectMapper` 구현체에 따라 다르게 표현된다. 기본적으로 `ObjectToJsonTransformer`는 `Jackson2JsonObjectMapper`를 사용하며, 객체를 노드 트리로 변환하는 일은 `ObjectMapper#valueToTree` 메소드에 위임한다. 이후 다운스트림에선 SpEL 표현식 안에서도 JSON 데이터 프로퍼티에 액세스할 수 있는데, 이때 노드 JSON 표현을 잘 활용하면 `JsonPropertyAccessor`를 효율적으로 사용할 수 있다. 자세한 내용은 [프로퍼티 접근자](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel-property-accessors)를 참고해라.
 
-Beginning with version 5.1, the `resultType` can be configured as `BYTES` to produce a message with the `byte[]` payload for convenience when working with downstream handlers which operate with this data type.
+5.1 버전부터 이 `resultType`을 `BYTES`로 설정해 `byte[]` 페이로드를 가진 메시지를 생성할 수 있다. `byte[]`  로 동작하는 다운스트림 핸들러를 다룰 때 편리할 거다.
 
-Starting with version 5.2, the `JsonToObjectTransformer` can be configured with a `ResolvableType` to support generics during deserialization with the target JSON processor. Also this component now consults request message headers first for the presence of the `JsonHeaders.RESOLVABLE_TYPE` or `JsonHeaders.TYPE_ID` and falls back to the configured type otherwise. The `ObjectToJsonTransformer` now also populates a `JsonHeaders.RESOLVABLE_TYPE` header based on the request message payload for any possible downstream scenarios.
+5.2 버전부터 `JsonToObjectTransformer`는 `ResolvableType`을 함께 설정하면 타겟 JSON 프로세서로 역직렬화할 때 제네릭을 지원할 수 있다. 또한 이제는 요청 메시지 헤더에 `JsonHeaders.RESOLVABLE_TYPE`이나 `JsonHeaders.TYPE_ID`가 있는지를 먼저 확인해보고 없으면 설정한 타입으로 폴백한다. `ObjectToJsonTransformer`는 이제 다운스트림에서 쉽게 대응할 수 있도록 요청 메시지의 페이로드를 기반으로 `JsonHeaders.RESOLVABLE_TYPE` 헤더를 채운다.
 
-Starting with version 5.2.6, the `JsonToObjectTransformer` can be supplied with a `valueTypeExpression` to resolve a `ResolvableType` for the payload to convert from JSON at runtime against the request message. By default it consults `JsonHeaders` in the request message. If this expression returns `null` or `ResolvableType` building throws a `ClassNotFoundException`, the transformer falls back to the provided `targetType`. This logic is present as an expression because `JsonHeaders` may not have real class values, but rather some type ids which have to be mapped to target classes according some external registry.
+5.2.6 버전부터 `JsonToObjectTransformer`는 `valueTypeExpression`을 제공하면 런타임에 요청 메시지를 가지고 JSON으로부터 변환할 페이로드의 `ResolvableType`을 확인할 수 있다. 기본적으론 요청 메시지에 있는 `JsonHeaders`를 참조한다. 이 표현식이 `null`을 반환하거나 `ResolvableType`을 평가할 때 `ClassNotFoundException`이 발생하면, 트랜스포머는 지정한 `targetType`으로 폴백한다. 표현식을 사용하는 이유는 `JsonHeaders`가 실제 클래스 값이 아니라, 어떤 외부 레지스트리에 따라 타겟 클래스에 매핑시켜야 하는 특정 타입 ID를 가질 수 있기 때문이다.
 
 #### Apache Avro Transformers
 
-Version 5.2 added simple transformers to transform to/from Apache Avro.
+5.2 버전에선 Apache Avro를 변환하는 간단한 트랜스포머가 추가됐다.
 
-They are unsophisticated in that there is no schema registry; the transformers simply use the schema embedded in the `SpecificRecord` implementation generated from the Avro schema.
+스키마 레지스트리가 없기 때문에 그렇게까지 정교하진 않다. 이 트랜스포머는 단순히 Avro 스키마로 생성한 `SpecificRecord` 구현체에 임베딩된 스키마를 사용한다.
 
-Messages sent to the `SimpleToAvroTransformer` must have a payload that implements `SpecificRecord`; the transformer can handle multiple types. The `SimpleFromAvroTransformer` must be configured with a `SpecificRecord` class which is used as the default type to deserialize. You can also specify a SpEL expression to determine the type to deserialize using the `setTypeExpression` method. The default SpEL expression is `headers[avro_type]` (`AvroHeaders.TYPE`) which, by default, is populated by the `SimpleToAvroTransformer` with the fully qualified class name of the source class. If the expression returns `null`, the `defaultType` is used.
+`SimpleToAvroTransformer`로 전송된 메시지엔 반드시 `SpecificRecord`를 구현한 페이로드가 있어야 한다. 이 트랜스포머는 여러 가지 타입을 처리할 수 있다. `SimpleFromAvroTransformer`를 설정할 땐 반드시 역직렬화할 디폴트 타입으로 쓸 `SpecificRecord` 클래스를 지정해야 한다. 또한 `setTypeExpression` 메소드를 사용하면 SpEL 표현식을 통해 역직렬화할 타입을 결정할 수 있다. 디폴트 SpEL 표현식은 `headers[avro_type]` (`AvroHeaders.TYPE`)으로, `SimpleToAvroTransformer`는 기본적으로 소스 클래스의 풀 네임<sup>fully qualified name</sup>으로 이 값을 채운다. 이 표현식이 `null`을 반환하면 `defaultType`을 사용한다.
 
-The `SimpleToAvroTransformer` also has a `setTypeExpression` method. This allows decoupling of the producer and consumer where the sender can set the header to some token representing the type and the consumer then maps that token to a type.
+`SimpleToAvroTransformer` 역시 `setTypeExpression` 메소드를 가지고 있다. 덕분에 sender는 타입을 나타내는 특정 토큰으로 헤더를 세팅할 수 있고, 컨슈머는 이 토큰을 타입에 매핑할 수 있어, 프로듀서와 컨슈머가 분리된다.
 
 ### 9.1.4. Configuring a Transformer with Annotations
 
-You can add the `@Transformer` annotation to methods that expect either the `Message` type or the message payload type. The return value is handled in the exact same way as described earlier [in the section describing the `` element](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#transformer-namespace). The following example shows how to use the `@Transformer` annotation to transform a `String` into an `Order`:
+`Message` 타입이나 메시지 페이로드 타입을 받는 메소드에 `@Transformer` 어노테이션을 추가해주면 된다. 이 메소드가 반환한 값은 [`<transformer>` 요소를 설명할 때](#911-configuring-a-transformer-with-xml) 말한 것과 똑같은 방식으로 처리된다. 다음은 `@Transformer` 어노테이션을 사용해 `String`을 `Order`로 변환하는 방법을 보여주는 예시다:
 
 ```java
 @Transformer
@@ -365,7 +366,7 @@ Order generateOrder(String productId) {
 }
 ```
 
-Transformer methods can also accept the `@Header` and `@Headers` annotations, as documented in `Annotation Support`. The following examples shows how to use the `@Header` annotation:
+트랜스포머 메소드는 어노테이션 지원 섹션에서 설명하는 것처럼 `@Header`, `@Headers` 어노테이션도 받을 수 있다. 다음은 `@Header` 어노테이션을 사용하는 예시다:
 
 ```java
 @Transformer
@@ -374,47 +375,47 @@ Order generateOrder(String productId, @Header("customerName") String customer) {
 }
 ```
 
-See also [Advising Endpoints Using Annotations](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/handler-advice.html#advising-with-annotations).
+[어노테이션을 이용해 엔드포인트에 어드바이스 체인 적용하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/handler-advice.html#advising-with-annotations)도 함께 참고해라.
 
 ### 9.1.5. Header Filter
 
-Sometimes, your transformation use case might be as simple as removing a few headers. For such a use case, Spring Integration provides a header filter that lets you specify certain header names that should be removed from the output message (for example, removing headers for security reasons or a value that was needed only temporarily). Basically, the header filter is the opposite of the header enricher. The latter is discussed in [Header Enricher](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/content-enrichment.html#header-enricher). The following example defines a header filter:
+간혹 헤더 몇 개를 제거하는 것처럼 변환 로직이 매우 간단할 때가 있다. Spring Integration은 출력 메시지에서 제거해야 하는 헤더 이름들을 지정할 수 있는 헤더 필터를 제공한다 (예를 들어 보안 이슈로 헤더를 제거하거나, 임시로 사용한 값을 제거하는 등에 활용할 수 있다). 헤더 필터는 헤더 enricher와 정반대 개념이다. 헤더 enricher는 [여기](#921-header-enricher)에서 설명한다. 아래 설정은 헤더 필터를 정의하는 예시다:
 
 ```xml
 <int:header-filter input-channel="inputChannel"
 		output-channel="outputChannel" header-names="lastName, state"/>
 ```
 
-As you can see, configuration of a header filter is quite simple. It is a typical endpoint with input and output channels and a `header-names` attribute. That attribute accepts the names of the headers (delimited by commas if there are multiple) that need to be removed. So, in the preceding example, the headers named 'lastName' and 'state' are not present on the outbound message.
+보다시피 헤더 필터 설정은 매우 간단하다. 헤더 필터는 입출력 채널과 `header-names` 속성을 하나 가지고 있는 전형적인 엔드포인트다. 이 속성으론 제거해야 하는 헤더 이름들을 받는다 (여러 개일 땐 콤마로 구분한다). 즉, 위 예시에선 'lastName'과 'state'라는 헤더는 아웃바운드 메시지에 존재하지 않는다.
 
 ### 9.1.6. Codec-Based Transformers
 
-See [Codec](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/codec.html#codec).
+[코덱](#94-codec)을 읽어봐라.
 
 ---
 
 ## 9.2. Content Enricher
 
-At times, you may have a requirement to enhance a request with more information than was provided by the target system. The [data enricher](https://www.enterpriseintegrationpatterns.com/DataEnricher.html) pattern describes various scenarios as well as the component (Enricher) that lets you address such requirements.
+때로는 요청에 타겟 시스템에서 제공한 정보보다 더 많은 정보를 담아야 할 때가 있다. [데이터 enricher](https://www.enterpriseintegrationpatterns.com/DataEnricher.html) 패턴에선 이러한 요구 사항을 해결할 수 있는 구성 요소(Enricher)와 다양한 시나리오를 함께 설명하고 있다.
 
-The Spring Integration `Core` module includes two enrichers:
+Spring Integration `Core` 모듈에는 두 가지 enricher가 들어있다:
 
-- [Header Enricher](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#header-enricher)
-- [Payload Enricher](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#payload-enricher)
+- [Header Enricher](#921-header-enricher)
+- [Payload Enricher](#922-payload-enricher)
 
-It also includes three adapter-specific header enrichers:
+또한 어댑터 전용 헤더 enricher 세 가지도 함께 들어있다:
 
-- [XPath Header Enricher (XML Module)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml-xpath-header-enricher)
-- [Mail Header Enricher (Mail Module)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/mail.html#mail-namespace)
-- [XMPP Header Enricher (XMPP Module)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xmpp.html#xmpp-message-outbound-channel-adapter)
+- [XPath Header Enricher (XML 모듈)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml-xpath-header-enricher)
+- [Mail Header Enricher (Mail 모듈)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/mail.html#mail-namespace)
+- [XMPP Header Enricher (XMPP 모듈)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xmpp.html#xmpp-message-outbound-channel-adapter)
 
-See the adapter-specific sections of this reference manual to learn more about those adapters.
+이 어댑터들을 자세히 알아보려면 이 레퍼런스 메뉴얼에 있는 어댑터 전용 섹션을 참고해라.
 
-For more information regarding expressions support, see [Spring Expression Language (SpEL)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel).
+표현식 지원에 대한 자세한 설명은 [스프링 표현식 언어(SpEL<sup>Spring Expression Language</sup>)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel)를 확인해봐라.
 
 ### 9.2.1. Header Enricher
 
-If you need do nothing more than add headers to a message and the headers are not dynamically determined by the message content, referencing a custom implementation of a transformer may be overkill. For that reason, Spring Integration provides support for the header enricher pattern. It is exposed through the `<header-enricher>` element. The following example shows how to use it:
+만약 메시지에 헤더를 추가하는 것 외에 다른 작업은 필요하지 않고, 메시지 내용을 통해 동적으로 헤더를 결정하는 것도 아니라면, 트랜스포머를 직접 구현해 사용하는 것은 조금 과하다고 할 수 있다. Spring Integration은 이럴 때 활용할 수 있는 헤더 enricher 패턴을 지원한다. 이 패턴은 `<header-enricher>` 요소로 이용할 수 있다. 다음은 사용법을 보여주는 예시다:
 
 ```xml
 <int:header-enricher input-channel="in" output-channel="out">
@@ -423,7 +424,7 @@ If you need do nothing more than add headers to a message and the headers are no
 </int:header-enricher>
 ```
 
-The header enricher also provides helpful sub-elements to set well known header names, as the following example shows:
+헤더 enricher는 다음 예제와 같이, 많이 사용하는 헤더를 설정할 때 유용한 하위 요소도 지원하고 있다:
 
 ```xml
 <int:header-enricher input-channel="in" output-channel="out">
@@ -436,13 +437,13 @@ The header enricher also provides helpful sub-elements to set well known header 
 </int:header-enricher>
 ```
 
-The preceding configuration shows that, for well known headers (such as `errorChannel`, `correlationId`, `priority`, `replyChannel`, `routing-slip`, and others), instead of using generic `<header>` sub-elements where you would have to provide both header 'name' and 'value', you can use convenient sub-elements to set those values directly.
+범용 하위 요소 `<header>`를 사용할 땐 헤더 '이름'과 '값'을 둘 다 지정해야 하지만, 위 설정에선 자주 사용하는 헤더들(`errorChannel`, `correlationId`, `priority`, `replyChannel`, `routing-slip` 등)을 위해 따로 제공하는 하위 요소를 이용해 값을 바로 지정하고 있다.
 
-Starting with version 4.1, the header enricher provides a `routing-slip` sub-element. See [Routing Slip](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/router.html#routing-slip) for more information.
+4.1 버전부터 헤더 enricher는 `routing-slip`이란 하위 요소를 제공한다. 자세한 내용은 [라우팅 슬립](../messaging-routing/#routing-slip)을 참고해라.
 
 #### POJO Support
 
-Often, a header value cannot be defined statically and has to be determined dynamically based on some content in the message. That is why the header enricher lets you also specify a bean reference by using the `ref` and `method` attributes. The specified method calculates the header value. Consider the following configuration and a bean with a method that modifies a `String`:
+헤더 값은 항상 정적으로 정의할 수 있는 것은 아니며, 메시지 내용을 기반으로 동적으로 결정해야 할 때가 있다. 이러한 이유로 헤더 enricher에선 `ref`와 `method` 속성을 통해 빈을 하나 참조할 수 있다. 지정한 메소드에선 헤더 값을 계산한다. 아래 설정에서 사용하는 빈은 `String`을 수정하는 메소드를 가지고 있다:
 
 ```xml
 <int:header-enricher input-channel="in" output-channel="out">
@@ -450,6 +451,9 @@ Often, a header value cannot be defined statically and has to be determined dyna
 </int:header-enricher>
 
 <bean id="myBean" class="thing1.thing2.MyBean"/>
+```
+
+```java
 public class MyBean {
 
     public String computeValue(String payload){
@@ -458,7 +462,7 @@ public class MyBean {
 }
 ```
 
-You can also configure your POJO as an inner bean, as the following example shows:
+아래 예제처럼 POJO를 내부 빈으로 설정할 수도 있다:
 
 ```xml
 <int:header-enricher  input-channel="inputChannel" output-channel="outputChannel">
@@ -468,7 +472,7 @@ You can also configure your POJO as an inner bean, as the following example show
 </int:header-enricher>
 ```
 
-You can similarly point to a Groovy script, as the following example shows:
+유사하게 Groovy 스크립트를 가리킬 수 있도 있다:
 
 ```xml
 <int:header-enricher  input-channel="inputChannel" output-channel="outputChannel">
@@ -480,7 +484,7 @@ You can similarly point to a Groovy script, as the following example shows:
 
 #### SpEL Support
 
-In Spring Integration 2.0, we introduced the convenience of the [Spring Expression Language (SpEL)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions) to help configure many different components. The header enricher is one of them. Look again at the POJO example shown earlier. You can see that the computation logic to determine the header value is pretty simple. A natural question would be: "Is there an even simpler way to accomplish this?". That is where SpEL shows its true power. Consider the following example:
+Spring Integration 2.0에선 [스프링 표현식 언어(SpEL<sup>Spring Expression Language</sup>)](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#expressions)를 도입했기 때문에 다양한 구성 요소에 활용할 수 있다. 헤더 enricher도 마찬가지다. 앞에서 다룬 POJO 예제를 다시 살펴보자. 가만보면 헤더 값을 결정하는 계산 로직은 꽤나 간단하다는 것을 알 수 있다. 더 간단한 방법은 없을지가 궁금할 거다. SpEL의 진정한 힘은 여기서 드러난다. 다음 예제를 살펴보자:
 
 ```xml
 <int:header-enricher input-channel="in" output-channel="out">
@@ -488,11 +492,11 @@ In Spring Integration 2.0, we introduced the convenience of the [Spring Expressi
 </int:header-enricher>
 ```
 
-By using SpEL for such simple cases, you no longer have to provide a separate class and configure it in the application context. All you need do is configured the `expression` attribute with a valid SpEL expression. The 'payload' and 'headers' variables are bound to the SpEL evaluation context, giving you full access to the incoming message.
+이런 간단한 케이스에선 SpEL을 사용하면 더 이상 별도 클래스를 만들어 애플리케이션 컨텍스트에 설정하지 않아도 된다. `expression` 속성에 유효한 SpEL 표현식을 설정해주기만 하면 된다. SpEL 평가 컨텍스트엔 'payload'와 'headers' 변수가 바인딩되므로, 전달받은 메시지에 전부 접근할 수 있다.
 
 #### Configuring a Header Enricher with Java Configuration
 
-The following two examples show how to use Java Configuration for header enrichers:
+아래 두 예시에선 자바 코드를 통해 헤더 enricher를 설정하고 있다:
 
 ```java
 @Bean
@@ -518,11 +522,11 @@ public HeaderEnricher enrichHeaders() {
 }
 ```
 
-The first example adds a single literal header. The second example adds two headers, a literal header and one based on a SpEL expression.
+첫 번째 예시에선 헤더에 단순한 문자열을 하나 추가한다. 두 번째 예시에선 문자열 헤더 하나와, SpEL 표현식 기반 헤더를 추가하고 있다.
 
 #### Configuring a Header Enricher with the Java DSL
 
-The following example shows Java DSL Configuration for a header enricher:
+다음은 Java DSL로 header enricher를 설정하는 예시다:
 
 ```java
 @Bean
@@ -537,19 +541,19 @@ public IntegrationFlow enrichHeadersInFlow() {
 
 #### Header Channel Registry
 
-Starting with Spring Integration 3.0, a new sub-element `<int:header-channels-to-string/>` is available. It has no attributes. This new sub-element converts existing `replyChannel` and `errorChannel` headers (when they are a `MessageChannel`) to a `String` and stores the channels in a registry for later resolution, when it is time to send a reply or handle an error. This is useful for cases where the headers might be lost — for example, when serializing a message into a message store or when transporting the message over JMS. If the header does not already exist or it is not a `MessageChannel`, no changes are made.
+Spring Integration 3.0부터 새로운 하위 요소 `<int:header-channels-to-string/>`을 사용할 수 있다. 이 요소에는 속성이 없다. 이 요소는 기존 `replyChannel`, `errorChannel` 헤더를 (`MessageChannel`이라면) `String`으로 변환하고, 응답을 전송하거나 에러를 처리할 때가 되면 채널을 사용할 수 있도록 레지스트리에 따로 저장한다. 이 기능은 메시지를 메시지 스토어로 직렬화하거나, 메시지를 JMS로 전송하는 등, 헤더가 손실될 수 있는 경우에 활용할 수 있다. 헤더가 존재하지 않거나 `MessageChannel`이 아니라면 아무것도 달라지지 않는다.
 
-Using this functionality requires the presence of a `HeaderChannelRegistry` bean. By default, the framework creates a `DefaultHeaderChannelRegistry` with the default expiry (60 seconds). Channels are removed from the registry after this time. To change this behavior, define a bean with an `id` of `integrationHeaderChannelRegistry` and configure the required default delay by using a constructor argument (in milliseconds).
+이 기능을 사용하려면 `HeaderChannelRegistry` 빈이 있어야 한다. 프레임워크는 기본적으로 디폴트 만료 시간(60초)으로 `DefaultHeaderChannelRegistry`를 하나 생성한다. 이 시간이 지나면 레지스트리에서 채널들이 제거된다. 이 동작을 변경하고 싶다면 `integrationHeaderChannelRegistry`라는 `id`로 빈을 정의하고, 원하는 디폴트 지연시간을 생성자 인자(밀리세컨드 단위)로 넘겨주면 된다.
 
-Since version 4.1, you can set a property called `removeOnGet` to `true` on the `<bean/>` definition, and the mapping entry is removed immediately on first use. This might be useful in a high-volume environment and when the channel is only used once, rather than waiting for the reaper to remove it.
+4.1 버전부터는 `<bean/>` 정의에서 `removeOnGet`이란 속성을 `true`로 설정할 수 있으며, 그러면 매핑 항목을 처음 사용하는 즉시 제거한다. 이 속성은 reaper가 채널을 지울 때까지 기다리기보단, 채널을 한 번씩만 사용하는 대용량 환경에서 유용하다.
 
-The `HeaderChannelRegistry` has a `size()` method to determine the current size of the registry. The `runReaper()` method cancels the current scheduled task and runs the reaper immediately. The task is then scheduled to run again based on the current delay. These methods can be invoked directly by getting a reference to the registry, or you can send a message with, for example, the following content to a control bus:
+`HeaderChannelRegistry`는 레지스트리의 현재 사이즈를 결정하는 `size()` 메소드를 가지고 있다. `runReaper()` 메소드는 현재 예약된 태스크를 취소하고 reaper를 즉시 실행한다. 그런 다음 현재 지연 시간을 기반으로 다시 태스크를 예약한다. 이 메소들은 레지스트리에 대한 참조를 가져와 직접 호출해도 좋고, 메시지에 아래 예시와 같은 내용을 담아 컨트롤 버스에 전송할 수도 있다:
 
 ```none
 "@integrationHeaderChannelRegistry.runReaper()"
 ```
 
-This sub-element is a convenience, and is the equivalent of specifying the following configuration:
+이 하위 요소를 이용하면 간편하지만, 아래 설정을 지정해도 효과는 동일하다:
 
 ```xml
 <int:reply-channel
@@ -560,7 +564,7 @@ This sub-element is a convenience, and is the equivalent of specifying the follo
     overwrite="true" />
 ```
 
-Starting with version 4.1, you can now override the registry’s configured reaper delay so that the channel mapping is retained for at least the specified time, regardless of the reaper delay. The following example shows how to do so:
+4.1 버전부터는 레지스트리에 설정한 리퍼 지연 시간을 재정의해서, 리퍼 지연 시간에 관계없이 최소한 지정한 시간 동안은 채널 매핑을 유지하도록 만들 수 있다. 그 방법은 다음 예시를 참고해라:
 
 ```xml
 <int:header-enricher input-channel="inputTtl" output-channel="next">
@@ -573,29 +577,29 @@ Starting with version 4.1, you can now override the registry’s configured reap
 </int:header-enricher>
 ```
 
-In the first case, the time to live for every header channel mapping will be two minutes. In the second case, the time to live is specified in the message header and uses an Elvis operator to use two minutes if there is no header.
+첫 번째 예시에선 모든 헤더 채널의 매핑 정보 TTL<sup>Time to Live</sup>이 2분이다. 두 번째 예시에선 TTL을 메시지 헤더에 지정하며, 헤더가 없는 경우 엘비스 연산자<sup>Elvis operator</sup>를 이용해 2분으로 설정한다.
 
 ### 9.2.2. Payload Enricher
 
-In certain situations, the header enricher, as discussed earlier, may not be sufficient and payloads themselves may have to be enriched with additional information. For example, order messages that enter the Spring Integration messaging system have to look up the order’s customer based on the provided customer number and then enrich the original payload with that information.
+상황에 따라서는 앞에서 설명한 헤더 enricher만으로는 부족하고, 페이로드 자체에 정보를 더 담아야 할 수도 있다. Spring Integration 메시징 시스템에 전달된 주문 메시지로 예를 들면, 메시지에 담긴 고객 번호를 기반으로 주문한 고객을 찾아, 기존 페이로드에 고객 정보를 채워야 할 수 있다.
 
-Spring Integration 2.1 introduced the payload enricher. The payload enricher defines an endpoint that passes a `Message` to the exposed request channel and then expects a reply message. The reply message then becomes the root object for evaluation of expressions to enrich the target payload.
+Spring Integration 2.1에선 페이로드 enricher를 도입했다. 페이로드 enricher는 정의해둔 요청 채널에 `Message`를 전달하고 응답 메시지를 받는 엔드포인트다. 타겟 페이로드에 정보를 추가할 땐, 이 응답 메시지를 루트 객체로 사용해 표현식을 평가한다.
 
-The payload enricher provides full XML namespace support through the `enricher` element. In order to send request messages, the payload enricher has a `request-channel` attribute that lets you dispatch messages to a request channel.
+페이로드 enricher가 제공하는 기능은 전부 XML 네임스페이스의 `enricher` 요소를 통해 이용할 수 있다. 페이로드 enricher는 요청 메시지를 전송해야 하기 때문에, 요청 채널에 메시지를 전달할 수 있는 `request-channel` 속성을 가지고 있다.
 
-Basically, by defining the request channel, the payload enricher acts as a gateway, waiting for the message sent to the request channel to return. The enricher then augments the message’s payload with the data provided by the reply message.
+페이로드 enricher는 요청 채널을 정의하기 때문에, 본질적으로 요청 채널로 전송한 메시지가 반환되기를 기다리는 게이트웨이 역할을 담당한다. 응답 메시지를 받으면 enricher는 응답 메시지에 있는 데이터로 메시지의 페이로드를 보강한다.
 
-When sending messages to the request channel, you also have the option to send only a subset of the original payload by using the `request-payload-expression` attribute.
+요청 채널에 메시지를 보낼 때 `request-payload-expression` 속성을 사용하면 기존 페이로드의 일부만 전송할 수도 있다.
 
-The enriching of payloads is configured through SpEL expressions, providing a maximum degree of flexibility. Therefore, you can not only enrich payloads with direct values from the reply channel’s `Message`, but you can use SpEL expressions to extract a subset from that message or to apply additional inline transformations, letting you further manipulate the data.
+페이로드 enricher는 SpEL 표현식을 통해 설정하기 때문에 매우 유연한 편이다. 따라서 응답 채널의 `Message`에 있는 값을 그대로 페이로드에 추가하는 것 뿐 아니라, SpEL 표현식을 이용해 해당 메시지에서 일부 정보만 추출하거나, 표현식 내에서 인라인으로 데이터를 좀 조작하고 변형할 수도 있다.
 
-If you need only to enrich payloads with static values, you need not provide the `request-channel` attribute.
+단순히 정적인 값만으로 페이로드를 보강할 수 있다면 `request-channel` 속성을 지정하지 않아도 된다.
 
-> Enrichers are a variant of transformers. In many cases, you could use a payload enricher or a generic transformer implementation to add additional data to your message payloads. You should familiarize yourself with all transformation-capable components that are provided by Spring Integration and carefully select the implementation that semantically fits your business case best.
+> Enricher도 일종의 트랜스포머라고 할 수 있다. 메시지 페이로드에 데이터를 추가할 때 페이로드 enricher나 일반 트랜스포머 구현체 중, 어떤 것을 사용해도 상관 없는 경우가 많다. Spring Integration이 제공하는 변환용 구성 요소들에 전부 익숙해지는 것이 좋으며, 의미상 비즈니스 사례에 가장 적합한 구현체를 신중히 선택하면 된다.
 
 #### Configuration
 
-The following example shows all available configuration options for the payload enricher:
+아래 예제는 페이로드 enricher에서 설정할 수 있는 모든 옵션을 보여주고 있다:
 
 ```xml
 <int:enricher request-channel=""                           <!-- (1) -->
@@ -615,27 +619,27 @@ The following example shows all available configuration options for the payload 
     <int:header name="" value="" overwrite="" type="" null-result-expression=""/>
 </int:enricher>
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> Channel to which a message is sent to get the data to use for enrichment. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> Lifecycle attribute signaling whether this component should be started during the application context startup. Defaults to true. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> ID of the underlying bean definition, which is either an `EventDrivenConsumer` or a `PollingConsumer`. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> Specifies the order for invocation when this endpoint is connected as a subscriber to a channel. This is particularly relevant when that channel is using a “failover” dispatching strategy. It has no effect when this endpoint is itself a polling consumer for a channel with a queue. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> Identifies the message channel where a message is sent after it is being processed by this endpoint. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> By default, the original message’s payload is used as payload that is sent to the `request-channel`. By specifying a SpEL expression as the value for the `request-payload-expression` attribute, you can use a subset of the original payload, a header value, or any other resolvable SpEL expression as the basis for the payload that is sent to the request-channel. For the expression evaluation, the full message is available as the 'root object'. For instance, the following SpEL expressions (among others) are possible: `payload.something`, `headers.something`, `new java.util.Date()`, `'thing1' + 'thing2'`</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> Channel where a reply message is expected. This is optional. Typically, the auto-generated temporary reply channel suffices. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> The channel to which an `ErrorMessage` is sent if an `Exception` occurs downstream of the `request-channel`. This enables you to return an alternative object to use for enrichment. If it is not set, an `Exception` is thrown to the caller. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> Maximum amount of time in milliseconds to wait when sending a message to the channel, if the channel might block. For example, a queue channel can block until space is available, if its maximum capacity has been reached. Internally, the send timeout is set on the `MessagingTemplate` and ultimately applied when invoking the send operation on the `MessageChannel`. By default, the send timeout is set to '-1', which can cause the send operation on the `MessageChannel`, depending on the implementation, to block indefinitely. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> Boolean value indicating whether any payload that implements `Cloneable` should be cloned prior to sending the message to the request channel for acquiring the enriching data. The cloned version would be used as the target payload for the ultimate reply. The default is `false`. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> Lets you configure a message poller if this endpoint is a polling consumer. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> Each `property` sub-element provides the name of a property (through the mandatory `name` attribute). That property should be settable on the target payload instance. Exactly one of the `value` or `expression` attributes must be provided as well — the former for a literal value to set and the latter for a SpEL expression to be evaluated. The root object of the evaluation context is the message that was returned from the flow initiated by this enricher — the input message if there is no request channel or the application context (using the `@<beanName>.<beanProperty>` SpEL syntax). Starting with version 4.0, when specifying a `value` attribute, you can also specify an optional `type` attribute. When the destination is a typed setter method, the framework coerces the value appropriately (as long as a `PropertyEditor`) exists to handle the conversion. If, however, the target payload is a `Map`, the entry is populated with the value without conversion. The `type` attribute lets you, for example, convert a `String` containing a number to an `Integer` value in the target payload. Starting with version 4.1, you can also specify an optional `null-result-expression` attribute. When the `enricher` returns null, it is evaluated, and the output of the evaluation is returned instead.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> Each `header` sub-element provides the name of a message header (through the mandatory `name` attribute). Exactly one of the `value` or `expression` attributes must also be provided — the former for a literal value to set and the latter for a SpEL expression to be evaluated. The root object of the evaluation context is the message that was returned from the flow initiated by this enricher — the input message if there is no request channel or the application context (using the '@<beanName>.<beanProperty>' SpEL syntax). Note that, similarly to the `<header-enricher>`, the `<enricher>` element’s `header` element has `type` and `overwrite` attributes. However, a key difference is that, with the `<enricher>`, the `overwrite` attribute is `true` by default, to be consistent with the `<enricher>` element’s `<property>` sub-element. Starting with version 4.1, you can also specify an optional `null-result-expression` attribute. When the `enricher` returns null, it is evaluated, and the output of the evaluation is returned instead.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 메시지를 전송할 채널. 이 곳에서 페이로드를 보강할 데이터를 가져온다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 애플리케이션 컨텍스트를 기동하면서 이 컴포넌트를 시작해야 하는지 여부를 나타내는 라이프사이클 속성.<br>기본값은 true다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 내부에 정의하는 빈 ID로, `EventDrivenConsumer` 또는 `PollingConsumer`다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 이 엔드포인트가 어떤 채널의 구독자로서 연결돼있을 때 호출할 순서를 지정한다.<br>특히 연결된 채널이 "failover" 디스패치 전략을 사용할 때 활용하곤 한다.<br>이 엔드포인트 자체가 큐를 가진 채널의 폴링 컨슈머인 경우엔 아무런 효과가 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 이 엔드포인트에서 처리를 마친 메시지를 전송할 메시지 채널을 식별한다.<br>생략할 수 있다. </small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 기본적으로 `request-channel`로 메시지를 전송할 땐 원본 메시지에 있는 페이로드를 사용한다.<br>`request-payload-expression` 속성에 SpEL 표현식을 지정하면 기존 페이로드의 일부나, 헤더 값만 보내는 것도 가능하다. 요청 채널로 전송하는 페이로드를 가지고 만들 수 있는 SpEL 표현식이라면 어떤 것도 가능하다.<br>표현식에선 전체 메시지를 '루트 객체'로 사용할 수 있다.<br>예를 들면 다음과 같은 SpEL 표현식이 가능하다: `payload.something`, `headers.something`, `new java.util.Date()`, `'thing1' + 'thing2'`</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 응답 메시지를 받을 채널.<br>이 속성은 생략할 수 있다.<br>일반적으론 자동으로 생성된 임시 채널로도 충분하다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> `request-channel`의 다운스트림에서 `Exception`이 발생하면 `ErrorMessage`를 전송할 채널.<br>이 채널을 통해 페이로드 보강에 사용할 대체 객체를 반환할 수 있다.<br>설정하지 않았다면 호출자 쪽으로 `Exception`을 던진다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> 블로킹될 수 있는 채널인 경우, 채널에 메시지를 전송하면서 최대로 대기할 시간 (밀리세컨드 단위).<br>예를 들어 큐 채널은 최대 용량을 다 사용하고 나면 여유 공간이 생길 때까지 블로킹된 있다.<br>이 타임아웃 값은 내부적으로 `MessagingTemplate`에 설정되며, 궁극적으로 `MessageChannel`에서 전송 작업을 진행할 때 적용된다.<br>기본적으론 `-1`로 설정돼서 구현체에 따라 `MessageChannel`의 전송 작업이 무한정 블로킹될 수 있다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> 요청 채널에 메시지를 전송해 보충할 데이터를 획득하기 전에, `Cloneable`을 구현한 페이로드를 복제해야 하는지 여부를 나타내는 boolean 값.<br>복제한 객체를 최종 응답의 타겟 페이로드로 사용한다. 기본값은 `false`다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> 이 엔드포인트가 폴링 컨슈머일 땐 메시지 폴러를 설정할 수 있다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(12)</span> 하위 요소 `property`엔 프로퍼티명을 하나씩 지정한다 (필수 속성 `name`을 통해).<br>이 프로퍼티는 타겟 페이로드 인스턴스에 설정할 수 있어야 한다.<br>반드시 `value`나 `expression` 속성 중 하나를 함께 제공해야 한다 — 전자로는 리터럴 값을 설정할 수 있고, 후자로는 평가할 SpEL 표현식을 설정할 수 있다.<br>평가 컨텍스트의 루트 객체는 이 enricher로 시작된 플로우에서 반환한 메시지다 — 요청 채널이 없는 경우 입력 메시지나, 애플리케이션 컨텍스트를 루트 객체로 사용한다 (SpEL 구문 `@<beanName>.<beanProperty>` 사용).<br>4.0 버전부터는 `value` 속성을 지정할 때 `type` 속성을 함께 지정할 수 있다 (optional). 타입이 지정된 setter 메소드를 호출해야 한다면 프레임워크가 데이터를 변환할 수 있도록 값을 적절히 처리해준다 (`PropertyEditor`만 있다면).<br>반면 타겟 페이로드가 `Map`인 경우 변환 없이 엔트리에 그 값을 채운다.<br>예를 들어 `type` 속성을 사용하면 숫자를 담고있는 `String`을 타겟 페이로드에선 `Integer` 값으로 변환할 수 있다.<br>4.1 버전부터는 `null-result-expression` 속성도 지정할 수 있다 (optional).<br>`enricher`가 null을 반환하면 이 표현식을 평가해서 그 결과를 대신 반환한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(13)</span> 하위 요소 `header`엔 메시지 헤더명을 하나씩 지정한다 (필수 속성 `name`을 통해).<br>반드시 `value`나 `expression` 속성 중 하나를 함께 제공해야 한다 — 전자로는 리터럴 값을 설정할 수 있고, 후자로는 평가할 SpEL 표현식을 설정할 수 있다.<br>평가 컨텍스트의 루트 객체는 이 enricher로 시작된 플로우에서 반환한 메시지다 — 요청 채널이 없는 경우 입력 메시지나, 애플리케이션 컨텍스트를 루트 객체로 사용한다 (SpEL 구문 '@\<beanName\>.\<beanProperty\>' 사용).<br>`<header-enricher>`와 유사하게 `<enricher>`의 `header` 요소에도 `type`과 `overwrite` 속성이 있다.<br>하지만 `<enricher>`의 경우, `<enricher>`의 다른 하위 요소 `<property>`와의 통일감을 위해 `overwrite` 속성의 기본값이 `true`라는 차이점이 있다.<br>4.1 버전부터 `null-result-expression` 속성도 지정할 수 있다 (optional).<br>`enricher`가 null을 반환하면 이 표현식을 평가해서 그 결과를 대신 반환한다.</small>
 
 #### Examples
 
-This section contains several examples of using a payload enricher in various situations.
+이 섹션에선 다양한 상황에 페이로드 enricher를 활용하는 예제들을 몇 가지다룬다.
 
-> The code samples shown here are part of the Spring Integration Samples project. See [Spring Integration Samples](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/samples.html#samples).
+> 여기에서 보여주는 코드 외에도 다른 Spring Integration 샘플들을 제공하고 있다. [Spring Integration Samples](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/samples.html#samples)를 확인해봐라.
 
-In the following example, a `User` object is passed as the payload of the `Message`:
+아래 예제에선 `User` 객체를 `Message`의 페이로드로 전달한다:
 
 ```xml
 <int:enricher id="findUserEnricher"
@@ -646,13 +650,13 @@ In the following example, a `User` object is passed as the payload of the `Messa
 </int:enricher>
 ```
 
-The `User` has several properties, but only the `username` is set initially. The enricher’s `request-channel` attribute is configured to pass the `User` to the `findUserServiceChannel`.
+`User`에는 여러 가지 프로퍼티들이 있지만 처음엔 `username`만 설정돼있다. enricher의 `request-channel` 속성은 `User`를 `findUserServiceChannel`에 전달하도록 설정돼있다.
 
-Through the implicitly set `reply-channel`, a `User` object is returned and, by using the `property` sub-element, properties from the reply are extracted and used to enrich the original payload.
+내부에서 설정한 `reply-channel`을 통해 `User` 객체가 반환되며, 하위 요소 `property`를 이용해 응답에서 프로퍼티들을 추출하고, 기존 페이로드에 이 정보를 채운다.
 
 #### How Do I Pass Only a Subset of Data to the Request Channel?
 
-When using a `request-payload-expression` attribute, a single property of the payload instead of the full message can be passed on to the request channel. In the following example, the username property is passed on to the request channel:
+`request-payload-expression` 속성을 사용하면 전체 메시지가 아닌, 페이로드에 있는 한 가지 프로퍼티를 요청 채널로 전달할 수 있다. 아래 예제에선 username 프로퍼티를 요청 채널에 전달한다:
 
 ```xml
 <int:enricher id="findUserByUsernameEnricher"
@@ -664,11 +668,11 @@ When using a `request-payload-expression` attribute, a single property of the pa
 </int:enricher>
 ```
 
-Keep in mind that, although only the username is passed, the resulting message to the request channel contains the full set of `MessageHeaders`.
+username만을 전달하더라도, 요청 채널로 보내는 메시지엔 `MessageHeaders` 전체 셋이 담겨있다는 점에 주의하자.
 
-##### How Can I Enrich Payloads that Consist of Collection Data?
+#### How Can I Enrich Payloads that Consist of Collection Data?
 
-In the following example, instead of a `User` object, a `Map` is passed in:
+아래 예제에선 `User` 객체 대신 `Map`을 전달한다:
 
 ```xml
 <int:enricher id="findUserWithMapEnricher"
@@ -679,11 +683,11 @@ In the following example, instead of a `User` object, a `Map` is passed in:
 </int:enricher>
 ```
 
-The `Map` contains the username under the `username` map key. Only the `username` is passed on to the request channel. The reply contains a full `User` object, which is ultimately added to the `Map` under the `user` key.
+이 `Map`에는 `username`이란 키로 username이 담겨있다. 요청 채널에는 이 `username`만 전달한다. 응답으로는 완전한 `User` 객체를 받으며, 궁극적으로 이 객체를 `user`라는 키로 `Map`에 추가한다.
 
 #### How Can I Enrich Payloads with Static Information without Using a Request Channel?
 
-The following example does not use a request channel at all but solely enriches the message’s payload with static values:
+아래 예제에선 요청 채널은 아예 사용하지 않고, 메시지 페이로드에 정적인<sup>static</sup> 값들을 채운다:
 
 ```xml
 <int:enricher id="userEnricher"
@@ -695,26 +699,26 @@ The following example does not use a request channel at all but solely enriches 
 </int:enricher>
 ```
 
-Note that the word, 'static', is used loosely here. You can still use SpEL expressions for setting those values.
+여기서 '정적<sup>static</sup>'이라는 단어는 좀 막연히 사용한 감이 있이다. 고정된 값만을 의미하는 것은 아니며, SpEL 표현식도 물론 사용할 수 있다.
 
 ---
 
 ## 9.3. Claim Check
 
-In earlier sections, we covered several content enricher components that can help you deal with situations where a message is missing a piece of data. We also discussed content filtering, which lets you remove data items from a message. However, there are times when we want to hide data temporarily. For example, in a distributed system, we may receive a message with a very large payload. Some intermittent message processing steps may not need access to this payload and some may only need to access certain headers, so carrying the large message payload through each processing step may cause performance degradation, may produce a security risk, and may make debugging more difficult.
+앞 섹션에선 메시지에 필요한 데이터가 일부 들어있지 않은 상황을 해결할 수 있는 컨텐츠 enricher 두 가지를 다뤘다. 또한 메시지에서 원하는 데이터를 제거할 수 있는 컨텐츠 필터링에 대해서도 설명했었다. 하지만 데이터를 일시적으로 숨겨야 할 때가 있다. 예를 들어서, 분산 시스템에선 페이로드가 매우 큰 메시지를 수신할 수도 있다. 메시지 처리 단계 중에는, 이 페이로드에 접근할 필요가 없는 단계도 있을 수 있고,  특정 헤더만 접근하면 되는 단계도 있을 수 있다. 이런 상황에서 모든 처리 단계마다 거대한 메시지 페이로드를 같이 넘기면 성능 문제도 발생할 수 있으며, 보안에도 좋지 않고, 디버깅이 더 어려워질 수 있다.
 
-The [store in library](https://www.enterpriseintegrationpatterns.com/StoreInLibrary.html) (or claim check) pattern describes a mechanism that lets you store data in a well known place while maintaining only a pointer (a claim check) to where that data is located. You can pass that pointer around as the payload of a new message, thereby letting any component within the message flow get the actual data as soon as it needs it. This approach is very similar to the certified mail process, where you get a claim check in your mailbox and then have to go to the post office to claim your actual package. It is also the same idea as baggage claim after a flight or in a hotel.
+[store in library](https://www.enterpriseintegrationpatterns.com/StoreInLibrary.html) 패턴은 (클레임 체크<sup>claim check</sup> 패턴이라고도 한다) 데이터를 원하는 저장소에 저장해두고, 데이터가 있는 곳을 가리키는 포인터(클레임 체크)만 유지할 수 있는 메커니즘을 다룬다. 이 포인터를 페이로드로 가진 메시지를 만들어 전달할 수 있으므로, 메시지 플로우에 있는 어떤 구성 요소라도 필요하다면 곧바로 실제 데이터를 가져올 수 있다. 이 방식은 우편함으로 수화물 인환증<sup>claim check</sup>을 받은 다음 우체국에 방문해 다음 실제 패키지를 받아와야 하는 등기 우편 프로세스와 매우 유사하다. 비행기에서 내린 다음이나 호텔에 가서 수하물 찾는 것과도 같은 개념이다.
 
-Spring Integration provides two types of claim check transformers:
+Spring Integration은 두 가지 유형의 클레임 체크 트랜스포머를 제공한다:
 
 - Incoming Claim Check Transformer
 - Outgoing Claim Check Transformer
 
-Convenient namespace-based mechanisms are available to configure them.
+클레임 체크 트랜스포머를 설정할 땐 간편하게 네임스페이스를 활용하면 된다.
 
 ### 9.3.1. Incoming Claim Check Transformer
 
-An incoming claim check transformer transforms an incoming message by storing it in the message store identified by its `message-store` attribute. The following example defines an incoming claim check transformer:
+incoming 클레임 체크 트랜스포머는 전달받은 메시지를 `message-store` 속성으로 식별하는 메시지 스토어에 저장하고 변환한다. 다음은 incoming 클레임 체크 트랜스포머를 정의하는 예시다:
 
 ```xml
 <int:claim-check-in id="checkin"
@@ -723,11 +727,11 @@ An incoming claim check transformer transforms an incoming message by storing it
         output-channel="output"/>
 ```
 
-In the preceding configuration, the message that is received on the `input-channel` is persisted to the message store identified with the `message-store` attribute and indexed with a generated ID. That ID is the claim check for that message. The claim check also becomes the payload of the new (transformed) message that is sent to the `output-channel`.
+위 설정에선 `input-channel`로 받은 메시지는 메시지 스토어에 보관한다. 이 메시지 스토어는 `message-store` 속성으로 식별하며, 자동으로 만들어진 ID로 메시지를 인덱싱한다. 이 ID가 바로 해당 메시지에 대한 클레임 체크다. 클레임 체크는 `output-channel`로 전송되는 새로운(변환을 마친) 메시지의 페이로드로도 사용한다.
 
-Now, assume that at some point you do need access to the actual message. You can access the message store manually and get the contents of the message, or you can use the same approach (creating a transformer) except that now you transform the Claim Check to the actual message by using an outgoing claim check transformer.
+이제 실제 메시지에 접근해야 하는 때가 왔다고 생각해보자. 메시지 스토어에 직접 접근해서 메시지를 가져와도 좋고, 똑같이 트랜스포머를 하나 만들어서 (이번엔 outgoing 클레임 체크 트랜스포머다) 클레임 체크를 실제 메시지로 변환할 수도 있다.
 
-The following listing provides an overview of all available parameters of an incoming claim check transformer:
+다음은 incoming 클레임 체크 트랜스포머에서 사용 가능한 모든 파라미터를 나타낸 예시다:
 
 ```xml
 <int:claim-check-in auto-startup="true"             <!-- (1) -->
@@ -740,18 +744,18 @@ The following listing provides an overview of all available parameters of an inc
     <int:poller></int:poller>                       <!-- (8) -->
 </int:claim-check-in>
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> Lifecycle attribute signaling whether this component should be started during application context startup. It defaults to `true`. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> ID identifying the underlying bean definition (`MessageTransformingHandler`). This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> The receiving message channel of this endpoint. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> Reference to the `MessageStore` to be used by this claim check transformer. If not specified, the default reference is to a bean named `messageStore`. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> Specifies the order for invocation when this endpoint is connected as a subscriber to a channel. This is particularly relevant when that channel uses a `failover` dispatching strategy. It has no effect when this endpoint is itself a polling consumer for a channel with a queue. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> Identifies the message channel where the message is sent after being processed by this endpoint. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> Specifies the maximum amount of time (in milliseconds) to wait when sending a reply message to the output channel. Defaults to `-1` — blocking indefinitely. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> Defines a poller. This element is not available inside a `Chain` element. Optional.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 애플리케이션 컨텍스트를 기동하면서 이 컴포넌트를 시작해야 하는지 여부를 나타내는 라이프사이클 속성.<br>기본값은 `true`다.<bR>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 내부 빈 정의를 식별하는 ID (`MessageTransformingHandler`).<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 이 엔드포인트가 메시지를 수신할 채널.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 이 클레임 체크 트랜스포머에서 사용할 `MessageStore`에 대한 참조.<br>따로 지정하지 않으면 기본적으로 `messageStore`라는 이름의 빈을 참조한다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 이 엔드포인트가 어떤 채널의 구독자로서 연결돼있을 때 호출할 순서를 지정한다.<br>특히 연결된 채널이 `failover` 디스패치 전략을 사용할 때 활용하곤 한다.<br>이 엔드포인트 자체가 큐를 가진 채널의 폴링 컨슈머인 경우엔 아무런 효과가 없다.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 이 엔드포인트에서 처리를 마친 메시지를 전송할 메시지 채널을 식별한다.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 출력 채널에 응답 메시지를 전송할 때 최대로 대기할 시간을 지정한다 (밀리세컨드 단위).<br>기본값은 `-1`로, 무한정 블로킹된다.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> 폴러를 하나 정의한다.<br>이 요소는 `Chain` 안에선 사용할 수 없다.<br>생략할 수 있다.</small>
 
 ### 9.3.2. Outgoing Claim Check Transformer
 
-An outgoing claim check transformer lets you transform a message with a claim check payload into a message with the original content as its payload.
+outgoing 클레임 체크 트랜스포머를 사용하면 클레임 체크를 페이로드로 가지고 있는 메시지를, 본래 컨텐츠를 페이로드로 가진 메시지로 변환할 수 있다.
 
 ```xml
 <int:claim-check-out id="checkout"
@@ -760,9 +764,9 @@ An outgoing claim check transformer lets you transform a message with a claim ch
         output-channel="output"/>
 ```
 
-In the preceding configuration, the message received on the `input-channel` should have a claim check as its payload. The outgoing claim check transformer transforms it into a message with the original payload by querying the message store for a message identified by the provided claim check. It then sends the newly checked-out message to the `output-channel`.
+위 설정에선, `input-channel`로 받은 메시지는 클레임 체크를 페이로드로 가지고 있어야 한다. outgoing 클레임 체크 트랜스포머는 메시지 스토어에서 전달받은 클레임 체크로 메시지를 식별해서 질의하고, 원래의 페이로드를 가지고 있는 메시지로 변환한다. 그런 다음 새롭게 체크아웃한 메시지를 `output-channel`로 전송한다.
 
-The following listing provides an overview of all available parameters of an outgoing claim check transformer:
+다음은 outgoing 클레임 체크 트랜스포머에서 사용 가능한 모든 파라미터를 나타낸 예시다:
 
 ```xml
 <int:claim-check-out auto-startup="true"             <!-- (1) -->
@@ -776,21 +780,20 @@ The following listing provides an overview of all available parameters of an out
     <int:poller></int:poller>                        <!-- (9) -->
 </int:claim-check-out>
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> Lifecycle attribute signaling whether this component should be started during application context startup. It defaults to `true`. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> ID identifying the underlying bean definition (`MessageTransformingHandler`). This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> The receiving message channel of this endpoint. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> Reference to the `MessageStore` to be used by this claim check transformer. If not specified, the default reference is to a bean named `messageStore`. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> Specifies the order for invocation when this endpoint is connected as a subscriber to a channel. This is particularly relevant when that channel is using a `failover` dispatching strategy. It has no effect when this endpoint is itself a polling consumer for a channel with a queue. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> Identifies the message channel where the message is sent after being processed by this endpoint. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> If set to `true`, the message is removed from the `MessageStore` by this transformer. This setting is useful when Message can be “claimed” only once. It defaults to `false`. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> Specifies the maximum amount of time (in milliseconds) to wait when sending a reply message to the output channel. It defaults to `-1` — blocking indefinitely. This attribute is not available inside a `Chain` element. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> Defines a poller. This element is not available inside a `Chain` element. Optional.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 애플리케이션 컨텍스트를 기동하면서 이 컴포넌트를 시작해야 하는지 여부를 나타내는 라이프사이클 속성.<br>기본값은 `true`다.<bR>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 내부 빈 정의를 식별하는 ID (`MessageTransformingHandler`).<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 이 엔드포인트가 메시지를 수신할 채널.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> 이 클레임 체크 트랜스포머에서 사용할 `MessageStore`에 대한 참조.<br>따로 지정하지 않으면 기본적으로 `messageStore`라는 이름의 빈을 참조한다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 이 엔드포인트가 어떤 채널의 구독자로서 연결돼있을 때 호출할 순서를 지정한다.<br>특히 연결된 채널이 `failover` 디스패치 전략을 사용할 때 활용하곤 한다.<br>이 엔드포인트 자체가 큐를 가진 채널의 폴링 컨슈머인 경우엔 아무런 효과가 없다.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 이 엔드포인트에서 처리를 마친 메시지를 전송할 메시지 채널을 식별한다.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> `true`로 설정하면 트랜스포머는 `MessageStore`에서 메시지를 제거한다.<br>메시지를 단 한 번만 "요청<sup>claim</sup>"할 수 있는 케이스에 활용하면 된다.<br>디폴트는 `false`다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> 출력 채널에 응답 메시지를 전송할 때 최대로 대기할 시간을 지정한다 (밀리세컨드 단위).<br>기본값은 `-1`로, 무한정 블로킹된다.<br>이 속성은 `Chain` 요소 안에선 사용할 수 없다.<br>생략할 수 있다.</small><br><small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> 폴러를 하나 정의한다.<br>이 요소는 `Chain` 안에선 사용할 수 없다.<br>생략할 수 있다.</small>
 
 ### 9.3.3. Claim Once
 
-Sometimes, a particular message must be claimed only once. As an analogy, consider process of handling airplane luggage. You checking in your luggage on departure and claiming it on arrival. Once the luggage has been claimed, it can not be claimed again without first checking it back in. To accommodate such cases, we introduced a `remove-message` boolean attribute on the `claim-check-out` transformer. This attribute is set to `false` by default. However, if set to `true`, the claimed message is removed from the `MessageStore` so that it cannot be claimed again.
+간혹 특정 메시지는 딱 한 번만 요청<sup>claim</sup>을 받아야 할 때가 있다. 비유로 비행기 수하물을 처리하는 과정을 생각해보자. 공항에서 출발할 땐 수하물을 체크인하고, 도착 시에 청구<sup>claim</sup>한다. 수하물을 청구하고 나면, 다시 수하물을 체크인한 게 아니라면 다시 청구할 수 없다. 이런 케이스를 지원하기 위해 `claim-check-out` 트랜스포머는 `remove-message`라는 boolean 속성을 도입했다. 이 속성은 기본적으로 `false`로 설정된다. 하지만 `true`로 설정하면 요청된 메시지는 `MessageStore`에서 제거되어 다시 요청할 수 없게 된다.
 
-This feature has an impact in terms of storage space, especially in the case of the in-memory `Map`-based `SimpleMessageStore`, where failing to remove messages could ultimately lead to an `OutOfMemoryException`. Therefore, if you do not expect multiple claims to be made, we recommend that you set the `remove-message` attribute’s value to `true`. The following example show how to use the `remove-message` attribute:
+이 기능은 저장 공간에 영향을 끼치는데, 특히 인메모리 `Map` 기반 `SimpleMessageStore`라면 더욱더 그렇다. 메시지 제거에 실패하면 종국엔 `OutOfMemoryException`이 발생할 수 있다. 따라서 메시지를 여러 번 요청하는 게 아니라면 `remove-message` 속성을 `true`로 설정해주는 게 좋다. `remove-message` 속성을 사용하는 방법은 아래 예제를 참고해라:
 
 ```xml
 <int:claim-check-out id="checkout"
@@ -802,18 +805,18 @@ This feature has an impact in terms of storage space, especially in the case of 
 
 ### 9.3.4. A Word on Message Store
 
-Although we rarely care about the details of the claim checks (as long as they work), you should know that the current implementation of the actual claim check (the pointer) in Spring Integration uses a UUID to ensure uniqueness.
+클레임 체크의 세부 구현 스펙을 신경 쓰는 일은 거의 없지만 (제대로 동작만 한다면), Spring Integration에서 현재 사용하는 실제 클레임 체크(포인터) 구현체는 고유성을 보장을 위해 UUID를 사용한다는 것을 알아두면 좋다.
 
-`org.springframework.integration.store.MessageStore` is a strategy interface for storing and retrieving messages. Spring Integration provides two convenient implementations of it:
+`org.springframework.integration.store.MessageStore`는 메시지를 저장하고 검색하기 위한 전략 인터페이스다. Spring Integration은 두 가지 구현체를 제공하고 있다:
 
-- `SimpleMessageStore`: An in-memory, `Map`-based implementation (the default, good for testing)
-- `JdbcMessageStore`: An implementation that uses a relational database over JDBC
+- `SimpleMessageStore`: 인메모리, `Map` 기반 구현체 (디폴트, 테스트하기 좋다)
+- `JdbcMessageStore`: JDBC를 통해 관계형 데이터베이스를 사용하는 구현체
 
 ---
 
 ## 9.4. Codec
 
-Version 4.2 of Spring Integration introduced the `Codec` abstraction. Codecs encode and decode objects to and from `byte[]`. They offer an alternative to Java serialization. One advantage is that, typically, objects need not implement `Serializable`. We provide one implementation that uses [Kryo](https://github.com/EsotericSoftware/kryo) for serialization, but you can provide your own implementation for use in any of the following components:
+Spring Integration 4.2에선 `Codec`이라는 인터페이스를 도입했다. 코덱은 객체와 `byte[]` 사이를 인코딩하고 디코딩하는 역할을 담당한다. 자바 직렬화 대신 사용할 수 있으며, 일반적으로 `Serializable`을 구현한 객체가 아니어도 된다는 장점이 있다. [Kryo](https://github.com/EsotericSoftware/kryo)를 이용해 직렬화하는 구현체를 하나 제공하지만, 아래 컴포넌트들에서 사용할 자체 구현체를 제공해도 된다:
 
 - `EncodingPayloadTransformer`
 - `DecodingTransformer`
@@ -821,40 +824,40 @@ Version 4.2 of Spring Integration introduced the `Codec` abstraction. Codecs enc
 
 ### 9.4.1. `EncodingPayloadTransformer`
 
-This transformer encodes the payload to a `byte[]` by using the codec. It does not affect message headers.
+이 트랜스포머는 코덱을 사용해 페이로드를 `byte[]`로 인코딩한다. 메시지 헤더에는 아무런 영향을 끼치지 않는다.
 
-See the [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/transformer/EncodingPayloadTransformer.html) for more information.
+자세한 내용은 [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/transformer/EncodingPayloadTransformer.html)을 참고해라.
 
 ### 9.4.2. `DecodingTransformer`
 
-This transformer decodes a `byte[]` by using the codec. It needs to be configured with the `Class` to which the object should be decoded (or an expression that resolves to a `Class`). If the resulting object is a `Message<?>`, inbound headers are not retained.
+이 트랜스포머는 코덱을 사용해 `byte[]`를 디코딩한다. 디코딩해야 하는 `Class`(또는 `Class`로 리졸브되는 표현식)를 설정해줘야 한다. `Message<?>` 객체를 생성할 땐 인바운드 헤더는 보존하지 않는다.
 
-See the [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/transformer/DecodingTransformer.html) for more information.
+자세한 내용은 [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/transformer/DecodingTransformer.html)을 참고해라.
 
 ### 9.4.3. `CodecMessageConverter`
 
-Certain endpoints (such as TCP and Redis) have no concept of message headers. They support the use of a `MessageConverter`, and the `CodecMessageConverter` can be used to convert a message to or from a `byte[]` for transmission.
+어떤 엔드포인트들은 (ex. TCP, Redis) 메시지 헤더라는 개념이 없다. 이런 엔드포인트에선 `MessageConverter`를 지원하는데, `byte[]`와 메시지 사이를 변환해 전송할 땐 `CodecMessageConverter`를 사용할 수 있다.
 
-See the [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/codec/CodecMessageConverter.html) for more information.
+자세한 내용은 [Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/codec/CodecMessageConverter.html)을 참고해라.
 
 ### 9.4.4. Kryo
 
-Currently, this is the only implementation of `Codec`, and it provides two kinds of `Codec`:
+현재 유일하게 제공하는 `Codec`의 구현체로, 두 종류의 `Codec`이 있다:
 
-- `PojoCodec`: Used in the transformers
-- `MessageCodec`: Used in the `CodecMessageConverter`
+- `PojoCodec`: 트랜스포머에서 사용
+- `MessageCodec`: `CodecMessageConverter`에서 사용
 
-The framework provides several custom serializers:
+스프링은 커스텀 시리얼라이저를 몇 가지 제공한다:
 
 - `FileSerializer`
 - `MessageHeadersSerializer`
 - `MutableMessageHeadersSerializer`
 
-The first can be used with the `PojoCodec` by initializing it with the `FileKryoRegistrar`. The second and third are used with the `MessageCodec`, which is initialized with the `MessageKryoRegistrar`.
+첫 번째 시리얼라이저는 `FileKryoRegistrar`를 생성할 때 초기화되며, `PojoCodec`에 넘겨 함께 사용할 수 있다. 두 번째와 세 번째 시리얼라이저는 `MessageKryoRegistrar`로 초기화하는 `MessageCodec`과 함께 사용한다.
 
 #### Customizing Kryo
 
-By default, Kryo delegates unknown Java types to its `FieldSerializer`. Kryo also registers default serializers for each primitive type, along with `String`, `Collection`, and `Map`. `FieldSerializer` uses reflection to navigate the object graph. A more efficient approach is to implement a custom serializer that is aware of the object’s structure and can directly serialize selected primitive fields. The following example shows such a serializer:
+Kryo는 기본적으로 알지 못하는 자바 타입은 `FieldSerializer`에 위임한다. 그리고 Kryo는 `String`, `Collection`, `Map` 등의 primitive 타입을 위한 디폴트 시리얼라이저들을 등록한다. `FieldSerializer`는 리플렉션을 사용해 객체 그래프를 탐색한다. 물론, 객체의 구조를 인식해서 선택한 primitive 필드들을 직접 직렬화할 수 있는 커스텀 시리얼라이저를 구현하면 더 효율적이다. 아래 보이는 예제처럼 말이다:
 
 ```java
 public class AddressSerializer extends Serializer<Address> {
@@ -873,17 +876,17 @@ public class AddressSerializer extends Serializer<Address> {
 }
 ```
 
-The `Serializer` interface exposes `Kryo`, `Input`, and `Output`, which provide complete control over which fields are included and other internal settings, as described in the [Kryo documentation](https://github.com/EsotericSoftware/kryo).
+[Kryo 문서](https://github.com/EsotericSoftware/kryo)에서도 설명하고 있지만, `Serializer` 인터페이스에선 `Kryo`, `Input`, `Output`을 받아 포함시킬 필드나 다른 내부 설정들을 조절할 수 있다.
 
-> When registering your custom serializer, you need a registration ID. The registration IDs are arbitrary. However, in our case, the IDs must be explicitly defined, because each Kryo instance across the distributed application must use the same IDs. Kryo recommends small positive integers and reserves a few ids (value < 10). Spring Integration currently defaults to using 40, 41, and 42 (for the file and message header serializers mentioned earlier). We recommend you start at 60, to allow for expansion in the framework. You can override these framework defaults by configuring the registrars mentioned earlier.
+> 커스텀 시리얼라이저를 등록한다면 registration ID가 필요하다. registration ID는 임의로 정할 수 있다. 하지만 여기선 분산 애플리케이션마다 있는 Kryo 인스턴스에서 동일한 ID를 사용해야 하기 때문에, 반드시 ID를 명시해야 한다. Kryo는 작은 양의 정수 값을 권장하고 있으며, 일부 id는 예약되어 있다 (value < 10). 현재 Spring Integration은 디폴트로 40, 41, 42를 사용한다 (앞에서 언급한 파일 시리얼라이저와, 메시지 헤더 시리얼라이저에). 스프링에서 향후 다른 값도 사용할 수 있으므로, 60에서부터 시작하는 것을 권장한다. 앞에서 언급한 registrar를 설정하면 이러한 프레임워크 기본값을 재정의할 수 있다.
 
 ##### Using a Custom Kryo Serializer
 
-If you need custom serialization, see the [Kryo](https://github.com/EsotericSoftware/kryo) documentation, because you need to use the native API to do the customization. For an example, see the [`MessageCodec`](https://github.com/spring-projects/spring-integration/blob/main/spring-integration-core/src/main/java/org/springframework/integration/codec/kryo/MessageCodec.java) implementation.
+시리얼라이즈 로직을 커스텀해야 한다면, 커스텀엔 네이티브 API를 사용해야 하므로 [Kryo](https://github.com/EsotericSoftware/kryo) 문서를 참조해라. 예시로 [`MessageCodec`](https://github.com/spring-projects/spring-integration/blob/main/spring-integration-core/src/main/java/org/springframework/integration/codec/kryo/MessageCodec.java) 구현체를 확인해봐라.
 
 ##### Implementing KryoSerializable
 
-If you have write access to the domain object source code, you can implement `KryoSerializable` as described [here](https://github.com/EsotericSoftware/kryo#kryoserializable). In this case, the class provides the serialization methods itself and no further configuration is required. However benchmarks have shown this is not quite as efficient as registering a custom serializer explicitly. The following example shows a custom Kryo serializer:
+도메인 객체 코드를 직접 수정할 수 있는 경우, [여기](https://github.com/EsotericSoftware/kryo#kryoserializable)에서 설명하는 것처럼 `KryoSerializable`을 구현해도 된다. 이 방식에선 클래스 자체가 직렬화 메소드 제공하며, 다른 설정은 필요하지 않다. 하지만 벤치마크에 따르면 커스텀 시리얼라이저를 명시적으로 등록하는 것만큼 효율적이진 않다. 다음은 커스텀 Kryo 시리얼라이저 예시다:
 
 ```java
 public class Address implements KryoSerializable {
@@ -905,11 +908,11 @@ public class Address implements KryoSerializable {
 }
 ```
 
-You can also use this technique to wrap a serialization library other than Kryo.
+이 테크닉을 이용해서 Kryo가 아닌 다른 직렬화 라이브러리를 래핑하는 것도 가능하다.
 
 ##### Using the `@DefaultSerializer` Annotation
 
-Kryo also provides a `@DefaultSerializer` annotation, as described [here](https://github.com/EsotericSoftware/kryo#default-serializers).
+[여기](https://github.com/EsotericSoftware/kryo#default-serializers)에서도 설명하고 있지만, Kryo는 `@DefaultSerializer` 어노테이션도 제공하고 있다.
 
 ```java
 @DefaultSerializer(SomeClassSerializer.class)
@@ -918,4 +921,4 @@ public class SomeClass {
 }
 ```
 
-If you have write access to the domain object, this may be a simpler way to specify a custom serializer. Note that this does not register the class with an ID, which may make the technique unhelpful for certain situations.
+도메인 객체를 직접 수정할 수 있는 경우, 이 방법으로 커스텀 시리얼라이저를 지정하는 게 더 간단할 수 있다. 단, 이 클래스는 ID와 함께 등록되지 않으므로, 상황에 따라 이 테크닉을 이용하기 어려울 수도 있다.
