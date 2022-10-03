@@ -8,7 +8,7 @@ image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#spring-integration-introduction
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#spring-integration-introduction
 parent: Overview of Spring Integration Framework
 isParent: true
 parentUrl: /Spring%20Integration/introduction/

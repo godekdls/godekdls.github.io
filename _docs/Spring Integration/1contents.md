@@ -7,9 +7,9 @@ image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html
-originalVersion: 5.5.12
-description: 스프링 인티그레이션 공식 레퍼런스를 한글로 번역한 문서입니다. 버전은 5.5.12 기준입니다.
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html
+originalVersion: 5.5.15
+description: 스프링 인티그레이션 공식 레퍼런스를 한글로 번역한 문서입니다. 버전은 5.5.15 기준입니다.
 ---
 
 ---
@@ -214,3 +214,50 @@ Mark Fisher, Marius Bogoevici, Iwein Fuld, Jonas Partner, Oleg Zhurakousky, Gary
   + [10.10.2. Configuring with the Java DSL](../messaging-endpoints#10102-configuring-with-the-java-dsl)
 - [10.11. java.util.function Interfaces Support](../messaging-endpoints#1011-javautilfunction-interfaces-support)
   + [10.11.1. Kotlin Lambdas](../messaging-endpoints#10111-kotlin-lambdas)
+11. [Java DSL](../java-dsl)
+- [11.1. DSL Basics](../java-dsl#111-dsl-basics)
+- [11.2. Message Channels](../java-dsl#112-message-channels)
+- [11.3. Pollers](../java-dsl#113-pollers)
+- [11.4. The reactive() Endpoint](../java-dsl#114-the-reactive-endpoint)
+- [11.5. DSL and Endpoint Configuration](../java-dsl#115-dsl-and-endpoint-configuration)
+- [11.6. Transformers](../java-dsl#116-transformers)
+- [11.7. Inbound Channel Adapters](../java-dsl#117-inbound-channel-adapters)
+- [11.8. Message Routers](../java-dsl#118-message-routers)
+- [11.9. Splitters](../java-dsl#119-splitters)
+- [11.10. Aggregators and Resequencers](../java-dsl#1110-aggregators-and-resequencers)
+- [11.11. Service Activators and the .handle() method](../java-dsl#1111-service-activators-and-the-handle-method)
+- [11.12. Operator gateway()](../java-dsl#1112-operator-gateway)
+- [11.13. Operator log()](../java-dsl#1113-operator-log)
+- [11.14. Operator intercept()](../java-dsl#1114-operator-intercept)
+- [11.15. MessageChannelSpec.wireTap()](../java-dsl#1115-messagechannelspecwiretap)
+- [11.16. Working With Message Flows](../java-dsl#1116-working-with-message-flows)
+- [11.17. FunctionExpression](../java-dsl#1117-functionexpression)
+- [11.18. Sub-flows support](../java-dsl#1118-sub-flows-support)
+- [11.19. Using Protocol Adapters](../java-dsl#1119-using-protocol-adapters)
+- [11.20. IntegrationFlowAdapter](../java-dsl#1120-integrationflowadapter)
+- [11.21. Dynamic and Runtime Integration Flows](../java-dsl#1121-dynamic-and-runtime-integration-flows)
+- [11.22. IntegrationFlow as a Gateway](../java-dsl#1122-integrationflow-as-a-gateway)
+- [11.23. DSL Extensions](../java-dsl#1123-dsl-extensions)
+- [11.24. Integration Flows Composition](../java-dsl#1124-integration-flows-composition)
+12. [Kotlin DSL](../kotlin-dsl)
+13. [System Management](../system-management)
+- [13.1. Metrics and Management](../system-management#131-metrics-and-management)
++ [13.1.1. Legacy Metrics](../system-management#1311-legacy-metrics)
++ [13.1.2. Disabling Logging in High Volume Environments](../system-management#1312-disabling-logging-in-high-volume-environments)
++ [13.1.3. Micrometer Integration](../system-management#1313-micrometer-integration)
++ [13.1.4. Spring Integration JMX Support](../system-management#1314-spring-integration-jmx-support)
+- [13.2. Message History](../system-management#132-message-history)
+  + [13.2.1. Message History Configuration](../system-management#1321-message-history-configuration)
+- [13.3. Message Store](../system-management#133-message-store)
+  + [13.3.1. Using MessageGroupFactory](../system-management#1331-using-messagegroupfactory)
+  + [13.3.2. Persistent MessageGroupStore and Lazy-load](../system-management#1332-persistent-messagegroupstore-and-lazy-load)
+  + [13.3.3. Message Group Condition](../system-management#1333-message-group-condition)
+- [13.4. Metadata Store](../system-management#134-metadata-store)
+  + [13.4.1. Idempotent Receiver and Metadata Store](../system-management#1341-idempotent-receiver-and-metadata-store)
+  + [13.4.2. MetadataStoreListener](../system-management#1342-metadatastorelistener)
+- [13.5. Control Bus](../system-management#135-control-bus)
+- [13.6. Orderly Shutdown](../system-management#136-orderly-shutdown)
+- [13.7. Integration Graph](../system-management#137-integration-graph)
+  + [13.7. Integration Graph](../system-management#1371-graph-runtime-model)
+- [13.8. Integration Graph Controller](../system-management#138-integration-graph-controller)
+15. [Endpoint Quick Reference Table](../endpoint-summary)

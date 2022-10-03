@@ -8,7 +8,7 @@ image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#messaging-routing-chapter
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#messaging-routing-chapter
 parent: Core Messaging
 parentUrl: /Spring%20Integration/core-messaging/
 ---
@@ -230,7 +230,7 @@ Spring Integration은 다음과 같은 라우터를 제공한다:
 </bean>
 ```
 
-`PayloadTypeRouter` 설정은 Spring Integration에서 제공하는 네임스페이스로도 가능하다 ([`Namespace Support`](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#configuration-namespace) 참고). Spring Integration의 네임스페이스를 이용하면 사실상 `<router/>` 설정과 그 구현체(`<bean/>` 요소로 정의한)를 하나의 설정으로 만들 수 있어 더 간단해진다. 다음 예제는 위와 동일한 설정이지만, 네임스페이스 지원을 이용한 `PayloadTypeRouter` 설정을 보여준다:
+`PayloadTypeRouter` 설정은 Spring Integration에서 제공하는 네임스페이스로도 가능하다 ([`Namespace Support`](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#configuration-namespace) 참고). Spring Integration의 네임스페이스를 이용하면 사실상 `<router/>` 설정과 그 구현체(`<bean/>` 요소로 정의한)를 하나의 설정으로 만들 수 있어 더 간단해진다. 다음 예제는 위와 동일한 설정이지만, 네임스페이스 지원을 이용한 `PayloadTypeRouter` 설정을 보여준다:
 
 ```xml
 <int:payload-type-router input-channel="routingChannel">
@@ -388,7 +388,7 @@ public IntegrationFlow routerFlow2() {
 </bean>
 ```
 
-Spring Integration은 아래 예제에서 볼 수 있는 `RecipientListRouter` 설정을 위한 네임스페이스도 지원하고 있다 ([네임스페이스 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#configuration-namespace) 참고):
+Spring Integration은 아래 예제에서 볼 수 있는 `RecipientListRouter` 설정을 위한 네임스페이스도 지원하고 있다 ([네임스페이스 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#configuration-namespace) 참고):
 
 ```xml
 <int:recipient-list-router id="customRouter" input-channel="routingChannel"
@@ -449,7 +449,7 @@ public IntegrationFlow routerFlow() {
 
 #### `RecipientListRouterManagement`
 
-4.1 버전부터 `RecipientListRouter`는 런타임에 동적으로 수신자<sup>recipient</sup>를 조작할 수 있는 여러 가지 동작들을 제공한다. 이런 관리성<sup>management</sup> 연산은 `RecipientListRouterManagement`를 통해 제공되며, `@ManagedResource` 어노테이션을 이용한다. 다음 예제와 같이 [컨트롤 버스](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#control-bus)를 이용할 수도 있고, JMX를 이용하는 방법도 있다:
+4.1 버전부터 `RecipientListRouter`는 런타임에 동적으로 수신자<sup>recipient</sup>를 조작할 수 있는 여러 가지 동작들을 제공한다. 이런 관리성<sup>management</sup> 연산은 `RecipientListRouterManagement`를 통해 제공되며, `@ManagedResource` 어노테이션을 이용한다. 다음 예제와 같이 [컨트롤 버스](../system-management/#135-control-bus)를 이용할 수도 있고, JMX를 이용하는 방법도 있다:
 
 ```xml
 <control-bus input-channel="controlBus"/>
@@ -471,7 +471,7 @@ messagingTemplate.convertAndSend(controlBus, "@'simpleRouter.handler'.addRecipie
 
 #### XPath Router
 
-XPath 라우터는 XML 모듈에 들어있다. [XPath를 이용해 XML 메시지 라우팅하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml-xpath-routing)를 참고해라.
+XPath 라우터는 XML 모듈에 들어있다. [XPath를 이용해 XML 메시지 라우팅하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xml.html#xml-xpath-routing)를 참고해라.
 
 #### Routing and Error Handling
 
@@ -672,16 +672,16 @@ public String route(Foo payload) {...}
 public List<String> route(Foo payload) {...}
 ```
 
-꼭 페이로드를 기반으로 라우팅하지 않고, 메시지 헤더 안에 있는 프로퍼티나 attribute 등의 메타데이터를 기반으로도 라우팅할 수 있다. 헤더를 활용할 땐 `@Router`를 달아준 메소드에 `@Header`를 선언한 파라미터를 추가할 수 있다. 아래 예제에서 확인할 수 있듯이, 이 파라미터에는 헤더의 값이 매핑된다. 자세한 내용은 [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations)에서 설명하고 있다:
+꼭 페이로드를 기반으로 라우팅하지 않고, 메시지 헤더 안에 있는 프로퍼티나 attribute 등의 메타데이터를 기반으로도 라우팅할 수 있다. 헤더를 활용할 땐 `@Router`를 달아준 메소드에 `@Header`를 선언한 파라미터를 추가할 수 있다. 아래 예제에서 확인할 수 있듯이, 이 파라미터에는 헤더의 값이 매핑된다. 자세한 내용은 [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)에서 설명하고 있다:
 
 ```java
 @Router
 public List<String> route(@Header("orderStatus") OrderStatus status)
 ```
 
-> XPath 지원을 포함해서, XML 기반 메시지 라우팅에 대해 알아보려면 [XML 지원 - XML 페이로드 처리하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml)를 참고해라.
+> XPath 지원을 포함해서, XML 기반 메시지 라우팅에 대해 알아보려면 [XML 지원 - XML 페이로드 처리하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xml.html#xml)를 참고해라.
 
-라우터 설정을 좀더 자세히 알아보려면 Java DSL 챕터에 있는 [메시지 라우터](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-routers)를 함께 읽어봐라.
+라우터 설정을 좀더 자세히 알아보려면 Java DSL 챕터에 있는 [메시지 라우터](../java-dsl/#118-message-routers)를 함께 읽어봐라.
 
 ### 8.1.6. Dynamic Routers
 
@@ -751,7 +751,7 @@ Step 1에서 실제 `MessageChannel`의 인스턴스를 가져오게 되면 동�
 
 `PayloadTypeRouter`에서도 동일하다. 특정 페이로드 타입을 다시 매핑하거나 기존 매핑을 제거하면 된다. 사실, 표현식 기반 라우터는 물론, 다른 라우터들도 전부 동일하다. 매핑을 추가해주면 이제 라우터에서 계산하는 값들은 실제 **채널 이름**을 리졸브하기 위한 두 번째 스텝을 거칠 수 있기 때문이다.
 
-`channelMapping`은 `AbstractMappingMessageRouter` 단에서 정의되기 때문에 , `AbstractMappingMessageRouter`를 상속한 라우터는 전부 다이나믹 라우터다 (프레임워크에서 정의하는 대부분의 라우터도 포함해서). 이 맵의 setter 메소드는 public으로 노출돼있으며, 'setChannelMapping', 'removeChannelMapping' 메소드도 함께 제공한다. 따라서 라우터 자체에 대한 참조만 가지고 있다면 이 메소드들을 이용해 런타임에 라우터 매핑을 변경, 추가, 제거할 수 있다. JMX([JMX 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jmx.html#jmx) 참고)나 Spring Integration 컨트롤 버스([컨트롤 버스](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/control-bus.html#control-bus) 참고) 기능을 통해서도 같은 설정 옵션을 제공할 수 있다는 뜻이기도 하다.
+`channelMapping`은 `AbstractMappingMessageRouter` 단에서 정의되기 때문에 , `AbstractMappingMessageRouter`를 상속한 라우터는 전부 다이나믹 라우터다 (프레임워크에서 정의하는 대부분의 라우터도 포함해서). 이 맵의 setter 메소드는 public으로 노출돼있으며, 'setChannelMapping', 'removeChannelMapping' 메소드도 함께 제공한다. 따라서 라우터 자체에 대한 참조만 가지고 있다면 이 메소드들을 이용해 런타임에 라우터 매핑을 변경, 추가, 제거할 수 있다. JMX([JMX 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jmx.html#jmx) 참고)나 Spring Integration 컨트롤 버스([컨트롤 버스](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/control-bus.html#control-bus) 참고) 기능을 통해서도 같은 설정 옵션을 제공할 수 있다는 뜻이기도 하다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
   <p>채널 이름의 폴백으로 채널 키를 활용하면 간편하면서도 유연하게 대응할 수 있다. 그러나 메시지 생성자를 신뢰할 수 없는 상황이라면, 시스템을 잘 아는 누군가가 악의적으로 메시지를 생성해 예상치 못한 채널로 라우팅시킬 수도 있다. 예를 들어 키가 라우터의 입력 채널 이름으로 설정돼 있다면, 이런 메시지는 해당 라우터로 다시 라우팅되며, 종국엔 스택 오버플로 에러를 일으킨다. 따라서 이 기능은 비활성화하고 (<code class="highlighter-rouge">channelKeyFallback</code> 속성을 <code class="highlighter-rouge">false</code>로 설정) 필요한 경우 매핑 정보를 변경해야 할 수도 있다.</p>
@@ -761,7 +761,7 @@ Step 1에서 실제 `MessageChannel`의 인스턴스를 가져오게 되면 동�
 
 라우터 매핑을 관리하는 방법 중에는 [컨트롤 버스](https://www.enterpriseintegrationpatterns.com/ControlBus.html) 패턴을 이용하는 방법이 있다. 이 패턴은 컨트롤 채널이라는 별도 채널로 메시지를 전송해 라우터를 포함한 Spring Integration 구성 요소들을 관리하고 모니터링한다.
 
-> 컨트롤 버스에 관한 자세한 내용은 [컨트롤 버스](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/control-bus.html#control-bus)를 읽어봐라.
+> 컨트롤 버스에 관한 자세한 내용은 [컨트롤 버스](../system-management/#135-control-bus)를 읽어봐라.
 
 일반적으로 컨트롤 메시지를 전송할 땐, 메세지를 통해 관리 중인 특정 컴포넌트(라우터 등)에서 특정한 작업을 실행하도록 요청한다. 아래 있는 관리성 연산(메소드)들은 라우터의 리졸브 프로세스를 변경한다:
 
@@ -783,7 +783,7 @@ Step 1에서 실제 `MessageChannel`의 인스턴스를 가져오게 되면 동�
 
 스프링의 JMX 지원을 이용해 라우터 인스턴스를 하나 노출한 다음 자주 사용하는 JMX 클라이언트(ex. JConsole)를 사용해도 라우터 설정을 변경하는 연산(메소드)들을 관리할 수 있다.
 
-> 스프링이 제공하는 JMX 관련 기능은 [JMX 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jmx.html#jmx)을 읽어봐라.
+> 스프링이 제공하는 JMX 관련 기능은 [JMX 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jmx.html#jmx)을 읽어봐라.
 
 #### Routing Slip
 
@@ -819,7 +819,7 @@ Step 1에서 실제 `MessageChannel`의 인스턴스를 가져오게 되면 동�
 > `requestMessage` 인자는 언제나 `Message<?>`다. 반면 reply 객체는 컨텍스트에 따라 `Message<?>`일 수도, `AbstractIntegrationMessageBuilder`일 수도 있으며, 임의의 애플리케이션 도메인 객체일 수도 있다 (ex. 서비스 액티베이터로 실행한 POJO 메소드가 반환한 객체). 앞의 두 케이스라면, SpEL(또는 자바 구현체)에서 평소대로 `Message` 프로퍼티(`payload`와 `headers`)를 사용할 수 있다. 하지만 임의의 도메인 객체라면 이 프로퍼티를 사용할 수 없다. 따라서 POJO 메소드의 실행 결과로 다음 path를 결정하는 경우 라우팅 슬립을 주의해서 사용해야 한다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>라우팅 슬립이 분산 환경과 연계된다면 라우팅 슬립 <code class="highlighter-rouge">path</code>에 인라인 표현식은 사용하지 않는 게 좋다. 이는 메시지 브로커(<a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/amqp.html#amqp">AMQP 지원</a> 또는 <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jms.html#jms">JMS 지원</a>)를 통해 <code class="highlighter-rouge">request-reply</code>를 주고받거나, 인티그레이션 플로우에서 영구<sup>persistent</sup> <code class="highlighter-rouge">MessageStore</code>(<a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store">메시지 스토어</a>)를 사용하는 교차 JVM 애플리케이션과 같은 분산 환경에서도 마찬가지다. 프레임워크는 <code class="highlighter-rouge">RoutingSlipHeaderValueMessageProcessor</code>를 사용해 <code class="highlighter-rouge">path</code> 값을 <code class="highlighter-rouge">ExpressionEvaluatingRoutingSlipRouteStrategy</code> 객체로 변환하며, 이 객체는 메시지 헤더 <code class="highlighter-rouge">routingSlip</code>에 채워진다. 이 클래스는 <code class="highlighter-rouge">Serializable</code>이 아니기 때문에 (<code class="highlighter-rouge">BeanFactory</code>에 의존하기 때문에 불가능하다), 전체 <code class="highlighter-rouge">Message</code> 역시 직렬화가 불가능하며, 모든 분산 작업에서 <code class="highlighter-rouge">NotSerializableException</code>을 만나게 된다. 따라서, 적합한 SpEL을 이용해 <code class="highlighter-rouge">ExpressionEvaluatingRoutingSlipRouteStrategy</code> 빈을 등록하고, 라우팅 슬립 <code class="highlighter-rouge">path</code> 설정에선 이 빈 이름을 사용해라.</p>
+  <p>라우팅 슬립이 분산 환경과 연계된다면 라우팅 슬립 <code class="highlighter-rouge">path</code>에 인라인 표현식은 사용하지 않는 게 좋다. 이는 메시지 브로커(<a href="https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/amqp.html#amqp">AMQP 지원</a> 또는 <a href="https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jms.html#jms">JMS 지원</a>)를 통해 <code class="highlighter-rouge">request-reply</code>를 주고받거나, 인티그레이션 플로우에서 영구<sup>persistent</sup> <code class="highlighter-rouge">MessageStore</code>(<a href="../system-management/#133-message-store">메시지 스토어</a>)를 사용하는 교차 JVM 애플리케이션과 같은 분산 환경에서도 마찬가지다. 프레임워크는 <code class="highlighter-rouge">RoutingSlipHeaderValueMessageProcessor</code>를 사용해 <code class="highlighter-rouge">path</code> 값을 <code class="highlighter-rouge">ExpressionEvaluatingRoutingSlipRouteStrategy</code> 객체로 변환하며, 이 객체는 메시지 헤더 <code class="highlighter-rouge">routingSlip</code>에 채워진다. 이 클래스는 <code class="highlighter-rouge">Serializable</code>이 아니기 때문에 (<code class="highlighter-rouge">BeanFactory</code>에 의존하기 때문에 불가능하다), 전체 <code class="highlighter-rouge">Message</code> 역시 직렬화가 불가능하며, 모든 분산 작업에서 <code class="highlighter-rouge">NotSerializableException</code>을 만나게 된다. 따라서, 적합한 SpEL을 이용해 <code class="highlighter-rouge">ExpressionEvaluatingRoutingSlipRouteStrategy</code> 빈을 등록하고, 라우팅 슬립 <code class="highlighter-rouge">path</code> 설정에선 이 빈 이름을 사용해라.</p>
 </blockquote>
 
 자바 설정에선 다음과 같이 `HeaderEnricher` 빈 정의에 `RoutingSlipHeaderValueMessageProcessor` 인스턴스를 추가해주면 된다:
@@ -930,7 +930,7 @@ selector 혹은 적당한 POJO 메소드에서 `false`를 반환해 거절한 �
     output-channel="output" discard-channel="rejectedMessages"/>
 ```
 
-[필터에 어드바이스 체인 적용하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#advising-filters)도 함께 참고해라.
+[필터에 어드바이스 체인 적용하기](../messaging-endpoints/#1097-advising-filters)도 함께 참고해라.
 
 > 일반적으로 메시지 필터는 publish-subscribe 채널과 함께 사용한다. 같은 채널을 다양한 필터 엔드포인트가 구독할 수 있으며, 필터를 통해 다음 엔드포인트로 메시지를 전달할지를 결정하게 된다. 다음 엔드포인트는 지원하는 타입이라면 무엇이든 될 수 있다 (ex. 서비스 activator). point-to-point 입력 채널 하나와 여러 가지 출력 채널을 사용하는 메시지 라우터에선 메시지를 전송할 채널을 사전에 세팅해 놓는다면, 메시지 필터는 그대신 다양한 구독자별로 대응을 추가해나가는 방안이다.
 
@@ -1003,7 +1003,7 @@ XML 요소에서 제공하는 설정 옵션은 전부 `@Filter` 어노테이션�
 
 이 필터는 XML 안에서 직접 참조해도 되고, 클래스 위에 `@MessageEndpoint` 어노테이션을 선언했다면 클래스패스 스캔을 통해 자동으로 감지할 수도 있다.
 
-[어노테이션을 이용해 엔드포인트에 어드바이스 체인 적용하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/handler-advice.html#advising-with-annotations)도 함께 참고해라.
+[어노테이션을 이용해 엔드포인트에 어드바이스 체인 적용하기](../messaging-endpoints/#1098-advising-endpoints-using-annotations)도 함께 참고해라.
 
 ---
 
@@ -1105,7 +1105,7 @@ List<LineItem> extractItems(Order order) {
 }
 ```
 
-[어노테이션을 이용해 엔드포인트에 어드바이스 체인 적용하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/handler-advice.html#advising-with-annotations), [splitter](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-splitters), [파일 splitter](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/file.html#file-splitter)도 함께 참고해라.
+[어노테이션을 이용해 엔드포인트에 어드바이스 체인 적용하기](../messaging-endpoints/#1098-advising-endpoints-using-annotations), [splitter](../java-dsl/#119-splitters), [파일 splitter](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/file.html#file-splitter)도 함께 참고해라.
 
 ---
 
@@ -1267,7 +1267,7 @@ Spring Integration은 `ReleaseStrategy`의 구현체 `SimpleSequenceSizeReleaseS
 
 #### Aggregating Large Groups
 
-4.3 릴리즈에선 `SimpleMessageGroup`에 메시지들을 담는 디폴트 `Collection`을 `HashSet`으로 변경했다. 전에는 `BlockingQueue`를 사용했는데, 규모가 큰 그룹에선 개별 메시지들을 제거하는 비용이 상당했다 (O(n)에 해당하는 선형 탐색이 필요했다). 해시 셋은 일반적으로 제거 연산이 훨씬 빠르긴 하지만, 삽입과 제거 연산 모두 해시 값을 계산해야 하기 때문에 대용량 메시지라면 역시 비용이 커질 수 있다. 메시지에서 해시 값을 계산해내는 비용이 크다면 다른 컬렉션 타입을 고려해봐야 한다. [`MessageGroupFactory` 사용하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-group-factory)에서도 설명하지만, `SimpleMessageGroupFactory`라는 구현체를 제공하므로 요구사항에 가장 잘맞는 `Collection`을 선택해주면 된다. 아니면 자체 팩토리 구현체를 제공해서 다른 `Collection<Message<?>>`를 생성하는 것도 가능하다.
+4.3 릴리즈에선 `SimpleMessageGroup`에 메시지들을 담는 디폴트 `Collection`을 `HashSet`으로 변경했다. 전에는 `BlockingQueue`를 사용했는데, 규모가 큰 그룹에선 개별 메시지들을 제거하는 비용이 상당했다 (O(n)에 해당하는 선형 탐색이 필요했다). 해시 셋은 일반적으로 제거 연산이 훨씬 빠르긴 하지만, 삽입과 제거 연산 모두 해시 값을 계산해야 하기 때문에 대용량 메시지라면 역시 비용이 커질 수 있다. 메시지에서 해시 값을 계산해내는 비용이 크다면 다른 컬렉션 타입을 고려해봐야 한다. [`MessageGroupFactory` 사용하기](../system-management/#1331-using-messagegroupfactory)에서도 설명하지만, `SimpleMessageGroupFactory`라는 구현체를 제공하므로 요구사항에 가장 잘맞는 `Collection`을 선택해주면 된다. 아니면 자체 팩토리 구현체를 제공해서 다른 `Collection<Message<?>>`를 생성하는 것도 가능하다.
 
 다음은 이전에 사용했던 구현체와 `SimpleSequenceSizeReleaseStrategy`로 aggregator를 설정하는 예제다:
 
@@ -1343,7 +1343,7 @@ Found one Java-level deadlock:
 
 ### 8.4.3. Configuring an Aggregator in Java DSL
 
-Java DSL을 이용해 aggregator를 설정하는 방법은 [Aggregators and Resequencers](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-aggregators)를 참고해라.
+Java DSL을 이용해 aggregator를 설정하는 방법은 [Aggregators and Resequencers](../java-dsl/#1110-aggregators-and-resequencers)를 참고해라.
 
 #### Configuring an Aggregator with XML
 
@@ -1406,7 +1406,7 @@ Spring Integration에서 XML로 aggregator를 설정하려면 `<aggregator/>` �
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> aggregator가 메시지를 받아올 채널.<br>필수 값이다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> aggregator가 집계 결과를 전송할 채널.<br>생략할 수 있다 (수신한 메시지 자체의 헤더 'replyChannel'에 응답 채널이 지정돼 있을 수도 있기 때문).</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> aggregator가 타임아웃된 메시지들을 전송할 채널 (`send-partial-result-on-expiry`가 `false`인 경우에).<br>생략할 수 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 메시지 그룹이 완성될 때까지 correlation 키 아래 메시지들을 저장하는 `MessageGroupStore`에 대한 참조.<br>생략할 수 있다.<br>기본적으로 휘발성의 인메모리 저장소를 사용한다.<br>자세한 내용은 [메시지 스토어](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store)를 참고해라.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> 메시지 그룹이 완성될 때까지 correlation 키 아래 메시지들을 저장하는 `MessageGroupStore`에 대한 참조.<br>생략할 수 있다.<br>기본적으로 휘발성의 인메모리 저장소를 사용한다.<br>자세한 내용은 [메시지 스토어](../system-management/#133-message-store)를 참고해라.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> 둘 이상의 핸들러가 동일한 `DirectChannel`을 구독하는 경우 참고하는 이 aggregator의 순서 (로드 밸런싱 목적으로 사용).<br>생략할 수 있다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> 메시지들을 담고있는 `MessageGroup`이 만료되면 해당 메시지들을 집계해 'output-channel'이나 'replyChannel'로 보내야 하는지를 나타낸다 ([`MessageGroupStore.expireMessageGroups(long)`](https://docs.spring.io/spring-integration/api/org/springframework/integration/store/MessageGroupStore.html#expireMessageGroups-long) 참고).<br>`MessageGroup`을 만료시키는 방법으로는 `MessageGroupStoreReaper`를 설정하는 방법이 있다.<br>하지만 이 방법 대신 `MessageGroupStore.expireMessageGroups(timeout)`를 호출해도 `MessageGroup`을 만료시킬 수 있다.<br>Control Bus를 통해도 되고, `MessageGroupStore` 인스턴스에 대한 참조를 가지고 있다면 `expireMessageGroups(timeout)`를 호출하면 된다.<br>`MessageGroup`이 만료되지 않는다면 이 속성만으로는 아무런 일도 일어나지 않는다.<br>곧 만료되는 `MessageGroup`에 아직 남아 있는 메시지들을 전부 버릴지 출력 또는 응답 채널로 보낼지를 나타내는 단순한 지표라고 볼 수 있다.<br>이 속성은 생략할 수 있다 (디폴트는 `false`).<br>참고로, `expire-groups-upon-timeout`을 `false`로 설정한 경우 그룹이 실제로 만료되지 않을 수 있으므로 `send-partial-result-on-timeout`이라고 부르는 게 더 적합하다고 볼 수도 있다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> 응답 `Message`를 `output-channel` 또는 `discard-channel`로 전송할 때 대기하는 타임아웃 간격.<br>기본값은 `-1`로 무한으로 블로킹된다.<br>고정 'capacity'를 사용하는 `QueueChannel`같이, '전송'에 제한이 있는 출력 채널을 사용할 때만 적용된다.<br>타임아웃이 발생하면 `MessageDeliveryException`을 던진다.<br>`AbstractSubscribableChannel`의 구현체들은 `send-timeout`을 무시한다.<br>`group-timeout(-expression)`의 경우 예약된 expire 태스크에서 `MessageDeliveryException`이 발생하면 해당 태스크를 다시 스케줄링한다.<br>생략할 수 있다.</small><br>
@@ -1420,7 +1420,7 @@ Spring Integration에서 XML로 aggregator를 설정하려면 `<aggregator/>` �
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(17)</span> release 전략을 나타내는 SpEL 표현식.<br>표현식의 루트 객체는 `MessageGroup`이다.<br>ex: `"size() == 5"`.<br>`release-strategy`나 `release-strategy-expression`은 둘 중 하나만 사용할 수 있다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(18)</span> `true`로 설정하면 (디폴트는 `false`다) 완료된 그룹은 메시지 스토어에서 제거되며, 이후 correlation이 같은 메시지가 도착하면 새 그룹을 만들게된다.<br>기본 동작에선 완료된 그룹과 동일한 correlation을 가진 메시지들은 `discard-channel`로 전송된다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(19)</span> `<aggregator>`의 `MessageStore`에 `MessageGroupStoreReaper`를 설정했을 때만 적용된다.<br>`MessageGroupStoreReaper`가 그룹을 부분적으로 만료하도록 설정돼있다면 기본적으로 비어있는 그룹 역시 제거한다.<br>빈 그룹은 그룹이 정상적으로 release된 후에 존재하는데, 덕분에 늦게 도착하는 메시지들을 감지하고 폐기할 수 있다.<br>그룹을 부분적으로 만료시키는 것보다 더 긴 주기로 빈 그룹을 만료시키고 싶다면 이 속성을 설정해라.<br>비어있는 그룹들은 최소한 이 밀리세컨드 동안 수정되지 않는다면 `MessageStore`에서 제거되지 않을 거다.<br>빈 그룹이 실제로 만료되는 시간은 reaper의 `timeout` 속성에도 영향을 받으며, 이 값에 타임아웃을 더한 시간만큼 걸릴 수도 있다.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(20)</span> `org.springframework.integration.util.LockRegistry` 빈에 대한 참조.<br>`groupId`를 기반으로 `Lock`을 획득하는데 사용한다. 덕분에 같은 `MessageGroup`에 동시에 접근하는 상황을 대응할 수 있다.<br>기본적으론 내부 `DefaultLockRegistry`를 사용한다.<br>`ZookeeperLockRegistry`같은 분산 `LockRegistry`를 사용하면 특정 그룹에선 동시에 하나의 aggregator 인스턴스만이 작업할 수 있다.<br>자세한 내용은 [Redis Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/redis.html#redis-lock-registry), [Gemfire Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/gemfire.html#gemfire-lock-registry), [Zookeeper Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/zookeeper.html#zk-lock-registry)를 참고해라.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(20)</span> `org.springframework.integration.util.LockRegistry` 빈에 대한 참조.<br>`groupId`를 기반으로 `Lock`을 획득하는데 사용한다. 덕분에 같은 `MessageGroup`에 동시에 접근하는 상황을 대응할 수 있다.<br>기본적으론 내부 `DefaultLockRegistry`를 사용한다.<br>`ZookeeperLockRegistry`같은 분산 `LockRegistry`를 사용하면 특정 그룹에선 동시에 하나의 aggregator 인스턴스만이 작업할 수 있다.<br>자세한 내용은 [Redis Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/redis.html#redis-lock-registry), [Gemfire Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/gemfire.html#gemfire-lock-registry), [Zookeeper Lock Registry](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/zookeeper.html#zk-lock-registry)를 참고해라.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(21)</span> 현재 메시지가 도착했을 때 `ReleaseStrategy`가 그룹을 release하지 않으면 `MessageGroup`을 강제로 완료 상태로 만드는 타임아웃 (밀리세컨드 단위).<br>이 속성 덕분에 aggregator에 시간 기반 릴리즈 전략이 하나 내장된다고 볼 수 있다. `MessageGroup`에 마지막으로 메시지가 도착한 이후 타임아웃 기간 동안 새 메시지가 도착하지 않는 경우, 부분적인 결과를 내보내야 할 때 (혹은 그룹을 폐기해야 할 때) 활용할 수 있다.<br>`MessageGroup`이 생성된 시점부터 타임아웃을 계산하고 싶다면 `group-timeout-expression` 속성을 검토해봐라.<br>aggregator에 메시지가 새로 도착하면 해당 `MessageGroup`에 예약돼있는 기존 `ScheduledFuture<?>`는 모두 취소된다. `ReleaseStrategy`가 `false`를 반환하고 (release하지 않음을 의미) `groupTimeout > 0`이라면, 그룹을 만료시키는 태스크를 새로 예약한다.<br>이 속성을 0이나 음수 값으로 설정하는 것은 권하지 않는다.<br>이렇게 되면 모든 메시지 그룹이 즉시 완료되기 때문에 사실상 aggregator를 비활성화하는 거나 마찬가지다.<br>하지만 표현식을 사용하면 조건부로 0이나 음수로 설정할 수 있다.<br>자세한 내용은 `group-timeout-expression`을 참고해라.<br>그룹을 완료 상태로 만들면서 하는 일들은 `ReleaseStrategy`와 `send-partial-group-on-expiry` 속성에 따라 달라진다.<br>자세한 내용은 [Aggregator와 그룹 타임아웃](#aggregator-and-group-timeout)을 참고해라.<br>이 속성은 `group-timeout-expression`과 함께 사용할 수 없다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(22)</span> `groupTimeout`으로 평가되는 SpEL 표현식. `#root` 평가 컨텍스트 객체로 `MessageGroup`을 사용한다.<br>이 속성을 이용하면 `MessageGroup`을 강제로 완료 상태로 만드는 태스크를 예약할 수 있다.<br>표현식이 `null`로 평가되면 태스크를 예약하지 않는다.<br>0으로 평가되면 해당 그룹은 현재 스레드에서 즉시 완료된다.<br>사실상 이 속성은 `group-timeout`을 동적으로 만들어준다고 볼 수 있다.<br>예를 들어 그룹이 만들어지고 나서 10초가 지나면 `MessageGroup`을 강제로 완료시키고 싶다면, 이 SpEL 표현식을 검토해볼 수 있다: `timestamp + 10000 - T(System).currentTimeMillis()`. `MessageGroup`이 `#root` 평가 컨텍스트 객체이므로, 여기서 `timestamp`는 `MessageGroup.getTimestamp()`로 제공된다.<br>하지만 그룹의 생성 시각은 다른 그룹 만료 속성들을 어떻게 설정했는지에 따라, 메시지가 처음 도착한 시간과는 다를 수 있다는 사실을 명심해라.<br>자세한 내용은 `group-timeout`를 참고해라.<br>`group-timeout` 속성과는 함께 사용할 수 없다.</small><br>
 <small><span style="background-color: #a9dcfc; border-radius: 50px;">(23)</span> 타임아웃으로 인해 (또는 `MessageGroupStoreReaper`로 인해) 그룹이 완료되면 기본적으로 해당 그룹은 만료된다 (완전히 제거된다).<br>이후 도착하는 메시지들은 새 그룹을 만들게 된다.<br>이 속성을 `false`로 설정하면 그룹을 완료하되 메타데이터는 남겨둘 수 있어 늦게 도착한 메시지들을 폐기할 수 있다.<br>빈 그룹은 `empty-group-min-timeout` 속성과 `MessageGroupStoreReaper`를 함께 사용하면 이후 만료시킬 수 있다.<br>기본값은 `true`다.</small><br>
@@ -1613,7 +1613,7 @@ public MessageHandler aggregator(MessageGroupStore jdbcMessageGroupStore) {
 }
 ```
 
-자세한 정보는 [프로그래밍 모델](#842-programming-model)과 [`@Bean` 메소드 위에 선언할 수 있는 어노테이션들](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations_on_beans)을 읽어봐라.
+자세한 정보는 [프로그래밍 모델](#842-programming-model)과 [`@Bean` 메소드 위에 선언할 수 있는 어노테이션들](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations_on_beans)을 읽어봐라.
 
 > 4.2 버전부터는 `AggregatorFactoryBean`을 이용해 좀더 간단한 자바 설정으로 `AggregatingMessageHandler`를 구성할 수 있다.
 
@@ -1692,13 +1692,13 @@ Spring Integration은 편의를 위해 메시지 만료를 위한 래퍼 `Messag
 `AbstractCorrelatingMessageHandler`는 자체 만료 콜백을 등록하며, 콜백은 aggregator의 XML 설정에 있는 boolean 플래그 `send-partial-result-on-expiry`와 연결된다. 이 플래그를 `true`로 설정하면 만료 콜백이 실행될 때 아직 release 전인 그룹에 있는, 마킹되지 않는 메시지들을 출력 채널로 전송할 수 있다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p><code class="highlighter-rouge">MessageGroupStoreReaper</code>는 예약된 태스크에서 호출하고 다운스트림 플로우로 메시지를 보낼 수도 있기때문에 (<code class="highlighter-rouge">sendPartialResultOnExpiry</code> 옵션에 따라 다르다), <code class="highlighter-rouge">MessagePublishingErrorHandler</code>와 커스텀 <code class="highlighter-rouge">TaskScheduler</code>를 제공해서 <code class="highlighter-rouge">errorChannel</code>을 통해 예외를 처리하는 것을 권장한다. 일반적인 aggregator release 기능에서도 기대하는 방식이기도 하다. 마찬가지로 <code class="highlighter-rouge">TaskScheduler</code>에 의존하는 그룹 타임아웃에서도 동일하다. 자세한 내용은 <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/error-handling.html#error-handling">에러 핸들링</a>을 참고해라.</p>
+  <p><code class="highlighter-rouge">MessageGroupStoreReaper</code>는 예약된 태스크에서 호출하고 다운스트림 플로우로 메시지를 보낼 수도 있기때문에 (<code class="highlighter-rouge">sendPartialResultOnExpiry</code> 옵션에 따라 다르다), <code class="highlighter-rouge">MessagePublishingErrorHandler</code>와 커스텀 <code class="highlighter-rouge">TaskScheduler</code>를 제공해서 <code class="highlighter-rouge">errorChannel</code>을 통해 예외를 처리하는 것을 권장한다. 일반적인 aggregator release 기능에서도 기대하는 방식이기도 하다. 마찬가지로 <code class="highlighter-rouge">TaskScheduler</code>에 의존하는 그룹 타임아웃에서도 동일하다. 자세한 내용은 <a href="https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/error-handling.html#error-handling">에러 핸들링</a>을 참고해라.</p>
 </blockquote>
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
   <p>서로 다른 correlation 엔드포인트에서 하나의 <code class="highlighter-rouge">MessageStore</code>를 공유하고 있다면 반드시 적합한 <code class="highlighter-rouge">CorrelationStrategy</code>를 설정해서  그룹 ID의 고유성을 보장해줘야 한다. 그렇지 않으면 특정 correlation 엔드포인트가 다른 엔드포인트의 메시지를 release하거나 만료해서 의도와는 다르게 동작할 수도 있다. correlation 키가 동일한 메시지는 동일한 메시지 그룹에 저장된다.</p>
   <p><code class="highlighter-rouge">MessageStore</code> 구현체에 따라서는 데이터를 분할해 물리적으로 동일한 리소스를 사용할 수 있는 구현체도 있다. 예를 들어 <code class="highlighter-rouge">JdbcMessageStore</code>에는 <code class="highlighter-rouge">region</code>이란 속성이 있으며, <code class="highlighter-rouge">MongoDbMessageStore</code>에는 <code class="highlighter-rouge">collectionName</code>이란 속성이 있다.</p>
-  <p><code class="highlighter-rouge">MessageStore</code> 인터페이스와 구현체에 대한 좀더 자세한 내용은 <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-store">메시지 스토어</a>를 읽봐라.</p>
+  <p><code class="highlighter-rouge">MessageStore</code> 인터페이스와 구현체에 대한 좀더 자세한 내용은 <a href="../system-management/#133-message-store">메시지 스토어</a>를 읽봐라.</p>
 </blockquote>
 
 ### 8.4.5. Flux Aggregator
@@ -1744,9 +1744,9 @@ Flux<Message<?>> window =
 
 ### 8.4.6. Condition on the Message Group
 
-5.5 버전부터 `AbstractCorrelatingMessageHandler`(자바 & XML DSL 포함)는 `BiFunction<Message<?>, String, String>` 타입 옵션 `groupConditionSupplier`를 제공한다. 이 함수는 그룹에 메시지가 추가될 때마다 호출하며, 리턴한 condition 문자열은 그룹에 저장돼 이후에 참작할 수 있다. `ReleaseStrategy`에선 그룹에 있는 모든 메시지를 순회하는 대신에 이 condition을 참조할 수 있다. 자세한 내용은 `GroupConditionProvider` JavaDocs와 [메시지 그룹 Condition](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-store.html#message-group-condition)을 참고해라.
+5.5 버전부터 `AbstractCorrelatingMessageHandler`(자바 & XML DSL 포함)는 `BiFunction<Message<?>, String, String>` 타입 옵션 `groupConditionSupplier`를 제공한다. 이 함수는 그룹에 메시지가 추가될 때마다 호출하며, 리턴한 condition 문자열은 그룹에 저장돼 이후에 참작할 수 있다. `ReleaseStrategy`에선 그룹에 있는 모든 메시지를 순회하는 대신에 이 condition을 참조할 수 있다. 자세한 내용은 `GroupConditionProvider` JavaDocs와 [메시지 그룹 Condition](../system-management/#1333-message-group-condition)을 참고해라.
 
-[File Aggregator](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/file.html#file-aggregator)도 함께 읽어보면 좋다.
+[File Aggregator](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/file.html#file-aggregator)도 함께 읽어보면 좋다.
 
 ---
 
@@ -1766,7 +1766,7 @@ resequencer는 `CORRELATION_ID`를 사용해 메시지들을 그룹에 저장한
 
 ### 8.5.2. Configuring a Resequencer
 
-Java DSL을 이용해 resequencer를 설정한다면 [Aggregator와 Resequencer](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-aggregators)를 참고해라.
+Java DSL을 이용해 resequencer를 설정한다면 [Aggregator와 Resequencer](../java-dsl/#1110-aggregators-and-resequencers)를 참고해라.
 
 resequencer를 설정할 땐 XML에 적당한 요소만 추가해주면 된다.
 
@@ -1831,7 +1831,7 @@ resequencer를 설정할 땐 XML에 적당한 요소만 추가해주면 된다.
 
 `MessageHandlerChain`은 실제 동작은 필터, transformer, splitter 등과 같은 다른 핸들러들로 구성된 체인에 위임하면서, 단일 메시지 엔드포인트로 설정할 수 있는 `MessageHandler`의 구현체다. 여러 가지 핸들러를 고정된 순서로 연결해서 선형으로 실행해야 한다면 `MessageHandlerChain`을 이용하는 게 훨씬 더 간단하다. 예를 들면 다른 구성 요소 앞에 transformer를 두는 경우가 꽤 많다. 비슷하게 체인 앞부분에 필터를 두면 본질적으로 [선택적인<sup>selective</sup> 컨슈머](https://www.enterpriseintegrationpatterns.com/MessageSelector.html)를 만들게 된다. 두 체인 모두 하나의 `input-channel`과 하나의 `output-channel`만 있으면 되기 때문에, 구성 요소마다 개별적으로 채널을 정의해주지 않아도 된다.
 
-> `MessageHandlerChain`은 대부분 XML 설정 위주로 설계됐다. Java DSL의 `IntegrationFlow` 정의는 하나의 체인 컴포넌트로 취급할 순 있지만, 아래에서 설명하는 개념과 원칙들과는 관련이 없다. 자세한 내용은 [Java DSL](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl)을 참고해라.
+> `MessageHandlerChain`은 대부분 XML 설정 위주로 설계됐다. Java DSL의 `IntegrationFlow` 정의는 하나의 체인 컴포넌트로 취급할 순 있지만, 아래에서 설명하는 개념과 원칙들과는 관련이 없다. 자세한 내용은 [Java DSL](../java-dsl)을 참고해라.
 
 > Spring Integration의 `Filter`는 `throwExceptionOnRejection`이라는 boolean 프로퍼티를 제공한다. 하나의 point-to-point 채널에서 메시지를 수락하는 기준이 다른 여러 가지 선택적<sup>selective</sup> 컨슈머가 있다면, 이 값을 'true'로 설정해주는 것이 좋다 (기본값은 `false`다). 그러면 dispatcher에서 메시지가 거부되었음을 알 수 있으며, 결과적으로 메시지를 다른 구독자에게 전달해볼 수 있다. 예외를 던지지 않으면, 필터에서 메시지를 버려 추가적인 처리가 일어나지 않는 경우에도 dispatcher는 메시지 전달에 성공한 것으로 밖에 알 수가 없다. 정말로 메시지를 "삭제<sup>drop</sup>"하고 싶을 때는 필터의 'discard-channel'도 유용할 수 있다. 'discard-channel'을 이용하면 삭제된 메시지로 원하는 작업을 수행할 수 있다 (JMS 큐에 메시지를 전송하거나 로그로 남기는 등).
 
@@ -1898,7 +1898,7 @@ Spring Integration 3.0부터 체인 요소에 `id` 속성이 주어지면, 체�
 - 이 `ServiceActivatingHandler`의 `componentName`은 동일한 값을 사용하지만 '.handler' suffix는 없다. 즉, 'somethingChain$child.somethingService'가 된다.
 - `<chain>`의 마지막 하위 구성 요소 `<object-to-json-transformer>`는 `id` 속성을 가지고 있지 않다. 이 요소의 `componentName`은 `<chain>`에서의 위치를 기반으로 만들어진다. 이 예시에선 'somethingChain$child#1'이다. (이름의 마지막 부분이 체인 내의 순서를 나타내며, '#0'으로 시작한다). 참고로 이 transformer는 애플리케이션 컨텍스트 내 빈으로 등록되지 않으므로, `beanName`은 주어지지 않는다. 하지만 `componentName`에 로깅 등에 유용한 값이 담겨 있다.
 
-`<chain>` 요소들에 `id` 속성을 사용하면 [JMX 익스포터](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jmx.html#jmx-mbean-exporter)에도 적합하며, [메시지 히스토리](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-history.html#message-history)에서 추적할 수 있다. 앞에서 언급한 것처럼 적당한 빈 이름을 사용하면 `BeanFactory`로 액세스할 수도 있다.
+`<chain>` 요소들에 `id` 속성을 사용하면 [JMX 익스포터](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jmx.html#jmx-mbean-exporter)에도 적합하며, [메시지 히스토리](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/message-history.html#message-history)에서 추적할 수 있다. 앞에서 언급한 것처럼 적당한 빈 이름을 사용하면 `BeanFactory`로 액세스할 수도 있다.
 
 > `<chain>` 요소에 `id` 속성을 명시하면, 로그에서 하위 구성 요소를 간단하게 식별하고, `BeanFactory`에서 액세스할 수 있어 유용하다.
 
@@ -1955,7 +1955,7 @@ Spring Integration 3.0부터 체인 요소에 `id` 속성이 주어지면, 체�
 
 #### Auction
 
-`Scatter-Gather`의 auction 버전은 요청 메시지에 “publish-subscribe” 로직을 적용한다. 이때 “scatter” 채널은 `apply-sequence="true"`인 `PublishSubscribeChannel`이다. 물론 이 채널엔 어떤 `MessageChannel` 구현체라도 사용할 수 있다 (`ContentEnricher`의 `request-channel`에서처럼 — [Content Enricher](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/content-enrichment.html#content-enricher) 참고). 하지만 그러려면 `aggregation`에 사용할 자체 커스텀 `correlationStrategy`를 만들어야 한다.
+`Scatter-Gather`의 auction 버전은 요청 메시지에 “publish-subscribe” 로직을 적용한다. 이때 “scatter” 채널은 `apply-sequence="true"`인 `PublishSubscribeChannel`이다. 물론 이 채널엔 어떤 `MessageChannel` 구현체라도 사용할 수 있다 (`ContentEnricher`의 `request-channel`에서처럼 — [Content Enricher](../messaging-transformation/#92-content-enricher) 참고). 하지만 그러려면 `aggregation`에 사용할 자체 커스텀 `correlationStrategy`를 만들어야 한다.
 
 #### Distribution
 
@@ -2037,7 +2037,7 @@ public MessageHandler scatterGatherDistribution() {
 
 Scatter-Gather는 여러 개의 request와 reply를 다루는 컴포넌트기 때문에 에러를 핸들링하기가 조금 더 복잡한 편이다. `ReleaseStrategy`에서 요청보다 응답이 적어도 처리를 종료하도록 만든다면, 경우에 따라서는 다운스트림에서 발생한 예외를 잡아 단순히 무시하는 게 더 좋을 수도 있다. 그렇지 않을 땐 에러가 발생하면 하위 플로우에서 "보상 메시지<sup>compensation message</sup>"같은 걸 반환하는 것을 고려해봐야 한다.
 
-하위 플로우 중 비동기<sup>async</sup> 플로우가 있다면 전부 `errorChannel` 헤더를 설정해야 `MessagePublishingErrorHandler`가 적절한 에러 메시지를 전송할 수 있다. 그렇지 않으면 공통 에러 핸들링 로직을 통해 글로벌 `errorChannel`로 에러를 전송한다. 비동기 에러 처리에 대한 자세한 내용은 [에러 핸들링](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/error-handling.html#error-handling)을 참고해라.
+하위 플로우 중 비동기<sup>async</sup> 플로우가 있다면 전부 `errorChannel` 헤더를 설정해야 `MessagePublishingErrorHandler`가 적절한 에러 메시지를 전송할 수 있다. 그렇지 않으면 공통 에러 핸들링 로직을 통해 글로벌 `errorChannel`로 에러를 전송한다. 비동기 에러 처리에 대한 자세한 내용은 [에러 핸들링](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/error-handling.html#error-handling)을 참고해라.
 
 동기<sup>Synchronous</sup> 플로우는 `ExpressionEvaluatingRequestHandlerAdvice`를 사용해 예외를 무시하거나 보상 메시지를 반환할 수 있다. 하위 플로우 중 하나가 `ScatterGatherHandler`로 예외를 던지면 업스트림으로 다시 던진다. 이처럼 다른 하위 플로우가 응답을 하더라도 `ScatterGatherHandler`에선 그 응답을 무시하게 된다. 원하는 동작일 수도 있지만, 대부분의 경우 다른 플로우와 gatherer 동작에 영향을 주지 않도록 하위 플로우에서 발생한 에러를 처리해주는 것이 좋다.
 

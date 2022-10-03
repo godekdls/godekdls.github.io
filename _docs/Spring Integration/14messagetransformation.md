@@ -9,7 +9,7 @@ lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 parent: Core Messaging
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#messaging-transformation-chapter
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#messaging-transformation-chapter
 parentUrl: /Spring%20Integration/core-messaging/
 ---
 
@@ -60,7 +60,7 @@ parentUrl: /Spring%20Integration/core-messaging/
 
 시스템에 따라 [표준<sup>canonical</sup> 데이터 모델](https://www.enterpriseintegrationpatterns.com/CanonicalDataModel.html)을 제공하는 게 가장 좋을 수도 있지만, Spring Integration의 전반적인 철학은 특정한 형식을 요구하지 않는 것이다. Spring Integration은 그보단 확장해서 쓸 수 있도록 최대한 간단한 모델을 제공해서 유연성을 극대화하는 것을 목표로 삼는다. 다른 엔드포인트 유형과 마찬가지로 XML이나 Java 어노테이션 설정을 선언해주면 단순한 POJO를 메시지 트랜스포머의 역할에 맞게 조정할 수 있다. 이 챕터에선 관련 설정 옵션들에 대해 설명한다.
 
-> 스프링은 XML 기반 메시지 페이로드를 요구하지 않는다. 유연성을 끌어올리려는 목적이지만, 그럼에도 불구하고 스프링 프레임워크는 XML 기반 페이로드를 처리할 수 있는 간편한 트랜스포머를 몇 개 제공한다. 따라서 애플리케이션에 필요하다고 판단되면 직접 선택할 수 있다. 관련 트랜스포머 대한 정보는 [XML 지원 - XML 페이로드 처리하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml)를 참고해라.
+> 스프링은 XML 기반 메시지 페이로드를 요구하지 않는다. 유연성을 끌어올리려는 목적이지만, 그럼에도 불구하고 스프링 프레임워크는 XML 기반 페이로드를 처리할 수 있는 간편한 트랜스포머를 몇 개 제공한다. 따라서 애플리케이션에 필요하다고 판단되면 직접 선택할 수 있다. 관련 트랜스포머 대한 정보는 [XML 지원 - XML 페이로드 처리하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xml.html#xml)를 참고해라.
 
 ### 9.1.1. Configuring a Transformer with XML
 
@@ -333,11 +333,11 @@ public class ObjectMapperFactory {
 
 > 헤더를 사용해 타입을 결정할 때는 `class` 속성을 제공해선 안 된다. 이 속성을 헤더보다 우선시하기 때문이다.
 
-JSON 트랜스포머 외에도 Spring Integration은 표현식에서 사용할 수 있는 내장 `#jsonPath` SpEL 함수를 제공한다. 자세한 내용은 [스프링 표현식 언어(SpEL<sup>Spring Expression Language</sup>)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel)를 참고해라.
+JSON 트랜스포머 외에도 Spring Integration은 표현식에서 사용할 수 있는 내장 `#jsonPath` SpEL 함수를 제공한다. 자세한 내용은 [스프링 표현식 언어(SpEL<sup>Spring Expression Language</sup>)](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/spel.html#spel)를 참고해라.
 
-3.0 버전부터는 표현식에서 사용할 수 있는 `#xpath` SpEL 함수도 제공한다. 자세한 내용은 [#xpath SpEL 함수](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xpath-spel-function)를 참고해라.
+3.0 버전부터는 표현식에서 사용할 수 있는 `#xpath` SpEL 함수도 제공한다. 자세한 내용은 [#xpath SpEL 함수](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xml.html#xpath-spel-function)를 참고해라.
 
-4.0 버전 부터 `ObjectToJsonTransformer`는 노드 JSON을 표현하는 방법을 지정할 수 있도록 `resultType` 프로퍼티를 지원한다. 만들어지는 노드 트리는 사용하는 `JsonObjectMapper` 구현체에 따라 다르게 표현된다. 기본적으로 `ObjectToJsonTransformer`는 `Jackson2JsonObjectMapper`를 사용하며, 객체를 노드 트리로 변환하는 일은 `ObjectMapper#valueToTree` 메소드에 위임한다. 이후 다운스트림에선 SpEL 표현식 안에서도 JSON 데이터 프로퍼티에 액세스할 수 있는데, 이때 노드 JSON 표현을 잘 활용하면 `JsonPropertyAccessor`를 효율적으로 사용할 수 있다. 자세한 내용은 [프로퍼티 접근자](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel-property-accessors)를 참고해라.
+4.0 버전 부터 `ObjectToJsonTransformer`는 노드 JSON을 표현하는 방법을 지정할 수 있도록 `resultType` 프로퍼티를 지원한다. 만들어지는 노드 트리는 사용하는 `JsonObjectMapper` 구현체에 따라 다르게 표현된다. 기본적으로 `ObjectToJsonTransformer`는 `Jackson2JsonObjectMapper`를 사용하며, 객체를 노드 트리로 변환하는 일은 `ObjectMapper#valueToTree` 메소드에 위임한다. 이후 다운스트림에선 SpEL 표현식 안에서도 JSON 데이터 프로퍼티에 액세스할 수 있는데, 이때 노드 JSON 표현을 잘 활용하면 `JsonPropertyAccessor`를 효율적으로 사용할 수 있다. 자세한 내용은 [프로퍼티 접근자](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/spel.html#spel-property-accessors)를 참고해라.
 
 5.1 버전부터 이 `resultType`을 `BYTES`로 설정해 `byte[]` 페이로드를 가진 메시지를 생성할 수 있다. `byte[]`  로 동작하는 다운스트림 핸들러를 다룰 때 편리할 거다.
 
@@ -375,7 +375,7 @@ Order generateOrder(String productId, @Header("customerName") String customer) {
 }
 ```
 
-[어노테이션을 이용해 엔드포인트에 어드바이스 체인 적용하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/handler-advice.html#advising-with-annotations)도 함께 참고해라.
+[어노테이션을 이용해 엔드포인트에 어드바이스 체인 적용하기](../messaging-endpoints/#1098-advising-endpoints-using-annotations)도 함께 참고해라.
 
 ### 9.1.5. Header Filter
 
@@ -405,13 +405,13 @@ Spring Integration `Core` 모듈에는 두 가지 enricher가 들어있다:
 
 또한 어댑터 전용 헤더 enricher 세 가지도 함께 들어있다:
 
-- [XPath Header Enricher (XML 모듈)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xml.html#xml-xpath-header-enricher)
-- [Mail Header Enricher (Mail 모듈)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/mail.html#mail-namespace)
-- [XMPP Header Enricher (XMPP 모듈)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xmpp.html#xmpp-message-outbound-channel-adapter)
+- [XPath Header Enricher (XML 모듈)](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xml.html#xml-xpath-header-enricher)
+- [Mail Header Enricher (Mail 모듈)](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/mail.html#mail-namespace)
+- [XMPP Header Enricher (XMPP 모듈)](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xmpp.html#xmpp-message-outbound-channel-adapter)
 
 이 어댑터들을 자세히 알아보려면 이 레퍼런스 메뉴얼에 있는 어댑터 전용 섹션을 참고해라.
 
-표현식 지원에 대한 자세한 설명은 [스프링 표현식 언어(SpEL<sup>Spring Expression Language</sup>)](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/spel.html#spel)를 확인해봐라.
+표현식 지원에 대한 자세한 설명은 [스프링 표현식 언어(SpEL<sup>Spring Expression Language</sup>)](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/spel.html#spel)를 확인해봐라.
 
 ### 9.2.1. Header Enricher
 
@@ -637,7 +637,7 @@ Spring Integration 2.1에선 페이로드 enricher를 도입했다. 페이로드
 
 이 섹션에선 다양한 상황에 페이로드 enricher를 활용하는 예제들을 몇 가지다룬다.
 
-> 여기에서 보여주는 코드 외에도 다른 Spring Integration 샘플들을 제공하고 있다. [Spring Integration Samples](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/samples.html#samples)를 확인해봐라.
+> 여기에서 보여주는 코드 외에도 다른 Spring Integration 샘플들을 제공하고 있다. [Spring Integration Samples](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/samples.html#samples)를 확인해봐라.
 
 아래 예제에선 `User` 객체를 `Message`의 페이로드로 전달한다:
 

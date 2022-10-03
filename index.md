@@ -36,4 +36,4 @@ includeFooter: false
 | [Spring Boot](/Spring%20Boot/contents/) | 2.5.2 |  2021/07   | [ref](https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/) |
 | [Spring Cloud Data Flow](/Spring%20Cloud%20Data%20Flow/contents/) | 2.9.1 |  2021/12   | [ref](https://dataflow.spring.io/docs/) |
 | [Prometheus](/Prometheus/contents/) | 2.32(Prometheus)<br>0.23(Alerting) |  2022/01   | [ref](https://prometheus.io/docs/introduction/overview/) |
-| [Spring Integration](/Spring%20Integration/contents/) | 5.5.12 |  2022/06   | [ref](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html) |
+| [Spring Integration](/Spring%20Integration/contents/) | 5.5.15 |  2022/10   | [ref](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html) |

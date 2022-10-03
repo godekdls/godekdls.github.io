@@ -3,13 +3,13 @@ title: Messaging Endpoints
 category: Spring Integration
 order: 15
 permalink: /Spring%20Integration/messaging-endpoints/
-description: todo
+description: 다양한 메시지 엔드포인트 구현체와 AOP 어드바이스들
 image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 parent: Core Messaging
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#messaging-endpoints-chapter
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#messaging-endpoints-chapter
 parentUrl: /Spring%20Integration/core-messaging/
 ---
 <script>defaultLanguages = ['java-dsl', 'maven']</script>
@@ -371,7 +371,7 @@ Spring Integration은 폴러에 트랜잭션을 적용할 수 있게 지원하�
 </int:poller>
 ```
 
-좀 더 자세한 정보는 [폴러 트랜잭션 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/transactions.html#transaction-poller)을 참고해라.
+좀 더 자세한 정보는 [폴러 트랜잭션 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/transactions.html#transaction-poller)을 참고해라.
 
 #### AOP Advice chains
 
@@ -393,7 +393,7 @@ Spring Integration은 폴러에 트랜잭션을 적용할 수 있게 지원하�
 `MethodInterceptor` 인터페이스를 구현하는 방법에 대한 자세한 내용은 [스프링 프레임워크 레퍼런스 가이드에 있는 AOP 섹션](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-api)을 참고해라. 꼭 트랜잭션 설정이 있는게 아니더라도, 폴러에 어드바이스 체인을 적용하면 메시지 플로우 동작을 향상시킬 수 있다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>어드바이스 체인을 사용할 땐, 하위 요소 <code class="highlighter-rouge">&lt;transactional/&gt;</code>을 지정할 수 없다. 그대신 <code class="highlighter-rouge">&lt;tx:advice/&gt;</code> 빈을 선언하고 <code class="highlighter-rouge">&lt;advice-chain/&gt;</code>에 추가해라. 전체 설정에 관한 상세 정보는 <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/transactions.html#transaction-poller">폴러 트랜잭션 지원</a>을 참고해라.</p>
+  <p>어드바이스 체인을 사용할 땐, 하위 요소 <code class="highlighter-rouge">&lt;transactional/&gt;</code>을 지정할 수 없다. 그대신 <code class="highlighter-rouge">&lt;tx:advice/&gt;</code> 빈을 선언하고 <code class="highlighter-rouge">&lt;advice-chain/&gt;</code>에 추가해라. 전체 설정에 관한 상세 정보는 <a href="https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/transactions.html#transaction-poller">폴러 트랜잭션 지원</a>을 참고해라.</p>
 </blockquote>
 
 ##### TaskExecutor Support
@@ -409,7 +409,7 @@ Spring Integration은 폴러에 트랜잭션을 적용할 수 있게 지원하�
                keep-alive="120"/>
 ```
 
-task-executor를 제공하지 않으면 컨슈머의 핸들러는 호출자의 스레드에서 실행된다. 일반적인 상황에서 호출자는 보통 디폴트 `TaskScheduler`다 ([태스크 스케줄러 설정하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#namespace-taskscheduler) 참고). `task-executor` 속성은 스프링의 `TaskExecutor` 인터페이스를 구현한 빈의 이름을 참조할 수 있다는 점도 알아두면 좋다. 위 예제에 보이는 `executor` 요소는 편의상 표기했으니 참고해라.
+task-executor를 제공하지 않으면 컨슈머의 핸들러는 호출자의 스레드에서 실행된다. 일반적인 상황에서 호출자는 보통 디폴트 `TaskScheduler`다 ([태스크 스케줄러 설정하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#namespace-taskscheduler) 참고). `task-executor` 속성은 스프링의 `TaskExecutor` 인터페이스를 구현한 빈의 이름을 참조할 수 있다는 점도 알아두면 좋다. 위 예제에 보이는 `executor` 요소는 편의상 표기했으니 참고해라.
 
 [폴링 컨슈머의 배경 이론에 대해 설명하면서](#1013-polling-consumer) 언급했듯이, 폴링 컨슈머는 이벤트 기반 동작을 시뮬레이션할 때에도 활용할 수 있다. receive 타임아웃은 길고 인터벌은 짧은 트리거를 이용하면, 메시지 소스를 폴링하는 방식이더라도 메시지가 도착하면 매우 빠르게 반응할 수 있다. 단, 이 테크닉은 소스를 호출하면 타임아웃되기 전까지 블로킹되는 경우에만 가능하다. 예를 들어 파일 폴러는 블로킹되지 않는다. `receive()`를 호출할 때마다 즉시 반환되며, 새 파일이 있을 수도 없을 수도 있다. 따라서 폴러에 `receive-timeout`을 길게 설정하더라도, 블로킹되지 않기 때문에 이 값을 사용할 수 없다. 한편 Spring Integration의 자체 큐 기반 채널을 사용한다면 타임아웃을 적절히 활용할 수 있다. 다음 예제는 폴링 컨슈머로 메시지를 거의 도착하는 즉시 수신하는 방법을 보여준다:
 
@@ -657,7 +657,7 @@ public Map<String, Boolean> getEndpointsRunningStatus(String role) // (4)
 
 ## 10.3. Leadership Event Handling
 
-엔드포인트 그룹은 리더십이 부여되거나 회수됨에 따라 시작, 중지할 수 있다. 클러스터 안에 있는 인스턴스 중에서 단 하나의 인스턴스만 공유 리소스를 컨슘해야 하는 상황 등에 활용할 수 있다. 대표적인 예시는 공유 디렉토리를 폴링하는 파일 인바운드 채널 어댑터다. ([파일 읽기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/file.html#file-reading) 참고).
+엔드포인트 그룹은 리더십이 부여되거나 회수됨에 따라 시작, 중지할 수 있다. 클러스터 안에 있는 인스턴스 중에서 단 하나의 인스턴스만 공유 리소스를 컨슘해야 하는 상황 등에 활용할 수 있다. 대표적인 예시는 공유 디렉토리를 폴링하는 파일 인바운드 채널 어댑터다. ([파일 읽기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/file.html#file-reading) 참고).
 
 리더 선출에 참여해서, 리더로 선출되거나 리더십이 회수되거나, 또는 리더가 되려면 필요한 리소스를 획득하지 못한 경우에 통지 받을 수 있도록, 애플리케이션은 "leader initiator"라는 컴포넌트를 애플리케이션 컨텍스트 안에 하나 생성한다. 일반적으로 leader initiator는 `SmartLifecycle`이기 때문에, 컨텍스트가 시작할 때 시작되며 (선택 사항), 리더십이 변경되면 통지를 보낸다. 뿐만 아니라 5.0 버전부터는 `publishFailedEvents`를 `true`로 설정하면 실패 통보를 받을 수 있어, 실패 발생 시 원하는 조치를 취할 수 있다. 컨벤션에 따라 이 콜백들을 수신할 `Candidate`를 하나 제공해야 한다. 추가로, 프레임워크에서 제공하는 `Context` 객체를 통해 리더십을 회수할 수도 있다. 원하는 코드에서 `o.s.i.leader.event.AbstractLeaderEvent` 인스턴스(`OnGrantedEvent`와 `OnRevokedEvent`의 상위 클래스)를 수신<sup>listen</sup>하고 적절히 대응할 수도 있다 (ex. `SmartLifecycleRoleController`를 이용해서). 이 이벤트엔 `Context` 객체에 대한 참조가 담겨있다. 다음은 `Context` 인터페이스의 정의다:
 
@@ -686,7 +686,7 @@ public LockRegistryLeaderInitiator leaderInitiator(LockRegistry locks) {
 
 lock 레지스트리를 제대로 구현했다면, 리더는 최대 하나까지만 가능하다. lock 레지스트리에서 lock이 만료되거나 문제가 생겼을 때 예외를 던지기도 한다면 (이상적으로는 `InterruptedException`), 리더가 없는 상태로 유지되는 시간은 lock 구현체 자체의 대기 시간만큼만으로 최소화할 수 있다. 기본적으로, `busyWaitMillis` 프로퍼티는 추가적인 지연 시간을 더하는데, 이는 lock이 불완전해서 만료된 사실을 lock을 다시 얻어오려고 해봐야만 알 수 있는 좀 더 흔한 상황에서 CPU가 고갈되지 않게 하기 위함이다.
 
-Zookeeper를 이용한 리더십 선출과 이벤트에 대한 자세한 내용은 [Zookeeper 리더십 이벤트 핸들링](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/zookeeper.html#zk-leadership)을 참고해라.
+Zookeeper를 이용한 리더십 선출과 이벤트에 대한 자세한 내용은 [Zookeeper 리더십 이벤트 핸들링](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/zookeeper.html#zk-leadership)을 참고해라.
 
 ---
 
@@ -722,7 +722,7 @@ public interface Cafe {
          default-reply-channel="replyChannel"/>
 ```
 
-이렇게 설정해주고 나면, 다른 빈에는 `cafeService`를 주입할 수 있으며, `Cafe` 인터페이스의 프록시 인스턴스로 메소드를 호출하는 코드에선 Spring Integration API를 인지하지 못한다. 일반적으로 Spring Remoting(RMI, HttpInvoker 등)과 유사하게 처리할 수 있다. `gateway` 요소를 사용하는 예시는 부록에 있는 [“Samples”](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/samples.html#samples)를 참고해라 (Cafe 데모).
+이렇게 설정해주고 나면, 다른 빈에는 `cafeService`를 주입할 수 있으며, `Cafe` 인터페이스의 프록시 인스턴스로 메소드를 호출하는 코드에선 Spring Integration API를 인지하지 못한다. 일반적으로 Spring Remoting(RMI, HttpInvoker 등)과 유사하게 처리할 수 있다. `gateway` 요소를 사용하는 예시는 부록에 있는 [“Samples”](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/samples.html#samples)를 참고해라 (Cafe 데모).
 
 위 설정에 있는 디폴트 속성들은 게이트웨이 인터페이스에 있는 모든 메소드에 적용된다. reply 타임아웃을 지정하지 않으면 호출 스레드는 응답을 무한정 기다린다. [응답이 없을 때의 게이트웨이 동작](#10412-gateway-behavior-when-no-response-arrives)을 참고해라.
 
@@ -924,7 +924,7 @@ public interface TestGateway {
 ```
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>Spring Integration은 XML 설정과 유사하게 컴포넌트 스캔 중에도 이런 어노테이션들을 발견하면, 메시징 인프라를 이용해 <code class="highlighter-rouge">proxy</code> 구현체를 생성한다. 여기서 말하는 스캔을 수행하고 애플리케이션 컨텍스트에 <code class="highlighter-rouge">BeanDefinition</code>을 등록하려면 <code class="highlighter-rouge">@Configuration</code> 클래스에 <code class="highlighter-rouge">@IntegrationComponentScan</code> 어노테이션을 추가해라. 표준 <code class="highlighter-rouge">@ComponentScan</code> 인프라에선 인터페이스들을 처리해주지 않는다. 그렇기 때문에 인터페이스 위에 있는 <code class="highlighter-rouge">@MessagingGateway</code> 어노테이션을 정제해서 관련 <code class="highlighter-rouge">GatewayProxyFactoryBean</code> 인스턴스를 등록할 수 있도록 커스텀 <code class="highlighter-rouge">@IntegrationComponentScan</code> 로직을 도입했다. <a href="https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations">어노테이션 지원</a>도 함께 참고해라.</p>
+  <p>Spring Integration은 XML 설정과 유사하게 컴포넌트 스캔 중에도 이런 어노테이션들을 발견하면, 메시징 인프라를 이용해 <code class="highlighter-rouge">proxy</code> 구현체를 생성한다. 여기서 말하는 스캔을 수행하고 애플리케이션 컨텍스트에 <code class="highlighter-rouge">BeanDefinition</code>을 등록하려면 <code class="highlighter-rouge">@Configuration</code> 클래스에 <code class="highlighter-rouge">@IntegrationComponentScan</code> 어노테이션을 추가해라. 표준 <code class="highlighter-rouge">@ComponentScan</code> 인프라에선 인터페이스들을 처리해주지 않는다. 그렇기 때문에 인터페이스 위에 있는 <code class="highlighter-rouge">@MessagingGateway</code> 어노테이션을 정제해서 관련 <code class="highlighter-rouge">GatewayProxyFactoryBean</code> 인스턴스를 등록할 수 있도록 커스텀 <code class="highlighter-rouge">@IntegrationComponentScan</code> 로직을 도입했다. <a href="https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations">어노테이션 지원</a>도 함께 참고해라.</p>
 </blockquote>
 
 서비스 인터페이스 위에 `@MessagingGateway`, `@Profile` 어노테이션을 함께 마킹해주면, 해당 프로파일이 활성화되지 않았을 땐 빈을 생성하지 않을 수 있다.
@@ -1337,7 +1337,7 @@ public interface MyGateway {
   <p>게이트웨이로 스레드가 반환될 때 타이머가 시작된다는 것을 이해해야 한다. 즉, 플로우가 완료되거나 메시지가 다른 스레드로 전달될 때 말이다. 이 시점부터 호출 스레드는 응답을 기다리기 시작한다. 플로우가 완전히 동기식으로 동작한다면 호출 스레드에서 즉시 응답을 사용하면 된다. 비동기 플로우의 경우 스레드는 이 시간만큼 대기한다.</p>
 </blockquote>
 
-`IntegrationFlows`를 이용해 게이트웨이를 정의하는 방법은 Java DSL 챕터에 있는 [`IntegrationFlow` as Gateway](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#integration-flow-as-gateway)를 참고해라.
+`IntegrationFlows`를 이용해 게이트웨이를 정의하는 방법은 Java DSL 챕터에 있는 [`IntegrationFlow` as Gateway](../java-dsl/#1122-integrationflow-as-a-gateway)를 참고해라.
 
 ---
 
@@ -1357,7 +1357,7 @@ public interface MyGateway {
 
 - `@ServiceActivator` 어노테이션을 선언한 메소드
 - `public` 메소드
-- `requiresReply == true`라면 `void`를 반환하지 않는 메소드
+- `requiresReply == true`라면 반환 타입이 `void`가 아닌 메소드
 
 호출할 타겟 메소드는 런타임에 각 요청 메시지에 있는 `payload` 타입에 따라 선택하거나, 타겟 클래스에 폴백 메소드가 있다면 `Message<?>` 타입 폴백을 사용하기도 한다.
 
@@ -1376,13 +1376,13 @@ public interface MyGateway {
                        ref="somePojo" method="someMethod"/>
 ```
 
-메소드는 결과를 반환하는데 `output-channel`이 정의되지 않았다면, 프레임워크는 요청 메시지에 있는 `replyChannel` 헤더를 확인한다. 이 헤더에 값이 들어있으면 해당 타입을 체크해본다. `MessageChannel` 타입이라면 응답 메시지를 이 채널로 전송한다. `String 타입`인 경우 서비스 activator는 해당 채널명을 채널 인스턴스로 리졸브해본다. 채널을 리졸브할 수 없다면 `DestinationResolutionException`을 던진다. 채널을 리졸브할 수 있다면 해당 채널로 메시지를 전송한다. 요청 메시지에 `replyChannel` 헤더가 없고 `reply` 객체가 `Message`였다면 이 메시지의 `replyChannel` 헤더를 참조해서 다음 행선지를 결정한다. 이 테크닉은 Spring Integration에서 request-reply 메시지를 처리할 때도 사용하고 있으며, return address 패턴의 한 예시이기도 하다.
+메소드는 결과를 반환하는데 `output-channel`이 정의되지 않았다면, 프레임워크는 요청 메시지에 있는 `replyChannel` 헤더를 확인한다. 이 헤더에 값이 들어있으면 해당 타입을 체크해본다. `MessageChannel` 타입이라면 응답 메시지를 이 채널로 전송한다. `String` 타입인 경우 서비스 activator는 해당 채널명을 채널 인스턴스로 리졸브해본다. 채널을 리졸브할 수 없다면 `DestinationResolutionException`을 던진다. 채널을 리졸브할 수 있다면 해당 채널로 메시지를 전송한다. 요청 메시지에 `replyChannel` 헤더가 없고 `reply` 객체가 `Message`였다면 이 메시지의 `replyChannel` 헤더를 참조해서 다음 행선지를 결정한다. 이 테크닉은 Spring Integration에서 request-reply 메시지를 처리할 때도 사용하고 있으며, return address 패턴의 한 예시이기도 하다.
 
 메소드가 결과를 반환하는데, 반환 결과를 폐기<sup>discard</sup>하고 플로우를 종료하고 싶다면, `output-channel`을 `NullChannel`로 전송하도록 설정해야 한다. 프레임워크는 간편하게 이용할 수 있도록 `nullChannel`이라는 이름으로 하나를 등록해준다. 자세한 내용은 [특별한 채널들](../messaging-channels/#616-special-channels)을 참고해라.
 
 서비스 activator는 응답 메시지를 생성하지 않아도 되는 구성 요소 중 하나다. 메소드가 `null`을 반환하거나 리턴 타입이 `void`인 경우 서비스 activator는 메소드를 실행한 후 별도 신호 없이 종료된다. 이 동작은 `AbstractReplyProducingMessageHandler.requiresReply` 옵션으로 제어할 수 있으며, XML 네임스페이스를 이용할 땐 `requires-reply`로 설정하면 된다. 이 플래그를 `true`로 설정했을 때 메소드가 null을 반환하면 `ReplyRequiredException`을 던진다.
 
-서비스 메소드의 인자는 메시지일 수도, 임의의 타입일 수도 있다. 임의의 타입일 땐 메시지 페이로드인 것으로 가정하며, 메시지에서 페이로드를 추출해서 서비스 메소드에 주입해준다. 이렇게 하면 POJO 모델을 따를 수 있으므로, Spring Integration을 이용할 땐 일반적으로 이렇게 사용하기를 권장한다. [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations)에서 설명하는 것처럼 인자들은 `@Header`나 `@Headers` 어노테이션을 선언할 수도 있다.
+서비스 메소드의 인자는 메시지일 수도, 임의의 타입일 수도 있다. 임의의 타입일 땐 메시지 페이로드인 것으로 가정하며, 메시지에서 페이로드를 추출해서 서비스 메소드에 주입해준다. 이렇게 하면 POJO 모델을 따를 수 있으므로, Spring Integration을 이용할 땐 일반적으로 이렇게 사용하기를 권장한다. [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)에서 설명하는 것처럼 인자들은 `@Header`나 `@Headers` 어노테이션을 선언할 수도 있다.
 
 > 서비스 메소드는 인자가 없어도 되기 때문에, 이벤트 스타일의 서비스 액티베이터를 구현할 수 있으며 (여기선 오로지 서비스 메소드를 실행하는 것에만 관심을 둔다) 메시지의 내용은 신경쓰지 않아도 된다. 메시지가 null JMS 메시지라고 생각해보자. 예를 들면 입력 채널에 보관된 메시지들을 모니터링하거나 간단한 카운터를 구현할 수 있다.
 
@@ -1441,7 +1441,7 @@ Spring Integration 2.0 이후로는 서비스 activator에서 [SpEL](https://doc
 
 위 설정에선 페이로드 값에 2를 곱하는 것이 서비스 로직이다. SpEL을 사용하면 쉽게 처리할 수 있다.
 
-서비스 activator 설정에 관한 좀 더 자세한 내용은 Java DSL 챕터에 있는 [서비스 액티베이터와 `.handle()` 메소드](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/dsl.html#java-dsl-handle)를 참고해라.
+서비스 activator 설정에 관한 좀 더 자세한 내용은 Java DSL 챕터에 있는 [서비스 액티베이터와 `.handle()` 메소드](../java-dsl/#1111-service-activators-and-the-handle-method)를 참고해라.
 
 ### 10.5.2. Asynchronous Service Activator
 
@@ -1539,7 +1539,7 @@ public DelayHandler delayer() {
 >
 > 결과적으로, 헤더가 생략될 가능성이 있고 디폴트 지연 시간으로 폴백하고 싶다면, 예외를 catch하는 것보단 null을 감지하는 것이 더 빠르기 때문에, dot property accessor 구문 보단 indexer 구문을 사용하는 것이 일반적으로 더 효율적이다 (권장하는 방법이기도 하다).
 
-delayer는 동작을 스프링 `TaskScheduler` 인터페이스의 인스턴스에 위임한다. delayer에서 사용하는 디폴트 스케줄러는 Spring Integration에서 기동 시 제공하는 `ThreadPoolTaskScheduler` 인스턴스다. 자세한 내용은 [태스크 스케줄러 설정하기](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#namespace-taskscheduler)를 참고해라. 다른 스케줄러에 위임하고 싶다면, 다음과 같이 delayer 요소의 'scheduler' 속성을 통해 참조를 제공하면 된다:
+delayer는 동작을 스프링 `TaskScheduler` 인터페이스의 인스턴스에 위임한다. delayer에서 사용하는 디폴트 스케줄러는 Spring Integration에서 기동 시 제공하는 `ThreadPoolTaskScheduler` 인스턴스다. 자세한 내용은 [태스크 스케줄러 설정하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#namespace-taskscheduler)를 참고해라. 다른 스케줄러에 위임하고 싶다면, 다음과 같이 delayer 요소의 'scheduler' 속성을 통해 참조를 제공하면 된다:
 
 ```xml
 <int:delayer id="delayer" input-channel="input" output-channel="output"
@@ -1582,7 +1582,7 @@ Message<String> delayerReschedulingMessage =
 controlBusChannel.send(delayerReschedulingMessage);
 ```
 
-> 메시지 스토어와 JMX, 컨트롤 버스에 관한 자세한 내용은 [시스템 관리](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/system-management.html#system-management-chapter)를 참고해라.
+> 메시지 스토어와 JMX, 컨트롤 버스에 관한 자세한 내용은 [시스템 관리](../system-management)를 참고해라.
 
 5.3.7 버전부터 메시지를 `MessageStore`에 저장할 때 트랜잭션이 활성화된 상태라면, `TransactionSynchronization.afterCommit()` 콜백에서 릴리즈 태스크를 예약한다. 이렇게 하는 이유는 트랜잭션이 커밋되기 전에 예약된 릴리즈 태스크가 실행돼 메시지를 찾을 수 없는 경합 상태에 놓일 수 있기 때문이다. 이 경우 메시지는 지연 시간이 지난 이후나 트랜잭션 커밋 이후 중 더 늦은 시점에 릴리즈된다.
 
@@ -1618,12 +1618,12 @@ Spring Integration 2.1부터 Java 6에서 도입된 [자바 사양을 위한 JSR
 <dependency>
     <groupId>org.springframework.integration</groupId>
     <artifactId>spring-integration-scripting</artifactId>
-    <version>5.5.12</version>
+    <version>5.5.15</version>
 </dependency>
 ```
 <div class="language-only-for-gradle maven gradle"></div>
 ```groovy
-compile "org.springframework.integration:spring-integration-scripting:5.5.12"
+compile "org.springframework.integration:spring-integration-scripting:5.5.15"
 ```
 
 추가로, 스크립트 엔진 구현체를 추가해야 한다 (e.g. JRuby, Jython).
@@ -1862,14 +1862,14 @@ Spring Integration 2.0부터는 Groovy를 지원하기 때문에, 다양한 통�
 <dependency>
     <groupId>org.springframework.integration</groupId>
     <artifactId>spring-integration-groovy</artifactId>
-    <version>5.5.12</version>
+    <version>5.5.15</version>
 </dependency>
 ```
 
 **Gradle**
 
 ```groovy
-compile "org.springframework.integration:spring-integration-groovy:5.5.12"
+compile "org.springframework.integration:spring-integration-groovy:5.5.15"
 ```
 
 ### 10.8.1. Groovy Configuration
@@ -2432,20 +2432,20 @@ public Message<?> service(Message<?> message) {
 
 ### 10.9.2. Reactive Advice
 
-Starting with version 5.3, a `ReactiveRequestHandlerAdvice` can be used for request message handlers producing a `Mono` replies. A `BiFunction<Message<?>, Mono<?>, Publisher<?>>` has to be provided for this advice and it is called from the `Mono.transform()` operator on a reply produced by the intercepted `handleRequestMessage()` method implementation. Typically such a `Mono` customization is necessary when we would like to control network fluctuations via `timeout()`, `retry()` and similar support operators. For example when we can an HTTP request over WebFlux client, we could use below configuration to not wait for response more than 5 seconds:
+5.3 버전부터 `Mono` 응답을 생성하는 요청 메시지 핸들러에는 `ReactiveRequestHandlerAdvice`를 사용할 수 있다. 리액티브 어드바이스를 사용할 땐 `BiFunction<Message<?>, Mono<?>, Publisher<?>>`를 지정해야 하며, `handleRequestMessage()` 메소드를 가로채 받은 응답에서 `Mono.transform()` 연산자를 호출하고, 그 안에서 이 `BiFunction`을 호출한다. 일반적으로 이런 식의 `Mono` 커스텀은 `timeout()`, `retry()` 등과 유사한 연산자를 통해 들쭉날쭉한 네트워크 상황을 대응해야 할 때 필요하다. 예를 들어 WebFlux 클라이언트를 통해 HTTP 요청을 보낼 때는, 아래와 같이 설정해주면 응답을 5초 이상 기다리지 않도록 만들 수 있다:
 
 ```java
 .handle(WebFlux.outboundGateway("https://somehost/"),
                        e -> e.customizeMonoReply((message, mono) -> mono.timeout(Duration.ofSeconds(5))));
 ```
 
-The `message` argument is the request message for the message handler and can be used to determine request-scope attributes. The `mono` argument is the result of this message handler’s `handleRequestMessage()` method implementation. A nested `Mono.transform()` can also be called from this function to apply, for example, a [Reactive Circuit Breaker](https://spring.io/projects/spring-cloud-circuitbreaker).
+`message` 인자는 메시지 핸들러로 도착한 요청 메시지이며, 이 인자를 사용해 요청 스코프에 있는 속성들을 결정할 수 있다. `mono` 인자는 이 메시지 핸들러의 `handleRequestMessage()` 메소드를 실행해서 얻은 결과다. 이 함수 안에서 `Mono.transform()`을 중첩하면 [리액티브 서킷 브레이커](https://spring.io/projects/spring-cloud-circuitbreaker) 등을 적용할 수도 있다.
 
 ### 10.9.3. Custom Advice Classes
 
-In addition to the provided advice classes [described earlier](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#advice-classes), you can implement your own advice classes. While you can provide any implementation of `org.aopalliance.aop.Advice` (usually `org.aopalliance.intercept.MethodInterceptor`), we generally recommend that you subclass `o.s.i.handler.advice.AbstractRequestHandlerAdvice`. This has the benefit of avoiding the writing of low-level aspect-oriented programming code as well as providing a starting point that is specifically tailored for use in this environment.
+[앞서 설명한](#1091-provided-advice-classes) 기본 제공 어드바이스 클래스들 외에도, 자체 어드바이스 클래스를 구현하 것도 가능하다. `org.aopalliance.aop.Advice`의 구현체를 제공할 수도 있지만 (보통 `org.aopalliance.intercept.MethodInterceptor`), 일반적으로 `o.s.i.handler.advice.AbstractRequestHandlerAdvice`의 하위 클래스를 만드는 것을 권장한다. 이 클래스를 확장하면 저수준 AOP<sup>aspect-oriented programming</sup> 코드를 작성하지 않아도 되며, 통합 환경에 딱 맞게 개발을 시작할 수 있다.
 
-Subclasses need to implement the `doInvoke()` method, the definition of which follows:
+하위 클래스에선 `doInvoke()` 메소드를 구현해야 하며, 메소드 정의는 다음과 같다:
 
 ```java
 /**
@@ -2460,13 +2460,13 @@ Subclasses need to implement the `doInvoke()` method, the definition of which fo
 protected abstract Object doInvoke(ExecutionCallback callback, Object target, Message<?> message) throws Exception;
 ```
 
-The callback parameter is a convenience to avoid subclasses that deal with AOP directly. Invoking the `callback.execute()` method invokes the message handler.
+콜백 파라미터가 있는 덕분에 하위 클래스에선 AOP를 직접 처리하지 않아도 된다. `callback.execute()` 메소드를 호출하면 메시지 핸들러가 실행된다.
 
-The `target` parameter is provided for those subclasses that need to maintain state for a specific handler, perhaps by maintaining that state in a `Map` keyed by the target. This feature allows the same advice to be applied to multiple handlers. The `RequestHandlerCircuitBreakerAdvice` uses advice this to keep circuit breaker state for each handler.
+`target` 파라미터는 특정 핸들러의 상태를 유지해야 할 때를 대비해 제공한다. 보통은 타겟에서 키를 지정한 `Map` 안에 상태를 유지해야 할 거다. 이를 잘 활용하면 여러 핸들러에 동일한 어드바이스를 적용할 수 있다. `RequestHandlerCircuitBreakerAdvice`는 이 어드바이스를 사용해 각 핸들러의 서킷 브레이커 상태를 유지한다.
 
-The `message` parameter is the message sent to the handler. While the advice cannot modify the message before invoking the handler, it can modify the payload (if it has mutable properties). Typically, an advice would use the message for logging or to send a copy of the message somewhere before or after invoking the handler.
+`message` 파라미터는 핸들러로 전달하는 메시지다. 어드바이스는 핸들러를 호출하기 전에 메시지를 수정할 수 없지만, 페이로드는 수정할 수 있다 (변경 가능한<sup>mutable</sup> 프로퍼티가 있다면). 보통 어드바이스에선 이 메시지를 사용해, 핸들러를 호출하기 전이나 후에 메시지를 기록하거나 어딘가에 메시지 복사본을 전송하곤 한다.
 
-The return value would normally be the value returned by `callback.execute()`. However, the advice does have the ability to modify the return value. Note that only `AbstractReplyProducingMessageHandler` instances return values. The following example shows a custom advice class that extends `AbstractRequestHandlerAdvice`:
+보통은 `callback.execute()`가 반환한 값을 그대로 리턴한다. 하지만 이 어드바이스는 반환 값을 수정할 수 있다. 단, `AbstractReplyProducingMessageHandler` 인스턴스만 값을 반환한다는 점을 주의하자. 다음은 `AbstractRequestHandlerAdvice`를 상속한 커스텀 어드바이스 클래스의 예시다:
 
 ```java
 public class MyAdvice extends AbstractRequestHandlerAdvice {
@@ -2481,25 +2481,27 @@ public class MyAdvice extends AbstractRequestHandlerAdvice {
 }
 ```
 
-> In addition to the `execute()` method, `ExecutionCallback` provides an additional method: `cloneAndExecute()`. This method must be used in cases where the invocation might be called multiple times within a single execution of `doInvoke()`, such as in the `RequestHandlerRetryAdvice`. This is required because the Spring AOP `org.springframework.aop.framework.ReflectiveMethodInvocation` object maintains state by keeping track of which advice in a chain was last invoked. This state must be reset for each call.For more information, see the [ReflectiveMethodInvocation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aop/framework/ReflectiveMethodInvocation.html) Javadoc.
+> `ExecutionCallback`은 `execute()`외에 `cloneAndExecute()` 메소드도 함께 제공하고 있다. `RequestHandlerRetryAdvice`와 같이 `doInvoke()`를 한 번 실행하는 동안 콜백을 여러 번 실행할 수 있다면 반드시 `cloneAndExecute()` 메소드를 사용해야 한다. 스프링 AOP `org.springframework.aop.framework.ReflectiveMethodInvocation` 객체가 체인에서 마지막으로 호출된 어드바이스를 추적해서 상태를 유지하기 때문이다. 이 상태는 호출이 일어날 때마다 리셋되어야 한다.
+>
+> 자세한 내용은 Javadoc [ReflectiveMethodInvocation](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aop/framework/ReflectiveMethodInvocation.html)을 참고해라.
 
 ### 10.9.4. Other Advice Chain Elements
 
-While the abstract class mentioned above is a convenience, you can add any `Advice`, including a transaction advice, to the chain.
+위에선 간편한 추상 클래스를 알아보았지만, 트랜잭션 어드바이스를 비롯한 모든 `Advice`를 체인에 추가할 수 있다.
 
 ### 10.9.5. Handling Message Advice
 
-As discussed in [the introduction to this section](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#message-handler-advice-chain), advice objects in a request handler advice chain are applied to just the current endpoint, not the downstream flow (if any). For `MessageHandler` objects that produce a reply (such as those that extend `AbstractReplyProducingMessageHandler`), the advice is applied to an internal method: `handleRequestMessage()` (called from `MessageHandler.handleMessage()`). For other message handlers, the advice is applied to `MessageHandler.handleMessage()`.
+[이번 섹션을 소개하면서도](#109-adding-behavior-to-endpoints) 설명했지만, request handler advice chain 안에 있는 어드바이스 객체들은 다운스트림 플로우(있다면)가 아닌 현재 엔드포인트에만 적용된다. 응답을 생성하는 `MessageHandler` 객체라면 (`AbstractReplyProducingMessageHandler`를 상속한 객체 등), 어드바이스는 내부 메소드 `handleRequestMessage()`에 적용된다 (`MessageHandler.handleMessage()` 안에서 호출한다). 다른 메시지 핸들러의 경우 `MessageHandler.handleMessage()`에 어드바이스가 적용된다.
 
-There are some circumstances where, even if a message handler is an `AbstractReplyProducingMessageHandler`, the advice must be applied to the `handleMessage` method. For example, the [idempotent receiver](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#idempotent-receiver) might return `null`, which would cause an exception if the handler’s `replyRequired` property is set to `true`. Another example is the `BoundRabbitChannelAdvice` — see [Strict Message Ordering](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/amqp.html#amqp-strict-ordering).
+하지만 상황에 따라 메시지 핸들러가 `AbstractReplyProducingMessageHandler`이더라도 `handleMessage` 메소드에 어드바이스를 적용해야 할 때도 있다. 예를 들어, [idempotent receiver](#10911-idempotent-receiver-enterprise-integration-pattern)는 `null`을 반환할 수 있는데, 이때 핸들러의 `replyRequired` 프로퍼티가 `true`로 설정돼있으면 예외가 발생한다. 또 다른 예시로 `BoundRabbitChannelAdvice`도 있다 ([정확한 메시지 순서 유지하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/amqp.html#amqp-strict-ordering) 참고).
 
-Starting with version 4.3.1, a new `HandleMessageAdvice` interface and its base implementation (`AbstractHandleMessageAdvice`) have been introduced. `Advice` objects that implement `HandleMessageAdvice` are always applied to the `handleMessage()` method, regardless of the handler type.
+4.3.1 버전에선 새롭게 `HandleMessageAdvice` 인터페이스와 이 인터페이스의 기본 구현체(`AbstractHandleMessageAdvice`)를 도입했다. `HandleMessageAdvice`를 구현한 `Advice` 객체는 핸들러 타입에 관계없이 항상 `handleMessage()` 메소드에 적용된다.
 
-It is important to understand that `HandleMessageAdvice` implementations (such as [idempotent receiver](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#idempotent-receiver)), when applied to a handlers that return responses, are dissociated from the `adviceChain` and properly applied to the `MessageHandler.handleMessage()` method.
+`HandleMessageAdvice`의 구현체는 ([idempotent receiver](#10911-idempotent-receiver-enterprise-integration-pattern) 등) 응답을 반환하는 핸들러에 적용되면, `adviceChain`에서 분리돼서 적절히 `MessageHandler.handleMessage()` 메소드에 적용된다는 점을 이해하고 넘어가야 한다.
 
-> Because of this disassociation, the advice chain order is not honored.
+> 체인에서 분리되기 때문에 어드바이스 체인 순서는 지켜지지 않는다.
 
-Consider the following configuration:
+아래 설정을 한 번 살펴보자:
 
 ```xml
 <some-reply-producing-endpoint ... >
@@ -2510,17 +2512,17 @@ Consider the following configuration:
 </some-reply-producing-endpoint>
 ```
 
-In the preceding example, the `<tx:advice>` is applied to the `AbstractReplyProducingMessageHandler.handleRequestMessage()`. However, `myHandleMessageAdvice` is applied for to `MessageHandler.handleMessage()`. Therefore, it is invoked **before** the `<tx:advice>`. To retain the order, you should follow the standard [Spring AOP](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-api) configuration approach and use an endpoint `id` together with the `.handler` suffix to obtain the target `MessageHandler` bean. Note that, in that case, the entire downstream flow is within the transaction scope.
+위 예제에서 `<tx:advice>`는 `AbstractReplyProducingMessageHandler.handleRequestMessage()`에 적용된다. 하지만 `myHandleMessageAdvice`는 `MessageHandler.handleMessage()`에 적용된다. 따라서 `myHandleMessageAdvice`는 `<tx:advice>`보다 **먼저** 실행된다. 순서를 유지하고 싶다면 표준 [Spring AOP](https://docs.spring.io/spring/docs/current/spring-framework-reference/core.html#aop-api) 설정 방식을 따르고, 엔드포인트 `id`와 `.handler` suffix를 사용해 타겟 `MessageHandler` 빈을 가져와야 한다. 이 경우 전체 다운스트림 플로우가 트랜잭션 범위 내에 들어가게 된다.
 
-In the case of a `MessageHandler` that does not return a response, the advice chain order is retained.
+응답을 반환하지 않는 `MessageHandler`에선 어드바이스 체인의 순서가 유지된다.
 
-Starting with version 5.3, the `HandleMessageAdviceAdapter` is present to let apply any existing `MethodInterceptor` for the `MessageHandler.handleMessage()` and, therefore, whole sub-flow. For example a `RetryOperationsInterceptor` could be applied for the whole sub-flow starting from some endpoint, which is not possible by default because consumer endpoint applies advices only for the `AbstractReplyProducingMessageHandler.RequestHandler.handleRequestMessage()`. Starting with version 5.3, the `HandleMessageAdviceAdapter` is provided to apply any `MethodInterceptor` for the `MessageHandler.handleMessage()` method and, therefore, the whole sub-flow. For example, a `RetryOperationsInterceptor` could be applied to the whole sub-flow starting from some endpoint; this is not possible, by default, because the consumer endpoint applies advices only to the `AbstractReplyProducingMessageHandler.RequestHandler.handleRequestMessage()`.
+5.3 버전부터 `HandleMessageAdviceAdapter`를 제공해서, 기존 `MethodInterceptor` 중 원하는 것을 `MessageHandler.handleMessage()`에, 즉 전체 하위 플로우에 적용할 수 있다. 예를 들면 특정 엔드포인트에서 시작하는 전체 하위 플로우에 `RetryOperationsInterceptor`를 적용시킬 수 있다. 컨슈머 엔드포인트에선 `AbstractReplyProducingMessageHandler.RequestHandler.handleRequestMessage()`에만 어드바이스가 적용되기 때문에 원래는 불가능한 일이다.
 
 ### 10.9.6. Transaction Support
 
-Starting with version 5.0, a new `TransactionHandleMessageAdvice` has been introduced to make the whole downstream flow transactional, thanks to the `HandleMessageAdvice` implementation. When a regular `TransactionInterceptor` is used in the `<request-handler-advice-chain>` element (for example, through configuring `<tx:advice>`), a started transaction is only applied only for an internal `AbstractReplyProducingMessageHandler.handleRequestMessage()` and is not propagated to the downstream flow.
+5.0 버전부터 `HandleMessageAdvice`를 구현한 덕분에 전체 다운스트림 플로우에 트랜잭션을 적용할 수 있는 `TransactionHandleMessageAdvice`를 새로 도입했다. `<request-handler-advice-chain>` 요소에서 일반 `TransactionInterceptor`를 사용했을 땐 (ex. `<tx:advice>` 설정을 통해), 트랜잭션을 시작해도 내부 `AbstractReplyProducingMessageHandler.handleRequestMessage()`에만 적용되며 다운스트림 플로우로는 전파되지 않는다.
 
-To simplify XML configuration, along with the `<request-handler-advice-chain>`, a `<transactional>` element has been added to all `<outbound-gateway>` and `<service-activator>` and related components. The following example shows `<transactional>` in use:
+`<request-handler-advice-chain>`과 더불어 XML 설정이 단순해질 수 있도록, 모든 `<outbound-gateway>`, `<service-activator>`와 관련 구성 요소들에 `<transactional>` 요소가 추가됐다. 다음은 `<transactional>`을 사용하는 예시다:
 
 ```xml
 <int-rmi:outbound-gateway remote-channel="foo" host="localhost"
@@ -2533,9 +2535,9 @@ To simplify XML configuration, along with the `<request-handler-advice-chain>`, 
 </bean>
 ```
 
-If you are familiar with the [JPA integration components](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jpa.html#jpa), such a configuration is not new, but now we can start a transaction from any point in our flow — not only from the `<poller>` or a message-driven channel adapter such as [JMS](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/jms.html#jms-message-driven-channel-adapter).
+[JPA 통합 컴포넌트](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jpa.html#jpa)에 익숙하다면 별로 새로운 설정은 아니겠지만, 이제 `<poller>`나 [JMS](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jms.html#jms-message-driven-channel-adapter)같은 메시지 기반 채널 어댑터 뿐 아니라, 플로우의 어느 지점에서나 트랜잭션을 시작할 수 있다.
 
-Java configuration can be simplified by using the `TransactionInterceptorBuilder`, and the result bean name can be used in the [messaging annotations](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations) `adviceChain` attribute, as the following example shows:
+자바 설정은 `TransactionInterceptorBuilder`를 이용해 단순화할 수 있으며, 다음과 같이 등록한 빈의 이름을 [메시지 처리 어노테이션](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)의 `adviceChain` 속성에 사용하면 된다 :
 
 ```java
 @Bean
@@ -2571,9 +2573,9 @@ public Transformer transformer() {
 }
 ```
 
-Note the `true` parameter on the `TransactionInterceptorBuilder` constructor. It causes the creation of a `TransactionHandleMessageAdvice`, not a regular `TransactionInterceptor`.
+`TransactionInterceptorBuilder` 생성자에 `true`를 넘긴 점에 주목해라. 이 파라미터 덕분에 일반 `TransactionInterceptor`가 아닌 `TransactionHandleMessageAdvice`를 생성한다.
 
-Java DSL supports an `Advice` through the `.transactional()` options on the endpoint configuration, as the following example shows:
+Java DSL에선 엔드포인트를 설정할 때 `.transactional()` 옵션을 통해 `Advice`를 등록할 수 있다:
 
 ```java
 @Bean
@@ -2587,13 +2589,13 @@ public IntegrationFlow updatingGatewayFlow() {
 
 ### 10.9.7. Advising Filters
 
-There is an additional consideration when advising `Filter` advices. By default, any discard actions (when the filter returns `false`) are performed within the scope of the advice chain. This could include all the flow downstream of the discard channel. So, for example, if an element downstream of the discard channel throws an exception and there is a retry advice, the process is retried. Also, if `throwExceptionOnRejection` is set to `true` (the exception is thrown within the scope of the advice).
+`Filter`에 어드바이스를 적용할 땐 추가로 생각해봐야 하는 것이 있다. 기본적으로, 모든 discard 동작은 (필터가 `false`를 반환할 때를 의미한다) 어드바이스 체인의 스코프 내에서 수행된다. discard 채널의 다운스트림 플로우가 전부 어드바이스 체인에 들어갈 수도 있다. 그렇기 때문에, 예를 들어 discard 채널의 다운스트림에서 예외가 발생했고 retry 어드바이스가 하나 있는 경우엔 이 프로세스를 재시도하게 된다. `throwExceptionOnRejection`이 `true`로 설정된 경우도 마찬가지다 (어드바이스 스코프 내에서 예외를 던진다).
 
-Setting `discard-within-advice` to `false` modifies this behavior and the discard (or exception) occurs after the advice chain is called.
+이 동작은 `discard-within-advice`를 `false`로 설정하면 변경할 수 있으며, 어드바이스 체인을 실행한 이후에 discard(또는 exception)를 진행하게 된다.
 
 ### 10.9.8. Advising Endpoints Using Annotations
 
-When configuring certain endpoints by using annotations (`@Filter`, `@ServiceActivator`, `@Splitter`, and `@Transformer`), you can supply a bean name for the advice chain in the `adviceChain` attribute. In addition, the `@Filter` annotation also has the `discardWithinAdvice` attribute, which can be used to configure the discard behavior, as discussed in [Advising Filters](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#advising-filters). The following example causes the discard to be performed after the advice:
+특정 엔드포인트를 어노테이션을 사용해 설정할 땐 (`@Filter`, `@ServiceActivator`, `@Splitter`, `@Transformer`), `adviceChain` 속성에 어드바이스 체인의 빈 이름을 명시할 수 있다. 추가로, `@Filter` 어노테이션은 [필터에 어드바이스 적용하기](#1097-advising-filters)에서 설명한 것처럼 discard 동작을 설정할 수 있는 `discardWithinAdvice` 속성도 가지고 있다. 다음은 어드바이스를 적용한 이후에 discard를 진행하도록 만드는 설정 예시다:
 
 ```java
 @MessageEndpoint
@@ -2609,29 +2611,29 @@ public class MyAdvisedFilter {
 
 ### 10.9.9. Ordering Advices within an Advice Chain
 
-Advice classes are “around” advices and are applied in a nested fashion. The first advice is the outermost, while the last advice is the innermost (that is, closest to the handler being advised). It is important to put the advice classes in the correct order to achieve the functionality you desire.
+어드바이스 클래스는 타겟을 "감싸는" 식으로 동작하며, 어드바이스를 적용할 땐 서로 중첩된다. 첫 번째 어드바이스가 가장 바깥쪽에 위치하고, 마지막 어드바이스는 가장 안쪽에 위치한다 (즉, 어드바이스는 적용하는 핸들러에 가장 가깝게 배치된다). 원하는 기능을 구현하려면 어드바이스 클래스들을 올바른 순서로 배치하는 게 중요하다.
 
-For example, suppose you want to add a retry advice and a transaction advice. You may want to place the retry advice advice first, followed by the transaction advice. Consequently, each retry is performed in a new transaction. On the other hand, if you want all the attempts and any recovery operations (in the retry `RecoveryCallback`) to be scoped within the transaction, you could put the transaction advice first.
+예를 들어서 retry 어드바이스와 트랜잭션 어드바이스를 추가한다고 생각해보자. retry 어드바이스를 가장 앞에 배치하고 그 뒤에 트랜잭션 어드바이스를 배치하고 싶다고 해보자. 즉, 재시도할 때마다 새 트랜잭션을 시작해야 한다. 반면, 복구 작업을 비롯해서 (retry `RecoveryCallback`) 모든 호출 시도를 하나의 트랜잭션 내에서 진행하고 싶다면 트랜잭션 어드바이스를 앞에 배치하면 된다.
 
 ### 10.9.10. Advised Handler Properties
 
-Sometimes, it is useful to access handler properties from within the advice. For example, most handlers implement `NamedComponent` to let you access the component name.
+간혹 어드바이스 내에서 핸들러 프로퍼티에 접근할 수 있으면 유용할 때가 있다. 예를 들어, 대부분의 핸들러는 `NamedComponent`를 구현하고 있기 때문에 컴포넌트 이름에 접근할 수 있다.
 
-The target object can be accessed through the `target` argument (when subclassing `AbstractRequestHandlerAdvice`) or `invocation.getThis()` (when implementing `org.aopalliance.intercept.MethodInterceptor`).
+타겟 객체는 `target` 인자나 (`AbstractRequestHandlerAdvice`를 상속했을 때), `invocation.getThis()`(`org.aopalliance.intercept.MethodInterceptor`를 구현했을 때)를 통해 액세스할 수 있다.
 
-When the entire handler is advised (such as when the handler does not produce replies or the advice implements `HandleMessageAdvice`), you can cast the target object to an interface, such as `NamedComponent`, as shown in the following example:
+어드바이스가 핸들러 전체에 적용될 때는 (핸들러가 응답을 생성하지 않는 핸들러이거나, 어드바이스가 `HandleMessageAdvice`를 구현하고 있는 경우), 다음 예제와 같이 타겟 객체를 `NamedComponent` 등의 인터페이스로 타입 캐스팅할 수 있다:
 
 ```java
 String componentName = ((NamedComponent) target).getComponentName();
 ```
 
-When you implement `MethodInterceptor` directly, you could cast the target object as follows:
+`MethodInterceptor`를 직접 구현한다면 타겟 객체를 다음과 같이 캐스팅할 수 있다:
 
 ```java
 String componentName = ((NamedComponent) invocation.getThis()).getComponentName();
 ```
 
-When only the `handleRequestMessage()` method is advised (in a reply-producing handler), you need to access the full handler, which is an `AbstractReplyProducingMessageHandler`. The following example shows how to do so:
+`handleRequestMessage()` 메소드에만 어드바이스를 적용하는 경우 (응답을 생성하는 핸들러) 핸들러 자체, 즉 `AbstractReplyProducingMessageHandler`에 접근해야 한다:
 
 ```java
 AbstractReplyProducingMessageHandler handler =
@@ -2642,17 +2644,17 @@ String componentName = handler.getComponentName();
 
 ### 10.9.11. Idempotent Receiver Enterprise Integration Pattern
 
-Starting with version 4.1, Spring Integration provides an implementation of the [Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/IdempotentReceiver.html) Enterprise Integration Pattern. It is a functional pattern and the whole idempotency logic should be implemented in the application. However, to simplify the decision-making, the `IdempotentReceiverInterceptor` component is provided. This is an AOP `Advice` that is applied to the `MessageHandler.handleMessage()` method and that can `filter` a request message or mark it as a `duplicate`, according to its configuration.
+Spring Integration 4.1 버전부터 엔터프라이즈 통합 패턴 [Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/IdempotentReceiver.html)의 구현체를 제공한다. 이 패턴은 함수형 패턴으로, 멱등성<sup>idempotency</sup>을 위한 로직은 전부 애플리케이션에서 구현해야 한다. 하지만 Spring Integration은 좀 더 쉽게 패턴을 구현할 수 있도록 `IdempotentReceiverInterceptor`라는 컴포넌트를 제공한다. 이 클래스는 `MessageHandler.handleMessage()` 메소드에 적용되는 AOP `Advice`이며, 설정에 따라 요청 메시지를 **필터링**하거나 **중복**으로 마킹할 수 있다.
 
-Previously, you could have implemented this pattern by using a custom `MessageSelector` in a `<filter/>` (see [Filter](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/filter.html#filter)), for example. However, since this pattern really defines the behavior of an endpoint rather than being an endpoint itself, the idempotent receiver implementation does not provide an endpoint component. Rather, it is applied to endpoints declared in the application.
+이전에는 `<filter/>`에서 커스텀 `MessageSelector`를 사용하는 식으로 이 패턴을 구현할 수 있었다 ([Filter](../messaging-routing/#82-filter) 참고). 하지만 이 패턴은 엔드포인트 자체라기 보단, 엔드포인트의 동작을 정의하는 패턴에 가깝기 때문에, idempotent receiver 구현체는 엔드포인트 컴포넌트를 제공하지 않는다. 그보단 오히려 애플리케이션에 정의돼있는 엔드포인트에 적용되는 컴포넌트라고 볼 수 있다.
 
-The logic of the `IdempotentReceiverInterceptor` is based on the provided `MessageSelector` and, if the message is not accepted by that selector, it is enriched with the `duplicateMessage` header set to `true`. The target `MessageHandler` (or downstream flow) can consult this header to implement the correct idempotency logic. If the `IdempotentReceiverInterceptor` is configured with a `discardChannel` or `throwExceptionOnRejection = true`, the duplicate message is not sent to the target `MessageHandler.handleMessage()`. Rather, it is discarded. If you want to discard (do nothing with) the duplicate message, the `discardChannel` should be configured with a `NullChannel`, such as the default `nullChannel` bean.
+`IdempotentReceiverInterceptor`는 설정해둔 `MessageSelector`를 기반으로 동작하며, 이 셀렉터가 메시지를 수락하지 않으면 메시지에 `duplicateMessage` 헤더를 `true`로 저장한다. 타겟 `MessageHandler`에선 (또는 다운스트림 플로우) 이 헤더를 보고 멱등성<sup>idempotency </sup>을 위한 로직을 올바르게 구현할 수 있다. `IdempotentReceiverInterceptor`에 `discardChannel`이나 `throwExceptionOnRejection = true`를 설정하면 중복 메시지는 타겟 `MessageHandler.handleMessage()`로 전송하지 않고 버린다<sup>discard</sup>. 중복 메시지를 삭제하려면<sup>discard</sup> (아무 로직도 실행하지 않으려면), `discardChannel`을 디폴트 `nullChannel` 빈과 같은 `NullChannel`로 설정해야 한다.
 
-To maintain state between messages and provide the ability to compare messages for the idempotency, we provide the `MetadataStoreSelector`. It accepts a `MessageProcessor` implementation (which creates a lookup key based on the `Message`) and an optional `ConcurrentMetadataStore` ([Metadata Store](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/meta-data-store.html#metadata-store)). See the [`MetadataStoreSelector` Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/selector/MetadataStoreSelector.html) for more information. You can also customize the `value` for `ConcurrentMetadataStore` by using an additional `MessageProcessor`. By default, `MetadataStoreSelector` uses the `timestamp` message header.
+Spring Integration은 여러 메시지를 처리하면서 상태를 유지하고 메시지를 비교해 멱등성<sup>idempotency</sup>을 지원할 수 있도록 `MetadataStoreSelector`를 제공하고 있다. `MetadataStoreSelector`는 생성자에서 `MessageProcessor` 구현체와 (`Message`를 가지고 lookup 키를 생성한다), `ConcurrentMetadataStore`를 받는다 ([메타데이터 스토어](../system-management/#134-metadata-store)). `ConcurrentMetadataStore`는 생략할 수 있다. 자세한 내용은 [`MetadataStoreSelector` Javadoc](https://docs.spring.io/spring-integration/api/org/springframework/integration/selector/MetadataStoreSelector.html)을 참고해라. `MessageProcessor`를 하나 더 넘겨서 `ConcurrentMetadataStore`의 `value`를 커스텀할 수도 있다. `MetadataStoreSelector`는 기본적으로 메시지 헤더 `timestamp`를 사용한다.
 
-Normally, the selector selects a message for acceptance if there is no existing value for the key. In some cases, it is useful to compare the current and new values for a key, to determine whether the message should be accepted. Starting with version 5.3, the `compareValues` property is provided which references a `BiPredicate<String, String>`; the first parameter is the old value; return `true` to accept the message and replace the old value with the new value in the `MetadataStore`. This can be useful to reduce the number of keys; for example, when processing lines in a file, you can store the file name in the key and the current line number in the value. Then, after a restart, you can skip lines that have already been processed. See [Idempotent Downstream Processing a Split File](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/file.html#idempotent-file-splitter) for an example.
+이 셀렉터는 일반적으로 키에 해당하는 값이 기존에 없다면 메시지를 수락한다. 상황에 따라서는 키에 해당하는 현재의 값과 새 값을 비교해서 메시지 수락 여부를 결정해야 할 때도 있다. 5.3 버전부터 `BiPredicate<String, String>`을 참조하는 `compareValues`란 프로퍼티를 제공한다. 첫 번째 파라미터로는 이전 값을 넘기며, `true`를 반환해 메시지를 수락하면 `MetadataStore`의 이전 값을 새로운 값으로 교체한다. 이 프로퍼티를 이용하면 키의 개수를 줄일 수 있다. 예를 들어서 파일의 라인들을 처리한다면, 키에 파일명을, 값에 현재 라인 넘버를 저장할 수 있다. 재시작 이후엔 이미 처리한 라인들을 건너뛸 수 있다. 예제가 필요하다면 [파일을 분할한 뒤 다운스트림에서 멱등성을 지키며 처리하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/file.html#idempotent-file-splitter)를 확인해봐라.
 
-For convenience, the `MetadataStoreSelector` options are configurable directly on the `<idempotent-receiver>` component. The following listing shows all the possible attributes:
+`MetadataStoreSelector` 옵션들은 `<idempotent-receiver>` 위에 바로 설정할 수 있어 편리하다. 아래 설정엔 지원하는 모든 속성을 나타냈다:
 
 ```xml
 <idempotent-receiver
@@ -2668,19 +2670,19 @@ For convenience, the `MetadataStoreSelector` options are configurable directly o
         compare-values="" <!-- (10) -->
         throw-exception-on-rejection="" />  <!-- (11) -->
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> The ID of the `IdempotentReceiverInterceptor` bean. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> Consumer endpoint name(s) or pattern(s) to which this interceptor is applied. Separate names (patterns) with commas (`,`), such as `endpoint="aaa, bbb*, **ccc, \*ddd**, eee*fff"`. Endpoint bean names matching these patterns are then used to retrieve the target endpoint’s `MessageHandler` bean (using its `.handler` suffix), and the `IdempotentReceiverInterceptor` is applied to those beans. Required.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> A `MessageSelector` bean reference. Mutually exclusive with `metadata-store` and `key-strategy (key-expression)`. When `selector` is not provided, one of `key-strategy` or `key-strategy-expression` is required.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> Identifies the channel to which to send a message when the `IdempotentReceiverInterceptor` does not accept it. When omitted, duplicate messages are forwarded to the handler with a `duplicateMessage` header. Optional.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> A `ConcurrentMetadataStore` reference. Used by the underlying `MetadataStoreSelector`. Mutually exclusive with `selector`. Optional. The default `MetadataStoreSelector` uses an internal `SimpleMetadataStore` that does not maintain state across application executions.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> A `MessageProcessor` reference. Used by the underlying `MetadataStoreSelector`. Evaluates an `idempotentKey` from the request message. Mutually exclusive with `selector` and `key-expression`. When a `selector` is not provided, one of `key-strategy` or `key-strategy-expression` is required.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> A SpEL expression to populate an `ExpressionEvaluatingMessageProcessor`. Used by the underlying `MetadataStoreSelector`. Evaluates an `idempotentKey` by using the request message as the evaluation context root object. Mutually exclusive with `selector` and `key-strategy`. When a `selector` is not provided, one of `key-strategy` or `key-strategy-expression` is required.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> A `MessageProcessor` reference. Used by the underlying `MetadataStoreSelector`. Evaluates a `value` for the `idempotentKey` from the request message. Mutually exclusive with `selector` and `value-expression`. By default, the 'MetadataStoreSelector' uses the 'timestamp' message header as the Metadata 'value'.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> A SpEL expression to populate an `ExpressionEvaluatingMessageProcessor`. Used by the underlying `MetadataStoreSelector`. Evaluates a `value` for the `idempotentKey` by using the request message as the evaluation context root object. Mutually exclusive with `selector` and `value-strategy`. By default, the 'MetadataStoreSelector' uses the 'timestamp' message header as the metadata 'value'.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> A reference to a `BiPredicate<String, String>` bean which allows you to optionally select a message by comparing the old and new values for the key; `null` by default.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> Whether to throw an exception if the `IdempotentReceiverInterceptor` rejects the message. Defaults to `false`. It is applied regardless of whether or not a `discard-channel` is provided.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> `IdempotentReceiverInterceptor` 빈의 ID.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 이 인터셉터를 적용할 컨슈머 엔드포인트의 이름 혹은 패턴 (여러 개 지정할 수 있다).<br><span class="custom-blockquote">endpoint="aaa, bbb\*, <strong>ccc, \*ddd</strong>, eee\*fff"</span>와 같이 콤마(`,`)로 이름(패턴)들을 구분한다.<br>그러면 이 패턴과 일치하는 엔드포인트 빈 이름들로 타겟 엔드포인트의 `MessageHandler` 빈을 조회하고 (`.handler` suffix 사용), 해당 빈들에 `IdempotentReceiverInterceptor`를 적용한다.<br>필수 값이다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> `MessageSelector` 빈에 대한 참조.<br>`metadata-store`나 `key-strategy (key-expression)`과는 함께 사용할 수 없다.<br>`selector`를 지정하지 않는다면 `key-strategy`나 `key-strategy-expression` 중 하나를 지정해야 한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `IdempotentReceiverInterceptor`가 수락하지 않은 메시지를 전송할 채널.<br>생략하면 중복 메시지는 `duplicateMessage` 헤더와 함께 핸들러로 전달된다.<br>생략할 수 있다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> `ConcurrentMetadataStore`에 대한 참조.<br>내부 `MetadataStoreSelector`에서 사용한다.<br>`selector`와는 함께 사용할 수 없다.<br>생략할 수 있다.<br>디폴트 `MetadataStoreSelector`는 애플리케이션을 재실행하면 상태가 유지되지 않는 `SimpleMetadataStore`를 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(6)</span> `MessageProcessor`에 대한 참조.<br>내부 `MetadataStoreSelector`에서 사용한다.<br>요청 메시지를 가지고 `idempotentKey`를 결정한다.<br>`selector`나 `key-expression`과는 함께 사용할 수 없다.<br>`selector`를 지정하지 않는으면 `key-strategy`나 `key-strategy-expression` 중 하나를 지정해야 한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(7)</span> `ExpressionEvaluatingMessageProcessor`에서 사용할 SpEL 표현식.<br>내부 `MetadataStoreSelector`에서 사용한다.<br>요청 메시지를 평가 컨텍스트 루트 객체로 사용해서 `idempotentKey`를 평가한다.<br>`selector`나 `key-strategy`와는 함께 사용할 수 없다.<br>`selector`를 지정하지 않으면 `key-strategy`나 `key-strategy-expression` 중 하나를 지정해야 한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(8)</span> `MessageProcessor`에 대한 참조.<br>내부 `MetadataStoreSelector`에서 사용한다.<br>요청 메시지를 가지고 `idempotentKey`에 대한 `value`를 평가한다.<br>`selector`나 `value-expression`과는 함께 사용할 수 없다.<br>기본적으로 'MetadataStoreSelector'는 메시지 헤더 'timestamp'를 메타데이터 'value'로 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(9)</span> `ExpressionEvaluatingMessageProcessor`에서 사용할 SpEL 표현식.<br>내부 `MetadataStoreSelector`에서 사용한다.<br>요청 메시지를 평가 컨텍스트 루트 객체로 사용해서 `idempotentKey`에 대한 `value`를 평가한다.<br>`selector`나 `value-strategy`와는 함께 사용할 수 없다.<br>기본적으로 'MetadataStoreSelector'는 메시지 헤더 'timestamp'를 메타데이터 'value'로 사용한다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(10)</span> `BiPredicate<String, String>` 빈에 대한 참조.<br>특정 키에 해당하는 이전 값과 새 값을 비교해서 메시지를 선택할 수 있다.<br>생략할 수 있으며, 디폴트는 `null`이다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(11)</span> `IdempotentReceiverInterceptor`가 메시지를 거절했을 때 예외를 던질지 여부.<br>디폴트는 `false`다.<br>`discard-channel` 설정 여부와는 관계없이 적용된다.</small>
 
-For Java configuration, Spring Integration provides the method-level `@IdempotentReceiver` annotation. It is used to mark a `method` that has a messaging annotation (`@ServiceActivator`, `@Router`, and others) to specify which `IdempotentReceiverInterceptor` objects are applied to this endpoint. The following example shows how to use the `@IdempotentReceiver` annotation:
+자바 설정의 경우, Spring Integration은 메소드 레벨 어노테이션 `@IdempotentReceiver`를 제공하고 있다. 메시지 처리 어노테이션(`@ServiceActivator`, `@Router` 등)을 가지고 있는 `method`를 마킹해주면, 해당 엔드포인트에 적용할 `IdempotentReceiverInterceptor` 객체를 지정할 수 있다. 다음은 `@IdempotentReceiver` 어노테이션을 사용하는 예시다:
 
 ```java
 @Bean
@@ -2697,7 +2699,7 @@ public MessageHandler myService() {
 }
 ```
 
-When you use the Java DSL, you can add the interceptor to the endpoint’s advice chain, as the following example shows:
+자바 DSL을 사용할 때는 다음과 같이 엔드포인트의 어드바이스 체인에 인터셉터를 추가할 수 있다:
 
 ```java
 @Bean
@@ -2709,13 +2711,13 @@ public IntegrationFlow flow() {
 }
 ```
 
-> The `IdempotentReceiverInterceptor` is designed only for the `MessageHandler.handleMessage(Message<?>)` method. Starting with version 4.3.1, it implements `HandleMessageAdvice`, with the `AbstractHandleMessageAdvice` as a base class, for better dissociation. See [Handling Message Advice](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#handle-message-advice) for more information.
+> `IdempotentReceiverInterceptor`는 `MessageHandler.handleMessage(Message<?>)` 메소드 전용으로 설계한 인터셉터다. 4.3.1 버전부터는, 어드바이스 체인과 분리할 수 있도록 `AbstractHandleMessageAdvice`를 기본 클래스로 `HandleMessageAdvice`를 구현하고 있다. 자세한 내용은 [메시지 어드바이스 처리하기](#1095-handling-message-advice)를 참고해라.
 
 ---
 
 ## 10.10. Logging Channel Adapter
 
-The `<logging-channel-adapter>` is often used in conjunction with a wire tap, as discussed in [Wire Tap](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/channel.html#channel-wiretap). However, it can also be used as the ultimate consumer of any flow. For example, consider a flow that ends with a `<service-activator>` that returns a result, but you wish to discard that result. To do that, you could send the result to `NullChannel`. Alternatively, you can route it to an `INFO` level `<logging-channel-adapter>`. That way, you can see the discarded message when logging at `INFO` level but not see it when logging at (for example) the `WARN` level. With a `NullChannel`, you would see only the discarded message when logging at the `DEBUG` level. The following listing shows all the possible attributes for the `logging-channel-adapter` element:
+[Wire Tap](../messaging-channels/#wire-tap) 섹션에서 말했듯이 `<logging-channel-adapter>`는 Wire Tap과 자주 사용하는 경우가 많다. 하지만 원하는 플로우의 최종 컨슈머로도 사용할 수 있다. 예를 들어 플로우가 결과를 반환하는 `<service-activator>`로 끝나지만, 그 결과를 폐기<sup>discard</sup>하고 싶다고 생각해 보자. 그러려면 그 결과를 `NullChannel`로 전송하면 된다. 그게 아니라면, `INFO` 레벨 `<logging-channel-adapter>`로 라우팅해도 된다. 이렇게 하면 `INFO` 레벨로 로깅할 때 버려진 메시지를 볼 수 있지만 (예를 들어) `WARN` 레벨로 로깅할 땐 볼 수 없다. `NullChannel`을 사용한다면 버려지는 메시지들은 `DEBUG` 레벨로 로깅할 때만 조회할 수 있다. 다음은 `logging-channel-adapter` 요소에서 사용할 수 있는 속성들을 전부 나타낸 예시다:
 
 ```xml
 <int:logging-channel-adapter
@@ -2725,15 +2727,15 @@ The `<logging-channel-adapter>` is often used in conjunction with a wire tap, as
     log-full-message="false" <!-- (4) -->
     logger-name="" /> <!-- (5) -->
 ```
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> The channel connecting the logging adapter to an upstream component.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> The logging level at which messages sent to this adapter will be logged. Default: `INFO`.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> A SpEL expression representing exactly what parts of the message are logged. Default: `payload` — only the payload is logged. if `log-full-message` is specified, this attribute cannot be specified.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> When `true`, the entire message (including headers) is logged. Default: `false` — only the payload is logged. This attribute cannot be specified if `expression` is specified.</small><br>
-<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> Specifies the `name` of the logger (known as `category` in `log4j`). Used to identify log messages created by this adapter. This enables setting the log name (in the logging subsystem) for individual adapters. By default, all adapters log under the following name: `org.springframework.integration.handler.LoggingHandler`.</small>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(1)</span> 이 로깅 어댑터를 업스트림 컴포넌트에 연결해주는 채널.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(2)</span> 이 어댑터로 전송된 메시지를 로그로 남길 때 사용할 로그 레벨.<br>디폴트: `INFO`.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(3)</span> 메시지의 정확히 어떤 부분을 로그로 남길지를 나타내는 SpEL 표현식.<br>디폴트: `payload` — 페이로드만 기록한다.<br>`log-full-message`를 지정했다면 이 속성은 사용할 수 없다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(4)</span> `true`면 헤더를 포함한 전체 메시지를 로깅한다.<br>디폴트: `false` — 페이로드만 기록됩니다.<br>`expression`을 지정했다면 이 속성은 사용할 수 없다.</small><br>
+<small><span style="background-color: #a9dcfc; border-radius: 50px;">(5)</span> 로거의 `name`을 지정한다 (`log4j`에서는 `category`라고 부른다).<br>이 어댑터가 생성하는 로그 메시지를 식별하는 데 사용한다.<br>이 속성을 사용하면 어댑터에 개별적으로 로그 이름(로깅 하위 시스템 내)을 설정할 수 있다.<br>기본적으로 모든 어댑터는 `org.springframework.integration.handler.LoggingHandler`라는 이름 아래 로그를 남긴다.</small>
 
 ### 10.10.1. Using Java Configuration
 
-The following Spring Boot application shows an example of configuring the `LoggingHandler` by using Java configuration:
+다음은 자바 설정을 통해 `LoggingHandler`를 구성하는 스프링 부트 애플리케이션은 예시다:
 
 ```java
 @SpringBootApplication
@@ -2769,7 +2771,7 @@ public class LoggingJavaApplication {
 
 ### 10.10.2. Configuring with the Java DSL
 
-The following Spring Boot application shows an example of configuring the logging channel adapter by using the Java DSL:
+다음은 Java DSL을 이용해 로깅 채널 어댑터를 설정하는 스프링 부트 애플리케이션 예시다:
 
 ```java
 @SpringBootApplication
@@ -2805,7 +2807,7 @@ public class LoggingJavaApplication {
 
 ## 10.11. `java.util.function` Interfaces Support
 
-Starting with version 5.1, Spring Integration provides direct support for interfaces in the `java.util.function` package. All messaging endpoints, (Service Activator, Transformer, Filter, etc.) can now refer to `Function` (or `Consumer`) beans. The [Messaging Annotations](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations) can be applied directly on these beans similar to regular `MessageHandler` definitions. For example if you have this `Function` bean definition:
+Spring Integration은 5.1 버전부터 `java.util.function` 패키지의 인터페이스들을 직접적으로 지원하기 시작했다. 모든 메시지 처리 엔드포인트들은 (Service Activator, Transformer, Filter 등) 이제 `Function`(또는 `Consumer`) 빈을 참조할 수 있다. 일반적인 `MessageHandler` 정의와 유사하게, 이런 빈에도 [메시지 처리 어노테이션](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)을 바로 적용할 수 있다. 예를 들어 아래와 같은 `Function` 빈을 정의했다면:
 
 ```java
 @Configuration
@@ -2819,13 +2821,13 @@ public class FunctionConfiguration {
 }
 ```
 
-You can use it as a simple reference in an XML configuration file:
+XML 설정 파일에서 이 빈을 간단하게 참조할 수 있다:
 
 ```xml
 <service-activator input-channel="processorViaFunctionChannel" ref="functionAsService"/>
 ```
 
-When we configure our flow with Messaging Annotations, the code is straightforward:
+메시지 처리 어노테이션들로 플로우를 구성할 때의 코드는 다음과 같이 직관적이다:
 
 ```java
 @Bean
@@ -2835,9 +2837,9 @@ public Function<String, String> functionAsService() {
 }
 ```
 
-When the function returns an array, `Collection` (essentially, any `Iterable`), `Stream` or Reactor `Flux`, `@Splitter` can be used on such a bean to perform iteration over the result content.
+배열이나 `Collection`(사실상 모든 `Iterable`), `Stream`, 리액터 `Flux`를 반환하는 함수라면, 이 빈 위에 `@Splitter`를 사용해 결과를 순회하도록 만들 수 있다.
 
-The `java.util.function.Consumer` interface can be used for an `<int:outbound-channel-adapter>` or, together with the `@ServiceActivator` annotation, to perform the final step of a flow:
+`java.util.function.Consumer` 인터페이스는 `<int:outbound-channel-adapter>`에 사용하거나 `@ServiceActivator` 어노테이션과 함께 사용해 플로우의 마지막 단계를 이어갈 수 있다:
 
 ```java
 @Bean
@@ -2855,9 +2857,9 @@ public Consumer<Message<?>> messageConsumerAsService() {
 }
 ```
 
-Also, pay attention to the comment in the code snippet above: if you would like to deal with the whole message in your `Function`/`Consumer` you cannot use a lambda definition. Because of Java type erasure we cannot determine the target type for the `apply()/accept()` method call.
+위 코드에 있는 주석에도 주목해라. `Function`/`Consumer`에서 전체 메시지를 처리하려면 람다 정의는 사용할 수 없다. 자바 타입이 사라지기 때문에 `apply()/accept()` 메소드 호출에 사용할 타입을 결정할 수 없다.
 
-The `java.util.function.Supplier` interface can simply be used together with the `@InboundChannelAdapter` annotation, or as a `ref` in an `<int:inbound-channel-adapter>`:
+`java.util.function.Supplier` 인터페이스는 간단히 `@InboundChannelAdapter` 어노테이션과 함께 사용하거나, `<int:inbound-channel-adapter>`의 `ref`로 사용할 수 있다:
 
 ```java
 @Bean
@@ -2867,7 +2869,7 @@ public Supplier<String> pojoSupplier() {
 }
 ```
 
-With the Java DSL we just need to use a reference to the function bean in the endpoint definitions. Meanwhile an implementation of the `Supplier` interface can be used as regular `MessageSource` definition:
+Java DSL을 이용할 땐 엔드포인트 정의에서 함수 빈에 대한 참조를 사용하기만 하면 된다. 한편 `Supplier` 인터페이스의 구현체는 일반적인 `MessageSource` 정의로 사용할 수 있다:
 
 ```java
 @Bean
@@ -2889,11 +2891,11 @@ public IntegrationFlow supplierFlow() {
 }
 ```
 
-This function support is useful when used together with the [Spring Cloud Function](https://cloud.spring.io/spring-cloud-function/) framework, where we have a function catalog and can refer to its member functions from an integration flow definition.
+함수 지원 기능은 [Spring Cloud Function](https://cloud.spring.io/spring-cloud-function/) 프레임워크와 함께 사용할 때 더 유용하다. 이 프레임워크는 function catalog를 제공하며, 통합 플로우 정의에서 해당 멤버 함수를 참조할 수 있다.
 
 ### 10.11.1. Kotlin Lambdas
 
-The Framework also has been improved to support Kotlin lambdas for functions so now you can use a combination of the Kotlin language and Spring Integration flow definitions:
+프레임워크는 코틀린 람다 또한 지원하도록 개선되었기 때문에, 이제 코틀린 언어와 Spring Integration 플로우 정의를 함께 사용할 수 있다:
 
 ```java
 @Bean

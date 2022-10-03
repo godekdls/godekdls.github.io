@@ -8,7 +8,7 @@ image: ./../../images/springintegration/channel.jpeg
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#overview
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#overview
 parent: Overview of Spring Integration Framework
 parentUrl: /Spring%20Integration/introduction/
 priority: 0.8
@@ -324,17 +324,17 @@ XML 네임스페이스 지원을 이용해 Spring Integration 플로우에 필�
 - 통합을 목적으로 특정 빈들을 개선하거나 변환, 래핑하기 위한 여러 가지 `BeanPostProcessor` 인스턴스를 추가한다.
 - 메시징 어노테이션을 파싱하고 애플리케이션 컨텍스트에 관련 컴포넌트들을 등록하기 위한 어노테이션 프로세서들을 추가한다.
 
-`@IntegrationComponentScan` 어노테이션 덕분에 클래스패스 스캔도 가능하다. 이 어노테이션이 담당하는 일은 스프링 프레임워크의 표준 어노테이션 `@ComponentScan`과 유사하지만, 표준 스프링 프레임워크 컴포넌트 스캔 메커니즘으로 해결할 수 없는 Spring Integration 전용 구성 요소들과 어노테이션들로 제한된다. 예시로 [`@MessagingGateway` 어노테이션](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/gateway.html#messaging-gateway-annotation)을 참고해라.
+`@IntegrationComponentScan` 어노테이션 덕분에 클래스패스 스캔도 가능하다. 이 어노테이션이 담당하는 일은 스프링 프레임워크의 표준 어노테이션 `@ComponentScan`과 유사하지만, 표준 스프링 프레임워크 컴포넌트 스캔 메커니즘으로 해결할 수 없는 Spring Integration 전용 구성 요소들과 어노테이션들로 제한된다. 예시로 [`@MessagingGateway` 어노테이션](../messaging-endpoints/#1046-messaginggateway-annotation)을 참고해라.
 
-`@EnablePublisher` 어노테이션은 `PublisherAnnotationBeanPostProcessor` 빈을 등록하며, `channel` 속성 없이 제공한 `@Publisher` 어노테이션에 `default-publisher-channel`을 설정해준다. `@EnablePublisher` 어노테이션이 둘 이상 발견되는 경우엔 디폴트 채널에 모두 같은 값을 가지고 있어야 한다. 자세한 내용은 [`@Publisher` 어노테이션을 이용한 어노테이션 기반 설정](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/message-publishing.html#publisher-annotation)을 참고해라.
+`@EnablePublisher` 어노테이션은 `PublisherAnnotationBeanPostProcessor` 빈을 등록하며, `channel` 속성 없이 제공한 `@Publisher` 어노테이션에 `default-publisher-channel`을 설정해준다. `@EnablePublisher` 어노테이션이 둘 이상 발견되는 경우엔 디폴트 채널에 모두 같은 값을 가지고 있어야 한다. 자세한 내용은 [`@Publisher` 어노테이션을 이용한 어노테이션 기반 설정](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/message-publishing.html#publisher-annotation)을 참고해라.
 
 `@GlobalChannelInterceptor` 어노테이션은 글로벌 채널 인터셉션<sup>interception</sup>을 위한 `ChannelInterceptor` 빈들을 마킹하기 위해 도입됐다. 이 어노테이션은 XML 요소 `<int:channel-interceptor>`와 유사하다 ([글로벌 채널 인터셉터 설정](../messaging-channels/#global-channel-interceptor-configuration) 참고). `@GlobalChannelInterceptor` 어노테이션은 클래스 레벨에 두거나 (스테레오타입 어노테이션 `@Component`와 함께), `@Configuration` 클래스 안에 있는 `@Bean` 메소드 위에 선언할 수 있다. 두 경우 모두 빈은 `ChannelInterceptor`를 구현해야 한다.
 
 5.1 버전부터 동적으로 등록된 채널에도 글로벌 채널 인터셉터가 적용된다 (ex. `beanFactory.initializeBean()`으로 초기화하거나, 자바 DSL에서 `IntegrationFlowContext`를 사용해 초기화하는 빈들). 그전에는 애플리케이션 컨텍스트를 리프레시한 이후에 빈을 생성하는 경우엔 인터셉터가 적용되지 않았다.
 
-`@IntegrationConverter` 어노테이션은 `Converter`나 `GenericConverter`, `ConverterFactory` 빈들을 `integrationConversionService`의 후보 컨버터로 마킹한다. 이 어노테이션은 XML 요소 `<int:converter>`와 유사하다 ([페이로드 타입 변환](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/endpoint.html#payload-type-conversion) 참고). `@IntegrationConverter` 어노테이션은 클래스 레벨에 두거나 (스테레오타입 어노테이션 `@Component`와 함께), `@Configuration` 클래스 안에 있는 `@Bean` 메소드 위에 선언할 수 있다.
+`@IntegrationConverter` 어노테이션은 `Converter`나 `GenericConverter`, `ConverterFactory` 빈들을 `integrationConversionService`의 후보 컨버터로 마킹한다. 이 어노테이션은 XML 요소 `<int:converter>`와 유사하다 ([페이로드 타입 변환](../messaging-endpoints/#1016-payload-type-conversion) 참고). `@IntegrationConverter` 어노테이션은 클래스 레벨에 두거나 (스테레오타입 어노테이션 `@Component`와 함께), `@Configuration` 클래스 안에 있는 `@Bean` 메소드 위에 선언할 수 있다.
 
-메시징 어노테이션들에 대한 자세한 내용은 [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#annotations)을 참고해라.
+메시징 어노테이션들에 대한 자세한 내용은 [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)을 참고해라.
 
 ### 5.6. Programming Considerations
 
@@ -462,7 +462,7 @@ EIP 구현에 필요한 일급 객체<sup>first-class citizen</sup>들은 `Messa
 
 메시징 어노테이션이나 자바 DSL을 사용할 땐 프레임워크가 자동으로 적절한 어노테이션과 `BeanPostProcessor` 구현체들을 통해 이 구성 요소들을 생성해준다. 따라서 어떤 컴포넌트가 필요할지는 고민하지 않아도 된다. 구성 요소들을 수동으로 빌드할 땐, 세팅한 `inputChannel` 속성을 기반으로 생성할 타겟 `AbstractEndpoint` 컨슈머 구현체를 결정할 수 있도록 `ConsumerEndpointFactoryBean`을 사용하는 게 좋다.
 
-한편 `ConsumerEndpointFactoryBean`은 프레임워크의 또 다른 일급 객체<sup>first class citizen</sup> `org.springframework.messaging.MessageHandler`에게 메시지 처리를 위임한다. 이 인터페이스를 구현하는 목적은 채널에서 엔드포인트가 컨슘한 메시지를 처리하기 위함이다. Spring Integration에 있는 모든 EIP 구성 요소들은 `MessageHandler`의 구현체다 (ex. `AggregatingMessageHandler`, `MessageTransformingHandler`, `AbstractMessageSplitter` 등). 타겟 프로토콜 아웃바운드 어댑터들도 `MessageHandler`의 구현체다 (`FileWritingMessageHandler`, `HttpRequestExecutingMessageHandler`, `AbstractMqttMessageHandler` 등). 자바 설정을 이용해 Spring Integration 애플리케이션을 개발할 땐 Spring Integration 모듈을 조사해서 `@ServiceActivator` 설정에 사용할 적당한 `MessageHandler` 구현체를 찾아봐야 한다. 예를 들어, XMPP 메시지를 전송하려면 ([XMPP 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/xmpp.html#xmpp) 참고) 다음과 같은 설정을 작성해야 한다:
+한편 `ConsumerEndpointFactoryBean`은 프레임워크의 또 다른 일급 객체<sup>first class citizen</sup> `org.springframework.messaging.MessageHandler`에게 메시지 처리를 위임한다. 이 인터페이스를 구현하는 목적은 채널에서 엔드포인트가 컨슘한 메시지를 처리하기 위함이다. Spring Integration에 있는 모든 EIP 구성 요소들은 `MessageHandler`의 구현체다 (ex. `AggregatingMessageHandler`, `MessageTransformingHandler`, `AbstractMessageSplitter` 등). 타겟 프로토콜 아웃바운드 어댑터들도 `MessageHandler`의 구현체다 (`FileWritingMessageHandler`, `HttpRequestExecutingMessageHandler`, `AbstractMqttMessageHandler` 등). 자바 설정을 이용해 Spring Integration 애플리케이션을 개발할 땐 Spring Integration 모듈을 조사해서 `@ServiceActivator` 설정에 사용할 적당한 `MessageHandler` 구현체를 찾아봐야 한다. 예를 들어, XMPP 메시지를 전송하려면 ([XMPP 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xmpp.html#xmpp) 참고) 다음과 같은 설정을 작성해야 한다:
 
 ```java
 @Bean

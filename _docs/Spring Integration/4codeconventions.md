@@ -8,7 +8,7 @@ image: ./../../images/springintegration/logo.png
 lastmod: 2022-01-05T21:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
-originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/index-single.html#code-conventions
+originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#code-conventions
 parent: Preface
 parentUrl: /Spring%20Integration/preface/
 ---
@@ -41,6 +41,6 @@ parentUrl: /Spring%20Integration/preface/
 </beans>
 ```
 
-Spring Integration이 지원하는 네임스페이스와 관련된 내용은 [네임스페이스 지원](https://docs.spring.io/spring-integration/docs/5.5.12/reference/html/configuration.html#configuration-namespace) 섹션에서 자세히 다룬다.
+Spring Integration이 지원하는 네임스페이스와 관련된 내용은 [네임스페이스 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#configuration-namespace) 섹션에서 자세히 다룬다.
 
 > 네임스페이스 프리픽스는 자유롭게 선택할 수 있다. 네임스페이스 프리픽스를 아예 사용하지 않는 것도 가능하다. 그렇기 때문에 개발 중인 애플리케이션에 가장 잘 맞는 컨벤션을 적용하는 게 좋다. 단, SpringSource Tool Suite™(STS)에선 Spring Integration 관련 네임스페이스 컨벤션은 이 레퍼런스 가이드에서 사용하는 것과 동일한 컨벤션을 사용한다는 점을 알아두자.
