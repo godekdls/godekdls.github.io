@@ -126,7 +126,7 @@ expr: <string>
 labels:
   [ <labelname>: <tmpl_string> ]
 
-# 각 alert에 추가할 애노테이션.
+# 각 alert에 추가할 어노테이션.
 annotations:
   [ <labelname>: <tmpl_string> ]
 ```

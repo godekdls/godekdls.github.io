@@ -17,7 +17,7 @@ parentUrl: /Prometheus/alerting/
 
 프로메테우스는 alert를 생성해서 Alertmanager로 보내며, Alertmanager는 이어서 alert들의 레이블을 기반으로 각기 다른 receiver들에게 통보<sup>notification</sup>해준다. receiver는 다양한 통합 기능 중에서 선택할 수 있으며, 이 중에는 Slack, PagerDuty, 이메일도 있고, 범용적인 웹훅 인터페이스를 통해 커스텀할 수도 있다.
 
-receiver에게 보내는 통지<sup>notification</sup>는 템플릿을 통해 구성된다. Alertmanager는 디폴트 템플릿을 함께 제공하지만 커스텀도 가능하다. Alertmanager의 템플릿은 [프로메테우스의 템플릿](../template-reference)과는 다르니 혼동하지 말자. 여기서 말하는 프로메테우스 템플릿은 alert rule의 레이블/애노테이션 템플릿도 포함이다.
+receiver에게 보내는 통지<sup>notification</sup>는 템플릿을 통해 구성된다. Alertmanager는 디폴트 템플릿을 함께 제공하지만 커스텀도 가능하다. Alertmanager의 템플릿은 [프로메테우스의 템플릿](../template-reference)과는 다르니 혼동하지 말자. 여기서 말하는 프로메테우스 템플릿은 alert rule의 레이블/어노테이션 템플릿도 포함이다.
 
 Alertmanager의 notification 템플릿은 [Go 템플릿](https://golang.org/pkg/text/template) 시스템을 기반으로 작성한다. 텍스트로 평가되는 필드도 있고, 이스케이프에 영향을 주는 HTML로 평가되는 필드도 있으니 주의해라.
 
@@ -39,15 +39,15 @@ Alertmanager의 notification 템플릿은 [Go 템플릿](https://golang.org/pkg/
 
 `Data`는 notification 템플릿과 웹훅 푸시로 전달되는 구조체다.
 
-| Name              | Type            | Notes                                                        |
-| :---------------- | :-------------- | :----------------------------------------------------------- |
-| Receiver          | string          | notification을 전송할 receiver의 이름을 정의한다 (slack, 이메일 등). |
-| Status            | string          | alert가 하나라도 시행 중이면 firing으로 정의하고, 그 외는 resolved로 정의한다. |
-| Alerts            | [Alert](#alert) | 이 그룹에 속하는 모든 alert 객체 목록 ([아래 참고](#alert)). |
-| GroupLabels       | [KV](#kv)       | 이 alert들을 그룹으로 묶은 레이블들.                         |
-| CommonLabels      | [KV](#kv)       | 모든 alert에 공통으로 사용할 레이블들.                       |
-| CommonAnnotations | [KV](#kv)       | 모든 alert에 공통으로 사용할 애노테이션셋. alert에 좀 더 긴 부가 정보 문자열을 추가할 때 사용한다. |
-| ExternalURL       | string          | notification을 전송한 Alertmanager에 대한 백링크.            |
+| Name              | Type            | Notes                                                           |
+| :---------------- | :-------------- |:----------------------------------------------------------------|
+| Receiver          | string          | notification을 전송할 receiver의 이름을 정의한다 (slack, 이메일 등).            |
+| Status            | string          | alert가 하나라도 시행 중이면 firing으로 정의하고, 그 외는 resolved로 정의한다.          |
+| Alerts            | [Alert](#alert) | 이 그룹에 속하는 모든 alert 객체 목록 ([아래 참고](#alert)).                     |
+| GroupLabels       | [KV](#kv)       | 이 alert들을 그룹으로 묶은 레이블들.                                         |
+| CommonLabels      | [KV](#kv)       | 모든 alert에 공통으로 사용할 레이블들.                                        |
+| CommonAnnotations | [KV](#kv)       | 모든 alert에 공통으로 사용할 어노테이션 셋. alert에 좀 더 긴 부가 정보 문자열을 추가할 때 사용한다. |
+| ExternalURL       | string          | notification을 전송한 Alertmanager에 대한 백링크.                         |
 
 `Alerts` 타입에선 alert 필터링 함수들을 제공한다:
 
@@ -64,7 +64,7 @@ Alertmanager의 notification 템플릿은 [Go 템플릿](https://golang.org/pkg/
 | :----------- | :-------- | :----------------------------------------------------------- |
 | Status       | string    | alert가 해소되었는지<sup>resolved</sup> 또는 현재 시행<sup>firing</sup> 중인지 여부를 정의한다. |
 | Labels       | [KV](#kv) | alert에 첨부할 레이블 셋.                                    |
-| Annotations  | [KV](#kv) | alert의 애노테이션 셋.                                       |
+| Annotations  | [KV](#kv) | alert의 어노테이션 셋.                                       |
 | StartsAt     | time.Time | alert가 시행<sup>firing</sup>되기 시작한 시간. 생략하면 Alertmanager가 현재 시간을 할당한다. |
 | EndsAt       | time.Time | alert의 종료 시간을 알고 있을 때만 설정한다. 생략하면 마지막 alert를 수신한 시간에 타임아웃만큼의 기간을 더해 설정하며, 이 타임아웃 값은 설정으로 수정할 수 있다. |
 | GeneratorURL | string    | 이 alert를 발생시킨 엔티티를 식별하는 백링크.                |
@@ -74,13 +74,13 @@ Alertmanager의 notification 템플릿은 [Go 템플릿](https://golang.org/pkg/
 
 ## KV
 
-`KV`는 레이블과 애노테이션을 표현할 때 사용하는 키/값 문자열 쌍의 셋이다.
+`KV`는 레이블과 어노테이션을 표현할 때 사용하는 키/값 문자열 쌍의 셋이다.
 
 ```go
 type KV map[string]string
 ```
 
-아래 예시는 두 개의 애노테이션을 가지고 있다:
+아래 예시는 두 개의 어노테이션을 가지고 있다:
 
 ```js
 {
@@ -89,7 +89,7 @@ type KV map[string]string
 }
 ```
 
-KV로 저장한 데이터(레이블과 애노테이션)는 직접 액세스할 수 있으며, 그 외에도 LabelSet을 정렬, 제거, 조회할 수 있는 메소드를 제공한다:
+KV로 저장한 데이터(레이블과 어노테이션)는 직접 액세스할 수 있으며, 그 외에도 LabelSet을 정렬, 제거, 조회할 수 있는 메소드를 제공한다:
 
 ### KV methods
 

@@ -97,7 +97,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지 중
 
 ![sources](./../../images/springclouddataflow/sources.png)
 
-소스는 입력에서 데이터를 받아 다운스트림 처리를 위한 출력 채널로 전송한다. 적절한 클래스 레벨 애노테이션(`@EnableBinding(Source.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.OUTPUT`의 출력 채널을 사용해야 한다.
+소스는 입력에서 데이터를 받아 다운스트림 처리를 위한 출력 채널로 전송한다. 적절한 클래스 레벨 어노테이션(`@EnableBinding(Source.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.OUTPUT`의 출력 채널을 사용해야 한다.
 
 ---
 
@@ -107,7 +107,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지 중
 
 ![processors-input](./../../images/springclouddataflow/processors-input.png)
 
-프로세서는 데이터를 받아 추가 다운스트림 처리를 위해 해당 데이터를 조작해서 반환한다. 적절한 클래스 레벨 애노테이션(`@EnableBinding(Processor.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.INPUT`의 입력 채널을 사용해야 한다.
+프로세서는 데이터를 받아 추가 다운스트림 처리를 위해 해당 데이터를 조작해서 반환한다. 적절한 클래스 레벨 어노테이션(`@EnableBinding(Processor.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.INPUT`의 입력 채널을 사용해야 한다.
 
 ---
 
@@ -117,7 +117,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지 중
 
 ![processors-output](./../../images/springclouddataflow/processors-output.png)
 
-프로세서는 데이터를 받아 추가 다운스트림 처리를 위해 해당 데이터를 처리해서 반환한다. 적절한 클래스 레벨 애노테이션(`@EnableBinding(Processor.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.OUTPUT`의 출력 채널을 사용해야 한다.
+프로세서는 데이터를 받아 추가 다운스트림 처리를 위해 해당 데이터를 처리해서 반환한다. 적절한 클래스 레벨 어노테이션(`@EnableBinding(Processor.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.OUTPUT`의 출력 채널을 사용해야 한다.
 
 ---
 
@@ -127,7 +127,7 @@ DEBUG 레벨 로그를 활성화하는 것도 유용하다. 관심 패키지 중
 
 ![sinks](./../../images/springclouddataflow/sinks.png)
 
-싱크는 입력 채널에서 데이터를 받아 이 데이터로 특정한 일을 수행한다 (데이터를 외부 저장소에 저장하는 등). 적절한 클래스 레벨 애노테이션(`@EnableBinding(Sink.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.INPUT`의 출력 채널을 사용해야 한다.
+싱크는 입력 채널에서 데이터를 받아 이 데이터로 특정한 일을 수행한다 (데이터를 외부 저장소에 저장하는 등). 적절한 클래스 레벨 어노테이션(`@EnableBinding(Sink.class)`)을 선언했는지, 핸들러 메소드를 구현했는지 확인해봐라. 핸들러 메소드는 `Source.INPUT`의 출력 채널을 사용해야 한다.
 
 ---
 

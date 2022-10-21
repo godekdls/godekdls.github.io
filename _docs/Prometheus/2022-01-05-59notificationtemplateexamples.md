@@ -64,7 +64,7 @@ groups:
     for: 5m
     labels:
       severity: page
-    # 여기서는 alert의 애노테이션과 레이블 필드에 프로메테우스 템플릿을 적용한다.
+    # 여기서는 alert의 어노테이션과 레이블 필드에 프로메테우스 템플릿을 적용한다.
     annotations:
       description: '{% raw %}{{ $labels.instance }}{% endraw %} of job {% raw %}{{ $labels.job }}{% endraw %} has been down for more than 5 minutes.'
       summary: 'Instance {% raw %}{{ $labels.instance }}{% endraw %} down'
@@ -84,7 +84,7 @@ Receiver
 
 ## Ranging over all received Alerts
 
-마지막으로, 이전 예제와 같은 alert를 가정하고, Alertmanager에서 수신한 전체 alert를 범위로 지정해서 각각의 애노테이션 summary와 description을 새로운 라인에 출력하도록 receiver를 커스텀한다.
+마지막으로, 이전 예제와 같은 alert를 가정하고, Alertmanager에서 수신한 전체 alert를 범위로 지정해서 각각의 어노테이션 summary와 description을 새로운 라인에 출력하도록 receiver를 커스텀한다.
 
 Receiver
 
