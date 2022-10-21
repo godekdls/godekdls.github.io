@@ -5,7 +5,7 @@ order: 4
 permalink: /Spring%20Integration/code-conventions/
 description: 스프링 인티그레이션 네임스페이스 컨벤션 가이드
 image: ./../../images/springintegration/logo.png
-lastmod: 2022-01-05T21:30:00+09:00
+lastmod: 2022-10-21T13:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#code-conventions
@@ -15,7 +15,7 @@ parentUrl: /Spring%20Integration/preface/
 
 ---
 
-스프링 프레임워크 2.0에선 네임스페이스 지원을 도입했다. 덕분에 애플리케이션 컨텍스트 세팅을 위한 XML 설정은 더 단순해지고, Spring Integration에서도 광범위한 네임스페이스를 지원할 수 있게 됐다.
+스프링 프레임워크 2.0에선 네임스페이스 지원을 시작했다. 덕분에 애플리케이션 컨텍스트 세팅을 위한 XML 설정은 더 단순해지고, Spring Integration에서도 광범위한 네임스페이스를 지원할 수 있게 됐다.
 
 이 레퍼런스 가이드에선, Spring Integration의 코어 네임스페이스 기능에 `int`를 네임스페이스 프리픽스로 사용한다. 각 Spring Integration 어댑터 타입(모듈이라고도 부른다)은 아래 있는 컨벤션을 사용해 구성한 자체 네임스페이스를 제공한다:
 

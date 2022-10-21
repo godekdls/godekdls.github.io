@@ -5,7 +5,7 @@ order: 8
 permalink: /Spring%20Integration/introduction/
 description: 스프링 인티그레이션 소개
 image: ./../../images/springintegration/logo.png
-lastmod: 2022-01-05T21:30:00+09:00
+lastmod: 2022-10-21T13:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#spring-integration-introduction

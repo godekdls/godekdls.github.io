@@ -5,7 +5,7 @@ order: 3
 permalink: /Spring%20Integration/requirements/
 description: 스프링 인티그레이션의 시스템 요구사항
 image: ./../../images/springintegration/logo.png
-lastmod: 2022-01-05T21:30:00+09:00
+lastmod: 2022-10-21T13:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#system-requirements
@@ -21,7 +21,7 @@ parentUrl: /Spring%20Integration/preface/
 
 ## 1.1. Compatible Java Versions
 
-Spring Integration 5.5.x에서 호환되는 자바의 최소 버전은 Java SE 8이다. 이전 자바 버전은 지원되지 않는다.
+Spring Integration 5.5.x에서 호환되는 자바의 최소 버전은 Java SE 8이다. 이전 자바 버전은 지원하지 않는다.
 
 ---
 

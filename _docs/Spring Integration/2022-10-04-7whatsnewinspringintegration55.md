@@ -5,7 +5,7 @@ order: 7
 permalink: /Spring%20Integration/whats-new-55/
 description: 스프링 인티그레이션 5.5에서 새로 추가된 기능들
 image: ./../../images/springintegration/logo.png
-lastmod: 2022-01-05T21:30:00+09:00
+lastmod: 2022-10-21T13:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#whats-new
@@ -15,7 +15,7 @@ parentUrl: /Spring%20Integration/whats-new/
 
 ---
 
-좀 더 자세한 내용이 알고 싶다면, 5.5 개발 프로세스에서 해결 처리된 Issue Tracker 티켓들을 참고해라.
+좀 더 자세한 내용이 알고 싶다면, 5.5 버전 개발 과정에서 해결 처리된 Issue Tracker 티켓들을 참고해라.
 
 ### 목차
 
@@ -51,13 +51,13 @@ MQTT v5 프로토콜 통신 지원을 위해 `Mqttv5PahoMessageDrivenChannelAdap
 
 모든 영구<sup>persistent</sup> `MessageGroupStore` 구현체는 타겟 데이터베이스의 스트리밍 API를 기반으로 `streamMessagesForGroup(Object groupId)` 인터페이스를 구현한다. 자세한 내용은 [메시지 스토어](../system-management/#133-message-store)를 참고해라.
 
-`integrationGlobalProperties` 빈은 (선언했다면) 이제 반드시 `java.util.Properties` 대신 `org.springframework.integration.context.IntegrationProperties`의 인스턴스여야 한다. `java.util.Properties`는 이전 버전과의 호환성을 위해 deprecated되었다. 글로벌 디폴트 `errorChannel`을 반드시 `requireSubscribers` 옵션으로 설정해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.requireSubscribers=true`가 추가됐다. 글로벌 디폴트 `errorChannel`이 반드시 디스패칭 에러를 무시하고 다음 핸들러로 메시지를 전달해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.ignoreFailures=true`를 추가했다. 자세한 내용은 [글로벌 프로퍼티](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#global-properties)를 참고해라.
+`integrationGlobalProperties` 빈은 (선언했다면) 이제 반드시 `java.util.Properties` 대신 `org.springframework.integration.context.IntegrationProperties`의 인스턴스여야 한다. `java.util.Properties`는 이전 버전과의 호환성을 위해 deprecated시킨 상태다. 글로벌 디폴트 `errorChannel`을 반드시 `requireSubscribers` 옵션으로 설정해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.requireSubscribers=true`가 추가됐다. 글로벌 디폴트 `errorChannel`이 반드시 디스패칭 에러를 무시하고 다음 핸들러로 메시지를 전달해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.ignoreFailures=true`를 추가했다. 자세한 내용은 [글로벌 프로퍼티](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#global-properties)를 참고해라.
 
 `AbstractPollingEndpoint`(소스 폴링 채널 어댑터와 폴링 컨슈머)는 `maxMessagesPerPoll == 0`을 소스 호출을 건너뛰라는 의미로 받아들인다. 이 값은 나중에 컨트롤 버스 등을 통해 다른 값으로 변경할 수 있다. 자세한 내용은 [폴링 컨슈머](../messaging-endpoints/#1013-polling-consumer)를 참고해라.
 
 `ConsumerEndpointFactoryBean`은 이제 입력 채널로 사용하는 리액티브 스트림 소스를 위한 `reactiveCustomizer` `Function`을 받으며, 내부에선 `ReactiveStreamsConsumer`를 사용한다. 이 기능은 Java DSL의 `ConsumerEndpointSpec.reactive()` 옵션과 메시지 처리 어노테이션에 중첩해서 쓰는 `@Reactive` 어노테이션으로 커버한다. 자세한 내용은 [리액티브 스트림즈 지원](../reactive-streams)을 참고해라.
 
-correlation 메시지 핸들러(`Aggregator`와 `Resequencer`)의 `groupTimeoutExpression`은 이제 `java.util.Date`로 평가해서 스케줄링 정책을 세세하게 조정할 수 있다. 또한 `AbstractCorrelatingMessageHandler`에는 `BiFunction groupConditionSupplier` 옵션이 추가돼서, 그룹에 추가하는 메시지를 보고 `MessageGroup` condition을 제공할 수 있다. 자세한 내용은 [Aggregator](../messaging-routing/#84-aggregator)를 참고해라.
+correlation 메시지 핸들러(`Aggregator`와 `Resequencer`)의 `groupTimeoutExpression`은 이제 `java.util.Date`로 평가해서 스케줄링 정책을 세세하게 조정할 수 있다. 또한 `AbstractCorrelatingMessageHandler`에는 `BiFunction groupConditionSupplier` 옵션이 추가돼서, 그룹에 추가하는 메시지를 참고해 `MessageGroup` condition을 제공할 수 있다. 자세한 내용은 [Aggregator](../messaging-routing/#84-aggregator)를 참고해라.
 
 `MessageGroup` 인터페이스를 `condition`과 함께 제공하면, 이후 이 condition을 평가해 그 그룹에 대한 결정을 내릴 수 있다. 자세한 내용은 [메시지 그룹 Condition](../system-management/#1333-message-group-condition)을 참고해라.
 
@@ -79,7 +79,7 @@ correlation 메시지 핸들러(`Aggregator`와 `Resequencer`)의 `groupTimeoutE
 
 ### 4.2.5. File/FTP/SFTP Changes
 
-영구<sup>persistent</sup> 파일 리스트 필터는 이제 boolean 프로퍼티 `forRecursion`을 가진다. 이 프로퍼티를 `true`로 설정하면 `alwaysAcceptDirectories`도 함께 세팅된다. 즉, 아웃바운드 게이트웨이에 대한 재귀 연산은 (`ls`, `mget`) 이제 매번 전체 디렉토리 트리를 순회한다. 이는 디렉토리 트리 깊은 곳에서 발생한 변경 사항을 감지하지 못하는 문제를 해결하기 위한 것이다. 또한 `forRecursion=true`를 설정하면 파일의 전체 경로를 메타데이터 스토어 키로 사용하게 된다. 덕분에 여러 디렉토리에 같은 이름을 가진 파일이 여러 개 있을 때 필터가 제대로 동작하지 않던 문제가 해결된다. 주의해야 할 점은, 최상위 디렉토리 밑에 있는 파일에선 영구<sup>persistent</sup> 메타데이터 스토어에 있던 기존 키를 찾을 수 없게 된다. 이러한 이유로 이 프로퍼티의  기본값은 `false`다. 향후 릴리즈에선 변경될 수 있다.
+영구<sup>persistent</sup> 파일 리스트 필터는 이제 boolean 프로퍼티 `forRecursion`을 가진다. 이 프로퍼티를 `true`로 설정하면 `alwaysAcceptDirectories`도 함께 세팅된다. 즉, 아웃바운드 게이트웨이에 대한 재귀 연산은 (`ls`, `mget`) 이제 매번 전체 디렉토리 트리를 순회하게 된다. 이렇게 하는 이유는 디렉토리 트리 깊은 곳에서 변경 사항이 생기면 감지하지 못하는 문제가 있었기 때문이다. 또한 `forRecursion=true`를 설정하면 파일의 전체 경로를 메타데이터 스토어 키로 사용하게 된다. 덕분에 여러 디렉토리에 같은 이름을 가진 파일이 여러 개 있을 때 필터가 제대로 동작하지 않던 문제가 해결된다. 주의해야 할 점은, 최상위 디렉토리 밑에 있는 파일에선 영구<sup>persistent</sup> 메타데이터 스토어에 있던 기존 키를 찾을 수 없게 된다. 이러한 이유로 이 프로퍼티의  기본값은 `false`다. 향후 릴리즈에선 변경될 수 있다.
 
 `FileInboundChannelAdapterSpec`에는 이제 `recursive(boolean)` 옵션이 있어서  `RecursiveDirectoryScanner`에 대한 참조를 명시하지 않아도 된다.
 

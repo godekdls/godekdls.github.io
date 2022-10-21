@@ -5,7 +5,7 @@ order: 5
 permalink: /Spring%20Integration/guide-conventions/
 description: 가이드 문서에서 사용하는 컨벤션 가이드
 image: ./../../images/springintegration/logo.png
-lastmod: 2022-01-05T21:30:00+09:00
+lastmod: 2022-10-21T13:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#guide-conventions

@@ -3,9 +3,9 @@ title: Endpoint Quick Reference Table
 category: Spring Integration
 order: 21
 permalink: /Spring%20Integration/endpoint-summary/
-description: 외부 시스템과의 메시지 기반 통신을 위한 엔드포인트들 요약 정보
+description: 외부 시스템과의 메시지 기반 통신을 위한 엔드포인트 정리
 image: ./../../images/springintegration/logo.png
-lastmod: 2022-01-05T21:30:00+09:00
+lastmod: 2022-10-21T13:30:00+09:00
 comments: true
 originalRefName: 스프링 인티그레이션
 originalRefLink: https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html#endpoint-summary
@@ -37,7 +37,7 @@ Spring Integration은 BOM<sup>bill-of-materials</sup> POM을 제공하으며, �
 
 - 인바운드 채널 어댑터는 메시징 애플리케이션으로 데이터를 가져오는 단방향 플로우에 사용한다.
 - 아웃바운드 채널 어댑터는 메시징 애플리케이션 밖으로 데이터를 전송하는 단방향 플로우에 사용한다.
-- 인바운드 게이트웨이는 다른 시스템이 메시징 애플리케이션을 호출해 응답을 수신하는 양방향 통합 플로우에 사용한다.
+- 인바운드 게이트웨이는 타 시스템이 메시징 애플리케이션을 호출해 응답을 수신해가는 양방향 통합 플로우에 사용한다.
 - 아웃바운드 게이트웨이는 메시징 애플리케이션이 외부 서비스나 엔티티를 호출하고 그 결과로 처리를 이어가는 양방향 통합 플로우에 사용한다.
 
 다음은 다양한 엔드포인트들을 전용 링크와 함께 요약해둔 테이블이다.
@@ -76,6 +76,6 @@ Spring Integration은 BOM<sup>bill-of-materials</sup> POM을 제공하으며, �
 | **XMPP**         | [XMPP Messages](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xmpp.html#xmpp-messages) and [XMPP Presence](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xmpp.html#xmpp-presence) | [XMPP Messages](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xmpp.html#xmpp-messages) and [XMPP Presence](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/xmpp.html#xmpp-presence) | N                                                            | N                                                            |
 | **ZeroMQ**       | [ZeroMQ Inbound Channel Adapter](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/zeromq.html#zeromq-inbound-channel-adapter) | [ZeroMQ outbound Channel Adapter](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/zeromq.html#zeromq-outbound-channel-adapter) | N                                                            | N                                                            |
 
-그 외에도 Spring Integration은 [Core Messaging](../core-messaging)에서 설명한 것처럼 POJO<sup>Plain Old Java Objects</sup>로 연결할 수 있는 엔드포인트들을 제공한다. [채널 어댑터](../messaging-channels/#63-channel-adapter)에서 설명했듯이, `<int:inbound-channel-adapter>` 요소를 사용하면 자바 메소드로 데이터를 폴링할 수 있다. `<int:outbound-channel-adapter>` 요소로는 `void` 메소드로 데이터를 전송할 수 있다. [Messaging Gateways](../messaging-endpoints/#104-messaging-gateways)에서 논의한 것처럼, `<int:gateway>` 요소는 어떤 자바 프로그램이든지 메시지 처리 플로우를 호출할 수 있게 해준다. 이 요소들은 모두 소스 단에서 Spring Integration 의존성을 요구하지 않는다. 아웃바운드 게이트웨이에 해당하는 엔드포인트는 서비스 액티베이터로, 일종의 `Object`를 반환하는 메소드를 호출할 수 있다 ([서비스 액티베이터](../messaging-endpoints/#105-service-activator) 참고).
+그 외에도 Spring Integration은 [Core Messaging](../core-messaging)에서 설명한 것처럼 POJO<sup>Plain Old Java Objects</sup>를 통해 실행할 수 있는 엔드포인트들을 제공한다. [채널 어댑터](../messaging-channels/#63-channel-adapter)에서 설명했듯이, `<int:inbound-channel-adapter>` 요소를 사용하면 자바 메소드로 데이터를 폴링할 수 있다. `<int:outbound-channel-adapter>` 요소로는 `void` 메소드로 데이터를 전송할 수 있다. [Messaging Gateways](../messaging-endpoints/#104-messaging-gateways)에서 논의한 것처럼, `<int:gateway>` 요소는 어떤 자바 프로그램이든지 메시지 처리 플로우를 실행할 수 있게 해준다. 이 요소들은 모두 소스 단에서 Spring Integration 의존성을 요구하지 않는다. 아웃바운드 게이트웨이에 해당하는 엔드포인트는 서비스 액티베이터로, 일종의 `Object`를 반환하는 메소드를 호출할 수 있다 ([서비스 액티베이터](../messaging-endpoints/#105-service-activator) 참고).
 
-`5.2.2` 버전부터, 모든 인바운드 게이트웨이는 boolean 플래그 `errorOnTimeout`을 설정해서, 다운스트림 플로우가 제한 시간 안에 응답을 반환하지 않으면 `MessageTimeoutException`을 발생시킬 수 있다. 이땐 게이트웨이로 스레드 제어가 돌아올 때까지 타이머를 시작하지 않으므로, 이 플래그는 보통 다운스트림 플로우가 비동기로 동작하거나 특정 핸들러에서 (ex. [필터](../messaging-routing/#82-filter)) `null`을 반환해 플로우가 중단되는 상황에서만 유용하다. 이때 발생하는 예외는 `errorChannel` 플로우에서 요청한 클라이언트에 보상 응답을 전송하는 식으로 처리할 수 있다.
+`5.2.2` 버전부터, 모든 인바운드 게이트웨이는 boolean 플래그 `errorOnTimeout`을 설정해서, 다운스트림 플로우가 제한 시간 안에 응답을 반환하지 않으면 `MessageTimeoutException`을 발생시킬 수 있다. 이땐 게이트웨이로 스레드 제어가 넘어올 때까지 타이머를 시작하지 않으므로, 이 플래그는 보통 다운스트림 플로우가 비동기로 동작하거나 특정 핸들러에서 (ex. [필터](../messaging-routing/#82-filter)) `null`을 반환해 플로우가 중단되는 상황에서만 유용하다. 이때 발생하는 예외는 `errorChannel` 플로우에서 요청한 클라이언트에 보상 응답을 전송하는 식으로 처리할 수 있다.

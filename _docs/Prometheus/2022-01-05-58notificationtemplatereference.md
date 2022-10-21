@@ -39,15 +39,15 @@ Alertmanager의 notification 템플릿은 [Go 템플릿](https://golang.org/pkg/
 
 `Data`는 notification 템플릿과 웹훅 푸시로 전달되는 구조체다.
 
-| Name              | Type            | Notes                                                        |
-| :---------------- | :-------------- | :----------------------------------------------------------- |
-| Receiver          | string          | notification을 전송할 receiver의 이름을 정의한다 (slack, 이메일 등). |
-| Status            | string          | alert가 하나라도 시행 중이면 firing으로 정의하고, 그 외는 resolved로 정의한다. |
-| Alerts            | [Alert](#alert) | 이 그룹에 속하는 모든 alert 객체 목록 ([아래 참고](#alert)). |
-| GroupLabels       | [KV](#kv)       | 이 alert들을 그룹으로 묶은 레이블들.                         |
-| CommonLabels      | [KV](#kv)       | 모든 alert에 공통으로 사용할 레이블들.                       |
-| CommonAnnotations | [KV](#kv)       | 모든 alert에 공통으로 사용할 어노테이션셋. alert에 좀 더 긴 부가 정보 문자열을 추가할 때 사용한다. |
-| ExternalURL       | string          | notification을 전송한 Alertmanager에 대한 백링크.            |
+| Name              | Type            | Notes                                                           |
+| :---------------- | :-------------- |:----------------------------------------------------------------|
+| Receiver          | string          | notification을 전송할 receiver의 이름을 정의한다 (slack, 이메일 등).            |
+| Status            | string          | alert가 하나라도 시행 중이면 firing으로 정의하고, 그 외는 resolved로 정의한다.          |
+| Alerts            | [Alert](#alert) | 이 그룹에 속하는 모든 alert 객체 목록 ([아래 참고](#alert)).                     |
+| GroupLabels       | [KV](#kv)       | 이 alert들을 그룹으로 묶은 레이블들.                                         |
+| CommonLabels      | [KV](#kv)       | 모든 alert에 공통으로 사용할 레이블들.                                        |
+| CommonAnnotations | [KV](#kv)       | 모든 alert에 공통으로 사용할 어노테이션 셋. alert에 좀 더 긴 부가 정보 문자열을 추가할 때 사용한다. |
+| ExternalURL       | string          | notification을 전송한 Alertmanager에 대한 백링크.                         |
 
 `Alerts` 타입에선 alert 필터링 함수들을 제공한다:
 
