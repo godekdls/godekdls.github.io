@@ -821,7 +821,7 @@ public PollableChannel rendezvousChannel() {
 
 > 'logging-channel-adapter'는 'expression' 속성도 받을 수 있는데, 이 속성에 지정하는 SpEL 표현식 안에서는 'payload'와 'headers'를 변수로 사용할 수 있다. 아니면 전체 메시지의 `toString()` 값을 기록하고 싶다면 'log-full-message' 속성을 `true`를 지정하면 된다. 이 속성은 기본적으로 `false`이기 때문에 페이로드만 기록한다. `true`로 설정하면 페이로드 외에도 전체 헤더를 로깅할 수 있다. 그래도 가장 유연하게 활용할 수 있는 건 'expression' 옵션이긴 하다 (ex. `expression="payload.user.name"`).
 
-wire tap이나 다른 비슷한 컴포넌트들([Message Publishing Configuration](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/message-publishing.html#message-publishing-config))에 대해 흔히 하는 오해 중 하나는 이런 컴포넌트들은 저절로 알아서 완전한 비동기로 동작할 거란 생각이다. 컴포넌트로서 wire tap은 기본적으로 비동기로 실행되지 않는다. Spring Integration은 그보단 비동기 설정을 메시지 채널이라는 하나의 수단으로 모아 통합하는 것에 집중한다. 메시지 플로우에서 어떤 부분을 동기 혹은 비동기로 만들어주는 건 그 플로우 안에 설정된 메시지 채널의 타입이다. 메시지 채널로 추상화했을 때 누릴 수 있는 혜택 중 하나이기도 하다. 스프링은 프레임워크를 시작할 때부터 항상 일급 객체<sup>first-class citizen</sup>로서 메시지 채널의 필요성과 가치를 강조해 왔다. 메시지 채널은 EIP 패턴을 내부적, 암묵적으로 실현하는 것만이 전부가 아니다. 메시지 채널은 엔드 유저에게 설정 가능한 컴포넌트로 완전히 노출된다. 따라서 wire tap 컴포넌트에서는 아래 있는 작업들만 수행해야 한다:
+wire tap이나 다른 비슷한 컴포넌트들([Message Publishing Configuration](../message-publishing/#c1-message-publishing-configuration))에 대해 흔히 하는 오해 중 하나는 이런 컴포넌트들은 저절로 알아서 완전한 비동기로 동작할 거란 생각이다. 컴포넌트로서 wire tap은 기본적으로 비동기로 실행되지 않는다. Spring Integration은 그보단 비동기 설정을 메시지 채널이라는 하나의 수단으로 모아 통합하는 것에 집중한다. 메시지 플로우에서 어떤 부분을 동기 혹은 비동기로 만들어주는 건 그 플로우 안에 설정된 메시지 채널의 타입이다. 메시지 채널로 추상화했을 때 누릴 수 있는 혜택 중 하나이기도 하다. 스프링은 프레임워크를 시작할 때부터 항상 일급 객체<sup>first-class citizen</sup>로서 메시지 채널의 필요성과 가치를 강조해 왔다. 메시지 채널은 EIP 패턴을 내부적, 암묵적으로 실현하는 것만이 전부가 아니다. 메시지 채널은 엔드 유저에게 설정 가능한 컴포넌트로 완전히 노출된다. 따라서 wire tap 컴포넌트에서는 아래 있는 작업들만 수행해야 한다:
 
 - 채널을 이용해<sup>tap</sup> (ex. `channelA`) 메시지 플로우 가로채기
 - 각 메시지를 잡아내기
@@ -887,7 +887,7 @@ public WireTap wireTap(MessageChannel wiretapChannel) {
 
 애플리케이션 컨텍스트에는 두 가지 특별한 채널 `errorChannel`과 `nullChannel`이 디폴트로 정의된다. 'nullChannel'(`NullChannel`의 인스턴스)은 마치 `/dev/null`처럼 동작하며, 전달받은 모든 메시지를 `DEBUG` 레벨로 기록한 뒤 곧바로 반환한다. 페이로드가 `org.reactivestreams.Publisher`인 메시지를 받으면 특별한 처리를 하나 더 진행한다. 데이터는 버리더라도 리액티브 스트림 처리를 시작할 수 있도록 이 채널 안에서 `Publisher`를 즉시 구독한다. 리액티브 스트림 처리 중에 던져진 에러는 이후 살펴볼 수 있도록 warn 레벨로 기록한다 (`Subscriber.onError(Throwable)` 참고). 이런 에러가 발생했을 때 어떠한 조치를 취해야 하는 경우엔, 이 `nullChannel`에 `Mono` 응답을 전송하는 메시지 핸들러에 [`ReactiveRequestHandlerAdvice`](../messaging-endpoints/#1092-reactive-advice)를 적용해 `Mono.doOnError()`를 커스텀하면 된다. 크게 상관 없는 응답에서 채널 resolution 에러가 발생한다면, 관련 구성 요소의 `output-channel` 속성을 'nullChannel'로 설정하면 된다 ('nullChannel'이란 이름은 애플리케이션 컨텍스트 내에서 예약돼있다).
 
-'errorChannel'은 내부적으로 에러 메시지를 전송할 때 사용하며, 커스텀 설정을 통해 재정의할 수도 있다. 이 채널은 [에러 핸들링](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/error-handling.html#error-handling)에서 자세히 논한다.
+'errorChannel'은 내부적으로 에러 메시지를 전송할 때 사용하며, 커스텀 설정을 통해 재정의할 수도 있다. 이 채널은 [에러 핸들링](../error-handling)에서 자세히 논한다.
 
 메시지 채널 및 인터셉터에 대한 자세한 내용은 자바 DSL 챕터에 있는 [메시지 채널](../java-dsl/#112-message-channels)을 함께 참고해라.
 

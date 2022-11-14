@@ -69,7 +69,7 @@ Spring Integration을 이끄는 원칙들은 다음과 같다:
 
 - 구성 요소들은 모듈화나 테스트를 위해 느슨하게 결합<sup>loosely coupled</sup>해야 한다.
 - 프레임워크는 비즈니스 로직과 통합 로직 간의 관심사를 분리해줘야 한다.
-- 확장 포인트는 재사용과 이식성을 위해 (단, 명확한 경계 내에서) 완전히 추상화돼 있어야 한다.
+- 확장 포인트는 재사용과 이식성을 위해 완전히 추상화돼 있어야 한다 (단, 명확한 경계 내에서).
 
 ---
 
@@ -326,7 +326,7 @@ XML 네임스페이스를 이용해 Spring Integration 플로우에 필요한 �
 
 `@IntegrationComponentScan` 어노테이션 덕분에 클래스패스 스캔도 가능하다. 이 어노테이션이 담당하는 일은 스프링 프레임워크의 표준 어노테이션 `@ComponentScan`과 유사하지만, 표준 스프링 프레임워크 컴포넌트 스캔 메커니즘으로 해결할 수 없는 Spring Integration 전용 구성 요소들과 어노테이션들로 한정된다. 예시로 [`@MessagingGateway` 어노테이션](../messaging-endpoints/#1046-messaginggateway-annotation)을 참고해라.
 
-`@EnablePublisher` 어노테이션은 `PublisherAnnotationBeanPostProcessor` 빈을 등록하며, `channel` 속성 없이 제공한 `@Publisher` 어노테이션에 `default-publisher-channel`을 설정해준다. `@EnablePublisher` 어노테이션이 둘 이상 발견되는 경우엔 디폴트 채널에 모두 같은 값을 가지고 있어야 한다. 자세한 내용은 [`@Publisher` 어노테이션을 이용한 어노테이션 기반 설정](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/message-publishing.html#publisher-annotation)을 참고해라.
+`@EnablePublisher` 어노테이션은 `PublisherAnnotationBeanPostProcessor` 빈을 등록하며, `channel` 속성 없이 제공한 `@Publisher` 어노테이션에 `default-publisher-channel`을 설정해준다. `@EnablePublisher` 어노테이션이 둘 이상 발견되는 경우엔 디폴트 채널에 모두 같은 값을 가지고 있어야 한다. 자세한 내용은 [`@Publisher` 어노테이션을 이용한 어노테이션 기반 설정](../message-publishing/#c11-annotation-driven-configuration-with-the-publisher-annotation)을 참고해라.
 
 `@GlobalChannelInterceptor` 어노테이션은 글로벌 채널 인터셉션<sup>interception</sup>을 위한 `ChannelInterceptor` 빈들을 마킹하기 위해 도입됐다. 이 어노테이션은 XML 요소 `<int:channel-interceptor>`와 유사하다 ([글로벌 채널 인터셉터 설정](../messaging-channels/#global-channel-interceptor-configuration) 참고). `@GlobalChannelInterceptor` 어노테이션은 클래스 레벨에 두거나 (스테레오타입 어노테이션 `@Component`와 함께), `@Configuration` 클래스 안에 있는 `@Bean` 메소드 위에 선언할 수 있다. 두 경우 모두 빈은 `ChannelInterceptor`를 구현해야 한다.
 
@@ -334,7 +334,7 @@ XML 네임스페이스를 이용해 Spring Integration 플로우에 필요한 �
 
 `@IntegrationConverter` 어노테이션은 `Converter`나 `GenericConverter`, `ConverterFactory` 빈들을 `integrationConversionService`의 후보 컨버터로 마킹한다. 이 어노테이션은 XML 요소 `<int:converter>`와 유사하다 ([페이로드 타입 변환](../messaging-endpoints/#1016-payload-type-conversion) 참고). `@IntegrationConverter` 어노테이션은 클래스 레벨에 두거나 (스테레오타입 어노테이션 `@Component`와 함께), `@Configuration` 클래스 안에 있는 `@Bean` 메소드 위에 선언할 수 있다.
 
-메시징 어노테이션들에 대한 자세한 내용은 [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)을 참고해라.
+메시징 어노테이션들에 대한 자세한 내용은 [어노테이션 지원](../configuration/#f4-annotation-support)을 참고해라.
 
 ### 5.6. Programming Considerations
 

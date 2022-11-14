@@ -51,7 +51,7 @@ MQTT v5 프로토콜 통신 지원을 위해 `Mqttv5PahoMessageDrivenChannelAdap
 
 모든 영구<sup>persistent</sup> `MessageGroupStore` 구현체는 타겟 데이터베이스의 스트리밍 API를 기반으로 `streamMessagesForGroup(Object groupId)` 인터페이스를 구현한다. 자세한 내용은 [메시지 스토어](../system-management/#133-message-store)를 참고해라.
 
-`integrationGlobalProperties` 빈은 (선언했다면) 이제 반드시 `java.util.Properties` 대신 `org.springframework.integration.context.IntegrationProperties`의 인스턴스여야 한다. `java.util.Properties`는 이전 버전과의 호환성을 위해 deprecated시킨 상태다. 글로벌 디폴트 `errorChannel`을 반드시 `requireSubscribers` 옵션으로 설정해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.requireSubscribers=true`가 추가됐다. 글로벌 디폴트 `errorChannel`이 반드시 디스패칭 에러를 무시하고 다음 핸들러로 메시지를 전달해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.ignoreFailures=true`를 추가했다. 자세한 내용은 [글로벌 프로퍼티](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#global-properties)를 참고해라.
+`integrationGlobalProperties` 빈은 (선언했다면) 이제 반드시 `java.util.Properties` 대신 `org.springframework.integration.context.IntegrationProperties`의 인스턴스여야 한다. `java.util.Properties`는 이전 버전과의 호환성을 위해 deprecated시킨 상태다. 글로벌 디폴트 `errorChannel`을 반드시 `requireSubscribers` 옵션으로 설정해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.requireSubscribers=true`가 추가됐다. 글로벌 디폴트 `errorChannel`이 반드시 디스패칭 에러를 무시하고 다음 핸들러로 메시지를 전달해야 하는지 여부를 표현하는 글로벌 프로퍼티 `spring.integration.channels.error.ignoreFailures=true`를 추가했다. 자세한 내용은 [글로벌 프로퍼티](../configuration/#f3-global-properties)를 참고해라.
 
 `AbstractPollingEndpoint`(소스 폴링 채널 어댑터와 폴링 컨슈머)는 `maxMessagesPerPoll == 0`을 소스 호출을 건너뛰라는 의미로 받아들인다. 이 값은 나중에 컨트롤 버스 등을 통해 다른 값으로 변경할 수 있다. 자세한 내용은 [폴링 컨슈머](../messaging-endpoints/#1013-polling-consumer)를 참고해라.
 
@@ -75,7 +75,7 @@ correlation 메시지 핸들러(`Aggregator`와 `Resequencer`)의 `groupTimeoutE
 
 ### 4.2.4. HTTP Changes
 
-`HttpRequestExecutingMessageHandler`는 더 이상 컨텐츠 타입 `application/x-java-serialized-object`로 폴백하지 않으며, `RestTemplate`이 설정에 있는 `HttpMessageConverter`를 기반으로 요청 바디를 어떻게 변환할지 최종적으로 결정한다. 또한 `HttpRequestExecutingMessageHandler`는 이제 `extractResponseBody` 플래그를 가져서 (디폴트는 `true`다), 설정한 `expectedResponseType`과는 상관 없이 응답 바디만 반환하거나 전체 `ResponseEntity`를 응답 메시지 페이로드로 반환할 수 있다. `WebFluxRequestExecutingMessageHandler`도 동일한 옵션을 제공한다. 자세한 내용은 [HTTP 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/http.html#http)을 참고해라.
+`HttpRequestExecutingMessageHandler`는 더 이상 컨텐츠 타입 `application/x-java-serialized-object`로 폴백하지 않으며, `RestTemplate`이 설정에 있는 `HttpMessageConverter`를 기반으로 요청 바디를 어떻게 변환할지 최종적으로 결정한다. 또한 `HttpRequestExecutingMessageHandler`는 이제 `extractResponseBody` 플래그를 가져서 (디폴트는 `true`다), 설정한 `expectedResponseType`과는 상관 없이 응답 바디만 반환하거나 전체 `ResponseEntity`를 응답 메시지 페이로드로 반환할 수 있다. `WebFluxRequestExecutingMessageHandler`도 동일한 옵션을 제공한다. 자세한 내용은 [HTTP 지원](../http)을 참고해라.
 
 ### 4.2.5. File/FTP/SFTP Changes
 

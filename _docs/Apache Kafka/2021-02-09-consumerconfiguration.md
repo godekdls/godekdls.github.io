@@ -70,7 +70,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#consumerconfigs
 
 - #### heartbeat.interval.ms
 
-  카프카의 그룹 관리 기능을 사용할 때, 컨슈머 코디네이터에 보내는 하트비트의 예상 시간 간격. 하트비트를 이용해 컨슈머의 세션이 활성 상태인지 확인하고, 그룹에 새 컨슈머가 들어오거나 나갈 때 리밸런스를 촉진한다. [`session.timeout.ms`](#sessiontimeoutms)보다 낮게 설정해야 하지만, 보통은 이 값의 1/3 이하로 설정하는 게 좋다. 일반적인 리밸런스 시간을 제어하려면 더 낮게 조정할 수도 있다.
+  카프카의 그룹 관리 기능을 사용할 때, 컨슈머 코디네이터에 보내는 하트비트의 예상 시간 간격. 하트비트를 이용해 컨슈머의 세션이 활성 상태인지 확인하고, 그룹에 새 컨슈머가 들어오거나 나갈 때 리밸런싱을 촉진한다. [`session.timeout.ms`](#sessiontimeoutms)보다 낮게 설정해야 하지만, 보통은 이 값의 1/3 이하로 설정하는 게 좋다. 일반적인 리밸런싱 시간을 제어하려면 더 낮게 조정할 수도 있다.
 
   |         Type: | int              |
   | ------------: | ---------------- |
@@ -90,7 +90,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#consumerconfigs
 
 - #### session.timeout.ms
 
-  카프카의 그룹 관리 기능에서 클라이언트 실패를 감지할 때 사용할 타임아웃. 클라이언트는 주기적으로 브로커에 하트 비트를 보내 살아 있음을 알린다. 이 세션 타임아웃이 만료되기 전까지 브로커가 하트 비트를 받지 못하면, 브로커는 그룹에서 이 클라이언트를 제외시키고 리밸런스를 시작한다. 단, 이 값은 브로커 설정에 있는 [`group.min.session.timeout.ms`](../broker-configuration#groupminsessiontimeoutms)와 [`group.max.session.timeout.ms`](../broker-configuration#groupmaxsessiontimeoutms)로 정한 허용 범위 내에 있어야 한다.
+  카프카의 그룹 관리 기능에서 클라이언트 실패를 감지할 때 사용할 타임아웃. 클라이언트는 주기적으로 브로커에 하트 비트를 보내 살아 있음을 알린다. 이 세션 타임아웃이 만료되기 전까지 브로커가 하트 비트를 받지 못하면, 브로커는 그룹에서 이 클라이언트를 제외시키고 리밸런싱을 시작한다. 단, 이 값은 브로커 설정에 있는 [`group.min.session.timeout.ms`](../broker-configuration#groupminsessiontimeoutms)와 [`group.max.session.timeout.ms`](../broker-configuration#groupmaxsessiontimeoutms)로 정한 허용 범위 내에 있어야 한다.
 
   |         Type: | int                |
   | ------------: | ------------------ |
@@ -265,7 +265,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#consumerconfigs
 
 - #### group.instance.id
 
-  최종 사용자가 제공한 컨슈머 인스턴스의 고유 식별자. 비어 있지 않은 문자열만 허용한다. 값을 설정하면 컨슈머를 스태틱 멤버로 취급한다. 즉, 컨슈머 그룹에서 이 ID를 가진 인스턴스는 언제나 하나만 허용하게 된다. 세션 타임아웃을 좀 더 크게 잡고 ID를 함께 활용하면, 일시적인 중단(프로세스 재시작 등)으로 인한 그룹 리밸런스를 방지할 수 있다. 설정하지 않으면 컨슈머는 기존 동작대로 동적 멤버로 그룹에 조인한다.
+  최종 사용자가 제공한 컨슈머 인스턴스의 고유 식별자. 비어 있지 않은 문자열만 허용한다. 값을 설정하면 컨슈머를 스태틱 멤버로 취급한다. 즉, 컨슈머 그룹에서 이 ID를 가진 인스턴스는 언제나 하나만 허용하게 된다. 세션 타임아웃을 좀 더 크게 잡고 ID를 함께 활용하면, 일시적인 중단(프로세스 재시작 등)으로 인한 그룹 리밸런싱을 방지할 수 있다. 설정하지 않으면 컨슈머는 기존 동작대로 동적 멤버로 그룹에 조인한다.
 
   |         Type: | string |
   | ------------: | ------ |
@@ -289,7 +289,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#consumerconfigs
 
 - #### max.poll.interval.ms
 
-  컨슈머 그룹 관리를 사용할 때, poll() 호출 사이의 최대 지연 시간. 컨슈머가 또다시 레코드를 가져가기 전 유휴 상태로 남아 있을 수 있는 시간에 상한선이 생긴다. 이 타임아웃이 만료하기 전에 poll()을 호출하지 않으면 컨슈머가 실패한 것으로 간주하고 해당 그룹은 리밸런스를 통해 파티션을 다른 구성원에 재할당한다. [`group.instance.id`](#groupinstanceid)가 null이 아닌 컨슈머가 타임아웃에 도달했을 땐 파티션을 즉시 재할당하지 않는다. 그보단 컨슈머는 하트비트 전송을 중단하게 될거고, `session.timeout.ms`가 만료되고 나서 파티션을 재할당한다. 스태틱 컨슈머가 셧다운됐을 때의 동작을 반영한 것이다.
+  컨슈머 그룹 관리를 사용할 때, poll() 호출 사이의 최대 지연 시간. 컨슈머가 또다시 레코드를 가져가기 전 유휴 상태로 남아 있을 수 있는 시간에 상한선이 생긴다. 이 타임아웃이 만료하기 전에 poll()을 호출하지 않으면 컨슈머가 실패한 것으로 간주하고 해당 그룹은 리밸런싱을 통해 파티션을 다른 구성원에 재할당한다. [`group.instance.id`](#groupinstanceid)가 null이 아닌 컨슈머가 타임아웃에 도달했을 땐 파티션을 즉시 재할당하지 않는다. 그보단 컨슈머는 하트비트 전송을 중단하게 될거고, `session.timeout.ms`가 만료되고 나서 파티션을 재할당한다. 스태틱 컨슈머가 셧다운됐을 때의 동작을 반영한 것이다.
 
   |         Type: | int                |
   | ------------: | ------------------ |

@@ -409,7 +409,7 @@ Spring Integration은 폴러에 트랜잭션을 적용할 수 있게 지원하�
                keep-alive="120"/>
 ```
 
-task-executor를 제공하지 않으면 컨슈머의 핸들러는 호출자의 스레드에서 실행된다. 일반적인 상황에서 호출자는 보통 디폴트 `TaskScheduler`다 ([태스크 스케줄러 설정하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#namespace-taskscheduler) 참고). `task-executor` 속성은 스프링의 `TaskExecutor` 인터페이스를 구현한 빈의 이름을 참조할 수 있다는 점도 알아두면 좋다. 위 예제에 보이는 `executor` 요소는 편의상 표기했으니 참고해라.
+task-executor를 제공하지 않으면 컨슈머의 핸들러는 호출자의 스레드에서 실행된다. 일반적인 상황에서 호출자는 보통 디폴트 `TaskScheduler`다 ([태스크 스케줄러 설정하기](../configuration/#f2-configuring-the-task-scheduler) 참고). `task-executor` 속성은 스프링의 `TaskExecutor` 인터페이스를 구현한 빈의 이름을 참조할 수 있다는 점도 알아두면 좋다. 위 예제에 보이는 `executor` 요소는 편의상 표기했으니 참고해라.
 
 [폴링 컨슈머의 배경 이론에 대해 설명하면서](#1013-polling-consumer) 언급했듯이, 폴링 컨슈머는 이벤트 기반 동작을 시뮬레이션할 때에도 활용할 수 있다. receive 타임아웃은 길고 인터벌은 짧은 트리거를 이용하면, 메시지 소스를 폴링하는 방식이더라도 메시지가 도착하면 매우 빠르게 반응할 수 있다. 단, 이 테크닉은 소스를 호출하면 타임아웃되기 전까지 블로킹되는 경우에만 가능하다. 예를 들면 파일 폴러는 블로킹되지 않는다. `receive()`를 호출할 때마다 즉시 반환되며, 새 파일이 있을 수도 없을 수도 있다. 따라서 파일 폴러에 `receive-timeout`을 길게 설정하더라도, 블로킹되지 않기 때문에 타임아웃을 이용할 수 없다. 한편 Spring Integration의 자체 큐 기반 채널을 사용한다면 타임아웃을 적절히 활용할 수 있다. 다음 예제는 폴링 컨슈머로 메시지를 거의 도착하는 즉시 수신하는 방법을 보여준다:
 
@@ -925,7 +925,7 @@ public interface TestGateway {
 ```
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p>Spring Integration은 XML 설정과 유사하게 컴포넌트 스캔 중에도 이런 어노테이션들을 발견하면, 메시징 인프라를 이용해 <code class="highlighter-rouge">proxy</code> 구현체를 생성한다. 여기서 말하는 스캔을 수행하고 애플리케이션 컨텍스트에 <code class="highlighter-rouge">BeanDefinition</code>을 등록하려면 <code class="highlighter-rouge">@Configuration</code> 클래스에 <code class="highlighter-rouge">@IntegrationComponentScan</code> 어노테이션을 추가해라. 표준 <code class="highlighter-rouge">@ComponentScan</code> 인프라에선 인터페이스들을 처리해주지 않는다. 그렇기 때문에 인터페이스 위에 있는 <code class="highlighter-rouge">@MessagingGateway</code> 어노테이션을 정제해서 관련 <code class="highlighter-rouge">GatewayProxyFactoryBean</code> 인스턴스를 등록할 수 있도록 커스텀 <code class="highlighter-rouge">@IntegrationComponentScan</code> 로직을 도입했다. <a href="https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations">어노테이션 지원</a>도 함께 참고해라.</p>
+  <p>Spring Integration은 XML 설정과 유사하게 컴포넌트 스캔 중에도 이런 어노테이션들을 발견하면, 메시징 인프라를 이용해 <code class="highlighter-rouge">proxy</code> 구현체를 생성한다. 여기서 말하는 스캔을 수행하고 애플리케이션 컨텍스트에 <code class="highlighter-rouge">BeanDefinition</code>을 등록하려면 <code class="highlighter-rouge">@Configuration</code> 클래스에 <code class="highlighter-rouge">@IntegrationComponentScan</code> 어노테이션을 추가해라. 표준 <code class="highlighter-rouge">@ComponentScan</code> 인프라에선 인터페이스들을 처리해주지 않는다. 그렇기 때문에 인터페이스 위에 있는 <code class="highlighter-rouge">@MessagingGateway</code> 어노테이션을 정제해서 관련 <code class="highlighter-rouge">GatewayProxyFactoryBean</code> 인스턴스를 등록할 수 있도록 커스텀 <code class="highlighter-rouge">@IntegrationComponentScan</code> 로직을 도입했다. <a href="../configuration/#f4-annotation-support">어노테이션 지원</a>도 함께 참고해라.</p>
 </blockquote>
 
 서비스 인터페이스 위에 `@MessagingGateway`, `@Profile` 어노테이션을 함께 마킹해주면, 해당 프로파일이 활성화되었을 때에만 빈을 생성할 수 있다.
@@ -1041,7 +1041,7 @@ public interface RequestReplyExchanger {
 
 ### 10.4.10. Gateway Timeouts
 
-게이트웨이는 `requestTimeout`과 `replyTimeout`이라는 두 가지 타임아웃 프로퍼티를 가지고 있다. `requestTimeout`은 채널이 블로킹될 수 있는 경우에만 적용된다 (예를 들어 유한<sup>bounded</sup> `QueueChannel`이 가득 찼을 때). `replyTimeout` 값은 게이트웨이가 응답을 기다리는 시간으로, 이 시간이 지나면 `null`을 반환한다. 기본값은 무한대다.
+게이트웨이는 `requestTimeout`과 `replyTimeout`이라는 두 가지 타임아웃 프로퍼티를 가지고 있다. `requestTimeout`은 채널이 블로킹될 수 있는 경우에만 적용된다 (예를 들어 유한<sup>bounded</sup> `QueueChannel`이 가득 찼을 때). `replyTimeout` 값은 게이트웨이가 응답을 기다리는 시간으로, 이 시간이 지나면 `null`을 반환한다. 기본값은 무한대다.
 
 이 타임아웃 값들은 게이트웨이의 모든 메소드나 (`defaultRequestTimeout`, `defaultReplyTimeout`) `MessagingGateway` 인터페이스 어노테이션에서 사용할 기본값으로 설정할 수 있다. 개별 메소드에선 자식 요소 `<method/>`나 `@Gateway` 어노테이션에서 이 기본값을 재정의할 수 있다.
 
@@ -1383,7 +1383,7 @@ public interface MyGateway {
 
 서비스 activator는 응답 메시지를 생성하지 않아도 되는 구성 요소 중 하나다. 메소드가 `null`을 반환하거나 리턴 타입이 `void`인 경우 서비스 activator는 메소드를 실행한 후 별도 신호 없이 종료한다. 이 동작은 `AbstractReplyProducingMessageHandler.requiresReply` 옵션으로 변경할 수 있으며, XML 네임스페이스를 이용할 땐 `requires-reply`로 설정해주면 된다. 이 플래그를 `true`로 설정했을 때 메소드가 null을 반환하면 `ReplyRequiredException`을 던진다.
 
-서비스 메소드의 인자는 메시지일 수도, 임의의 타입일 수도 있다. 임의의 타입일 땐 메시지 페이로드인 것으로 가정하며, 메시지에서 페이로드를 추출해서 서비스 메소드에 주입해준다. 이렇게 하면 POJO 모델을 따를 수 있으므로, Spring Integration을 이용할 땐 일반적으로 임의의 타입을 사용하는 것을 권장한다. [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)에서 설명하는 것처럼 인자들은 `@Header`나 `@Headers` 어노테이션을 선언할 수도 있다.
+서비스 메소드의 인자는 메시지일 수도, 임의의 타입일 수도 있다. 임의의 타입일 땐 메시지 페이로드인 것으로 가정하며, 메시지에서 페이로드를 추출해서 서비스 메소드에 주입해준다. 이렇게 하면 POJO 모델을 따를 수 있으므로, Spring Integration을 이용할 땐 일반적으로 임의의 타입을 사용하는 것을 권장한다. [어노테이션 지원](../configuration/#f4-annotation-support)에서 설명하는 것처럼 인자들은 `@Header`나 `@Headers` 어노테이션을 선언할 수도 있다.
 
 > 서비스 메소드는 인자가 없어도 되기 때문에, 이벤트 스타일의 서비스 액티베이터를 구현할 수 있으며 (여기선 오로지 서비스 메소드를 실행하는 것에만 관심을 둔다) 메시지의 내용은 신경쓰지 않아도 된다. 메시지가 null JMS 메시지라고 생각해보자. 예를 들면 입력 채널에 보관된 메시지들을 모니터링하거나 간단한 카운터를 구현할 수 있다.
 
@@ -1541,7 +1541,7 @@ public DelayHandler delayer() {
 >
 > 결과적으로, 헤더가 생략될 가능성이 있고 디폴트 지연 시간으로 폴백하고 싶다면, 예외를 catch하는 것보단 null을 감지하는 것이 더 빠르기 때문에, dot property accessor 구문 보단 indexer 구문을 사용하는 것이 일반적으로 더 효율적이다 (권장하는 방법이기도 하다).
 
-delayer는 동작을 스프링 `TaskScheduler` 인터페이스의 인스턴스에 위임한다. delayer에서 사용하는 디폴트 스케줄러는 Spring Integration에서 기동 시 제공하는 `ThreadPoolTaskScheduler` 인스턴스다. 자세한 내용은 [태스크 스케줄러 설정하기](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#namespace-taskscheduler)를 참고해라. 다른 스케줄러에 위임하고 싶다면, 다음과 같이 delayer 요소의 'scheduler' 속성을 통해 참조를 제공하면 된다:
+delayer는 동작을 스프링 `TaskScheduler` 인터페이스의 인스턴스에 위임한다. delayer에서 사용하는 디폴트 스케줄러는 Spring Integration에서 기동 시 제공하는 `ThreadPoolTaskScheduler` 인스턴스다. 자세한 내용은 [태스크 스케줄러 설정하기](../configuration/#f2-configuring-the-task-scheduler)를 참고해라. 다른 스케줄러에 위임하고 싶다면, 다음과 같이 delayer 요소의 'scheduler' 속성을 통해 참조를 제공하면 된다:
 
 ```xml
 <int:delayer id="delayer" input-channel="input" output-channel="output"
@@ -2550,7 +2550,7 @@ public class MyAdvice extends AbstractRequestHandlerAdvice {
 
 [JPA 통합 컴포넌트](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jpa.html#jpa)에 익숙하다면 별로 새로운 설정은 아니겠지만, 이제 `<poller>`나 [JMS](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jms.html#jms-message-driven-channel-adapter)같은 메시지 기반 채널 어댑터 뿐 아니라, 플로우의 어느 지점에서나 트랜잭션을 시작할 수 있다.
 
-자바 설정은 `TransactionInterceptorBuilder`를 이용해 단순화할 수 있으며, 다음과 같이 [메시지 처리 어노테이션](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)의 `adviceChain` 속성에 등록한 빈의 이름을 지정하면 된다 :
+자바 설정은 `TransactionInterceptorBuilder`를 이용해 단순화할 수 있으며, 다음과 같이 [메시지 처리 어노테이션](../configuration/#f4-annotation-support)의 `adviceChain` 속성에 등록한 빈의 이름을 지정하면 된다:
 
 ```java
 @Bean
@@ -2820,7 +2820,7 @@ public class LoggingJavaApplication {
 
 ## 10.11. `java.util.function` Interfaces Support
 
-Spring Integration은 5.1 버전부터 `java.util.function` 패키지의 인터페이스들을 본격적으로 지원하기 시작했다. 모든 메시지 처리 엔드포인트들은 (Service Activator, Transformer, Filter 등) 이제 `Function`(또는 `Consumer`) 빈을 참조할 수 있다. 일반적인 `MessageHandler` 정의와 유사하게, 이런 빈에도 [메시지 처리 어노테이션](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)을 바로 적용할 수 있다. 예를 들어 아래와 같은 `Function` 빈을 정의했다면:
+Spring Integration은 5.1 버전부터 `java.util.function` 패키지의 인터페이스들을 본격적으로 지원하기 시작했다. 모든 메시지 처리 엔드포인트들은 (Service Activator, Transformer, Filter 등) 이제 `Function`(또는 `Consumer`) 빈을 참조할 수 있다. 일반적인 `MessageHandler` 정의와 유사하게, 이런 빈에도 [메시지 처리 어노테이션](../configuration/#f4-annotation-support)을 바로 적용할 수 있다. 예를 들어 아래와 같은 `Function` 빈을 정의했다면:
 
 ```java
 @Configuration

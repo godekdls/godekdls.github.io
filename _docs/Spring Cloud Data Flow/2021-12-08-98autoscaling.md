@@ -71,7 +71,7 @@ for: 30s
 
 > 여기에서 사용하는 alert 룰들은 [alert.rule.yml](https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/recipes/scaling/kubernetes/helm/prometheus/prometheus-configmap.yaml#L8-L23)에서 확인할 수 있다 (kubectl로 설치할 땐 [여기](https://github.com/spring-cloud/spring-cloud-dataflow-samples/blob/master/dataflow-website/recipes/scaling/kubernetes/prometheus/prometheus-configmap.yaml#L8-L23)에서).
 
-> `spring_integration_send_seconds_count` 메트릭은 메세지 속도를 계산하는 데 사용하는 메트릭으로, `spring integration`의 [마이크로미터 기능](https://docs.spring.io/spring-integration/docs/5.2.2.RELEASE/reference/html/system-management.html#micrometer-integration)을 통해 수집한다.
+> `spring_integration_send_seconds_count` 메트릭은 메세지 속도를 계산하는 데 사용하는 메트릭으로, `spring integration`의 [마이크로미터 기능](../../Spring%20Integration/system-management/#1313-micrometer-integration)을 통해 수집한다.
 
 [Alertmanager](../../Prometheus/alertmanager)는 alert를 관리하는 독립형 서비스로, silencing, inhibition, aggregation과 함께 미리 설정해둔 웹훅에 알림을 전송하는 일을 담당한다.
 

@@ -93,7 +93,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#configuration
 
 - #### auto.leader.rebalance.enable
 
-  자동 리더 밸런싱을 활성화한다. 백그라운드 스레드에서 [`leader.imbalance.check.interval.seconds`](#leaderimbalancecheckintervalseconds)로 설정한 주기적인 인터벌에 따라 파티션 리더의 배포 상태를 확인한다. 리더 불균형 수치가 [`leader.imbalance.per.broker.percentage`](#leaderimbalanceperbrokerpercentage)를 초과하면 해당 파티션에 대해 선호하는 리더로 리더 리밸런스를 트리거한다.
+  자동 리더 밸런싱을 활성화한다. 백그라운드 스레드에서 [`leader.imbalance.check.interval.seconds`](#leaderimbalancecheckintervalseconds)로 설정한 주기적인 인터벌에 따라 파티션 리더의 배포 상태를 확인한다. 리더 불균형 수치가 [`leader.imbalance.per.broker.percentage`](#leaderimbalanceperbrokerpercentage)를 초과하면 해당 파티션에 대해 선호하는 리더로 리더 리밸런싱을 트리거한다.
 
   |         Type: | boolean   |
   | ------------: | --------- |
@@ -189,7 +189,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#configuration
 
 - #### leader.imbalance.check.interval.seconds
 
-  컨트롤러가 파티션 리밸런스 검사를 트리거할 주기
+  컨트롤러가 파티션 리밸런싱 검사를 트리거할 주기
 
   |         Type: | long      |
   | ------------: | --------- |
@@ -1057,7 +1057,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#configuration
 
 - #### group.initial.rebalance.delay.ms
 
-  그룹 코디네이터가 새 그룹에서 처음 리밸런스를 수행하기 전에, 더 많은 컨슈머가 그룹에 들어올 수 있도록 기다리는 시간. 더 오래 기다리면 앞으로 리밸런스를 덜 할 순 있지만, 리밸런스를 시작하기까지 시간이 더 오래 걸린다.
+  그룹 코디네이터가 새 그룹에서 처음 리밸런싱을 수행하기 전에, 더 많은 컨슈머가 그룹에 들어올 수 있도록 기다리는 시간. 더 오래 기다리면 앞으로 리밸런싱을 덜 할 순 있지만, 리밸런싱을 시작하기까지 시간이 더 오래 걸린다.
 
   |         Type: | int              |
   | ------------: | ---------------- |
