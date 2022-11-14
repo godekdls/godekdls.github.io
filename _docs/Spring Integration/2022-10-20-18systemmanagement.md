@@ -750,7 +750,7 @@ public interface Gate {
 
 ## 13.8. Integration Graph Controller
 
-웹 기반 애플리케이션을 개발할 때는 (또는 스프링 부트에서 임베디드 웹 컨테이너를 사용하고 있다면), 클래스패스에 Spring Integration HTTP 혹은 WebFlux 모듈이 있다면 (각각 [HTTP 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/http.html#http)과 [WebFlux 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/webflux.html#webflux) 참고) `IntegrationGraphController`를 사용해 `IntegrationGraphServer` 기능을 REST 서비스로 노출할 수 있다. HTTP 모듈에선 클래스 어노테이션 `@EnableIntegrationGraphController`, `@Configuration`과 XML 요소 `<int-http:graph-controller/>`를 이용하면 된다. 이 설정을 `@EnableWebMvc` 어노테이션(XML로 정의할 땐 `<mvc:annotation-driven/>`)과 함께 사용하면 `@RestController` `IntegrationGraphController`가 등록된다. 이 컨트롤러의 `@RequestMapping.path`는 `@EnableIntegrationGraphController` 어노테이션이나 `<int-http:graph-controller/>` 요소로 설정할 수 있다. 디폴트 경로는 `/integration`이다.
+웹 기반 애플리케이션을 개발할 때는 (또는 스프링 부트에서 임베디드 웹 컨테이너를 사용하고 있다면), 클래스패스에 Spring Integration HTTP 혹은 WebFlux 모듈이 있다면 (각각 [HTTP 지원](../http)과 [WebFlux 지원](../webflux) 참고) `IntegrationGraphController`를 사용해 `IntegrationGraphServer` 기능을 REST 서비스로 노출할 수 있다. HTTP 모듈에선 클래스 어노테이션 `@EnableIntegrationGraphController`, `@Configuration`과 XML 요소 `<int-http:graph-controller/>`를 이용하면 된다. 이 설정을 `@EnableWebMvc` 어노테이션(XML로 정의할 땐 `<mvc:annotation-driven/>`)과 함께 사용하면 `@RestController` `IntegrationGraphController`가 등록된다. 이 컨트롤러의 `@RequestMapping.path`는 `@EnableIntegrationGraphController` 어노테이션이나 `<int-http:graph-controller/>` 요소로 설정할 수 있다. 디폴트 경로는 `/integration`이다.
 
 `@RestController` `IntegrationGraphController`는 다음과 같은 서비스를 제공한다:
 

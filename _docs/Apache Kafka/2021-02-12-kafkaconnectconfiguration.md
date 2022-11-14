@@ -95,7 +95,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#connectconfigs
 
 - #### heartbeat.interval.ms
 
-  카프카의 그룹 관리 기능을 사용할 때, 그룹 코디네이터에 보내는 하트비트의 예상 시간 간격. 하트비트를 이용해 워커의 세션이 활성 상태인지 확인하고, 그룹에 새 멤버가 들어오거나 나갈 때 리밸런스를 촉진한다. [`session.timeout.ms`](#sessiontimeoutms)보다 낮게 설정해야 하지만, 보통은 이 값의 1/3 이하로 설정하는 게 좋다. 일반적인 리밸런스 시간을 제어하려면 더 낮게 조정할 수도 있다.
+  카프카의 그룹 관리 기능을 사용할 때, 그룹 코디네이터에 보내는 하트비트의 예상 시간 간격. 하트비트를 이용해 워커의 세션이 활성 상태인지 확인하고, 그룹에 새 멤버가 들어오거나 나갈 때 리밸런싱을 촉진한다. [`session.timeout.ms`](#sessiontimeoutms)보다 낮게 설정해야 하지만, 보통은 이 값의 1/3 이하로 설정하는 게 좋다. 일반적인 리밸런싱 시간을 제어하려면 더 낮게 조정할 수도 있다.
 
   |         Type: | int              |
   | ------------: | ---------------- |
@@ -105,7 +105,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#connectconfigs
 
 - #### rebalance.timeout.ms
 
-  리밸런스가 시작된 후 각 워커가 그룹에 조인할 수 있는 최대 허용 시간. 개념적으로는 모든 태스크에서 펜딩되고 있는 데이터를 플러시하고 오프셋을 커밋하는데 필요한 시간 제한이다. 타임 아웃을 초과하면, 이 워커는 그룹에서 제거돼 오프셋 커밋에 실패하게 된다.
+  리밸런싱이 시작된 후 각 워커가 그룹에 조인할 수 있는 최대 허용 시간. 개념적으로는 모든 태스크에서 펜딩되고 있는 데이터를 플러시하고 오프셋을 커밋하는데 필요한 시간 제한이다. 타임 아웃을 초과하면, 이 워커는 그룹에서 제거돼 오프셋 커밋에 실패하게 된다.
 
   |         Type: | int              |
   | ------------: | ---------------- |
@@ -115,7 +115,7 @@ originalRefLink: https://kafka.apache.org/27/documentation.html#connectconfigs
 
 - #### session.timeout.ms
 
-  워커의 실패를 감지할 때 사용할 타임아웃. 워커는 주기적으로 브로커에 하트 비트를 보내 살아 있음을 알린다. 이 세션 타임아웃이 만료되기 전까지 브로커가 하트 비트를 받지 못하면, 브로커는 그룹에서 이 워커를 제외시키고 리밸런스를 시작한다. 단, 이 값은 브로커 설정에 있는 [`group.min.session.timeout.ms`](../broker-configuration#groupminsessiontimeoutms)와 [`group.max.session.timeout.ms`](../broker-configuration#groupmaxsessiontimeoutms)로 정한 허용 범위 내에 있어야 한다.
+  워커의 실패를 감지할 때 사용할 타임아웃. 워커는 주기적으로 브로커에 하트 비트를 보내 살아 있음을 알린다. 이 세션 타임아웃이 만료되기 전까지 브로커가 하트 비트를 받지 못하면, 브로커는 그룹에서 이 워커를 제외시키고 리밸런싱을 시작한다. 단, 이 값은 브로커 설정에 있는 [`group.min.session.timeout.ms`](../broker-configuration#groupminsessiontimeoutms)와 [`group.max.session.timeout.ms`](../broker-configuration#groupmaxsessiontimeoutms)로 정한 허용 범위 내에 있어야 한다.
 
   |         Type: | int                |
   | ------------: | ------------------ |

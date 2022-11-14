@@ -229,7 +229,7 @@ Spring Integration은 다음과 같은 라우터를 제공한다:
 </bean>
 ```
 
-`PayloadTypeRouter`는 Spring Integration에서 제공하는 네임스페이스로도 설정할 수 있다 ([`Namespace Support`](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#configuration-namespace) 참고). Spring Integration의 네임스페이스를 이용하면 사실상 `<router/>` 설정과 그에 따른 구현체(`<bean/>` 요소로 정의한)를 하나의 요소로 정의할 수 있어 더 간단해진다. 다음 예제는 위와 동일한 설정이지만, 네임스페이스 지원을 이용한 `PayloadTypeRouter` 설정을 보여준다:
+`PayloadTypeRouter`는 Spring Integration에서 제공하는 네임스페이스로도 설정할 수 있다 ([`Namespace Support`](../configuration/#f1-namespace-support) 참고). Spring Integration의 네임스페이스를 이용하면 사실상 `<router/>` 설정과 그에 따른 구현체(`<bean/>` 요소로 정의한)를 하나의 요소로 정의할 수 있어 더 간단해진다. 다음 예제는 위와 동일한 설정이지만, 네임스페이스 지원을 이용한 `PayloadTypeRouter` 설정을 보여준다:
 
 ```xml
 <int:payload-type-router input-channel="routingChannel">
@@ -387,7 +387,7 @@ public IntegrationFlow routerFlow2() {
 </bean>
 ```
 
-Spring Integration은 아래 예제에 보이는 `RecipientListRouter` 전용 네임스페이스도 지원하고 있다 ([네임스페이스 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#configuration-namespace) 참고):
+Spring Integration은 아래 예제에 보이는 `RecipientListRouter` 전용 네임스페이스도 지원하고 있다 ([네임스페이스 지원](../configuration/#f1-namespace-support) 참고):
 
 ```xml
 <int:recipient-list-router id="customRouter" input-channel="routingChannel"
@@ -673,7 +673,7 @@ public String route(Foo payload) {...}
 public List<String> route(Foo payload) {...}
 ```
 
-꼭 페이로드를 기반으로 라우팅해야 하는 것은 아니며, 메시지 헤더 안에 있는 프로퍼티나 attribute 등의 메타데이터를 기반으로도 라우팅할 수 있다. 헤더를 활용할 땐 `@Router`를 달아준 메소드에 `@Header`를 선언한 파라미터를 추가할 수 있다. 아래 예제에서 확인할 수 있듯이, 이 파라미터에는 헤더의 값이 매핑된다. 자세한 내용은 [어노테이션 지원](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations)에서 설명하고 있다:
+꼭 페이로드를 기반으로 라우팅해야 하는 것은 아니며, 메시지 헤더 안에 있는 프로퍼티나 attribute 등의 메타데이터를 기반으로도 라우팅할 수 있다. 헤더를 활용할 땐 `@Router`를 달아준 메소드에 `@Header`를 선언한 파라미터를 추가할 수 있다. 아래 예제에서 확인할 수 있듯이, 이 파라미터에는 헤더의 값이 매핑된다. 자세한 내용은 [어노테이션 지원](../configuration/#f4-annotation-support)에서 설명하고 있다:
 
 ```java
 @Router
@@ -1614,7 +1614,7 @@ public MessageHandler aggregator(MessageGroupStore jdbcMessageGroupStore) {
 }
 ```
 
-자세한 정보는 [프로그래밍 모델](#842-programming-model)과 [`@Bean` 메소드 위에 선언할 수 있는 어노테이션들](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/configuration.html#annotations_on_beans)을 읽어봐라.
+자세한 정보는 [프로그래밍 모델](#842-programming-model)과 [`@Bean` 메소드 위에 선언할 수 있는 어노테이션들](../configuration/#f51-annotations-on-bean-methods)을 읽어봐라.
 
 > 4.2 버전부터는 `AggregatorFactoryBean`을 이용해 좀더 간단한 자바 설정으로 `AggregatingMessageHandler`를 구성할 수 있다.
 
@@ -1694,7 +1694,7 @@ Spring Integration은 편의를 위해 메시지 만료를 위한 래퍼<sup>wra
 `AbstractCorrelatingMessageHandler`는 자체 만료 콜백을 등록하며, 이 콜백은 aggregator의 XML 설정에 있는 boolean 플래그 `send-partial-result-on-expiry`와 연결된다. 이 플래그를 `true`로 설정하면 만료 콜백이 실행될 때 아직 release 전인 그룹에 있는, 마킹되지 않는 메시지들을 출력 채널로 전송할 수 있다.
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
-  <p><code class="highlighter-rouge">MessageGroupStoreReaper</code>는 예약된 태스크에서 호출해서 다운스트림 플로우로 메시지를 보낼 수도 있다 (<code class="highlighter-rouge">sendPartialResultOnExpiry</code> 옵션에 따라 다르다). 그렇기 때문에 <code class="highlighter-rouge">errorChannel</code>을 통해 예외를 처리할 수 있도록 <code class="highlighter-rouge">MessagePublishingErrorHandler</code>와 커스텀 <code class="highlighter-rouge">TaskScheduler</code>를 제공하는 것을 권장한다. 일반적인 aggregator release 기능에서도 기대하는 방식이기도 하다. 마찬가지로 <code class="highlighter-rouge">TaskScheduler</code>를 사용하는 그룹 타임아웃 기능에서도 동일하다. 자세한 내용은 <a href="https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/error-handling.html#error-handling">에러 핸들링</a>을 참고해라.</p>
+  <p><code class="highlighter-rouge">MessageGroupStoreReaper</code>는 예약된 태스크에서 호출해서 다운스트림 플로우로 메시지를 보낼 수도 있다 (<code class="highlighter-rouge">sendPartialResultOnExpiry</code> 옵션에 따라 다르다). 그렇기 때문에 <code class="highlighter-rouge">errorChannel</code>을 통해 예외를 처리할 수 있도록 <code class="highlighter-rouge">MessagePublishingErrorHandler</code>와 커스텀 <code class="highlighter-rouge">TaskScheduler</code>를 제공하는 것을 권장한다. 일반적인 aggregator release 기능에서도 기대하는 방식이기도 하다. 마찬가지로 <code class="highlighter-rouge">TaskScheduler</code>를 사용하는 그룹 타임아웃 기능에서도 동일하다. 자세한 내용은 <a href="../error-handling">에러 핸들링</a>을 참고해라.</p>
 </blockquote>
 
 <blockquote style="background-color: #fbebf3; border-color: #d63583;">
@@ -1902,7 +1902,7 @@ Spring Integration 3.0부터 체인 요소에 `id` 속성이 주어지면, 체�
 - 이 `ServiceActivatingHandler`의 `componentName`은 동일한 값을 사용하지만 '.handler' suffix는 없다. 즉, 'somethingChain$child.somethingService'가 된다.
 - `<chain>`의 마지막 하위 구성 요소 `<object-to-json-transformer>`는 `id` 속성을 가지고 있지 않다. 이 요소의 `componentName`은 `<chain>`에서의 위치를 기반으로 만들어진다. 이 예시에선 'somethingChain$child#1'이다. (이름의 마지막 부분이 체인 내의 순서를 나타내며, '#0'부터 시작한다). 참고로 이 transformer는 애플리케이션 컨텍스트 내 빈으로 등록되지 않으므로, `beanName`은 주어지지 않는다. 하지만 `componentName`엔 로깅 등에 활용하기 좋은 값이 담겨 있다.
 
-`<chain>` 요소들에 `id` 속성을 사용하면 [JMX 익스포터](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jmx.html#jmx-mbean-exporter)에도 적합하며, [메시지 히스토리](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/message-history.html#message-history)에서 추적하기도 좋다. 앞에서 언급한 것처럼 적당한 빈 이름을 사용하면 `BeanFactory`로 액세스할 수도 있다.
+`<chain>` 요소들에 `id` 속성을 사용하면 [JMX 익스포터](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/jmx.html#jmx-mbean-exporter)에도 적합하며, [메시지 히스토리](../system-management/#132-message-history)에서 추적하기도 좋다. 앞에서 언급한 것처럼 적당한 빈 이름을 사용하면 `BeanFactory`로 액세스할 수도 있다.
 
 > `<chain>` 요소에 `id` 속성을 명시하면, 로그에서 하위 구성 요소를 간단하게 식별하고, `BeanFactory`에서 액세스할 수 있어 유용하다.
 
@@ -2041,7 +2041,7 @@ public MessageHandler scatterGatherDistribution() {
 
 Scatter-Gather는 여러 개의 request와 reply를 다루는 컴포넌트기 때문에 에러를 핸들링하기가 조금 더 복잡한 편이다. `ReleaseStrategy`에서 요청보다 응답이 적어도 처리를 종료하도록 만든다면, 경우에 따라서는 다운스트림에서 발생한 예외를 잡아 그저 무시하는 게 더 좋을 수도 있다. 그렇지 않을 땐 에러가 발생하면 하위 플로우에서 "보상 메시지<sup>compensation message</sup>"같은 걸 반환하는 것을 고려해봐야 한다.
 
-하위 플로우 중 비동기<sup>async</sup> 플로우가 있다면 전부 `errorChannel` 헤더를 설정해야 `MessagePublishingErrorHandler`가 적절한 에러 메시지를 전송할 수 있다. 그렇지 않으면 공통 에러 핸들링 로직을 통해 글로벌 `errorChannel`로 에러를 전송한다. 비동기 에러 처리에 대한 자세한 내용은 [에러 핸들링](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/error-handling.html#error-handling)을 참고해라.
+하위 플로우 중 비동기<sup>async</sup> 플로우가 있다면 전부 `errorChannel` 헤더를 설정해야 `MessagePublishingErrorHandler`가 적절한 에러 메시지를 전송할 수 있다. 그렇지 않으면 공통 에러 핸들링 로직을 통해 글로벌 `errorChannel`로 에러를 전송한다. 비동기 에러 처리에 대한 자세한 내용은 [에러 핸들링](../error-handling)을 참고해라.
 
 동기<sup>Synchronous</sup> 플로우는 `ExpressionEvaluatingRequestHandlerAdvice`를 사용해 예외를 무시하거나 보상 메시지를 반환할 수 있다. 하위 플로우 중 하나가 `ScatterGatherHandler`로 예외를 던지면 `ScatterGatherHandler`는 업스트림으로 예외를 다시 던진다. 그렇기 때문에 다른 하위 플로우에서 무언가를 처리했더라도 `ScatterGatherHandler`에선 그 응답을 무시하게 된다. 원하는 동작일 수도 있지만, 대부분의 경우 다른 플로우와 gatherer 동작에 영향을 주지 않도록 하위 플로우에서 발생한 에러를 적당히 처리해주는 것이 좋다.
 

@@ -662,7 +662,7 @@ public static void main(String[] args) throws InterruptedException {
 hello thread Thread-0
 ```
 
-리액터에서 코드 실행 모델과 실행 위치는 어떤 `Scheduler`를 사용했느냐에 따라 달라진다. [`Scheduler`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Scheduler.html)는 `ExecutorService`와 유사하게 스케줄링 담당하지만, 자체 추상화를 통해 시간을 좀 더 컨트롤할 수 있고, 더 다양하게 구현할 수 있다 (테스트를 위한 가상 시간, trampolining, 또는 즉각적인 스케줄링 등).
+리액터에서 코드 실행 모델과 실행 위치는 어떤 `Scheduler`를 사용했느냐에 따라 달라진다. [`Scheduler`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Scheduler.html)는 `ExecutorService`와 유사하게 스케줄링을 담당하지만, 자체 추상화를 통해 시간을 좀 더 컨트롤할 수 있고, 더 다양하게 구현할 수 있다 (테스트를 위한 가상 시간, trampolining, 또는 즉각적인 스케줄링 등).
 
 아래와 같은 [`Schedulers`](https://projectreactor.io/docs/core/release/api/reactor/core/scheduler/Schedulers.html) 클래스의 스태틱 메소드로 실행 컨텍스트에 접근할 수 있다:
 

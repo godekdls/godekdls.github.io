@@ -21,7 +21,7 @@ subparentUrl: /Spring%20Cloud%20Data%20Flow/feature-guides.stream/
 
 이 섹션에선 스트림 데이터 파이프라인을 구성하도록 배포한 애플리케이션들을 모니터링하는 방법을 설명한다. 각 플랫폼마다 설정은 다르지만, 전반적인 아키텍처는 모든 플랫폼에서 동일하다.
 
-Data Flow 메트릭 아키텍처는 [Micrometer](https://micrometer.io/) 라이브러리를 중심으로 설계되어, 가장 많이 사용하는 모니터링 시스템들의 전용 instrumentation 클라이언트를 위한 간단한 파사드를 제공한다. 지원하는 모니터링 시스템 목록은 [Micrometer 문서](https://micrometer.io/docs)를 참고해라. Micrometer는 스프링 부트에서 제공하는 애플리케이션 메트릭을 전달할 수 있는 동력이다. Spring Integration은 스트림 모니터링에 꼭 필요한 메세지 비율과 에러에 관한 메트릭을 노출할 수 있는 [별도 마이크로미터 통합](https://docs.spring.io/spring-integration/docs/current/reference/html/system-management.html#micrometer-integration)을 제공한다.
+Data Flow 메트릭 아키텍처는 [Micrometer](https://micrometer.io/) 라이브러리를 중심으로 설계되어, 가장 많이 사용하는 모니터링 시스템들의 전용 instrumentation 클라이언트를 위한 간단한 파사드를 제공한다. 지원하는 모니터링 시스템 목록은 [Micrometer 문서](https://micrometer.io/docs)를 참고해라. Micrometer는 스프링 부트에서 제공하는 애플리케이션 메트릭을 전달할 수 있는 동력이다. Spring Integration은 스트림 모니터링에 꼭 필요한 메세지 비율과 에러에 관한 메트릭을 노출할 수 있는 [별도 마이크로미터 통합](../../Spring%20Integration/system-management/#1313-micrometer-integration)을 제공한다.
 
 모든 Spring Cloud [Stream App Starters](https://docs.spring.io/spring-cloud-dataflow/docs/current/reference/htmlsingle/#applications)와 [Stream Applications](https://github.com/spring-cloud/stream-applications)에는 가장 흔히 쓰는 세 가지 모니터링 시스템 [프로메테우스](https://prometheus.io/), [Wavefront](https://www.wavefront.com/), [InfluxDB](https://www.influxdata.com/)를 위한 설정이 미리 세팅돼있다. 배포한 애플리케이션들에서 사용하고 싶은 모니터링 시스템을 선언해주면 된다.
 
