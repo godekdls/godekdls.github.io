@@ -1,6 +1,6 @@
 ---
 title: Enabling Production-ready Features
-category: Spring Boot
+category: Spring Boot 2.X
 order: 42
 permalink: /Spring%20Boot/enabling-production-ready-features/
 description: 스프링 부트 프로젝트에서 액추에이터 기능을 활성화하는 방법
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#actuator.enabling
 parent: Spring Boot Actuator
 parentUrl: /Spring%20Boot/spring-boot-actuator/
+priority: 0.4
 ---
 
 ### 목차

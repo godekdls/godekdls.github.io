@@ -1,6 +1,6 @@
 ---
 title: SpringApplication
-category: Spring Boot
+category: Spring Boot 2.X
 order: 9
 permalink: /Spring%20Boot/spring-application/
 description: 스프링 부트 애플리케이션을 부트스트랩하기 위한 SpringApplication 클래스와 라이프 사이클, 이벤트 소개
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.spring-application
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

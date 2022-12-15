@@ -1,6 +1,6 @@
 ---
 title: Spring Boot Application
-category: Spring Boot
+category: Spring Boot 2.X
 order: 57
 permalink: /Spring%20Boot/howto.spring-boot-application/
 description: 스프링 부트 애플리케이션과 관련된 how to 가이드 (자동 설정 트러블 슈팅, ApplicationContext 커스텀하기)
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto.application
 parent: “How-to” Guides
 parentUrl: /Spring%20Boot/how-to-guides/
+priority: 0.4
 ---
 
 ### 목차

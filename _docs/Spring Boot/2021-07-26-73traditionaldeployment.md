@@ -1,6 +1,6 @@
 ---
 title: Traditional Deployment
-category: Spring Boot
+category: Spring Boot 2.X
 order: 73
 permalink: /Spring%20Boot/howto.traditional-deployment/
 description: 전통적인 war 패포와 관련된 how to 가이드 (war 파일 만들기, 스프링 애플리케이션을 부트로 마이그레이션하기 등)
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto.traditional-deployment
 parent: “How-to” Guides
 parentUrl: /Spring%20Boot/how-to-guides/
+priority: 0.4
 ---
 
 ### 목차

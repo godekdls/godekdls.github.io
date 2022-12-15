@@ -1,6 +1,6 @@
 ---
 title: HTTP Clients
-category: Spring Boot
+category: Spring Boot 2.X
 order: 62
 permalink: /Spring%20Boot/howto.http-clients/
 description: HTTP 클라이언트와 관련된 how to 가이드 (RestTemplate에 프록시 설정하기, TcpClient 커스텀하기 등)
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto.http-clients
 parent: “How-to” Guides
 parentUrl: /Spring%20Boot/how-to-guides/
+priority: 0.4
 ---
 
 ### 목차

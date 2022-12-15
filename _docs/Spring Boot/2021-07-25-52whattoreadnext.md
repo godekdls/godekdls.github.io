@@ -1,6 +1,6 @@
 ---
 title: What to Read Next
-category: Spring Boot
+category: Spring Boot 2.X
 order: 52
 permalink: /Spring%20Boot/actuator.what-to-read-next/
 description: 액추에이터를 학습한 후에 읽어볼 자료들
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#actuator.whats-next
 parent: Spring Boot Actuator
 parentUrl: /Spring%20Boot/spring-boot-actuator/
+priority: 0.4
 ---
 
 ---

@@ -1,6 +1,6 @@
 ---
 title: Getting Help
-category: Spring Boot
+category: Spring Boot 2.X
 order: 3
 permalink: /Spring%20Boot/getting-help/
 description: 스프링 부트 문제 해결 가이드
@@ -9,6 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#getting-help
+priority: 0.4
 ---
 
 ---

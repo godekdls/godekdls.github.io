@@ -1,6 +1,6 @@
 ---
 title: Hot Swapping
-category: Spring Boot
+category: Spring Boot 2.X
 order: 70
 permalink: /Spring%20Boot/howto.hot-swapping/
 description: hot swapping과 관련된 how to 가이드
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto.hotswapping
 parent: “How-to” Guides
 parentUrl: /Spring%20Boot/how-to-guides/
+priority: 0.4
 ---
 
 ### 목차

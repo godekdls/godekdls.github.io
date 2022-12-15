@@ -1,6 +1,6 @@
 ---
 title: Spring Integration
-category: Spring Boot
+category: Spring Boot 2.X
 order: 31
 permalink: /Spring%20Boot/spring-integration/
 description: 스프링 부트로 Spring Integration 자동 설정하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.spring-integration
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

@@ -1,6 +1,6 @@
 ---
 title: Working with SQL Databases
-category: Spring Boot
+category: Spring Boot 2.X
 order: 19
 permalink: /Spring%20Boot/working-with-sql-databases/
 description: 스프링 부트로 JPA, JDBC, JOOQ, R2DBC를 활용해 데이터소스, 커넥션 팩토리, 템플릿, 레포지토리 자동 설정하기
@@ -11,7 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.sql
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
-priority: 0.6
+priority: 0.5
 ---
 <script>defaultLanguages = ['properties']</script>
 

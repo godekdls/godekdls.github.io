@@ -1,6 +1,6 @@
 ---
 title: Creating Your Own Auto-configuration
-category: Spring Boot
+category: Spring Boot 2.X
 order: 37
 permalink: /Spring%20Boot/creating-your-own-auto-configuration/
 description: 직접 스프링 부트 자동 설정 개발하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.developing-auto-configuration
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 
 ### 목차

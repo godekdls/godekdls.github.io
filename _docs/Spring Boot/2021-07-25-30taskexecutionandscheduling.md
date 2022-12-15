@@ -1,6 +1,6 @@
 ---
 title: Task Execution and Scheduling
-category: Spring Boot
+category: Spring Boot 2.X
 order: 30
 permalink: /Spring%20Boot/task-execution-and-scheduling/
 description: 스프링 부트에서 비동기 태스크 실행하고 스케줄링하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.task-execution-and-scheduling
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

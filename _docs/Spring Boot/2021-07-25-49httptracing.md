@@ -1,6 +1,6 @@
 ---
 title: HTTP Tracing
-category: Spring Boot
+category: Spring Boot 2.X
 order: 49
 permalink: /Spring%20Boot/http-tracing/
 description: 액추에이터로 HTTP tracing 정보 추적하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#actuator.tracing
 parent: Spring Boot Actuator
 parentUrl: /Spring%20Boot/spring-boot-actuator/
+priority: 0.4
 ---
 
 ### 목차

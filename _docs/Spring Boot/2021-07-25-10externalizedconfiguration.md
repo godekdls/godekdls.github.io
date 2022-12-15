@@ -1,6 +1,6 @@
 ---
 title: Externalized Configuration
-category: Spring Boot
+category: Spring Boot 2.X
 order: 10
 permalink: /Spring%20Boot/externalized-configuration/
 description: properties/yaml 파일, 환경 변수, 커맨드라인 인자 등으로 스프링 부트 설정을 관리하고 바인딩하는 방법
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.external-config
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

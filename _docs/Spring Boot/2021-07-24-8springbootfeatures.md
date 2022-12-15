@@ -1,6 +1,6 @@
 ---
 title: Spring Boot Features
-category: Spring Boot
+category: Spring Boot 2.X
 order: 8
 permalink: /Spring%20Boot/spring-boot-features/
 description: 스프링 부트의 주요 기능들
@@ -9,7 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features
-priority: 0.2
+priority: 0.1
 parent: Spring Boot Features
 isParent: true
 parentUrl: /Spring%20Boot/spring-boot-features/

@@ -1,6 +1,6 @@
 ---
 title: Batch Applications
-category: Spring Boot
+category: Spring Boot 2.X
 order: 67
 permalink: /Spring%20Boot/howto.batch-applications/
 description: 스프링 배치와 관련된 how to 가이드 (데이터소스 지정하기, 실행할 job 이름/파라미터 설정하기 등)
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto.batch
 parent: “How-to” Guides
 parentUrl: /Spring%20Boot/how-to-guides/
+priority: 0.4
 ---
 
 ### 목차

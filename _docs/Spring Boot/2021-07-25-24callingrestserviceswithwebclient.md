@@ -1,6 +1,6 @@
 ---
 title: Calling REST Services with WebClient
-category: Spring Boot
+category: Spring Boot 2.X
 order: 24
 permalink: /Spring%20Boot/calling-rest-services-with-webclient/
 description: 스프링 부트로 WebClient 자동 설정하고 커스텀하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.webclient
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 
 ### 목차

@@ -1,6 +1,6 @@
 ---
 title: What to Read Next
-category: Spring Boot
+category: Spring Boot 2.X
 order: 40
 permalink: /Spring%20Boot/what-to-read-next/
 description: 스프링 부트를 학습한 후에 읽어볼 자료들
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.whats-next
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 
 ---

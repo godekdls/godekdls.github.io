@@ -1,6 +1,6 @@
 ---
 title: Working with NoSQL Technologies
-category: Spring Boot
+category: Spring Boot 2.X
 order: 20
 permalink: /Spring%20Boot/working-with-nosql-technologies/
 description: 스프링 부트로 Redis, MongoDB, Elasticsearch, Cassandra, influxDB 등의 NOSQL 데이터베이스 접근하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.nosql
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

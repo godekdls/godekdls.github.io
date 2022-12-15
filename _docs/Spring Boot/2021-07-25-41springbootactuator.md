@@ -1,7 +1,7 @@
 ---
 title: Spring Boot Actuator, Production-ready Features
 navTitle: Spring Boot Actuator
-category: Spring Boot
+category: Spring Boot 2.X
 order: 41
 permalink: /Spring%20Boot/spring-boot-actuator/
 description: 스프링 부트 액추에이터 소개
@@ -14,6 +14,7 @@ priority: 0.2
 parent: Spring Boot Actuator
 isParent: true
 parentUrl: /Spring%20Boot/spring-boot-actuator/
+priority: 0.4
 ---
 
 ---

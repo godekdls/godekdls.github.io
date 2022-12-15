@@ -1,6 +1,6 @@
 ---
 title: Process Monitoring
-category: Spring Boot
+category: Spring Boot 2.X
 order: 50
 permalink: /Spring%20Boot/process-monitoring/
 description: 스프링 부트 애플리케이션 프로세스 모니터링하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#actuator.process-monitoring
 parent: Spring Boot Actuator
 parentUrl: /Spring%20Boot/spring-boot-actuator/
+priority: 0.4
 ---
 
 ### 목차

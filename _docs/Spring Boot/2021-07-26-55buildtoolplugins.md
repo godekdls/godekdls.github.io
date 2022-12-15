@@ -1,6 +1,6 @@
 ---
 title: Build Tool Plugins
-category: Spring Boot
+category: Spring Boot 2.X
 order: 55
 permalink: /Spring%20Boot/build-tool-plugins/
 description: 스프링 부트 메이븐/그래들 플러그인을 통해 executable jar 생성하기
@@ -9,6 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#build-tool-plugins
+priority: 0.4
 ---
 
 ### 목차

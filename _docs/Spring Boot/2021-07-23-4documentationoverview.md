@@ -1,6 +1,6 @@
 ---
 title: Documentation Overview
-category: Spring Boot
+category: Spring Boot 2.X
 order: 4
 permalink: /Spring%20Boot/documentation-overview/
 description: 스프링 부트 레퍼런스 문서의 개요와 길라잡이
@@ -9,6 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#documentation
+priority: 0.4
 ---
 
 ### 목차

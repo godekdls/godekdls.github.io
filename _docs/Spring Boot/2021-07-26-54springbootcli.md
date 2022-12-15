@@ -1,6 +1,6 @@
 ---
 title: Spring Boot CLI
-category: Spring Boot
+category: Spring Boot 2.X
 order: 54
 permalink: /Spring%20Boot/spring-boot-cli/
 description: 스프링 부트 CLI로 애플리케이션 개발하기
@@ -9,6 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#cli
+priority: 0.4
 ---
 
 ### 목차

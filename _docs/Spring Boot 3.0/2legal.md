@@ -1,15 +1,14 @@
 ---
 title: Legal
-category: Spring Boot 2.X
+category: Spring Boot 3.0
 order: 2
-permalink: /Spring%20Boot/legal/
+permalink: /Spring%20Boot/3.x/legal/
 description: 스프링 부트 문서 저작권 소개
-image: ./../../images/springboot/logo.png
+image: ./../../../images/springboot/logo.png
 lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
-originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#legal
-priority: 0.4
+originalRefLink: https://docs.spring.io/spring-boot/docs/3.0.0/reference/htmlsingle/#legal
 ---
 
 ---

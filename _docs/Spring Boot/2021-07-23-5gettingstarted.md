@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-category: Spring Boot
+category: Spring Boot 2.X
 order: 5
 permalink: /Spring%20Boot/getting-started/
 description: 스프링 부트 소개, 설치 방법, 어플리케이션을 개발하고 실행해보기
@@ -9,7 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#getting-started
-priority: 0.7
+priority: 0.6
 ---
 
 ### 목차

@@ -1,6 +1,6 @@
 ---
 title: Distributed Transactions with JTA
-category: Spring Boot
+category: Spring Boot 2.X
 order: 27
 permalink: /Spring%20Boot/distributed-transactions-with-jta/
 description: 스프링 부트에서 분산 트랜잭션 사용하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.jta
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 
 ### 목차

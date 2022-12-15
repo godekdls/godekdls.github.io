@@ -1,6 +1,6 @@
 ---
 title: Container Images
-category: Spring Boot
+category: Spring Boot 2.X
 order: 39
 permalink: /Spring%20Boot/container-images/
 description: 스프링 부트 애플리케이션을 실행하기 위한 도커 이미지를 만들고 레이어 최적화 달성하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.container-images
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 
 ### 목차

@@ -1,6 +1,6 @@
 ---
 title: Internationalization
-category: Spring Boot
+category: Spring Boot 2.X
 order: 13
 permalink: /Spring%20Boot/internationalization/
 description: 리소스 번들을 사용해서 스프링 부트 메세지 현지화하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.internationalization
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

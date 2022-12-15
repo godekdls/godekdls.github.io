@@ -1,6 +1,6 @@
 ---
 title: Deploying Spring Boot Applications
-category: Spring Boot
+category: Spring Boot 2.X
 order: 53
 permalink: /Spring%20Boot/deploying-spring-boot-applications/
 description: 스프링 부트 애플리케이션을 쿠버네티스 등의 클라우드 환경에 배포하는 방법과 linux 서비스로 실행하는 방법
@@ -9,6 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#deployment
+priority: 0.4
 ---
 
 ### 목차

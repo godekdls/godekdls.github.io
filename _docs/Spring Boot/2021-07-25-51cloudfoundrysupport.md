@@ -1,6 +1,6 @@
 ---
 title: Cloud Foundry Support
-category: Spring Boot
+category: Spring Boot 2.X
 order: 51
 permalink: /Spring%20Boot/cloud-foundry-support/
 description: 클라우드 파운드리에서 지원하는 액추에이터 엔드포인트 소개
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#actuator.cloud-foundry
 parent: Spring Boot Actuator
 parentUrl: /Spring%20Boot/spring-boot-actuator/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

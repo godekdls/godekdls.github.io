@@ -1,6 +1,6 @@
 ---
 title: Graceful shutdown
-category: Spring Boot
+category: Spring Boot 2.X
 order: 16
 permalink: /Spring%20Boot/graceful-shutdown/
 description: 스프링 부트 애플리케이션 서버에 graceful shutdown 적용하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.graceful-shutdown
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

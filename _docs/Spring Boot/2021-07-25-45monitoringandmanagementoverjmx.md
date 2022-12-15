@@ -1,6 +1,6 @@
 ---
 title: Monitoring and Management over JMX
-category: Spring Boot
+category: Spring Boot 2.X
 order: 45
 permalink: /Spring%20Boot/actuator.monitoring-and-management-over-jmx/
 description: 액추에이터 엔드포인트를 JMX로 노출하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#actuator.jmx
 parent: Spring Boot Actuator
 parentUrl: /Spring%20Boot/spring-boot-actuator/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

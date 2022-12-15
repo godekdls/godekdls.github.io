@@ -1,6 +1,6 @@
 ---
 title: Web Services
-category: Spring Boot
+category: Spring Boot 2.X
 order: 36
 permalink: /Spring%20Boot/web-services/
 description: 스프링 부트로 웹 서비스 자동 설정하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.webservices
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

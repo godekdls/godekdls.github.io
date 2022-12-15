@@ -1,6 +1,6 @@
 ---
 title: “How-to” Guides
-category: Spring Boot
+category: Spring Boot 2.X
 order: 56
 permalink: /Spring%20Boot/how-to-guides/
 description: 스프링 부트 how to 가이드
@@ -9,7 +9,7 @@ lastmod: 2021-07-26T18:30:00+09:00
 comments: true
 originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto
-priority: 0.2
+priority: 0.1
 parent: “How-to” Guides
 isParent: true
 parentUrl: /Spring%20Boot/how-to-guides/

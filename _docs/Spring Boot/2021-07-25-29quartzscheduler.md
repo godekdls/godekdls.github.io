@@ -1,6 +1,6 @@
 ---
 title: Quartz Scheduler
-category: Spring Boot
+category: Spring Boot 2.X
 order: 29
 permalink: /Spring%20Boot/quartz-scheduler/
 description: 스프링 부트에서 Quartz 스케줄러 사용하기
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.quartz
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

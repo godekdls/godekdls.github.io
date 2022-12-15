@@ -1,6 +1,6 @@
 ---
 title: Developing Web Applications
-category: Spring Boot
+category: Spring Boot 2.X
 order: 15
 permalink: /Spring%20Boot/developing-web-applications/
 description: 스프링 부트로 웹 애플리케이션 개발하기. MVC/웹플럭스 자동 설정, 메세지 컨버터, 스태틱 리소스 서빙, 에러 처리, 템플릿 엔진, 임베디드 컨테이너 등을 설명합니다.
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#features.developing-web-applications
 parent: Spring Boot Features
 parentUrl: /Spring%20Boot/spring-boot-features/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

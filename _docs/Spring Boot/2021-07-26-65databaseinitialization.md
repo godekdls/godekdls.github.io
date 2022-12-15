@@ -1,6 +1,6 @@
 ---
 title: Database Initialization
-category: Spring Boot
+category: Spring Boot 2.X
 order: 65
 permalink: /Spring%20Boot/howto.data-initialization/
 description: 데이터베이스 초기화와 관련된 how to 가이드 (스크립트나 설정으로 스키마, 데이터 초기화하기 등)
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto.data-initialization
 parent: “How-to” Guides
 parentUrl: /Spring%20Boot/how-to-guides/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 

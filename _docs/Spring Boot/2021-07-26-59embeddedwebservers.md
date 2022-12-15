@@ -1,6 +1,6 @@
 ---
 title: Embedded Web Servers
-category: Spring Boot
+category: Spring Boot 2.X
 order: 59
 permalink: /Spring%20Boot/howto.embedded-web-servers/
 description: 임베디드 서버와 관련된 how to 가이드 (웹 서버 변경하기, 포트 변경하기, 프록시 헤더 설정하기, 필터 등록하기 등)
@@ -11,6 +11,7 @@ originalRefName: 스프링 부트
 originalRefLink: https://docs.spring.io/spring-boot/docs/2.5.2/reference/htmlsingle/#howto.webserver
 parent: “How-to” Guides
 parentUrl: /Spring%20Boot/how-to-guides/
+priority: 0.4
 ---
 <script>defaultLanguages = ['properties']</script>
 
