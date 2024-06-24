@@ -3,7 +3,7 @@ title: Consumer Configuration
 category: Apache Kafka
 order: 7
 permalink: /Apache%20Kafka/consumer-configuration/
-description: 아파치 카프카 공식 문서에 있는 컨슈머 레벨 설정을 한글로 번역한 문서입니다.
+description: 아파치 카프카 공식 문서에 있는 컨슈머 레벨 설정을 한국어로 번역한 문서입니다.
 image: ./../../images/kafka/logo.png
 lastmod: 2021-02-14T22:25:00+09:00
 comments: true

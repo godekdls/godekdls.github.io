@@ -3,7 +3,7 @@ title: DAO Support
 category: Spring Data Access
 order: 3
 permalink: /Spring%20Data%20Access/daosupport/
-description: 스프링 프레임워크 DAO의 예외 계층 구조와, 어노테이션으로 레포지토리를 설정하는 방법을 소개합니다. 스프링 DAO 공식 레퍼런스를 한글로 번역한 문서입니다.
+description: 스프링 프레임워크 DAO의 예외 계층 구조와, 어노테이션으로 레포지토리를 설정하는 방법을 소개합니다. 스프링 DAO 공식 레퍼런스를 한국어로 번역한 문서입니다.
 image: ./../../images/springdataaccess/DataAccessException.png
 lastmod: 2021-01-10T23:00:00+09:00
 comments: true

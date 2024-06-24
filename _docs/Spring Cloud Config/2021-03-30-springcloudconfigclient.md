@@ -3,7 +3,7 @@ title: Spring Cloud Config Client
 category: Spring Cloud Config
 order: 8
 permalink: /Spring%20Cloud%20Config/spring-cloud-config-client/
-description: 스프링 클라우드 컨피그 클라이언트를 한글로 번역한 문서입니다. 컨피그 클라이언트 설정 방법, Config first/Discovery first 부트스트랩 등을 설명합니다.
+description: 스프링 클라우드 컨피그 클라이언트를 한국어로 번역한 문서입니다. 컨피그 클라이언트 설정 방법, Config first/Discovery first 부트스트랩 등을 설명합니다.
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-03-31T22:00:00+09:00
 comments: true

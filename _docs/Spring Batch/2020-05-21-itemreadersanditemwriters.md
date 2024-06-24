@@ -3,7 +3,7 @@ title: ItemReaders and ItemWriters
 category: Spring Batch
 order: 7
 permalink: /Spring%20Batch/itemreadersanditemwriters/
-description: 스프링 배치 ItemReader, ItemWriter 한글 번역
+description: 스프링 배치 ItemReader, ItemWriter 한국어 번역
 image: ./../../images/springbatch/errorOnWrite.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true

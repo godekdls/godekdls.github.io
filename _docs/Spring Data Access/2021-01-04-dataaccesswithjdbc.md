@@ -3,7 +3,7 @@ title: Data Access with JDBC
 category: Spring Data Access
 order: 4
 permalink: /Spring%20Data%20Access/dataaccesswithjdbc/
-description: 스프링 프레임워크 JDBC 레퍼런스를 한글로 번역한 문서입니다. 스프링 프레임워크 JDBC 패키지 구조를 간단하게 정리하고, JdbcTemplate, NamedParameterJdbcTemplate, SimpleJdbc, StoredProcedure 등의 사용법을 다룹니다.
+description: 스프링 프레임워크 JDBC 레퍼런스를 한국어로 번역한 문서입니다. 스프링 프레임워크 JDBC 패키지 구조를 간단하게 정리하고, JdbcTemplate, NamedParameterJdbcTemplate, SimpleJdbc, StoredProcedure 등의 사용법을 다룹니다.
 image: ./../../images/spring/logo.png
 lastmod: 2021-01-10T23:00:00+09:00
 comments: true

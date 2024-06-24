@@ -3,7 +3,7 @@ title: Kotlin support
 category: Reactor Core
 order: 6
 permalink: /Reactor%20Core/kotlinsupport/
-description: 리액터 코틀린 지원 한글 번역
+description: 리액터 코틀린 지원 한국어 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-18T10:51:00+09:00
 comments: true

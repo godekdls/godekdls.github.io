@@ -3,7 +3,7 @@ title: Spring Security Crypto Module
 category: Spring Security
 order: 21
 permalink: /Spring%20Security/springsecuritycryptomodule/
-description: 스프링 시큐리티 암호화(Crypto) 모듈을 소개합니다. 공식 문서에 있는 "Spring Security Crypto Module" 챕터를 한글로 번역한 문서입니다.
+description: 스프링 시큐리티 암호화(Crypto) 모듈을 소개합니다. 공식 문서에 있는 "Spring Security Crypto Module" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

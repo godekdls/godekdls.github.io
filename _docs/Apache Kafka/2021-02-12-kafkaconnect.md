@@ -3,7 +3,7 @@ title: Kafka Connect
 category: Apache Kafka
 order: 16
 permalink: /Apache%20Kafka/kafka-connect/
-description: 카프카 커넥트 프레임워크 한글 번역. 워커, 싱크/소스 커넥터, 싱크/소스 태스크에 대한 개념을 소개하고 커넥트를 개발하는 방법을 안내합니다.
+description: 카프카 커넥트 프레임워크 한국어 번역. 워커, 싱크/소스 커넥터, 싱크/소스 태스크에 대한 개념을 소개하고 커넥트를 개발하는 방법을 안내합니다.
 image: ./../../images/kafka/logo.png
 lastmod: 2021-02-14T22:25:00+09:00
 comments: true

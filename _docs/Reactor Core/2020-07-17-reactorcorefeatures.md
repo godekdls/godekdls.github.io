@@ -3,7 +3,7 @@ title: Reactor Core Features
 category: Reactor Core
 order: 5
 permalink: /Reactor%20Core/reactorcorefeatures/
-description: 리액터 코어 기능 한글 번역
+description: 리액터 코어 기능 한국어 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-17T23:49:00+09:00
 priority: 0.8

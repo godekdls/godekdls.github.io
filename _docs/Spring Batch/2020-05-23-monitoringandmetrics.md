@@ -3,7 +3,7 @@ title: Monitoring and metrics
 category: Spring Batch
 order: 15
 permalink: /Spring%20Batch/monitoringandmetrics/
-description: 스프링배치 모니터링, 메트릭 수집 한글 번역
+description: 스프링배치 모니터링, 메트릭 수집 한국어 번역
 image: ./../../images/springbatch/batch-stereotypes.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true

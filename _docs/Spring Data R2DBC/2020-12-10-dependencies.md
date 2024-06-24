@@ -3,7 +3,7 @@ title: Dependencies
 category: Spring Data R2DBC
 order: 11
 permalink: /Spring%20Data%20R2DBC/dependencies/
-description: 스프링 데이터 R2DBC 의존성 버전 관리하기 한글 번역
+description: 스프링 데이터 R2DBC 의존성 버전 관리하기 한국어 번역
 image: ./../../images/spring/logo.png
 lastmod: 2020-12-19T23:00:00+09:00
 comments: true

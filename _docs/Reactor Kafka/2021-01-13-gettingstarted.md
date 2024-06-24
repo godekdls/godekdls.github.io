@@ -3,7 +3,7 @@ title: Getting Started
 category: Reactor Kafka
 order: 4
 permalink: /Reactor%20Kafka/gettingstarted/
-description: 리액터 카프카 샘플 맛보기 한글 번역
+description: 리액터 카프카 샘플 맛보기 한국어 번역
 image: ./../../images/reactor/logo.png
 lastmod: 2021-01-11T15:00:00+09:00
 comments: true

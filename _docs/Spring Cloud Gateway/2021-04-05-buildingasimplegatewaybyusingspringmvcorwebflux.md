@@ -3,7 +3,7 @@ title: Building a Simple Gateway by Using Spring MVC or Webflux
 category: Spring Cloud Gateway
 order: 19
 permalink: /Spring%20Cloud%20Gateway/building-a-simple-gateway-by-using-spring-mvc-or-webflux/
-description: 스프링 MVC와 Webflux를 사용해 간단한 게이트웨이 어플리케이션을 만드는 방법 한글 번역
+description: 스프링 MVC와 Webflux를 사용해 간단한 게이트웨이 어플리케이션을 만드는 방법 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

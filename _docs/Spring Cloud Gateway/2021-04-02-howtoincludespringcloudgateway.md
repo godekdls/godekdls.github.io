@@ -3,7 +3,7 @@ title: How to Include Spring Cloud Gateway
 category: Spring Cloud Gateway
 order: 2
 permalink: /Spring%20Cloud%20Gateway/how-to-include-spring-cloud-gateway/
-description: 프로젝트에 스프링 클라우드 게이트웨이를 추가하는 방법 한글 번역
+description: 프로젝트에 스프링 클라우드 게이트웨이를 추가하는 방법 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

@@ -3,7 +3,7 @@ title: Route Predicate Factories
 category: Spring Cloud Gateway
 order: 6
 permalink: /Spring%20Cloud%20Gateway/route-predicate-factories/
-description: 스프링 클라우드 게이트웨이가 제공하는 여러 가지 route predicate 팩토리 소개 한글 번역
+description: 스프링 클라우드 게이트웨이가 제공하는 여러 가지 route predicate 팩토리 소개 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

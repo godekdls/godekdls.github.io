@@ -3,7 +3,7 @@ title: R2DBC Repositories
 category: Spring Data R2DBC
 order: 15
 permalink: /Spring%20Data%20R2DBC/r2dbcrepositories/
-description: 스프링 데이터 R2DBC 레포지토리 공식 레퍼런스를 한글로 번역한 문서입니다.
+description: 스프링 데이터 R2DBC 레포지토리 공식 레퍼런스를 한국어로 번역한 문서입니다.
 image: ./../../images/spring/logo.png
 lastmod: 2020-12-19T23:00:00+09:00
 comments: true

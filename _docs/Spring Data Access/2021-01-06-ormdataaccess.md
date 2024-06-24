@@ -3,7 +3,7 @@ title: Object Relational Mapping (ORM) Data Access
 category: Spring Data Access
 order: 7
 permalink: /Spring%20Data%20Access/ormdataaccess/
-description: 스프링 프레임워크 ORM 레퍼런스를 한글로 번역한 문서입니다. ORM 기술로 데이터에 접근하고 스프링의 트랜잭션을 적용하는 방법을 설명합니다. 하위 섹션에서 하이버네이트, JPA와 관련한 설정을 다룹니다.
+description: 스프링 프레임워크 ORM 레퍼런스를 한국어로 번역한 문서입니다. ORM 기술로 데이터에 접근하고 스프링의 트랜잭션을 적용하는 방법을 설명합니다. 하위 섹션에서 하이버네이트, JPA와 관련한 설정을 다룹니다.
 image: ./../../images/spring/logo.png
 lastmod: 2021-01-10T23:00:00+09:00
 comments: true

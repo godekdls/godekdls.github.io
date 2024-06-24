@@ -3,7 +3,7 @@ title: Introduction to Reactive Programming
 category: Reactor Core
 order: 4
 permalink: /Reactor%20Core/introductiontoreactiveprogramming/
-description: 리액터 리액티브 프로그래밍 소개 한글 번역
+description: 리액터 리액티브 프로그래밍 소개 한국어 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-15T00:00:00+09:00
 comments: true

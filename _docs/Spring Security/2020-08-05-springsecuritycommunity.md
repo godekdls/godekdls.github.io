@@ -3,7 +3,7 @@ title: Spring Security Community
 category: Spring Security
 order: 3
 permalink: /Spring%20Security/springsecuritycommunity/
-description: 공식 문서에 있는 "스프링 시큐리티 커뮤니티 활용법" 챕터를 한글로 번역한 문서입니다.
+description: 공식 문서에 있는 "스프링 시큐리티 커뮤니티 활용법" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/spring-security.png
 lastmod: 2020-09-20T23:18:12+09:00
 comments: true

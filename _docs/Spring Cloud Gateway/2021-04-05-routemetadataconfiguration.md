@@ -3,7 +3,7 @@ title: Route Metadata Configuration
 category: Spring Cloud Gateway
 order: 12
 permalink: /Spring%20Cloud%20Gateway/route-metadata-configuration/
-description: 게이트웨이 route에 메타데이터를 설정하고 exchange로 조회하는 방법 한글 번역
+description: 게이트웨이 route에 메타데이터를 설정하고 exchange로 조회하는 방법 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

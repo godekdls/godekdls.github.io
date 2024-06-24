@@ -3,7 +3,7 @@ title: Reactive Libraries
 category: Spring Web on Reactive Stack
 order: 8
 permalink: /Reactive%20Spring/reactivelibraries/
-description: 스프링5 웹 리액티브 라이브러리 한글 번역
+description: 스프링5 웹 리액티브 라이브러리 한국어 번역
 image: ./../../images/reactivespring/spring-mvc-and-webflux-venn.png
 lastmod: 2020-07-12T16:00:00+09:00
 comments: true

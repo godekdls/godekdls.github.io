@@ -3,7 +3,7 @@ title: Http timeouts configuration
 category: Spring Cloud Gateway
 order: 13
 permalink: /Spring%20Cloud%20Gateway/http-timeouts-configuration/
-description: route에 Http 타임아웃을 설정하는 방법, 디스커버리 서비스 레지스트리에 등록된 서비스를 기반으로 route를 만들고 predicate와 필터를 설정하는 방법 한글 번역
+description: route에 Http 타임아웃을 설정하는 방법, 디스커버리 서비스 레지스트리에 등록된 서비스를 기반으로 route를 만들고 predicate와 필터를 설정하는 방법 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

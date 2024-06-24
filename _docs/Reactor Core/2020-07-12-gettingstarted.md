@@ -3,7 +3,7 @@ title: Getting Started
 category: Reactor Core
 order: 3
 permalink: /Reactor%20Core/gettingstarted/
-description: 리액터 시작하기 한글 번역
+description: 리액터 시작하기 한국어 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-12T21:00:00+09:00
 comments: true

@@ -3,7 +3,7 @@ title: Spring Batch Introduction
 category: Spring Batch
 order: 2
 permalink: /Spring%20Batch/introduction/
-description: 스프링 배치 소개 한글 번역
+description: 스프링 배치 소개 한국어 번역
 image: ./../../images/springbatch/spring-batch-layers.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true

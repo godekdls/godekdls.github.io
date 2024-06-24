@@ -3,7 +3,7 @@ title: Configuration
 category: Spring REST Docs
 order: 6
 permalink: /Spring%20REST%20Docs/configuration/
-description: 스프링 REST Docs 설정하기 한글 번역
+description: 스프링 REST Docs 설정하기 한국어 번역
 image: ./../../images/springrestdocs/logo.png
 lastmod: 2020-12-19T00:00:00+09:00
 comments: true

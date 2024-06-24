@@ -3,7 +3,7 @@ title: CircuitBreaker
 category: Resilience4j
 order: 6
 permalink: /Resilience4j/circuitbreaker/
-description: 서킷 브레이커 기본 소개를 한글로 번역한 문서입니다. 서킷 브레이커 동작 원리와 카운트/시간 기반 슬라이딩 윈도우, 실패 비율 임계치 등의 설정값을 소개합니다.
+description: 서킷 브레이커 기본 소개를 한국어로 번역한 문서입니다. 서킷 브레이커 동작 원리와 카운트/시간 기반 슬라이딩 윈도우, 실패 비율 임계치 등의 설정값을 소개합니다.
 image: ./../../images/resilience4j/39cdd54-state_machine.jpeg
 lastmod: 2021-05-16T17:00:00+09:00
 comments: true

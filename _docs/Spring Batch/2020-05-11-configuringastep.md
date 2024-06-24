@@ -3,7 +3,7 @@ title: Configuring a Step
 category: Spring Batch
 order: 6
 permalink: /Spring%20Batch/configuringastep/
-description: 스프링 배치 step 설정하기 한글 번역
+description: 스프링 배치 step 설정하기 한국어 번역
 image: ./../../images/springbatch/step.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true

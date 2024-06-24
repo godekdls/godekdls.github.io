@@ -3,7 +3,7 @@ title: Actuator API
 category: Spring Cloud Gateway
 order: 16
 permalink: /Spring%20Cloud%20Gateway/actuator-api/
-description: 액추에이터를 이용한 엔드포인트 사용 방법 한글 번역
+description: 액추에이터를 이용한 엔드포인트 사용 방법 한국어 번역
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2021-04-06T22:00:00+09:00
 comments: true

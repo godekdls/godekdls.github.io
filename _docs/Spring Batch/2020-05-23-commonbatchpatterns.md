@@ -3,7 +3,7 @@ title: Common Batch Patterns
 category: Spring Batch
 order: 12
 permalink: /Spring%20Batch/commonbatchpatterns/
-description: 스프링 배치 자주 사용하는 패턴 한글 번역
+description: 스프링 배치 자주 사용하는 패턴 한국어 번역
 image: ./../../images/springbatch/drivingQueryJob.png
 lastmod: 2020-06-08T19:00:00+09:00
 comments: true

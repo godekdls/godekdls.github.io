@@ -3,7 +3,7 @@ title: Kafka Streams Configuration
 category: Apache Kafka
 order: 9
 permalink: /Apache%20Kafka/kafka-streams-configuration/
-description: 아파치 카프카 공식 문서에 있는 카프카 스트림즈 설정을 한글로 번역한 문서입니다.
+description: 아파치 카프카 공식 문서에 있는 카프카 스트림즈 설정을 한국어로 번역한 문서입니다.
 image: ./../../images/kafka/logo.png
 lastmod: 2021-01-11T15:00:00+09:00
 comments: true

@@ -3,7 +3,7 @@ title: Exposing Reactor metrics
 category: Reactor Core
 order: 9
 permalink: /Reactor%20Core/exposingreactormetrics/
-description: 리액터 메트릭 한글 번역
+description: 리액터 메트릭 한국어 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-19T16:40:00+09:00
 comments: true

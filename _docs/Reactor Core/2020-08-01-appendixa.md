@@ -3,7 +3,7 @@ title: Appendix A Which operator do I need
 category: Reactor Core
 order: 11
 permalink: /Reactor%20Core/appendixawhichoperatordoineed/
-description: 리액터의 연산자 선택 가이드를 한글로 번역했습니다.
+description: 리액터의 연산자 선택 가이드를 한국어로 번역했습니다.
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-03T21:29:00+09:00
 comments: true

@@ -3,7 +3,7 @@ title: Advanced Features and Concepts
 category: Reactor Core
 order: 10
 permalink: /Reactor%20Core/advancedfeaturesandconcepts/
-description: 리액터 고급 기능 한글 번역
+description: 리액터 고급 기능 한국어 번역
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-07-21T16:00:00+09:00
 comments: true

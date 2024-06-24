@@ -3,7 +3,7 @@ title: Authentication
 category: Spring Security
 order: 11
 permalink: /Spring%20Security/authentication/
-description: 서블릿 기반 어플리케이션에 적용할 수 있는 스프링 시큐리티 인증을 설명합니다. 공식 문서에 있는 "authentication" 챕터를 한글로 번역한 문서입니다.
+description: 서블릿 기반 어플리케이션에 적용할 수 있는 스프링 시큐리티 인증을 설명합니다. 공식 문서에 있는 "authentication" 챕터를 한국어로 번역한 문서입니다.
 image: ./../../images/springsecurity/securitycontextholder.png
 priority: 0.8
 lastmod: 2020-09-20T23:18:12+09:00

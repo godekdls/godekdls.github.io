@@ -3,7 +3,7 @@ title: Appendix C Reactor-Extra
 category: Reactor Core
 order: 13
 permalink: /Reactor%20Core/appendixcreactorextra/
-description: 리액터 유틸리티 모듈 가이드를 한글로 번역했습니다.
+description: 리액터 유틸리티 모듈 가이드를 한국어로 번역했습니다.
 image: ./../../images/reactorcore/gs-transform.png
 lastmod: 2020-08-04T19:07:00+09:00
 comments: true

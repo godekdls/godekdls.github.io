@@ -3,7 +3,7 @@ title: Debugging Reactor
 category: Reactor Core
 order: 8
 permalink: /Reactor%20Core/debuggingreactor/
-description: 리액터 디버깅 한글 번역
+description: 리액터 디버깅 한국어 번역
 image: ./../../images/reactorcore/flux.png
 lastmod: 2020-07-19T15:44:00+09:00
 comments: true

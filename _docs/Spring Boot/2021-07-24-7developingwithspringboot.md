@@ -3,7 +3,7 @@ title: Developing with Spring Boot
 category: Spring Boot
 order: 7
 permalink: /Spring%20Boot/developing-with-spring-boot/
-description: 스프링 부트 공식 문서 한글 번역. 빌드 시스템, 스타터, 기본 코드 구성, 자동 설정, 애플리케이션 실행 방법, devtools 소개
+description: 스프링 부트 공식 문서 한국어 번역. 빌드 시스템, 스타터, 기본 코드 구성, 자동 설정, 애플리케이션 실행 방법, devtools 소개
 image: ./../../images/springboot/logo.png
 lastmod: 2021-07-26T18:30:00+09:00
 comments: true
