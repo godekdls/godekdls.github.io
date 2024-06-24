@@ -95,7 +95,7 @@ val characters : Flux<SWCharacter> = client.select().from().fetch().all()
 
 코틀린 [코루틴](https://kotlinlang.org/docs/reference/coroutines-overview.html)은 논블로킹 코드를 명령적으로(imperatively) 작성할 수 있는 경량 스레드다. 언어 측면에서 보면 `suspend` 함수가 비동기 연산을 추상화해주고, 라이브러리 측면에선 [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines)가 [`async { }`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/async.html)같은 함수와, [`Flow`](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/index.html)같은 타입을 제공한다.
 
-스프링 데이터 모듈은 이 지원하는 코투린 범위는 다음과 같다:
+스프링 데이터 모듈은 이 지원하는 코틀린 범위는 다음과 같다:
 
 - 코틀린 익스텐션에서 리턴 타입에 [Deferred](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-deferred/index.html)와 [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/index.html) 지원
 
@@ -126,7 +126,7 @@ val characters : Flux<SWCharacter> = client.select().from().fetch().all()
 
 ### 17.5.2. How Reactive translates to Coroutines?
 
-반환 값에 사용하는 리액티브 타입은 다음과 같이 코투린 API로 바꿀 수 있다:
+반환 값에 사용하는 리액티브 타입은 다음과 같이 코틀린 API로 바꿀 수 있다:
 
 - `fun handler(): Mono<Void>`는 `suspend fun handler()`가 된다.
 - `fun handler(): Mono<T>`는 `Mono`가 빈 값이 될 수 있는지에 따라 (더 정적으로 타입을 정할 수 있다) `suspend fun handler(): T`  또는 `suspend fun handler(): T?`가 된다.
