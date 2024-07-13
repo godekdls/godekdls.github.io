@@ -1,3 +1,10 @@
+// 커스텀
+div.table-wrapper {
+    //// 가로 스크롤 ////
+	overflow-x: auto;
+	//// 가로 스크롤 ////
+}
+
 table {
 	width: 100%;
 	margin-bottom: 1.75em;

@@ -24,15 +24,15 @@ Data Flow의 분산 트레이싱 아키텍처는 [Spring Cloud Sleuth](https://s
 
 Spring Cloud Sleuth는 스트리밍 파이프라인 메세지들을 추적하고, 트레이싱 정보를 외부 시스템으로 내보내 분석하고 시각화할 수 있다. Spring Cloud Sleuth는 [Zipkin Server](https://github.com/openzipkin/zipkin/tree/master/zipkin-server)나 [Wavefront Distributed Tracing](https://docs.wavefront.com/tracing_basics.html)같은 `OpenZipkin` 호환 시스템을 지원한다.
 
-모든 Spring Cloud [스트림 애플리케이션들](https://github.com/spring-cloud/stream-applications)은 메세지 분산 트레이싱을 지원하며, `Zipkin Server`와(또는) `Wavefront Tracing`으로 트레이싱 정보들을 익스포트하기 위한 설정이 미리 세팅돼있다. 트레이싱 익스포트는 기본적으론 비활성화돼 있다! Wavefront나 Zipkin Server로 트레이싱 정보를 익스포트할 땐 `management.metrics.export.wavefront.enabled=true`, `spring.zipkin.enabled=true`를 사용한다. 상세 가이드는 아래에서 다룬다. Sleuth 설정 프로퍼티는 [spring sleuth 프로퍼티](https://docs.spring.io/spring-cloud-sleuth/docs/3.0.3/reference/html/appendix.html#appendix)를 참고하면 된다.
+모든 Spring Cloud [스트림 애플리케이션들](https://github.com/spring-cloud/stream-applications)은 메세지 분산 트레이싱을 지원하며, `Zipkin Server`와(또는) `Wavefront Tracing`으로 트레이싱 정보들을 익스포트하기 위한 설정이 미리 세팅돼있다. 트레이싱 익스포트는 기본적으론 비활성화돼 있다! Wavefront나 Zipkin Server로 트레이싱 정보를 익스포트할 땐 `management.metrics.export.wavefront.enabled=true`, `spring.zipkin.enabled=true`를 사용한다. 상세 가이드는 아래에서 다룬다. Sleuth 설정 프로퍼티는 [spring sleuth 프로퍼티](../..//Spring%20Cloud%20Sleuth/appendix/#common-application-properties)를 참고하면 된다.
 
 다음은 스트리밍 애플리케이션 모니터링의 전반적인 아키텍처를 나타낸 이미지다:
 
 ![Stream Distributed Tracing Architecture](./../../images/springclouddataflow/SCDF-stream-tracing-architecture.webp)
 
-> `Spring Cloud Function` `3.1.x` 이전 버전을 기반으로 만든 스트리밍 애플리케이션에선, `Spring Cloud Sleuth` 라이브러리는 [트레이싱 계측<sup>instrumentation</sup>에 스프링 인테그레이션](https://docs.spring.io/spring-cloud-sleuth/docs/current/reference/htmlsingle/#sleuth-messaging-spring-integration-integration)을 활용한다. 이땐 `Spring Cloud Sleuth`에서 스프링 인테그레이션 내부 컴포넌트들엔 불필요한 (노이즈) 트레이싱 정보를 생성할 수도 있다!
+> `Spring Cloud Function` `3.1.x` 이전 버전을 기반으로 만든 스트리밍 애플리케이션에선, `Spring Cloud Sleuth` 라이브러리는 [트레이싱 계측<sup>instrumentation</sup>에 스프링 인테그레이션](../../Spring%20Cloud%20Sleuth/sleuth-customization/#651-spring-integration)을 활용한다. 이땐 `Spring Cloud Sleuth`에서 스프링 인테그레이션 내부 컴포넌트들엔 불필요한 (노이즈) 트레이싱 정보를 생성할 수도 있다!
 >
-> `Spring Cloud Function 3.1+`부터는 Spring Cloud Sleuth [트레이싱 계측<sup>instrumentation</sup>](https://docs.spring.io/spring-cloud-sleuth/docs/current/reference/htmlsingle/#sleuth-messaging-spring-cloud-function-integration)에서 좀더 SCF 기반 애플리케이션에 잘 맞는 맞춤 트레이싱 정보를 제공한다.
+> `Spring Cloud Function 3.1+`부터는 Spring Cloud Sleuth [트레이싱 계측<sup>instrumentation</sup>](../../Spring%20Cloud%20Sleuth/sleuth-customization/#652-spring-cloud-function-and-spring-cloud-stream)에서 좀더 SCF 기반 애플리케이션에 잘 맞는 맞춤 트레이싱 정보를 제공한다.
 
 ### 목차
 

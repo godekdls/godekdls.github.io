@@ -37,3 +37,4 @@ includeFooter: false
 | [Spring Cloud Data Flow](/Spring%20Cloud%20Data%20Flow/contents/) | 2.9.1 |  2021/12   | [ref](https://dataflow.spring.io/docs/) |
 | [Prometheus](/Prometheus/contents/) | 2.32(Prometheus)<br>0.23(Alerting) |  2022/01   | [ref](https://prometheus.io/docs/introduction/overview/) |
 | [Spring Integration](/Spring%20Integration/contents/) | 5.5.15 |  2022/10   | [ref](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html) |
+| [Spring Cloud Sleuth](/Spring%20Cloud%20Sleuth/contents/) | 3.1.11 |  2024/07   | [ref](https://docs.spring.io/spring-cloud-sleuth/docs/3.1.11/reference/htmlsingle/) |
