@@ -5,7 +5,7 @@ order: 3
 permalink: /Spring%20Cloud%20Sleuth/getting-started/
 description: 스프링 클라우드 슬루스 시작하기
 image: ./../../images/springcloudsleuth/parents.jpg
-lastmod: 2024-06-22T13:30:00+09:00
+lastmod: 2024-07-13T14:47:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 슬루스
 originalRefLink: https://docs.spring.io/spring-cloud-sleuth/docs/3.1.11/reference/htmlsingle/#getting-started
@@ -252,7 +252,7 @@ Hello World!
 
 ## 2.3. Next Steps
 
-이번 섹션을 통해 Spring Cloud Sleuth의 기본기를 다지고 나만의 애플리케이션을 만들어보는 기회가 되었기를 바란다. 과제를 직접 해결해보는 것을 선호한다면 곧장 [spring.io](https://spring.io/)로 넘어가 [getting started](https://spring.io/guides/) 가이드를 확인해봐라. "Spring으로 어떻게 해결할 수 있나요?" 같은 류의 구체적인 문제를 해결하는데 도움이 될 거다. 그외 스프링 클라우드 슬루스 전용 “[how-to](https://docs.spring.io/spring-cloud-sleuth/docs/3.1.11/reference/htmlsingle/#howto)” 레퍼런스 문서도 제공하고 있다.
+이번 섹션을 통해 Spring Cloud Sleuth의 기본기를 다지고 나만의 애플리케이션을 만들어보는 기회가 되었기를 바란다. 과제를 직접 해결해보는 것을 선호한다면 곧장 [spring.io](https://spring.io/)로 넘어가 [getting started](https://spring.io/guides/) 가이드를 확인해봐라. "Spring으로 어떻게 해결할 수 있나요?" 같은 류의 구체적인 문제를 해결하는데 도움이 될 거다. 그외 스프링 클라우드 슬루스 전용 “[how-to](../howto)” 레퍼런스 문서도 제공하고 있다.
 
 과제를 해결해보기 앞서 조금 더 깊게 알아보고 싶다면, [Spring Cloud Sleuth 사용하기](../using-spring-cloud-sleuth)를 읽어봐라. 시간이 많지 않다면 [Spring Cloud Sleuth 기능들](../features)로 넘어가도 좋다.
 

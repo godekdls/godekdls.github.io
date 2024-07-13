@@ -5,7 +5,7 @@ order: 5
 permalink: /Spring%20Cloud%20Sleuth/features/
 description: 스프링 클라우드 슬루스 기능들
 image: ./../../images/springcloud/logo.jpeg
-lastmod: 2024-06-25T13:30:00+09:00
+lastmod: 2024-07-13T14:47:00+09:00
 comments: true
 originalRefName: 스프링 클라우드 슬루스
 originalRefLink: https://docs.spring.io/spring-cloud-sleuth/docs/3.1.11/reference/htmlsingle/#project-features
