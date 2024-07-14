@@ -38,3 +38,4 @@ includeFooter: false
 | [Prometheus](/Prometheus/contents/) | 2.32(Prometheus)<br>0.23(Alerting) |  2022/01   | [ref](https://prometheus.io/docs/introduction/overview/) |
 | [Spring Integration](/Spring%20Integration/contents/) | 5.5.15 |  2022/10   | [ref](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html) |
 | [Spring Cloud Sleuth](/Spring%20Cloud%20Sleuth/contents/) | 3.1.11 |  2024/07   | [ref](https://docs.spring.io/spring-cloud-sleuth/docs/3.1.11/reference/htmlsingle/) |
+| [Micrometer Tracing](/Micrometer%20Tracing/contents/) | 1.3.2 |  2024/07   | [ref](https://docs.micrometer.io/tracing/reference/index.html) |
