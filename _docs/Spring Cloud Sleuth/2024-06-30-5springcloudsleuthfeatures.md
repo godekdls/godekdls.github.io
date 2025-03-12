@@ -3,7 +3,7 @@ title: Spring Cloud Sleuth Features
 category: Spring Cloud Sleuth
 order: 5
 permalink: /Spring%20Cloud%20Sleuth/features/
-description: 스프링 클라우드 슬루스 기능들
+description: 스프링 클라우드 슬루스가 제공하는 기능들
 image: ./../../images/springcloud/logo.jpeg
 lastmod: 2024-07-13T14:47:00+09:00
 comments: true
@@ -20,7 +20,6 @@ originalVersion: 3.1.11
 - [4.2. Sampling](#42-sampling)
 - [4.3. Baggage](#43-baggage)
    - [4.3.1. Baggage versus Tags](#431-baggage-versus-tags)
-
 - [4.4. OpenZipkin Brave Tracer Integration](#44-openzipkin-brave-tracer-integration)
   + [4.4.1. Brave Basics](#441-brave-basics)
   + [4.4.2. Brave Sampling](#442-brave-sampling)
@@ -177,7 +176,7 @@ public Sampler defaultSampler() {
 
 > HTTP 헤더 `b3`를 `1`로 설정하거나 메시지 전송 시 `spanFlags` 헤더를 `1`로 설정하면, 샘플러 설정과는 상관 없이 현재 요청을 강제로 샘플에 포함시킬 수 있다.
 
-기본적으로 샘플러는 리프레시 스코프 메커니즘 내에서 동작한다. 즉, 런타임에 샘플링 프로퍼티를 변경할 수 있고, 애플리케이션을 리프레시하면 변경 사항이 반영된다. 하지만 샘플러를 감싼 프록시를 생성하고서 샘플러를 너무 일찍 호출하면 (ex. `@PostConstruct` 애노테이션을 선언한 메소드 안에서 호출), 데드락이 발생할 수 있다. 이럴 땐 샘플러 빈을 생성하는 코드를 직접 작성하거나, `spring.sleuth.sampler.refresh.enabled` 프로퍼티를 `false`로 설정해 리프레시 스코프 지원을 비활성해라.
+기본적으로 샘플러는 리프레시 스코프 메커니즘 내에서 동작한다. 즉, 런타임에 샘플링 프로퍼티를 변경할 수 있고, 애플리케이션을 리프레시하면 변경 사항이 반영된다. 하지만 샘플러를 감싼 프록시를 생성하고서 샘플러를 너무 일찍 호출하면 (ex. `@PostConstruct` 어노테이션을 선언한 메소드 안에서 호출), 데드락이 발생할 수 있다. 이럴 땐 샘플러 빈을 생성하는 코드를 직접 작성하거나, `spring.sleuth.sampler.refresh.enabled` 프로퍼티를 `false`로 설정해 리프레시 스코프 지원을 비활성해라.
 
 ### 4.4.3. Brave Baggage Java configuration
 
@@ -205,7 +204,7 @@ public Sampler defaultSampler() {
 
 클라이언트/서버 샘플링이 필요한 경우, `brave.sampler.SamplerFunction<HttpRequest>` 타입의 빈을 등록하고, 클라이언트 샘플러 빈의 이름은 `sleuthHttpClientSampler`로, 서버 샘플러 빈은 `sleuthHttpServerSampler`로 지정하면 된다.
 
-간단히 빈을 주입받고 싶으면 `@HttpClientSampler`와 `@HttpServerSampler` 애노테이션을 사용하면 되고, 빈의 이름은 각 애노테이션에 정의된 스태틱 문자열 `NAME` 필드를 참조하면 된다.
+간단히 빈을 주입받고 싶으면 `@HttpClientSampler`와 `@HttpServerSampler` 어노테이션을 사용하면 되고, 빈의 이름은 각 어노테이션에 정의된 스태틱 문자열 `NAME` 필드를 참조하면 된다.
 
 경로를 기반으로 동작하는 샘플러 정책을 만들고 싶다면, Brave 레포지토리에 있는 예시를 참고해라. [github.com/openzipkin/brave/tree/master/instrumentation/http#sampling-policy](https://github.com/openzipkin/brave/tree/master/instrumentation/http#sampling-policy)
 
@@ -235,7 +234,7 @@ Sleuth는 카프카나 JMS와 같은 메시지 처리 시스템을 계측<sup>in
 
 메시지 처리를 추적하기 위한 프로듀서<sup>producer</sup> / 컨슈머<sup>consumer</sup> 샘플링 로직을 커스텀해야 하는 경우, `brave.sampler.SamplerFunction<MessagingRequest>` 타입의 빈을 등록하고, 프로듀서<sup>producer</sup> 샘플러 빈의 이름은 `sleuthProducerSampler`로, 컨슈머<sup>consumer</sup> 샘플러는 `sleuthConsumerSampler`로 지정하기만 하면 된다.
 
-간단히 빈을 주입받고 싶으면 `@ProducerSampler`와 `@ConsumerSampler` 애노테이션을 사용하면 되고, 빈의 이름은 각 애노테이션에 정의된 스태틱 문자열 `NAME` 필드를 참조하면 된다.
+간단히 빈을 주입받고 싶으면 `@ProducerSampler`와 `@ConsumerSampler` 어노테이션을 사용하면 되고, 빈의 이름은 각 어노테이션에 정의된 스태틱 문자열 `NAME` 필드를 참조하면 된다.
 
 Ex. 다음은 "alerts" 채널을 제외한 컨슈머<sup>consumer</sup> 요청을 초당 100개씩 추적하는 샘플러다. 그외 다른 요청의 샘플링 비율은 `Tracing` 컴포넌트에서 제공하는 글로벌 설정을 따른다.
 
@@ -286,7 +285,7 @@ spring.zipkin.sender.type: web
 
 리액티브 애플리케이션을 실행할 때는 `WebClient` 기반 span sender를 사용한다. 그 외는 `RestTemplate` 기반으로 동작한다.
 
-HTTP를 통해 Zipkin으로 span을 전송할 때 사용하는 `RestTemplate`을 커스텀하려면, `@Configuration` 애노테이션을 선언한 스프링 설정 클래스 안에 `ZipkinRestTemplateCustomizer` 빈을 등록하면 된다.
+HTTP를 통해 Zipkin으로 span을 전송할 때 사용하는 `RestTemplate`을 커스텀하려면, `@Configuration` 어노테이션을 선언한 스프링 설정 클래스 안에 `ZipkinRestTemplateCustomizer` 빈을 등록하면 된다.
 
 ```java
 @Bean

@@ -270,7 +270,7 @@ Tracing tracing = Tracing.newBuilder()
 
 ## Aspect Oriented Programming
 
-Micrometer Tracing에는 `@NewSpan`, `@ContinueSpan`, `@SpanTag` 애노테이션이 포함돼있다. 프레임워크에선 이 애노테이션들을 활용해, '웹 요청 엔드포인트를 서빙하는 메소드' 같은 특정 유형의 메소드나, 좀더 일반적으로는 모든 메소드에 대한 span을 생성하거나 커스텀한다.
+Micrometer Tracing에는 `@NewSpan`, `@ContinueSpan`, `@SpanTag` 어노테이션이 포함돼있다. 프레임워크에선 이 어노테이션들을 활용해, '웹 요청 엔드포인트를 서빙하는 메소드' 같은 특정 유형의 메소드나, 좀더 일반적으로는 모든 메소드에 대한 span을 생성하거나 커스텀한다.
 
 > Micrometer의 Spring Boot 설정은, 임의의 메소드에서 이 aspect들을 인식하지 *못한다*.
 
@@ -336,9 +336,9 @@ static class SpelTagValueExpressionResolver implements ValueExpressionResolver {
 `SpanAspect`를 적용하면, 아래 예제에서 볼 수 있듯이, AspectJ 프록시 덕분에 임의의 메소드에 `@NewSpan`과 `@ContinueSpan`을 사용할 수 있게 된다:
 
 ```java
-// Sleuth에서는 @NewSpan과 @ContinueSpan 애노테이션 역시 동작한다.
+// Sleuth에서는 @NewSpan과 @ContinueSpan 어노테이션 역시 동작한다.
 // Micrometer Tracing에서는 @Aspect의 제약으로 인해 그렇지 않다.
-// 반면 @SpanTag 애노테이션은 잘 동작한다.
+// 반면 @SpanTag 어노테이션은 잘 동작한다.
 protected interface TestBeanInterface {
 
     void testMethod2();
@@ -387,7 +387,7 @@ protected static class TestBean implements TestBeanInterface {
 testBean().testMethod2();
 then(createdSpanViaAspect()).isEqualTo("test-method2");
 
-// 애노테이션에 있는 이름을 사용한다
+// 어노테이션에 있는 이름을 사용한다
 testBean().testMethod3();
 then(createdSpanViaAspect()).isEqualTo("custom-name-on-test-method3");
 
