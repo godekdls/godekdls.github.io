@@ -13,7 +13,7 @@ originalVersion: 3.1.11
 ---
 <script>defaultLanguages = ['maven']</script>
 
-이번 섹션에선 Spring Cloud Sleuth를 사용할 때 자주 묻곤 하는 "어떻게 해야 하나요...?" 류의 질문들에 답하는 섹션이다. 모든 질문에 답해주진 않지만, 꽤 많은 내용을 다루고 있다.
+이번 섹션은 Spring Cloud Sleuth를 사용할 때 자주 묻곤 하는 "어떻게 해야 하나요...?" 류의 질문들에 답해본다. 모든 질문에 답해주진 않지만, 꽤 많은 내용을 다루고 있다.
 
 현재 직면한 문제를 이 문서에서 다루지 않았다면, [stackoverflow.com](https://stackoverflow.com/tags/spring-cloud-sleuth)에서도 찾아봐라. 이미 다른 사람이 답변해 두었을 수도 있다. 스택 오버플로는 질문을 새로 올리기에도 아주 좋은 곳이다 (`spring-cloud-sleuth` 태그를 달아달라).
 

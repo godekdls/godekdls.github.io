@@ -57,7 +57,6 @@ OpenTelemetry Tracer
     <groupId>io.micrometer</groupId>
     <artifactId>micrometer-tracing-bridge-otel</artifactId>
 </dependency>
-Copied!
 ```
 
 > 브릿지는 **하나만** 선택해야 한다는 점을 기억해두자. 클래스패스에 브릿지가 두 개 있어서는 **안 된다**.

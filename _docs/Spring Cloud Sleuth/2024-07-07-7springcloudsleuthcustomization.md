@@ -126,13 +126,13 @@ DisposableBean exampleRunningConsumer(KafkaReceiver<String, String> receiver){
 
 Spring Cloud Sleuth는 비동기 통신과 관련된 구성 요소들을 계측<sup>instrumentation</sup>하기 때문에, 트레이싱<sup>tracing</sup> 정보는 여러 스레드를 오갈 때도 잘 전달된다. 이 동작은 `spring.sleuth.async.enabled` 값을 `false`로 설정하면 비활성화할 수 있다.
 
-메소드 위에 `@Async` 애노테이션을 선언하면, 기존 Span은 자동으로 다음과 같이 변경된다:
+메소드 위에 `@Async` 어노테이션을 선언하면, 기존 Span은 자동으로 다음과 같이 변경된다:
 
-- 메소드 위에 `@SpanName` 애노테이션을 선언한 경우, 이 애노테이션의 value를 Span의 이름으로 사용한다.
-- 메소드 위에 `@SpanName` 애노테이션이 없다면, `@Async` 애노테이션을 선언한 메소드명을 Span의 이름으로 사용한다.
+- 메소드 위에 `@SpanName` 어노테이션을 선언한 경우, 이 어노테이션의 value를 Span의 이름으로 사용한다.
+- 메소드 위에 `@SpanName` 어노테이션이 없다면, `@Async` 어노테이션을 선언한 메소드명을 Span의 이름으로 사용한다.
 - 해당 클래스명과 메소드명을 태그로 추가한다.
 
-기존 span을 수정하는 것이기 때문에 원래 이름을 유지하고 싶다면 (e.g. HTTP 요청을 받아 span이 만들어진 경우 등) , `@Async`를 선언한 메소드를 `@NewSpan` 애노테이션으로 감싸거나 span을 직접 새로 만들어야 한다.
+기존 span을 수정하는 것이기 때문에 원래 이름을 유지하고 싶다면 (e.g. HTTP 요청을 받아 span이 만들어진 경우 등) , `@Async`를 선언한 메소드를 `@NewSpan` 어노테이션으로 감싸거나 span을 직접 새로 만들어야 한다.
 
 ### 6.2.2. `@Scheduled` Annotated Methods
 
@@ -140,9 +140,9 @@ Spring Cloud Sleuth는 비동기 통신과 관련된 구성 요소들을 계측<
 
 Spring Cloud Sleuth는 스케줄링된 메소드가 실행될 때도 이를 계측<sup>instrumentation</sup>하기 때문에, 트레이싱<sup>tracing</sup> 정보는 여러 스레드를 오갈 때도 잘 전달된다. 이 동작은 `spring.sleuth.scheduled.enabled` 값을 `false`로 설정하면 비활성화할 수 있다.
 
-메소드 위에 `@Scheduled` 애노테이션을 선언하면, 다음과 같은 span을 자동으로 생성해준다:
+메소드 위에 `@Scheduled` 어노테이션을 선언하면, 다음과 같은 span을 자동으로 생성해준다:
 
-- 애노테이션을 선언한 메소드 이름을 span 이름으로 사용한다
+- 어노테이션을 선언한 메소드 이름을 span 이름으로 사용한다
 - 해당 클래스명과 메소명을 태그로 추가한다.
 
 `@Scheduled`를 선언한 클래스 중 span을 만들고 싶지 않은 클래스도 있다면, `spring.sleuth.scheduled.skipPattern`을 해당 클래스의 풀 네임<sup>fully qualified name</sup>과 매칭되는 정규식으로 설정해주면 된다.
@@ -584,7 +584,7 @@ Sleuth는 `KafkaStreams` `KafkaClientSupplier`를 계측<sup>instrumentation</su
 
 이 기능은 Brave 트레이서<sup>tracer</sup> 구현체에서 사용할 수 있다.
 
-Sleuth는 `JmsTemplate`을 계측<sup>instrumentation</sup>해서 메시지에 트레이싱<sup>tracing</sup> 헤더를 주입한다. 또한 컨슈머 측에서 메소드 위에 `@JmsListener` 애노테이션을 선언한 코드도 지원한다.
+Sleuth는 `JmsTemplate`을 계측<sup>instrumentation</sup>해서 메시지에 트레이싱<sup>tracing</sup> 헤더를 주입한다. 또한 컨슈머 측에서 메소드 위에 `@JmsListener` 어노테이션을 선언한 코드도 지원한다.
 
 이 기능을 끄러면 `spring.sleuth.messaging.jms.enabled`를 `false`로 설정해라.
 
@@ -725,7 +725,7 @@ Sleuth는 gRPC나 Dubbo와 같은 RPC 계측<sup>instrumentation</sup>의 기반
 
 RPC를 추적할 때 사용할 클라이언트/서버 샘플링 로직을 커스텀해야 하는 경우, `brave.sampler.SamplerFunction<RpcRequest>` 타입 빈을 등록하고, 클라이언트 샘플러의 경우 빈 이름을 `sleuthRpcClientSampler`로, 서버 샘플러의 경우 `sleuthRpcServerSampler`로 지정하기만 하면 된다.
 
-간단히 빈을 주입받 싶으면 `@RpcClientSampler`와 `@RpcServerSampler` 애노테이션을 사용하면 되고, 빈의 이름은 각 애노테이션에 정의된 스태틱 문자열 `NAME` 필드를 참조하면 된다.
+간단히 빈을 주입받 싶으면 `@RpcClientSampler`와 `@RpcServerSampler` 어노테이션을 사용하면 되고, 빈의 이름은 각 어노테이션에 정의된 스태틱 문자열 `NAME` 필드를 참조하면 된다.
 
 Ex. 다음은 초당 100개의 서버 요청 "GetUserToken"을 추적하는 샘플러다. 이때 health check 서비스에 대한 요청은 트레이스<sup>trace</sup>를 새로 시작하지 않는다. 다른 요청은 글로벌 샘플링 설정에 따른다.
 

@@ -40,7 +40,7 @@ Spring Cloud Sleuth는 사용자의 요청과 메시지를 추적해서, 통신 
 
 Spring Cloud Sleuth에서 사용하는 용어들은 [Dapper](https://research.google.com/pubs/pub36356.html)에서 빌려왔다.
 
-**Span**: 작업의 기본 단위를 의미한다. 예를 들어, RPC를 전송하는 것은 하나의 새로운 span으로 볼 수 있으며, 마찬가지로 RPC에 응답을 전송하는 것 또한 하나의 새로운 span이다. span은 다른 데이터들도 가지고 있는데, 단순한 설명부터, 시간별 이벤트, 키-값 애노테이션(tag), 해당 span을 발생시킨 span의 ID, 프로세스 ID(보통은 IP 주소) 등이 있다.
+**Span**: 작업의 기본 단위를 의미한다. 예를 들어, RPC를 전송하는 것은 하나의 새로운 span으로 볼 수 있으며, 마찬가지로 RPC에 응답을 전송하는 것 또한 하나의 새로운 span이다. span은 다른 데이터들도 가지고 있는데, 단순한 설명부터, 시간별 이벤트, 키-값 어노테이션(tag), 해당 span을 발생시킨 span의 ID, 프로세스 ID(보통은 IP 주소) 등이 있다.
 
 span은 시작하고 중단할 수 있으며, span은 시간별 정보를 지속적으로 추적한다. span을 하나 생성했다면, 이후 어느 시점에는 반드시 종료해줘야 한다.
 
@@ -50,9 +50,9 @@ span은 시작하고 중단할 수 있으며, span은 시간별 정보를 지속
 
 일반적인 RPC 시나리오라면, 이런 이벤트들을 표시해 어떤 작업이 수행됐는지 표시하는 개념이라고 볼 수 있다 (이러한 이벤트가 물리적으로 span에 설정된다는 의미는 아니다).
 
-- **cs**: 클라이언트 전송<sup>Client Sent</sup>. 클라이언트가 요청을 만든 상태로, span의 시작을 나타내는 애노테이션이다.
+- **cs**: 클라이언트 전송<sup>Client Sent</sup>. 클라이언트가 요청을 만든 상태로, span의 시작을 나타내는 어노테이션이다.
 - **sr**: 서버 수신<sup>Server Received</sup>. 서버 측에서 요청을 받고 처리를 시작했다는 뜻이다. `sr` 타임스탬프 값에서 `cs` 타임스탬프 값을 빼면 네트워크 지연 시간을 구할 수 있다.
-- **ss**: 서버 전송<sup>Server Sent</sup>. 요청을 다 처리하고 나면 (클라이언트로 응답을 돌려준 시점) 이 애노테이션이 추가된다. `ss` 타임스탬프 값에서 `sr` 타임스탬프 값을 빼면 서버 측에서 요청을 처리하는 데 필요한 시간을 구할 수 있다.
+- **ss**: 서버 전송<sup>Server Sent</sup>. 요청을 다 처리하고 나면 (클라이언트로 응답을 돌려준 시점) 이 어노테이션이 추가된다. `ss` 타임스탬프 값에서 `sr` 타임스탬프 값을 빼면 서버 측에서 요청을 처리하는 데 필요한 시간을 구할 수 있다.
 - **cr**: 클라이언트 수신<sup>Client Received</sup>. span의 끝을 의미한다. 서버 측에서 보낸 응답을 클라이언트가 성공적으로 수신했다는 뜻이다. `cr` 타임스탬프 값에서 `cs` 타임스탭프 값을 빼면 클라이언트가 서버의 응답을 수신하는데 필요한 전체 시간을 구할 수 있다.
 
 다음 이미지는 시스템 상에서 **Span**과 **Trace**가 어떻게 구성되어 있는지를 보여준다.
@@ -254,6 +254,6 @@ Hello World!
 
 이번 섹션을 통해 Spring Cloud Sleuth의 기본기를 다지고 나만의 애플리케이션을 만들어보는 기회가 되었기를 바란다. 과제를 직접 해결해보는 것을 선호한다면 곧장 [spring.io](https://spring.io/)로 넘어가 [getting started](https://spring.io/guides/) 가이드를 확인해봐라. "Spring으로 어떻게 해결할 수 있나요?" 같은 류의 구체적인 문제를 해결하는데 도움이 될 거다. 그외 스프링 클라우드 슬루스 전용 “[how-to](../howto)” 레퍼런스 문서도 제공하고 있다.
 
-과제를 해결해보기 앞서 조금 더 깊게 알아보고 싶다면, [Spring Cloud Sleuth 사용하기](../using-spring-cloud-sleuth)를 읽어봐라. 시간이 많지 않다면 [Spring Cloud Sleuth 기능들](../features)로 넘어가도 좋다.
+과제를 해결해보기 앞서 조금 더 깊게 알아보고 싶다면, [Spring Cloud Sleuth 사용 가이드](../using-spring-cloud-sleuth)를 읽어봐라. 시간이 많지 않다면 [Spring Cloud Sleuth가 제공하는 기능들](../features)로 넘어가도 좋다.
 
 기본 프로젝트 샘플은 [samples 레포지토리](https://github.com/spring-cloud-samples/spring-cloud-sleuth-samples/)에서 확인할 수 있다.

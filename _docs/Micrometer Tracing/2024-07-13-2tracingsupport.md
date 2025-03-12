@@ -66,4 +66,4 @@ implementation 'io.micrometer:micrometer-tracing'
 </dependencies>
 ```
 
-`micrometer-tracing-bridge-brave`, `micrometer-tracing-bridge-otel` 같은 트레이싱<sup>tracing</sup> 브릿지와, span exporter/reporter를 추가해야 한다. 브릿지를 추가하면 전의 의존성<sup>transitive dependency</sup>으로 `micrometer-tracing` 라이브러리가 추가된다.
+`micrometer-tracing-bridge-brave`, `micrometer-tracing-bridge-otel` 같은 트레이싱<sup>tracing</sup> 브릿지와, span exporter/reporter를 추가해야 한다. 브릿지를 추가하면 전이 의존성<sup>transitive dependency</sup>으로 `micrometer-tracing` 라이브러리가 추가된다.
