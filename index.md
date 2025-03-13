@@ -39,5 +39,5 @@ includeFooter: false
 | [Spring Integration](/Spring%20Integration/contents/) | 5.5.15 |  2022/10   | [ref](https://docs.spring.io/spring-integration/docs/5.5.15/reference/html/index-single.html) |
 | [Spring Cloud Sleuth](/Spring%20Cloud%20Sleuth/contents/) | 3.1.11 |  2024/07   | [ref](https://docs.spring.io/spring-cloud-sleuth/docs/3.1.11/reference/htmlsingle/) |
 | [Micrometer Tracing](/Micrometer%20Tracing/contents/) | 1.3.2 |  2024/07   | [ref](https://docs.micrometer.io/tracing/reference/index.html) |
-| [Spring Cloud Contract](/Spring%20Cloud%20Contract/contents/) | 4.2.0 |  2025/03   | [ref](https://docs.spring.io/spring-cloud-contract/reference/4.2.0/index.html) |
+| [Spring Cloud Contract](/Spring%20Cloud%20Contract/getting-started/) | 4.2.0 |  2025/03   | [ref](https://docs.spring.io/spring-cloud-contract/reference/4.2.0/index.html) |
 
