@@ -40,4 +40,4 @@ includeFooter: false
 | [Spring Cloud Sleuth](/Spring%20Cloud%20Sleuth/contents/) | 3.1.11 |  2024/07   | [ref](https://docs.spring.io/spring-cloud-sleuth/docs/3.1.11/reference/htmlsingle/) |
 | [Micrometer Tracing](/Micrometer%20Tracing/contents/) | 1.3.2 |  2024/07   | [ref](https://docs.micrometer.io/tracing/reference/index.html) |
 | [Spring Cloud Contract](/Spring%20Cloud%20Contract/getting-started/) | 4.2.0 |  2025/03   | [ref](https://docs.spring.io/spring-cloud-contract/reference/4.2.0/index.html) |
-
+| [Spring for Apache Kafka](/Spring%20for%20Apache%20Kafka/quick-tour/) |3.3.10 |  2025/09   | [ref](https://docs.spring.io/spring-kafka/reference/3.3.10/index.html) |

@@ -1,0 +1,16 @@
+incremental: true
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      published: true
+  - scope:
+      path: "_docs"
+    values:
+      published: false
+  - scope:
+      path: "_docs/Spring for Apache Kafka"
+    values:
+      layout: default
+      published: true
