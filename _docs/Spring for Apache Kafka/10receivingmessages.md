@@ -270,7 +270,7 @@ public interface Acknowledgment {
 
 > 배치의 일부만 커밋하려면 `nack()`을 사용해라. 트랜잭션을 사용 중일 때는 `AckMode`를 `MANUAL`로 설정해라. `nack()` 호출하면 처리를 마친 레코드의 오프셋이 트랜잭션으로 전달된다.
 
-> `nack()`은 리스너를 실행하는 컨슈머 스레드에서만 호출할 수 있다.                                                                |
+> `nack()`은 리스너를 실행하는 컨슈머 스레드에서만 호출할 수 있다.
 
 > `nack()`은 [비순차적 커밋 모드<sup>Out of Order Commits</sup>](#asynchronous-kafkalistener-return-types)에서는 사용할 수 없다.
 
@@ -332,7 +332,7 @@ public Mono<Void> listen(String data) {
 
 > 비동기 리턴 타입을 감지하면 `AckMode`는 자동으로 `MANUAL`로 설정되며, 순서와 무관한 커밋<sup> out-of-order commits</sup>도 가능해진다. 대신 비동기 작업이 완료되면 해당 시점에 ack가 수행된다. 비동기 처리가 에러로 끝나면, 컨테이너 에러 핸들러에 따라 메시지 복구 여부를 결정한다. 만약 리스너 메소드 내에서 비동기 결과 객체를 생성하지 못할 정도의 예외가 발생하면, **반드시** 예외를 catch해서 적절한 반환 객체를 리턴해야 메시지를 ack 처리하거나 복구할 수 있다.
 
-비동기 리턴 타입(코틀린 suspend 함수 포함)을 가진 리스너에 `KafkaListenerErrorHandler`를 설정하면, 에러 발생 후  `KafkaListenerErrorHandler`가 실행된다.  `KafkaListenerErrorHandler`와 그 목적에 대한 자세한 내용은 [예외 처리](https://docs.spring.io/spring-kafka/reference/kafka/annotation-error-handling.html)를 참고해라.
+비동기 리턴 타입(코틀린 suspend 함수 포함)을 가진 리스너에 `KafkaListenerErrorHandler`를 설정하면, 에러 발생 후  `KafkaListenerErrorHandler`가 실행된다.  `KafkaListenerErrorHandler`와 그 목적에 대한 자세한 내용은 [예외 처리](../annotation-error-handling)를 참고해라.
 
 ---
 
@@ -1073,21 +1073,21 @@ public ApplicationRunner runner(KafkaTemplate<String, Object> template, KafkaLis
 
 ## Forwarding Listener Results using `@SendTo`
 
-Starting with version 2.0, if you also annotate a `@KafkaListener` with a `@SendTo` annotation and the method invocation returns a result, the result is forwarded to the topic specified by the `@SendTo`.
+2.0 버전부터 `@KafkaListener` 어노테이션에 `@SendTo` 어노테이션을 함께 적용했다면, 메소드의 반환 결과는 `@SendTo`로 지정한 토픽으로 전달된다.
 
-The `@SendTo` value can have several forms:
+`@SendTo` 값은 여러 형태를 가질 수 있다:
 
-- `@SendTo("someTopic")` routes to the literal topic.
-- `@SendTo("#{someExpression}")` routes to the topic determined by evaluating the expression once during application context initialization.
-- `@SendTo("!{someExpression}")` routes to the topic determined by evaluating the expression at runtime. The `#root` object for the evaluation has three properties:
-  - `request`: The inbound `ConsumerRecord` (or `ConsumerRecords` object for a batch listener).
-  - `source`: The `org.springframework.messaging.Message<?>` converted from the `request`.
-  - `result`: The method return result.
-- `@SendTo` (no properties): This is treated as `!{source.headers['kafka_replyTopic']}` (since version 2.1.3).
+- `@SendTo(“someTopic”)`은 지정한 토픽으로 그대로 라우팅한다.
+- `@SendTo(“#{someExpression}”)`은 애플리케이션 컨텍스트 초기화 시점에 표현식을 한 번 평가해서, 그 결과로 나온 토픽으로 라우팅한다.
+- `@SendTo(“!{someExpression}”)`은 런타임에 표현식을 평가해서 그 결과로 나온 토픽으로 라우팅한다. 표현식 평가를 위한 `#root` 객체는 세 가지 프로퍼티를 가진다:
+  - `request`: 인바운드 `ConsumerRecord` (배치 리스너의 경우 `ConsumerRecords` 객체).
+  - `source`: `request`를 변환한 `org.springframework.messaging.Message<?>` 객체.
+  - `result`: 메소드 반환 결과.
+- `@SendTo` (프로퍼티 설정 안함): `!{source.headers[‘kafka_replyTopic’]}`과 동일하게 처리된다 (2.1.3 버전부터).
 
-Starting with versions 2.1.11 and 2.2.1, property placeholders are resolved within `@SendTo` values.
+2.1.11 및 2.2.1 버전부터는 `@SendTo` 값 내에서 프로퍼티 플레이스홀더를 사용할 수 있다.
 
-The result of the expression evaluation must be a `String` that represents the topic name. The following examples show the various ways to use `@SendTo`:
+표현식은 토픽명을 의미하는 `String`으로 평가되어야 한다. 다음은 `@SendTo`를 사용하는 다양한 예시다:
 
 ```java
 @KafkaListener(topics = "annotated21")
@@ -1127,9 +1127,9 @@ public class MultiListenerSendTo {
 }
 ```
 
-> In order to support `@SendTo`, the listener container factory must be provided with a `KafkaTemplate` (in its `replyTemplate` property), which is used to send the reply. This should be a `KafkaTemplate` and not a `ReplyingKafkaTemplate` which is used on the client-side for request/reply processing. When using Spring Boot, it will auto-configure the template into the factory; when configuring your own factory, it must be set as shown in the examples below.
+> `@SendTo`를 사용하려면 반드시 리스너 컨테이너 팩토리에 응답을 전송할 때 사용할 `KafkaTemplate`(`replyTemplate` 프로퍼티)을 제공해 한다. 참고로, 클라이언트 측에서 요청/응답 처리에 사용하는 `ReplyingKafkaTemplate`이 아닌 `KafkaTemplate`을 지정해야 한다. 스프링 부트를 사용한다면 팩토리에 해당 템플릿이 자동 설정된다. 직접 팩토리를 세팅하는 경우 아래에 나오는 예시와 같이 설정해야 한다.
 
-Starting with version 2.2, you can add a `ReplyHeadersConfigurer` to the listener container factory. This is consulted to determine which headers you want to set in the reply message. The following example shows how to add a `ReplyHeadersConfigurer`:
+2.2 버전부터 리스너 컨테이너 팩토리에 `ReplyHeadersConfigurer`를 추가할 수 있다. 이 설정에 따라 응답 메시지에 세팅할 헤더를 결정한다. 다음은 `ReplyHeadersConfigurer`를 추가하는 예시다.
 
 ```java
 @Bean
@@ -1143,7 +1143,7 @@ public ConcurrentKafkaListenerContainerFactory<Integer, String> kafkaListenerCon
 }
 ```
 
-You can also add more headers if you wish. The following example shows how to do so:
+원한다면 다른 헤더도 추가할 수 있다. 그 방법은 다음 예시를 참고해라:
 
 ```java
 @Bean
@@ -1169,9 +1169,9 @@ public ConcurrentKafkaListenerContainerFactory<Integer, String> kafkaListenerCon
 }
 ```
 
-When you use `@SendTo`, you must configure the `ConcurrentKafkaListenerContainerFactory` with a `KafkaTemplate` in its `replyTemplate` property to perform the send. Spring Boot will automatically wire in its auto-configured template (or any if a single instance is present).
+`@SendTo`를 사용하는 경우, 메시지를 전송하려면 반드시 `ConcurrentKafkaListenerContainerFactory`를 설정할 때 `replyTemplate` 프로퍼티에 `KafkaTemplate`을 함께 세팅해야 한다. 스프링 부트는 자동 설정된 템플릿에 (인스턴스를 하나 설정했다면 해당 인스턴스로) 자동으로 연결해준다.
 
-> Unless you use [request/reply semantics](https://docs.spring.io/spring-kafka/reference/kafka/sending-messages.html#replying-template), only the simple `send(topic, value)` method is used, so you may wish to create a subclass to generate the partition or key. The following example shows how to do so:
+> [요청/응답 패턴<sup>request/reply semantics</sup>](https://docs.spring.io/spring-kafka/reference/kafka/sending-messages.html#replying-template)을 사용하는 것이 아니라면, 간단한 `send(topic, value)` 메소드만 사용하면 되기 때문에 파티션이나 키를 생성하는 하위 클래스를 만드는 것이 좋다. 예를 들면 다음과 같다:
 
 ```java
 @Bean
@@ -1189,55 +1189,57 @@ public KafkaTemplate<String, String> myReplyingTemplate() {
 }
 ```
 
-> If the listener method returns `Message<?>` or `Collection<Message<?>>`, the listener method is responsible for setting up the message headers for the reply. For example, when handling a request from a `ReplyingKafkaTemplate`, you might do the following:
+> 리스너 메소드가 `Message<?>`나 `Collection<Message<?>>`를 반환하는 경우, 응답 메시지의 헤더를 설정하는 책임은 리스너 메소드에 있다. 예를 들어 `ReplyingKafkaTemplate`의 요청을 처리할 때는 다음과 같이 작성할 수 있다:
+>
 > <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@KafkaListener</span><span class="o">(</span><span class="n">id</span> <span class="o">=</span> <span class="s">"messageReturned"</span><span class="o">,</span> <span class="n">topics</span> <span class="o">=</span> <span class="s">"someTopic"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="nc">Message</span><span class="o">&lt;?&gt;</span> <span class="n">listen</span><span class="o">(</span><span class="nc">String</span> <span class="n">in</span><span class="o">,</span> <span class="nd">@Header</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">REPLY_TOPIC</span><span class="o">)</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">replyTo</span><span class="o">,</span>
-        <span class="nd">@Header</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">CORRELATION_ID</span><span class="o">)</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">correlation</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="nc">MessageBuilder</span><span class="o">.</span><span class="na">withPayload</span><span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">())</span>
-            <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">TOPIC</span><span class="o">,</span> <span class="n">replyTo</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">KEY</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">CORRELATION_ID</span><span class="o">,</span> <span class="n">correlation</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="s">"someOtherHeader"</span><span class="o">,</span> <span class="s">"someValue"</span><span class="o">)</span>
-            <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-<span class="o">}</span>
-</code></pre></div></div>
+> <span class="kd">public</span> <span class="nc">Message</span><span class="o">&lt;?&gt;</span> <span class="n">listen</span><span class="o">(</span><span class="nc">String</span> <span class="n">in</span><span class="o">,</span> <span class="nd">@Header</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">REPLY_TOPIC</span><span class="o">)</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">replyTo</span><span class="o">,</span>
+>    <span class="nd">@Header</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">CORRELATION_ID</span><span class="o">)</span> <span class="kt">byte</span><span class="o">[]</span> <span class="n">correlation</span><span class="o">)</span> <span class="o">{</span>
+> <span class="k">return</span> <span class="nc">MessageBuilder</span><span class="o">.</span><span class="na">withPayload</span><span class="o">(</span><span class="n">in</span><span class="o">.</span><span class="na">toUpperCase</span><span class="o">())</span>
+>        <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">TOPIC</span><span class="o">,</span> <span class="n">replyTo</span><span class="o">)</span>
+>        <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">KEY</span><span class="o">,</span> <span class="mi">42</span><span class="o">)</span>
+>        <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="nc">KafkaHeaders</span><span class="o">.</span><span class="na">CORRELATION_ID</span><span class="o">,</span> <span class="n">correlation</span><span class="o">)</span>
+>        <span class="o">.</span><span class="na">setHeader</span><span class="o">(</span><span class="s">"someOtherHeader"</span><span class="o">,</span> <span class="s">"someValue"</span><span class="o">)</span>
+>        <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+> <span class="o">}</span>
+> </code></pre></div></div>
 
-When using request/reply semantics, the target partition can be requested by the sender.
+요청/응답 패턴<sup>request/reply semantics</sup>을 사용할 때는 sender가 타켓 파티션을 요청할 수 있다.
 
-> You can annotate a `@KafkaListener` method with `@SendTo` even if no result is returned. This is to allow the configuration of an `errorHandler` that can forward information about a failed message delivery to some topic. The following example shows how to do so:
+> `@KafkaListener` 메소드가 결과값을 반환하지 않더라도 `@SendTo` 어노테이션을 추가할 수 있다. 이렇게 하는 이유는 `errorHandler`를 설정해서 전송에 실패한 메시지 정보를 특정 토픽으로 전달하기 위해서다. 그 방법은 다음 코드를 참고해라:
+>
 > <div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@KafkaListener</span><span class="o">(</span><span class="n">id</span> <span class="o">=</span> <span class="s">"voidListenerWithReplyingErrorHandler"</span><span class="o">,</span> <span class="n">topics</span> <span class="o">=</span> <span class="s">"someTopic"</span><span class="o">,</span>
-        <span class="n">errorHandler</span> <span class="o">=</span> <span class="s">"voidSendToErrorHandler"</span><span class="o">)</span>
-<span class="nd">@SendTo</span><span class="o">(</span><span class="s">"failures"</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kt">void</span> <span class="nf">voidListenerWithReplyingErrorHandler</span><span class="o">(</span><span class="nc">String</span> <span class="n">in</span><span class="o">)</span> <span class="o">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"fail"</span><span class="o">);</span>
-<span class="o">}</span>
-<span class="nd">@Bean</span>
-<span class="kd">public</span> <span class="nc">KafkaListenerErrorHandler</span> <span class="nf">voidSendToErrorHandler</span><span class="o">()</span> <span class="o">{</span>
-    <span class="k">return</span> <span class="o">(</span><span class="n">m</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="o">...</span> <span class="c1">// some information about the failure and input data</span>
-    <span class="o">};</span>
-<span class="o">}</span>
-</code></pre></div></div>
+>         <span class="n">errorHandler</span> <span class="o">=</span> <span class="s">"voidSendToErrorHandler"</span><span class="o">)</span>
+> <span class="nd">@SendTo</span><span class="o">(</span><span class="s">"failures"</span><span class="o">)</span>
+> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">voidListenerWithReplyingErrorHandler</span><span class="o">(</span><span class="nc">String</span> <span class="n">in</span><span class="o">)</span> <span class="o">{</span>
+>     <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">"fail"</span><span class="o">);</span>
+> <span class="o">}</span>
+> <span class="nd">@Bean</span>
+> <span class="kd">public</span> <span class="nc">KafkaListenerErrorHandler</span> <span class="nf">voidSendToErrorHandler</span><span class="o">()</span> <span class="o">{</span>
+>  <span class="k">return</span> <span class="o">(</span><span class="n">m</span><span class="o">,</span> <span class="n">e</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="o">{</span>
+>         <span class="k">return</span> <span class="o">...</span> <span class="c1">// some information about the failure and input data</span>
+>     <span class="o">};</span>
+>    <span class="o">}</span>
+> </code></pre></div></div>
+> 
+>자세한 정보는 [Exception 처리하기](https://docs.spring.io/spring-kafka/reference/kafka/annotation-error-handling.html)를 참고해라.
 
-> See [Handling Exceptions](https://docs.spring.io/spring-kafka/reference/kafka/annotation-error-handling.html) for more information.
-
-> If a listener method returns an `Iterable`, by default a record for each element as the value is sent. Starting with version 2.3.5, set the `splitIterables` property on `@KafkaListener` to `false` and the entire result will be sent as the value of a single `ProducerRecord`. This requires a suitable serializer in the reply template’s producer configuration. However, if the reply is `Iterable<Message<?>>` the property is ignored and each message is sent separately.
+> 리스너 메소드가 `Iterable`을 반환하는 경우, 기본적으로 각 요소를 하나의 레코드로 전송한다. 2.3.5 버전부터 `@KafkaListener`의 `splitIterables` 프로퍼티를 `false`로 설정하면, 전체 `Iterable`을 하나의 `ProducerRecord` 값으로 전송할 수 있다. 이 방식에선 reply 템플릿의 프로듀서 설정에 적절한 serializer가 있어야 한다. 반면 `Iterable<Message<?>>`를 반환하는 경우, 해당 프로퍼티는 무시하고 각 메시지를 별도 레코드로 개별 전송한다.
 
 ---
 
 ## Filtering Messages
 
-In certain scenarios, such as rebalancing, a message that has already been processed may be redelivered. The framework cannot know whether such a message has been processed or not. That is an application-level function. This is known as the [Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html) pattern and Spring Integration provides an [implementation](https://docs.spring.io/spring-integration/reference/handler-advice/idempotent-receiver.html) of it.
+리밸런싱 같은 특수 상황에서는 이미 처리했던 메시지가 다시 전달될 수 있다. 특정 메시지가 처리되었는지 여부는 프레임워크에서 알 수 없다. 이는 애플리케이션 수준에서 해결해야 하는 문제다. [Idempotent Receiver](https://www.enterpriseintegrationpatterns.com/patterns/messaging/IdempotentReceiver.html) 패턴이라고도 알려진 이 패턴은, Spring Integration에서 [구현체](../../Spring%20Integration/messaging-endpoints/#10911-idempotent-receiver-enterprise-integration-pattern)를 제공하고 있기도 하다.
 
-The Spring for Apache Kafka project also provides some assistance by means of the `FilteringMessageListenerAdapter` class, which can wrap your `MessageListener`. This class takes an implementation of `RecordFilterStrategy` in which you implement the `filter` method to signal that a message is a duplicate and should be discarded. This has an additional property called `ackDiscarded`, which indicates whether the adapter should acknowledge the discarded record. It is `false` by default.
+스프링 카프카 프로젝트도 약간의 도움을 제공하는데, `MessageListener`를 래핑할 수 있는 `FilteringMessageListenerAdapter` 클래스를 제공한다. 이 클래스는 `RecordFilterStrategy` 구현체를 받으며, `RecordFilterStrategy`에선 `filter` 메소드를 구현해 중복 메시지를 폐기할지 여부를 알릴 수 있다. `FilteringMessageListenerAdapter`는 어댑터가 폐기한 레코드를 승인<sup>acknowledge</sup>해야 하는지 여부를 나타내는 `ackDiscarded`라는 별도 프로퍼티도 하나 정의돼 있다. 기본값은 `false`다.
 
-When you use `@KafkaListener`, set the `RecordFilterStrategy` (and optionally `ackDiscarded`) on the container factory so that the listener is wrapped in the appropriate filtering adapter.
+`@KafkaListener`를 사용할 때는, 컨테이너 팩토리에 `RecordFilterStrategy`(원한다면 `ackDiscarded`도)를 설정하면 적절한 필터링 어댑터로 리스너를 래핑한다.
 
-In addition, a `FilteringBatchMessageListenerAdapter` is provided, for when you use a batch [message listener](https://docs.spring.io/spring-kafka/reference/kafka/receiving-messages/message-listeners.html).
+또한, 배치 [메시지 리스너](#message-listeners)를 위한 `FilteringBatchMessageListenerAdapter`도 제공한다.
 
-> The `FilteringBatchMessageListenerAdapter` is ignored if your `@KafkaListener` receives a `ConsumerRecords<?, ?>` instead of `List<ConsumerRecord<?, ?>>`, because `ConsumerRecords` is immutable.
+> `@KafkaListener`에서 `List<ConsumerRecord<?, ?>>`가 아닌 `ConsumerRecords<?, ?>`를 받는 경우 `FilteringBatchMessageListenerAdapter`는 무시된다. `ConsumerRecords`는 변경할 수 없기 때문이다.
 
-Starting with version 2.8.4, you can override the listener container factory’s default `RecordFilterStrategy` by using the `filter` property on the listener annotations.
+2.8.4 버전부터 리스너 어노테이션의 `filter` 프로퍼티를 이용해 리스너 컨테이너 팩토리의 디폴트 `RecordFilterStrategy`를 재정의할 수 있다.
 
 ```java
 @KafkaListener(id = "filtered", topics = "topic", filter = "differentFilter")
@@ -1246,13 +1248,13 @@ public void listen(Thing thing) {
 }
 ```
 
-Starting with version 3.3, Ignoring empty batches that result from filtering by `RecordFilterStrategy` is supported. When implementing `RecordFilterStrategy`, it can be configured through `ignoreEmptyBatch()`. The default setting is `false`, indicating `KafkaListener` will be invoked even if all `ConsumerRecord`s are filtered out.
+3.3 버전부터 `RecordFilterStrategy`로 필터링해 만든 배치가 비어있을 경우 이를 무시하도록 만들 수 있다. `RecordFilterStrategy`를 구현할 때 `ignoreEmptyBatch()`를 통해 설정하면 된다. 디폴트는 `false`로 세팅되어 있어서, 모든 `ConsumerRecord`를 필터링해 제외시키더라도 `KafkaListener`를 실행한다.
 
-If `true` is returned, the `KafkaListener` will not be invoked when all `ConsumerRecord` are filtered out. However, commit to broker, will still be executed.
+`true`를 반환하면 모든 `ConsumerRecord`를 필터링해 제외된 경우엔 `KafkaListener`가 실행되지 않는다. 하지만 브로커에 대한 커밋은 여전히 진행한다.
 
-If `false` is returned, the `KafkaListener` will be invoked when all `ConsumerRecord` are filtered out.
+`false`를 반환하면 모든 `ConsumerRecord`를 필터링해 제외시켜도 `KafkaListener`를 실행한다.
 
-Here are some examples.
+다음은 몇 가지 예시다.
 
 ```java
 public class IgnoreEmptyBatchRecordFilterStrategy implements RecordFilterStrategy {
@@ -1276,7 +1278,7 @@ public void listen(List<Thing> things) {
 }
 ```
 
-In this case, `IgnoreEmptyBatchRecordFilterStrategy` always returns empty list and return `true` as result of `ignoreEmptyBatch()`. Thus `KafkaListener#listen(…)` never will be invoked at all.
+위 코드에선 `IgnoreEmptyBatchRecordFilterStrategy`는 항상 빈 리스트를 반환하고, `ignoreEmptyBatch()`는 `true`를 반환한다. 따라서 `KafkaListener#listen(…)`은 절대 실행되지 않는다.
 
 ```java
 public class NotIgnoreEmptyBatchRecordFilterStrategy implements RecordFilterStrategy {
@@ -1300,21 +1302,21 @@ public void listen(List<Thing> things) {
 }
 ```
 
-However, in this case, `IgnoreEmptyBatchRecordFilterStrategy` always returns empty list and return `false` as result of `ignoreEmptyBatch()`. Thus `KafkaListener#listen(…)` always will be invoked.
+반면 위 코드에선 `NotIgnoreEmptyBatchRecordFilterStrategy`는 항상 빈 리스트를 반환하고, `ignoreEmptyBatch()`는 `false`를 반환한다. 따라서 `KafkaListener#listen(…)`은 항상 실행된다.
 
 ---
 
 ## Retrying Deliveries
 
-See the `DefaultErrorHandler` in [Handling Exceptions](https://docs.spring.io/spring-kafka/reference/kafka/annotation-error-handling.html).
+[Exception 처리하기](https://docs.spring.io/spring-kafka/reference/kafka/annotation-error-handling.html)에서 설명하는 `DefaultErrorHandler`를 확인해봐라.
 
 ---
 
 ## Starting `@KafkaListener`s in Sequence
 
-A common use case is to start a listener after another listener has consumed all the records in a topic. For example, you may want to load the contents of one or more compacted topics into memory before processing records from other topics. Starting with version 2.7.3, a new component `ContainerGroupSequencer` has been introduced. It uses the `@KafkaListener`'s `containerGroup` property to group containers together and start the containers in the next group, when all the containers in the current group have gone idle.
+어떤 리스너가 토픽에 있는 모든 레코드를 컨슘하고 나면, 다른 리스너를 시작하고 싶은 경우가 많이 있다. 예를 들어, 다른 토픽에 있는 레코드를 처리하기 전에 하나 이상의 압축<sup>compacted </sup> 토픽 컨텐츠를 메모리에 로드할 수 있다. 2.7.3 버전부터 `ContainerGroupSequencer`를 새로 도입했다. 이제 `@KafkaListener`의 `containerGroup` 프로퍼티를 통해 관련 컨테이너를 그룹으로 묶으면, 현재 그룹의 모든 컨테이너가 유휴 상태<sup>idle</sup>가 됐을 때 다음 그룹의 컨테이너를 시작할 수 있다.
 
-It is best illustrated with an example.
+예시를 보면 쉽게 이해할 수 있다.
 
 ```java
 @KafkaListener(id = "listen1", topics = "topic1", containerGroup = "g1", concurrency = "2")
@@ -1339,21 +1341,21 @@ ContainerGroupSequencer sequencer(KafkaListenerEndpointRegistry registry) {
 }
 ```
 
-Here, we have 4 listeners in two groups, `g1` and `g2`.
+여기서는 `g1`과 `g2`이 라는 두 그룹에 네 가지 리스너가 있다.
 
-During application context initialization, the sequencer sets the `autoStartup` property of all the containers in the provided groups to `false`. It also sets the `idleEventInterval` for any containers (that do not already have one set) to the supplied value (5000ms in this case). Then, when the sequencer is started by the application context, the containers in the first group are started. As `ListenerContainerIdleEvent`s are received, each individual child container in each container is stopped. When all child containers in a `ConcurrentMessageListenerContainer` are stopped, the parent container is stopped. When all containers in a group have been stopped, the containers in the next group are started. There is no limit to the number of groups or containers in a group.
+애플리케이션 컨텍스트를 초기화할 때 sequencer는 지정한 그룹 내에 있는 모든 컨테이너의 `autoStartup` 프로퍼티를 `false`로 설정한다. 또한 (아직 설정하지 않은) 모든 컨테이너의 `idleEventInterval`을 지정한 값으로 설정한다 (여기서는 5000ms). 이후 애플리케이션 컨텍스트가 sequencer를 시작하면 첫 번째 그룹의 컨테이너를 시작한다. `ListenerContainerIdleEvent`를 수신하면 각 컨테이너의 자식 컨테이너를 하나 하나 중지한다. `ConcurrentMessageListenerContainer`의 모든 자식 컨테이너가 중지되면 부모 컨테이너가 중지된다. 그룹 내 모든 컨테이너가 중지되면 다음 그룹의 컨테이너를 시작한다. 한 그룹 내 컨테이너 수나 그룹 수에는 제한이 없다.
 
-By default, the containers in the final group (`g2` above) are not stopped when they go idle. To modify that behavior, set `stopLastGroupWhenIdle` to `true` on the sequencer.
+기본적으로, 마지막 그룹(위에선 `g2`)의 컨테이너는 유휴 상태가 되어도 중지되지 않는다. 이 동작을 변경하려면 sequencer의 `stopLastGroupWhenIdle`을 `true`로 설정해라.
 
-As an aside, previously containers in each group were added to a bean of type `Collection<MessageListenerContainer>` with the bean name being the `containerGroup`. These collections are now deprecated in favor of beans of type `ContainerGroup` with a bean name that is the group name, suffixed with `.group`; in the example above, there would be 2 beans `g1.group` and `g2.group`. The `Collection` beans will be removed in a future release.
+참고로, 이전에는 각 그룹의 컨테이너를 `containerGroup`이라는 이름을 가진 `Collection<MessageListenerContainer>` 타입의 빈으로 추가했었다. 이제는 이름이 `.group`으로 끝나는 `ContainerGroup` 타입 빈으로 대체되었다. 위 예시에서는 `g1.group`과 `g2.group`이라는 두 개의 빈이 등록된다. `Collection` 빈은 향후 릴리즈에서 제거될 예정이다.
 
 ---
 
 ## Using `KafkaTemplate` to Receive
 
-This section covers how to use `KafkaTemplate` to receive messages.
+이번에는 `KafkaTemplate`을 사용해 메시지를 수신하는 방법을 다룬다.
 
-Starting with version 2.8, the template has four `receive()` methods:
+2.8 버전부터 템플릿엔 네 가지 `receive()` 메소드가 존재한다:
 
 ```java
 ConsumerRecord<K, V> receive(String topic, int partition, long offset);
@@ -1362,9 +1364,9 @@ ConsumerRecord<K, V> receive(String topic, int partition, long offset, Duration 
 
 ConsumerRecords<K, V> receive(Collection<TopicPartitionOffset> requested);
 
-ConsumerRecords<K, V> receive(Collection<TopicPartitionOffset> requested, Duration pollTimeout);Copied!
+ConsumerRecords<K, V> receive(Collection<TopicPartitionOffset> requested, Duration pollTimeout);
 ```
 
-As you can see, you need to know the partition and offset of the record(s) you need to retrieve; a new `Consumer` is created (and closed) for each operation.
+보다시피, 수신하고 싶은 레코드의 파티션과 오프셋을 알아야 한다. 작업을 수행할 때마다 새로운 `Consumer`가 생성되고 닫힌다.
 
-With the last two methods, each record is retrieved individually and the results assembled into a `ConsumerRecords` object. When creating the `TopicPartitionOffset`s for the request, only positive, absolute offsets are supported.
+마지막 두 메소드를 사용하면 각 레코드를 하나씩 읽고, 레코드를 모아 `ConsumerRecords` 객체로 반환한다. 요청할 `TopicPartitionOffset`을 생성할 때는 양수의 절대 오프셋만 지원한다.

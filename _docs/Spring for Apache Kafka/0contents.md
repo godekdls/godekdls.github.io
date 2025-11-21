@@ -46,20 +46,20 @@ description: 스프링 카프카 레퍼런스를 한글로 번역한 문서입�
  + [Dynamically Creating Containers
  + [Application Events
  + [Topic/Partition Initial Offset
- + [Seeking to a Specific Offset 
- + [Container factory 
- + [Thread Safety 
- + [Monitoring 
- + [Transactions 
- + [Exactly Once Semantics 
- + [Wiring Spring Beans into Producer/Consumer Interceptors 
+ + [Seeking to a Specific Offset
+ + [Container factory
+ + [Thread Safety
+ + [Monitoring
+ + [Transactions
+ + [Exactly Once Semantics
+ + [Wiring Spring Beans into Producer/Consumer Interceptors
  + [Producer Interceptor Managed in Spring
- + [Pausing and Resuming Listener Containers 
- + [Pausing and Resuming Partitions on Listener Containers 
- + [Serialization, Deserialization, and Message Conversion 
- + [Message Headers 
- + [Null Payloads and Log Compaction of 'Tombstone' Records 
- + [Handling Exceptions 
+ + [Pausing and Resuming Listener Containers](../pause-resume)
+ + [Pausing and Resuming Partitions on Listener Containers](../pause-resume-partitions)
+ + [Serialization, Deserialization, and Message Conversion
+ + [Message Headers
+ + [Null Payloads and Log Compaction of 'Tombstone' Records
+ + [Handling Exceptions](../annotation-error-handling)
  + [JAAS and Kerberos
 - [Non-Blocking Retries]
  + [How the Pattern Works]
