@@ -8,7 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/3.3.10/kafka.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/kafka.html
 parent: Reference
 parentUrl: /Spring for Apache Kafka/reference/
 subparent: Using Spring for Apache Kafka
@@ -18,7 +18,7 @@ isSubparent: true
 
 ---
 
-이번 섹션에선 스프링 카프카의 사용에 영향을 미치는 여러 가지 요소들을 자세히 설명한다. 짧고 간단한 소개는 [퀵 가이드](../quick-tour)를 참고해라.
+이번 섹션에선 스프링 카프카의 사용성에 영향을 미치는 여러 가지 요소들을 자세히 설명한다. 짧고 간단한 소개는 [퀵 가이드](../quick-tour)를 참고해라.
 
 ---
 
@@ -26,7 +26,7 @@ isSubparent: true
 
 - [카프카 연결하기](../connecting)
 - [토픽 설정하기](../configuring-topics)
-- [Sending Messages](https://docs.spring.io/spring-kafka/reference/kafka/sending-messages.html)
+- [메시지 전송하기](../sending-messages)
 - [메시지 수신하기](../receiving-messages)
 - [Listener Container Properties](https://docs.spring.io/spring-kafka/reference/kafka/container-props.html)
 - [Dynamically Creating Containers](https://docs.spring.io/spring-kafka/reference/kafka/dynamic-containers.html)

@@ -8,7 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/3.3.10/reference.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/reference.html
 parent: Reference
 isParent: true
 parentUrl: /Spring for Apache Kafka/reference/

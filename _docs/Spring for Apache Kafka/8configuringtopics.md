@@ -8,7 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/3.3.10/configuring-topics.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/configuring-topics.html
 parent: Reference
 parentUrl: /Spring for Apache Kafka/reference/
 subparent: Using Spring for Apache Kafka
@@ -174,14 +174,15 @@ fun topics456() = KafkaAdmin.NewTopics(
 
 > 브로커가 이를 지원하는 경우 (1.0.0 이상), 어드민은 기존 토픽의 파티션 수가 `NewTopic.numPartitions`보다 적다고 판단되면 파티션 수를 늘린다.
 
-Starting with version 2.7, the `KafkaAdmin` provides methods to create and examine topics at runtime.
+2.7 버전부터 `KafkaAdmin`은 런타임에 토픽을 생성하고 조사할 수 있는 메소드를 제공한다.
 
-2.7 버전부터 `KafkaAdmin`은 런타임에 토픽을 생성하고 
+4.0 버전부터는 토픽을 삭제할 수 있는 메소드도 제공한다.
 
 - `createOrModifyTopics`
 - `describeTopics`
+-  `deleteTopics` (since 4.0)
 
-이런 기능들을 사용하려면 `AdminClient`를 직접 사용하면 된다. 그 방법은 다음 예제를 참고해라:
+이런 토픽 관리 기능을 사용하려면 `AdminClient`를 직접 사용하면 된다. 그 방법은 다음 예제를 참고해라:
 
 ```java
 @Autowired

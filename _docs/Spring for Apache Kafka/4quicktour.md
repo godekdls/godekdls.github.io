@@ -8,7 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/3.3.10/quick-tour.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/quick-tour.html
 parent: Introduction
 parentUrl: /Spring for Apache Kafka/introduction/
 ---
@@ -63,7 +63,7 @@ compile 'org.springframework.kafka:spring-kafka:3.3.10'
 implementation 'org.springframework.kafka:spring-kafka'
 ```
 
-하지만 [start.spring.io](https://start.spring.io/)(Spring Tool Suits와 Intellij IDEA의 프로젝트 생성 도우미)를 이용해 프로젝트를 생성하고, 'Spring for Apache Kafka'를 의존성으로 선택하는 방법이 가장 쉽고 빠르다.
+하지만 [start.spring.io](https://start.spring.io/)(Spring Tool Suits와 Intellij IDEA의 프로젝트 생성 도우미)를 이용해 프로젝트를 생성하고, 의존성으로 'Spring for Apache Kafka'를 선택하는 방법이 가장 쉽고 빠르다.
 
 ---
 
@@ -71,15 +71,15 @@ implementation 'org.springframework.kafka:spring-kafka'
 
 이 가이드에서는 다음과 같은 버전을 사용한다:
 
-- Apache Kafka Clients 3.7.x
-- Spring Framework 6.1.x
+- Apache Kafka Clients 4.0.x
+- Spring Framework 7.0.0x
 - 자바 최소 버전: 17
 
 ---
 
 ## Getting Started
 
-스프링 카프카를 가장 빠르게 시작해보려면 [start.spring.io](https://start.spring.io/)(Spring Tool Suits와 Intellij IDEA의 프로젝트 생성 도우미)를 이용해 프로젝트를 생성하고, 'Spring for Apache Kafka'를 의존성으로 선택하면 된다. 스프링 부트가 자동으로 설정해주는 내부 빈들에 대한 자세한 내용은 [스프링 부트 문서](../../Spring%20Boot/messaging/#7143-apache-kafka-support)를 참고해라.
+스프링 카프카를 가장 빠르게 시작하고 싶다면 [start.spring.io](https://start.spring.io/)(Spring Tool Suits와 Intellij IDEA의 프로젝트 생성 도우미)를 이용해 프로젝트를 생성하고, 의존성으로 'Spring for Apache Kafka'를 선택하면 된다. 스프링 부트가 자동으로 설정해주는 내부 빈들에 대한 자세한 설명은 [스프링 부트 문서](../../Spring%20Boot/messaging/#7143-apache-kafka-support)를 참고해라.
 
 다음은 최소한의 코드로 작성한 컨슈머 애플리케이션이다.
 
@@ -199,7 +199,7 @@ class Application {
 
 > 스프링 카프카는 스프링 애플리케이션 컨텍스트 내에서 사용하는 용도로 설계됐다. 예를 들어, 스프링 컨텍스트 밖에서 직접 리스너 컨테이너를 생성하는 경우, 컨테이너가 구현하는 모든 `...Aware` 인터페이스에 필요한 것들을 직접 처리하지 않으면 일부 기능이 동작하지 않을 수 있다.
 
-다음은 스프링 부트를 사용하지 않는 애플리케이션의 예시다. 이 애플리케이션은 `Consumer`와 `Producer`를 모두 사용한다.
+다음은 스프링 부트를 사용하지 않는 애플리케이션의 예시다. 이 애플리케이션은 `Consumer`와 `Producer`를 모두 다룬다.
 
 *Without Spring Boot*
 
