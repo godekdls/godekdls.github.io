@@ -8,7 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/quick-tour.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/kafka/quick-tour.html
 parent: Introduction
 parentUrl: /Spring for Apache Kafka/introduction/
 ---

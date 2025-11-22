@@ -8,7 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/receiving-messages.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/kafka/receiving-messages.html
 parent: Reference
 parentUrl: /Spring for Apache Kafka/reference/
 subparent: Using Spring for Apache Kafka
@@ -330,7 +330,7 @@ public Mono<Void> listen(String data) {
 }
 ```
 
-> 비동기 리턴 타입을 감지하면 `AckMode`는 자동으로 `MANUAL`로 설정되며, 순서와 무관한 커밋<sup> out-of-order commits</sup>도 가능해진다. 대신 비동기 작업이 완료되면 해당 시점에 ack가 수행된다. 비동기 처리가 에러로 끝나면, 컨테이너 에러 핸들러에 따라 메시지 복구 여부를 결정한다. 만약 리스너 메소드 내에서 비동기 결과 객체를 생성하지 못할 정도의 예외가 발생하면, **반드시** 예외를 catch해서 적절한 반환 객체를 리턴해야 메시지를 ack 처리하거나 복구할 수 있다.
+> 비동기 리턴 타입을 감지하면 `AckMode`는 자동으로 `MANUAL`로 설정되며, 순서와 무관한 커밋<sup>out-of-order commits</sup>도 가능해진다. 대신 비동기 작업이 완료되면 해당 시점에 ack가 수행된다. 비동기 처리가 에러로 끝나면, 컨테이너 에러 핸들러에 따라 메시지 복구 여부를 결정한다. 만약 리스너 메소드 내에서 비동기 결과 객체를 생성하지 못할 정도의 예외가 발생하면, **반드시** 예외를 catch해서 적절한 반환 객체를 리턴해야 메시지를 ack 처리하거나 복구할 수 있다.
 
 비동기 리턴 타입(코틀린 suspend 함수 포함)을 가진 리스너에 `KafkaListenerErrorHandler`를 설정하면, 에러 발생 후  `KafkaListenerErrorHandler`가 실행된다.  `KafkaListenerErrorHandler`와 그 목적에 대한 자세한 내용은 [예외 처리](../annotation-error-handling)를 참고해라.
 

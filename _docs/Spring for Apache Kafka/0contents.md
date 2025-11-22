@@ -7,7 +7,7 @@ image: ./../../images/spring/logo.jpeg
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/index.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/kafka/index.html
 originalVersion: 4.0.0
 description: 스프링 카프카 레퍼런스를 한글로 번역한 문서입니다. 버전은 4.0.0 기준입니다.
 ---
@@ -42,7 +42,7 @@ description: 스프링 카프카 레퍼런스를 한글로 번역한 문서입�
  + [Configuring Topics](../configuring-topics)
  + [Sending Messages](../sending-messages)
  + [Receiving Messages](../receiving-messages)
- + [Listener Container Properties
+ + [Listener Container Properties](..container-props)
  + [Dynamically Creating Containers
  + [Application Events
  + [Topic/Partition Initial Offset

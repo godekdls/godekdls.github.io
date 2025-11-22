@@ -8,7 +8,7 @@ image: ./../../images/spring/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/kafka.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/kafka/kafka.html
 parent: Reference
 parentUrl: /Spring for Apache Kafka/reference/
 subparent: Using Spring for Apache Kafka
@@ -28,7 +28,7 @@ isSubparent: true
 - [토픽 설정하기](../configuring-topics)
 - [메시지 전송하기](../sending-messages)
 - [메시지 수신하기](../receiving-messages)
-- [Listener Container Properties](https://docs.spring.io/spring-kafka/reference/kafka/container-props.html)
+- [리스너 컨테이너 프로퍼티](../container-props)
 - [Dynamically Creating Containers](https://docs.spring.io/spring-kafka/reference/kafka/dynamic-containers.html)
 - [Application Events](https://docs.spring.io/spring-kafka/reference/kafka/events.html)
 - [Topic/Partition Initial Offset](https://docs.spring.io/spring-kafka/reference/kafka/topic/partition-initial-offset.html)

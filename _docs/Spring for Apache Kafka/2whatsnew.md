@@ -9,7 +9,7 @@ image: ./../../images/logo.png
 lastmod: 2025-09-12T23:34:00+09:00
 comments: true
 originalRefName: 스프링 카프카
-originalRefLink: https://docs.spring.io/spring-kafka/reference/4.0.0/whats-new.html
+originalRefLink: https://docs.spring.io/spring-kafka/reference/kafka/whats-new.html
 ---
 
 ---
