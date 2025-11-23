@@ -43,13 +43,13 @@ description: 스프링 카프카 레퍼런스를 한글로 번역한 문서입�
  + [Sending Messages](../sending-messages)
  + [Receiving Messages](../receiving-messages)
  + [Listener Container Properties](..container-props)
- + [Dynamically Creating Containers
- + [Application Events
- + [Topic/Partition Initial Offset
- + [Seeking to a Specific Offset
- + [Container factory
- + [Thread Safety
- + [Monitoring
+ + [Dynamically Creating Containers](../dynamic-containers)
+ + [Application Events](../events)
+ + [Topic/Partition Initial Offset](../partition-initial-offset)
+ + [Seeking to a Specific Offset](../seek)
+ + [Container factory](../container-factory)
+ + [Thread Safety](../thread-safety)
+ + [Monitoring](../micrometer)
  + [Transactions
  + [Exactly Once Semantics
  + [Wiring Spring Beans into Producer/Consumer Interceptors

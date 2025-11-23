@@ -1314,7 +1314,7 @@ public void listen(List<Thing> things) {
 
 ## Starting `@KafkaListener`s in Sequence
 
-어떤 리스너가 토픽에 있는 모든 레코드를 컨슘하고 나면, 다른 리스너를 시작하고 싶은 경우가 많이 있다. 예를 들어, 다른 토픽에 있는 레코드를 처리하기 전에 하나 이상의 압축<sup>compacted </sup> 토픽 컨텐츠를 메모리에 로드할 수 있다. 2.7.3 버전부터 `ContainerGroupSequencer`를 새로 도입했다. 이제 `@KafkaListener`의 `containerGroup` 프로퍼티를 통해 관련 컨테이너를 그룹으로 묶으면, 현재 그룹의 모든 컨테이너가 유휴 상태<sup>idle</sup>가 됐을 때 다음 그룹의 컨테이너를 시작할 수 있다.
+어떤 리스너가 토픽에 있는 모든 레코드를 컨슘하고 나면, 다른 리스너를 시작하고 싶은 경우가 많이 있다. 예를 들어, 다른 토픽에 있는 레코드를 처리하기 전에 하나 이상의 압축<sup>compacted</sup> 토픽 컨텐츠를 메모리에 로드할 수 있다. 2.7.3 버전부터 `ContainerGroupSequencer`를 새로 도입했다. 이제 `@KafkaListener`의 `containerGroup` 프로퍼티를 통해 관련 컨테이너를 그룹으로 묶으면, 현재 그룹의 모든 컨테이너가 유휴 상태<sup>idle</sup>가 됐을 때 다음 그룹의 컨테이너를 시작할 수 있다.
 
 예시를 보면 쉽게 이해할 수 있다.
 
