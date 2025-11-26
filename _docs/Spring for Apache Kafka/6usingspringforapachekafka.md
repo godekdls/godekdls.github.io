@@ -36,7 +36,7 @@ isSubparent: true
 - [컨테이너 팩토리](../container-factory)
 - [Thread Safety](../thread-safety)
 - [모니터링](../micrometer)
-- [Transactions](https://docs.spring.io/spring-kafka/reference/kafka/transactions.html)
+- [트랜잭션](../transactions)
 - [Exactly Once Semantics](https://docs.spring.io/spring-kafka/reference/kafka/exactly-once.html)
 - [Wiring Spring Beans into Producer/Consumer Interceptors](https://docs.spring.io/spring-kafka/reference/kafka/interceptors.html)
 - [Producer Interceptor Managed in Spring](https://docs.spring.io/spring-kafka/reference/kafka/producer-interceptor-managed-in-spring.html)

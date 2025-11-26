@@ -50,7 +50,7 @@ description: 스프링 카프카 레퍼런스를 한글로 번역한 문서입�
  + [Container factory](../container-factory)
  + [Thread Safety](../thread-safety)
  + [Monitoring](../micrometer)
- + [Transactions
+ + [Transactions](../transactions)
  + [Exactly Once Semantics
  + [Wiring Spring Beans into Producer/Consumer Interceptors
  + [Producer Interceptor Managed in Spring

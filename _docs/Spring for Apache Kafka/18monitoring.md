@@ -21,53 +21,53 @@ subparentUrl: /Spring for Apache Kafka/kafka/
 - [Monitoring KafkaTemplate Performance](#monitoring-kafkatemplate-performance)
 - [Micrometer Native Metrics](#micrometer-native-metrics)
 - [Micrometer Observation](#micrometer-observation)
-- [Batch Listener Observations](#batch-listener-observations)
+  - [Batch Listener Observations](#batch-listener-observations)
 
 ---
 
 ## Monitoring Listener Performance
 
-Starting with version 2.3, the listener container will automatically create and update Micrometer `Timer`s for the listener, if `Micrometer` is detected on the classpath, and a single `MeterRegistry` is present in the application context. The timers can be disabled by setting the `ContainerProperty`'s `micrometerEnabled` to `false`.
+2.3 버전부터 클래스패스에 `Micrometer`가 존재하면서 애플리케이션 컨텍스트에 `MeterRegistry`가 하나 있을 경우, 리스너 컨테이너는 자동으로 리스너를 위한 Micrometer `Timer`를 생성하고 업데이트한다. 타이머를 비활성화하려면 `ContainerProperty`의 `micrometerEnabled`를 `false`로 설정하면 된다.
 
-Two timers are maintained - one for successful calls to the listener and one for failures.
+관리하는 타이머는 총 두 가지로, 리스너 실행에 성공한 경우를 위한 타이머와, 실패한 경우를 위한 타이머가 있다.
 
-The timers are named `spring.kafka.listener` and have the following tags:
+타이머 이름은 `spring.kafka.listener`이며, 다음과 같은 태그를 가진다:
 
-- `name` : (container bean name)
-- `result` : `success` or `failure`
-- `exception` : `none` or `ListenerExecutionFailedException`
+- `name` : (컨테이너 빈 이름)
+- `result` : `success` 또는 `failure`
+- `exception` : `none` 또는 `ListenerExecutionFailedException`
 
-You can add additional tags using the `ContainerProperties`'s `micrometerTags` property.
+`ContainerProperties`의 `micrometerTags` 프로퍼티를 이용하면 다른 태그를 더 추가할 수 있다.
 
-Starting with versions 2.9.8, 3.0.6, you can provide a function in `ContainerProperties`'s `micrometerTagsProvider`; the function receives the `ConsumerRecord<?, ?>` and returns tags which can be based on that record, and merged with any static tags in `micrometerTags`.
+2.9.8, 3.0.6 버전부터는 `ContainerProperties`의 `micrometerTagsProvider`로 함수를 제공할 수 있다. 이 함수는 `ConsumerRecord<?, ?>`를 받아 해당 레코드를 기반으로 태그를 반환하며, 그러면 `micrometerTags`에 있는 기존 정적인 태그와 병합된다.
 
-> With the concurrent container, timers are created for each thread and the `name` tag is suffixed with `-n` where n is `0` to `concurrency-1`.
+> concurrent 컨테이너를 사용할 때는 각 스레드마다 타이머가 생성된다. `name` tag는 뒤에 `-n`이 붙으며, 여기서 n은 `0`부터 `concurrency-1`까지의 값이다.
 
 ---
 
 ## Monitoring KafkaTemplate Performance
 
-Starting with version 2.5, the template will automatically create and update Micrometer `Timer`s for send operations, if `Micrometer` is detected on the classpath, and a single `MeterRegistry` is present in the application context. The timers can be disabled by setting the template’s `micrometerEnabled` property to `false`.
+2.3 버전부터 클래스패스에 `Micrometer`가 존재하면서 애플리케이션 컨텍스트에 `MeterRegistry`가 하나 있을 경우, 템플릿은 자동으로 전송 작업을 위한 Micrometer `Timer`를 생성하고 업데이트한다. 타이머를 비활성화하려면 `ContainerProperty`의 `micrometerEnabled`를 `false`로 설정하면 된다.
 
-Two timers are maintained - one for successful calls to the listener and one for failures.
+관리하는 타이머는 총 두 가지로, 리스너 실행에 성공한 경우를 위한 타이머와, 실패한 경우를 위한 타이머가 있다.
 
-The timers are named `spring.kafka.template` and have the following tags:
+타이머 이름은 `spring.kafka.template`이며, 다음과 같은 태그를 가진다:
 
-- `name` : (template bean name)
-- `result` : `success` or `failure`
-- `exception` : `none` or the exception class name for failures
+- `name` : (템플릿 빈 이름)
+- `result` : `success` 또는 `failure`
+- `exception` : `none` 또는실패 시 exception 클래스명
 
-You can add additional tags using the template’s `micrometerTags` property.
+템플릿의 `micrometerTags` 프로퍼티를 이용하면 다른 태그를 더 추가할 수 있다.
 
-Starting with versions 2.9.8, 3.0.6, you can provide a `KafkaTemplate.setMicrometerTagsProvider(Function<ProducerRecord<?, ?>, Map<String, String>>)` property; the function receives the `ProducerRecord<?, ?>` and returns tags which can be based on that record, and merged with any static tags in `micrometerTags`.
+2.9.8, 3.0.6 버전부터는 `KafkaTemplate.setMicrometerTagsProvider(Function<ProducerRecord<?, ?>, Map<String, String>>)` 프로퍼티를 제공할 수 있다. 이 함수는 `ProducerRecord<?, ?>`를 받아 해당 레코드를 기반으로 태그를 반환하며, 그러면 `micrometerTags`에 있는 기존 정적인 태그와 병합된다.
 
 ---
 
 ## Micrometer Native Metrics
 
-Starting with version 2.5, the framework provides [Factory Listeners](https://docs.spring.io/spring-kafka/reference/kafka/connecting.html#factory-listeners) to manage a Micrometer `KafkaClientMetrics` instance whenever producers and consumers are created and closed.
+2.5 버전부터 스프링 프레임워크는 프로듀서와 컨슈머를 생성하거나 종료할 때 Micrometer `KafkaClientMetrics` 인스턴스를 관리할 수 있는 [팩토리 리스너](../connecting/#factory-listeners)를 제공한다.
 
-To enable this feature, simply add the listeners to your producer and consumer factories:
+이 기능을 활성화하려면, 간단히 프로듀서와 컨슈머 팩토리에 리스너를 추가해주면 된다:
 
 ```java
 @Bean
@@ -96,9 +96,9 @@ public ProducerFactory<String, String> myProducerFactory() {
 }
 ```
 
-The consumer/producer `id` passed to the listener is added to the meter’s tags with tag name `spring.id`.
+리스너에 전달되는 컨슈머/프로듀서 `id`는 `spring.id`라는 이름으로 meter의 태그에 추가된다.
 
-An example of obtaining one of the Kafka metrics
+다음은 카프카 메트릭 중 하나를 조회하는 예시다:
 
 ```java
 double count = this.meterRegistry.get("kafka.producer.node.incoming.byte.total")
@@ -108,41 +108,39 @@ double count = this.meterRegistry.get("kafka.producer.node.incoming.byte.total")
                 .count();
 ```
 
-A similar listener is provided for the `StreamsBuilderFactoryBean` - see [KafkaStreams Micrometer Support](https://docs.spring.io/spring-kafka/reference/streams.html#streams-micrometer).
+`StreamsBuilderFactoryBean`에도 비슷한 리스너를 제공하고 있다. 자세한 내용은 [KafkaStreams Micrometer 지원](https://docs.spring.io/spring-kafka/reference/streams.html#streams-micrometer)을 참고해라.
 
-Starting with version 3.3, a `KafkaMetricsSupport` abstract class is introduced to manage `io.micrometer.core.instrument.binder.kafka.KafkaMetrics` binding into a `MeterRegistry` for provided Kafka client. This class is a super for the mentioned above `MicrometerConsumerListener`, `MicrometerProducerListener` and `KafkaStreamsMicrometerListener`. However, it can be used for any Kafka client use-cases. The class needs to be extended and its `bindClient()` and `unbindClient()` API have to be called to connect Kafka client metrics with a Micrometer collector.
+3.3 버전부터는 `KafkaMetricsSupport`라는 추상 클래스를 도입했다. 이 클래스는 넘겨받은 카프카 클라이언트의 `io.micrometer.core.instrument.binder.kafka.KafkaMetrics`를 `MeterRegistry`에 바인딩한다. 앞서 언급한 `MicrometerConsumerListener`, `MicrometerProducerListener`, `KafkaStreamsMicrometerListener` 역시 이 클래스를 상속하고 있다. 물론, 카프카 클라이언트를 사용한다면 다른 케이스에도 활용할 수 있다. 이 클래스를 상속하고, `bindClient()`와 `unbindClient()` API를 직접 호출해서 카프카 클라이언트 메트릭을 Micrometer collector에 연결해주면 된다.
 
 ---
 
 ## Micrometer Observation
 
-Using Micrometer for observation is now supported, since version 3.0, for the `KafkaTemplate` and listener containers.
+3.0 버전부터 `KafkaTemplate`과 리스너 컨테이너에 Micrometer Observation을 사용할 수 있다.
 
-Set `observationEnabled` to `true` on the `KafkaTemplate` and `ContainerProperties` to enable observation; this will disable [Micrometer Timers](https://docs.spring.io/spring-kafka/reference/kafka/micrometer.html#) because the timers will now be managed with each observation.
+`KafkaTemplate`과 `ContainerProperties`의 `observationEnabled`를 `true`로 설정하면 Observation이 활성화된다. 이 설정을 사용하면 각 observation이 타이머를 관리하기 때문에 [Micrometer 타이머](./)는 비활성화된다.
 
-> Micrometer Observation does not support batch listener; this will enable Micrometer Timers
+> Micrometer Observation은 배치 리스너를 지원하지 않는다. 이 경우 Micrometer 타이머가 활성화된다.
 
-Refer to [Micrometer Tracing](https://docs.micrometer.io/tracing/reference/1.6) for more information.
+자세한 내용은 [Micrometer 트레이싱](https://docs.micrometer.io/tracing/reference/1.6)을 참고해라.
 
-To add tags to timers/traces, configure a custom `KafkaTemplateObservationConvention` or `KafkaListenerObservationConvention` to the template or listener container, respectively.
+타이머/트레이스에 태그를 추가하려면, 템플릿 또는 리스너 컨테이너에 각각 커스텀`KafkaTemplateObservationConvention`/`KafkaListenerObservationConvention` 구현체를 설정해라.
 
-The default implementations add the `bean.name` tag for template observations and `listener.id` tag for containers.
+디폴트구현체는 템플릿 Observation에는 `bean.name` 태그를, 컨테이너 Observation에는 `listener.id` 태그를 추가한다.
 
-You can either subclass `DefaultKafkaTemplateObservationConvention` or `DefaultKafkaListenerObservationConvention` or provide completely new implementations.
+`DefaultKafkaTemplateObservationConvention`이나 `DefaultKafkaListenerObservationConvention`을 상속해도 되고, 완전히 새로운 구현체를 제공해도 된다.
 
-See [Micrometer Observation Documentation](https://docs.spring.io/spring-kafka/reference/appendix/micrometer.html#observation-gen) for details of the default observations that are recorded.
+기록되는 기본 Observation에 대한 자세한 내용은 [Micrometer Observation 문서](https://docs.spring.io/spring-kafka/reference/appendix/micrometer.html#observation-gen)를 참고해라.
 
-Starting with version 3.0.6, you can add dynamic tags to the timers and traces, based on information in the consumer or producer records. To do so, add a custom `KafkaListenerObservationConvention` and/or `KafkaTemplateObservationConvention` to the listener container properties or `KafkaTemplate` respectively. The `record` property in both observation contexts contains the `ConsumerRecord` or `ProducerRecord` respectively.
+3.0.6 버전부터, 컨슈머 또는 프로듀서 레코드의 정보를 기반으로 타이머와 트레이스에 동적인 태그를 추가할 수 있다. 이땐 리스너 컨테이너 프로퍼티나 `KafkaTemplate`에 각각 커스텀 `KafkaListenerObservationConvention`, `KafkaTemplateObservationConvention`을 설정하면 된다. 두 Observation 컨텍스트에 있는 `record` 프로퍼티는 각각 `ConsumerRecord` 또는 `ProducerRecord`가 들어있다.
 
-The sender and receiver contexts `remoteServiceName` properties are set to the Kafka `clusterId` property; this is retrieved by a `KafkaAdmin`. If, for some reason - perhaps lack of admin permissions, you cannot retrieve the cluster id, starting with version 3.1, you can set a manual `clusterId` on the `KafkaAdmin` and inject it into `KafkaTemplate`s and listener containers. When it is `null` (default), the admin will invoke the `describeCluster` admin operation to retrieve it from the broker.
-
----
+sender와 receiver 컨텍스트의 `remoteServiceName` 프로퍼티는 카프카 `clusterId` 프로퍼티로 세팅된다. 이 값은 `KafkaAdmin`으로 가져온다. 만약 어드민 권한이 없다거나 하는 이유로 클러스터 id를 조회할 수 없다면, 3.1 버전부터는 `KafkaAdmin`에 직접 `clusterId`를 설정하고 이를 `KafkaTemplate`과 리스너 컨테이너에 주입해주면 된다. `clusterId`가 `null`(디폴트)이면, 어드민은 admin operation `describeCluster`를 실행해 브로커에서 클러스터 id를 조회한다.
 
 ### Batch Listener Observations
 
-When using a batch listener, by default, no observations are created, even if a `ObservationRegistry` is present. This is because the scope of an observation is tied to the thread, and with a batch listener, there is no one-to-one mapping between an observation and a record.
+배치 리스너를 사용할 때는 기본적으로 `ObservationRegistry`가 존재하더라도 Observation을 생성하지 않는다. Observation의 스코프는 스레드에 묶이게 되고, 배치 리스너에서는 Observation과 레코드 간에 1:1 매핑이 존재하지 않기 때문이다.
 
-To enable per-record observations in a batch listener, set the container factory property `recordObservationsInBatch` to `true`.
+배치 리스너에서 레코드 단위 Observation을 활성화고 싶다면, 컨테이너 팩토리 프로퍼티 `recordObservationsInBatch`를 `true`로 설정해라.
 
 ```java
 @Bean
@@ -157,4 +155,4 @@ ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
 }
 ```
 
-When this property is `true`, an observation will be created for each record in the batch, but the observation is not propagated to the listener method. The application can then use the observation context to track the processing of each record in the batch. This allows you to have visibility into the processing of each record, even within a batch context.
+이 프로퍼티가 `true`이면, 배치에 포함된 각 레코드마다 Observation이 생성된다. 하지만 이 Observation은 리스너 메소드로 전파되진 않는다. 애플리케이션은 Observation 컨텍스트를 사용해 배치 내 각 레코드의 처리 과정을 추적할 수 있다. 덕분에 배치 환경에서도 개별 레코드의 처리 상태를 파악할 수 있다.
