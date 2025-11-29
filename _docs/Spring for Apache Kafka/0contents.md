@@ -51,12 +51,12 @@ description: 스프링 카프카 레퍼런스를 한글로 번역한 문서입�
  + [Thread Safety](../thread-safety)
  + [Monitoring](../micrometer)
  + [Transactions](../transactions)
- + [Exactly Once Semantics
- + [Wiring Spring Beans into Producer/Consumer Interceptors
- + [Producer Interceptor Managed in Spring
+ + [Exactly Once Semantics](../exactly-once)
+ + [Wiring Spring Beans into Producer/Consumer Interceptors](../interceptors)
+ + [Producer Interceptor Managed in Spring](../producer-interceptor-managed-in-spring)
  + [Pausing and Resuming Listener Containers](../pause-resume)
  + [Pausing and Resuming Partitions on Listener Containers](../pause-resume-partitions)
- + [Serialization, Deserialization, and Message Conversion
+ + [Serialization, Deserialization, and Message Conversion](../serdes)
  + [Message Headers
  + [Null Payloads and Log Compaction of 'Tombstone' Records
  + [Handling Exceptions](../annotation-error-handling)
